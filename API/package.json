@@ -1,0 +1,10 @@
+{
+  "name": "Entschuldigungsverfahren-API",
+  "version": "0.0.1",
+  "description": "Die API für das Entschuldigungsverfahren.",
+  "main": "index.js",
+  "repository": "https://github.com/Skn0tt/EntschuldigungsVerfahren",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true
+}
