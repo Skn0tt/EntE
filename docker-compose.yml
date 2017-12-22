@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    build: ui/
+    restart: on-failure
+    ports:
+      - "80:80"
+  api:
+    build: api/
+    restart: on-failure
+    ports:
+      - "3000:3000"
