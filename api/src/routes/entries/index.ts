@@ -6,7 +6,7 @@ const entriesRouter = Router();
  * Get all entries for user
  */
 entriesRouter.get('/', (request, response) => {
-
+  
 });
 
 /**
@@ -21,7 +21,6 @@ entriesRouter.post('/', (request, response) => {
  */
 entriesRouter.get('/:entryId', (request, response) => {
   const entryId = request.params.entryId;
-
 });
 
 export default entriesRouter;

@@ -14,6 +14,7 @@ slotsRouter.get('/', (request, response) => {
  */
 slotsRouter.get('/:slotId', (request, response) => {
   const slotId = request.params.slotId;
+  response.end(slotId);
 });
 
 /**

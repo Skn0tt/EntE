@@ -6,11 +6,11 @@ import { ROLES } from '../constants';
 /**
  * # Schema
  */
-
-const UserSchema = new Schema({
+const types = [ROLES.ADMIN, ROLES.PARENT, ROLES.STUDENT, ROLES.TEACHER];
+const userSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  type: { type: String, enum: ROLES, required: true }
+  type: { type: String, enum: types, required: true },
 });
 
 /**
@@ -20,18 +20,17 @@ const UserSchema = new Schema({
  * ## Hash password before saving
  */
 const SALT_WORK_FACTOR = 10;
-UserSchema.pre('save', function(next) {
-  const user = this;
+userSchema.pre('save', function (next) {
 
-  if (!user.isModified('password')) return next();
+  if (!this.isModified('password')) return next();
 
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-    if (err) return next(err);
+    if (!!err) return next(err);
 
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) return next(err);
+    bcrypt.hash(this.password, salt, (err, hash) => {
+      if (!!err) return next(err);
       
-      user.password = hash;
+      this.password = hash;
       next();
     });
   });
@@ -40,16 +39,16 @@ UserSchema.pre('save', function(next) {
 /**
  * ## Validate password
  */
-UserSchema.methods.comparePassword = function(candidatePassword, callback) {
+userSchema.methods.comparePassword = function (candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-      if (err) return callback(err);
-      callback(null, isMatch);
+    if (err) return callback(err);
+    callback(null, isMatch);
   });
 };
 
 /**
  * # Model
  */
-const User = model('users', UserSchema);
+const user = model('users', userSchema);
 
-export default User;
+export default user;

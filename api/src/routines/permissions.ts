@@ -8,7 +8,7 @@ interface Permissions {
   entries_write: boolean;
   users_read: boolean;
   users_write: boolean;
-};
+}
 
 const adminPermissions: Permissions = {
   slots_read: true,
@@ -56,7 +56,7 @@ const teacherPermissions: Permissions = {
  * @param needs
  */
 const compare = (has: Permissions, needs: Permissions) : boolean => {
-  Object.keys(needs).forEach(key => {
+  Object.keys(needs).forEach((key) => {
     if (needs[key] && !has[key]) return false;
   });
 
@@ -79,5 +79,5 @@ const check = (role: ROLES, neededPermissions: Permissions) : boolean => {
 
 export {
   check,
-  Permissions
+  Permissions,
 };

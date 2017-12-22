@@ -8,8 +8,8 @@ const authenticate = async (username, password, done) => {
     if (!user.schema.methods.comparePassword(password)) return done(null, false);
 
     return done(null, user);
-  } catch(err) {
-    done(err)
+  } catch (err) {
+    done(err);
   }
 };
 
