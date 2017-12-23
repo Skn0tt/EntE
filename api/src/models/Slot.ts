@@ -1,4 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
+
+interface SlotModel extends Document {
+  sign(): void;
+}
 
 export interface ISlot {
   date: Date;
@@ -25,7 +29,7 @@ const slotSchema = new Schema({
 /**
  * ## Sign a Slot
  */
-slotSchema.methods.sign = function (callback) {
+slotSchema.methods.sign = function (callback) : void {
   this.signed = true;
   this.save(callback);
 };
@@ -33,6 +37,6 @@ slotSchema.methods.sign = function (callback) {
 /**
  * # Model
  */
-const slot = model('slots', slotSchema);
+const slot : Model<SlotModel> = model('slots', slotSchema);
 
 export default slot;

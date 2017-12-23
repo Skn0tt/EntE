@@ -1,9 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
+
+interface EntryModel extends Document {
+  sign(): void;
+}
 
 /**
  * # Schema
  */
-const entrySchema = new Schema({
+const entrySchema: Schema = new Schema({
   date: { type: Date, required: true, default: Date.now() },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   slots: { type: [Schema.Types.ObjectId], required: true, ref: 'slots' },
@@ -17,7 +21,7 @@ const entrySchema = new Schema({
 /**
  * ## Sign an Entry
  */
-entrySchema.methods.sign = function (callback) {
+entrySchema.methods.sign = function (callback) : void {
   this.signed = true;
   this.save(callback);
 };
@@ -25,7 +29,7 @@ entrySchema.methods.sign = function (callback) {
 /**
  * # Model
  */
-const entry = model('entries', entrySchema);
+const entry: Model<EntryModel> = model('entries', entrySchema);
 
 
 export default entry;

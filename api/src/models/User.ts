@@ -1,12 +1,16 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { roles } from '../constants';
 
+export interface UserModel extends Document {
+  comparePassword(candidatePassword: String): Promise<boolean>;
+}
+
 /**
  * # Schema
  */
-const userSchema = new Schema({
+const userSchema : Schema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   email: { type: String, required: false },
   password: { type: String, required: true },
@@ -37,10 +41,10 @@ userSchema.pre('save', async function (next) {
 /**
  * ## Validate password
  */
-userSchema.methods.comparePassword = function (candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) : Promise<boolean> {
   const password = this.password;
   try {
-    const isValid = bcrypt.compare(candidatePassword, this.password);
+    const isValid = await bcrypt.compare(candidatePassword, this.password);
     return isValid;
   } catch (error) {
     return error;
@@ -50,7 +54,7 @@ userSchema.methods.comparePassword = function (candidatePassword) {
 /**
  * # Model
  */
-const user = model('users', userSchema);
+const user : Model<UserModel> = model('users', userSchema);
 
 user.create({
   username: 'admin',

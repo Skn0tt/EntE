@@ -15,12 +15,12 @@ import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
 
-const ENV = process.env.NODE_ENV || 'dev';
+const docker = process.env.DOCKER;
 
 // Mongoose
 require('mongoose').Promise = Promise;
 mongoose.connect(
-  'mongodb://localhost/entschuldigungsVerfahrentTest',
+  docker ? 'mongodb://mongodb' : 'mongodb://localhost/entschuldigungsVerfahrentTest',
   { useMongoClient: true },
 );
 
