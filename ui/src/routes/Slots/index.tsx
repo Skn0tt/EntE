@@ -3,7 +3,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import styles from './styles';
 
-const Slots = () => (
+const Slots: React.SFC = () => (
   <div>
     Slots
   </div>

@@ -14,7 +14,6 @@ import store from './redux/store';
 import Entries from './routes/Entries';
 import Slots from './routes/Slots';
 import Users from './routes/Users';
-import { getEntry } from './redux/actions';
 
 const Home = () => (
   <div>
@@ -30,8 +29,6 @@ const Routes = () => (
     <Route path="/users" component={Users}/>
   </React.Fragment>
 );
-
-console.log(getEntry("Hallo"));
 
 const theme = createMuiTheme();
 

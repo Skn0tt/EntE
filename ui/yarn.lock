@@ -51,6 +51,13 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/redux-actions/-/redux-actions-2.2.3.tgz#a11777808ec37ef7246f70bed770cab3510cf926"
 
+"@types/redux-immutable@^3.0.38":
+  version "3.0.38"
+  resolved "https://registry.yarnpkg.com/@types/redux-immutable/-/redux-immutable-3.0.38.tgz#9e2fcce4a9c64e60f13de2165d2765f7af85d487"
+  dependencies:
+    immutable "^3.8.1"
+    redux "^3.6.0"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -2440,7 +2447,7 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
-immutable@^3.8.2:
+immutable@^3.8.1, immutable@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
 

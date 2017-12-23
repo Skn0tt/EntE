@@ -3,7 +3,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import styles from './styles';
 
-const Users = () => (
+const Users: React.SFC = () => (
   <div>
     Users
   </div>

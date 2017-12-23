@@ -1,5 +1,3 @@
-export type errorPayload = Error;
-
 export const CREATE_ENTRY_REQUEST = 'CREATE_ENTRY_REQUEST';
 export const CREATE_ENTRY_SUCCESS = 'CREATE_ENTRY_SUCCESS';
 export const CREATE_ENTRY_ERROR = 'CREATE_ENTRY_ERROR';
