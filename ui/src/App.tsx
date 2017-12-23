@@ -1,22 +1,50 @@
 import * as React from 'react';
-import './App.css';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui';
+import {
+  BrowserRouter,
+  Route
+} from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-const logo = require('./logo.svg');
+import Drawer from './components/Drawer';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
-}
+import store from './redux/store';
+
+// Routes
+import Entries from './routes/Entries';
+import Slots from './routes/Slots';
+import Users from './routes/Users';
+import { getEntry } from './redux/actions';
+
+const Home = () => (
+  <div>
+    Home!
+  </div>
+);
+
+const Routes = () => (
+  <React.Fragment>
+    <Route exact={true} path="/" component={Home}/>
+    <Route path="/entries" component={Entries}/>
+    <Route path="/slots" component={Slots}/>
+    <Route path="/users" component={Users}/>
+  </React.Fragment>
+);
+
+console.log(getEntry("Hallo"));
+
+const theme = createMuiTheme();
+
+const App = () => (
+  <MuiThemeProvider theme={theme}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Drawer>
+          <Routes />
+        </Drawer>
+      </BrowserRouter>
+    </Provider>
+  </MuiThemeProvider>
+);
 
 export default App;
