@@ -4,16 +4,25 @@ import * as bodyParser from 'body-parser';
 import * as passport from 'passport';
 import { BasicStrategy } from 'passport-http';
 import * as mongoose from 'mongoose';
+import * as validator from 'express-validator';
+import { Promise } from 'bluebird';
 
+// Routines
 import authenticate from './routines/authenticate';
 
+// Routes
 import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
 
-// Mongoose
-mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
+const ENV = process.env.NODE_ENV || 'dev';
 
+// Mongoose
+require('mongoose').Promise = Promise;
+mongoose.connect(
+  ENV === 'dev' ? 'mongodb://localhost/entschuldigungsVerfahrentTest' : 'mongodb://mongodb',
+  { useMongoClient: true },
+);
 
 const app = express();
 
@@ -22,6 +31,7 @@ app.set('port', process.env.PORT || 3000);
 // Express Setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(validator());
 app.use(passport.initialize());
 
 // Authentication

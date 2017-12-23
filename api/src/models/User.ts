@@ -1,16 +1,17 @@
 import { Schema, model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-import { ROLES } from '../constants';
+import { roles } from '../constants';
 
 /**
  * # Schema
  */
-const types = [ROLES.ADMIN, ROLES.PARENT, ROLES.STUDENT, ROLES.TEACHER];
 const userSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
+  email: { type: String, required: false },
   password: { type: String, required: true },
-  type: { type: String, enum: types, required: true },
+  role: { type: String, enum: roles, required: true },
+  children: { type: [Schema.Types.ObjectId] },
 });
 
 /**

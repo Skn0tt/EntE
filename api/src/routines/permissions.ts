@@ -1,13 +1,13 @@
 import { ROLES } from '../constants';
 
 interface Permissions {
-  slots_read: boolean;
-  slots_write: boolean;
-  entries_read: boolean;
-  entries_create: boolean;
-  entries_write: boolean;
-  users_read: boolean;
-  users_write: boolean;
+  slots_read?: boolean;
+  slots_write?: boolean;
+  entries_read?: boolean;
+  entries_create?: boolean;
+  entries_write?: boolean;
+  users_read?: boolean;
+  users_write?: boolean;
 }
 
 const adminPermissions: Permissions = {

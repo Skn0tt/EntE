@@ -4,3 +4,4 @@ export enum ROLES {
   TEACHER = 'teacher',
   ADMIN = 'admin',
 }
+export const roles = [ROLES.ADMIN, ROLES.STUDENT, ROLES.TEACHER, ROLES.PARENT];
