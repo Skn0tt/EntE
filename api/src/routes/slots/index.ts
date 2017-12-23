@@ -4,6 +4,8 @@ import { validationResult, param } from 'express-validator/check';
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
 import { roles } from '../../constants';
 
+import Slot from '../../models/Slot';
+
 const slotsRouter = Router();
 
 /**
@@ -12,8 +14,16 @@ const slotsRouter = Router();
 const readPermissions: Permissions = {
   slots_read: true,
 };
-slotsRouter.get('/', (request, response) => {
-  if (!permissionsCheck(request.body.role, readPermissions)) return response.status(403);
+slotsRouter.get('/', async (request, response) => {
+  if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
+
+  try {
+    const slots = await Slot.find({}).populate('teacher', 'username email');
+    
+    return response.json(slots);
+  } catch (error) {
+    return response.status(400).json(error);
+  }
 });
 
 /**
@@ -24,10 +34,19 @@ const readSpecificPermissions: Permissions = {
 };
 slotsRouter.get('/:slotId', [
   param('slotId').isMongoId(),
-], (request, response) => {
-  if (!permissionsCheck(request.body.role, readSpecificPermissions)) return response.status(403);
+], async (request, response) => {
+  if (!permissionsCheck(request.user.role, readSpecificPermissions))
+    return response.status(403).end();
   
   const slotId = request.params.slotId;
+
+  try {
+    const slot = await Slot.findById(slotId).populate('teacher', 'username email');
+    
+    return response.json(slot);
+  } catch (error) {
+    return response.status(400).json(error);
+  }
 });
 
 /**
@@ -36,10 +55,23 @@ slotsRouter.get('/:slotId', [
 const signPermissions: Permissions = {
   slots_write: true,
 };
-slotsRouter.put('/:slotId/sign', (request, response) => {
-  if (!permissionsCheck(request.body.role, signPermissions)) return response.status(403);
+slotsRouter.put('/:slotId/sign', async (request, response) => {
+  if (!permissionsCheck(request.user.role, signPermissions)) return response.status(403).end();
 
   const slotId = request.params.slotId;
+
+  try {
+    const slot = await Slot.findById(slotId);
+    
+    slot.sign();
+    slot.save();
+
+    slot.populate('teacher', 'username email');
+
+    return response.json(slot);
+  } catch (error) {
+    return response.json(error);
+  }
 });
 
 export default slotsRouter;

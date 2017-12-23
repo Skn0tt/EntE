@@ -20,7 +20,7 @@ const ENV = process.env.NODE_ENV || 'dev';
 // Mongoose
 require('mongoose').Promise = Promise;
 mongoose.connect(
-  ENV === 'dev' ? 'mongodb://localhost/entschuldigungsVerfahrentTest' : 'mongodb://mongodb',
+  'mongodb://localhost/entschuldigungsVerfahrentTest',
   { useMongoClient: true },
 );
 
@@ -32,10 +32,11 @@ app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(validator());
-app.use(passport.initialize());
 
 // Authentication
+app.use(passport.initialize());
 passport.use(new BasicStrategy(authenticate));
+app.use(passport.authenticate('basic', { session: false }));
 
 // Routes
 app.use('/entries', entries);

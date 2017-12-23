@@ -15,12 +15,34 @@ const readPermissions : Permissions = {
   users_read: true,
 };
 usersRouter.get('/', async (request, response) => {
-  if (!permissionsCheck(request.body.role, createPermissions)) return response.status(403).send("No Permissions");
+  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   try {
-    const users = await User.find({});
+    const users = await User.find({}).select('-password');
 
     return response.json(users);
+  } catch (error) {
+    return response.status(400).json(error);
+  }
+});
+
+/**
+ * Get specific user
+ */
+const readSpecificPermissions : Permissions = {
+  users_read: true,
+};
+usersRouter.get('/:userId', [
+  param('userId').isMongoId(),
+], async (request, response) => {
+  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+
+  const userId = request.params.userId;
+
+  try {
+    const user = await User.findById(userId).select('-password');
+    
+    return response.json(user);
   } catch (error) {
     return response.status(400).json(error);
   }
@@ -36,7 +58,7 @@ usersRouter.post('/', [
   body('email').isEmail(),
   body('role').isIn(roles),
 ], async (request, response) => {
-  if (!permissionsCheck(request.body.role, createPermissions)) return response.status(403);
+  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   const errors = validationResult(request);
   if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
@@ -57,28 +79,6 @@ usersRouter.post('/', [
 });
 
 /**
- * Get specific user
- */
-const readSpecificPermissions : Permissions = {
-  users_read: true,
-};
-usersRouter.get('/:userId', [
-  param('userId').isMongoId(),
-], async (request, response) => {
-  if (!permissionsCheck(request.body.role, createPermissions)) return response.status(403);
-
-  const userId = request.params.userId;
-
-  try {
-    const user = await User.findById(userId);
-    
-    return response.json(user);
-  } catch (error) {
-    return response.status(400).json(error);
-  }
-});
-
-/**
  * Update specific user
  */
 const updatePermissions : Permissions = {
@@ -89,25 +89,24 @@ usersRouter.put('/:userId', [
   body('role').isIn(roles),
   param('userId').isMongoId(),
 ], async (request: Request, response: Response) => {
-  if (!permissionsCheck(request.body.role, updatePermissions)) return response.status(403);
+  if (!permissionsCheck(request.user.role, updatePermissions)) return response.status(403).end();
   
   const errors = validationResult(request);
   if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
 
   const userId = request.params.userId;
+  const body = request.body;
   
   try {
     const user = await User.findById(userId);
 
-    user.update({
-      email: request.body.email,
-      role: request.body.role,
-      username: request.body.username,
-      password: request.body.password,
-      children: request.body.children,
-    });
+    if (body.email) user.set('email', body.email);
+    if (body.role) user.set('role', body.role);
+    if (body.username) user.set('role', body.username);
+    if (body.children) user.set('children', body.children);
+    if (body.password) user.set('password', body.password);
 
-    user.save();
+    await user.save();
 
     return response.json(user);
   } catch (error) {

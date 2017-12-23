@@ -1,5 +1,13 @@
 import { Schema, model } from 'mongoose';
 
+export interface ISlot {
+  date: Date;
+  hour_from: Number;
+  hour_to: Number;
+  signed: boolean;
+  teacher: Schema.Types.ObjectId;
+}
+
 /**
  * # Schema
  */
@@ -8,7 +16,7 @@ const slotSchema = new Schema({
   hour_from: { type: Number, required: true },
   hour_to: { type: Number, required: true },
   signed: { type: Boolean, default: false, required: true },
-  teacher: { type: Schema.Types.ObjectId, required: true },
+  teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
 });
 
 /**
@@ -25,6 +33,6 @@ slotSchema.methods.sign = function (callback) {
 /**
  * # Model
  */
-const slot = model('slot', slotSchema);
+const slot = model('slots', slotSchema);
 
 export default slot;

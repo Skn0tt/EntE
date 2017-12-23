@@ -3,13 +3,14 @@ import User from '../models/User';
 const authenticate = async (username, password, done) => {
   try {
     const user = await User.findOne({ username });
-
     if (!user) return done(null, false);
-    if (!user.schema.methods.comparePassword(password)) return done(null, false);
 
-    return done(null, user);
+    const valid = await user.comparePassword(password);
+
+    if (valid) return done(null, user);
+    return done(null, false);
   } catch (err) {
-    done(err);
+    return done(err);
   }
 };
 

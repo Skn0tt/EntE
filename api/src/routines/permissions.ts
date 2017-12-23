@@ -56,11 +56,12 @@ const teacherPermissions: Permissions = {
  * @param needs
  */
 const compare = (has: Permissions, needs: Permissions) : boolean => {
+  let result = true;
   Object.keys(needs).forEach((key) => {
-    if (needs[key] && !has[key]) return false;
+    if (needs[key] && !has[key]) result = false;
   });
 
-  return true;
+  return result;
 };
 
 /**
