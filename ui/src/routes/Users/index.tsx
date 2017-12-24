@@ -8,17 +8,19 @@ import * as select from '../../redux/selectors';
 import { User } from '../../interfaces/index';
 import { AppState } from '../../redux/reducer';
 import { Action } from 'redux';
-import { StyledComponentProps } from 'material-ui';
-import { List } from 'immutable';
+import { StyledComponentProps, List } from 'material-ui';
+import ListItem from '../../components/ListItem';
 
 interface Props {
-  users: List<User>;
+  users: User[];
 }
 
 const Users: React.SFC<Props & StyledComponentProps<string> & WithStyles<string>> = (props) => (
-  <div>
-    Entries
-  </div>
+  <List>
+    {props.users.map(user => (
+      <ListItem id={user.get('_id') || ''}/>
+    ))}
+  </List>
 );
 
 const mapStateToProps = (state: AppState) => ({

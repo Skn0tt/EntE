@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
 
 export type errorPayload = {};
-export type MongoId = String;
+export type MongoId = string;
 
 /**
  * User
@@ -15,8 +15,8 @@ export enum Roles {
 
 export interface User {
   _id: MongoId;
-  username: String;
-  email: String;
+  username: string;
+  email: string;
   role: Roles;
   children: [User];
 }
@@ -36,8 +36,8 @@ export class User extends Record({}) {
 export interface Slot {
   _id: MongoId;
   date: Date;
-  hour_from: Number;
-  hour_to: Number;
+  hour_from: number;
+  hour_to: number;
   signed: boolean;
   teacher: User;
 }

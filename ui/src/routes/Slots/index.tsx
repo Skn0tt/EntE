@@ -8,16 +8,19 @@ import * as select from '../../redux/selectors';
 import { Slot } from '../../interfaces/index';
 import { AppState } from '../../redux/reducer';
 import { Action } from 'redux';
-import { List } from 'immutable';
+import { List } from 'material-ui';
+import ListItem from '../../components/ListItem';
 
 interface Props extends WithStyles {
-  slots: List<Slot>;
+  slots: Slot[];
 }
 
 const Slots: React.SFC<Props> = (props) => (
-  <div>
-    Entries
-  </div>
+  <List>
+    {props.slots.map(slot => (
+      <ListItem id={slot.get('_id') || ''}/>
+    ))}
+  </List>
 );
 
 const mapStateToProps = (state: AppState) => ({

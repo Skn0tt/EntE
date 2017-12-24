@@ -1,23 +1,26 @@
 import * as React from 'react';
 import withStyles from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
-
+import { List } from 'material-ui';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
 import { Entry } from '../../interfaces/index';
 import { AppState } from '../../redux/reducer';
 import { Action } from 'redux';
-import { List } from 'immutable';
+
+import ListItem from '../../components/ListItem';
 
 interface Props {
-  entries: List<Entry>;
+  entries: Entry[];
 }
 
 const Entries: React.SFC<Props> = (props) => (
-  <div>
-    Entries
-  </div>
+  <List>
+    {props.entries.map(entry => (
+      <ListItem id={entry.get('_id') || ''}/>
+    ))}
+  </List>
 );
 
 const mapStateToProps = (state: AppState) => ({
