@@ -13,19 +13,34 @@ export enum Roles {
   ADMIN = 'admin',
 }
 
-export interface User {
+export interface IUser {
   _id: MongoId;
   username: string;
   email: string;
   role: Roles;
-  children: [User];
+  children: User[];
+}
+
+export interface IUserAPI {
+  _id: MongoId;
+  username: string;
+  email: string;
+  role: Roles;
+  children: IUserAPI[];
+}
+
+export interface IUserCreate {
+  username: string;
+  email: string;
+  role: Roles;
+  children: User[];
 }
 
 export class User extends Record({}) {
-  constructor(props: User) {
+  constructor(props: IUser) {
     super(props);
   }
-  get<T extends keyof User>(value: T): User[T] {
+  get<T extends keyof IUser>(value: T): IUser[T] {
     return super.get(value);
   }
 }
@@ -33,7 +48,7 @@ export class User extends Record({}) {
 /**
  * Slot
  */
-export interface Slot {
+export interface ISlot {
   _id: MongoId;
   date: Date;
   hour_from: number;
@@ -42,11 +57,20 @@ export interface Slot {
   teacher: User;
 }
 
+export interface ISlotAPI {
+  _id: MongoId;
+  date: Date;
+  hour_from: number;
+  hour_to: number;
+  signed: boolean;
+  teacher: IUserAPI;
+}
+
 export class Slot extends Record({}) {
-  constructor(props: Slot) {
+  constructor(props: ISlot) {
     super(props);
   }
-  get<T extends keyof Slot>(value: T): Slot[T] {
+  get<T extends keyof ISlot>(value: T): ISlot[T] {
     return super.get(value);
   }
 }
@@ -54,21 +78,37 @@ export class Slot extends Record({}) {
 /**
  * Entry
  */
-export interface Entry {
-  _id?: MongoId;
-  date?: Date;
-  student?: User;
-  slots: [Slot];
+export interface IEntry {
+  _id: MongoId;
+  date: Date;
+  student: User;
+  slots: Slot[];
   forSchool: boolean;
-  signedAdmin?: boolean;
-  signedParent?: boolean;
+  signedAdmin: boolean;
+  signedParent: boolean;
+}
+
+export interface IEntryAPI {
+  _id: MongoId;
+  date: Date;
+  student: IUserAPI;
+  slots: ISlotAPI[];
+  forSchool: boolean;
+  signedAdmin: boolean;
+  signedParent: boolean;
+}
+
+export interface IEntryCreate {
+  date: Date;
+  slots: Slot[];
+  forSchool: boolean;
 }
 
 export class Entry extends Record({}) {
-  constructor(props: Entry) {
+  constructor(props: IEntry) {
     super(props);
   }
-  get<T extends keyof Entry>(value: T): Entry[T] {
+  get<T extends keyof IEntry>(value: T): IEntry[T] {
     return super.get(value);
   }
 }

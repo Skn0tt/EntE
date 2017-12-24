@@ -1,6 +1,6 @@
 import { handleActions, Action } from 'redux-actions';
 import { Record, Map } from 'immutable';
-import { MongoId, Entry, User, Slot } from '../interfaces/index';
+import { MongoId, User, Slot, Entry } from '../interfaces/index';
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,

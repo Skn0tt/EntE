@@ -1,5 +1,5 @@
 import * as React from 'react';
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
 import { List } from 'material-ui';
 import styles from './styles';
@@ -10,9 +10,11 @@ import { AppState } from '../../redux/reducer';
 import { Action } from 'redux';
 
 import ListItem from '../../components/ListItem';
+import { getEntriesRequest } from '../../redux/actions';
 
-interface Props {
+interface Props extends WithStyles {
   entries: Entry[];
+  getEntries(): Action;
 }
 
 const Entries: React.SFC<Props> = (props) => (
@@ -28,7 +30,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-
+  getEntries: () => dispatch(getEntriesRequest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Entries));

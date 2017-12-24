@@ -6,6 +6,7 @@ import { BasicStrategy } from 'passport-http';
 import * as mongoose from 'mongoose';
 import * as validator from 'express-validator';
 import { Promise } from 'bluebird';
+import * as cors from 'cors';
 
 // Routines
 import authenticate from './routines/authenticate';
@@ -26,12 +27,16 @@ mongoose.connect(
 
 const app = express();
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 
 // Express Setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(validator());
+
+// Cors
+app.use(cors({ origin: true }));
+app.options('*', cors({ origin: true }));
 
 // Authentication
 app.use(passport.initialize());

@@ -17,7 +17,7 @@ export const createEntryRequest = createAction<Entry>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction<Entry>(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
-export const getEntriesRequest = createAction<null>(GET_ENTRIES_REQUEST);
+export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
 export const getEntriesSuccess = createAction<Entry[]>(GET_ENTRIES_SUCCESS);
 export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
 
