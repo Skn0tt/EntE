@@ -38,7 +38,6 @@ const Drawer = withStyles(styles)<{}>(
           <div className={classes.drawerHeader} />
           <Divider />
           <AdminItems />
-          <Divider />
         </div>
       );
   
@@ -60,7 +59,6 @@ const Drawer = withStyles(styles)<{}>(
                   EntschuldigungsVerfahren
                 </Typography>
                 <div className={classes.grow} />
-                <div id="upperRightPortal" />
               </Toolbar>
             </AppBar>
             <Hidden mdUp={true}>

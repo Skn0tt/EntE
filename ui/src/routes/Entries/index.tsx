@@ -7,7 +7,6 @@ import styles from './styles';
 import * as select from '../../redux/selectors';
 import { Entry, AppState } from '../../interfaces/index';
 import { Action } from 'redux';
-import UpperRight from '../../elements/UpperRight';
 
 import ListItem from '../../components/ListItem';
 import { getEntriesRequest } from '../../redux/actions';
@@ -18,16 +17,11 @@ interface Props extends WithStyles {
 }
 
 const Entries: React.SFC<Props> = (props) => (
-  <React.Fragment>
-    <List>
-      {props.entries.map(entry => (
-        <ListItem id={entry.get('_id') || ''}/>
-      ))}
-    </List>
-    <UpperRight>
-      <div>Test!</div>
-    </UpperRight>
-  </React.Fragment>
+  <List>
+    {props.entries.map(entry => (
+      <ListItem id={entry.get('_id') || ''}/>
+    ))}
+  </List>
 );
 
 const mapStateToProps = (state: AppState) => ({
