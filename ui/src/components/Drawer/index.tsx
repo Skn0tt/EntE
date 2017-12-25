@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -8,10 +7,11 @@ import {
   Hidden,
   Divider,
   withStyles,
-  WithStyles,
-  Drawer as MUIDrawer
+  Drawer as MUIDrawer,
+  WithStyles
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
+import LoadingIndicator from '../LoadingIndicator';
 
 import styles from './styles';
 import { AdminItems } from './items';
@@ -22,9 +22,7 @@ interface State {
   mobileOpen: boolean;
 }
 
-const decorate = withStyles(styles);
-
-const Drawer = decorate<{}>(
+const Drawer = withStyles(styles)<{}>(
   class extends React.Component<Props, State> {
     state = {
       mobileOpen: false,
@@ -32,19 +30,21 @@ const Drawer = decorate<{}>(
   
     handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
   
-    render(): ReactNode {
-      const { classes } = this.props;
+    render() {
+      const classes = this.props.classes!;
   
       const drawer = (
         <div>
           <div className={classes.drawerHeader} />
           <Divider />
           <AdminItems />
+          <Divider />
         </div>
       );
   
       return (
         <div className={classes.root}>
+          <LoadingIndicator />
           <div className={classes.appFrame}>
             <AppBar className={classes.appBar}>
               <Toolbar>
@@ -59,6 +59,8 @@ const Drawer = decorate<{}>(
                 <Typography type="title" color="inherit" noWrap={true}>
                   EntschuldigungsVerfahren
                 </Typography>
+                <div className={classes.grow} />
+                <div id="upperRightPortal" />
               </Toolbar>
             </AppBar>
             <Hidden mdUp={true}>
@@ -70,7 +72,7 @@ const Drawer = decorate<{}>(
                 }}
                 onClose={this.handleDrawerToggle}
                 ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
+                  keepMounted: true,
                 }}
               >
                 {drawer}

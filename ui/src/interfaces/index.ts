@@ -1,7 +1,31 @@
-import { Record } from 'immutable';
+import { Record, Map } from 'immutable';
 
 export type errorPayload = {};
 export type MongoId = string;
+
+/**
+ * AppState
+ */
+export interface IAppState {
+  entries: Map<MongoId, Entry>;
+  users: Map<MongoId, User>;
+  slots: Map<MongoId, Slot>;
+  loading: number;
+}
+
+export class AppState extends Record({
+  entries: Map<MongoId, Entry>(),
+  users: Map<MongoId, User>(),
+  slots: Map<MongoId, Slot>(),
+  loading: 0,
+}) {
+  constructor(props: Partial<IAppState>) {
+    super(props);
+  }
+  get<T extends keyof IAppState>(value: T): IAppState[T] {
+    return super.get(value);
+  }
+}
 
 /**
  * User

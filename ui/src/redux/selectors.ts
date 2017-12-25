@@ -1,6 +1,6 @@
-import { Map } from 'immutable';
-import { AppState } from './reducer';
+import { AppState } from '../interfaces/index';
 
-export const getEntries = (state: Map<String, AppState>) => state.get('entries').toArray();
-export const getUsers = (state: Map<String, AppState>) => state.get('users').toArray();
-export const getSlots = (state: Map<String, AppState>) => state.get('slots').toArray();
+export const getEntries = (state: AppState) => state.get('entries').toArray();
+export const getUsers = (state: AppState) => state.get('users').toArray();
+export const getSlots = (state: AppState) => state.get('slots').toArray();
+export const isLoading = (state: AppState): boolean => state.get('loading') > 0;

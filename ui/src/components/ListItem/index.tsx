@@ -4,7 +4,6 @@ import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import {
   ListItem as MUIListItem,
   ListItemText as MUIListItemText,
-
 } from 'material-ui';
 
 interface Props extends Partial<WithStyles> {

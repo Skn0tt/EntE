@@ -5,8 +5,7 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { User } from '../../interfaces/index';
-import { AppState } from '../../redux/reducer';
+import { User, AppState } from '../../interfaces/index';
 import { Action } from 'redux';
 import { StyledComponentProps, List } from 'material-ui';
 import ListItem from '../../components/ListItem';
