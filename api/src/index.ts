@@ -15,6 +15,7 @@ import authenticate from './routines/authenticate';
 import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
+import login from './routes/login';
 
 const docker = process.env.DOCKER;
 
@@ -48,6 +49,7 @@ app.use(passport.authenticate('basic', { session: false }));
 app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
+app.use('/login', login);
 
 app.listen(app.get('port'), () => {
   console.log(
