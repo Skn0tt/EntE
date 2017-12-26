@@ -7,14 +7,16 @@ import {
   GET_ENTRIES_ERROR,
   GET_ENTRY_REQUEST,
   GET_ENTRY_ERROR,
-  GET_ENTRY_SUCCESS
+  GET_ENTRY_SUCCESS,
+  GET_USER_REQUEST,
+  GET_USERS_ERROR,
+  GET_USER_ERROR,
+  GET_USER_SUCCESS,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS
 } from './constants';
 
-const initialState = new AppState({
-  entries: Map<MongoId, Entry>(),
-  users: Map<MongoId, User>(),
-  loading: 0,
-});
+const initialState = new AppState({});
 
 const reducer = handleActions({
   /**
@@ -42,6 +44,32 @@ const reducer = handleActions({
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
     .update('loading', loading => loading - 1)
     .update('entries', map => map.set(action.payload!.get('_id'), action.payload)),
+
+  /**
+   * GET_USERS
+   */
+  [GET_USERS_REQUEST]: state => state
+    .update('loading', loading => loading + 1),
+  [GET_USERS_ERROR]: state => state
+    .update('loading', loading => loading - 1),
+  [GET_USERS_SUCCESS]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('users', (map: Map<MongoId, User>) => map.withMutations(
+      mutator => action.payload!.forEach(
+        user => mutator.set(user.get('_id'), user)
+      )
+    )),
+
+  /**
+   * GET_USER
+   */
+  [GET_USER_REQUEST]: state => state
+    .update('loading', loading => loading + 1),
+  [GET_USER_ERROR]: state => state
+    .update('loading', loading => loading - 1),
+  [GET_USER_SUCCESS]: (state, action: Action<User>) => state
+    .update('loading', loading => loading - 1)
+    .update('users', map => map.set(action.payload!.get('_id'), action.payload)),
   
 }, initialState); // tslint:disable-line:align
 

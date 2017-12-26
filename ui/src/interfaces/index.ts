@@ -73,6 +73,14 @@ export class User extends Record({
   }
 }
 
+export const createUser = (item: IUserAPI): User => new User({
+  _id: item._id,
+  children: item.children ? item.children.map(child => createUser(child)) : [],
+  email: item.email,
+  role: item.role,
+  username: item.username
+});
+
 /**
  * Slot
  */
@@ -109,6 +117,15 @@ export class Slot extends Record({
     return super.get(value);
   }
 }
+
+export const createSlot = (item: ISlotAPI) => new Slot({
+  _id: item._id as string,
+  date: new Date(item.date),
+  hour_from: item.hour_from,
+  hour_to: item.hour_to,
+  signed: item.signed,
+  teacher: createUser(item.teacher),
+});
 
 /**
  * Entry
@@ -155,3 +172,13 @@ export class Entry extends Record({
     return super.get(value);
   }
 }
+
+export const createEntry = (item: IEntryAPI) => new Entry({
+  _id: item._id as string,
+  slots: item.slots.map((slot) => createSlot(slot)) as Slot[],
+  forSchool: item.forSchool as boolean,
+  date: new Date(item.date),
+  signedAdmin: item.signedAdmin as boolean,
+  signedParent: item.signedParent as boolean,
+  student: createUser(item.student),
+});

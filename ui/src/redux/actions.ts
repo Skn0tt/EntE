@@ -9,9 +9,15 @@ import {
   GET_ENTRIES_ERROR,
   GET_ENTRY_REQUEST,
   GET_ENTRY_SUCCESS,
-  GET_ENTRY_ERROR
+  GET_ENTRY_ERROR,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_ERROR
 } from './constants';
-import { Entry, MongoId } from '../interfaces/index';
+import { Entry, MongoId, User } from '../interfaces/index';
 
 export const createEntryRequest = createAction<Entry>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction<Entry>(CREATE_ENTRY_SUCCESS);
@@ -24,3 +30,11 @@ export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
 export const getEntryRequest = createAction<MongoId>(GET_ENTRY_REQUEST);
 export const getEntrySuccess = createAction<Entry>(GET_ENTRY_SUCCESS);
 export const getEntryError = createAction<Error>(GET_ENTRY_ERROR);
+
+export const getUserRequest = createAction(GET_USER_REQUEST);
+export const getUserSuccess = createAction<User>(GET_USER_SUCCESS);
+export const getUserError = createAction<Error>(GET_USER_ERROR);
+
+export const getUsersRequest = createAction(GET_USERS_REQUEST);
+export const getUsersSuccess = createAction<User[]>(GET_USERS_SUCCESS);
+export const getUsersError = createAction<Error>(GET_USERS_ERROR);
