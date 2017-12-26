@@ -4,23 +4,28 @@ export type errorPayload = {};
 export type MongoId = string;
 
 /**
- * AppState
+ * Auth
  */
-export interface IAppState {
-  entries: Map<MongoId, Entry>;
-  users: Map<MongoId, User>;
-  loading: number;
+// TODO: Dont save pw in clearform!!!!
+export interface ICredentials {
+  username: string;
+  password: string;
+}
+export interface IAuth extends ICredentials {
+  role: string;
+  checked: boolean;
 }
 
-export class AppState extends Record({
-  entries: Map<MongoId, Entry>(),
-  users: Map<MongoId, User>(),
-  loading: 0,
+export class AuthState extends Record({
+  username: 'admin',
+  password: 'root',
+  role: '',
+  checked: false,
 }) {
-  constructor(props: Partial<IAppState>) {
+  constructor(props: Partial<IAuth>) {
     super(props);
   }
-  get<T extends keyof IAppState>(value: T): IAppState[T] {
+  get<T extends keyof IAuth>(value: T): IAuth[T] {
     return super.get(value);
   }
 }
@@ -182,3 +187,27 @@ export const createEntry = (item: IEntryAPI) => new Entry({
   signedParent: item.signedParent as boolean,
   student: createUser(item.student),
 });
+
+/**
+ * AppState
+ */
+export interface IAppState {
+  entries: Map<MongoId, Entry>;
+  users: Map<MongoId, User>;
+  auth: typeof AuthState;
+  loading: number;
+}
+
+export class AppState extends Record({
+  entries: Map<MongoId, Entry>(),
+  users: Map<MongoId, User>(),
+  auth: new AuthState({}),
+  loading: 0,
+}) {
+  constructor(props: Partial<IAppState>) {
+    super(props);
+  }
+  get<T extends keyof IAppState>(value: T): IAppState[T] {
+    return super.get(value);
+  }
+}

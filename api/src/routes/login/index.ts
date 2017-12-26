@@ -5,6 +5,6 @@ const loginRouter = Router();
 /**
  * Login
  */
-loginRouter.get('/', async (request, response) => request.user.role);
+loginRouter.get('/', (request, response) => response.json(request.user.role));
 
 export default loginRouter;

@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put, select } from 'redux-saga/effects';
 import {
   getEntryError,
   getEntriesError,
@@ -8,20 +8,35 @@ import {
   getUsersSuccess,
   getUserSuccess,
   getUsersError,
+  checkAuthSuccess,
+  checkAuthError,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
   GET_ENTRIES_REQUEST,
   GET_USER_REQUEST,
-  GET_USERS_REQUEST
+  GET_USERS_REQUEST,
+  CHECK_AUTH_REQUEST
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
-import { MongoId } from '../interfaces/index';
+import * as selectors from './selectors';
+import { MongoId, ICredentials, AuthState } from '../interfaces/index';
+
+function* checkAuthSaga(action: Action<ICredentials>) {
+  try {
+    const authState: AuthState = yield call(api.checkAuth, action.payload);
+
+    yield put(checkAuthSuccess(authState));
+  } catch (error) {
+    yield put(checkAuthError(error));
+  }
+}
 
 function* getEntrySaga(action: Action<MongoId>) {
   try {
-    const entry = yield call(api.getEntry, action.payload);
+    const auth = yield select(selectors.getAuthCredentials);
+    const entry = yield call(api.getEntry, action.payload, auth);
 
     yield put(getEntrySuccess(entry));
   } catch (error) {
@@ -31,7 +46,8 @@ function* getEntrySaga(action: Action<MongoId>) {
 
 function* getEntriesSaga() {
   try {
-    const entries = yield call(api.getEntries);
+    const auth = yield select(selectors.getAuthCredentials);
+    const entries = yield call(api.getEntries, auth);
 
     yield put(getEntriesSuccess(entries));
   } catch (error) {
@@ -41,7 +57,8 @@ function* getEntriesSaga() {
 
 function* getUserSaga(action: Action<MongoId>) {
   try {
-    const user = yield call(api.getUser, action.payload);
+    const auth = yield select(selectors.getAuthCredentials);
+    const user = yield call(api.getUser, action.payload, auth);
 
     yield put(getUserSuccess(user));
   } catch (error) {
@@ -51,7 +68,8 @@ function* getUserSaga(action: Action<MongoId>) {
 
 function* getUsersSaga() {
   try {
-    const users = yield call(api.getUsers);
+    const auth = yield select(selectors.getAuthCredentials);
+    const users = yield call(api.getUsers, auth);
 
     yield put(getUsersSuccess(users));
   } catch (error) {
@@ -64,6 +82,7 @@ function* saga() {
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
   yield takeEvery<Action<MongoId>>(GET_USER_REQUEST, getUserSaga);
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
+  yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
 }
 
 export default saga;

@@ -1,5 +1,5 @@
 import { handleActions, Action } from 'redux-actions';
-import { Entry, AppState, MongoId, User } from '../interfaces/index';
+import { Entry, AppState, MongoId, User, AuthState } from '../interfaces/index';
 import { Map } from 'immutable';
 import {
   GET_ENTRIES_REQUEST,
@@ -13,12 +13,27 @@ import {
   GET_USER_ERROR,
   GET_USER_SUCCESS,
   GET_USERS_REQUEST,
-  GET_USERS_SUCCESS
+  GET_USERS_SUCCESS,
+  CHECK_AUTH_REQUEST,
+  CHECK_AUTH_ERROR,
+  CHECK_AUTH_SUCCESS
 } from './constants';
 
 const initialState = new AppState({});
 
 const reducer = handleActions({
+  /**
+   * CHECK_ENTRIES
+   */
+  [CHECK_AUTH_REQUEST]: state => state
+    .update('loading', loading => loading + 1),
+  [CHECK_AUTH_ERROR]: state => state
+    .update('loading', loading => loading - 1)
+    .setIn(['auth', 'checked'], true),
+  [CHECK_AUTH_SUCCESS]: (state, action: Action<AuthState>) => state
+    .update('loading', loading => loading - 1)
+    .set('auth', action.payload),
+  
   /**
    * GET_ENTRIES
    */

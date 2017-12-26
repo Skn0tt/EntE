@@ -5,20 +5,36 @@ import {
   IUserAPI,
   MongoId,
   createEntry,
-  createUser
+  createUser,
+  ICredentials,
+  AuthState
 } from '../interfaces/index';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const baseUrl = window ? `${location.protocol}//${location.hostname}:4000` : '';
 
-export const getEntry = async (id: MongoId): Promise<Entry> => {
+export const checkAuth = async (auth: ICredentials): Promise<AuthState> => {
+  const url = `${baseUrl}/login`;
+
+  const config: AxiosRequestConfig = {
+    auth,
+  };
+
+  const response = await axios.get(url, config);
+
+  const role: string = response.data;
+  return new AuthState({
+    ...auth,
+    role,
+    checked: true,
+  });
+};
+
+export const getEntry = async (id: MongoId, auth: ICredentials): Promise<Entry> => {
   const url = `${baseUrl}/entries/${id}`;
 
   const config: AxiosRequestConfig = {
-    auth: {
-      username: 'admin',
-      password: 'root',
-    }
+    auth,
   };
 
   const response = await axios.get(url, config);
@@ -29,14 +45,12 @@ export const getEntry = async (id: MongoId): Promise<Entry> => {
   return entry;
 };
 
-export const getEntries = async (): Promise<Entry[]> => {
+export const getEntries = async (auth: ICredentials): Promise<Entry[]> => {
   const url = `${baseUrl}/entries`;
   const config: AxiosRequestConfig = {
-    auth: {
-      username: 'admin',
-      password: 'root',
-    }
+    auth,
   };
+
   const response = await axios.get(url, config);
 
   const data: IEntryAPI[] = response.data;
@@ -45,14 +59,11 @@ export const getEntries = async (): Promise<Entry[]> => {
   return entries;
 };
 
-export const getUser = async (id: MongoId): Promise<User> => {
+export const getUser = async (id: MongoId, auth: ICredentials): Promise<User> => {
   const url = `${baseUrl}/users/${id}`;
 
   const config: AxiosRequestConfig = {
-    auth: {
-      username: 'admin',
-      password: 'root',
-    }
+    auth,
   };
 
   const response = await axios.get(url, config);
@@ -63,14 +74,11 @@ export const getUser = async (id: MongoId): Promise<User> => {
   return user;
 };
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (auth: ICredentials): Promise<User[]> => {
   const url = `${baseUrl}/users`;
 
   const config: AxiosRequestConfig = {
-    auth: {
-      username: 'admin',
-      password: 'root',
-    }
+    auth,
   };
 
   const response = await axios.get(url, config);

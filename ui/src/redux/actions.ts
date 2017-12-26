@@ -15,9 +15,12 @@ import {
   GET_USER_ERROR,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
-  GET_USERS_ERROR
+  GET_USERS_ERROR,
+  CHECK_AUTH_REQUEST,
+  CHECK_AUTH_SUCCESS,
+  CHECK_AUTH_ERROR
 } from './constants';
-import { Entry, MongoId, User } from '../interfaces/index';
+import { Entry, MongoId, User, AuthState, ICredentials } from '../interfaces/index';
 
 export const createEntryRequest = createAction<Entry>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction<Entry>(CREATE_ENTRY_SUCCESS);
@@ -38,3 +41,7 @@ export const getUserError = createAction<Error>(GET_USER_ERROR);
 export const getUsersRequest = createAction(GET_USERS_REQUEST);
 export const getUsersSuccess = createAction<User[]>(GET_USERS_SUCCESS);
 export const getUsersError = createAction<Error>(GET_USERS_ERROR);
+
+export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
+export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
+export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
