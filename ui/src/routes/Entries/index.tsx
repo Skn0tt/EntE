@@ -9,14 +9,19 @@ import { Entry, AppState } from '../../interfaces/index';
 import { Action } from 'redux';
 
 import { getEntriesRequest } from '../../redux/actions';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { History } from 'history';
 
-interface Props extends WithStyles {
+interface Props extends WithStyles, RouteComponentProps<{}> {
   entries: Entry[];
   getEntries(): Action;
 }
 
-const EntryRow = (entry: Entry) => (
-  <TableRow key={entry.get('_id')}>
+const EntryRow = (entry: Entry, history: History) => (
+  <TableRow
+    key={entry.get('_id')}
+    onClick={() => history.push(`/entries/${entry.get('_id')}`)}
+  >
     <TableCell>{entry.getIn(['student', 'username'])}</TableCell>
     <TableCell>{entry.get('date').toDateString()}</TableCell>
     <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
@@ -34,7 +39,7 @@ const Entries: React.SFC<Props> = (props) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.entries.map(entry => EntryRow(entry))}
+        {props.entries.map(entry => EntryRow(entry, props.history))}
       </TableBody>
     </Table>
   </Paper>
@@ -48,4 +53,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   getEntries: () => dispatch(getEntriesRequest()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Entries));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Entries)));
