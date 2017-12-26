@@ -2,15 +2,29 @@ import * as React from 'react';
 import { Button } from 'material-ui';
 import { Dispatch, connect } from 'react-redux';
 import { Action } from 'redux';
-import { getEntriesRequest } from '../../redux/actions';
+import { getEntriesRequest, getUsersRequest } from '../../redux/actions';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-interface Props {
+interface Props extends RouteComponentProps<{}> {
   getEntries(): Action;
+  getUsers(): Action;
 }
 
-const RefreshButton = (props: Props) => (
+const RefreshButton: React.SFC<Props> = (props) => (
   <Button
-    onClick={() => props.getEntries()}
+    onClick={() => {
+      const { location } = props;
+      switch (location.pathname) {
+        case('/entries'):
+          props.getEntries();
+          break;
+          case('/users'):
+          props.getUsers();
+          break;
+        default:
+          break;
+      }
+    }}
     raised={true}
   >
     Refresh
@@ -19,6 +33,7 @@ const RefreshButton = (props: Props) => (
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   getEntries: () => dispatch(getEntriesRequest()),
+  getUsers: () => dispatch(getUsersRequest()),
 });
 
-export default connect(undefined, mapDispatchToProps)(RefreshButton);
+export default withRouter(connect(undefined, mapDispatchToProps)(RefreshButton));

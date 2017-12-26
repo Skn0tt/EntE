@@ -13,20 +13,26 @@ interface Props extends WithStyles {
   users: User[];
 }
 
+const UserRow = (user: User) => (
+  <TableRow key={user.get('_id')}>
+    <TableCell>{user.get('username')}</TableCell>
+    <TableCell>{user.get('email')}</TableCell>
+    <TableCell>{user.get('role')}</TableCell>
+  </TableRow>
+);
+
 const Users: React.SFC<Props> = (props) => (
   <Paper>
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
+          <TableCell>Username</TableCell>
+          <TableCell>Email</TableCell>
+          <TableCell>Role</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.users.map(user => (
-          <TableRow key={user.get('_id')}>
-            <TableCell>{user.get('username')}</TableCell>
-          </TableRow>
-        ))}
+        {props.users.map(user => UserRow(user))}
       </TableBody>
     </Table>
   </Paper>

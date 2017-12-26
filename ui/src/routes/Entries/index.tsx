@@ -28,7 +28,7 @@ const Entries: React.SFC<Props> = (props) => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
+          <TableCell>Username</TableCell>
           <TableCell>Datum</TableCell>
           <TableCell>Schulisch</TableCell>
         </TableRow>
