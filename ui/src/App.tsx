@@ -2,7 +2,8 @@ import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui';
 import {
   BrowserRouter,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
@@ -22,9 +23,11 @@ const Home = () => (
 
 const Routes = () => (
   <React.Fragment>
-    <Route exact={true} path="/" component={Home}/>
-    <Route path="/entries" component={Entries}/>
-    <Route path="/users" component={Users}/>
+    <Switch>
+      <Route exact={true} path="/" component={Home}/>
+      <Route path="/entries" component={Entries}/>
+      <Route path="/users" component={Users}/>
+    </Switch>
   </React.Fragment>
 );
 
