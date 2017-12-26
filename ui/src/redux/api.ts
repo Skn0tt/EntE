@@ -5,7 +5,7 @@ const baseUrl = window ? `${location.protocol}//${location.hostname}:4000` : '';
 
 const createUser = (item: IUserAPI): User => new User({
   _id: item._id,
-  children: item.children.map(child => createUser(child)),
+  children: item.children ? item.children.map(child => createUser(child)) : [],
   email: item.email,
   role: item.role,
   username: item.username
@@ -40,6 +40,10 @@ export const getEntries = async (): Promise<Entry[]> => {
     method: 'GET',
   };
   const response = await axios.get(url, config);
+
+  if (response.status === 304) {
+    return [];
+  }
 
   const data: IEntryAPI[] = response.data;
   const entries: Entry[] = data.map(item => createEntry(item));

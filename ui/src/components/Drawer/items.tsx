@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { InsertDriveFile, AccessTime, Person } from 'material-ui-icons';
+import { InsertDriveFile, Person } from 'material-ui-icons';
 import { Route } from 'react-router-dom';
 
 export const AdminItems = () => (
@@ -12,16 +12,6 @@ export const AdminItems = () => (
             <InsertDriveFile />
           </ListItemIcon>
           <ListItemText primary="Entries" />
-        </ListItem>
-      )}
-    />
-    <Route
-      render={({ history }) => (
-        <ListItem button={true} onClick={() => history.push('/slots')}>
-          <ListItemIcon>
-            <AccessTime />
-          </ListItemIcon>
-          <ListItemText primary="Slots" />
         </ListItem>
       )}
     />

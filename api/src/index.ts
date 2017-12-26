@@ -28,6 +28,7 @@ mongoose.connect(
 const app = express();
 
 app.set('port', process.env.PORT || 4000);
+app.disable('etag');
 
 // Express Setup
 app.use(logger('dev'));

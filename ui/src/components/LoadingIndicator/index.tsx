@@ -1,21 +1,16 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { LinearProgress } from 'material-ui';
-import { AppState } from '../../interfaces/index';
-import * as select from '../../redux/selectors';
+import { LinearProgress, withStyles } from 'material-ui';
 
-interface Props {
-  loading: boolean;
-}
+import styles from './styles';
+import { WithStyles } from 'material-ui/styles/withStyles';
 
-const LoadingIndicator: React.SFC<Props> = (props) => (
-  props.loading ?
-    <LinearProgress mode="query" />
-  : null
+interface Props {}
+
+const LoadingIndicator: React.SFC<Props & WithStyles<string>> = (props) => (
+  <LinearProgress
+    className={props.classes.loading}
+    mode="query"
+  />
 );
 
-const mapStateToProps = (state: AppState) => ({
-  loading: select.isLoading(state),
-});
-
-export default connect(mapStateToProps)(LoadingIndicator);
+export default withStyles(styles)(LoadingIndicator);

@@ -12,17 +12,30 @@ import {
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
 import LoadingIndicator from '../LoadingIndicator';
+import * as select from '../../redux/selectors';
 
 import styles from './styles';
 import { AdminItems } from './items';
+import RefreshButton from '../RefreshButton';
+import { connect } from 'react-redux';
+import { AppState } from '../../interfaces/index';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-interface Props extends WithStyles {}
+interface IProps {
+  loading: boolean;
+}
 
 interface State {
   mobileOpen: boolean;
 }
 
-const Drawer = withStyles(styles)<{}>(
+const mapStateToProps = (state: AppState) => ({
+  loading: select.isLoading(state),
+});
+
+type Props = IProps & RouteComponentProps<IProps> &WithStyles<string>;
+
+const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
   class extends React.Component<Props, State> {
     state = {
       mobileOpen: false,
@@ -43,7 +56,7 @@ const Drawer = withStyles(styles)<{}>(
   
       return (
         <div className={classes.root}>
-          <LoadingIndicator />
+          {this.props.loading && <LoadingIndicator />}
           <div className={classes.appFrame}>
             <AppBar className={classes.appBar}>
               <Toolbar>
@@ -59,6 +72,7 @@ const Drawer = withStyles(styles)<{}>(
                   EntschuldigungsVerfahren
                 </Typography>
                 <div className={classes.grow} />
+                <RefreshButton />
               </Toolbar>
             </AppBar>
             <Hidden mdUp={true}>
@@ -95,6 +109,6 @@ const Drawer = withStyles(styles)<{}>(
       );
     }
   }
-);
+)));
 
 export default Drawer;

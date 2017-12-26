@@ -7,19 +7,29 @@ import styles from './styles';
 import * as select from '../../redux/selectors';
 import { User, AppState } from '../../interfaces/index';
 import { Action } from 'redux';
-import { StyledComponentProps, List } from 'material-ui';
-import ListItem from '../../components/ListItem';
+import { Paper, Table, TableRow, TableHead, TableBody, TableCell } from 'material-ui';
 
-interface Props {
+interface Props extends WithStyles {
   users: User[];
 }
 
-const Users: React.SFC<Props & StyledComponentProps<string> & WithStyles<string>> = (props) => (
-  <List>
-    {props.users.map(user => (
-      <ListItem id={user.get('_id') || ''}/>
-    ))}
-  </List>
+const Users: React.SFC<Props> = (props) => (
+  <Paper>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {props.users.map(user => (
+          <TableRow key={user.get('_id')}>
+            <TableCell>{user.get('username')}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </Paper>
 );
 
 const mapStateToProps = (state: AppState) => ({

@@ -9,14 +9,12 @@ export type MongoId = string;
 export interface IAppState {
   entries: Map<MongoId, Entry>;
   users: Map<MongoId, User>;
-  slots: Map<MongoId, Slot>;
   loading: number;
 }
 
 export class AppState extends Record({
   entries: Map<MongoId, Entry>(),
   users: Map<MongoId, User>(),
-  slots: Map<MongoId, Slot>(),
   loading: 0,
 }) {
   constructor(props: Partial<IAppState>) {
@@ -60,8 +58,14 @@ export interface IUserCreate {
   children: User[];
 }
 
-export class User extends Record({}) {
-  constructor(props: IUser) {
+export class User extends Record({
+  _id: '',
+  username: '',
+  email: '',
+  role: '',
+  children: [],
+}) {
+  constructor(props: Partial<IUser>) {
     super(props);
   }
   get<T extends keyof IUser>(value: T): IUser[T] {
@@ -90,8 +94,15 @@ export interface ISlotAPI {
   teacher: IUserAPI;
 }
 
-export class Slot extends Record({}) {
-  constructor(props: ISlot) {
+export class Slot extends Record({
+  _id: '',
+  date: new Date(0),
+  hour_from: -1,
+  hour_to: -1,
+  signed: false,
+  teacher: new User({})
+}) {
+  constructor(props: Partial<ISlot>) {
     super(props);
   }
   get<T extends keyof ISlot>(value: T): ISlot[T] {
@@ -128,8 +139,16 @@ export interface IEntryCreate {
   forSchool: boolean;
 }
 
-export class Entry extends Record({}) {
-  constructor(props: IEntry) {
+export class Entry extends Record({
+  _id: '',
+  date: new Date(0),
+  student: new User({}),
+  slots: [],
+  forSchool: false,
+  signedAdmin: false,
+  signedParent: false
+}) {
+  constructor(props: Partial<IEntry>) {
     super(props);
   }
   get<T extends keyof IEntry>(value: T): IEntry[T] {

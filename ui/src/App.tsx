@@ -12,7 +12,6 @@ import store from './redux/store';
 
 // Routes
 import Entries from './routes/Entries';
-import Slots from './routes/Slots';
 import Users from './routes/Users';
 
 const Home = () => (
@@ -25,7 +24,6 @@ const Routes = () => (
   <React.Fragment>
     <Route exact={true} path="/" component={Home}/>
     <Route path="/entries" component={Entries}/>
-    <Route path="/slots" component={Slots}/>
     <Route path="/users" component={Users}/>
   </React.Fragment>
 );
