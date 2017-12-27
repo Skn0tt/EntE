@@ -5,30 +5,36 @@ import { Action } from 'redux';
 import { getEntriesRequest, getUsersRequest } from '../../redux/actions';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-interface Props extends RouteComponentProps<{}> {
+interface Props {
   getEntries(): Action;
   getUsers(): Action;
 }
 
-const RefreshButton: React.SFC<Props> = (props) => (
-  <Button
-    onClick={() => {
-      const { location } = props;
-      switch (location.pathname) {
-        case('/entries'):
-          props.getEntries();
-          break;
-          case('/users'):
-          props.getUsers();
-          break;
-        default:
-          break;
-      }
-    }}
-    raised={true}
-  >
-    Refresh
-  </Button>
+// TODO: Implement, only render when wanted
+const shouldRender = (path: string) => true;
+
+const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = (props) => (
+  shouldRender(props.match.url) ?
+  (
+    <Button
+      onClick={() => {
+        const { location } = props;
+        switch (location.pathname) {
+          case('/entries'):
+            props.getEntries();
+            break;
+            case('/users'):
+            props.getUsers();
+            break;
+          default:
+            break;
+        }
+      }}
+      raised={true}
+    >
+      Refresh
+    </Button>
+  ) : null
 );
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
