@@ -5,7 +5,6 @@ RUN yarn
 COPY . ./
 RUN yarn build
 
-
 FROM nginx as server
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
