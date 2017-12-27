@@ -7,7 +7,6 @@ COPY . ./
 RUN yarn build
 
 ENV NODE_ENV=production
-ENV DOCKER=true
 
 EXPOSE 3000
 CMD ["yarn", "start"]

@@ -7,6 +7,7 @@ import * as mongoose from 'mongoose';
 import * as validator from 'express-validator';
 import { Promise } from 'bluebird';
 import * as cors from 'cors';
+import * as helmet from 'helmet';
 
 // Routines
 import authenticate from './routines/authenticate';
@@ -17,12 +18,12 @@ import slots from './routes/slots';
 import users from './routes/users';
 import login from './routes/login';
 
-const docker = process.env.DOCKER;
+const production = process.env.NODE_ENV === 'production';
 
 // Mongoose
 require('mongoose').Promise = Promise;
 mongoose.connect(
-  docker ? 'mongodb://mongodb' : 'mongodb://localhost/entschuldigungsVerfahrentTest',
+  production ? 'mongodb://mongodb' : 'mongodb://localhost/entschuldigungsVerfahrentTest',
   { useMongoClient: true },
 );
 
@@ -35,6 +36,12 @@ app.disable('etag');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(validator());
+
+// Security Measures
+if (production) {
+  // Helmet
+  app.use(helmet());
+}
 
 // Cors
 app.use(cors({ origin: true }));
