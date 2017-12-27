@@ -18,10 +18,17 @@ export const checkAuth = async (auth: ICredentials): Promise<AuthState> => {
 
   const config: AxiosRequestConfig = {
     auth,
+    validateStatus: status => (status === 401) || (status === 200)
   };
 
   const response = await axios.get(url, config);
 
+  if (response.status === 401) {
+    return new AuthState({
+      checked: true,
+    });
+  }
+  
   const role: string = response.data;
   return new AuthState({
     ...auth,

@@ -27,9 +27,9 @@ const reducer = handleActions({
    */
   [CHECK_AUTH_REQUEST]: state => state
     .update('loading', loading => loading + 1),
-  [CHECK_AUTH_ERROR]: state => state
+  [CHECK_AUTH_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
-    .setIn(['auth', 'checked'], true),
+    .update('errors', errors => errors.push(action.payload)),
   [CHECK_AUTH_SUCCESS]: (state, action: Action<AuthState>) => state
     .update('loading', loading => loading - 1)
     .set('auth', action.payload),
@@ -39,8 +39,9 @@ const reducer = handleActions({
    */
   [GET_ENTRIES_REQUEST]: state => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRIES_ERROR]: state => state
-    .update('loading', loading => loading - 1),
+  [GET_ENTRIES_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRIES_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1)
     .update('entries', (map: Map<MongoId, Entry>) => map.withMutations(
@@ -54,8 +55,9 @@ const reducer = handleActions({
    */
   [GET_ENTRY_REQUEST]: state => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRY_ERROR]: state => state
-    .update('loading', loading => loading - 1),
+  [GET_ENTRY_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
     .update('loading', loading => loading - 1)
     .update('entries', map => map.set(action.payload!.get('_id'), action.payload)),
@@ -65,8 +67,9 @@ const reducer = handleActions({
    */
   [GET_USERS_REQUEST]: state => state
     .update('loading', loading => loading + 1),
-  [GET_USERS_ERROR]: state => state
-    .update('loading', loading => loading - 1),
+  [GET_USERS_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
   [GET_USERS_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1)
     .update('users', (map: Map<MongoId, User>) => map.withMutations(
@@ -80,8 +83,9 @@ const reducer = handleActions({
    */
   [GET_USER_REQUEST]: state => state
     .update('loading', loading => loading + 1),
-  [GET_USER_ERROR]: state => state
-    .update('loading', loading => loading - 1),
+  [GET_USER_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
   [GET_USER_SUCCESS]: (state, action: Action<User>) => state
     .update('loading', loading => loading - 1)
     .update('users', map => map.set(action.payload!.get('_id'), action.payload)),

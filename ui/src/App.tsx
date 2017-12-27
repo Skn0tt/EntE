@@ -38,6 +38,7 @@ const Routes = () => (
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
+    <Route path="/login" component={Login} />
   </React.Fragment>
 );
 
@@ -60,7 +61,6 @@ class App extends React.Component<Props, State> {
         <div>
           <Switch>
             <Route path="/loading" component={Loading} />
-            <Route path="/login" component={Login} />
             <Drawer>
               <Routes />
             </Drawer>

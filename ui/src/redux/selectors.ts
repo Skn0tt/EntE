@@ -13,8 +13,8 @@ export const wasAuthChecked = (state: AppState): boolean => state.getIn(['auth',
 
 export const getRole = (state: AppState): boolean => state.getIn(['auth', 'role']);
 export const getAuthCredentials = (state: AppState): ICredentials => ({
-  username: state.getIn(['auth', 'username']),
-  password: state.getIn(['auth', 'password']),
+  username: state.get('auth').get('username'),
+  password: state.get('auth').get('password'),
 });
 
 /**
