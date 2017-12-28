@@ -7,19 +7,30 @@ import { AppState } from '../../interfaces/index';
 import { connect, Dispatch } from 'react-redux';
 import { Action } from 'redux';
 import { Redirect } from 'react-router';
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, Grid } from 'material-ui';
 
 interface Props {
   authValid: boolean;
   authChecked: boolean;
 }
 const Loading: React.SFC<Props & WithStyles> = (props) => (
-  <div>
+  <Grid
+    className={props.classes.root}
+    container={true}
+    direction="row"
+    alignItems="center"
+    justify="center"
+  >
     {props.authChecked && <Redirect to="/login" />}
-    <div>
-      <CircularProgress />
-    </div>
-  </div>
+    <Grid
+      className={props.classes.item}
+      item={true}
+    >
+      <CircularProgress
+        size={100}
+      />
+    </Grid>
+  </Grid>
 );
 
 const mapStateToProps = (state: AppState) => ({
