@@ -17,35 +17,32 @@ const Home: React.SFC<Props> = (props) => (
     <Grid
       item={true}
     >
-      <Link to="/newEntry">
-        <Button
-          raised={true}
-        >
-          Neuer Eintrag
-        </Button>
-      </Link>
+      <Button
+        component={p => <Link to="/newEntry" {...p} />}
+        raised={true}
+      >
+        Neuer Eintrag
+      </Button>
     </Grid>
     <Grid
       item={true}
     >
-      <Link to="/entries">
-        <Button
-          raised={true}
-        >
-          Meine Einträge
-        </Button>
-      </Link>
+      <Button
+        component={p => <Link to="/entries" {...p} />}
+        raised={true}
+      >
+        Meine Einträge
+      </Button>
     </Grid>
     <Grid
       item={true}
     >
-      <Link to="">
-        <Button
-          raised={true}
-        >
-          3
-        </Button>
-      </Link>
+      <Button
+        component={p => <Link to="/" {...p}/>}
+        raised={true}
+      >
+        3
+      </Button>
     </Grid>
     
   </Grid>
