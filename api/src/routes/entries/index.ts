@@ -87,7 +87,9 @@ entriesRouter.post('/', [], async (request, response) => {
     const entry = await Entry.create({
       slots,
       date: request.body.date,
-      student: request.user._id,
+      student: request.user.role === 'parent' ?
+        request.body.student :
+        request.user._id,
       forSchool: request.body.forSchool,
     });
 
