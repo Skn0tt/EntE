@@ -21,6 +21,7 @@ import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
 import Login from './routes/Login';
 import Home from './routes/Home';
+import CreateEntry from './routes/CreateEntry';
 
 const Routes = () => (
   <React.Fragment>
@@ -32,6 +33,7 @@ const Routes = () => (
     <Switch>
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
+      <Route path="/newEntry" component={CreateEntry} />
     </Switch>
     <Route path="/login" component={Login} />
   </React.Fragment>

@@ -29,10 +29,13 @@ export const checkAuth = async (auth: ICredentials): Promise<AuthState> => {
     });
   }
   
-  const role: string = response.data;
+  const role: string = response.data.role;
+  const children = response.data.children.map((child: IUserAPI) => createUser(child));
+  
   return new AuthState({
     ...auth,
     role,
+    children,
     checked: true,
   });
 };

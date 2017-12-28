@@ -26,7 +26,7 @@ export interface IUserAPI {
   username: string;
   email: string;
   role: Roles;
-  children: IUserAPI[];
+  children: Partial<IUserAPI>[];
 }
 
 export interface IUserCreate {
@@ -51,7 +51,7 @@ export class User extends Record({
   }
 }
 
-export const createUser = (item: IUserAPI): User => new User({
+export const createUser = (item: Partial<IUserAPI>): User => new User({
   _id: item._id,
   children: item.children ? item.children.map(child => createUser(child)) : [],
   email: item.email,
@@ -77,7 +77,7 @@ export interface ISlotAPI {
   hour_from: number;
   hour_to: number;
   signed: boolean;
-  teacher: IUserAPI;
+  teacher: Partial<IUserAPI>;
 }
 
 export class Slot extends Record({
@@ -96,13 +96,13 @@ export class Slot extends Record({
   }
 }
 
-export const createSlot = (item: ISlotAPI) => new Slot({
+export const createSlot = (item: Partial<ISlotAPI>) => new Slot({
   _id: item._id as string,
-  date: new Date(item.date),
+  date: item.date ? new Date(item.date) : undefined,
   hour_from: item.hour_from,
   hour_to: item.hour_to,
   signed: item.signed,
-  teacher: createUser(item.teacher),
+  teacher: item.teacher ? createUser(item.teacher) : undefined,
 });
 
 /**
@@ -151,14 +151,14 @@ export class Entry extends Record({
   }
 }
 
-export const createEntry = (item: IEntryAPI) => new Entry({
+export const createEntry = (item: Partial<IEntryAPI>) => new Entry({
   _id: item._id as string,
-  slots: item.slots.map((slot) => createSlot(slot)) as Slot[],
+  slots: item.slots ? item.slots.map((slot) => createSlot(slot)) as Slot[] : [],
   forSchool: item.forSchool as boolean,
-  date: new Date(item.date),
+  date: item.date ? new Date(item.date) : undefined,
   signedAdmin: item.signedAdmin as boolean,
   signedParent: item.signedParent as boolean,
-  student: createUser(item.student),
+  student: item.student ? createUser(item.student) : undefined,
 });
 
 /**
@@ -172,12 +172,14 @@ export interface ICredentials {
 export interface IAuth extends ICredentials {
   role: string;
   checked: boolean;
+  children: User[];
 }
 
 export class AuthState extends Record({
-  username: '',
-  password: '',
+  username: 'simon',
+  password: 'knott',
   role: '',
+  children: [],
   checked: false,
 }) {
   constructor(props: Partial<IAuth>) {

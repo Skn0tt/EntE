@@ -23,7 +23,7 @@ const initialState = new AppState({});
 
 const reducer = handleActions({
   /**
-   * CHECK_ENTRIES
+   * CHECK_AUTH
    */
   [CHECK_AUTH_REQUEST]: state => state
     .update('loading', loading => loading + 1),
@@ -32,7 +32,10 @@ const reducer = handleActions({
     .update('errors', errors => errors.push(action.payload)),
   [CHECK_AUTH_SUCCESS]: (state, action: Action<AuthState>) => state
     .update('loading', loading => loading - 1)
-    .set('auth', action.payload),
+    .set('auth', action.payload)
+    .update('users', (map: Map<MongoId, User>) => map.merge(
+      Map<MongoId, User>(action.payload!.get('children').map(child => ([child.get('_id'), child])))
+    )),
   
   /**
    * GET_ENTRIES
