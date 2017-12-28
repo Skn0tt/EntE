@@ -8,7 +8,6 @@ const authenticate = async (username, password, done) => {
     const valid = await user.comparePassword(password);
 
     if (valid) {
-      await user.populate('children');
       return done(null, user);
     }
     

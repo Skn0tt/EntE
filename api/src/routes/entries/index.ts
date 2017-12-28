@@ -19,11 +19,40 @@ entriesRouter.get('/', async (request, response) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
   
   try {
-    const entries = await Entry.find({})
-      .populate('student', 'username email')
-      .populate('slots');
+    if (request.user.role === 'parent') {
+      const entries = await Entry.find({
+          student: { $in: request.user.children },
+        })
+        .populate('student', 'username email')
+        .populate('slots');
+      
+      return response.json(entries);
+    }
+    if (request.user.role === 'teacher') {
+      const entries = await Entry.find({})
+        .populate('student', 'username email')
+        .populate('slots');
+    
+      return response.json(entries);
+    }
+    if (request.user.role === 'admin') {
+      const entries = await Entry.find({})
+        .populate('student', 'username email')
+        .populate('slots');
+    
+      return response.json(entries);
+    }
+    if (request.user.role === 'student') {
+      const entries = await Entry.find({
+          student: request.user._id,
+        })
+        .populate('student', 'username email')
+        .populate('slots');
+    
+      return response.json(entries);
+    }
 
-    response.json(entries);
+    return response.status(400).end;
   } catch (error) {
     return response.status(400).json(error);
   }
@@ -39,8 +68,9 @@ const readSpecificPermissions: Permissions = {
 entriesRouter.get('/:entryId', [
   param('entryId').isMongoId(),
 ], async (request, response) => {
-  if (!permissionsCheck(request.user.role, readSpecificPermissions))
+  if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
     return response.status(403).end();
+  }
 
   const errors = validationResult(request);
   if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
