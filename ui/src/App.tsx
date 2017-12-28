@@ -12,13 +12,13 @@ import { Redirect } from 'react-router';
 
 import * as select from './redux/selectors';
 import Drawer from './components/Drawer';
+import LoadingScreen from './components/LoadingScreen';
 
 // Routes
 import Entries from './routes/Entries';
 import Users from './routes/Users';
 import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
-import Loading from './routes/Loading';
 import Login from './routes/Login';
 
 const Home = () => (
@@ -59,14 +59,14 @@ class App extends React.Component<Props, State> {
     return (
       <BrowserRouter>
         <div>
+          {!this.props.authValid && <Redirect to="/login" />}
+          {!this.props.authChecked && <Redirect to="/loading" />}
           <Switch>
-            <Route path="/loading" component={Loading} />
+            <Route path="/loading" component={LoadingScreen} />
             <Drawer>
               <Routes />
             </Drawer>
           </Switch>
-          {!this.props.authValid && <Redirect to="/login" />}
-          {!this.props.authChecked && <Redirect to="/loading" />}
         </div>
       </BrowserRouter>
     );

@@ -15,7 +15,6 @@ interface Props {
 }
 const Loading: React.SFC<Props & WithStyles> = (props) => (
   <div>
-    {props.authValid && <Redirect to="/" />}
     {props.authChecked && <Redirect to="/login" />}
     <div>
       <CircularProgress />
