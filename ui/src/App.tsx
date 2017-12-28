@@ -20,12 +20,7 @@ import Users from './routes/Users';
 import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
 import Login from './routes/Login';
-
-const Home = () => (
-  <div>
-    Home!
-  </div>
-);
+import Home from './routes/Home';
 
 const Routes = () => (
   <React.Fragment>
