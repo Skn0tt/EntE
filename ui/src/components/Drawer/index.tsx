@@ -15,7 +15,7 @@ import LoadingIndicator from '../LoadingIndicator';
 import * as select from '../../redux/selectors';
 
 import styles from './styles';
-import { AdminItems } from './items';
+import { AdminItems, StandardItems } from './items';
 import RefreshButton from '../RefreshButton';
 import { connect } from 'react-redux';
 import { AppState } from '../../interfaces/index';
@@ -49,6 +49,8 @@ const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
       const drawer = (
         <div>
           <div className={classes.drawerHeader} />
+          <Divider />
+          <StandardItems />
           <Divider />
           <AdminItems />
         </div>

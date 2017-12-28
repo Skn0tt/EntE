@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { InsertDriveFile, Person } from 'material-ui-icons';
+import { InsertDriveFile, Person, Home } from 'material-ui-icons';
 import { Route } from 'react-router-dom';
 
 export const AdminItems = () => (
@@ -22,6 +22,21 @@ export const AdminItems = () => (
             <Person />
           </ListItemIcon>
           <ListItemText primary="Users" />
+        </ListItem>
+      )}
+    />
+  </List>
+);
+
+export const StandardItems = () => (
+  <List>
+    <Route
+      render={({ history }) => (
+        <ListItem button={true} onClick={() => history.push('/')}>
+          <ListItemIcon>
+            <Home />
+          </ListItemIcon>
+          <ListItemText primary="Home" />
         </ListItem>
       )}
     />
