@@ -34,17 +34,6 @@ const Home: React.SFC<Props> = (props) => (
         Meine Einträge
       </Button>
     </Grid>
-    <Grid
-      item={true}
-    >
-      <Button
-        component={p => <Link to="/" {...p}/>}
-        raised={true}
-      >
-        3
-      </Button>
-    </Grid>
-    
   </Grid>
 );
 
