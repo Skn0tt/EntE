@@ -7,21 +7,11 @@ export const AdminItems = () => (
   <List>
     <Route
       render={({ history }) => (
-        <ListItem button={true} onClick={() => history.push('/entries')}>
-          <ListItemIcon>
-            <InsertDriveFile />
-          </ListItemIcon>
-          <ListItemText primary="Entries" />
-        </ListItem>
-      )}
-    />
-    <Route
-      render={({ history }) => (
         <ListItem button={true} onClick={() => history.push('/users')}>
           <ListItemIcon>
             <Person />
           </ListItemIcon>
-          <ListItemText primary="Users" />
+          <ListItemText primary="Nutzer" />
         </ListItem>
       )}
     />
@@ -37,6 +27,16 @@ export const StandardItems = () => (
             <Home />
           </ListItemIcon>
           <ListItemText primary="Home" />
+        </ListItem>
+      )}
+    />
+    <Route
+      render={({ history }) => (
+        <ListItem button={true} onClick={() => history.push('/entries')}>
+          <ListItemIcon>
+            <InsertDriveFile />
+          </ListItemIcon>
+          <ListItemText primary="Einträge" />
         </ListItem>
       )}
     />

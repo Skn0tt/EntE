@@ -18,12 +18,13 @@ import styles from './styles';
 import { AdminItems, StandardItems } from './items';
 import RefreshButton from '../RefreshButton';
 import { connect } from 'react-redux';
-import { AppState } from '../../interfaces/index';
+import { AppState, Roles } from '../../interfaces/index';
 import { withRouter, RouteComponentProps } from 'react-router';
 import LoginStatus from '../LoginStatus';
 
 interface IProps {
   loading: boolean;
+  role: Roles;
 }
 
 interface State {
@@ -32,6 +33,7 @@ interface State {
 
 const mapStateToProps = (state: AppState) => ({
   loading: select.isLoading(state),
+  role: select.getRole(state),
 });
 
 type Props = IProps & RouteComponentProps<IProps> &WithStyles<string>;
@@ -53,7 +55,7 @@ const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
           <Divider />
           <StandardItems />
           <Divider />
-          <AdminItems />
+          {this.props.role === 'admin' && <AdminItems />}
         </div>
       );
   
