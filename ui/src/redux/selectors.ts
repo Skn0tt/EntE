@@ -17,6 +17,7 @@ export const getAuthCredentials = (state: AppState): ICredentials => ({
   password: state.get('auth').get('password'),
 });
 export const getChildren = (state: AppState): User[] => state.getIn(['auth', 'children']).toArray();
+export const getUsername = (state: AppState): string => state.getIn(['auth', 'username']);
 
 /**
  * Data

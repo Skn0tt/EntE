@@ -18,7 +18,8 @@ import {
   GET_USERS_ERROR,
   CHECK_AUTH_REQUEST,
   CHECK_AUTH_SUCCESS,
-  CHECK_AUTH_ERROR
+  CHECK_AUTH_ERROR,
+  LOGOUT
 } from './constants';
 import { Entry, MongoId, User, AuthState, ICredentials } from '../interfaces/index';
 
@@ -45,3 +46,5 @@ export const getUsersError = createAction<Error>(GET_USERS_ERROR);
 export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
+
+export const logout = createAction(LOGOUT);

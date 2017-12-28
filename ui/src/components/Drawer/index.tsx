@@ -20,6 +20,7 @@ import RefreshButton from '../RefreshButton';
 import { connect } from 'react-redux';
 import { AppState } from '../../interfaces/index';
 import { withRouter, RouteComponentProps } from 'react-router';
+import LoginStatus from '../LoginStatus';
 
 interface IProps {
   loading: boolean;
@@ -48,7 +49,7 @@ const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
   
       const drawer = (
         <div>
-          <div className={classes.drawerHeader} />
+          <LoginStatus />
           <Divider />
           <StandardItems />
           <Divider />

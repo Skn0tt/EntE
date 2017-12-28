@@ -42,7 +42,6 @@ const styles = (theme: Theme): StyleRules =>  ({
       display: 'none',
     },
   },
-  drawerHeader: theme.mixins.toolbar,
   drawerPaper: {
     width: 250,
     [theme.breakpoints.up('md')]: {

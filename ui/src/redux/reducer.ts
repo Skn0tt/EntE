@@ -16,7 +16,8 @@ import {
   GET_USERS_SUCCESS,
   CHECK_AUTH_REQUEST,
   CHECK_AUTH_ERROR,
-  CHECK_AUTH_SUCCESS
+  CHECK_AUTH_SUCCESS,
+  LOGOUT
 } from './constants';
 
 const initialState = new AppState({});
@@ -36,6 +37,14 @@ const reducer = handleActions({
     .update('users', (map: Map<MongoId, User>) => map.merge(
       Map<MongoId, User>(action.payload!.get('children').map(child => ([child.get('_id'), child])))
     )),
+  
+  /**
+   * LOGOUT
+   */
+  [LOGOUT]: (state: AppState, action) => state
+    .set('auth', new AuthState({
+      checked: true,
+    })),
   
   /**
    * GET_ENTRIES
