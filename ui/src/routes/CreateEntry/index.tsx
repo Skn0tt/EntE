@@ -109,6 +109,12 @@ class extends React.Component<Props, State> {
     forSchool: this.state.forSchool,
   }))
 
+  handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
+    if (event.key === 'Enter' && this.inputValid()) {
+      this.handleSubmit();
+    }
+  }
+
   /**
    * ## Input Handlers
    */
@@ -230,7 +236,7 @@ class extends React.Component<Props, State> {
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
-          <form className={classes.container}>
+          <form className={classes.container} onKeyPress={this.handleKeyPress} >
             <FormControl>
               <FormControlLabel
                 onChange={this.handleChangeForSchool}

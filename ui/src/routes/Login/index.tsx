@@ -54,6 +54,12 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IPro
       };
     }
 
+    handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
+      if (event.key === 'Enter') {
+        this.handleSignIn();
+      }
+    }
+
     handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (event) => this.setState({
       username: event.target.value,
     })
@@ -76,6 +82,7 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IPro
           <Dialog
             fullScreen={this.props.fullScreen}
             open={true}
+            onKeyPress={this.handleKeyPress}
           >
             <DialogTitle>Login</DialogTitle>
             <DialogContent>
