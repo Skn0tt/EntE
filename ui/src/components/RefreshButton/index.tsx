@@ -10,11 +10,15 @@ interface Props {
   getUsers(): Action;
 }
 
-// TODO: Implement, only render when wanted
-const shouldRender = (path: string) => true;
+const renderPaths: string[] = [
+  '/entries',
+  '/users',
+];
+
+const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
 const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = (props) => (
-  shouldRender(props.match.url) ?
+  shouldRender(props.location.pathname) ?
   (
     <Button
       onClick={() => {
