@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, Entry, User, Roles, Slot, createSlot, MongoId } from '../../interfaces/index';
+import { AppState, Entry, User, Roles, Slot, MongoId } from '../../interfaces/index';
 import { Action } from 'redux';
 import { DatePicker } from 'material-ui-pickers';
 
@@ -15,7 +15,6 @@ import {
   FormControl,
   Switch,
   List as MUIList,
-  Grid,
   TextField,
 } from 'material-ui';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
@@ -26,7 +25,7 @@ import FormControlLabel from 'material-ui/Form/FormControlLabel';
 import { ChangeEvent } from 'react';
 import { List } from 'immutable';
 import SlotListItem from './elements/SlotListItem';
-import { Add as AddIcon } from 'material-ui-icons';
+import SlotEntry from './components/SlotEntry';
 
 import * as moment from 'moment';
 import 'moment/locale/de';
@@ -120,107 +119,20 @@ class extends React.Component<Props, State> {
    */
   handleChangeDate = (date: Date) => this.setState({ date });
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-
   handleChangeForSchool = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ forSchool: checked });
 
   handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ isRange: checked });
 
-  handleAddSlot = () => this.setState({
-    slots: this.state.slots.push(createSlot({
-      hour_from: Number(this.state.slotInput.hour_from),
-      hour_to: Number(this.state.slotInput.hour_to),
-      teacher: this.state.slotInput.teacher,
-    })),
+  handleAddSlot = (slot: Slot) => this.setState({
+    slots: this.state.slots.push(slot),
   })
 
   handleRemoveSlot = (index: number) => this.setState({ slots: this.state.slots.delete(index) });
 
-  handleChangeFrom = (event: ChangeEvent<HTMLInputElement>) => (
-    (
-      event.target.value === '' || (
-      Number(event.target.value) > 0 &&
-      Number(event.target.value) < 12
-    )) &&
-    this.setState({
-      slotInput: {
-        hour_from: event.target.value,
-        hour_to: this.state.slotInput.hour_to,
-        teacher: this.state.slotInput.teacher,
-      }
-    }))
-
-  handleChangeTo = (event: ChangeEvent<HTMLInputElement>) => (
-    (
-      event.target.value === '' || (
-      Number(event.target.value) > 0 &&
-      Number(event.target.value) < 12
-    )) &&
-    this.setState({
-      slotInput: {
-        hour_to: event.target.value,
-        hour_from: this.state.slotInput.hour_from,
-        teacher: this.state.slotInput.teacher,
-      }
-    }))
-
   handleChangeStudent = (event: ChangeEvent<HTMLInputElement>) => this.setState({ student: event.target.value });
 
-  handleChangeTeacher = (event: ChangeEvent<HTMLInputElement>) => this.setState({
-    slotInput: {
-      hour_to: this.state.slotInput.hour_to,
-      hour_from: this.state.slotInput.hour_from,
-      teacher: {
-        _id: event.target.value,
-        username: this.props.getUser(event.target.value).get('username')
-      }
-    }
-  })
-
-  /**
-   * ## Form Validation Logic
-   */
-  /**
-   * ### Slot
-   */
-  fromValid = (): boolean => {
-    const { hour_from, hour_to } = this.state.slotInput;
-
-    return (
-      !isNaN(parseInt(hour_from, 10)) &&
-      Number(hour_from) ! > 0 &&
-      hour_from! <= hour_to!
-    );
-  }
-
-  toValid = (): boolean => {
-    const { hour_to } = this.state.slotInput;
-    return (
-      !isNaN(parseInt(hour_to, 10)) &&
-      Number(hour_to)! <= 12
-    );
-  }
-
-  teacherValid = (): boolean => {
-    const { teacher } = this.state.slotInput;
-    return (
-      !!teacher &&
-      !!teacher._id &&
-      !!teacher.username
-    );
-  }
-  
-  slotInputValid = () => (
-    this.fromValid() &&
-    this.toValid() &&
-    this.teacherValid()
-  )
-
-  /**
-   * ### Form
-   */
-  inputValid = () => (
-    this.slotInputValid()
-  )
+  // TODO: Implement
+  inputValid = () => true;
 
   /**
    * ## Data
@@ -294,75 +206,7 @@ class extends React.Component<Props, State> {
               />
             ))}
           </MUIList>
-          <Grid
-            container={true}
-            direction="row"
-          >
-            <Grid
-              item={true}
-            >
-              <TextField
-                select={true}
-                label="Lehrer"
-                value={this.state.slotInput.teacher ? this.state.slotInput.teacher.username : ''}
-                onChange={this.handleChangeTeacher}
-                error={this.teacherValid()}
-                SelectProps={{
-                  native: true,
-                }}
-                helperText="Wählen sie den Lehrer aus."
-              >
-                {this.props.getTeachers().map(teacher => (
-                  <option
-                    key={teacher.get('_id')}
-                    value={teacher.get('_id')}
-                  >
-                    {teacher.get('username')}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid
-              item={true}
-            >
-              <TextField
-                label="Von"
-                value={this.state.slotInput.hour_from}
-                onChange={this.handleChangeFrom}
-                type="number"
-                error={this.fromValid()}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid
-              item={true}
-            >
-              <TextField
-                label="Bis"
-                value={this.state.slotInput.hour_to}
-                onChange={this.handleChangeTo}
-                error={this.toValid()}
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid
-              item={true}
-            >
-              <Button
-                fab={true}
-                mini={true}
-                disabled={!this.slotInputValid()}
-                onClick={() => this.handleAddSlot()}
-              >
-                <AddIcon />
-              </Button>
-            </Grid>
-          </Grid>
+          <SlotEntry onAdd={(slot) => this.handleAddSlot(slot)}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="accent">
