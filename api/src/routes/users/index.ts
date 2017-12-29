@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { validationResult, body, param } from 'express-validator/check';
 
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles } from '../../constants';
+import { roles, ROLES } from '../../constants';
 
 import User from '../../models/User';
 
@@ -14,16 +14,25 @@ const usersRouter = Router();
 const readPermissions : Permissions = {
   users_read: true,
 };
-usersRouter.get('/', async (request, response) => {
-  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
-
+const readTeacherPermissions : Permissions = {
+  teachers_read: true,
+};
+usersRouter.get('/', (request, response, next) => {
+  if (!permissionsCheck(
+    request.user.role,
+    request.query.role === ROLES.TEACHER ?
+      readTeacherPermissions :
+      readPermissions,
+  )) {
+    return response.status(403).end();
+  }
+  return next();
+}, async (request, response) => {
   try {
-    let users;
-    if (request.params.role === 'teacher') {
-      users = await User.find({}).select('-password');
-    } else {
-      users = await User.find({ role: 'teacher' }).select('-password');
-    }
+    const users =
+      request.query.role === ROLES.TEACHER ?
+        await User.find({ role: 'teacher' }).select('-password') :
+        await User.find({}).select('-password');
     
     return response.json(users);
   } catch (error) {
@@ -40,7 +49,9 @@ const readSpecificPermissions : Permissions = {
 usersRouter.get('/:userId', [
   param('userId').isMongoId(),
 ], async (request, response) => {
-  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+  if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
+    return response.status(403).end();
+  }
 
   const userId = request.params.userId;
 
