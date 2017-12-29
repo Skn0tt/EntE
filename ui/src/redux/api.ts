@@ -43,9 +43,7 @@ export const checkAuth = async (auth: ICredentials): Promise<AuthState> => {
 export const getEntry = async (id: MongoId, auth: ICredentials): Promise<Entry> => {
   const url = `${baseUrl}/entries/${id}`;
 
-  const config: AxiosRequestConfig = {
-    auth,
-  };
+  const config: AxiosRequestConfig = { auth };
 
   const response = await axios.get(url, config);
 
@@ -57,9 +55,7 @@ export const getEntry = async (id: MongoId, auth: ICredentials): Promise<Entry> 
 
 export const getEntries = async (auth: ICredentials): Promise<Entry[]> => {
   const url = `${baseUrl}/entries`;
-  const config: AxiosRequestConfig = {
-    auth,
-  };
+  const config: AxiosRequestConfig = { auth };
 
   const response = await axios.get(url, config);
 
@@ -72,9 +68,7 @@ export const getEntries = async (auth: ICredentials): Promise<Entry[]> => {
 export const getUser = async (id: MongoId, auth: ICredentials): Promise<User> => {
   const url = `${baseUrl}/users/${id}`;
 
-  const config: AxiosRequestConfig = {
-    auth,
-  };
+  const config: AxiosRequestConfig = { auth };
 
   const response = await axios.get(url, config);
 
@@ -97,4 +91,17 @@ export const getUsers = async (auth: ICredentials): Promise<User[]> => {
   const users: User[] = data.map(user => createUser(user));
 
   return users;
+};
+
+export const getTeachers = async (auth: ICredentials): Promise<User[]> => {
+  const url = `${baseUrl}/users?role=teacher`;
+
+  const config: AxiosRequestConfig = { auth };
+
+  const response = await axios.get(url, config);
+
+  const data: IUserAPI[] = response.data;
+  const teachers: User[] = data.map(user => createUser(user));
+
+  return teachers;
 };

@@ -18,8 +18,13 @@ usersRouter.get('/', async (request, response) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   try {
-    const users = await User.find({}).select('-password');
-
+    let users;
+    if (request.params.role === 'teacher') {
+      users = await User.find({}).select('-password');
+    } else {
+      users = await User.find({ role: 'teacher' }).select('-password');
+    }
+    
     return response.json(users);
   } catch (error) {
     throw error;

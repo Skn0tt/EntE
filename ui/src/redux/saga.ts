@@ -10,13 +10,15 @@ import {
   getUsersError,
   checkAuthSuccess,
   checkAuthError,
+  getTeachersRequest,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
   GET_ENTRIES_REQUEST,
   GET_USER_REQUEST,
   GET_USERS_REQUEST,
-  CHECK_AUTH_REQUEST
+  CHECK_AUTH_REQUEST,
+  GET_TEACHERS_REQUEST
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -28,6 +30,7 @@ function* checkAuthSaga(action: Action<ICredentials>) {
     const authState: AuthState = yield call(api.checkAuth, action.payload);
 
     yield put(checkAuthSuccess(authState));
+    yield put(getTeachersRequest());
   } catch (error) {
     yield put(checkAuthError(error));
   }
@@ -77,11 +80,23 @@ function* getUsersSaga() {
   }
 }
 
+function* getTeachersSaga() {
+  try {
+    const auth = yield select(selectors.getAuthCredentials);
+    const teachers = yield call(api.getTeachers, auth);
+
+    yield put(getUsersSuccess(teachers));
+  } catch (error) {
+    yield put(getUsersError(error));
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
   yield takeEvery<Action<MongoId>>(GET_USER_REQUEST, getUserSaga);
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
+  yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
 }
 

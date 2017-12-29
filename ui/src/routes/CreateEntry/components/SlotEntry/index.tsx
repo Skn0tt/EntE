@@ -39,8 +39,8 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
         hour_from: '1',
         hour_to: '2',
         teacher: {
-          _id: '',
-          username: '',
+          _id: this.props.teachers[0].get('_id'),
+          username: this.props.teachers[0].get('username'),
         }
       };
     }

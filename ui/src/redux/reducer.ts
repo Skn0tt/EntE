@@ -17,7 +17,10 @@ import {
   CHECK_AUTH_REQUEST,
   CHECK_AUTH_ERROR,
   CHECK_AUTH_SUCCESS,
-  LOGOUT
+  LOGOUT,
+  GET_TEACHERS_REQUEST,
+  GET_TEACHERS_ERROR,
+  GET_TEACHERS_SUCCESS
 } from './constants';
 
 const initialState = new AppState({});
@@ -83,6 +86,22 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_USERS_SUCCESS]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('users', (map: Map<MongoId, User>) => map.withMutations(
+      mutator => action.payload!.forEach(
+        user => mutator.set(user.get('_id'), user)
+      )
+    )),
+
+  /**
+   * GET_TEACHERS
+   */
+  [GET_TEACHERS_REQUEST]: state => state
+    .update('loading', loading => loading + 1),
+  [GET_TEACHERS_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
+  [GET_TEACHERS_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1)
     .update('users', (map: Map<MongoId, User>) => map.withMutations(
       mutator => action.payload!.forEach(
