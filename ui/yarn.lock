@@ -5763,10 +5763,6 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
-typed-immutable-record@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/typed-immutable-record/-/typed-immutable-record-0.0.6.tgz#03ac0636a34819144fbcbe0ae2ed9abf6c19a908"
-
 typeface-roboto@^0.0.45:
   version "0.0.45"
   resolved "https://registry.yarnpkg.com/typeface-roboto/-/typeface-roboto-0.0.45.tgz#4686bdd505b2db3b7ba0a980d216eb3d5aec4788"
