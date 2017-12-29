@@ -8,6 +8,7 @@ import * as validator from 'express-validator';
 import { Promise } from 'bluebird';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
+import * as Raven from 'raven';
 
 // Routines
 import authenticate from './routines/authenticate';
@@ -20,22 +21,29 @@ import login from './routes/login';
 
 const production = process.env.NODE_ENV === 'production';
 
+const app = express();
+
+app.set('port', process.env.PORT || 4000);
+app.disable('etag');
+
+// Raven
+const DSN =
+  'https://056357657b5f4baf94ca072cda3ba9f8:5eb4639c0dda49f695bda81a23bfcbf0@sentry.io/264890';
+
+Raven.config(DSN).install();
+
+// Express Setup
+app.use(Raven.requestHandler());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(validator());
+
 // Mongoose
 require('mongoose').Promise = Promise;
 mongoose.connect(
   production ? 'mongodb://mongodb' : 'mongodb://localhost/entschuldigungsVerfahrentTest',
   { useMongoClient: true },
 );
-
-const app = express();
-
-app.set('port', process.env.PORT || 4000);
-app.disable('etag');
-
-// Express Setup
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(validator());
 
 // Security Measures
 if (production) {
@@ -57,6 +65,17 @@ app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
 app.use('/login', login);
+
+// Error Handling
+app.use(Raven.errorHandler());
+app.use((err, req, res, next) => {
+  res.status(500).json({
+    error: err.message,
+    sentry: res.sentry,
+  });
+  next();
+});
+
 
 app.listen(app.get('port'), () => {
   console.log(

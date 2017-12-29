@@ -22,7 +22,7 @@ usersRouter.get('/', async (request, response) => {
 
     return response.json(users);
   } catch (error) {
-    return response.status(400).json(error);
+    throw error;
   }
 });
 
@@ -44,7 +44,7 @@ usersRouter.get('/:userId', [
     
     return response.json(user);
   } catch (error) {
-    return response.status(400).json(error);
+    throw error;
   }
 });
 
@@ -57,7 +57,7 @@ const createPermissions : Permissions = {
 usersRouter.post('/', [
   body('email').isEmail(),
   body('role').isIn(roles),
-], async (request, response) => {
+], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   const errors = validationResult(request);
@@ -74,7 +74,7 @@ usersRouter.post('/', [
 
     return response.json(user);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
@@ -88,7 +88,7 @@ usersRouter.put('/:userId', [
   body('email').isEmail(),
   body('role').isIn(roles),
   param('userId').isMongoId(),
-], async (request: Request, response: Response) => {
+], async (request: Request, response: Response, next) => {
   if (!permissionsCheck(request.user.role, updatePermissions)) return response.status(403).end();
   
   const errors = validationResult(request);
@@ -110,7 +110,7 @@ usersRouter.put('/:userId', [
 
     return response.json(user);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 

@@ -14,7 +14,7 @@ const slotsRouter = Router();
 const readPermissions: Permissions = {
   slots_read: true,
 };
-slotsRouter.get('/', async (request, response) => {
+slotsRouter.get('/', async (request, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
 
   try {
@@ -22,7 +22,7 @@ slotsRouter.get('/', async (request, response) => {
     
     return response.json(slots);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
@@ -34,7 +34,7 @@ const readSpecificPermissions: Permissions = {
 };
 slotsRouter.get('/:slotId', [
   param('slotId').isMongoId(),
-], async (request, response) => {
+], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, readSpecificPermissions))
     return response.status(403).end();
   
@@ -45,7 +45,7 @@ slotsRouter.get('/:slotId', [
     
     return response.json(slot);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
@@ -55,7 +55,7 @@ slotsRouter.get('/:slotId', [
 const signPermissions: Permissions = {
   slots_write: true,
 };
-slotsRouter.put('/:slotId/sign', async (request, response) => {
+slotsRouter.put('/:slotId/sign', async (request, response, next) => {
   if (!permissionsCheck(request.user.role, signPermissions)) return response.status(403).end();
 
   const slotId = request.params.slotId;
@@ -70,7 +70,7 @@ slotsRouter.put('/:slotId/sign', async (request, response) => {
 
     return response.json(slot);
   } catch (error) {
-    return response.json(error);
+    return next(error);
   }
 });
 

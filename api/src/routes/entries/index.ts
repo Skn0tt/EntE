@@ -15,7 +15,7 @@ const entriesRouter = Router();
 const readPermissions: Permissions = {
   entries_read: true,
 };
-entriesRouter.get('/', async (request, response) => {
+entriesRouter.get('/', async (request, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
   
   try {
@@ -54,7 +54,7 @@ entriesRouter.get('/', async (request, response) => {
 
     return response.status(400).end;
   } catch (error) {
-    return response.status(400).json(error);
+    throw error;
   }
 });
 
@@ -67,7 +67,7 @@ const readSpecificPermissions: Permissions = {
 };
 entriesRouter.get('/:entryId', [
   param('entryId').isMongoId(),
-], async (request, response) => {
+], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
     return response.status(403).end();
   }
@@ -84,7 +84,7 @@ entriesRouter.get('/:entryId', [
 
     response.json(entry);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
@@ -108,7 +108,7 @@ const createSlots = async (items: [ISlot], date: Date) => {
   }
   return result;
 };
-entriesRouter.post('/', [], async (request, response) => {
+entriesRouter.post('/', [], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   try {
@@ -129,7 +129,7 @@ entriesRouter.post('/', [], async (request, response) => {
 
     return response.json(entry);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
@@ -141,7 +141,7 @@ const signEntryPermissions: Permissions = {
 };
 entriesRouter.put('/:entryId/sign', [
   param('entryId').isMongoId(),
-], async (request, response) => {
+], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, signEntryPermissions)) return response.status(403).end();
 
   const errors = validationResult(request);
@@ -157,7 +157,7 @@ entriesRouter.put('/:entryId/sign', [
 
     return response.json(entry);
   } catch (error) {
-    return response.status(400).json(error);
+    return next(error);
   }
 });
 
