@@ -123,9 +123,13 @@ class extends React.Component<Props, State> {
 
   handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ isRange: checked });
 
-  handleAddSlot = (slot: Slot) => this.setState({
-    slots: this.state.slots.push(slot),
-  })
+  handleAddSlot = (slot: Slot) => {
+    if (this.state.slots.contains(slot)) {
+      return;
+    }
+
+    this.setState({ slots: this.state.slots.push(slot) });
+  }
 
   handleRemoveSlot = (index: number) => this.setState({ slots: this.state.slots.delete(index) });
 
@@ -213,7 +217,10 @@ class extends React.Component<Props, State> {
             Cancel
           </Button>
           <Button
-            onClick={this.handleSubmit}
+            onClick={() => {
+              this.handleSubmit();
+              this.handleClose();
+            }}
             disabled={!this.inputValid()}
             color="primary"
           >

@@ -37,7 +37,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
       
       this.state = {
         hour_from: '1',
-        hour_to: '1',
+        hour_to: '2',
         teacher: {
           _id: '',
           username: '',
@@ -69,13 +69,12 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
         hour_to: event.target.value,
       })
     )
-
-  handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({
-    teacher: {
-      _id: event.target.value,
-      username: this.props.getUser(event.target.value).get('username')
-    }
-  })
+    handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({
+      teacher: {
+        _id: event.target.value,
+        username: this.props.getUser(event.target.value).get('username')
+      }
+    })
     /**
      * ## Form Validation Logic
      */
@@ -83,20 +82,24 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
      * ### Slot
      */
     fromValid = (): boolean => {
-      const { hour_from, hour_to } = this.state;
-
+      const { hour_from } = this.state;
+      const nmbFrom = parseInt(hour_from, 10);
+      
       return (
-        !isNaN(parseInt(hour_from, 10)) &&
-        Number(hour_from) ! > 0 &&
-        hour_from! <= hour_to!
+        !isNaN(nmbFrom) &&
+        nmbFrom > 0 && nmbFrom < 12
       );
     }
 
     toValid = (): boolean => {
-      const { hour_to } = this.state;
+      const { hour_from, hour_to } = this.state;
+      const nmbTo = parseInt(hour_to, 10);
+      const nmbFrom = parseInt(hour_from, 10);
+      
       return (
-        !isNaN(parseInt(hour_to, 10)) &&
-        Number(hour_to)! <= 12
+        !isNaN(nmbTo) &&
+        nmbTo >= nmbFrom &&
+        nmbTo > 0 && nmbTo < 12
       );
     }
 
@@ -127,18 +130,21 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
           container={true}
           direction="row"
         >
+
+          {/* Teacher */}
           <Grid
             item={true}
+            xs={12}
+            md={4}
           >
             <TextField
               select={true}
               label="Lehrer"
-              value={this.state.teacher ? this.state.teacher.username : ''}
+              value={this.state.teacher ? this.state.teacher._id : ''}
               onChange={this.handleChangeTeacher}
-              error={this.teacherValid()}
-              SelectProps={{
-                native: true,
-              }}
+              fullWidth={true}
+              error={!this.teacherValid()}
+              SelectProps={{ native: true }}
               helperText="Wählen sie den Lehrer aus."
             >
               {this.props.teachers.map(teacher => (
@@ -151,36 +157,50 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
               ))}
             </TextField>
           </Grid>
+          
+          {/* From */}
           <Grid
             item={true}
+            xs={5}
+            md={3}
           >
             <TextField
               label="Von"
+              fullWidth={true}
               value={this.state.hour_from}
               onChange={this.handleChangeFrom}
               type="number"
-              error={this.fromValid()}
+              error={!this.fromValid()}
               InputLabelProps={{
                 shrink: true,
               }}
             />
           </Grid>
+
+          {/* To */}
           <Grid
             item={true}
+            xs={5}
+            md={3}
           >
             <TextField
               label="Bis"
+              fullWidth={true}
               value={this.state.hour_to}
               onChange={this.handleChangeTo}
-              error={this.toValid()}
+              error={!this.toValid()}
               type="number"
               InputLabelProps={{
                 shrink: true,
               }}
             />
           </Grid>
+
+          {/* Add */}
           <Grid
             item={true}
+            xs={2}
+            md={2}
           >
             <Button
               fab={true}
