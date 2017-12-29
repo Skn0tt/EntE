@@ -6,6 +6,7 @@ interface Permissions {
   entries_read?: boolean;
   entries_create?: boolean;
   entries_write?: boolean;
+  teachers_read?: boolean;
   users_read?: boolean;
   users_write?: boolean;
 }
@@ -16,6 +17,7 @@ const adminPermissions: Permissions = {
   entries_read: true,
   entries_create: true,
   entries_write: true,
+  teachers_read: true,
   users_read: true,
   users_write: true,
 };
@@ -26,6 +28,7 @@ const studentPermissions: Permissions = {
   entries_read: true,
   entries_create: true,
   entries_write: false,
+  teachers_read: true,
   users_read: false,
   users_write: false,
 };
@@ -36,6 +39,7 @@ const parentPermissions: Permissions = {
   entries_read: true,
   entries_create: true,
   entries_write: true,
+  teachers_read: true,
   users_read: false,
   users_write: false,
 };
@@ -46,6 +50,7 @@ const teacherPermissions: Permissions = {
   entries_read: true,
   entries_create: false,
   entries_write: false,
+  teachers_read: true,
   users_read: false,
   users_write: false,
 };
