@@ -2,7 +2,6 @@ import { ROLES } from '../constants';
 
 interface Permissions {
   slots_read?: boolean;
-  slots_write?: boolean;
   entries_read?: boolean;
   entries_create?: boolean;
   entries_write?: boolean;
@@ -13,7 +12,6 @@ interface Permissions {
 
 const adminPermissions: Permissions = {
   slots_read: true,
-  slots_write: true,
   entries_read: true,
   entries_create: true,
   entries_write: true,
@@ -24,7 +22,6 @@ const adminPermissions: Permissions = {
 
 const studentPermissions: Permissions = {
   slots_read: true,
-  slots_write: false,
   entries_read: true,
   entries_create: true,
   entries_write: false,
@@ -34,8 +31,7 @@ const studentPermissions: Permissions = {
 };
 
 const parentPermissions: Permissions = {
-  slots_read: true,
-  slots_write: false,
+  slots_read: false,
   entries_read: true,
   entries_create: true,
   entries_write: true,
@@ -46,7 +42,6 @@ const parentPermissions: Permissions = {
 
 const teacherPermissions: Permissions = {
   slots_read: true,
-  slots_write: true,
   entries_read: true,
   entries_create: false,
   entries_write: false,
