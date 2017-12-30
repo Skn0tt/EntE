@@ -123,9 +123,7 @@ entriesRouter.post('/', [
 
     const signedParent: boolean = request.user.role === ROLES.PARENT;
 
-    if (signedParent && !(request.user.children as MongoId[]).includes(request.body.student)) {
-      return response.status(403).end('Student not in children.');
-    }
+    // TOOD: Reject Parents creating entries for children that are not theirs
 
     const entry = await Entry.create({
       slots,

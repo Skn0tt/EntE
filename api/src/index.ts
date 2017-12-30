@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as logger from 'morgan';
-import * as bodyParser from 'body-parser';
 import * as passport from 'passport';
 import { BasicStrategy } from 'passport-http';
 import * as mongoose from 'mongoose';
@@ -34,8 +33,8 @@ Raven.config(DSN).install();
 
 // Express Setup
 app.use(Raven.requestHandler());
-app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(logger(production ? 'common' : 'dev'));
+app.use(express.json());
 app.use(validator());
 
 // Mongoose
