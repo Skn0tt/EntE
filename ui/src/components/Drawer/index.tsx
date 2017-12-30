@@ -15,7 +15,7 @@ import LoadingIndicator from '../LoadingIndicator';
 import * as select from '../../redux/selectors';
 
 import styles from './styles';
-import { AdminItems, StandardItems } from './items';
+import { AdminItems, StandardItems, TeacherItems, StudentItems, ParentItems } from './items';
 import RefreshButton from '../RefreshButton';
 import { connect } from 'react-redux';
 import { AppState, Roles } from '../../interfaces/index';
@@ -55,7 +55,10 @@ const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
           <Divider />
           <StandardItems />
           <Divider />
-          {this.props.role === 'admin' && <AdminItems />}
+          {this.props.role === Roles.ADMIN && <AdminItems />}
+          {this.props.role === Roles.TEACHER && <TeacherItems />}
+          {this.props.role === Roles.PARENT && <ParentItems />}
+          {this.props.role === Roles.STUDENT && <StudentItems />}
         </div>
       );
   

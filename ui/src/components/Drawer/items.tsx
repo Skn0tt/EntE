@@ -1,44 +1,86 @@
 import * as React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { InsertDriveFile, Person, Home } from 'material-ui-icons';
+import { WatchLater, InsertDriveFile, Person, Home as HomeIcon } from 'material-ui-icons';
 import { Route } from 'react-router-dom';
 
-export const AdminItems = () => (
-  <List>
-    <Route
-      render={({ history }) => (
-        <ListItem button={true} onClick={() => history.push('/users')}>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText primary="Nutzer" />
-        </ListItem>
-      )}
-    />
-  </List>
+const Slots = () => (
+  <Route
+    render={({ history }) => (
+      <ListItem button={true} onClick={() => history.push('/slots')}>
+        <ListItemIcon>
+          <WatchLater />
+        </ListItemIcon>
+        <ListItemText primary="Stunden" />
+      </ListItem>
+    )}
+  />
+);
+
+const Users = () => (
+  <Route
+    render={({ history }) => (
+      <ListItem button={true} onClick={() => history.push('/users')}>
+        <ListItemIcon>
+          <Person />
+        </ListItemIcon>
+        <ListItemText primary="Nutzer" />
+      </ListItem>
+    )}
+  />
+);
+
+const Entries = () => (
+  <Route
+    render={({ history }) => (
+      <ListItem button={true} onClick={() => history.push('/entries')}>
+        <ListItemIcon>
+          <InsertDriveFile />
+        </ListItemIcon>
+        <ListItemText primary="Einträge" />
+      </ListItem>
+    )}
+  />
+);
+
+const Home = () => (
+  <Route
+    render={({ history }) => (
+      <ListItem button={true} onClick={() => history.push('/')}>
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Home" />
+      </ListItem>
+    )}
+  />
 );
 
 export const StandardItems = () => (
   <List>
-    <Route
-      render={({ history }) => (
-        <ListItem button={true} onClick={() => history.push('/')}>
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-      )}
-    />
-    <Route
-      render={({ history }) => (
-        <ListItem button={true} onClick={() => history.push('/entries')}>
-          <ListItemIcon>
-            <InsertDriveFile />
-          </ListItemIcon>
-          <ListItemText primary="Einträge" />
-        </ListItem>
-      )}
-    />
+    <Home />
+  </List>
+);
+
+export const AdminItems = () => (
+  <List>
+    <Users />
+  </List>
+);
+
+export const TeacherItems = () => (
+  <List>
+    <Slots />
+  </List>
+);
+
+export const StudentItems = () => (
+  <List>
+    <Entries />
+  </List>
+);
+
+export const ParentItems = () => (
+  <List>
+    <Entries />
   </List>
 );

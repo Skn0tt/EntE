@@ -21,14 +21,16 @@ import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
 import Login from './routes/Login';
 import Home from './routes/Home';
+import Slots from './routes/Slots';
 import CreateEntry from './routes/CreateEntry';
 
 const Routes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact={true} path="/" component={Home}/>
-      <Route path="/entries" component={Entries}/>
-      <Route path="/users" component={Users}/>
+      <Route exact={true} path="/" component={Home} />
+      <Route path="/entries" component={Entries} />
+      <Route path="/users" component={Users} />
+      <Route path="/slots" component={Slots} />
     </Switch>
     <Switch>
       <Route path="/users/:userId" component={SpecificUser} />

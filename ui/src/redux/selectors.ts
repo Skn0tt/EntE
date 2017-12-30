@@ -28,6 +28,8 @@ export const getEntries = (state: AppState) => state.get('entries').toArray();
 export const getUser = (id: MongoId) => (state: AppState) => state.getIn(['users', id]);
 export const getUsers = (state: AppState) => state.get('users').toArray();
 
+export const getSlots = (state: AppState) => state.get('slots').toArray();
+
 export const getTeachers = (state: AppState) => state
   .get('users')
   .valueSeq()
