@@ -1,6 +1,5 @@
-import { handleActions, Action } from 'redux-actions';
-import { Entry, AppState, MongoId, User, AuthState, Slot } from '../interfaces/index';
-import { Map } from 'immutable';
+import { handleActions, Action, BaseAction, ReducerMap } from 'redux-actions';
+import { Entry, AppState, AuthState, APIResponse } from '../interfaces/index';
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -24,10 +23,9 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
-  ADD_USERS,
-  ADD_SLOTS,
-  ADD_ENTRIES
+  ADD_RESPONSE,
 } from './constants';
+import { ActionType } from 'redux-saga/effects';
 
 const initialState = new AppState({});
 
@@ -35,19 +33,19 @@ const reducer = handleActions({
   /**
    * CHECK_AUTH
    */
-  [CHECK_AUTH_REQUEST]: state => state
+  [CHECK_AUTH_REQUEST]: (state, action: BaseAction): AppState => state
     .update('loading', loading => loading + 1),
-  [CHECK_AUTH_ERROR]: (state, action) => state
+  [CHECK_AUTH_ERROR]: (state, action): AppState => state
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
-  [CHECK_AUTH_SUCCESS]: (state, action: Action<AuthState>) => state
+  [CHECK_AUTH_SUCCESS]: (state, action): AppState => state
     .update('loading', loading => loading - 1)
     .set('auth', action.payload),
-  
+
   /**
    * LOGOUT
    */
-  [LOGOUT]: (state: AppState, action) => state
+  [LOGOUT]: (state: AppState, action: BaseAction): AppState => state
     .set('auth', new AuthState({
       checked: true,
     })),
@@ -55,9 +53,9 @@ const reducer = handleActions({
   /**
    * GET_ENTRIES
    */
-  [GET_ENTRIES_REQUEST]: state => state
+  [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRIES_ERROR]: (state, action) => state
+  [GET_ENTRIES_ERROR]: (state: AppState, action): AppState => state
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRIES_SUCCESS]: (state, action) => state
@@ -66,7 +64,7 @@ const reducer = handleActions({
   /**
    * GET_ENTRY
    */
-  [GET_ENTRY_REQUEST]: state => state
+  [GET_ENTRY_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
   [GET_ENTRY_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
@@ -77,7 +75,7 @@ const reducer = handleActions({
   /**
    * GET_SLOTS
    */
-  [GET_SLOTS_REQUEST]: state => state
+  [GET_SLOTS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
   [GET_SLOTS_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
@@ -88,7 +86,7 @@ const reducer = handleActions({
   /**
    * GET_USERS
    */
-  [GET_USERS_REQUEST]: state => state
+  [GET_USERS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
   [GET_USERS_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
@@ -99,7 +97,7 @@ const reducer = handleActions({
   /**
    * GET_TEACHERS
    */
-  [GET_TEACHERS_REQUEST]: state => state
+  [GET_TEACHERS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
   [GET_TEACHERS_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
@@ -110,38 +108,21 @@ const reducer = handleActions({
   /**
    * GET_USER
    */
-  [GET_USER_REQUEST]: state => state
+  [GET_USER_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
   [GET_USER_ERROR]: (state, action) => state
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
-  [GET_USER_SUCCESS]: (state, action: Action<User>) => state
+  [GET_USER_SUCCESS]: (state, action): AppState => state
     .update('loading', loading => loading - 1),
 
   /**
-   * ADD_USERS
+   * ADD_RESPONSE
    */
-  [ADD_USERS]: (state, action) => state
-    .update('users', (map: Map<MongoId, User>) => map.merge(
-      Map<MongoId, User>(action.payload!.map((user: User) => [user.get('_id'), user]))
-    )),
-
-  /**
-   * ADD_SLOTS
-   */
-  [ADD_SLOTS]: (state, action) => state
-    .update('slots', (map: Map<MongoId, Slot>) => map.merge(
-      Map<MongoId, Slot>(action.payload!.map((slot: Slot) => [slot.get('_id'), slot]))
-    )),
-
-  /**
-   * ADD_ENTRIES
-   */
-  [ADD_ENTRIES]: (state, action) => state
-    .update('entries', (map: Map<MongoId, Entry>) => map.merge(
-      Map<MongoId, Entry>(action.payload!.map((entry: Entry) => [entry.get('_id'), entry]))
-    )),
-  
-}, initialState); // tslint:disable-line:align
+  [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState => state
+    .update('users', users => users.merge(action.payload!.users))
+    .update('slots', slots => slots.merge(action.payload!.slots))
+    .update('entries', entries => entries.merge(action.payload!.entries)),
+} as ReducerMap<AppState, ActionType>, initialState); // tslint:disable-line:align
 
 export default reducer;

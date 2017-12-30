@@ -4,12 +4,11 @@ import {
   MongoId,
   ICredentials,
   AuthState,
-  Roles,
   Slot,
   APIResponse,
   IAPIResponse
 } from '../interfaces/index';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 const baseUrl = window ? `${location.protocol}//${location.hostname}:4000` : '';
 
@@ -19,23 +18,33 @@ export const get = async (url: string, auth: ICredentials) => {
 };
 
 export const transform = (data: IAPIResponse): APIResponse => ({
-  entries: data.entries.map(entry => new Entry(entry)),
-  slots: data.slots.map(slot => new Slot(slot)),
-  users: data.users.map(user => new User(user)),
+  entries: data.entries ? data.entries.map(entry => new Entry(entry)) : [],
+  slots: data.slots ? data.slots.map(slot => new Slot(slot)) : [],
+  users: data.users ? data.users.map(user => new User(user)) : [],
 });
 
-export const transformAuth = (data: IAPIResponse, password: string): APIResponse => ({
-  auth: new AuthState({
-    password,
+export const checkAuth = async (auth: ICredentials): Promise<{ auth: AuthState, data: APIResponse }> => {
+  const response = await axios.get(`${baseUrl}/login`, {
+    auth,
+    validateStatus: status =>
+      (status === 401) ||
+      (status === 200),
+  });
+
+  if (response.status === 401) {
+    return ({
+      auth: new AuthState({
+        checked: true,
+      }),
+      data: {},
+    });
+  }
+  const authState = new AuthState({
     checked: true,
-    ...data.auth,
-  }),
-  ...transform(data),
-});
-
-export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/login`, auth);
-  return transformAuth(data, auth.password);
+    ...auth,
+    ...response.data.auth,
+  });
+  return ({ auth: authState, data: transform(response.data) });
 };
 
 export const getEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {

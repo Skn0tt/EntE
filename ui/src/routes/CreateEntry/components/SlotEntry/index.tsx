@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Slot, AppState, User, MongoId } from '../../../../interfaces/index';
+import { AppState, User, MongoId, ISlotCreate } from '../../../../interfaces/index';
 import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles, Grid, TextField, Button } from 'material-ui';
@@ -11,16 +11,13 @@ import { WithStyles } from 'material-ui/styles/withStyles';
 
 interface Props {
   teachers: User[];
-  onAdd(slot: Slot): void;
+  onAdd(slot: ISlotCreate): void;
   getUser(id: MongoId): User;
 }
 interface State {
   hour_from: string;
   hour_to: string;
-  teacher: {
-    _id: MongoId;
-    username: string;
-  };
+  teacher: MongoId;
 }
 
 const mapStateToProps = (state: AppState) => ({
@@ -38,10 +35,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
       this.state = {
         hour_from: '1',
         hour_to: '2',
-        teacher: {
-          _id: this.props.teachers[0].get('_id'),
-          username: this.props.teachers[0].get('username'),
-        }
+        teacher: this.props.teachers[0].get('_id'),
       };
     }
     /**
@@ -70,10 +64,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
       })
     )
     handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({
-      teacher: {
-        _id: event.target.value,
-        username: this.props.getUser(event.target.value).get('username')
-      }
+      teacher: event.target.value,
     })
     /**
      * ## Form Validation Logic
@@ -105,11 +96,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
 
     teacherValid = (): boolean => {
       const { teacher } = this.state;
-      return (
-        !!teacher &&
-        !!teacher._id &&
-        !!teacher.username
-      );
+      return (!!teacher);
     }
     
     slotInputValid = () => (
@@ -118,11 +105,11 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
       this.teacherValid()
     )
 
-    handleAddSlot = () => this.props.onAdd(new Slot({
+    handleAddSlot = () => this.props.onAdd({
       hour_from: Number(this.state.hour_from),
       hour_to: Number(this.state.hour_to),
-      teacher: new User(this.state.teacher),
-    }))
+      teacher: this.state.teacher,
+    })
 
     render() {
       return (
@@ -140,7 +127,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
             <TextField
               select={true}
               label="Lehrer"
-              value={this.state.teacher ? this.state.teacher._id : ''}
+              value={this.state.teacher || ''}
               onChange={this.handleChangeTeacher}
               fullWidth={true}
               error={!this.teacherValid()}
@@ -152,7 +139,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
                   key={teacher.get('_id')}
                   value={teacher.get('_id')}
                 >
-                  {teacher.get('username')}
+                  {teacher.get('displayname')}
                 </option>
               ))}
             </TextField>

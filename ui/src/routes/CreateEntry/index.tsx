@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, Entry, User, Roles, Slot, MongoId } from '../../interfaces/index';
+import { AppState, User, Roles, MongoId, ISlotCreate, IEntryCreate } from '../../interfaces/index';
 import { Action } from 'redux';
 import { DatePicker } from 'material-ui-pickers';
 
@@ -23,7 +23,6 @@ import DialogActions from 'material-ui/Dialog/DialogActions';
 import { createEntryRequest } from '../../redux/actions';
 import FormControlLabel from 'material-ui/Form/FormControlLabel';
 import { ChangeEvent } from 'react';
-import { List } from 'immutable';
 import SlotListItem from './elements/SlotListItem';
 import SlotEntry from './components/SlotEntry';
 
@@ -41,24 +40,16 @@ interface Props extends WithStyles, RouteComponentProps<{}> {
   getChildren(): User[];
   getTeachers(): User[];
   getUser(id: MongoId): User;
-  createEntry(entry: Entry): Action;
+  createEntry(entry: IEntryCreate): Action;
 }
 
 interface State {
   isRange: boolean;
   date: Date;
   dateEnd: Date;
-  student: MongoId;
-  slots: List<Slot>;
+  student?: MongoId;
+  slots: ISlotCreate[];
   forSchool: boolean;
-  slotInput: {
-    hour_from: string;
-    hour_to: string;
-    teacher: {
-      _id: string;
-      username: string;
-    }
-  };
 }
 
 const mapStateToProps = (state: AppState) => ({
@@ -69,7 +60,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createEntry: (entry: Entry) => dispatch(createEntryRequest(entry)),
+  createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry)),
 });
 
 const CreateEntry = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
@@ -81,17 +72,11 @@ class extends React.Component<Props, State> {
       isRange: false,
       date: new Date(),
       dateEnd: new Date(),
-      slots: List(),
-      student: this.props.getRole() === 'parent' ? this.props.getChildren()[0].get('_id') : '',
-      forSchool: false,
-      slotInput: {
-        hour_from: '1',
-        hour_to: '1',
-        teacher: {
-          _id: '',
-          username: '',
-        }
-      }
+      slots: [],
+      student: this.props.getRole() === 'parent' ?
+        this.props.getChildren()[0].get('_id') :
+        undefined,
+      forSchool: false
     };
   }
 
@@ -102,11 +87,13 @@ class extends React.Component<Props, State> {
   
   handleClose = () => this.handleGoBack();
 
-  handleSubmit = () => this.props.createEntry(new Entry({
+  handleSubmit = () => this.props.createEntry({
     date: this.state.date,
-    slots: this.state.slots.toArray(),
+    dateEnd: this.state.dateEnd,
+    slots: this.state.slots,
     forSchool: this.state.forSchool,
-  }))
+    student: this.state.student,
+  })
 
   handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
     if (event.key === 'Enter' && this.inputValid()) {
@@ -123,15 +110,15 @@ class extends React.Component<Props, State> {
 
   handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ isRange: checked });
 
-  handleAddSlot = (slot: Slot) => {
-    if (this.state.slots.contains(slot)) {
+  handleAddSlot = (slot: ISlotCreate) => {
+    if (this.state.slots.indexOf(slot) !== -1) {
       return;
     }
 
-    this.setState({ slots: this.state.slots.push(slot) });
+    this.setState({ slots: [...this.state.slots, slot] });
   }
 
-  handleRemoveSlot = (index: number) => this.setState({ slots: this.state.slots.delete(index) });
+  handleRemoveSlot = (index: number) => this.setState({ slots: this.state.slots.slice(index, index) });
 
   handleChangeStudent = (event: ChangeEvent<HTMLInputElement>) => this.setState({ student: event.target.value });
 
@@ -169,7 +156,7 @@ class extends React.Component<Props, State> {
               <TextField
                 select={true}
                 label="Kind"
-                value={this.props.getUser(this.state.student).get('username')}
+                value={this.props.getUser(this.state.student!).get('displayname')}
                 onChange={this.handleChangeStudent}
                 SelectProps={{
                   native: true,
@@ -184,7 +171,7 @@ class extends React.Component<Props, State> {
                     key={child.get('_id')}
                     value={child.get('_id')}
                   >
-                    {child.get('username')}
+                    {child.get('displayname')}
                   </option>
                 ))}
               </TextField>
@@ -203,7 +190,7 @@ class extends React.Component<Props, State> {
             )}
           </form>
           <MUIList>
-            {this.state.slots.toArray().map((slot, index) => (
+            {this.state.slots.map((slot, index) => (
               <SlotListItem 
                 slot={slot}
                 delete={() => this.handleRemoveSlot(index)}

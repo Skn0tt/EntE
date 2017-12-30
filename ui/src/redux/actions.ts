@@ -26,13 +26,13 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
-  ADD_USERS,
-  ADD_ENTRIES,
-  ADD_SLOTS
+  ADD_RESPONSE
 } from './constants';
-import { Entry, MongoId, User, AuthState, ICredentials, Slot } from '../interfaces/index';
+import { MongoId, AuthState, ICredentials, IEntryCreate, APIResponse } from '../interfaces/index';
 
-export const createEntryRequest = createAction<Entry>(CREATE_ENTRY_REQUEST);
+export type ActionType = IEntryCreate | Error | MongoId | ICredentials | AuthState | Error | APIResponse;
+
+export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
@@ -64,8 +64,6 @@ export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
 
-export const addUsers = createAction<User[]>(ADD_USERS);
-export const addEntries = createAction<Entry[]>(ADD_ENTRIES);
-export const addSlots = createAction<Slot[]>(ADD_SLOTS);
+export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 
 export const logout = createAction(LOGOUT);

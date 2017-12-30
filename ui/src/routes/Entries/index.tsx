@@ -5,7 +5,7 @@ import { Table, TableRow, TableHead, TableCell, TableBody, Paper } from 'materia
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { Entry, AppState } from '../../interfaces/index';
+import { Entry, AppState, MongoId, User } from '../../interfaces/index';
 import { Action } from 'redux';
 
 import { getEntriesRequest } from '../../redux/actions';
@@ -14,16 +14,17 @@ import { Route } from 'react-router';
 interface Props extends WithStyles {
   entries: Entry[];
   getEntries(): Action;
+  getUser(id: MongoId): User;
 }
 
-const EntryRow = (entry: Entry) => (
+const EntryRow = (entry: Entry, props: Props) => (
   <Route
     render={({ history }) => (
       <TableRow
         key={entry.get('_id')}
         onClick={() => history.push(`/entries/${entry.get('_id')}`)}
       >
-        <TableCell>{entry.getIn(['student', 'username'])}</TableCell>
+        <TableCell>{props.getUser(entry.get('student')).get('displayname')}</TableCell>
         <TableCell>{entry.get('date').toDateString()}</TableCell>
         <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
       </TableRow>
@@ -37,13 +38,13 @@ const Entries: React.SFC<Props> = (props) => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Username</TableCell>
+          <TableCell>Name</TableCell>
           <TableCell>Datum</TableCell>
           <TableCell>Schulisch</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.entries.map(entry => EntryRow(entry))}
+        {props.entries.map(entry => EntryRow(entry, props))}
       </TableBody>
     </Table>
   </Paper>
@@ -51,6 +52,7 @@ const Entries: React.SFC<Props> = (props) => (
 
 const mapStateToProps = (state: AppState) => ({
   entries: select.getEntries(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

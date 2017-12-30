@@ -5,23 +5,24 @@ import { Table, TableRow, TableHead, TableCell, TableBody, Paper } from 'materia
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, Slot } from '../../interfaces/index';
+import { AppState, Slot, MongoId, User } from '../../interfaces/index';
 import { Action } from 'redux';
 
 import { Route } from 'react-router';
 
 interface Props extends WithStyles {
   slots: Slot[];
+  getUser(id: MongoId): User;
 }
 
-const SlotRow = (slot: Slot) => (
+const SlotRow = (slot: Slot, props: Props) => (
   <Route
     render={({ history }) => (
       <TableRow
         key={slot.get('_id')}
         onClick={() => history.push(`/slots/${slot.get('_id')}`)}
       >
-        <TableCell>{slot.getIn(['student', 'username'])}</TableCell>
+        <TableCell>{props.getUser(slot.get('student')).get('displayname')}</TableCell>
         <TableCell>{slot.get('date').toDateString()}</TableCell>
       </TableRow>
     )}
@@ -34,12 +35,12 @@ const Slots: React.SFC<Props> = (props) => (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Username</TableCell>
+          <TableCell>Name</TableCell>
           <TableCell>Datum</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.slots.map(slot => SlotRow(slot))}
+        {props.slots.map(slot => SlotRow(slot, props))}
       </TableBody>
     </Table>
   </Paper>

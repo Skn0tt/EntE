@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, MongoId, Entry } from '../../interfaces/index';
+import { AppState, MongoId, Entry, User, Slot } from '../../interfaces/index';
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -19,6 +19,8 @@ interface RouteMatch {
 
 interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
   getEntry(id: MongoId): Entry;
+  getUser(id: MongoId): User;
+  getSlots(ids: MongoId[]): Slot[];
 }
 
 const SpecificEntry: React.SFC<Props> = (props) => {
@@ -33,16 +35,16 @@ const SpecificEntry: React.SFC<Props> = (props) => {
             {entry.get('_id')}
           </Typography>
           <Typography component="p">
-            {entry.get('student').get('username')}
+            {props.getUser(entry.get('student')).get('displayname')}
           </Typography>
           <List>
-            {entry.get('slots').map(slot => (
+            {props.getSlots(entry.get('slots')).map(slot => (
               <ListItem
                 key={slot.get('_id')}
               >
                 <ListItemText primary={slot.get('hour_from')}/>
                 <ListItemText primary={slot.get('hour_to')}/>
-                <ListItemText primary={slot.get('teacher').get('username')}/>
+                <ListItemText primary={props.getUser(slot.get('teacher')).get('displayname')}/>
               </ListItem>
             ))}
           </List>
@@ -63,6 +65,8 @@ const SpecificEntry: React.SFC<Props> = (props) => {
 
 const mapStateToProps = (state: AppState) => ({
   getEntry: (id: MongoId) => select.getEntry(id)(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
+  getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});

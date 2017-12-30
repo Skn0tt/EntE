@@ -16,6 +16,7 @@ interface Props extends WithStyles {
 const UserRow = (user: User) => (
   <TableRow key={user.get('_id')}>
     <TableCell>{user.get('username')}</TableCell>
+    <TableCell>{user.get('displayname')}</TableCell>
     <TableCell>{user.get('email')}</TableCell>
     <TableCell>{user.get('role')}</TableCell>
   </TableRow>
@@ -27,6 +28,7 @@ const Users: React.SFC<Props> = (props) => (
       <TableHead>
         <TableRow>
           <TableCell>Username</TableCell>
+          <TableCell>Name</TableCell>
           <TableCell>Email</TableCell>
           <TableCell>Role</TableCell>
         </TableRow>

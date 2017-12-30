@@ -8,19 +8,19 @@ export type MongoId = string;
  */
 
 export interface APIResponse {
-  auth?: AuthState;
-  users: User[];
-  entries: Entry[];
-  slots: Slot[];
+  users?: User[];
+  entries?: Entry[];
+  slots?: Slot[];
 }
 export interface IAPIResponse {
   auth?: {
+    displayname: string;
     role: Roles;
     children: MongoId[];
   };
-  users: IUser[];
-  entries: IEntry[];
-  slots: ISlot[];
+  users?: IUser[];
+  entries?: IEntry[];
+  slots?: ISlot[];
 }
 
 /**
@@ -36,6 +36,7 @@ export enum Roles {
 export interface IUser {
   _id: MongoId;
   username: string;
+  displayname: string;
   email: string;
   role: Roles;
   children: MongoId[];
@@ -44,6 +45,7 @@ export interface IUser {
 export class User extends Record({
   _id: '',
   username: '',
+  displayname: '',
   email: '',
   role: '',
   children: [],
@@ -59,13 +61,15 @@ export class User extends Record({
 /**
  * Slot
  */
-export interface ISlot {
+export interface ISlot extends ISlotCreate {
   _id: MongoId;
+  student: MongoId;
   date: Date;
+}
+
+export interface ISlotCreate {
   hour_from: number;
   hour_to: number;
-  signed: boolean;
-  student: MongoId;
   teacher: MongoId;
 }
 
@@ -93,6 +97,7 @@ export const createSlot = (item: Partial<ISlot>) => new Slot(item);
 export interface IEntry {
   _id: MongoId;
   date: Date;
+  dateEnd?: Date;
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
@@ -100,9 +105,18 @@ export interface IEntry {
   signedParent: boolean;
 }
 
+export interface IEntryCreate {
+  date: Date;
+  dateEnd?: Date;
+  student?: MongoId;
+  slots: ISlotCreate[];
+  forSchool: boolean;
+}
+
 export class Entry extends Record({
   _id: '',
-  date: new Date(0),
+  date: new Date(),
+  dateEnd: new Date(),
   student: '',
   slots: [],
   forSchool: false,
@@ -127,6 +141,7 @@ export interface ICredentials {
 }
 export interface IAuth extends ICredentials {
   role: Roles;
+  displayname: string;
   checked: boolean;
   children: MongoId[];
 }
@@ -134,6 +149,7 @@ export interface IAuth extends ICredentials {
 export class AuthState extends Record({
   username: '',
   password: '',
+  displayname: '',
   role: '',
   children: [],
   checked: false,

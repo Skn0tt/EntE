@@ -10,15 +10,11 @@ import {
   getUsersError,
   checkAuthSuccess,
   checkAuthError,
-  getTeachersRequest,
   getTeachersError,
   getTeachersSuccess,
-  getSlotsRequest,
   getSlotsSuccess,
   getSlotsError,
-  addEntries,
-  addSlots,
-  addUsers,
+  addResponse,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -32,27 +28,20 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { APIResponse, ICredentials, MongoId } from '../interfaces/index';
+import { APIResponse, ICredentials, MongoId, AuthState } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
   const { entries, slots, users } = data;
-  if (entries) {
-    yield put(addEntries(entries));
-  }
-  if (slots) {
-    yield put(addSlots(slots));
-  }
-  if (users) {
-    yield put(addUsers(users));
-  }
+
+  yield put(addResponse({ entries, slots, users }));
 }
 
 function* checkAuthSaga(action: Action<ICredentials>) {
   try {
-    const result: APIResponse = yield call(api.checkAuth, action.payload);
-    yield dispatchUpdates(result);
-
-    yield put(checkAuthSuccess(result.auth!));
+    const result: { auth: AuthState, data: APIResponse } = yield call(api.checkAuth, action.payload);
+    
+    yield dispatchUpdates(result.data);
+    yield put(checkAuthSuccess(result.auth));
   } catch (error) {
     yield put(checkAuthError(error));
   }
