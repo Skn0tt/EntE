@@ -5,6 +5,7 @@ import * as Handlebars from 'handlebars';
 import * as templates from '../templates';
 import { SignRequestOptions } from '../templates/SignRequest';
 import User from '../models/User';
+import { SignedInformationOptions } from '../templates/SignedInformation';
 
 let mailConfig;
 if (process.env.NODE_ENV === 'production') {
@@ -57,4 +58,31 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
     throw error;
   }
 };
+
+const signedInformation: HandlebarsTemplateDelegate<SignedInformationOptions>
+  = Handlebars.compile(templates.signedInformation);
+
+export const dispatchSignedInformation = async (entry: EntryModel) => {
+  try {
+    const hemlTemplate = await signRequest({
+      preview: 'The Entry was signed.',
+      link_address: 'https://simonknott.de',
+      link_display: 'test',
+      subject: 'Entry #42 was signed.',
+    });
+    const { html, metadata, errors } = await heml(hemlTemplate);
+
+    const parents = await User.find({ children: entry.student }).select('email');
+    
+    const recipients = parents.map(parent => parent.email);
+  
+    transporter.sendMail({
+      html,
+      to: recipients,
+      subject: metadata.subject,
+    });
+  } catch (error) {
+    throw error;
+  }
+}
 
