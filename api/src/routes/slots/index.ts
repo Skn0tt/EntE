@@ -53,30 +53,4 @@ slotsRouter.get('/:slotId', [
   }
 });
 
-/**
- * Sign specific slot
- */
-const signPermissions: Permissions = {
-  slots_write: true,
-};
-slotsRouter.put('/:slotId/sign', async (request, response, next) => {
-  if (!permissionsCheck(request.user.role, signPermissions)) return response.status(403).end();
-
-  const slotId = request.params.slotId;
-
-  try {
-    const slot = await Slot.findById(slotId);
-    
-    slot.sign();
-    slot.save();
-
-    slot.populate('teacher', 'username email');
-    slot.populate('student', 'username email');
-
-    return response.json(slot);
-  } catch (error) {
-    return next(error);
-  }
-});
-
 export default slotsRouter;

@@ -1,10 +1,18 @@
 import { Schema, model, Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-import { roles } from '../constants';
+import { roles, ROLES, MongoId } from '../constants';
 
-export interface UserModel extends Document {
-  comparePassword(candidatePassword: String): Promise<boolean>;
+export interface UserModel extends Document, IUser {
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
+
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+  role: ROLES;
+  children: MongoId[];
 }
 
 /**

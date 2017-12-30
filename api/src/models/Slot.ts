@@ -1,8 +1,6 @@
 import { Schema, model, Document, Model } from 'mongoose';
 
-interface SlotModel extends Document {
-  sign(): void;
-}
+export interface SlotModel extends Document, ISlot {}
 
 export interface ISlot {
   date: Date;
@@ -24,17 +22,6 @@ const slotSchema = new Schema({
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
 });
-
-/**
- * # Schema Methods
- */
-/**
- * ## Sign a Slot
- */
-slotSchema.methods.sign = function (callback) : void {
-  this.signed = true;
-  this.save(callback);
-};
 
 /**
  * # Model

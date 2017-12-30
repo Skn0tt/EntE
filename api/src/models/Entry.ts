@@ -1,7 +1,18 @@
 import { Schema, model, Document, Model } from 'mongoose';
+import { MongoId } from '../constants';
 
-interface EntryModel extends Document {
-  sign(): void;
+export interface EntryModel extends Document, IEntry {
+  signParent(): void;
+  signAdmin(): void;
+}
+
+export interface IEntry {
+  date: Date;
+  student: MongoId;
+  slots: MongoId[];
+  forSchool: boolean;
+  signedAdmin: boolean;
+  signedParent: boolean;
 }
 
 /**
@@ -12,7 +23,8 @@ const entrySchema: Schema = new Schema({
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   slots: { type: [Schema.Types.ObjectId], required: true, ref: 'slots' },
   forSchool: { type: Boolean, required: true },
-  signed: { type: Boolean, required: true, default: false },
+  signedParent: { type: Boolean, required: true, default: false },
+  signedAdmin: { type: Boolean, required: true, default: false },
 });
 
 /**
@@ -21,8 +33,12 @@ const entrySchema: Schema = new Schema({
 /**
  * ## Sign an Entry
  */
-entrySchema.methods.sign = function (callback) : void {
-  this.signed = true;
+entrySchema.methods.signParent = function (callback) : void {
+  this.signedParent = true;
+  this.save(callback);
+};
+entrySchema.methods.signAdmin = function (callback) : void {
+  this.signedAdmin = true;
   this.save(callback);
 };
 

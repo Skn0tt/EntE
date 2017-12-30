@@ -1,11 +1,12 @@
-import { Router } from 'express';
+import { Router, Response, Request } from 'express';
 import { body, validationResult, param } from 'express-validator/check';
 
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles, MongoId } from '../../constants';
+import { roles, MongoId, ROLES } from '../../constants';
 
 import Entry from '../../models/Entry';
 import Slot, { ISlot } from '../../models/Slot';
+import * as mail from '../../routines/mail';
 
 const entriesRouter = Router();
 
@@ -109,20 +110,34 @@ const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
   }
   return result;
 };
-entriesRouter.post('/', [], async (request, response, next) => {
+entriesRouter.post('/', [
+  body('student').exists(),
+], async (request: Request, response: Response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+
+  const errors = validationResult(request);
+  if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
 
   try {
     const slots = await createSlots(request.body.slots, request.body.date, request.user._id);
 
+    const signedParent: boolean = request.user.role === ROLES.PARENT;
+
+    if (signedParent && !(request.user.children as MongoId[]).includes(request.body.student)) {
+      return response.status(403).end('Student not in children.');
+    }
+
     const entry = await Entry.create({
       slots,
+      signedParent,
       date: request.body.date,
       student: request.user.role === 'parent' ?
         request.body.student :
         request.user._id,
       forSchool: request.body.forSchool,
     });
+
+    if (!entry.signedParent) mail.dispatchSignRequest(entry);
 
     entry
       .populate('student', 'username email')
@@ -152,8 +167,13 @@ entriesRouter.put('/:entryId/sign', [
   
   try {
     const entry = await Entry.findById(entryId);
+
+    if (request.user.role === ROLES.ADMIN) {
+      entry.signAdmin();
+    } else if (request.user.role === ROLES.PARENT) {
+      entry.signParent();
+    }
     
-    entry.sign();
     entry.save();
 
     return response.json(entry);
