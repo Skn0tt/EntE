@@ -30,7 +30,8 @@
       "program": "${workspaceFolder}/api/src/index.ts",
       "outFiles": [
         "${workspaceFolder}/api/build/*.js"
-      ]
+      ],
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
