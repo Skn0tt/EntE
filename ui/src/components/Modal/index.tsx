@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Modal as MUIModal, withStyles, Paper
+  Modal as MUIModal, withStyles
 } from 'material-ui';
 import { WithStyles } from 'material-ui/styles/withStyles';
 import styles from './styles';
@@ -15,11 +15,7 @@ const Modal: React.SFC<Props & WithStyles<string>> = (props) => (
     onClose={() => props.onClose()}
     className={props.classes.modal}
   >
-    <Paper
-      className={props.classes.paper}
-    >
-      {props.children}
-    </Paper>
+    {props.children}
   </MUIModal>
 );
 

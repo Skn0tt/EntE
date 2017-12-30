@@ -16,6 +16,9 @@ import {
   getSlotsRequest,
   getSlotsSuccess,
   getSlotsError,
+  addEntries,
+  addSlots,
+  addUsers,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -29,13 +32,16 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { MongoId, ICredentials, AuthState, Roles } from '../interfaces/index';
+import { MongoId, ICredentials, AuthState, Roles, Entry, Slot, User } from '../interfaces/index';
 
 function* checkAuthSaga(action: Action<ICredentials>) {
   try {
     const authState: AuthState = yield call(api.checkAuth, action.payload);
 
+    const children: User[] = authState.get('children');
+
     yield put(checkAuthSuccess(authState));
+    yield put(addUsers(children));
     if (
       [Roles.PARENT, Roles.STUDENT]
         .indexOf(authState.get('role')) !== -1) {
@@ -56,7 +62,12 @@ function* getEntrySaga(action: Action<MongoId>) {
     const auth = yield select(selectors.getAuthCredentials);
     const entry = yield call(api.getEntry, action.payload, auth);
 
+    const users: User[] = [];
+    const slots: Slot[] = [];
+
     yield put(getEntrySuccess(entry));
+    yield put(addUsers(users));
+    yield put(addSlots(slots));
   } catch (error) {
     yield put(getEntryError(error));
   }
@@ -65,9 +76,14 @@ function* getEntrySaga(action: Action<MongoId>) {
 function* getEntriesSaga() {
   try {
     const auth = yield select(selectors.getAuthCredentials);
-    const entries = yield call(api.getEntries, auth);
+    const entries: Entry[] = yield call(api.getEntries, auth);
 
-    yield put(getEntriesSuccess(entries));
+    const slots: Slot[] = [];
+    entries.forEach((entry: Entry) => slots.push(...entry.get('slots')));
+
+    yield put(getEntriesSuccess());
+    yield put(addEntries(entries));
+    yield put(addSlots(slots));
   } catch (error) {
     yield put(getEntriesError(error));
   }
@@ -76,9 +92,14 @@ function* getEntriesSaga() {
 function* getSlotsSaga() {
   try {
     const auth = yield select(selectors.getAuthCredentials);
-    const slots = yield call(api.getSlots, auth);
+    const slots: Slot[] = yield call(api.getSlots, auth);
+    
+    const users: User[] = [];
+    slots.forEach((slot: Slot) => users.push(slot.get('student'), slot.get('teacher')));
 
-    yield put(getSlotsSuccess(slots));
+    yield put(getSlotsSuccess());
+    yield put(addSlots(slots));
+    yield put(addUsers(users));
   } catch (error) {
     yield put(getSlotsError(error));
   }
@@ -87,9 +108,12 @@ function* getSlotsSaga() {
 function* getUserSaga(action: Action<MongoId>) {
   try {
     const auth = yield select(selectors.getAuthCredentials);
-    const user = yield call(api.getUser, action.payload, auth);
+    const user: User = yield call(api.getUser, action.payload, auth);
+
+    const children: User[] = user.get('children');
 
     yield put(getUserSuccess(user));
+    yield put(addUsers(children));
   } catch (error) {
     yield put(getUserError(error));
   }
@@ -98,9 +122,13 @@ function* getUserSaga(action: Action<MongoId>) {
 function* getUsersSaga() {
   try {
     const auth = yield select(selectors.getAuthCredentials);
-    const users = yield call(api.getUsers, auth);
+    const users: User[] = yield call(api.getUsers, auth);
 
-    yield put(getUsersSuccess(users));
+    const children: User[] = [];
+    users.forEach((user: User) => children.push(...user.get('children')));
+
+    yield put(getUsersSuccess());
+    yield put(addUsers(users));
   } catch (error) {
     yield put(getUsersError(error));
   }
@@ -111,7 +139,8 @@ function* getTeachersSaga() {
     const auth = yield select(selectors.getAuthCredentials);
     const teachers = yield call(api.getTeachers, auth);
 
-    yield put(getTeachersSuccess(teachers));
+    yield put(getTeachersSuccess());
+    yield put(addUsers(teachers));
   } catch (error) {
     yield put(getTeachersError(error));
   }

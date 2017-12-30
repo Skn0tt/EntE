@@ -30,4 +30,8 @@ export const CHECK_AUTH_REQUEST = 'CHECK_AUTH_REQUEST';
 export const CHECK_AUTH_SUCCESS = 'CHECK_AUTH_SUCCESS';
 export const CHECK_AUTH_ERROR = 'CHECK_AUTH_ERROR';
 
+export const ADD_USERS = 'ADD_USERS';
+export const ADD_SLOTS = 'ADD_SLOTS';
+export const ADD_ENTRIES = 'ADD_ENTRIES';
+
 export const LOGOUT = 'LOGOUT';

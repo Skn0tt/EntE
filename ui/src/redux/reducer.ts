@@ -23,10 +23,15 @@ import {
   GET_TEACHERS_SUCCESS,
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
-  GET_SLOTS_SUCCESS
+  GET_SLOTS_SUCCESS,
+  ADD_USERS,
+  ADD_SLOTS,
+  ADD_ENTRIES
 } from './constants';
 
 const initialState = new AppState({});
+
+const keepDefined = (prev: any, next: any) => next ? next : prev;
 
 const reducer = handleActions({
   /**
@@ -39,10 +44,7 @@ const reducer = handleActions({
     .update('errors', errors => errors.push(action.payload)),
   [CHECK_AUTH_SUCCESS]: (state, action: Action<AuthState>) => state
     .update('loading', loading => loading - 1)
-    .set('auth', action.payload)
-    .update('users', (map: Map<MongoId, User>) => map.merge(
-      Map<MongoId, User>(action.payload!.get('children').map(child => ([child.get('_id'), child])))
-    )),
+    .set('auth', action.payload),
   
   /**
    * LOGOUT
@@ -61,16 +63,7 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRIES_SUCCESS]: (state, action) => state
-    .update('loading', loading => loading - 1)
-    .update('entries', (map: Map<MongoId, Entry>) => map.withMutations(
-      mutator => action.payload!.forEach(entry => mutator.set(entry.get('_id'), entry))
-    ))
-    .update('slots', (map: Map<MongoId, Slot>) => map.withMutations(
-      (mutator) => action.payload!.forEach(
-        (entry: Entry) => entry.get('slots').forEach(
-          (slot: Slot) => mutator.set(slot.get('_id'), slot),
-      ))
-    )),
+    .update('loading', loading => loading - 1),
   
   /**
    * GET_ENTRY
@@ -82,10 +75,7 @@ const reducer = handleActions({
     .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
     .update('loading', loading => loading - 1)
-    .update('entries', map => map.set(action.payload!.get('_id'), action.payload))
-    .update('slots', map => map.merge(
-      Map<MongoId, Slot>(action.payload!.get('slots').map(slot => [slot.get('_id'), slot]))
-    )),
+    .setIn(['entries', action.payload!.get('_id')], action.payload),
 
   /**
    * GET_SLOTS
@@ -96,10 +86,7 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_SLOTS_SUCCESS]: (state, action) => state
-    .update('loading', loading => loading - 1)
-    .update('slots', (map: Map<MongoId, Slot>) => map.merge(
-      Map<MongoId, Slot>(action.payload!.map(slot => [slot.get('_id'), slot]))
-    )),
+    .update('loading', loading => loading - 1),
 
   /**
    * GET_USERS
@@ -110,12 +97,7 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_USERS_SUCCESS]: (state, action) => state
-    .update('loading', loading => loading - 1)
-    .update('users', (map: Map<MongoId, User>) => map.withMutations(
-      mutator => action.payload!.forEach(
-        user => mutator.set(user.get('_id'), user)
-      )
-    )),
+    .update('loading', loading => loading - 1),
 
   /**
    * GET_TEACHERS
@@ -126,12 +108,7 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_TEACHERS_SUCCESS]: (state, action) => state
-    .update('loading', loading => loading - 1)
-    .update('users', (map: Map<MongoId, User>) => map.withMutations(
-      mutator => action.payload!.forEach(
-        user => mutator.set(user.get('_id'), user)
-      )
-    )),
+    .update('loading', loading => loading - 1),
 
   /**
    * GET_USER
@@ -142,8 +119,34 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_USER_SUCCESS]: (state, action: Action<User>) => state
-    .update('loading', loading => loading - 1)
-    .update('users', map => map.set(action.payload!.get('_id'), action.payload)),
+    .update('loading', loading => loading - 1),
+
+  /**
+   * ADD_USERS
+   */
+  [ADD_USERS]: (state, action) => state
+    .update('users', (map: Map<MongoId, User>) => map.mergeDeepWith(
+      keepDefined,
+      Map<MongoId, User>(action.payload!.map((user: User) => [user.get('_id'), user]))
+    )),
+
+  /**
+   * ADD_SLOTS
+   */
+  [ADD_SLOTS]: (state, action) => state
+    .update('slots', (map: Map<MongoId, Slot>) => map.mergeDeepWith(
+      keepDefined,
+      Map<MongoId, Slot>(action.payload!.map((slot: Slot) => [slot.get('_id'), slot]))
+    )),
+
+  /**
+   * ADD_ENTRIES
+   */
+  [ADD_ENTRIES]: (state, action) => state
+    .update('entries', (map: Map<MongoId, Entry>) => map.mergeDeepWith(
+      keepDefined,
+      Map<MongoId, Entry>(action.payload!.map((entry: Entry) => [entry.get('_id'), entry]))
+    )),
   
 }, initialState); // tslint:disable-line:align
 

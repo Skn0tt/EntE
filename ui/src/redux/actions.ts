@@ -25,7 +25,10 @@ import {
   GET_TEACHERS_ERROR,
   GET_SLOTS_REQUEST,
   GET_SLOTS_SUCCESS,
-  GET_SLOTS_ERROR
+  GET_SLOTS_ERROR,
+  ADD_USERS,
+  ADD_ENTRIES,
+  ADD_SLOTS
 } from './constants';
 import { Entry, MongoId, User, AuthState, ICredentials, Slot } from '../interfaces/index';
 
@@ -34,7 +37,7 @@ export const createEntrySuccess = createAction<Entry>(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
 export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
-export const getEntriesSuccess = createAction<Entry[]>(GET_ENTRIES_SUCCESS);
+export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
 export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
 
 export const getEntryRequest = createAction<MongoId>(GET_ENTRY_REQUEST);
@@ -46,19 +49,23 @@ export const getUserSuccess = createAction<User>(GET_USER_SUCCESS);
 export const getUserError = createAction<Error>(GET_USER_ERROR);
 
 export const getUsersRequest = createAction(GET_USERS_REQUEST);
-export const getUsersSuccess = createAction<User[]>(GET_USERS_SUCCESS);
+export const getUsersSuccess = createAction(GET_USERS_SUCCESS);
 export const getUsersError = createAction<Error>(GET_USERS_ERROR);
 
 export const getTeachersRequest = createAction(GET_TEACHERS_REQUEST);
-export const getTeachersSuccess = createAction<User[]>(GET_TEACHERS_SUCCESS);
+export const getTeachersSuccess = createAction(GET_TEACHERS_SUCCESS);
 export const getTeachersError = createAction<Error>(GET_TEACHERS_ERROR);
 
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
-export const getSlotsSuccess = createAction<Slot[]>(GET_SLOTS_SUCCESS);
+export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
 export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
 
 export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
+
+export const addUsers = createAction<User[]>(ADD_USERS);
+export const addEntries = createAction<Entry[]>(ADD_ENTRIES);
+export const addSlots = createAction<Slot[]>(ADD_SLOTS);
 
 export const logout = createAction(LOGOUT);
