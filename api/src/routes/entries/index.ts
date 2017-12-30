@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { body, validationResult, param } from 'express-validator/check';
 
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles } from '../../constants';
+import { roles, MongoId } from '../../constants';
 
 import Entry from '../../models/Entry';
 import Slot, { ISlot } from '../../models/Slot';
@@ -95,7 +95,7 @@ entriesRouter.get('/:entryId', [
 const createPermissions: Permissions = {
   entries_create: true,
 };
-const createSlots = async (items: [ISlot], date: Date) => {
+const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
   const result = [];
   for (const item of items) {
     const slot = await Slot.create({
@@ -103,6 +103,7 @@ const createSlots = async (items: [ISlot], date: Date) => {
       hour_from: item.hour_from,
       hour_to: item.hour_to,
       teacher: item.teacher,
+      student: studentId,
     });
     result.push(slot._id);
   }
@@ -112,7 +113,7 @@ entriesRouter.post('/', [], async (request, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
   try {
-    const slots = await createSlots(request.body.slots, request.body.date);
+    const slots = await createSlots(request.body.slots, request.body.date, request.user._id);
 
     const entry = await Entry.create({
       slots,

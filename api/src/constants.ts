@@ -5,3 +5,4 @@ export enum ROLES {
   ADMIN = 'admin',
 }
 export const roles = [ROLES.ADMIN, ROLES.STUDENT, ROLES.TEACHER, ROLES.PARENT];
+export type MongoId = string;

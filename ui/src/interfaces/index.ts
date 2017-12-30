@@ -68,6 +68,7 @@ export interface ISlot {
   hour_from: number;
   hour_to: number;
   signed: boolean;
+  student: User;
   teacher: User;
 }
 
@@ -77,6 +78,7 @@ export interface ISlotAPI {
   hour_from: number;
   hour_to: number;
   signed: boolean;
+  student: Partial<IUserAPI>;
   teacher: Partial<IUserAPI>;
 }
 
@@ -85,6 +87,7 @@ export class Slot extends Record({
   date: new Date(0),
   hour_from: -1,
   hour_to: -1,
+  student: new User({}),
   signed: false,
   teacher: new User({})
 }) {
@@ -102,6 +105,7 @@ export const createSlot = (item: Partial<ISlotAPI>) => new Slot({
   hour_from: item.hour_from,
   hour_to: item.hour_to,
   signed: item.signed,
+  student: item.student ? createUser(item.student) : undefined,
   teacher: item.teacher ? createUser(item.teacher) : undefined,
 });
 

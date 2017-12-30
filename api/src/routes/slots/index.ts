@@ -18,7 +18,9 @@ slotsRouter.get('/', async (request, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
 
   try {
-    const slots = await Slot.find({}).populate('teacher', 'username email');
+    const slots = await Slot.find({})
+      .populate('teacher', 'username email')
+      .populate('student', 'username email');
     
     return response.json(slots);
   } catch (error) {
@@ -41,7 +43,9 @@ slotsRouter.get('/:slotId', [
   const slotId = request.params.slotId;
 
   try {
-    const slot = await Slot.findById(slotId).populate('teacher', 'username email');
+    const slot = await Slot.findById(slotId)
+      .populate('teacher', 'username email')
+      .populate('student', 'username email');
     
     return response.json(slot);
   } catch (error) {
@@ -67,6 +71,7 @@ slotsRouter.put('/:slotId/sign', async (request, response, next) => {
     slot.save();
 
     slot.populate('teacher', 'username email');
+    slot.populate('student', 'username email');
 
     return response.json(slot);
   } catch (error) {
