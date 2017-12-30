@@ -41,7 +41,7 @@ app.use(validator());
 // Mongoose
 require('mongoose').Promise = Promise;
 mongoose.connect(
-  production ? 'mongodb://mongodb' : 'mongodb://localhost/entschuldigungsVerfahrentTest',
+  production ? 'mongodb://mongodb' : 'mongodb://localhost/test',
   { useMongoClient: true },
 );
 
