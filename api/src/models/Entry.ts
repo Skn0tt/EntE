@@ -21,10 +21,12 @@ export interface IEntry {
 const entrySchema: Schema = new Schema({
   date: { type: Date, required: true, default: Date.now() },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-  slots: { type: [Schema.Types.ObjectId], required: true, ref: 'slots' },
+  slots: [{ type: Schema.Types.ObjectId, required: true, ref: 'slots' }],
   forSchool: { type: Boolean, required: true },
   signedParent: { type: Boolean, required: true, default: false },
   signedAdmin: { type: Boolean, required: true, default: false },
+}, {
+  versionKey: false,
 });
 
 /**

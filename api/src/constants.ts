@@ -1,3 +1,5 @@
+import { ObjectId } from "bson";
+
 export enum ROLES {
   PARENT = 'parent',
   STUDENT = 'student',
@@ -5,4 +7,4 @@ export enum ROLES {
   ADMIN = 'admin',
 }
 export const roles = [ROLES.ADMIN, ROLES.STUDENT, ROLES.TEACHER, ROLES.PARENT];
-export type MongoId = string;
+export type MongoId = ObjectId;

@@ -23,7 +23,9 @@ const userSchema : Schema = new Schema({
   email: { type: String, required: false },
   password: { type: String, required: true },
   role: { type: String, enum: roles, required: true },
-  children: { type: [Schema.Types.ObjectId], ref: 'users' },
+  children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+}, {
+  versionKey: false,
 });
 
 /**

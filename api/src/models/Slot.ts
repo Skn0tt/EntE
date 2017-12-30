@@ -1,4 +1,5 @@
 import { Schema, model, Document, Model } from 'mongoose';
+import { MongoId } from '../constants';
 
 export interface SlotModel extends Document, ISlot {}
 
@@ -7,8 +8,8 @@ export interface ISlot {
   hour_from: Number;
   hour_to: Number;
   signed: boolean;
-  student: Schema.Types.ObjectId;
-  teacher: Schema.Types.ObjectId;
+  student: MongoId;
+  teacher: MongoId;
 }
 
 /**
@@ -21,6 +22,8 @@ const slotSchema = new Schema({
   signed: { type: Boolean, default: false, required: true },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+}, {
+  versionKey: false,
 });
 
 /**
