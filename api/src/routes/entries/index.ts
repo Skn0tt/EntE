@@ -107,7 +107,7 @@ entriesRouter.get('/:entryId', [
   try {
     const entry = await Entry.findById(entryId);
 
-    if (!entry) return response.status(404).end('Couldnt find Entry.');
+    if (entry === null) return response.status(404).end('Couldnt find Entry.');
     
     request.entries = [entry];
     next();
@@ -122,7 +122,8 @@ entriesRouter.get('/:entryId', [
 // TODO: Reject all dates that are too late
 
 const teacherExists = async (id: MongoId): Promise<boolean> => {
-  return await User.count({ _id: id }) > 0;
+  const count = await User.count({ _id: id });
+  return count > 0;
 };
 
 const createPermissions: Permissions = {
@@ -197,7 +198,7 @@ entriesRouter.put('/:entryId/sign', [
   try {
     const entry = await Entry.findById(entryId);
 
-    if (!entry) return response.status(404).end('Couldnt find Entry.');
+    if (entry === null) return response.status(404).end('Couldnt find Entry.');
 
     if (request.user.role === ROLES.ADMIN) {
       entry.signAdmin();

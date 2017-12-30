@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "node build/"
+    "start": "node build/",
+    "lint": "tslint --project ."
   },
   "dependencies": {
     "bcrypt": "^1.0.3",

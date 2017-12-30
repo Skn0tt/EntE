@@ -84,5 +84,5 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
