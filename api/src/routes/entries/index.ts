@@ -165,6 +165,7 @@ entriesRouter.post('/', [], async (request: EntriesRequest, response: Response, 
       slots,
       signedParent,
       date: request.body.date,
+      dateEnd: request.body.dateEnd,
       student: studentId,
       forSchool: request.body.forSchool,
     });

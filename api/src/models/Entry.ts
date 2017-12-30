@@ -8,6 +8,7 @@ export interface EntryModel extends Document, IEntry {
 
 export interface IEntry {
   date: Date;
+  dateEnd: Date;
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
@@ -20,6 +21,7 @@ export interface IEntry {
  */
 const entrySchema: Schema = new Schema({
   date: { type: Date, required: true, default: Date.now() },
+  dateEnd: { type: Date, required: false, default: Date.now() },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   slots: [{ type: Schema.Types.ObjectId, required: true, ref: 'slots' }],
   forSchool: { type: Boolean, required: true },
