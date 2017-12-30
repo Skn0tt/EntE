@@ -63,6 +63,8 @@ export const StandardItems = () => (
 
 export const AdminItems = () => (
   <List>
+    <Entries />
+    <Slots />
     <Users />
   </List>
 );
