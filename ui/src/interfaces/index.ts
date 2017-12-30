@@ -4,6 +4,26 @@ export type errorPayload = {};
 export type MongoId = string;
 
 /**
+ * API
+ */
+
+export interface APIResponse {
+  auth?: AuthState;
+  users: User[];
+  entries: Entry[];
+  slots: Slot[];
+}
+export interface IAPIResponse {
+  auth?: {
+    role: Roles;
+    children: MongoId[];
+  };
+  users: IUser[];
+  entries: IEntry[];
+  slots: ISlot[];
+}
+
+/**
  * User
  */
 export enum Roles {
@@ -18,22 +38,7 @@ export interface IUser {
   username: string;
   email: string;
   role: Roles;
-  children: User[];
-}
-
-export interface IUserAPI {
-  _id: MongoId;
-  username: string;
-  email: string;
-  role: Roles;
-  children: Partial<IUserAPI>[];
-}
-
-export interface IUserCreate {
-  username: string;
-  email: string;
-  role: Roles;
-  children: User[];
+  children: MongoId[];
 }
 
 export class User extends Record({
@@ -51,14 +56,6 @@ export class User extends Record({
   }
 }
 
-export const createUser = (item: Partial<IUserAPI>): User => new User({
-  _id: item._id,
-  children: item.children ? item.children.map(child => createUser(child)) : [],
-  email: item.email,
-  role: item.role,
-  username: item.username
-});
-
 /**
  * Slot
  */
@@ -68,17 +65,8 @@ export interface ISlot {
   hour_from: number;
   hour_to: number;
   signed: boolean;
-  student: User;
-  teacher: User;
-}
-
-export interface ISlotAPI {
-  _id: MongoId;
-  date: Date;
-  hour_from: number;
-  hour_to: number;
-  student: Partial<IUserAPI>;
-  teacher: Partial<IUserAPI>;
+  student: MongoId;
+  teacher: MongoId;
 }
 
 export class Slot extends Record({
@@ -86,8 +74,8 @@ export class Slot extends Record({
   date: new Date(0),
   hour_from: -1,
   hour_to: -1,
-  student: new User({}),
-  teacher: new User({})
+  student: '',
+  teacher: ''
 }) {
   constructor(props: Partial<ISlot>) {
     super(props);
@@ -97,14 +85,7 @@ export class Slot extends Record({
   }
 }
 
-export const createSlot = (item: Partial<ISlotAPI>) => new Slot({
-  _id: item._id as string,
-  date: item.date ? new Date(item.date) : undefined,
-  hour_from: item.hour_from,
-  hour_to: item.hour_to,
-  student: item.student ? createUser(item.student) : undefined,
-  teacher: item.teacher ? createUser(item.teacher) : undefined,
-});
+export const createSlot = (item: Partial<ISlot>) => new Slot(item);
 
 /**
  * Entry
@@ -112,33 +93,17 @@ export const createSlot = (item: Partial<ISlotAPI>) => new Slot({
 export interface IEntry {
   _id: MongoId;
   date: Date;
-  student: User;
-  slots: Slot[];
+  student: MongoId;
+  slots: MongoId[];
   forSchool: boolean;
   signedAdmin: boolean;
   signedParent: boolean;
-}
-
-export interface IEntryAPI {
-  _id: MongoId;
-  date: Date;
-  student: IUserAPI;
-  slots: ISlotAPI[];
-  forSchool: boolean;
-  signedAdmin: boolean;
-  signedParent: boolean;
-}
-
-export interface IEntryCreate {
-  date: Date;
-  slots: Slot[];
-  forSchool: boolean;
 }
 
 export class Entry extends Record({
   _id: '',
   date: new Date(0),
-  student: new User({}),
+  student: '',
   slots: [],
   forSchool: false,
   signedAdmin: false,
@@ -152,16 +117,6 @@ export class Entry extends Record({
   }
 }
 
-export const createEntry = (item: Partial<IEntryAPI>) => new Entry({
-  _id: item._id as string,
-  slots: item.slots ? item.slots.map((slot) => createSlot(slot)) as Slot[] : [],
-  forSchool: item.forSchool as boolean,
-  date: item.date ? new Date(item.date) : undefined,
-  signedAdmin: item.signedAdmin as boolean,
-  signedParent: item.signedParent as boolean,
-  student: item.student ? createUser(item.student) : undefined,
-});
-
 /**
  * Auth
  */
@@ -173,7 +128,7 @@ export interface ICredentials {
 export interface IAuth extends ICredentials {
   role: Roles;
   checked: boolean;
-  children: User[];
+  children: MongoId[];
 }
 
 export class AuthState extends Record({

@@ -31,8 +31,6 @@ import {
 
 const initialState = new AppState({});
 
-const keepDefined = (prev: any, next: any) => next ? next : prev;
-
 const reducer = handleActions({
   /**
    * CHECK_AUTH
@@ -74,8 +72,7 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
-    .update('loading', loading => loading - 1)
-    .setIn(['entries', action.payload!.get('_id')], action.payload),
+    .update('loading', loading => loading - 1),
 
   /**
    * GET_SLOTS
@@ -125,8 +122,7 @@ const reducer = handleActions({
    * ADD_USERS
    */
   [ADD_USERS]: (state, action) => state
-    .update('users', (map: Map<MongoId, User>) => map.mergeDeepWith(
-      keepDefined,
+    .update('users', (map: Map<MongoId, User>) => map.merge(
       Map<MongoId, User>(action.payload!.map((user: User) => [user.get('_id'), user]))
     )),
 
@@ -134,8 +130,7 @@ const reducer = handleActions({
    * ADD_SLOTS
    */
   [ADD_SLOTS]: (state, action) => state
-    .update('slots', (map: Map<MongoId, Slot>) => map.mergeDeepWith(
-      keepDefined,
+    .update('slots', (map: Map<MongoId, Slot>) => map.merge(
       Map<MongoId, Slot>(action.payload!.map((slot: Slot) => [slot.get('_id'), slot]))
     )),
 
@@ -143,8 +138,7 @@ const reducer = handleActions({
    * ADD_ENTRIES
    */
   [ADD_ENTRIES]: (state, action) => state
-    .update('entries', (map: Map<MongoId, Entry>) => map.mergeDeepWith(
-      keepDefined,
+    .update('entries', (map: Map<MongoId, Entry>) => map.merge(
       Map<MongoId, Entry>(action.payload!.map((entry: Entry) => [entry.get('_id'), entry]))
     )),
   
