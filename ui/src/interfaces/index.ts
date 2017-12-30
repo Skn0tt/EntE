@@ -170,7 +170,7 @@ export interface ICredentials {
   password: string;
 }
 export interface IAuth extends ICredentials {
-  role: string;
+  role: Roles;
   checked: boolean;
   children: User[];
 }
@@ -201,6 +201,7 @@ type ErrorState = Error[];
 export interface IAppState {
   entries: Map<MongoId, Entry>;
   users: Map<MongoId, User>;
+  slots: Map<MongoId, Slot>;
   auth: AuthState;
   errors: ErrorState;
   loading: number;
@@ -209,6 +210,7 @@ export interface IAppState {
 export class AppState extends Record({
   entries: Map<MongoId, Entry>(),
   users: Map<MongoId, User>(),
+  slots: Map<MongoId, Slot>(),
   auth: new AuthState({}),
   errors: [],
   loading: 0,

@@ -1,5 +1,5 @@
 import { handleActions, Action } from 'redux-actions';
-import { Entry, AppState, MongoId, User, AuthState } from '../interfaces/index';
+import { Entry, AppState, MongoId, User, AuthState, Slot } from '../interfaces/index';
 import { Map } from 'immutable';
 import {
   GET_ENTRIES_REQUEST,
@@ -20,7 +20,10 @@ import {
   LOGOUT,
   GET_TEACHERS_REQUEST,
   GET_TEACHERS_ERROR,
-  GET_TEACHERS_SUCCESS
+  GET_TEACHERS_SUCCESS,
+  GET_SLOTS_REQUEST,
+  GET_SLOTS_ERROR,
+  GET_SLOTS_SUCCESS
 } from './constants';
 
 const initialState = new AppState({});
@@ -60,9 +63,13 @@ const reducer = handleActions({
   [GET_ENTRIES_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1)
     .update('entries', (map: Map<MongoId, Entry>) => map.withMutations(
-      mutator => action.payload!.forEach(
-        entry => mutator.set(entry.get('_id'), entry)
-      )
+      mutator => action.payload!.forEach(entry => mutator.set(entry.get('_id'), entry))
+    ))
+    .update('slots', (map: Map<MongoId, Slot>) => map.withMutations(
+      (mutator) => action.payload!.forEach(
+        (entry: Entry) => entry.get('slots').forEach(
+          (slot: Slot) => mutator.set(slot.get('_id'), slot),
+      ))
     )),
   
   /**
@@ -75,7 +82,24 @@ const reducer = handleActions({
     .update('errors', errors => errors.push(action.payload)),
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
     .update('loading', loading => loading - 1)
-    .update('entries', map => map.set(action.payload!.get('_id'), action.payload)),
+    .update('entries', map => map.set(action.payload!.get('_id'), action.payload))
+    .update('slots', map => map.merge(
+      Map<MongoId, Slot>(action.payload!.get('slots').map(slot => [slot.get('_id'), slot]))
+    )),
+
+  /**
+   * GET_SLOTS
+   */
+  [GET_SLOTS_REQUEST]: state => state
+    .update('loading', loading => loading + 1),
+  [GET_SLOTS_ERROR]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
+  [GET_SLOTS_SUCCESS]: (state, action) => state
+    .update('loading', loading => loading - 1)
+    .update('slots', (map: Map<MongoId, Slot>) => map.merge(
+      Map<MongoId, Slot>(action.payload!.map(slot => [slot.get('_id'), slot]))
+    )),
 
   /**
    * GET_USERS

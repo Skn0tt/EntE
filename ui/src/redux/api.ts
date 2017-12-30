@@ -7,7 +7,11 @@ import {
   createEntry,
   createUser,
   ICredentials,
-  AuthState
+  AuthState,
+  Roles,
+  ISlotAPI,
+  createSlot,
+  Slot
 } from '../interfaces/index';
 import axios, { AxiosRequestConfig } from 'axios';
 
@@ -29,7 +33,7 @@ export const checkAuth = async (auth: ICredentials): Promise<AuthState> => {
     });
   }
   
-  const role: string = response.data.role;
+  const role: Roles = response.data.role;
   const children = response.data.children.map((child: IUserAPI) => createUser(child));
   
   return new AuthState({
@@ -63,6 +67,18 @@ export const getEntries = async (auth: ICredentials): Promise<Entry[]> => {
   const entries: Entry[] = data.map(item => createEntry(item));
 
   return entries;
+};
+
+export const getSlots = async (auth: ICredentials): Promise<Slot[]> => {
+  const url = `${baseUrl}/slots`;
+  const config: AxiosRequestConfig = { auth };
+
+  const response = await axios.get(url, config);
+
+  const data: ISlotAPI[] = response.data;
+  const slots: Slot[] = data.map(item => createSlot(item));
+
+  return slots;
 };
 
 export const getUser = async (id: MongoId, auth: ICredentials): Promise<User> => {

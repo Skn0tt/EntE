@@ -11,6 +11,11 @@ import {
   checkAuthSuccess,
   checkAuthError,
   getTeachersRequest,
+  getTeachersError,
+  getTeachersSuccess,
+  getSlotsRequest,
+  getSlotsSuccess,
+  getSlotsError,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -18,19 +23,29 @@ import {
   GET_USER_REQUEST,
   GET_USERS_REQUEST,
   CHECK_AUTH_REQUEST,
-  GET_TEACHERS_REQUEST
+  GET_TEACHERS_REQUEST,
+  GET_SLOTS_REQUEST
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { MongoId, ICredentials, AuthState } from '../interfaces/index';
+import { MongoId, ICredentials, AuthState, Roles } from '../interfaces/index';
 
 function* checkAuthSaga(action: Action<ICredentials>) {
   try {
     const authState: AuthState = yield call(api.checkAuth, action.payload);
 
     yield put(checkAuthSuccess(authState));
-    yield put(getTeachersRequest());
+    if (
+      [Roles.PARENT, Roles.STUDENT]
+        .indexOf(authState.get('role')) !== -1) {
+      yield put(getTeachersRequest());
+    }
+    if (
+      [Roles.TEACHER]
+        .indexOf(authState.get('role')) !== -1) {
+      yield put(getSlotsRequest());
+    }
   } catch (error) {
     yield put(checkAuthError(error));
   }
@@ -55,6 +70,17 @@ function* getEntriesSaga() {
     yield put(getEntriesSuccess(entries));
   } catch (error) {
     yield put(getEntriesError(error));
+  }
+}
+
+function* getSlotsSaga() {
+  try {
+    const auth = yield select(selectors.getAuthCredentials);
+    const slots = yield call(api.getSlots, auth);
+
+    yield put(getSlotsSuccess(slots));
+  } catch (error) {
+    yield put(getSlotsError(error));
   }
 }
 
@@ -85,9 +111,9 @@ function* getTeachersSaga() {
     const auth = yield select(selectors.getAuthCredentials);
     const teachers = yield call(api.getTeachers, auth);
 
-    yield put(getUsersSuccess(teachers));
+    yield put(getTeachersSuccess(teachers));
   } catch (error) {
-    yield put(getUsersError(error));
+    yield put(getTeachersError(error));
   }
 }
 
@@ -96,6 +122,7 @@ function* saga() {
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
   yield takeEvery<Action<MongoId>>(GET_USER_REQUEST, getUserSaga);
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
+  yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
 }

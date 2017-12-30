@@ -22,9 +22,12 @@ import {
   LOGOUT,
   GET_TEACHERS_SUCCESS,
   GET_TEACHERS_REQUEST,
-  GET_TEACHERS_ERROR
+  GET_TEACHERS_ERROR,
+  GET_SLOTS_REQUEST,
+  GET_SLOTS_SUCCESS,
+  GET_SLOTS_ERROR
 } from './constants';
-import { Entry, MongoId, User, AuthState, ICredentials } from '../interfaces/index';
+import { Entry, MongoId, User, AuthState, ICredentials, Slot } from '../interfaces/index';
 
 export const createEntryRequest = createAction<Entry>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction<Entry>(CREATE_ENTRY_SUCCESS);
@@ -38,7 +41,7 @@ export const getEntryRequest = createAction<MongoId>(GET_ENTRY_REQUEST);
 export const getEntrySuccess = createAction<Entry>(GET_ENTRY_SUCCESS);
 export const getEntryError = createAction<Error>(GET_ENTRY_ERROR);
 
-export const getUserRequest = createAction(GET_USER_REQUEST);
+export const getUserRequest = createAction<MongoId>(GET_USER_REQUEST);
 export const getUserSuccess = createAction<User>(GET_USER_SUCCESS);
 export const getUserError = createAction<Error>(GET_USER_ERROR);
 
@@ -49,6 +52,10 @@ export const getUsersError = createAction<Error>(GET_USERS_ERROR);
 export const getTeachersRequest = createAction(GET_TEACHERS_REQUEST);
 export const getTeachersSuccess = createAction<User[]>(GET_TEACHERS_SUCCESS);
 export const getTeachersError = createAction<Error>(GET_TEACHERS_ERROR);
+
+export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
+export const getSlotsSuccess = createAction<Slot[]>(GET_SLOTS_SUCCESS);
+export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
 
 export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
