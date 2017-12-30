@@ -9,6 +9,7 @@ export interface UserModel extends Document, IUser {
 
 export interface IUser {
   username: string;
+  displayname: string;
   email: string;
   password: string;
   role: ROLES;
@@ -20,6 +21,7 @@ export interface IUser {
  */
 const userSchema : Schema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
+  displayname: { type: String, required: true },
   email: { type: String, required: false },
   password: { type: String, required: true },
   role: { type: String, enum: roles, required: true },

@@ -77,7 +77,6 @@ usersRouter.get('/', (request: UserRequest, response, next) => {
           .select('-password') :
         await User
           .find({})
-          .populate('children', 'username email role')
           .select('-password');
     
     request.users = users;
@@ -117,11 +116,14 @@ usersRouter.get('/:userId', [
 /**
  * Create new user
  */
+const userAlreadyExists = async (username: string): Promise<boolean> =>
+  !!(await User.findOne({ username }));
 const createPermissions : Permissions = {
   users_write: true,
 };
 usersRouter.post('/', [
   body('email').isEmail(),
+  body('displayname').exists(),
   body('role').isIn(roles),
 ], async (request: UserRequest, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
@@ -130,9 +132,14 @@ usersRouter.post('/', [
   if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
 
   try {
+    if (await userAlreadyExists(request.body.username)) {
+      return response.status(422).end('User already exists.');
+    }
+    
     const user = await User.create({
       email: request.body.email,
       role: request.body.role,
+      displayname: request.body.displayname,
       password: request.body.password,
       username: request.body.username,
       children: request.body.children,

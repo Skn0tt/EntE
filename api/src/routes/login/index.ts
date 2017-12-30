@@ -26,6 +26,7 @@ loginRouter.get('/', async (request: Request, response: Response, next) => {
     
     return response.json({
       auth: {
+        displayname: request.user.displayname,
         role: request.user.role,
         children: request.user.children,
       },
