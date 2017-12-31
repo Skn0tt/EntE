@@ -7,13 +7,15 @@ test_api:
   stage: test
   script:
     - cd api
+    - yarn
     - yarn test
 
 test_ui:
   image: node
   stage: test
   script:
-    - cd ui
+    - cd u
+    - yarn
     - yarn test
 
 lint_api:
@@ -21,6 +23,7 @@ lint_api:
   stage: test
   script:
     - cd api
+    - yarn
     - yarn lint
 
 lint_ui:
@@ -28,6 +31,7 @@ lint_ui:
   stage: test
   script:
     - cd ui
+    - yarn
     - yarn lint
 
 build_api:
