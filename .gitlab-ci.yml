@@ -1,38 +1,5 @@
 stages:
-  - test
   - build
-
-test_api:
-  image: node
-  stage: test
-  script:
-    - cd api
-    - yarn
-    - yarn test
-
-test_ui:
-  image: node
-  stage: test
-  script:
-    - cd u
-    - yarn
-    - yarn test
-
-lint_api:
-  image: node
-  stage: test
-  script:
-    - cd api
-    - yarn
-    - yarn lint
-
-lint_ui:
-  image: node
-  stage: test
-  script:
-    - cd ui
-    - yarn
-    - yarn lint
 
 build_api:
   image: docker:latest
