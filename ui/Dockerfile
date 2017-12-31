@@ -7,7 +7,7 @@ COPY . ./
 RUN yarn build
 
 # Host Static Files
-FROM nginx as server
+FROM z720/docker-nginx-amplify as server
 
 # Copy over static content
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
