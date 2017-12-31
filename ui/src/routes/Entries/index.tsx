@@ -17,22 +17,6 @@ interface Props extends WithStyles {
   getUser(id: MongoId): User;
 }
 
-const EntryRow = (entry: Entry, props: Props) => (
-  <Route
-    render={({ history }) => (
-      <TableRow
-        key={entry.get('_id')}
-        onClick={() => history.push(`/entries/${entry.get('_id')}`)}
-      >
-        <TableCell>{props.getUser(entry.get('student')).get('displayname')}</TableCell>
-        <TableCell>{entry.get('date').toDateString()}</TableCell>
-        <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
-      </TableRow>
-    )}
-  />
-  
-);
-
 const Entries: React.SFC<Props> = (props) => (
   <Paper>
     <Table>
@@ -44,7 +28,20 @@ const Entries: React.SFC<Props> = (props) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.entries.map(entry => EntryRow(entry, props))}
+        {props.entries.map(entry => (
+          <Route
+            render={({ history }) => (
+              <TableRow
+                key={entry.get('_id')}
+                onClick={() => history.push(`/entries/${entry.get('_id')}`)}
+              >
+                <TableCell>{props.getUser(entry.get('student')).get('displayname')}</TableCell>
+                <TableCell>{entry.get('date').toDateString()}</TableCell>
+                <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
+              </TableRow>
+            )}
+          />
+        ))}
       </TableBody>
     </Table>
   </Paper>

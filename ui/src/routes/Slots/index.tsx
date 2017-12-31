@@ -48,6 +48,7 @@ const Slots: React.SFC<Props> = (props) => (
 
 const mapStateToProps = (state: AppState) => ({
   slots: select.getSlots(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
