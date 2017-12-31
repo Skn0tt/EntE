@@ -1,0 +1,21 @@
+build_api:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd api
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
+
+build_ui:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd ui
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
