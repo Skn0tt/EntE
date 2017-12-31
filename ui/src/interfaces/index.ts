@@ -8,9 +8,10 @@ export type MongoId = string;
  */
 
 export interface APIResponse {
-  users?: User[];
-  entries?: Entry[];
-  slots?: Slot[];
+  auth?: AuthState;
+  users: User[];
+  entries: Entry[];
+  slots: Slot[];
 }
 export interface IAPIResponse {
   auth?: {

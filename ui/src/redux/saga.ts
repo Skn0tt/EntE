@@ -28,19 +28,17 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { APIResponse, ICredentials, MongoId, AuthState } from '../interfaces/index';
+import { APIResponse, ICredentials, MongoId } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
-  const { entries, slots, users } = data;
-
-  yield put(addResponse({ entries, slots, users }));
+  yield put(addResponse(data));
 }
 
 function* checkAuthSaga(action: Action<ICredentials>) {
   try {
-    const result: { auth: AuthState, data: APIResponse } = yield call(api.checkAuth, action.payload);
+    const result = yield call(api.checkAuth, action.payload);
     
-    yield dispatchUpdates(result.data);
+    yield dispatchUpdates(result);
     yield put(checkAuthSuccess(result.auth));
   } catch (error) {
     yield put(checkAuthError(error));

@@ -1,5 +1,5 @@
 import { handleActions, Action, BaseAction, ReducerMap } from 'redux-actions';
-import { Entry, AppState, AuthState, APIResponse } from '../interfaces/index';
+import { Entry, AppState, AuthState, APIResponse, MongoId, User, Slot } from '../interfaces/index';
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -26,6 +26,7 @@ import {
   ADD_RESPONSE,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
+import { Map } from 'immutable';
 
 const initialState = new AppState({});
 
@@ -120,9 +121,16 @@ const reducer = handleActions({
    * ADD_RESPONSE
    */
   [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState => state
-    .update('users', users => users.merge(action.payload!.users))
-    .update('slots', slots => slots.merge(action.payload!.slots))
-    .update('entries', entries => entries.merge(action.payload!.entries)),
+    .update('users', users => users.merge(
+      Map<MongoId, User>(action.payload!.users.map(user => [user.get('_id'), user]))
+    ))
+    .update('slots', slots => slots.merge(
+      Map<MongoId, Slot>(action.payload!.slots.map(slot => [slot.get('_id'), slot]))
+    ))
+    .update('entries', entries => entries.merge(
+      Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry]))
+    )),
+
 } as ReducerMap<AppState, ActionType>, initialState); // tslint:disable-line:align
 
 export default reducer;
