@@ -14,7 +14,7 @@ import { logout } from '../../redux/actions';
 import ListItemIcon from 'material-ui/List/ListItemIcon';
 
 interface Props {
-  username: string;
+  displayname: string;
   logout(): Action<void>;
 }
 
@@ -27,14 +27,14 @@ const LoginStatus: React.SFC<Props & WithStyles<string>> = (props) => (
             <ExitToAppIcon />
           </IconButton>
         </ListItemIcon>
-        <ListItemText primary={props.username}/>
+        <ListItemText primary={props.displayname}/>
       </ListItem>
     </List>
   </div>
 );
 
 const mapStateToProps = (state: AppState) => ({
-  username: select.getUsername(state),
+  displayname: select.getDisplayname(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action<void>>) => ({
