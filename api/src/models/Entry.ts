@@ -1,5 +1,6 @@
 import { Schema, model, Document, Model } from 'mongoose';
 import { MongoId } from '../constants';
+import * as idValidator from 'mongoose-id-validator';
 
 export interface EntryModel extends Document, IEntry {
   signParent(): void;
@@ -23,13 +24,14 @@ const entrySchema: Schema = new Schema({
   date: { type: Date, required: true, default: Date.now() },
   dateEnd: { type: Date, required: false, default: Date.now() },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-  slots: [{ type: Schema.Types.ObjectId, required: true, ref: 'slots' }],
+  slots: [{ type: Schema.Types.ObjectId, ref: 'slots' }],
   forSchool: { type: Boolean, required: true },
   signedParent: { type: Boolean, required: true, default: false },
   signedAdmin: { type: Boolean, required: true, default: false },
 }, {
   versionKey: false,
 });
+entrySchema.plugin(idValidator);
 
 /**
  * # Schema Methods
