@@ -1,5 +1,38 @@
 stages:
+  - test
   - build
+
+test_api:
+  image: node
+  stage: test
+  script:
+    - cd api
+    - yarn
+    - yarn test
+
+test_ui:
+  image: node
+  stage: test
+  script:
+    - cd ui
+    - yarn
+    - yarn test
+
+lint_api:
+  image: node
+  stage: test
+  script:
+    - yarn install tslint tslint-config-airbnb
+    - cd api
+    - yarn lint
+
+lint_ui:
+  image: node
+  stage: test
+  script:
+    - yarn install tslint tslint-config-airbnb
+    - cd ui
+    - yarn lint
 
 build_api:
   image: docker:latest
