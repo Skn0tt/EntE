@@ -7,7 +7,7 @@ const styles = (theme: Theme): StyleRules => ({
   },
   item: {
     margin: 200,
-  }
+  },
 });
 
 export default styles;

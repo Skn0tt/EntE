@@ -26,11 +26,18 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
-  ADD_RESPONSE
+  ADD_RESPONSE,
 } from './constants';
 import { MongoId, AuthState, ICredentials, IEntryCreate, APIResponse } from '../interfaces/index';
 
-export type ActionType = IEntryCreate | Error | MongoId | ICredentials | AuthState | Error | APIResponse;
+export type ActionType =
+  IEntryCreate |
+  Error |
+  MongoId |
+  ICredentials |
+  AuthState |
+  Error |
+  APIResponse;
 
 export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);

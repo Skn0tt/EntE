@@ -9,6 +9,6 @@ const styles = (theme: Theme): StyleRules => ({
   },
   paper: {
     padding: 50,
-  }
+  },
 });
 export default styles;

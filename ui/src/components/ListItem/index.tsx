@@ -10,7 +10,7 @@ interface Props extends Partial<WithStyles> {
   id: string;
 }
 
-const ListItem: React.SFC<Props> = (props) => (
+const ListItem: React.SFC<Props> = props => (
   <MUIListItem>
     <MUIListItemText primary={props.id}/>
   </MUIListItem>

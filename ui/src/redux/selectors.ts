@@ -30,10 +30,13 @@ export const getUser = (id: MongoId) => (state: AppState): User => state.getIn([
 export const getUsers = (state: AppState) => state.get('users').toArray();
 
 export const getSlots = (state: AppState) => state.get('slots').toArray();
-export const getSlotsById = (ids: MongoId[]) => (state: AppState): Slot[] => ids.map(id => state.getIn(['slots', id]));
+export const getSlotsById =
+  (ids: MongoId[]) =>
+    (state: AppState): Slot[] =>
+      ids.map(id => state.getIn(['slots', id]));
 
 export const getTeachers = (state: AppState) => state
   .get('users')
   .valueSeq()
-  .filter((user) => user!.get('role') === 'teacher')
+  .filter(user => user!.get('role') === 'teacher')
   .toArray();

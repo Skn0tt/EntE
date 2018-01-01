@@ -76,7 +76,7 @@ class extends React.Component<Props, State> {
       student: this.props.getRole() === 'parent' ?
         this.props.getChildren()[0].get('_id') :
         undefined,
-      forSchool: false
+      forSchool: false,
     };
   }
 
@@ -106,9 +106,11 @@ class extends React.Component<Props, State> {
    */
   handleChangeDate = (date: Date) => this.setState({ date });
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-  handleChangeForSchool = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ forSchool: checked });
+  handleChangeForSchool = (event: ChangeEvent<{}>, checked: boolean) =>
+    this.setState({ forSchool: checked })
 
-  handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) => this.setState({ isRange: checked });
+  handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) =>
+    this.setState({ isRange: checked })
 
   handleAddSlot = (slot: ISlotCreate) => {
     if (this.state.slots.indexOf(slot) !== -1) {
@@ -118,9 +120,11 @@ class extends React.Component<Props, State> {
     this.setState({ slots: [...this.state.slots, slot] });
   }
 
-  handleRemoveSlot = (index: number) => this.setState({ slots: this.state.slots.slice(index, index) });
+  handleRemoveSlot = (index: number) =>
+    this.setState({ slots: this.state.slots.slice(index, index) })
 
-  handleChangeStudent = (event: ChangeEvent<HTMLInputElement>) => this.setState({ student: event.target.value });
+  handleChangeStudent = (event: ChangeEvent<HTMLInputElement>) =>
+    this.setState({ student: event.target.value })
 
   // TODO: Implement
   inputValid = () => true;

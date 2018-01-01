@@ -14,7 +14,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  TextField
+  TextField,
 } from 'material-ui';
 import { withMobileDialog } from 'material-ui/Dialog';
 import { checkAuthRequest } from '../../redux/actions';
@@ -70,7 +70,7 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IPro
 
     handleSignIn = () => this.props.checkAuth({
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
     })
 
     render() {
@@ -119,7 +119,7 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IPro
         </div>  
       );
     }
-  }
+  },
 )));
 
 export default Login;

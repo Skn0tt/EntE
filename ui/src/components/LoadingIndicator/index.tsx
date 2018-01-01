@@ -6,7 +6,7 @@ import { WithStyles } from 'material-ui/styles/withStyles';
 
 interface Props {}
 
-const LoadingIndicator: React.SFC<Props & WithStyles<string>> = (props) => (
+const LoadingIndicator: React.SFC<Props & WithStyles<string>> = props => (
   <LinearProgress
     className={props.classes.loading}
     mode="query"

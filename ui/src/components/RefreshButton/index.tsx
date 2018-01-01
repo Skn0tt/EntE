@@ -19,7 +19,7 @@ const renderPaths: string[] = [
 
 const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
-const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = (props) => (
+const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props => (
   shouldRender(props.location.pathname) ?
   (
     <Button

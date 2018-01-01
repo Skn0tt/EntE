@@ -8,7 +8,7 @@ import {
   Divider,
   withStyles,
   Drawer as MUIDrawer,
-  WithStyles
+  WithStyles,
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
 import LoadingIndicator from '../LoadingIndicator';
@@ -116,7 +116,7 @@ const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
         </div>
       );
     }
-  }
+  },
 )));
 
 export default Drawer;

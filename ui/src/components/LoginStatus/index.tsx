@@ -18,7 +18,7 @@ interface Props {
   logout(): Action<void>;
 }
 
-const LoginStatus: React.SFC<Props & WithStyles<string>> = (props) => (
+const LoginStatus: React.SFC<Props & WithStyles<string>> = props => (
   <div className={props.classes.container}>
     <List>
       <ListItem>

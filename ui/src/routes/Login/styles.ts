@@ -8,7 +8,7 @@ const styles = (theme: Theme): StyleRules => ({
     justifyContent: 'center',
     alignItems: 'center',
     
-  }
+  },
 });
 
 export default styles;

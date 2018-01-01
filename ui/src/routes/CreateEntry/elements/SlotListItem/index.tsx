@@ -13,7 +13,7 @@ interface Props {
   delete(): void;
 }
 
-const SlotListItem: React.SFC<Props & WithStyles> = (props) => (
+const SlotListItem: React.SFC<Props & WithStyles> = props => (
   <ListItem>
     <ListItemText
       primary={props.getUser(props.slot.teacher).get('displayname')}

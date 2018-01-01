@@ -23,7 +23,7 @@ import {
   GET_USERS_REQUEST,
   CHECK_AUTH_REQUEST,
   GET_TEACHERS_REQUEST,
-  GET_SLOTS_REQUEST
+  GET_SLOTS_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';

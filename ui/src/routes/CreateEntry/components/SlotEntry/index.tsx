@@ -202,7 +202,7 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
       );
     }
 
-  }
+  },
 ));
 
 export default SlotEntry;

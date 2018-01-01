@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   BrowserRouter,
   Route,
-  Switch
+  Switch,
 } from 'react-router-dom';
 import { connect, Dispatch } from 'react-redux';
 import { AppState, ICredentials } from './interfaces/index';

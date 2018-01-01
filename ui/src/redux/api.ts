@@ -6,7 +6,7 @@ import {
   AuthState,
   Slot,
   APIResponse,
-  IAPIResponse
+  IAPIResponse,
 } from '../interfaces/index';
 import axios from 'axios';
 
@@ -24,35 +24,28 @@ const defaultResponse: APIResponse = {
  */
 // TODO: Implement in Immutable, Make Blog Post
 const regexIso8601 =
+  // tslint:disable-next-line:max-line-length
   /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
 
 function convertDateStringsToDates(input: any) {
-    // Ignore things that aren't objects.
-    if (typeof input !== 'object') {
-      return input;
-    }
+  if (typeof input !== 'object') return input;
 
-    for (let key in input) {
-        if (!input.hasOwnProperty(key)) {
-          continue;
-        }
-
-        let value = input[key];
-        let match;
-        // Check for string properties which look like dates.
-        if (typeof value === 'string' && (match = value.match(regexIso8601))) {
-            var milliseconds = Date.parse(match[0]);
-            if (!isNaN(milliseconds)) {
-                input[key] = new Date(milliseconds);
-            }
-        } else if (Array.isArray(value)) {
-          value.forEach(element => convertDateStringsToDates(element));
-        } else if (typeof value === 'object') {
-            convertDateStringsToDates(value);
-        }
-    }
+  for (const key in input) {
+    if (!input.hasOwnProperty(key)) continue;
+    const value = input[key];
+    let match;
+  
+    if (typeof value === 'string' && (match = value.match(regexIso8601))) {
+      const milliseconds = Date.parse(match[0]);
+      if (!isNaN(milliseconds))
+        input[key] = new Date(milliseconds);
+    } else if (Array.isArray(value))
+      value.forEach(element => convertDateStringsToDates(element));
+    else if (typeof value === 'object')
+      convertDateStringsToDates(value);
 
     return input;
+  }
 }
 
 const transformDates = (data: string) => {
@@ -92,7 +85,7 @@ export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
   if (response.status === 401) {
     return ({
       auth: new AuthState({ checked: true }),
-      ...defaultResponse
+      ...defaultResponse,
     });
   }
 

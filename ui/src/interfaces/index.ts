@@ -80,7 +80,7 @@ export class Slot extends Record({
   hour_from: -1,
   hour_to: -1,
   student: '',
-  teacher: ''
+  teacher: '',
 }) {
   constructor(props: Partial<ISlot>) {
     super(props);
@@ -122,7 +122,7 @@ export class Entry extends Record({
   slots: [],
   forSchool: false,
   signedAdmin: false,
-  signedParent: false
+  signedParent: false,
 }) {
   constructor(props: Partial<IEntry>) {
     super(props);

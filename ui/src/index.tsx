@@ -24,6 +24,6 @@ const Index = () => (
 
 ReactDOM.render(
   <Index />,
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 registerServiceWorker();
