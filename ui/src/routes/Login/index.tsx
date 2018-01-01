@@ -43,7 +43,8 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = IProps & WithStyles<string> & InjectedProps;
 
-const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IProps>()(withStyles(styles)(
+const Login = connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<IProps>()(withStyles(styles)(
   class extends React.Component<Props, State> {
     constructor(props: Props) {
       super(props);
@@ -60,11 +61,11 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(withMobileDialog<IPro
       }
     }
 
-    handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (event) => this.setState({
+    handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
       username: event.target.value,
     })
 
-    handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (event) => this.setState({
+    handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
       password: event.target.value,
     })
 

@@ -13,7 +13,7 @@ interface Props {
   authValid: boolean;
   authChecked: boolean;
 }
-const Loading: React.SFC<Props & WithStyles> = (props) => (
+const Loading: React.SFC<Props & WithStyles> = props => (
   <Grid
     className={props.classes.root}
     container={true}

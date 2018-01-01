@@ -18,7 +18,7 @@ interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
   getUser(id: MongoId): User;
 }
 
-const SpecificUser: React.SFC<Props> = (props) => (
+const SpecificUser: React.SFC<Props> = props => (
   <Modal
     onClose={() => props.history.goBack()}
   >
@@ -34,4 +34,9 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SpecificUser)));
+export default
+  withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    SpecificUser,
+  )));

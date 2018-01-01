@@ -71,4 +71,9 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SpecificEntry)));
+export default
+  withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    SpecificEntry,
+  )));

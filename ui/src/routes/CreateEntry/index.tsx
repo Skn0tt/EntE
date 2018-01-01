@@ -22,7 +22,6 @@ import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import { createEntryRequest } from '../../redux/actions';
 import FormControlLabel from 'material-ui/Form/FormControlLabel';
-import { ChangeEvent } from 'react';
 import SlotListItem from './elements/SlotListItem';
 import SlotEntry from './components/SlotEntry';
 
@@ -106,10 +105,10 @@ class extends React.Component<Props, State> {
    */
   handleChangeDate = (date: Date) => this.setState({ date });
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-  handleChangeForSchool = (event: ChangeEvent<{}>, checked: boolean) =>
+  handleChangeForSchool = (event: React.ChangeEvent<{}>, checked: boolean) =>
     this.setState({ forSchool: checked })
 
-  handleChangeIsRange = (event: ChangeEvent<{}>, checked: boolean) =>
+  handleChangeIsRange = (event: React.ChangeEvent<{}>, checked: boolean) =>
     this.setState({ isRange: checked })
 
   handleAddSlot = (slot: ISlotCreate) => {
@@ -123,7 +122,7 @@ class extends React.Component<Props, State> {
   handleRemoveSlot = (index: number) =>
     this.setState({ slots: this.state.slots.slice(index, index) })
 
-  handleChangeStudent = (event: ChangeEvent<HTMLInputElement>) =>
+  handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ student: event.target.value })
 
   // TODO: Implement
@@ -201,7 +200,7 @@ class extends React.Component<Props, State> {
               />
             ))}
           </MUIList>
-          <SlotEntry onAdd={(slot) => this.handleAddSlot(slot)}/>
+          <SlotEntry onAdd={slot => this.handleAddSlot(slot)}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="accent">

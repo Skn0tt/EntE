@@ -22,7 +22,7 @@ const UserRow = (user: User) => (
   </TableRow>
 );
 
-const Users: React.SFC<Props> = (props) => (
+const Users: React.SFC<Props> = props => (
   <Paper>
     <Table>
       <TableHead>

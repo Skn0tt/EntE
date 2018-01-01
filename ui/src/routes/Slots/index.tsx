@@ -30,7 +30,7 @@ const SlotRow = (slot: Slot, props: Props) => (
   
 );
 
-const Slots: React.SFC<Props> = (props) => (
+const Slots: React.SFC<Props> = props => (
   <Paper>
     <Table>
       <TableHead>

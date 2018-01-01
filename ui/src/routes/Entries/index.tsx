@@ -17,7 +17,7 @@ interface Props extends WithStyles {
   getUser(id: MongoId): User;
 }
 
-const Entries: React.SFC<Props> = (props) => (
+const Entries: React.SFC<Props> = props => (
   <Paper>
     <Table>
       <TableHead>

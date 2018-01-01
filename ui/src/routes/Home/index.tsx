@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 interface Props extends WithStyles, RouteComponentProps<{}> {}
 
-const Home: React.SFC<Props> = (props) => (
+const Home: React.SFC<Props> = props => (
   <Grid
     container={true}
     justify="center"
