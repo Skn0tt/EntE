@@ -20,7 +20,7 @@ import login from './routes/login';
 import status from './routes/status';
 
 const production = process.env.NODE_ENV === 'production';
-
+const kubernetes = process.env.KUBERNETES === 'true';
 const app = express();
 
 app.set('port', process.env.PORT || 4000);
@@ -38,12 +38,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(validator());
 
+const mongoAddress =
+  (kubernetes || !production) ?
+    'mongodb://localhost/ev' :
+    'mongodb://mongodb/ev';
+
 // Mongoose
 require('mongoose').Promise = Promise;
-mongoose.connect(
-  production ? 'mongodb://mongodb' : 'mongodb://localhost/test',
-  { useMongoClient: true },
-);
+mongoose.connect(mongoAddress, { useMongoClient: true });
 
 // Security Measures
 if (production) {

@@ -9,8 +9,6 @@ services:
   api:
     build: api/
     restart: on-failure
-    links:
-      - mongodb
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/status"]
       interval: 1m30s

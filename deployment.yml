@@ -1,14 +1,5 @@
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  name: gitlab
-  namespace: awesomeapps
-data:
-  .dockerconfigjson: UmVhbGx5IHJlYWxseSByZWVlZWVlZWVlZWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWxsbGxsbGxsbGxsbGxsbGxsbGxsbGxsbGxsbGxsbGx5eXl5eXl5eXl5eXl5eXl5eXl5eSBsbGxsbGxsbGxsbGxsbG9vb29vb29vb29vb29vb29vb29vb29vb29vb25ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubmdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2cgYXV0aCBrZXlzCg==
-type: kubernetes.io/dockerconfigjson
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongodb-pv-claim
@@ -27,6 +18,7 @@ spec:
   selector:
     matchLabels:
       app: entschuldigungsverfahren
+  replicas: 1
   strategy:
     type: Recreate
   template:
@@ -34,6 +26,8 @@ spec:
       labels:
         app: entschuldigungsverfahren
     spec:
+      imagePullSecrets:
+      - name: gitlab
       containers:
         - image: mongo
           name: mongodb
@@ -42,12 +36,34 @@ spec:
             mountPath: /data/db
         - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
           name: api
-        - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/web:latest
-          name: web
+          ports:
+          - containerPort: 4000
+          env:
+            - name: KUBERNETES
+              value: true
+        - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+          name: ui
+          ports:
+          - containerPort: 80
       volumes:
         - name: mongodb-persistent-storage
           persistentVolumeClaim:
-            claimName: mongodb-pv-claim  
-      imagePullSecrets:
-        - name: gitlab
+            claimName: mongodb-pv-claim
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: entschuldigungsverfahren-service
+spec:
+  type: NodePort
+  selector:
+    app: entschuldigungsverfahren
+  ports:
+  - protocol: TCP
+    name: ui
+    port: 80
+  - protocol: TCP
+    name: api
+    port: 4000
+
     
