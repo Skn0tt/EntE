@@ -36,11 +36,11 @@ spec:
             mountPath: /data/db
         - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
           name: api
+          env:
+            - name: "KUBERNETES"
+              value: "true"
           ports:
           - containerPort: 4000
-          env:
-            - name: KUBERNETES
-              value: true
         - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
           name: ui
           ports:
@@ -55,7 +55,7 @@ apiVersion: v1
 metadata:
   name: entschuldigungsverfahren-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: entschuldigungsverfahren
   ports:
