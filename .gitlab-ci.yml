@@ -55,3 +55,14 @@ build_ui:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+
+build_reverseproxy:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd reverseproxy
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest
