@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "test": "echo NO TESTS DEFINED",
     "watch": "tsc --watch",
     "start": "node build/",
     "lint": "tslint --project ."

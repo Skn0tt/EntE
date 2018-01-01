@@ -22,7 +22,7 @@ lint_api:
   image: node
   stage: test
   script:
-    - yarn install tslint tslint-config-airbnb
+    - yarn add tslint tslint-config-airbnb
     - cd api
     - yarn lint
 
@@ -30,7 +30,7 @@ lint_ui:
   image: node
   stage: test
   script:
-    - yarn install tslint tslint-config-airbnb
+    - yarn add tslint tslint-config-airbnb
     - cd ui
     - yarn lint
 
