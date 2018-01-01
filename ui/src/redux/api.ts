@@ -75,21 +75,23 @@ const transformAuth = (data: IAPIResponse, auth: ICredentials) => ({
 });
 
 export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
-  const response = await axios.get(`${baseUrl}/login`, {
-    auth,
-    validateStatus: status =>
-      (status === 401) ||
-      (status === 200),
-  });
-
-  if (response.status === 401) {
-    return ({
-      auth: new AuthState({ checked: true }),
-      ...defaultResponse,
+  if ((auth.username !== '') &&
+      (auth.password !== '')
+  ) {
+    const response = await axios.get(`${baseUrl}/login`, {
+      auth,
+      validateStatus: status =>
+        (status === 401) ||
+        (status === 200),
     });
+
+    if (response.status === 200) return transformAuth(response.data, auth);
   }
 
-  return transformAuth(response.data, auth);
+  return ({
+    auth: new AuthState({ checked: true }),
+    ...defaultResponse,
+  });
 };
 
 export const getEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
