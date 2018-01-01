@@ -17,6 +17,7 @@ import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
 import login from './routes/login';
+import status from './routes/status';
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -33,7 +34,7 @@ Raven.config(DSN).install();
 
 // Express Setup
 app.use(Raven.requestHandler());
-app.use(logger(production ? 'common' : 'dev'));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(validator());
 
@@ -64,6 +65,7 @@ app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
 app.use('/login', login);
+app.use('/status', status);
 
 // Error Handling
 app.use(Raven.errorHandler());

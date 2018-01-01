@@ -114,6 +114,7 @@ const user : Model<UserModel> = model('users', userSchema);
 user.create({
   username: 'admin',
   role: 'admin',
+  displayname: 'Administrator',
   password: 'root',
   email: 'simoknott@gmail.com',
   children: [],
