@@ -10,7 +10,7 @@ import {
 } from '../interfaces/index';
 import axios from 'axios';
 
-const baseUrl = window ? `${location.protocol}//${location.hostname}:4000` : '';
+const baseUrl = window && `${location.protocol}//api.${location.hostname}`;
 
 const defaultResponse: APIResponse = {
   entries: [],

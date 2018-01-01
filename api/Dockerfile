@@ -8,5 +8,5 @@ RUN yarn build
 
 ENV NODE_ENV=production
 
-EXPOSE 4000
+EXPOSE 80
 CMD ["yarn", "start"]

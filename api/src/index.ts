@@ -23,7 +23,7 @@ const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
 const app = express();
 
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 80);
 app.disable('etag');
 
 // Raven

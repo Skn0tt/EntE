@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  reverseproxy:
+    build: reverseproxy/
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
   mongodb:
     image: mongo:latest
     volumes:
@@ -8,7 +14,7 @@ services:
     container_name: "mongodb"
   api:
     build: api/
-    restart: on-failure
+    restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/status"]
       interval: 1m30s
@@ -16,17 +22,14 @@ services:
       retries: 3
     depends_on:
       - mongodb
-    ports:
-      - "4000:4000"
-  web:
+      - reverseproxy
+  ui:
     build: ui/
-    restart: on-failure
+    restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 1m30s
       timeout: 10s
       retries: 3
     depends_on:
-      - api
-    ports:
-      - "80:80"
+      - reverseproxy
