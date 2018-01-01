@@ -22,16 +22,16 @@ lint_api:
   image: node
   stage: test
   script:
-    - yarn global add tslint tslint-config-airbnb
     - cd api
+    - yarn
     - yarn lint
 
 lint_ui:
   image: node
   stage: test
   script:
-    - yarn global add tslint tslint-config-airbnb
     - cd ui
+    - yarn
     - yarn lint
 
 build_api:
