@@ -8,18 +8,23 @@ import * as select from '../../redux/selectors';
 import { User, AppState } from '../../interfaces/index';
 import { Action } from 'redux';
 import { Paper, Table, TableRow, TableHead, TableBody, TableCell } from 'material-ui';
+import { Route } from 'react-router';
 
 interface Props extends WithStyles {
   users: User[];
 }
 
 const UserRow = (user: User) => (
-  <TableRow key={user.get('_id')}>
-    <TableCell>{user.get('username')}</TableCell>
-    <TableCell>{user.get('displayname')}</TableCell>
-    <TableCell>{user.get('email')}</TableCell>
-    <TableCell>{user.get('role')}</TableCell>
-  </TableRow>
+  <Route
+    render={({ history }) => (
+      <TableRow key={user.get('_id')} onClick={() => history.push(`users/${user.get('_id')}`)}>
+        <TableCell>{user.get('username')}</TableCell>
+        <TableCell>{user.get('displayname')}</TableCell>
+        <TableCell>{user.get('email')}</TableCell>
+        <TableCell>{user.get('role')}</TableCell>
+      </TableRow>
+    )}
+  />
 );
 
 const Users: React.SFC<Props> = props => (

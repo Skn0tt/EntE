@@ -25,7 +25,7 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
-import { Delete as DeleteIcon } from 'material-ui-icons';
+import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
 
 interface IProps {
   students: User[];
@@ -110,8 +110,10 @@ class extends React.Component<Props, State> {
     this.setState({ email: event.target.value })
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ role: event.target.value as Roles })
-  handleAddChildren = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ children: [...this.state.children, event.target.value] })
+  handleSelectChild = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ selectedChild: event.target.value })
+  handleAddChild = () =>
+    this.setState({ children: [...this.state.children, this.state.selectedChild] })
   handleRemoveChildren = (index: number) =>
     this.setState({ children: this.state.children.slice(index, index) })
   
@@ -245,11 +247,11 @@ class extends React.Component<Props, State> {
                       <TextField
                         select={true}
                         label="Kind"
-                        value={this.state.role}
-                        onChange={this.handleAddChildren}
+                        value={this.state.selectedChild}
+                        onChange={this.handleSelectChild}
                         fullWidth={true}
                         SelectProps={{ native: true }}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
+                        helperText="Fügen sie Kinder hinzu."
                       >
                         {this.props.students.map(student => (
                           <option
@@ -262,7 +264,9 @@ class extends React.Component<Props, State> {
                       </TextField>
                     </Grid>
                     <Grid item={true} xs={2}>
-                        
+                      <IconButton onClick={() => this.handleAddChild()}>
+                        <AddIcon />
+                      </IconButton>
                     </Grid>
                   </Grid>
                 </Grid>
