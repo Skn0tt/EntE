@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { validationResult, body, param } from 'express-validator/check';
+import { validationResult, body, param, oneOf } from 'express-validator/check';
 
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
 import { roles, ROLES, MongoId } from '../../constants';
@@ -127,7 +127,7 @@ const createPermissions : Permissions = {
  */
 usersRouter.post('/', [
   body('email').isEmail(),
-  body('displayname').exists(),
+  body('displayname').isAlphanumeric(),
   body('role').isIn(roles),
 ], async (request: UserRequest, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
@@ -170,8 +170,8 @@ const updatePermissions : Permissions = {
   users_write: true,
 };
 usersRouter.put('/:userId', [
-  body('email').isEmail(),
-  body('role').isIn(roles),
+  body('role').isIn(roles).optional(),
+  body('email').isEmail().optional(),
   param('userId').isMongoId(),
 ], async (request: UserRequest, response: Response, next) => {
   if (!permissionsCheck(request.user.role, updatePermissions)) return response.status(403).end();
@@ -183,11 +183,13 @@ usersRouter.put('/:userId', [
   const body = request.body;
   
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select('-password');
+
+    if (!user) return response.status(404).end('User not found');
 
     if (body.email) user.set('email', body.email);
     if (body.role) user.set('role', body.role);
-    if (body.username) user.set('role', body.username);
+    if (body.displayname) user.set('role', body.displayname);
     if (body.children) user.set('children', body.children);
     if (body.password) user.set('password', body.password);
 
