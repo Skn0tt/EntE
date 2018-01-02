@@ -30,11 +30,12 @@ import {
   GET_SLOTS_REQUEST,
   CREATE_ENTRY_REQUEST,
   CREATE_USER_REQUEST,
+  UPDATE_USER_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { APIResponse, ICredentials, MongoId, IEntryCreate, IUserCreate } from '../interfaces/index';
+import { APIResponse, ICredentials, MongoId, IEntryCreate, IUserCreate, IUser } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
@@ -147,6 +148,18 @@ function* createUserSaga(action: Action<IUserCreate>) {
   }
 }
 
+function* updateUserSaga(action: Action<Partial<IUser>>) {
+  try {
+    const auth = yield select(selectors.getAuthCredentials);
+    const result = yield call(api.updateUser, action.payload, auth);
+
+    yield put(createUserSuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(createUserError(error));
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -157,6 +170,7 @@ function* saga() {
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
   yield takeEvery<Action<IUserCreate>>(CREATE_USER_REQUEST, createUserSaga);
+  yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);
 }
 
 export default saga;
