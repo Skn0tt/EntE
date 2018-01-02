@@ -12,8 +12,13 @@ const loginRouter = Router();
 loginRouter.get('/', async (request: Request, response: Response, next) => {
   try {
     const childrenIds: MongoId[] = request.user.children;
-    const children = await User
-      .find({ _id: { $in: childrenIds } })
+    const users = await User
+      .find({
+        $or: [
+          { _id: { $in: childrenIds } },
+          { role: ROLES.TEACHER },
+        ],
+      })
       .select('-password');
 
     const entries: EntryModel[] = await Entry
@@ -25,14 +30,14 @@ loginRouter.get('/', async (request: Request, response: Response, next) => {
       .find({ _id: { $in: slotIds } });
     
     return response.json({
+      entries,
+      slots,
+      users,
       auth: {
         displayname: request.user.displayname,
         role: request.user.role,
         children: request.user.children,
       },
-      users: [...children],
-      entries: [...entries],
-      slots: [...slots],
     });
   } catch (error) {
     return next(error);
