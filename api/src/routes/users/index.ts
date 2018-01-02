@@ -140,7 +140,7 @@ usersRouter.post('/', [
       return response.status(422).end('User already exists.');
     }
 
-    for (const child in request.body.children) {
+    for (const child of request.body.children) {
       if (await !childAlreadyExists(child)) {
         return response.status(422).end(`Child ${child} doesn't exist.`);
       }
