@@ -119,8 +119,6 @@ entriesRouter.get('/:entryId', [
 /**
  * Create new entry
  */
-// TODO: Reject all dates that are too late
-
 const teacherExists = async (id: MongoId): Promise<boolean> => {
   const count = await User.count({ _id: id });
   return count > 0;
@@ -148,8 +146,15 @@ const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
   return result;
 };
 
-entriesRouter.post('/', [], async (request: EntriesRequest, response: Response, next) => {
+const twoWeeksBefore: Date = new Date(+new Date() - (14 * 24 * 60 * 60 * 1000));
+
+entriesRouter.post('/', [
+  body('date').isAfter(twoWeeksBefore.toISOString()),
+], async (request: EntriesRequest, response: Response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+
+  const errors = validationResult(request);
+  if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
 
   const studentId = request.user.role === ROLES.PARENT ?
     request.body.student : request.user._id;
