@@ -31,7 +31,7 @@ const studentPermissions: Permissions = {
 };
 
 const parentPermissions: Permissions = {
-  slots_read: false,
+  slots_read: true,
   entries_read: true,
   entries_create: true,
   entries_write: true,
