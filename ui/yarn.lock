@@ -4689,7 +4689,7 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scripts-ts@2.8.0:
+react-scripts-ts@^2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/react-scripts-ts/-/react-scripts-ts-2.8.0.tgz#6ef17a490725fd34ca3ba8829354581a97b310e8"
   dependencies:
