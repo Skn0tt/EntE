@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  reverseproxy:
+    build: ./reverseproxy
+  api:
+    build: ./api
+    volumes:
+      - ./api/build:/usr/src/app/build
+    depends_on:
+      - mongodb
+      - reverseproxy
+  ui:
+    build: ./ui

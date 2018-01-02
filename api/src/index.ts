@@ -39,7 +39,7 @@ app.use(express.json());
 app.use(validator());
 
 const mongoAddress =
-  (kubernetes || !production) ?
+  kubernetes ?
     'mongodb://localhost/ev' :
     'mongodb://mongodb/ev';
 

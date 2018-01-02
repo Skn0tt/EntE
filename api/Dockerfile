@@ -6,7 +6,7 @@ RUN yarn
 COPY . ./
 RUN yarn build
 
-ENV NODE_ENV=production
+RUN chmod +x ./run.sh
 
 EXPOSE 80
-CMD ["yarn", "start"]
+CMD ./run.sh

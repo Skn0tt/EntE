@@ -1,19 +1,13 @@
 version: '3'
 
 services:
-  reverseproxy:
-    build: reverseproxy/
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
   mongodb:
     image: mongo:latest
     volumes:
       - /data/db
     container_name: "mongodb"
   api:
-    build: api/
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/status"]
@@ -24,7 +18,7 @@ services:
       - mongodb
       - reverseproxy
   ui:
-    build: ui/
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
@@ -33,3 +27,9 @@ services:
       retries: 3
     depends_on:
       - reverseproxy
+  reverseproxy:
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
