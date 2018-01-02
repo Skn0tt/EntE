@@ -2,7 +2,7 @@ import { Router, Request } from 'express';
 import { validationResult, param } from 'express-validator/check';
 
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles, MongoId } from '../../constants';
+import { roles, MongoId, ROLES } from '../../constants';
 
 import Slot, { SlotModel } from '../../models/Slot';
 import { RequestHandler } from 'express-serve-static-core';
@@ -43,8 +43,23 @@ slotsRouter.get('/', async (request: SlotRequest, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
 
   try {
-    // TODO: Only get Slots for User
-    const slots = await Slot.find({});
+    let slots;
+    switch (request.user.role) {
+      case ROLES.TEACHER:
+        slots = await Slot.find({ teacher: request.user._id });
+        break;
+      case ROLES.PARENT:
+        slots = await Slot.find({ student: { $in: request.user.children } });
+        break;
+      case ROLES.STUDENT:
+        slots = await Slot.find({ student: request.user._id });
+        break;
+      case ROLES.ADMIN:
+        slots = await Slot.find({});
+        break;
+      default:
+        break;
+    }
 
     request.slots = slots;
     
