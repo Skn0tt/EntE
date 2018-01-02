@@ -27,8 +27,18 @@ import {
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
   ADD_RESPONSE,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_ERROR,
 } from './constants';
-import { MongoId, AuthState, ICredentials, IEntryCreate, APIResponse } from '../interfaces/index';
+import {
+  MongoId,
+  AuthState,
+  ICredentials,
+  IEntryCreate,
+  APIResponse,
+  IUserCreate,
+} from '../interfaces/index';
 
 export type ActionType =
   IEntryCreate |
@@ -42,6 +52,10 @@ export type ActionType =
 export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
+
+export const createUserRequest = createAction<IUserCreate>(CREATE_USER_REQUEST);
+export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
+export const createUserError = createAction<Error>(CREATE_USER_ERROR);
 
 export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
 export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
