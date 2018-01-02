@@ -95,7 +95,7 @@ const readSpecificPermissions : Permissions = {
 };
 usersRouter.get('/:userId', [
   param('userId').isMongoId(),
-], async (request: UserRequest, response, next) => {
+], async (request: UserRequest, response: Response, next) => {
   if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
     return response.status(403).end();
   }
@@ -104,6 +104,8 @@ usersRouter.get('/:userId', [
 
   try {
     const user = await User.findById(userId).select('-password');
+
+    if (!user) return response.status(404).end('Couldnt find requested user.');
 
     request.users = [user];
     
