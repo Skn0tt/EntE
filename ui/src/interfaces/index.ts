@@ -34,13 +34,20 @@ export enum Roles {
   ADMIN = 'admin',
 }
 
-export interface IUser {
-  _id: MongoId;
+export interface IUserBase {
   username: string;
-  displayname: string;
   email: string;
-  role: Roles;
   children: MongoId[];
+  role: Roles;
+  displayname: string;
+}
+
+export interface IUserCreate extends IUserBase {
+  password: string;
+}
+
+export interface IUser extends IUserBase {
+  _id: MongoId;
 }
 
 export class User extends Record({
@@ -148,8 +155,8 @@ export interface IAuth extends ICredentials {
 }
 
 export class AuthState extends Record({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: 'root',
   displayname: '',
   role: '',
   children: [],

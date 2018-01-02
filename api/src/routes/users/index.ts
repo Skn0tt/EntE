@@ -115,14 +115,16 @@ usersRouter.get('/:userId', [
   }
 }, populate);
 
-/**
- * Create new user
- */
 const userAlreadyExists = async (username: string): Promise<boolean> =>
   !!(await User.findOne({ username }));
+const childAlreadyExists = async (id: string): Promise<boolean> =>
+  !!(await User.findById(id));
 const createPermissions : Permissions = {
   users_write: true,
 };
+/**
+ * Create new user
+ */
 usersRouter.post('/', [
   body('email').isEmail(),
   body('displayname').exists(),
@@ -136,6 +138,12 @@ usersRouter.post('/', [
   try {
     if (await userAlreadyExists(request.body.username)) {
       return response.status(422).end('User already exists.');
+    }
+
+    for (const child of request.body.children) {
+      if (await !childAlreadyExists(child)) {
+        return response.status(422).end(`Child ${child} doesn't exist.`);
+      }
     }
     
     const user = await User.create({

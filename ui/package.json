@@ -21,7 +21,8 @@
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "typeface-roboto": "^0.0.45"
+    "typeface-roboto": "^0.0.45",
+    "validate.js": "^0.12.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -40,8 +41,8 @@
     "@types/react-router-dom": "^4.2.3",
     "@types/redux-actions": "^2.2.3",
     "@types/redux-immutable": "^3.0.38",
-    "redux-devtools-extension": "^2.13.2",
     "react-scripts-ts": "^2.8.0",
+    "redux-devtools-extension": "^2.13.2",
     "tslint-config-airbnb": "^5.4.2"
   }
 }

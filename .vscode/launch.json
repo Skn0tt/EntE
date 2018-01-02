@@ -6,14 +6,6 @@
   "configurations": [
     {
       "type": "chrome",
-      "request": "attach",
-      "name": "Attach to Chrome",
-      "port": 9222,
-      "url": "http://localhost:3000/",
-      "webRoot": "${workspaceFolder}/ui/src"
-    },
-    {
-      "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome",
       "url": "http://localhost:3000",
@@ -21,24 +13,14 @@
     },
     {
       "type": "node",
-      "request": "launch",
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "name": "Debug",
-      "sourceMaps": true,
-      "program": "${workspaceFolder}/api/src/index.ts",
-      "outFiles": [
-        "${workspaceFolder}/api/build/*.js"
-      ],
-      "console": "integratedTerminal"
-    },
-    {
-      "type": "node",
       "request": "attach",
-      "name": "Attach to Process",
+      "name": "Docker: Attach to Node",
       "port": 5858,
-      "outFiles": []
-    },
+      "address": "localhost",
+      "restart": true,
+      "localRoot": "${workspaceRoot}/api",
+      "remoteRoot": "/usr/src/app/",
+      "protocol": "inspector"
+    }
   ]
 }

@@ -34,6 +34,16 @@ const Home: React.SFC<Props> = props => (
         Meine Einträge
       </Button>
     </Grid>
+    <Grid
+      item={true}
+    >
+      <Button
+        component={p => <Link to="/newUser" {...p} />}
+        raised={true}
+      >
+        Neuer Nutzer
+      </Button>
+    </Grid>
   </Grid>
 );
 
