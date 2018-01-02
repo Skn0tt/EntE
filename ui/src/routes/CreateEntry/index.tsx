@@ -8,7 +8,7 @@ import { AppState, User, Roles, MongoId, ISlotCreate, IEntryCreate } from '../..
 import { Action } from 'redux';
 import { DatePicker } from 'material-ui-pickers';
 
-import { RouteComponentProps, withRouter } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import {
   Dialog,
   Button,
@@ -16,6 +16,7 @@ import {
   Switch,
   List as MUIList,
   TextField,
+  Grid,
 } from 'material-ui';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
@@ -27,6 +28,8 @@ import SlotEntry from './components/SlotEntry';
 
 import * as moment from 'moment';
 import 'moment/locale/de';
+import MenuItem from 'material-ui/Menu/MenuItem';
+import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 
 /**
  * ## Moment Setup
@@ -34,12 +37,16 @@ import 'moment/locale/de';
  */
 moment.locale('de');
 
-interface Props extends WithStyles, RouteComponentProps<{}> {
+interface IProps {
   getRole(): Roles;
-  getChildren(): User[];
+  children: User[];
   getTeachers(): User[];
   getUser(id: MongoId): User;
   createEntry(entry: IEntryCreate): Action;
+}
+
+interface InjectedProps {
+  fullScreen: boolean;
 }
 
 interface State {
@@ -52,7 +59,7 @@ interface State {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  getChildren: () => select.getChildren(state),
+  children: select.getChildren(state),
   getRole: () => select.getRole(state),
   getTeachers: () => select.getTeachers(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
@@ -62,19 +69,24 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry)),
 });
 
-const CreateEntry = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
+type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedProps;
+
+const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<IProps>()(withRouter(withStyles(styles)(
 class extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     
+    const student = this.props.children.length > 0 ?
+      this.props.children[0].get('_id') :
+      undefined;
+    
     this.state = {
+      student,
       isRange: false,
       date: new Date(),
       dateEnd: new Date(),
       slots: [],
-      student: this.props.getRole() === 'parent' ?
-        this.props.getChildren()[0].get('_id') :
-        undefined,
       forSchool: false,
     };
   }
@@ -112,9 +124,7 @@ class extends React.Component<Props, State> {
     this.setState({ isRange: checked })
 
   handleAddSlot = (slot: ISlotCreate) => {
-    if (this.state.slots.indexOf(slot) !== -1) {
-      return;
-    }
+    if (this.state.slots.indexOf(slot) !== -1) return;
 
     this.setState({ slots: [...this.state.slots, slot] });
   }
@@ -123,74 +133,113 @@ class extends React.Component<Props, State> {
     this.setState({ slots: this.state.slots.slice(index, index) })
 
   handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ student: event.target.value })
+    this.setState({ student: event.target.value })
 
-  // TODO: Implement
-  inputValid = () => true;
+  /**
+   * ## Validation
+   */
+  dateValid = (): boolean => (
+    // Less than 14 Days ago
+    this.state.date > this.minDate
+  )
+  dateEndValid = (): boolean => (
+    this.state.isRange ||
+    this.state.dateEnd > this.state.date
+  )
+  studentValid = (): boolean => (
+    this.props.getRole() !== Roles.PARENT ||
+    !!this.state.student
+  )
+
+  inputValid = () => (
+    this.dateValid &&
+    this.dateEndValid &&
+    this.studentValid
+  )
 
   /**
    * ## Data
    */
-  minDate = (): Date => new Date(+new Date - 14 * 24 * 60 * 60 * 1000);
+  minDate: Date = new Date(+new Date - 14 * 24 * 60 * 60 * 1000);
 
   render() {
     const { classes } = this.props;
+    const isParent = this.props.getRole() === Roles.PARENT;
+
     return (
       <Dialog
+        fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
         open={true}
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
           <form className={classes.container} onKeyPress={this.handleKeyPress} >
-            <FormControl>
-              <FormControlLabel
-                onChange={this.handleChangeForSchool}
-                control={<Switch />}
-                label="Schulisch"
-              />
-              <FormControlLabel
-                onChange={this.handleChangeIsRange}
-                control={<Switch />}
-                label="Mehrtägig"
-              />
-            </FormControl>
-            {this.props.getRole() === 'parent' && (
-              <TextField
-                select={true}
-                label="Kind"
-                value={this.props.getUser(this.state.student!).get('displayname')}
-                onChange={this.handleChangeStudent}
-                SelectProps={{
-                  native: true,
-                  MenuProps: {
-                    className: classes.menu,
-                  },
-                }}
-                helperText="Wählen sie das betroffene Kind aus."
-              >
-                {this.props.getChildren().map(child => (
-                  <option
-                    key={child.get('_id')}
-                    value={child.get('_id')}
+            <Grid container={true} direction="column" >
+              <Grid item={true} >
+                <FormControl>
+                  <FormControlLabel
+                    onChange={this.handleChangeForSchool}
+                    control={<Switch />}
+                    label="Schulisch"
+                  />
+                </FormControl>
+              </Grid>
+              {isParent && (
+                <Grid item={true} >
+                  <TextField
+                    fullWidth={true}
+                    select={true}
+                    label="Kind"
+                    value={this.state.student}
+                    onChange={this.handleChangeStudent}
+                    helperText="Wählen sie das betroffene Kind aus."
                   >
-                    {child.get('displayname')}
-                  </option>
-                ))}
-              </TextField>
-            )}
-            <DatePicker
-              value={this.state.date}
-              onChange={this.handleChangeDate}
-              minDate={this.minDate()}
-            />
-            {this.state.isRange && (
-              <DatePicker
-                value={this.state.dateEnd}
-                onChange={this.handleChangeDateEnd}
-                minDate={this.minDate()}
-              />
-            )}
+                    {this.props.children.map(child => (
+                      <MenuItem
+                        key={child.get('_id')}
+                        value={child.get('_id')}
+                      >
+                        {child.get('displayname')}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              )}
+              <Grid item={true} >
+                <Grid container={true} direction="row" >
+                  <Grid item={true} xs={8} >
+                    <DatePicker
+                      helperText="Von"
+                      error={!this.dateValid()}
+                      value={this.state.date}
+                      onChange={this.handleChangeDate}
+                      minDate={this.minDate}
+                      fullWidth={true}
+                    />
+                  </Grid>
+                  <Grid item={true} xs={4} > 
+                    <FormControlLabel
+                      onChange={this.handleChangeIsRange}
+                      control={<Switch />}
+                      label="Mehrtägig"
+                    /> 
+                  </Grid>
+                  {this.state.isRange && (
+                    <Grid item={true} xs={8} >
+                      <DatePicker
+                        helperText="Bis"
+                        error={!this.dateValid()}
+                        value={this.state.dateEnd}
+                        onChange={this.handleChangeDateEnd}
+                        minDate={this.minDate}
+                        fullWidth={true}
+                      />
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
           </form>
           <MUIList>
             {this.state.slots.map((slot, index) => (
@@ -220,6 +269,6 @@ class extends React.Component<Props, State> {
       </Dialog>
     );
   }
-})));
+}))));
 
 export default CreateEntry;

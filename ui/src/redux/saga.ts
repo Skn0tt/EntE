@@ -15,6 +15,8 @@ import {
   getSlotsSuccess,
   getSlotsError,
   addResponse,
+  createEntrySuccess,
+  createEntryError,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -24,11 +26,12 @@ import {
   CHECK_AUTH_REQUEST,
   GET_TEACHERS_REQUEST,
   GET_SLOTS_REQUEST,
+  CREATE_ENTRY_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { APIResponse, ICredentials, MongoId } from '../interfaces/index';
+import { APIResponse, ICredentials, MongoId, IEntryCreate } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
@@ -117,6 +120,18 @@ function* getTeachersSaga() {
   }
 }
 
+function* createEntrySaga(action: Action<IEntryCreate>) {
+  try {
+    const auth = yield select(selectors.getAuthCredentials);
+    const result = yield call(api.createEntry, action.payload, auth);
+
+    yield put(createEntrySuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(createEntryError(error));
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -125,6 +140,7 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
+  yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
 }
 
 export default saga;

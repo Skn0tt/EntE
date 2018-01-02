@@ -7,6 +7,7 @@ import {
   Slot,
   APIResponse,
   IAPIResponse,
+  IEntryCreate,
 } from '../interfaces/index';
 import axios from 'axios';
 
@@ -83,6 +84,7 @@ export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
       validateStatus: status =>
         (status === 401) ||
         (status === 200),
+      transformResponse: transformDates,
     });
 
     if (response.status === 200) return transformAuth(response.data, auth);
@@ -122,4 +124,17 @@ export const getUsers = async (auth: ICredentials): Promise<APIResponse> => {
 export const getTeachers = async (auth: ICredentials): Promise<APIResponse> => {
   const data = await get(`${baseUrl}/users?role=teacher`, auth);
   return transform(data);
+};
+
+const post = async (url: string, body: {}, auth: ICredentials) => {
+  const response = await axios.post(url, body, { auth, transformResponse: transformDates });
+  return response.data;
+};
+
+export const createEntry = async (
+  entry: IEntryCreate,
+  auth: ICredentials)
+  : Promise<APIResponse> => {
+  const response = await post(`${baseUrl}/entries/`, entry, auth);
+  return transform(response);
 };

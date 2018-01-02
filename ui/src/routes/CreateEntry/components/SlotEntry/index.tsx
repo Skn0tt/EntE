@@ -14,6 +14,7 @@ interface Props {
   onAdd(slot: ISlotCreate): void;
   getUser(id: MongoId): User;
 }
+
 interface State {
   hour_from: string;
   hour_to: string;
@@ -31,11 +32,15 @@ const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles
   class extends React.Component<SlotEntryProps, State> {
     constructor(props: SlotEntryProps) {
       super(props);
+
+      const teacher = this.props.teachers.length > 0 ?
+        this.props.teachers[0].get('_id') :
+        '';
       
       this.state = {
+        teacher,
         hour_from: '1',
         hour_to: '2',
-        teacher: this.props.teachers[0].get('_id'),
       };
     }
     /**
