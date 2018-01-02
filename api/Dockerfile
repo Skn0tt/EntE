@@ -6,7 +6,7 @@ RUN yarn
 COPY . ./
 RUN yarn build
 
-RUN chmod +x ./run.sh
+RUN yarn global add nodemon
 
 EXPOSE 80
-CMD ./run.sh
+CMD ['yarn', 'start']
