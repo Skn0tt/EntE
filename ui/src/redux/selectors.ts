@@ -44,3 +44,10 @@ export const getTeachers = createSelector(
     user => user.get('role') === Roles.TEACHER,
   ),
 );
+
+export const getStudents = createSelector(
+  [getUsers],
+  users => users.filter(
+    user => user.get('role') === Roles.STUDENT,
+  ),
+);
