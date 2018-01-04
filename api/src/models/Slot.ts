@@ -9,7 +9,6 @@ export interface ISlot {
   date: Date;
   hour_from: Number;
   hour_to: Number;
-  signed: boolean;
   student: MongoId;
   teacher: MongoId;
 }
@@ -21,7 +20,6 @@ const slotSchema = new Schema({
   date: { type: Date, required: true, default: Date.now() },
   hour_from: { type: Number, required: true, min: 1, max: 12 },
   hour_to: { type: Number, required: true, min: 1, max: 12 },
-  signed: { type: Boolean, default: false, required: true },
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
 }, {

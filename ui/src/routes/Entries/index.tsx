@@ -36,7 +36,7 @@ const Entries: React.SFC<Props> = props => (
                 onClick={() => history.push(`/entries/${entry.get('_id')}`)}
               >
                 <TableCell>{props.getUser(entry.get('student')).get('displayname')}</TableCell>
-                <TableCell>{entry.get('date')}</TableCell>
+                <TableCell>{entry.get('date').toDateString()}</TableCell>
                 <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
               </TableRow>
             )}
