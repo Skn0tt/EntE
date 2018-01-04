@@ -20,39 +20,16 @@ const defaultResponse: APIResponse = {
   users: [],
 };
 
-/**
- * Thanks!
- * (Source)[http://aboutcode.net/2013/07/27/json-date-parsing-angularjs.html]
- */
-// TODO: Implement in Immutable, Make Blog Post
-const regexIso8601 =
-  // tslint:disable-next-line:max-line-length
-  /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
-
-function convertDateStringsToDates(input: any) {
-  if (typeof input !== 'object') return input;
-
-  for (const key in input) {
-    if (!input.hasOwnProperty(key)) continue;
-    const value = input[key];
-    let match;
-  
-    if (typeof value === 'string' && (match = value.match(regexIso8601))) {
-      const milliseconds = Date.parse(match[0]);
-      if (!isNaN(milliseconds))
-        input[key] = new Date(milliseconds);
-    } else if (Array.isArray(value))
-      value.forEach(element => convertDateStringsToDates(element));
-    else if (typeof value === 'object')
-      convertDateStringsToDates(value);
-
-    return input;
+const reviver = (key: string, value: any) => {
+  const timestamp = Date.parse(value);
+  if (!isNaN(timestamp)) {
+    return new Date(timestamp);
   }
-}
+  return value;
+};
 
 const transformDates = (data: string) => {
-  const input = JSON.parse(data);
-  convertDateStringsToDates(input);
+  const input = JSON.parse(data, reviver);
   return input;
 };
 
