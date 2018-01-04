@@ -35,7 +35,14 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { APIResponse, ICredentials, MongoId, IEntryCreate, IUserCreate, IUser } from '../interfaces/index';
+import { 
+  APIResponse,
+  ICredentials,
+  MongoId,
+  IEntryCreate,
+  IUserCreate,
+  IUser,
+} from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
