@@ -17,6 +17,7 @@ import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import DialogContentText from 'material-ui/Dialog/DialogContentText';
 import Divider from 'material-ui/Divider/Divider';
+import DisplaynameUpdate from './components/DisplaynameUpdate';
 
 interface RouteMatch {
   userId: MongoId;
@@ -55,7 +56,13 @@ const SpecificUser: React.SFC<Props & InjectedProps> = (props) => {
           Role: {user.get('role')}
         </DialogContentText>
         <Divider />
-        {isParent && <ChildrenUpdate userId={userId}/>}
+        <DisplaynameUpdate userId={userId} />
+        {isParent && (
+          <React.Fragment>
+            <Divider />
+            <ChildrenUpdate userId={userId}/>
+          </React.Fragment>
+        )}
       </DialogContent>
       <DialogActions>
         <Button
