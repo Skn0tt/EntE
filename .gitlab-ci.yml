@@ -1,13 +1,16 @@
 stages:
+  - build
   - test
   - upload
-  - build
 
 services:
   - docker:dind
 
+#
+# Build
+#
 Build API:
-  image: docker:latest
+  image: docker
   stage: build
   script:
     - cd api
@@ -16,7 +19,7 @@ Build API:
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
 
 Build UI:
-  image: docker:latest
+  image: docker
   stage: build
   script:
     - cd ui
@@ -25,7 +28,7 @@ Build UI:
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
 
 Build Reverse Proxy:
-  image: docker:latest
+  image: docker
   stage: build
   script:
     - cd reverseproxy
@@ -33,8 +36,13 @@ Build Reverse Proxy:
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
 
+#
+# Test
+#
+
+# Test
 Compose Startup Test:
-  image: docker:latest
+  image: docker/compose
   stage: test
   script:
     - wget -O wait-for "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
@@ -58,9 +66,11 @@ Test UI:
     - yarn
     - yarn test
 
+# Linting (Allows Fails)
 Lint API:
   image: node
   stage: test
+  allow_failure: true
   script:
     - cd api
     - yarn
@@ -69,6 +79,7 @@ Lint API:
 Lint UI:
   image: node
   stage: test
+  allow_failure: true
   script:
     - cd ui
     - yarn

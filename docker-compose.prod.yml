@@ -2,7 +2,7 @@ version: '3'
 
 services:
   reverseproxy:
-    environement:
+    environment:
       API_KEY: 'ca4e2488d58ecdf4781177d40ac8e99f'
       AMPLIFY_IMAGENAME: 'EntschuldigungsVerfahren'
   api:
