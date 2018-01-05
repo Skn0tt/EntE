@@ -189,7 +189,7 @@ usersRouter.put('/:userId', [
 
     if (body.email) user.set('email', body.email);
     if (body.role) user.set('role', body.role);
-    if (body.displayname) user.set('role', body.displayname);
+    if (body.displayname) user.set('displayname', body.displayname);
     if (body.children) user.set('children', body.children);
     if (body.password) user.set('password', body.password);
 
