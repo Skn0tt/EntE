@@ -19,6 +19,8 @@ import {
   createEntryError,
   createUserError,
   createUserSuccess,
+  signEntryError,
+  singEntrySuccess,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -31,6 +33,7 @@ import {
   CREATE_ENTRY_REQUEST,
   CREATE_USER_REQUEST,
   UPDATE_USER_REQUEST,
+  SIGN_ENTRY_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -167,6 +170,18 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
   }
 }
 
+function* signEntrySaga(action: Action<MongoId>) {
+  try {
+    const auth = yield select(selectors.getAuthCredentials);
+    const result = yield call(api.signEntry, action.payload, auth);
+
+    yield put(singEntrySuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(signEntryError(error));
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -174,6 +189,7 @@ function* saga() {
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
+  yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
   yield takeEvery<Action<IUserCreate>>(CREATE_USER_REQUEST, createUserSaga);

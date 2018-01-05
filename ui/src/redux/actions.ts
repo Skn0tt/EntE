@@ -33,6 +33,9 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  SIGN_ENTRY_REQUEST,
+  SIGN_ENTRY_SUCCESS,
+  SIGN_ENTRY_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -60,6 +63,10 @@ export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 export const createUserRequest = createAction<IUserCreate>(CREATE_USER_REQUEST);
 export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
 export const createUserError = createAction<Error>(CREATE_USER_ERROR);
+
+export const signEntryRequest = createAction<MongoId>(SIGN_ENTRY_REQUEST);
+export const singEntrySuccess = createAction(SIGN_ENTRY_SUCCESS);
+export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
 
 export const updateUserRequest = createAction<Partial<IUser>>(UPDATE_USER_REQUEST);
 export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);

@@ -52,6 +52,17 @@ const reducer = handleActions({
     })),
   
   /**
+   * SIGN_ENTRY
+   */
+  [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState => state
+    .update('loading', loading => loading + 1),
+  [GET_ENTRIES_ERROR]: (state: AppState, action): AppState => state
+    .update('loading', loading => loading - 1)
+    .update('errors', errors => errors.push(action.payload)),
+  [GET_ENTRIES_SUCCESS]: (state, action) => state
+    .update('loading', loading => loading - 1),
+  
+  /**
    * GET_ENTRIES
    */
   [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState => state

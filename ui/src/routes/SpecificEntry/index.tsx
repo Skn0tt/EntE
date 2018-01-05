@@ -4,15 +4,27 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, MongoId, Entry, User, Slot } from '../../interfaces/index';
+import { AppState, MongoId, Entry, User, Slot, Roles } from '../../interfaces/index';
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import Modal from '../../components/Modal';
-import { Card, CardContent, Typography, CardActions, Button, List } from 'material-ui';
+import { Button, Table, List } from 'material-ui';
+import { getEntryRequest, signEntryRequest } from '../../redux/actions';
+import SignedAvatar from './elements/SignedAvatar';
+import UnsignedAvatar from './elements/UnsignedAvatar';
+import TableHead from 'material-ui/Table/TableHead';
+import TableCell from 'material-ui/Table/TableCell';
+import TableRow from 'material-ui/Table/TableRow';
+import TableBody from 'material-ui/Table/TableBody';
+import Dialog from 'material-ui/Dialog/Dialog';
+import DialogContent from 'material-ui/Dialog/DialogContent';
+import DialogActions from 'material-ui/Dialog/DialogActions';
+import DialogContentText from 'material-ui/Dialog/DialogContentText';
+import Typography from 'material-ui/Typography/Typography';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
-import { getEntryRequest } from '../../redux/actions';
+import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
+import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
 
 interface RouteMatch {
   entryId: MongoId;
@@ -23,49 +35,105 @@ interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
   getUser(id: MongoId): User;
   getSlots(ids: MongoId[]): Slot[];
   requestEntry(id: MongoId): Action;
+  signEntry(id: MongoId): Action;
+  role: Roles;
 }
 
 const SpecificEntry: React.SFC<Props> = (props) => {
+  const { classes } = props;
   const { entryId } = props.match.params;
   const entry = props.getEntry(entryId);
   
   if (!entry) props.requestEntry(entryId);
 
   return !!entry ? (
-    <Modal
+    <Dialog
+      open={true}
       onClose={() => props.history.goBack()}
     >
-      <Card>
-        <CardContent>
-          <Typography type="headline" component="h2">
-            {entry.get('_id')}
-          </Typography>
-          <Typography component="p">
-            {props.getUser(entry.get('student')).get('displayname')}
-          </Typography>
-          <List>
+      <DialogContent>
+        <DialogContentText>
+          ID: {entry.get('_id')}
+        </DialogContentText>
+        {/* Slots */}
+        <Typography type="title">
+          Stunden
+        </Typography>
+        <Table>
+          <TableHead>
+            <TableCell>Von</TableCell>
+            <TableCell>Bis</TableCell>
+            <TableCell>Lehrer</TableCell>
+          </TableHead>
+          <TableBody>
             {props.getSlots(entry.get('slots')).map(slot => (
-              <ListItem
+              <TableRow
                 key={slot.get('_id')}
               >
-                <ListItemText primary={slot.get('hour_from')}/>
-                <ListItemText primary={slot.get('hour_to')}/>
-                <ListItemText primary={props.getUser(slot.get('teacher')).get('displayname')}/>
-              </ListItem>
+                <TableCell>{slot.get('hour_from')}</TableCell>
+                <TableCell>{slot.get('hour_to')}</TableCell>
+                <TableCell>{props.getUser(slot.get('teacher')).get('displayname')}</TableCell>
+              </TableRow>
             ))}
-          </List>
-        </CardContent>
-        <CardActions>
-          <Button
-            dense={true}
-            color="primary"
-            onClick={() => props.history.goBack()}
-          >
-            Close
-          </Button>
-        </CardActions>
-      </Card>
-    </Modal>
+          </TableBody>
+        </Table>
+        {/* Signed */}
+        <Typography type="title">
+          Signiert
+        </Typography>
+        <List>
+          {/* Admin */}
+          <ListItem>
+            {entry.get('signedAdmin') ?
+              <SignedAvatar />
+              : <UnsignedAvatar />
+            }
+            <ListItemText primary="Admin" />
+            {!entry.get('signedAdmin') &&
+              props.role === Roles.ADMIN && (
+              <ListItemSecondaryAction>
+                <Button
+                  className={classes.signEntryButton}
+                  onClick={() => props.signEntry(entry.get('_id'))}
+                >
+                  Sign
+                  <AssignmentTurnedInIcon />
+                </Button>
+              </ListItemSecondaryAction>
+            )}
+          </ListItem>
+          {/* Parents */}
+          <ListItem>
+            {entry.get('signedParent') ?
+              <SignedAvatar />
+              : <UnsignedAvatar />
+            }
+            <ListItemText primary="Eltern" />
+            {!entry.get('signedParent') &&
+              props.role === Roles.PARENT && (
+              <ListItemSecondaryAction>
+                <Button
+                  className={classes.signEntryButton}
+                  onClick={() => props.signEntry(entry.get('_id'))}
+                >
+                  Sign
+                  <AssignmentTurnedInIcon />
+                </Button>
+              </ListItemSecondaryAction>
+            )}
+          </ListItem>
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          dense={true}
+          color="primary"
+          onClick={() => props.history.goBack()}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   ) : null;
 };
 
@@ -73,10 +141,12 @@ const mapStateToProps = (state: AppState) => ({
   getEntry: (id: MongoId) => select.getEntry(id)(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
   getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
+  role: select.getRole(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   requestEntry: (id: MongoId) => dispatch(getEntryRequest(id)),
+  signEntry: (id: MongoId) => dispatch(signEntryRequest(id)),
 });
 
 export default

@@ -204,7 +204,7 @@ entriesRouter.put('/:entryId/sign', [
   try {
     const entry = await Entry.findById(entryId);
 
-    if (entry === null) return response.status(404).end('Couldnt find Entry.');
+    if (!entry) return response.status(404).end('Couldnt find Entry.');
 
     if (request.user.role === ROLES.ADMIN) {
       entry.signAdmin();
