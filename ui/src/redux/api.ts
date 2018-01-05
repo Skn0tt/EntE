@@ -104,7 +104,7 @@ export const getTeachers = async (auth: ICredentials): Promise<APIResponse> => {
   return transform(data);
 };
 
-const post = async (url: string, body: {}, auth: ICredentials) => {
+const post = async (url: string, auth: ICredentials, body: {}) => {
   const response = await axios.post(url, body, { auth, transformResponse: transformDates });
   return response.data;
 };
@@ -113,7 +113,7 @@ export const createEntry = async (
   entry: IEntryCreate,
   auth: ICredentials)
   : Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/entries/`, entry, auth);
+  const response = await post(`${baseUrl}/entries/`, auth, entry);
   return transform(response);
 };
 
@@ -125,7 +125,7 @@ export const createUser = async (
   return transform(response);
 };
 
-const put = async (url: string, body: {}, auth: ICredentials) => {
+const put = async (url: string, auth: ICredentials, body?: {}) => {
   const response = await axios.put(url, body, { auth, transformResponse: transformDates });
   return response.data;
 };
@@ -134,6 +134,11 @@ export const updateUser = async (
   user: Partial<IUser>,
   auth: ICredentials,
 ): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/users/${user._id}`, user, auth);
+  const response = await put(`${baseUrl}/users/${user._id}`, auth, user);
+  return transform(response);
+};
+
+export const signEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
+  const response = await put(`${baseUrl}/users/${id}/sign`, auth);
   return transform(response);
 };
