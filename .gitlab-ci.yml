@@ -60,10 +60,7 @@ Compose Startup Test:
     - apk add --update py-pip
     - pip install docker-compose
   script:
-    - wget -O wait-for "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
-    - chmod +x ./wait-for
     - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
-    - ./wait-for localhost:80 --timeout=90
 
 Test API:
   image: node
