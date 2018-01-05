@@ -2,7 +2,7 @@ stages:
   - test
   - build
 
-test_api:
+Test API:
   image: node
   stage: test
   script:
@@ -10,7 +10,7 @@ test_api:
     - yarn
     - yarn test
 
-test_ui:
+Test UI:
   image: node
   stage: test
   script:
@@ -18,7 +18,7 @@ test_ui:
     - yarn
     - yarn test
 
-lint_api:
+Lint API:
   image: node
   stage: test
   script:
@@ -26,7 +26,7 @@ lint_api:
     - yarn
     - yarn lint
 
-lint_ui:
+Lint UI:
   image: node
   stage: test
   script:
@@ -34,8 +34,10 @@ lint_ui:
     - yarn
     - yarn lint
 
-build_api:
+Build API:
   image: docker:latest
+  only:
+    - master
   services:
     - docker:dind
   stage: build
@@ -45,8 +47,10 @@ build_api:
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
 
-build_ui:
+Build UI:
   image: docker:latest
+  only:
+    - master
   services:
     - docker:dind
   stage: build
@@ -56,13 +60,15 @@ build_ui:
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
 
-build_reverseproxy:
+Build Reverse Proxy:
   image: docker:latest
+  only:
+    - master
   services:
     - docker:dind
   stage: build
   script:
     - cd reverseproxy
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
