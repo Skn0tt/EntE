@@ -66,11 +66,10 @@ Test UI:
     - yarn
     - yarn test
 
-# Linting (Allows Fails)
+# Linting
 Lint API:
   image: node
   stage: test
-  allow_failure: true
   script:
     - cd api
     - yarn
@@ -79,7 +78,6 @@ Lint API:
 Lint UI:
   image: node
   stage: test
-  allow_failure: true
   script:
     - cd ui
     - yarn
