@@ -22,9 +22,8 @@ const defaultResponse: APIResponse = {
 };
 
 const reviver = (key: string, value: any) => {
-  const timestamp = Date.parse(value);
-  if (!isNaN(timestamp)) {
-    return new Date(timestamp);
+  if (['date', 'dateEnd'].indexOf(key) !== -1) {
+    return new Date(value);
   }
   return value;
 };
