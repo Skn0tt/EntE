@@ -25,12 +25,17 @@ import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
+import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 
 interface RouteMatch {
   entryId: MongoId;
 }
 
-interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
+interface InjectedProps {
+  fullScreen: boolean;
+}
+
+interface Props extends WithStyles, RouteComponentProps<RouteMatch>, InjectedProps {
   getEntry(id: MongoId): Entry;
   getUser(id: MongoId): User;
   getSlots(ids: MongoId[]): Slot[];
@@ -49,6 +54,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
   return !!entry ? (
     <Dialog
       open={true}
+      fullScreen={props.fullScreen}
       onClose={() => props.history.goBack()}
     >
       <DialogContent>
@@ -153,5 +159,6 @@ export default
   withRouter(
   connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
+  withMobileDialog<Props>()(
     SpecificEntry,
-  )));
+  ))));
