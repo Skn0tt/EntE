@@ -9,6 +9,7 @@ import {
   IAPIResponse,
   IEntryCreate,
   IUserCreate,
+  IUser,
 } from '../interfaces/index';
 import axios from 'axios';
 
@@ -118,8 +119,21 @@ export const createEntry = async (
 
 export const createUser = async (
   user: IUserCreate,
-  auth: ICredentials)
-  : Promise<APIResponse> => {
+  auth: ICredentials,
+): Promise<APIResponse> => {
   const response = await post(`${baseUrl}/users/`, user, auth);
+  return transform(response);
+};
+
+const put = async (url: string, body: {}, auth: ICredentials) => {
+  const response = await axios.put(url, body, { auth, transformResponse: transformDates });
+  return response.data;
+};
+
+export const updateUser = async (
+  user: Partial<IUser>,
+  auth: ICredentials,
+): Promise<APIResponse> => {
+  const response = await put(`${baseUrl}/users/${user._id}`, user, auth);
   return transform(response);
 };

@@ -4,39 +4,94 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, MongoId, User } from '../../interfaces/index';
+import { AppState, MongoId, User, Roles } from '../../interfaces/index';
 import { Action } from 'redux';
+import ChildrenUpdate from './components/ChildrenUpdate';
+import EmailUpdate from './components/EmailUpdate';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import Modal from '../../components/Modal';
+import { Button, Dialog } from 'material-ui';
+import { getUserRequest } from '../../redux/actions';
+import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
+import DialogTitle from 'material-ui/Dialog/DialogTitle';
+import DialogContent from 'material-ui/Dialog/DialogContent';
+import DialogActions from 'material-ui/Dialog/DialogActions';
+import DialogContentText from 'material-ui/Dialog/DialogContentText';
+import Divider from 'material-ui/Divider/Divider';
+import DisplaynameUpdate from './components/DisplaynameUpdate';
 
 interface RouteMatch {
   userId: MongoId;
 }
 
-interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
+interface Props {
   getUser(id: MongoId): User;
+  requestUser(id: MongoId): Action;
 }
 
-const SpecificUser: React.SFC<Props> = props => (
-  <Modal
-    onClose={() => props.history.goBack()}
-  >
-    <div>
-      TEst!!
-    </div>
-  </Modal>
-);
+interface InjectedProps extends WithStyles, RouteComponentProps<RouteMatch> {
+  fullScreen: boolean;
+}
+
+const SpecificUser: React.SFC<Props & InjectedProps> = (props) => {
+  const { userId } = props.match.params;
+  const user = props.getUser(userId);
+  if (!user) {
+    props.requestUser(userId);
+    return null;
+  }
+  const isParent = user.get('role') === Roles.PARENT;
+  return !!user ? (
+    <Dialog
+      open={true}
+      onClose={() => props.history.goBack()}
+      fullScreen={props.fullScreen}
+    >
+      <DialogTitle>
+        {user.get('displayname')}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          ID: {user.get('_id')}
+          Email: {user.get('email')}
+          Role: {user.get('role')}
+        </DialogContentText>
+        <Divider />
+        <EmailUpdate userId={userId} />
+        <Divider />
+        <DisplaynameUpdate userId={userId} />
+        {isParent && (
+          <React.Fragment>
+            <Divider />
+            <ChildrenUpdate userId={userId}/>
+          </React.Fragment>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button
+          dense={true}
+          color="primary"
+          onClick={() => props.history.goBack()}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  ) : null;
+};
 
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
+});
 
 export default
   withRouter(
+  withMobileDialog<InjectedProps>()(
   connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
     SpecificUser,
-  )));
+  ))));

@@ -5,7 +5,6 @@ import styles from './styles';
 
 import * as select from '../../redux/selectors';
 import { AppState, User, Roles, IUserCreate, MongoId } from '../../interfaces/index';
-import * as validateJs from 'validate.js';
 
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
@@ -25,7 +24,8 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
-import { Delete as DeleteIcon } from 'material-ui-icons';
+import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
+import validateEmail from '../../services/validateEmail';
 
 interface IProps {
   students: User[];
@@ -110,8 +110,10 @@ class extends React.Component<Props, State> {
     this.setState({ email: event.target.value })
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ role: event.target.value as Roles })
-  handleAddChildren = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ children: [...this.state.children, event.target.value] })
+  handleSelectChild = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ selectedChild: event.target.value })
+  handleAddChild = () =>
+    this.setState({ children: [...this.state.children, this.state.selectedChild] })
   handleRemoveChildren = (index: number) =>
     this.setState({ children: this.state.children.slice(index, index) })
   
@@ -128,7 +130,7 @@ class extends React.Component<Props, State> {
   )
   emailValid = (): boolean => (
     !!this.state.email &&
-    !validateJs(this.state.email, { email: true })
+    !validateEmail(this.state.email)
   )
   childrenValid = (): boolean => (
     !this.isParent() ||
@@ -222,7 +224,7 @@ class extends React.Component<Props, State> {
                 </TextField>
               </Grid>
               {this.isParent() && (
-                <Grid container={true} direction="column">
+                <Grid item container={true} direction="column">
                   <Grid item={true}>
                     <List>
                       {this.state.children.map((child, index) => (
@@ -245,11 +247,11 @@ class extends React.Component<Props, State> {
                       <TextField
                         select={true}
                         label="Kind"
-                        value={this.state.role}
-                        onChange={this.handleAddChildren}
+                        value={this.state.selectedChild}
+                        onChange={this.handleSelectChild}
                         fullWidth={true}
                         SelectProps={{ native: true }}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
+                        helperText="Fügen sie Kinder hinzu."
                       >
                         {this.props.students.map(student => (
                           <option
@@ -262,7 +264,9 @@ class extends React.Component<Props, State> {
                       </TextField>
                     </Grid>
                     <Grid item={true} xs={2}>
-                        
+                      <IconButton onClick={() => this.handleAddChild()}>
+                        <AddIcon />
+                      </IconButton>
                     </Grid>
                   </Grid>
                 </Grid>

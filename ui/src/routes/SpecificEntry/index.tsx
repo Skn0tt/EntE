@@ -76,7 +76,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  requestEntry: (id: MongoId) => getEntryRequest(id),
+  requestEntry: (id: MongoId) => dispatch(getEntryRequest(id)),
 });
 
 export default

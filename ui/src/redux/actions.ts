@@ -30,6 +30,9 @@ import {
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -38,6 +41,7 @@ import {
   IEntryCreate,
   APIResponse,
   IUserCreate,
+  IUser,
 } from '../interfaces/index';
 
 export type ActionType =
@@ -56,6 +60,10 @@ export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 export const createUserRequest = createAction<IUserCreate>(CREATE_USER_REQUEST);
 export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
 export const createUserError = createAction<Error>(CREATE_USER_ERROR);
+
+export const updateUserRequest = createAction<Partial<IUser>>(UPDATE_USER_REQUEST);
+export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);
+export const updateUserError = createAction<Error>(UPDATE_USER_ERROR);
 
 export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
 export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
