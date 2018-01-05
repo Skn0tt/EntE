@@ -5,7 +5,6 @@ import styles from './styles';
 
 import * as select from '../../redux/selectors';
 import { AppState, User, Roles, IUserCreate, MongoId } from '../../interfaces/index';
-import * as validateJs from 'validate.js';
 
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
@@ -26,6 +25,7 @@ import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
+import validateEmail from '../../services/validateEmail';
 
 interface IProps {
   students: User[];
@@ -130,7 +130,7 @@ class extends React.Component<Props, State> {
   )
   emailValid = (): boolean => (
     !!this.state.email &&
-    !validateJs(this.state.email, { email: true })
+    !validateEmail(this.state.email)
   )
   childrenValid = (): boolean => (
     !this.isParent() ||
@@ -224,7 +224,7 @@ class extends React.Component<Props, State> {
                 </TextField>
               </Grid>
               {this.isParent() && (
-                <Grid container={true} direction="column">
+                <Grid item container={true} direction="column">
                   <Grid item={true}>
                     <List>
                       {this.state.children.map((child, index) => (

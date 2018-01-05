@@ -21,8 +21,7 @@
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "typeface-roboto": "^0.0.45",
-    "validate.js": "^0.12.0"
+    "typeface-roboto": "^0.0.45"
   },
   "scripts": {
     "start": "react-scripts-ts start",

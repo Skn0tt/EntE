@@ -7,6 +7,7 @@ import * as select from '../../redux/selectors';
 import { AppState, MongoId, User, Roles } from '../../interfaces/index';
 import { Action } from 'redux';
 import ChildrenUpdate from './components/ChildrenUpdate';
+import EmailUpdate from './components/EmailUpdate';
 
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Dialog } from 'material-ui';
@@ -55,6 +56,8 @@ const SpecificUser: React.SFC<Props & InjectedProps> = (props) => {
           Email: {user.get('email')}
           Role: {user.get('role')}
         </DialogContentText>
+        <Divider />
+        <EmailUpdate userId={userId} />
         <Divider />
         <DisplaynameUpdate userId={userId} />
         {isParent && (
