@@ -31,8 +31,8 @@ const usernameValidator = [
 
 const displaynameValidator = [
   validate({
-    validator: 'isAlphanumeric',
-    message: 'Dislpayname should contain alpha-numeric characters only',
+    validator: 'isAscii',
+    message: 'Dislpayname should contain ASCII characters only',
   }),
 ];
 
