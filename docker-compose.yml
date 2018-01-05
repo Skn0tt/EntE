@@ -28,7 +28,7 @@ services:
     depends_on:
       - reverseproxy
   reverseproxy:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverse_proxy:latest
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
     restart: always
     ports:
       - "80:80"
