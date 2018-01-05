@@ -12,6 +12,7 @@ import Modal from '../../components/Modal';
 import { Card, CardContent, Typography, CardActions, Button, List } from 'material-ui';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
+import { getEntryRequest } from '../../redux/actions';
 
 interface RouteMatch {
   entryId: MongoId;
@@ -21,11 +22,16 @@ interface Props extends WithStyles, RouteComponentProps<RouteMatch> {
   getEntry(id: MongoId): Entry;
   getUser(id: MongoId): User;
   getSlots(ids: MongoId[]): Slot[];
+  requestEntry(id: MongoId): Action;
 }
 
 const SpecificEntry: React.SFC<Props> = (props) => {
-  const entry = props.getEntry(props.match.params.entryId);
-  return (
+  const { entryId } = props.match.params;
+  const entry = props.getEntry(entryId);
+  
+  if (!entry) props.requestEntry(entryId);
+
+  return !!entry ? (
     <Modal
       onClose={() => props.history.goBack()}
     >
@@ -60,7 +66,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
         </CardActions>
       </Card>
     </Modal>
-  );
+  ) : null;
 };
 
 const mapStateToProps = (state: AppState) => ({
@@ -69,7 +75,9 @@ const mapStateToProps = (state: AppState) => ({
   getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  requestEntry: (id: MongoId) => getEntryRequest(id),
+});
 
 export default
   withRouter(
