@@ -127,7 +127,8 @@ const createPermissions : Permissions = {
  */
 usersRouter.post('/', [
   body('email').isEmail(),
-  body('displayname').isAlphanumeric(),
+  body('displayname').isAscii(),
+  body('username').isAlphanumeric(),
   body('role').isIn(roles),
 ], async (request: UserRequest, response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
@@ -172,6 +173,8 @@ const updatePermissions : Permissions = {
 usersRouter.put('/:userId', [
   body('role').isIn(roles).optional(),
   body('email').isEmail().optional(),
+  body('username').isAlphanumeric().optional(),
+  body('displayname').isAscii().optional(),
   param('userId').isMongoId(),
 ], async (request: UserRequest, response: Response, next) => {
   if (!permissionsCheck(request.user.role, updatePermissions)) return response.status(403).end();
