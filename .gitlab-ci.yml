@@ -12,27 +12,30 @@ services:
 Build API:
   image: docker
   stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd api
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
 
 Build UI:
   image: docker
   stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd ui
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
 
 Build Reverse Proxy:
   image: docker
   stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd reverseproxy
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
 
@@ -42,8 +45,11 @@ Build Reverse Proxy:
 
 # Test
 Compose Startup Test:
-  image: docker/compose:1.18.0
+  image: docker
   stage: test
+  before_script:
+    - apk add --update py-pip
+    - pip install docker-compose
   script:
     - wget -O wait-for "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
     - chmod +x ./wait-for
@@ -53,32 +59,36 @@ Compose Startup Test:
 Test API:
   image: node
   stage: test
-  script:
+  before_script:
     - cd api
     - yarn
+  script:
     - yarn test
 
 Test UI:
   image: node
   stage: test
-  script:
-    - cd ui
+  before_script:
+    - cd api
     - yarn
+  script:
     - yarn test
 
 # Linting
 Lint API:
   image: node
   stage: test
-  script:
+  before_script:
     - cd api
     - yarn
+  script:
     - yarn lint
 
 Lint UI:
   image: node
   stage: test
-  script:
+  before_script:
     - cd ui
     - yarn
+  script:
     - yarn lint
