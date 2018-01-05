@@ -42,7 +42,7 @@ Build Reverse Proxy:
 
 # Test
 Compose Startup Test:
-  image: docker/compose
+  image: docker/compose:1.18.0
   stage: test
   script:
     - wget -O wait-for "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
