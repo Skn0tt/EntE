@@ -13,8 +13,5 @@ services:
       - ./api/build:/usr/src/app/build
     ports:
       - "5858:5858"
-    depends_on:
-      - mongodb
-      - reverseproxy
   ui:
     build: ./ui

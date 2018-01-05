@@ -1,6 +1,53 @@
 stages:
-  - test
   - build
+  - test
+  - Upload
+
+
+Build API:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd api
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
+
+Build UI:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd ui
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+
+Build Reverse Proxy:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - cd reverseproxy
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
+    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
+
+
+Compose Startup Test:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: test
+  script:
+    - curl -O "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
+    - chmod +x ./wait-for
+    - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+    - ./wait-for localhost:80 --timeout=90
 
 Test API:
   image: node
@@ -33,42 +80,3 @@ Lint UI:
     - cd ui
     - yarn
     - yarn lint
-
-Build API:
-  image: docker:latest
-  only:
-    - master
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - cd api
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
-
-Build UI:
-  image: docker:latest
-  only:
-    - master
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - cd ui
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
-
-Build Reverse Proxy:
-  image: docker:latest
-  only:
-    - master
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - cd reverseproxy
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest

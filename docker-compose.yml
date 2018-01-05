@@ -7,7 +7,7 @@ services:
       - /data/db
     container_name: "mongodb"
   api:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:stable
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/status"]
@@ -18,7 +18,7 @@ services:
       - mongodb
       - reverseproxy
   ui:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:stable
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
@@ -28,7 +28,7 @@ services:
     depends_on:
       - reverseproxy
   reverseproxy:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
+    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:stable
     restart: always
     ports:
       - "80:80"
