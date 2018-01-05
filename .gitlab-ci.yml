@@ -1,13 +1,13 @@
 stages:
-  - build
   - test
-  - Upload
+  - upload
+  - build
 
+services:
+  - docker:dind
 
 Build API:
   image: docker:latest
-  services:
-    - docker:dind
   stage: build
   script:
     - cd api
@@ -17,8 +17,6 @@ Build API:
 
 Build UI:
   image: docker:latest
-  services:
-    - docker:dind
   stage: build
   script:
     - cd ui
@@ -28,8 +26,6 @@ Build UI:
 
 Build Reverse Proxy:
   image: docker:latest
-  services:
-    - docker:dind
   stage: build
   script:
     - cd reverseproxy
@@ -37,14 +33,11 @@ Build Reverse Proxy:
     - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
     - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
 
-
 Compose Startup Test:
   image: docker:latest
-  services:
-    - docker:dind
   stage: test
   script:
-    - curl -O "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
+    - wget -O wait-for "https://raw.githubusercontent.com/eficode/wait-for/master/wait-for"
     - chmod +x ./wait-for
     - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
     - ./wait-for localhost:80 --timeout=90
