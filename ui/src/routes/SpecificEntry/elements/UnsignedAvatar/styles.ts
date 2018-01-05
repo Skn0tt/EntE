@@ -1,10 +1,10 @@
-import { green } from 'material-ui/colors';
 import { StyleRules } from 'material-ui/styles/withStyles';
 import { Theme } from 'material-ui/styles/createMuiTheme';
+import pink from 'material-ui/colors/pink';
 
 const styles = (theme: Theme): StyleRules => ({
-  signEntryButton: {
-    color: green[500],
+  avatar: {
+    backgroundColor: pink[500],
   },
 });
 

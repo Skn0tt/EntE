@@ -139,6 +139,6 @@ export const updateUser = async (
 };
 
 export const signEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/users/${id}/sign`, auth);
+  const response = await put(`${baseUrl}/entries/${id}/sign`, auth);
   return transform(response);
 };
