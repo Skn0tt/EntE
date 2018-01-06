@@ -3,9 +3,6 @@ stages:
   - test
   - upload
 
-services:
-  - docker:dind
-
 variables:
   CONTAINER_BASE: registry.gitlab.com/skn0tt/entschuldigungsverfahren
   CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_NAME
@@ -21,6 +18,8 @@ variables:
 Build API:
   image: docker
   stage: build
+  services:
+    - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
@@ -31,6 +30,8 @@ Build API:
 Build UI:
   image: docker
   stage: build
+  services:
+    - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
@@ -41,6 +42,8 @@ Build UI:
 Build Reverse Proxy:
   image: docker
   stage: build
+  services:
+    - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
@@ -56,6 +59,8 @@ Build Reverse Proxy:
 Compose Startup Test:
   image: docker
   stage: test
+  services:
+    - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - apk add --update py-pip
@@ -101,8 +106,10 @@ Lint UI:
     - yarn lint
 
 Credentials:
-  image: bash
+  image: alpine
   stage: test
+  before_script:
+    - apk add grep
   script:
     - cd ui/src/interfaces
     - "grep -nwc index.ts -e \"username: '',\"} | grep -q 2"
