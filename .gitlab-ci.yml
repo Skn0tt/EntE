@@ -7,12 +7,13 @@ services:
   - docker:dind
 
 variables:
-  CONTAINER_UI_TEST_IMAGE: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:$CI_COMMIT_REF_NAME
-  CONTAINER_UI_RELEASE_IMAGE: registry.gitlab.com/my-group/my-project/ui:latest
-  CONTAINER_API_TEST_IMAGE: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:$CI_COMMIT_REF_NAME
-  CONTAINER_API_RELEASE_IMAGE: registry.gitlab.com/my-group/my-project/api:latest
-  CONTAINER_REVERSEPROXY_TEST_IMAGE: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:$CI_COMMIT_REF_NAME
-  CONTAINER_REVERSEPROXY_RELEASE_IMAGE: registry.gitlab.com/my-group/my-project/reverseproxy:latest
+  CONTAINER_BASE: registry.gitlab.com/skn0tt/entschuldigungsverfahren
+  CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_NAME
+  CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:latest
+  CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_NAME
+  CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:latest
+  CONTAINER_REVERSEPROXY_TEST_IMAGE: $CONTAINER_BASE/reverseproxy:$CI_COMMIT_REF_NAME
+  CONTAINER_REVERSEPROXY_RELEASE_IMAGE: $CONTAINER_BASE/reverseproxy:latest
 
 #
 # Build
