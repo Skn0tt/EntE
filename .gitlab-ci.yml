@@ -1,74 +1,122 @@
 stages:
-  - test
   - build
+  - test
+  - upload
+
+services:
+  - docker:dind
+
+variables:
+  CONTAINER_BASE: registry.gitlab.com/skn0tt/entschuldigungsverfahren
+  CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_NAME
+  CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:latest
+  CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_NAME
+  CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:latest
+  CONTAINER_REVERSEPROXY_TEST_IMAGE: $CONTAINER_BASE/reverseproxy:$CI_COMMIT_REF_NAME
+  CONTAINER_REVERSEPROXY_RELEASE_IMAGE: $CONTAINER_BASE/reverseproxy:latest
+
+#
+# Build
+#
+Build API:
+  image: docker
+  stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd api
+    - docker build --pull -t $CONTAINER_API_TEST_IMAGE .
+    - docker push $CONTAINER_API_TEST_IMAGE
+
+Build UI:
+  image: docker
+  stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd ui
+    - docker build --pull -t $CONTAINER_UI_TEST_IMAGE .
+    - docker push $CONTAINER_UI_TEST_IMAGE
+
+Build Reverse Proxy:
+  image: docker
+  stage: build
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd reverseproxy
+    - docker build --pull -t $CONTAINER_REVERSEPROXY_TEST_IMAGE .
+    - docker push $CONTAINER_REVERSEPROXY_TEST_IMAGE
+
+#
+# Test
+#
+
+# Test
+Compose Startup Test:
+  image: docker
+  stage: test
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - apk add --update py-pip
+    - pip install docker-compose
+  script:
+    - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 
 Test API:
   image: node
   stage: test
-  script:
+  before_script:
     - cd api
     - yarn
+  script:
     - yarn test
 
 Test UI:
   image: node
   stage: test
-  script:
-    - cd ui
+  before_script:
+    - cd api
     - yarn
+  script:
     - yarn test
 
+# Linting
 Lint API:
   image: node
   stage: test
-  script:
+  before_script:
     - cd api
     - yarn
+  script:
     - yarn lint
 
 Lint UI:
   image: node
   stage: test
-  script:
+  before_script:
     - cd ui
     - yarn
+  script:
     - yarn lint
 
-Build API:
-  image: docker:latest
+#
+# Upload
+#
+Push Images:
+  image: docker
+  stage: upload
   only:
     - master
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - cd api
+  before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
-
-Build UI:
-  image: docker:latest
-  only:
-    - master
-  services:
-    - docker:dind
-  stage: build
   script:
-    - cd ui
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
-
-Build Reverse Proxy:
-  image: docker:latest
-  only:
-    - master
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - cd reverseproxy
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - docker build -t registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest .
-    - docker push registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
+    - docker pull $CONTAINER_UI_TEST_IMAGE
+    - docker pull $CONTAINER_API_TEST_IMAGE
+    - docker pull $CONTAINER_REVERSEPROXY_TEST_IMAGE
+    - docker tag $CONTAINER_UI_TEST_IMAGE $CONTAINER_UI_RELEASE_IMAGE
+    - docker tag $CONTAINER_API_TEST_IMAGE $CONTAINER_API_RELEASE_IMAGE
+    - docker tag $CONTAINER_REVERSEPROXY_TEST_IMAGE $CONTAINER_REVERSEPROXY_RELEASE_IMAGE
+    - docker push $CONTAINER_UI_RELEASE_IMAGE
+    - docker push $CONTAINER_API_RELEASE_IMAGE
+    - docker push $CONTAINER_REVERSEPROXY_RELEASE_IMAGE
