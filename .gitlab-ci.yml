@@ -56,6 +56,8 @@ Build Reverse Proxy:
 Compose Startup Test:
   image: docker
   stage: test
+  variables:
+    GIT_STRATEGY: none
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - apk add --update py-pip
@@ -106,6 +108,8 @@ Lint UI:
 Push Images:
   image: docker
   stage: upload
+  variables:
+    GIT_STRATEGY: none
   only:
     - master
   before_script:
