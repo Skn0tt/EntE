@@ -19,7 +19,7 @@ const styles = (theme: Theme): StyleRules =>  ({
   root: {
     width: '100%',
     zIndex: 1,
-    overflow: 'hidden',
+    overflowX: 'hidden',
   },
   appFrame: {
     position: 'relative',
@@ -28,7 +28,7 @@ const styles = (theme: Theme): StyleRules =>  ({
     height: '100%',
   },
   appBar: {
-    position: 'absolute',
+    position: 'fixed',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -46,7 +46,7 @@ const styles = (theme: Theme): StyleRules =>  ({
     width: 250,
     [theme.breakpoints.up('md')]: {
       width: drawerWidth,
-      position: 'relative',
+      position: 'fixed',
       height: '100%',
     },
   },
@@ -58,6 +58,7 @@ const styles = (theme: Theme): StyleRules =>  ({
     [theme.breakpoints.up('sm')]: {
       height: 'calc(100% - 64px)',
       marginTop: 64,
+      marginLeft: drawerWidth,
     },
   },
 });

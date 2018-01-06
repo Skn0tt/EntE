@@ -94,7 +94,7 @@ class extends React.Component<Props, State> {
   /**
    * ## Action Handlers
    */
-  handleGoBack = () => this.props.history.goBack();
+  handleGoBack = () => this.props.history.push('/');
   
   handleClose = () => this.handleGoBack();
 
