@@ -109,6 +109,7 @@ Credentials:
   image: alpine
   stage: test
   before_script:
+    - apk update
     - apk add grep
   script:
     - cd ui/src/interfaces
