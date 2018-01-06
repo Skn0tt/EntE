@@ -130,7 +130,7 @@ class extends React.Component<Props, State> {
   )
   emailValid = (): boolean => (
     !!this.state.email &&
-    !validateEmail(this.state.email)
+    validateEmail(this.state.email)
   )
   childrenValid = (): boolean => (
     !this.isParent() ||

@@ -104,7 +104,7 @@ export const getTeachers = async (auth: ICredentials): Promise<APIResponse> => {
   return transform(data);
 };
 
-const post = async (url: string, auth: ICredentials, body: {}) => {
+const post = async (url: string, auth: ICredentials, body?: {}) => {
   const response = await axios.post(url, body, { auth, transformResponse: transformDates });
   return response.data;
 };
@@ -121,7 +121,7 @@ export const createUser = async (
   user: IUserCreate,
   auth: ICredentials,
 ): Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/users/`, user, auth);
+  const response = await post(`${baseUrl}/users/`, auth, user);
   return transform(response);
 };
 
