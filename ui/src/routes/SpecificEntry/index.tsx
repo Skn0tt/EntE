@@ -49,9 +49,9 @@ const SpecificEntry: React.SFC<Props> = (props) => {
   const { entryId } = props.match.params;
   const entry = props.getEntry(entryId);
   
-  if (!entry) props.requestEntry(entryId);
+  if (!entry) return null;
 
-  return !!entry ? (
+  return (
     <Dialog
       open={true}
       fullScreen={props.fullScreen}
@@ -140,7 +140,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-  ) : null;
+  );
 };
 
 const mapStateToProps = (state: AppState) => ({

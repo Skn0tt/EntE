@@ -50,7 +50,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
   if (!user) return null;
 
   const isParent = user.get('role') === Roles.PARENT;
-  return !!user ? (
+  return (
     <Dialog
       open={true}
       onClose={() => props.history.goBack()}
@@ -86,7 +86,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-  ) : null;
+  );
 };
 
 const mapStateToProps = (state: AppState) => ({
