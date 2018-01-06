@@ -52,7 +52,7 @@ class extends React.Component<Props, State> {
   handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
 
   render() {
-    const classes = this.props.classes!;
+    const { classes } = this.props;
 
     const drawer = (
       <div>
