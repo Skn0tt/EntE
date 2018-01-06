@@ -105,8 +105,8 @@ Credentials:
   stage: test
   script:
     - cd ui/src/interfaces
-    - "test ${grep -nw index.ts -e "username: '',"} -eq 2"
-    - "test ${grep -nw index.ts -e "password: '',"} -eq 1"
+    - "test ${grep -nwc index.ts -e \"username: '',\"} -eq 2"
+    - "test ${grep -nwc index.ts -e \"password: '',\"} -eq 1"
 
 #
 # Upload
