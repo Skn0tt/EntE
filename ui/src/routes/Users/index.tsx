@@ -16,8 +16,11 @@ interface Props extends WithStyles {
 
 const UserRow = (user: User) => (
   <Route
+    key={user.get('_id')}
     render={({ history }) => (
-      <TableRow key={user.get('_id')} onClick={() => history.push(`users/${user.get('_id')}`)}>
+      <TableRow
+        onClick={() => history.push(`users/${user.get('_id')}`)}
+      >
         <TableCell>{user.get('username')}</TableCell>
         <TableCell>{user.get('displayname')}</TableCell>
         <TableCell>{user.get('email')}</TableCell>
