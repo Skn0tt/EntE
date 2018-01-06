@@ -44,16 +44,13 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 type Props = IProps & InjectedProps & WithStyles;
 const ChildrenUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 class extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    const selected = this.props.students.length > 0 ?
-      this.props.students[0].get('_id') : '';
-  
-    this.state = {
-      selected,
-      children: this.props.getUser(this.props.userId).get('children'),
-    };
-  }
+  state: State = {
+    selected: this.props.students.length > 0
+      ? this.props.students[0].get('_id')
+      : '',
+    children: this.props.getUser(this.props.userId).get('children'),
+  };
+    
 
   handleSubmit = () => this.props.updateUser({
     _id: this.props.userId,

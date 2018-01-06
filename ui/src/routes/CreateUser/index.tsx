@@ -55,23 +55,17 @@ type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedPro
 const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<IProps>()(withRouter(withStyles(styles)(
 class extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    
-    const selectedChild = this.props.students.length > 0 ? 
-      this.props.students[0].get('_id') :
-        '';
-
-    this.state = {
-      selectedChild,
-      children: [],
-      displayname: '',
-      email: '',
-      password: '',
-      role: Roles.STUDENT,
-      username: '',
-    };
-  }
+  state: State = {
+    selectedChild: this.props.students.length > 0
+      ? this.props.students[0].get('_id')
+      : '',
+    children: [],
+    displayname: '',
+    email: '',
+    password: '',
+    role: Roles.STUDENT,
+    username: '',
+  };
 
   /**
    * ## Action Handlers
@@ -130,7 +124,7 @@ class extends React.Component<Props, State> {
   )
   emailValid = (): boolean => (
     !!this.state.email &&
-    !validateEmail(this.state.email)
+    validateEmail(this.state.email)
   )
   childrenValid = (): boolean => (
     !this.isParent() ||

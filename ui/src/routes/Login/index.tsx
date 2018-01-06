@@ -48,14 +48,10 @@ connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<IProps>()(
     withStyles(styles)(
 class extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    
-    this.state = {
-      username: '',
-      password: '',
-    };
-  }
+  state: State = {
+    username: '',
+    password: '',
+  };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
     if (event.key === 'Enter') {
