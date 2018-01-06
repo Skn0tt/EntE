@@ -47,10 +47,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
   const { userId } = props.match.params;
   const user = props.getUser(userId);
   
-  if (!user) {
-    props.requestUser(userId);
-    return null;
-  }
+  if (!user) return null;
 
   const isParent = user.get('role') === Roles.PARENT;
   return !!user ? (
