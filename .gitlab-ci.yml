@@ -109,12 +109,11 @@ Credentials:
   image: alpine
   stage: test
   before_script:
-    - apk update
     - apk add grep
   script:
     - cd ui/src/interfaces
-    - "grep -nwc index.ts -e \"username: '',\"} | grep -q 2"
-    - "grep -nwc index.ts -e \"password: '',\"} | grep -q 1"
+    - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
+    - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
 
 #
 # Upload
