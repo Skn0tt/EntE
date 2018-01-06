@@ -36,7 +36,7 @@ const mapStateToProps = (state: AppState) => ({
   role: select.getRole(state),
 });
 
-type Props = IProps & RouteComponentProps<IProps> &WithStyles<string>;
+type Props = IProps & RouteComponentProps<{}> & WithStyles<string>;
 
 const Drawer = withRouter(connect(mapStateToProps)(withStyles(styles)(
   class extends React.Component<Props, State> {
