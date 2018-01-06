@@ -106,11 +106,8 @@ Lint UI:
     - yarn lint
 
 Credentials:
-  image: alpine
+  image: frolvlad/alpine-bash bash
   stage: test
-  before_script:
-    - apk update
-    - apk add grep
   script:
     - cd ui/src/interfaces
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
