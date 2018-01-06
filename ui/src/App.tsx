@@ -8,7 +8,6 @@ import { connect, Dispatch } from 'react-redux';
 import { AppState, ICredentials } from './interfaces/index';
 import { Action } from 'redux';
 import { checkAuthRequest } from './redux/actions';
-import { Redirect } from 'react-router';
 
 import * as select from './redux/selectors';
 import Drawer from './components/Drawer';
@@ -19,6 +18,7 @@ import Entries from './routes/Entries';
 import Users from './routes/Users';
 import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Login from './routes/Login';
 import Home from './routes/Home';
 import Slots from './routes/Slots';
@@ -39,7 +39,6 @@ const Routes = () => (
       <Route path="/newEntry" component={CreateEntry} />
       <Route path="/newUser" component={CreateUser} />
     </Switch>
-    <Route path="/login" component={Login} />
   </React.Fragment>
 );
 
@@ -59,16 +58,18 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <BrowserRouter>
-        <div>
-          {!this.props.authValid && <Redirect to="/login" />}
-          {!this.props.authChecked && <Redirect to="/loading" />}
-          <Switch>
-            <Route path="/loading" component={LoadingScreen} />
+        <Switch>
+          <Route path="/loading" component={LoadingScreen} />
+          <Route path="/login" component={Login} />
+          <AuthenticatedRoute
+            authWasChecked={this.props.authChecked}
+            isLoggedIn={this.props.authValid}
+          >
             <Drawer>
               <Routes />
             </Drawer>
-          </Switch>
-        </div>
+          </AuthenticatedRoute>
+        </Switch>
       </BrowserRouter>
     );
   }

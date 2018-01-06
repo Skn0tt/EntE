@@ -6,32 +6,40 @@ import styles from './styles';
 import { AppState } from '../../interfaces/index';
 import { connect, Dispatch } from 'react-redux';
 import { Action } from 'redux';
-import { Redirect } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router';
 import { CircularProgress, Grid } from 'material-ui';
 
-interface Props {
+interface IProps {
   authValid: boolean;
   authChecked: boolean;
 }
-const Loading: React.SFC<Props & WithStyles> = props => (
-  <Grid
-    className={props.classes.root}
-    container={true}
-    direction="row"
-    alignItems="center"
-    justify="center"
-  >
-    {props.authChecked && <Redirect to="/login" />}
+
+type Props = IProps & WithStyles & RouteComponentProps<{}>;
+
+const Loading: React.SFC<Props> = (props) => {
+  const { classes } = props;
+  const { state } = props.location;
+
+  return (
     <Grid
-      className={props.classes.item}
-      item={true}
+      className={classes.root}
+      container={true}
+      direction="row"
+      alignItems="center"
+      justify="center"
     >
-      <CircularProgress
-        size={100}
-      />
+      {props.authChecked && <Redirect to={{ state, pathname: '/login' }} />}
+      <Grid
+        className={classes.item}
+        item={true}
+      >
+        <CircularProgress
+          size={100}
+        />
+      </Grid>
     </Grid>
-  </Grid>
-);
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   authValid: select.isAuthValid(state),
