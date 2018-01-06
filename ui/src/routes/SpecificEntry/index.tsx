@@ -55,7 +55,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
     <Dialog
       open={true}
       fullScreen={props.fullScreen}
-      onClose={() => props.history.goBack()}
+      onClose={() => props.history.push('/entries')}
     >
       <DialogContent>
         <DialogContentText>
@@ -134,7 +134,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
         <Button
           dense={true}
           color="primary"
-          onClick={() => props.history.goBack()}
+          onClick={() => props.history.push('/users')}
         >
           Close
         </Button>
