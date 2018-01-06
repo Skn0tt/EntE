@@ -53,7 +53,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
   return (
     <Dialog
       open={true}
-      onClose={() => props.history.goBack()}
+      onClose={() => props.history.push('/users')}
       fullScreen={props.fullScreen}
     >
       <DialogTitle>
@@ -80,7 +80,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
         <Button
           dense={true}
           color="primary"
-          onClick={() => props.history.goBack()}
+          onClick={() => props.history.push('/users')}
         >
           Close
         </Button>
