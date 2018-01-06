@@ -24,22 +24,34 @@ interface RouteMatch {
   userId: MongoId;
 }
 
-interface Props {
-  getUser(id: MongoId): User;
-  requestUser(id: MongoId): Action;
-}
-
-interface InjectedProps extends WithStyles, RouteComponentProps<RouteMatch> {
+interface MUIInjectedProps {
   fullScreen: boolean;
 }
 
-const SpecificUser: React.SFC<Props & InjectedProps> = (props) => {
+interface StateProps {
+  getUser(id: MongoId): User;
+}
+
+interface DispatchProps {
+  requestUser(id: MongoId): Action;
+}
+
+type Props =
+  StateProps &
+  DispatchProps &
+  MUIInjectedProps &
+  WithStyles &
+  RouteComponentProps<RouteMatch>;
+
+const SpecificUser: React.SFC<Props> = (props) => {
   const { userId } = props.match.params;
   const user = props.getUser(userId);
+  
   if (!user) {
     props.requestUser(userId);
     return null;
   }
+
   const isParent = user.get('role') === Roles.PARENT;
   return !!user ? (
     <Dialog
@@ -90,8 +102,8 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 export default
   withRouter(
-  withMobileDialog<InjectedProps>()(
-  connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<Props>()(
+  connect<StateProps, DispatchProps, Props>(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
     SpecificUser,
   ))));
