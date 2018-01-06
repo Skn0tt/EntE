@@ -106,7 +106,7 @@ Lint UI:
     - yarn lint
 
 Credentials:
-  image: frolvlad/alpine-bash bash
+  image: frolvlad/alpine-bash
   stage: test
   script:
     - cd ui/src/interfaces
