@@ -74,22 +74,16 @@ type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedPro
 const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<IProps>()(withRouter(withStyles(styles)(
 class extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    
-    const student = this.props.children.length > 0 ?
-      this.props.children[0].get('_id') :
-      undefined;
-    
-    this.state = {
-      student,
-      isRange: false,
-      date: new Date(),
-      dateEnd: new Date(),
-      slots: [],
-      forSchool: false,
-    };
-  }
+  state: State = {
+    student: this.props.children.length > 0
+      ? this.props.children[0].get('_id')
+      : undefined,
+    isRange: false,
+    date: new Date(),
+    dateEnd: new Date(),
+    slots: [],
+    forSchool: false,
+  };
 
   /**
    * ## Action Handlers

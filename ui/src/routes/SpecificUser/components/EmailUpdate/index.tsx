@@ -32,14 +32,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
 class extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: this.user().get('email'),
-    };
-  }
-
   user = (): User => this.props.getUser(this.props.userId);
+
+  state: State = {
+    email: this.user().get('email'),
+  };
 
   handleSubmit = () => this.props.updateUser({
     _id: this.props.userId,
