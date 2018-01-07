@@ -7,6 +7,8 @@ import styles from './styles';
 import * as select from '../../redux/selectors';
 import { Entry, AppState, MongoId, User } from '../../interfaces/index';
 import { Action } from 'redux';
+import SignedAvatar from '../SpecificEntry/elements/SignedAvatar';
+import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
 
 import { getEntriesRequest } from '../../redux/actions';
 import { Route } from 'react-router';
@@ -25,19 +27,30 @@ const Entries: React.SFC<Props> = props => (
           <TableCell>Name</TableCell>
           <TableCell>Datum</TableCell>
           <TableCell>Schulisch</TableCell>
+          <TableCell>Admin</TableCell>
+          <TableCell>Eltern</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {props.entries.map(entry => (
           <Route
+            key={entry.get('_id')}
             render={({ history }) => (
               <TableRow
-                key={entry.get('_id')}
                 onClick={() => history.push(`/entries/${entry.get('_id')}`)}
+                hover={true}
               >
                 <TableCell>{props.getUser(entry.get('student')).get('displayname')}</TableCell>
                 <TableCell>{entry.get('date').toDateString()}</TableCell>
                 <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
+                <TableCell>{entry.get('signedAdmin')
+                  ? <SignedAvatar />
+                  : <UnsignedAvatar />
+                }</TableCell>
+                <TableCell>{entry.get('signedParent')
+                  ? <SignedAvatar />
+                  : <UnsignedAvatar />
+                }</TableCell>
               </TableRow>
             )}
           />

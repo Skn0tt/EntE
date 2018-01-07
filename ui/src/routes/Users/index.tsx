@@ -14,22 +14,6 @@ interface Props extends WithStyles {
   users: User[];
 }
 
-const UserRow = (user: User) => (
-  <Route
-    key={user.get('_id')}
-    render={({ history }) => (
-      <TableRow
-        onClick={() => history.push(`users/${user.get('_id')}`)}
-      >
-        <TableCell>{user.get('username')}</TableCell>
-        <TableCell>{user.get('displayname')}</TableCell>
-        <TableCell>{user.get('email')}</TableCell>
-        <TableCell>{user.get('role')}</TableCell>
-      </TableRow>
-    )}
-  />
-);
-
 const Users: React.SFC<Props> = props => (
   <Paper>
     <Table>
@@ -42,7 +26,22 @@ const Users: React.SFC<Props> = props => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.users.map(user => UserRow(user))}
+        {props.users.map(user => (
+          <Route
+            key={user.get('_id')}
+            render={({ history }) => (
+              <TableRow
+                onClick={() => history.push(`users/${user.get('_id')}`)}
+                hover={true}
+              >
+                <TableCell>{user.get('username')}</TableCell>
+                <TableCell>{user.get('displayname')}</TableCell>
+                <TableCell>{user.get('email')}</TableCell>
+                <TableCell>{user.get('role')}</TableCell>
+              </TableRow>
+            )}
+          />
+        ))}
       </TableBody>
     </Table>
   </Paper>

@@ -20,10 +20,12 @@ const SlotRow = (slot: Slot, props: Props) => (
     render={({ history }) => (
       <TableRow
         key={slot.get('_id')}
-        onClick={() => history.push(`/slots/${slot.get('_id')}`)}
       >
         <TableCell>{props.getUser(slot.get('student')).get('displayname')}</TableCell>
         <TableCell>{slot.get('date').toDateString()}</TableCell>
+        <TableCell>{slot.get('hour_from')}</TableCell>
+        <TableCell>{slot.get('hour_to')}</TableCell>
+        <TableCell>{props.getUser(slot.get('teacher')).get('displayname')}</TableCell>
       </TableRow>
     )}
   />
@@ -37,6 +39,9 @@ const Slots: React.SFC<Props> = props => (
         <TableRow>
           <TableCell>Name</TableCell>
           <TableCell>Datum</TableCell>
+          <TableCell>Von</TableCell>
+          <TableCell>Bis</TableCell>
+          <TableCell>Lehrer</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
