@@ -142,7 +142,6 @@ export class Entry extends Record({
 /**
  * Auth
  */
-// TODO: Dont save pw in clearform!!!!
 export interface ICredentials {
   username: string;
   password: string;
