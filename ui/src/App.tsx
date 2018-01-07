@@ -5,7 +5,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { connect, Dispatch } from 'react-redux';
-import { AppState, ICredentials } from './interfaces/index';
+import { AppState, ICredentials, Roles } from './interfaces/index';
 import { Action } from 'redux';
 import { checkAuthRequest } from './redux/actions';
 
@@ -14,38 +14,15 @@ import Drawer from './components/Drawer';
 import LoadingScreen from './components/LoadingScreen';
 
 // Routes
-import Entries from './routes/Entries';
-import Users from './routes/Users';
-import SpecificEntry from './routes/SpecificEntry';
-import SpecificUser from './routes/SpecificUser';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Login from './routes/Login';
-import Home from './routes/Home';
-import Slots from './routes/Slots';
-import CreateEntry from './routes/CreateEntry';
-import CreateUser from './routes/CreateUser';
-
-const Routes = () => (
-  <React.Fragment>
-    <Switch>
-      <Route exact={true} path="/" component={Home} />
-      <Route path="/entries" component={Entries} />
-      <Route path="/users" component={Users} />
-      <Route path="/slots" component={Slots} />
-    </Switch>
-    <Switch>
-      <Route path="/users/:userId" component={SpecificUser} />
-      <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/newEntry" component={CreateEntry} />
-      <Route path="/newUser" component={CreateUser} />
-    </Switch>
-  </React.Fragment>
-);
+import Routes from './Routes';
 
 interface Props {
   authValid: boolean;
   authChecked: boolean;
   authCredentials: ICredentials;
+  role: Roles;
   checkAuth(credentials: ICredentials): Action;
 }
 interface State {}
@@ -66,7 +43,7 @@ class App extends React.Component<Props, State> {
             isLoggedIn={this.props.authValid}
           >
             <Drawer>
-              <Routes />
+              <Routes role={this.props.role}/>
             </Drawer>
           </AuthenticatedRoute>
         </Switch>
@@ -78,6 +55,7 @@ class App extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   authCredentials: select.getAuthCredentials(state),
   authValid: select.isAuthValid(state),
+  role: select.getRole(state),
   authChecked: select.wasAuthChecked(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
