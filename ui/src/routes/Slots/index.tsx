@@ -29,7 +29,6 @@ const SlotRow = (slot: Slot, props: Props) => (
       </TableRow>
     )}
   />
-  
 );
 
 const Slots: React.SFC<Props> = props => (
