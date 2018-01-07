@@ -8,6 +8,7 @@ import { Add as AddIcon } from 'material-ui-icons';
 
 import styles from './styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
+import Tooltip from 'material-ui/Tooltip/Tooltip';
 
 interface Props {
   teachers: User[];
@@ -28,7 +29,9 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
 
 type SlotEntryProps = Props & WithStyles;
-const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
+const SlotEntry =
+  connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
 class extends React.Component<SlotEntryProps, State> {
   state: State = {
     hour_from: '1',
@@ -189,14 +192,16 @@ class extends React.Component<SlotEntryProps, State> {
           xs={2}
           md={2}
         >
-          <Button
-            fab={true}
-            mini={true}
-            disabled={!this.slotInputValid()}
-            onClick={() => this.handleAddSlot()}
-          >
-            <AddIcon />
-          </Button>
+          <Tooltip title="Hinzufügen">
+            <Button
+              fab={true}
+              mini={true}
+              disabled={!this.slotInputValid()}
+              onClick={() => this.handleAddSlot()}
+            >
+              <AddIcon />
+            </Button>
+          </Tooltip>
         </Grid>
       </Grid>
     );
