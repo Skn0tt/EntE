@@ -37,6 +37,12 @@ import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
  */
 moment.locale('de');
 
+/**
+ * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array/)!
+ */
+const immutableDelete = (arr: any[], index: number) =>
+  arr.slice(0, index).concat(arr.slice(index + 1));
+
 interface IProps {
   getRole(): Roles;
   children: User[];
@@ -124,7 +130,7 @@ class extends React.Component<Props, State> {
   }
 
   handleRemoveSlot = (index: number) =>
-    this.setState({ slots: this.state.slots.slice(index, index) })
+    this.setState({ slots: immutableDelete(this.state.slots, index) })
 
   handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ student: event.target.value })
