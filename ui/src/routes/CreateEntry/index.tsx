@@ -30,12 +30,22 @@ import * as moment from 'moment';
 import 'moment/locale/de';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
+import Tooltip from 'material-ui/Tooltip/Tooltip';
+import Typography from 'material-ui/Typography/Typography';
 
 /**
  * ## Moment Setup
  * Change Language to German
  */
 moment.locale('de');
+
+/**
+ * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
+ */
+const immutableDelete = (arr: any[], index: number) =>
+  arr.slice(0, index).concat(arr.slice(index + 1));
+
+const oneDay: number = 24 * 60 * 60 * 1000;
 
 interface IProps {
   getRole(): Roles;
@@ -71,8 +81,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedProps;
 
-const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<IProps>()(withRouter(withStyles(styles)(
+const CreateEntry =
+  connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<IProps>()(
+  withRouter(
+  withStyles(styles)(
 class extends React.Component<Props, State> {
   state: State = {
     student: this.props.children.length > 0
@@ -94,8 +107,8 @@ class extends React.Component<Props, State> {
 
   handleSubmit = () => this.props.createEntry({
     date: this.state.date,
-    dateEnd: this.state.dateEnd,
-    slots: this.state.slots,
+    dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
+    slots: this.state.isRange ? [] : this.state.slots,
     forSchool: this.state.forSchool,
     student: this.state.student,
   })
@@ -109,7 +122,13 @@ class extends React.Component<Props, State> {
   /**
    * ## Input Handlers
    */
-  handleChangeDate = (date: Date) => this.setState({ date });
+  handleChangeDate = (date: Date) => {
+    const dateEnd = this.state.dateEnd <= date
+      ? new Date(+date + oneDay)
+      : this.state.dateEnd;
+    
+    this.setState({ date, dateEnd });
+  }
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
   handleChangeForSchool = (event: React.ChangeEvent<{}>, checked: boolean) =>
     this.setState({ forSchool: checked })
@@ -124,7 +143,7 @@ class extends React.Component<Props, State> {
   }
 
   handleRemoveSlot = (index: number) =>
-    this.setState({ slots: this.state.slots.slice(index, index) })
+    this.setState({ slots: immutableDelete(this.state.slots, index) })
 
   handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ student: event.target.value })
@@ -134,21 +153,26 @@ class extends React.Component<Props, State> {
    */
   dateValid = (): boolean => (
     // Less than 14 Days ago
-    this.state.date > this.minDate
+    +this.state.date > +this.minDate
   )
   dateEndValid = (): boolean => (
-    this.state.isRange ||
-    this.state.dateEnd > this.state.date
+    !this.state.isRange ||
+    +this.state.dateEnd > +this.state.date
   )
   studentValid = (): boolean => (
     this.props.getRole() !== Roles.PARENT ||
     !!this.state.student
   )
+  slotsValid = (): boolean => (
+    this.state.isRange ||
+    this.state.slots.length > 0
+  )
 
   inputValid = () => (
-    this.dateValid &&
-    this.dateEndValid &&
-    this.studentValid
+    this.dateValid() &&
+    this.dateEndValid() &&
+    this.studentValid() &&
+    this.slotsValid()
   )
 
   /**
@@ -157,7 +181,6 @@ class extends React.Component<Props, State> {
   minDate: Date = new Date(+new Date - 14 * 24 * 60 * 60 * 1000);
 
   render() {
-    const { classes } = this.props;
     const isParent = this.props.getRole() === Roles.PARENT;
 
     return (
@@ -168,16 +191,22 @@ class extends React.Component<Props, State> {
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
-          <form className={classes.container} onKeyPress={this.handleKeyPress} >
-            <Grid container={true} direction="column" >
-              <Grid item={true} >
-                <FormControl>
-                  <FormControlLabel
-                    onChange={this.handleChangeForSchool}
-                    control={<Switch />}
-                    label="Schulisch"
-                  />
-                </FormControl>
+          <Grid container direction="column" spacing={40}>
+            <Grid item container direction="column">
+              <Grid item>
+                <Tooltip title="Entschuldigung Schulischer Art/Krankheit?">
+                  <FormControl>
+                    <FormControlLabel
+                      onChange={this.handleChangeForSchool}
+                      control={<Switch />}
+                      label={
+                        this.state.forSchool
+                          ? 'Schulisch'
+                          : 'Krankheit'
+                      }
+                    />
+                  </FormControl>
+                </Tooltip>
               </Grid>
               {isParent && (
                 <Grid item={true} >
@@ -226,7 +255,7 @@ class extends React.Component<Props, State> {
                         error={!this.dateValid()}
                         value={this.state.dateEnd}
                         onChange={this.handleChangeDateEnd}
-                        minDate={this.minDate}
+                        minDate={this.state.date}
                         fullWidth={true}
                       />
                     </Grid>
@@ -234,16 +263,27 @@ class extends React.Component<Props, State> {
                 </Grid>
               </Grid>
             </Grid>
-          </form>
-          <MUIList>
-            {this.state.slots.map((slot, index) => (
-              <SlotListItem 
-                slot={slot}
-                delete={() => this.handleRemoveSlot(index)}
-              />
-            ))}
-          </MUIList>
-          <SlotEntry onAdd={slot => this.handleAddSlot(slot)}/>
+            {!this.state.isRange && (
+              <Grid item>
+                <Typography type="title">
+                  Stunden
+                </Typography>
+                <Typography type="caption">
+                  Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
+                  Erstellen sie dafür für jede Stunde einen Eintrag.
+                </Typography>
+                <MUIList>
+                  {this.state.slots.map((slot, index) => (
+                    <SlotListItem 
+                      slot={slot}
+                      delete={() => this.handleRemoveSlot(index)}
+                    />
+                  ))}
+                </MUIList>
+                <SlotEntry onAdd={slot => this.handleAddSlot(slot)}/>
+              </Grid>
+            )}
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="accent">
