@@ -138,7 +138,7 @@ usersRouter.post('/', [
 
   try {
     if (await userAlreadyExists(request.body.username)) {
-      return response.status(422).end('User already exists.');
+      return response.status(409).end('User already exists.');
     }
 
     for (const child of request.body.children) {
