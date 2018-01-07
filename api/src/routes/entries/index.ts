@@ -158,13 +158,17 @@ entriesRouter.post('/', [
 
   const studentId = request.user.role === ROLES.PARENT ?
     request.body.student : request.user._id;
+  
+  if (!request.body.dateEnd && request.body.slots.length === 0) {
+    return response.status(422).end('Entry that is no range needs to have one or more slots.');
+  }
 
   try {
     const slots = await createSlots(request.body.slots, request.body.date, studentId);
 
     const signedParent: boolean = request.user.role === ROLES.PARENT;
 
-    // TOOD: Reject Parents creating entries for children that are not theirs
+    // TODO: Reject Parents creating entries for children that are not theirs
 
     const entry = await Entry.create({
       slots,
