@@ -61,60 +61,60 @@ class extends React.Component<Props, State> {
     const { classes } = this.props;
 
     return (
-        <Grid container direction="column" spacing={8}>
-          <Grid item container direction="row">
-            <Grid item xs={12}>
-              <TextField
-                placeholder="Suchen"
-                fullWidth
-                className={classes.searchBar}
-                onChange={this.handleChangeSearch}
-              />
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Datum</TableCell>
-                  <TableCell>Schulisch</TableCell>
-                  <TableCell>Admin</TableCell>
-                  <TableCell>Eltern</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {this.props.entries.filter(this.filter).map(entry => (
-                  <Route
-                    key={entry.get('_id')}
-                    render={({ history }) => (
-                      <TableRow
-                        onClick={() => history.push(`/entries/${entry.get('_id')}`)}
-                        hover={true}
-                      >
-                        <TableCell>{
-                          this.props
-                            .getUser(entry.get('student'))
-                            .get('displayname')
-                          }</TableCell>
-                        <TableCell>{entry.get('date').toDateString()}</TableCell>
-                        <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
-                        <TableCell>{entry.get('signedAdmin')
-                          ? <SignedAvatar />
-                          : <UnsignedAvatar />
-                        }</TableCell>
-                        <TableCell>{entry.get('signedParent')
-                          ? <SignedAvatar />
-                          : <UnsignedAvatar />
-                        }</TableCell>
-                      </TableRow>
-                    )}
-                  />
-                ))}
-              </TableBody>
-            </Table>
+      <Grid container direction="column">
+        <Grid item container direction="row">
+          <Grid item xs={12}>
+            <TextField
+              placeholder="Suchen"
+              fullWidth
+              className={classes.searchBar}
+              onChange={this.handleChangeSearch}
+            />
           </Grid>
         </Grid>
+        <Grid item>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Datum</TableCell>
+                <TableCell>Schulisch</TableCell>
+                <TableCell>Admin</TableCell>
+                <TableCell>Eltern</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.props.entries.filter(this.filter).map(entry => (
+                <Route
+                  key={entry.get('_id')}
+                  render={({ history }) => (
+                    <TableRow
+                      onClick={() => history.push(`/entries/${entry.get('_id')}`)}
+                      hover={true}
+                    >
+                      <TableCell>{
+                        this.props
+                          .getUser(entry.get('student'))
+                          .get('displayname')
+                        }</TableCell>
+                      <TableCell>{entry.get('date').toDateString()}</TableCell>
+                      <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
+                      <TableCell>{entry.get('signedAdmin')
+                        ? <SignedAvatar />
+                        : <UnsignedAvatar />
+                      }</TableCell>
+                      <TableCell>{entry.get('signedParent')
+                        ? <SignedAvatar />
+                        : <UnsignedAvatar />
+                      }</TableCell>
+                    </TableRow>
+                  )}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </Grid>
+      </Grid>
     );
   }
 }));
