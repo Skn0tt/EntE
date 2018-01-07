@@ -46,11 +46,13 @@ class extends React.Component<Props, State> {
     searchTerm: '',
   };
 
-  filter = (entry: Entry): boolean =>
-    this.props
-      .getUser(entry.get('student'))
-      .get('displayname').toLocaleLowerCase()
-      .includes(this.state.searchTerm.toLocaleLowerCase())
+  filter = (entry: Entry): boolean => (
+    this.props.getUser(entry.get('student'))
+      .get('displayname').toLocaleLowerCase().includes(this.state.searchTerm.toLocaleLowerCase()) ||
+    this.props.getUser(entry.get('student'))
+      .get('email').toLocaleLowerCase().includes(this.state.searchTerm.toLocaleLowerCase())
+  )
+    
 
   handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ searchTerm: event.target.value })
