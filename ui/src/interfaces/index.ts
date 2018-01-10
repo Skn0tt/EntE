@@ -154,8 +154,8 @@ export interface IAuth extends ICredentials {
 }
 
 export class AuthState extends Record({
-  username: 'admin',
-  password: 'root',
+  username: '',
+  password: '',
   displayname: '',
   role: '',
   children: [],
