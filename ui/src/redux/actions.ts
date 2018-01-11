@@ -36,6 +36,7 @@ import {
   SIGN_ENTRY_REQUEST,
   SIGN_ENTRY_SUCCESS,
   SIGN_ENTRY_ERROR,
+  REMOVE_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -99,6 +100,8 @@ export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
 export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
+
+export const removeError = createAction<number>(REMOVE_ERROR);
 
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 
