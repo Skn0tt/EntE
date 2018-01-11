@@ -26,6 +26,7 @@ const entrySchema: Schema = new Schema({
   student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
   slots: [{ type: Schema.Types.ObjectId, ref: 'slots' }],
   forSchool: { type: Boolean, required: true },
+  reason: { type: String, maxlength: 300 },
   signedParent: { type: Boolean, required: true, default: false },
   signedAdmin: { type: Boolean, required: true, default: false },
 }, {

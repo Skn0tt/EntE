@@ -151,6 +151,7 @@ const twoWeeksBefore: Date = new Date(+new Date() - (14 * 24 * 60 * 60 * 1000));
 
 entriesRouter.post('/', [
   body('date').isAfter(twoWeeksBefore.toISOString()),
+  body('reason').isLength({ max: 300 }),
 ], async (request: EntriesRequest, response: Response, next) => {
   if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
 
@@ -174,6 +175,7 @@ entriesRouter.post('/', [
     const entry = await Entry.create({
       slots,
       signedParent,
+      reason: request.body.reason,
       date: request.body.date,
       dateEnd: request.body.dateEnd,
       student: studentId,

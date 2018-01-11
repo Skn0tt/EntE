@@ -108,6 +108,7 @@ export interface IEntry {
   _id: MongoId;
   date: Date;
   dateEnd?: Date;
+  reason: string;
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
@@ -118,6 +119,7 @@ export interface IEntry {
 export interface IEntryCreate {
   date: Date;
   dateEnd?: Date;
+  reason?: string;
   student?: MongoId;
   slots: ISlotCreate[];
   forSchool: boolean;
@@ -127,6 +129,7 @@ export class Entry extends Record({
   _id: '',
   date: new Date(),
   dateEnd: new Date(),
+  reason: '',
   student: '',
   slots: [],
   forSchool: false,

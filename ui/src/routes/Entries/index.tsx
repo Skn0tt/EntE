@@ -38,6 +38,13 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = StateProps & DispatchProps & WithStyles;
 
+const truncate = (str: string, length: number, ending: string) => {
+  if (str.length > length) {
+    return str.substring(0, length - ending.length) + ending;
+  }
+  return str;
+};
+
 const Entries =
   connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
@@ -79,6 +86,7 @@ class extends React.Component<Props, State> {
                 <TableCell>Name</TableCell>
                 <TableCell>Datum</TableCell>
                 <TableCell>Schulisch</TableCell>
+                <TableCell>Begründung</TableCell>
                 <TableCell>Admin</TableCell>
                 <TableCell>Eltern</TableCell>
               </TableRow>
@@ -99,6 +107,7 @@ class extends React.Component<Props, State> {
                         }</TableCell>
                       <TableCell>{entry.get('date').toDateString()}</TableCell>
                       <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
+                      <TableCell>{truncate(entry.get('reason'), 20, '...')}</TableCell>
                       <TableCell>{entry.get('signedAdmin')
                         ? <SignedAvatar />
                         : <UnsignedAvatar />
