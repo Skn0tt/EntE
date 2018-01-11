@@ -106,7 +106,7 @@ export interface IEntry {
   _id: MongoId;
   date: Date;
   dateEnd?: Date;
-  reason?: string;
+  reason: string;
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;

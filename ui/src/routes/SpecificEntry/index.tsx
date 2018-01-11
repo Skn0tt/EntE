@@ -83,6 +83,13 @@ const SpecificEntry: React.SFC<Props> = (props) => {
             ))}
           </TableBody>
         </Table>
+        {/* Reason */}
+        <Typography type="title">
+          Begründung
+        </Typography>
+        <Typography type="body1">
+          {entry.get('reason')}
+        </Typography>
         {/* Signed */}
         <Typography type="title">
           Signiert
