@@ -81,14 +81,14 @@ class extends React.Component<Props, State> {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography type="title" color="inherit" noWrap={true}>
+              <Typography type="title" color="inherit" noWrap>
                 EntschuldigungsVerfahren
               </Typography>
               <div className={classes.grow} />
               <RefreshButton />
             </Toolbar>
           </AppBar>
-          <Hidden mdUp={true}>
+          <Hidden mdUp>
             <MUIDrawer
               type="temporary"
               open={this.state.mobileOpen}
@@ -103,10 +103,10 @@ class extends React.Component<Props, State> {
               {drawer}
             </MUIDrawer>
           </Hidden>
-          <Hidden mdDown={true} implementation="css">
+          <Hidden smDown implementation="css">
             <MUIDrawer
               type="permanent"
-              open={true}
+              open
               classes={{
                 paper: classes.drawerPaper,
               }}

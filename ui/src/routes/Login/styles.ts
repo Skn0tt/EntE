@@ -7,7 +7,6 @@ const styles = (theme: Theme): StyleRules => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
 });
 

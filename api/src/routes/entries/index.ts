@@ -23,6 +23,7 @@ const populate = async (request: EntriesRequest, response, next) => {
     
     const userIds: MongoId[] = [];
     slots.forEach(slot => userIds.push(slot.teacher, slot.student));
+    request.entries.forEach(entry => userIds.push(entry.student));
 
     const users = await User
       .find({
