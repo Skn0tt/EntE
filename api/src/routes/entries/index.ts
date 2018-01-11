@@ -218,6 +218,11 @@ entriesRouter.put('/:entryId/sign', [
     }
     entry.save();
 
+    if (entry.signedAdmin && entry.signedParent) {
+      const slots = await Slot.find({ _id: { $in: entry.slots } });
+      slots.forEach(slot => slot.sign());
+    }
+
     if (request.user.role === ROLES.PARENT) {
       mail.dispatchSignedInformation(entry);
     }

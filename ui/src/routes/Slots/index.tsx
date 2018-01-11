@@ -14,6 +14,8 @@ import styles from './styles';
 
 import * as select from '../../redux/selectors';
 import { AppState, Slot, MongoId, User } from '../../interfaces/index';
+import SignedAvatar from '../SpecificEntry/elements/SignedAvatar';
+import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
 
 import { Route } from 'react-router';
 
@@ -77,6 +79,7 @@ class extends React.Component<Props, State> {
                 <TableCell>Datum</TableCell>
                 <TableCell>Von</TableCell>
                 <TableCell>Bis</TableCell>
+                <TableCell>Signiert</TableCell>
                 <TableCell>Lehrer</TableCell>
               </TableRow>
             </TableHead>
@@ -93,6 +96,11 @@ class extends React.Component<Props, State> {
                       <TableCell>{slot.get('date').toDateString()}</TableCell>
                       <TableCell>{slot.get('hour_from')}</TableCell>
                       <TableCell>{slot.get('hour_to')}</TableCell>
+                      <TableCell>{
+                        slot.get('signed')
+                          ? <SignedAvatar />
+                          : <UnsignedAvatar />
+                      }</TableCell>
                       <TableCell>{
                         this.props.getUser(slot.get('teacher')).get('displayname')
                       }</TableCell>

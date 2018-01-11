@@ -73,6 +73,7 @@ export interface ISlot extends ISlotCreate {
   _id: MongoId;
   student: MongoId;
   date: Date;
+  signed: boolean;
 }
 
 export interface ISlotCreate {
@@ -86,6 +87,7 @@ export class Slot extends Record({
   date: new Date(0),
   hour_from: -1,
   hour_to: -1,
+  signed: false,
   student: '',
   teacher: '',
 }) {
