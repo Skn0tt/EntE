@@ -6,7 +6,17 @@ import styles from './styles';
 
 import * as select from '../../redux/selectors';
 import { User, AppState } from '../../interfaces/index';
-import { Table, TableRow, TableHead, TableBody, TableCell, Grid, TextField } from 'material-ui';
+import {
+  Table,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Grid,
+  TextField,
+  Button,
+} from 'material-ui';
+import { Add as AddIcon } from 'material-ui-icons';
 import { Route } from 'react-router';
 
 interface StateProps {
@@ -90,6 +100,16 @@ class extends React.Component<Props, State> {
             </TableBody>
           </Table>
         </Grid>
+        <Route render={({ history }) => (
+          <Button
+            color="primary"
+            fab
+            onClick={() => history.push('/createEntry')}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Button>
+        )}/>
       </Grid>
     );
   }
