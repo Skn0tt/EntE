@@ -3,6 +3,7 @@ import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
 import { Table, TableRow, TableHead, TableCell, TableBody, Grid } from 'material-ui';
 import styles from './styles';
+import { Add as AddIcon } from 'material-ui-icons';
 
 import * as select from '../../redux/selectors';
 import { Entry, AppState, MongoId, User } from '../../interfaces/index';
@@ -13,6 +14,7 @@ import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
 import { getEntriesRequest } from '../../redux/actions';
 import { Route } from 'react-router';
 import TextField from 'material-ui/TextField/TextField';
+import Button from 'material-ui/Button/Button';
 
 interface StateProps {
   entries: Entry[];
@@ -123,6 +125,16 @@ class extends React.Component<Props, State> {
             </TableBody>
           </Table>
         </Grid>
+        <Route render={({ history }) => (
+          <Button
+            color="primary"
+            fab
+            onClick={() => history.push('/createEntry')}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Button>
+        )}/>
       </Grid>
     );
   }

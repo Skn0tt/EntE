@@ -18,7 +18,7 @@ const Home: React.SFC<Props> = props => (
       item={true}
     >
       <Button
-        component={p => <Link to="/newEntry" {...p} />}
+        component={p => <Link to="/createEntry" {...p} />}
         raised={true}
       >
         Neuer Eintrag
@@ -38,7 +38,7 @@ const Home: React.SFC<Props> = props => (
       item={true}
     >
       <Button
-        component={p => <Link to="/newUser" {...p} />}
+        component={p => <Link to="/createUser" {...p} />}
         raised={true}
       >
         Neuer Nutzer

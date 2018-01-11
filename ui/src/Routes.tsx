@@ -22,8 +22,8 @@ const AdminRoutes = () => (
     <Switch>
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/newEntry" component={CreateEntry} />
-      <Route path="/newUser" component={CreateUser} />
+      <Route path="/createEntry" component={CreateEntry} />
+      <Route path="/createUser" component={CreateUser} />
     </Switch>
   </React.Fragment>
 );
@@ -36,7 +36,7 @@ const ParentRoutes = () => (
     </Switch>
     <Switch>
       <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/newEntry" component={CreateEntry} />
+      <Route path="/createEntry" component={CreateEntry} />
     </Switch>
   </React.Fragment>
 );
