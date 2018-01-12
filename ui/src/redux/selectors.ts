@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
  * State
  */
 export const isLoading = (state: AppState): boolean => state.get('loading') > 0;
+export const getErrors = (state: AppState): Error[] => state.get('errors').toArray();
 
 /**
  * Auth

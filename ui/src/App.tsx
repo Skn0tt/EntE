@@ -12,6 +12,7 @@ import { checkAuthRequest } from './redux/actions';
 import * as select from './redux/selectors';
 import Drawer from './components/Drawer';
 import LoadingScreen from './components/LoadingScreen';
+import ErrorStream from './components/ErrorStream';
 
 // Routes
 import AuthenticatedRoute from './components/AuthenticatedRoute';
@@ -45,6 +46,7 @@ class App extends React.Component<Props, State> {
             <Drawer>
               <Routes role={this.props.role}/>
             </Drawer>
+            <ErrorStream />
           </AuthenticatedRoute>
         </Switch>
       </BrowserRouter>
