@@ -18,37 +18,43 @@ variables:
 Build API:
   image: docker
   stage: build
+  only:
+    - master
   services:
     - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd api
-    - docker build --pull -t $CONTAINER_API_TEST_IMAGE .
+    - docker build -t $CONTAINER_API_TEST_IMAGE .
     - docker push $CONTAINER_API_TEST_IMAGE
 
 Build UI:
   image: docker
   stage: build
+  only:
+    - master
   services:
     - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd ui
-    - docker build --pull -t $CONTAINER_UI_TEST_IMAGE .
+    - docker build -t $CONTAINER_UI_TEST_IMAGE .
     - docker push $CONTAINER_UI_TEST_IMAGE
 
 Build Reverse Proxy:
   image: docker
   stage: build
+  only:
+    - master
   services:
     - docker:dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd reverseproxy
-    - docker build --pull -t $CONTAINER_REVERSEPROXY_TEST_IMAGE .
+    - docker build -t $CONTAINER_REVERSEPROXY_TEST_IMAGE .
     - docker push $CONTAINER_REVERSEPROXY_TEST_IMAGE
 
 #
@@ -59,6 +65,8 @@ Build Reverse Proxy:
 Compose Startup Test:
   image: docker
   stage: test
+  only:
+    - master
   services:
     - docker:dind
   before_script:
@@ -71,6 +79,8 @@ Compose Startup Test:
 Test API:
   image: node
   stage: test
+  except:
+    - master
   before_script:
     - cd api
     - yarn
@@ -80,6 +90,8 @@ Test API:
 Test UI:
   image: node
   stage: test
+  except:
+    - master
   before_script:
     - cd api
     - yarn
@@ -90,6 +102,8 @@ Test UI:
 Lint API:
   image: node
   stage: test
+  except:
+    - master
   before_script:
     - cd api
     - yarn
@@ -99,6 +113,8 @@ Lint API:
 Lint UI:
   image: node
   stage: test
+  except:
+    - master
   before_script:
     - cd ui
     - yarn
@@ -112,26 +128,3 @@ Credentials:
     - cd ui/src/interfaces
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
     - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
-
-#
-# Upload
-#
-Push Images:
-  image: docker
-  stage: upload
-  variables:
-    GIT_STRATEGY: none
-  only:
-    - master
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - docker pull $CONTAINER_UI_TEST_IMAGE
-    - docker pull $CONTAINER_API_TEST_IMAGE
-    - docker pull $CONTAINER_REVERSEPROXY_TEST_IMAGE
-    - docker tag $CONTAINER_UI_TEST_IMAGE $CONTAINER_UI_RELEASE_IMAGE
-    - docker tag $CONTAINER_API_TEST_IMAGE $CONTAINER_API_RELEASE_IMAGE
-    - docker tag $CONTAINER_REVERSEPROXY_TEST_IMAGE $CONTAINER_REVERSEPROXY_RELEASE_IMAGE
-    - docker push $CONTAINER_UI_RELEASE_IMAGE
-    - docker push $CONTAINER_API_RELEASE_IMAGE
-    - docker push $CONTAINER_REVERSEPROXY_RELEASE_IMAGE
