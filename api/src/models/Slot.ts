@@ -11,6 +11,7 @@ export interface ISlot {
   date: Date;
   hour_from: Number;
   hour_to: Number;
+  signed: boolean;
   student: MongoId;
   teacher: MongoId;
 }

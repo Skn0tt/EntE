@@ -18,6 +18,7 @@ import slots from './routes/slots';
 import users from './routes/users';
 import login from './routes/login';
 import status from './routes/status';
+import { dispatchWeeklySummary } from './routines/mail';
 
 const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
@@ -79,6 +80,9 @@ app.use((err, req, res, next) => {
   next();
 });
 
+dispatchWeeklySummary()
+  .then(() => console.log('Successfully dispatched the weekly summary.'))
+  .catch(error => console.log(error));
 
 app.listen(app.get('port'), () => {
   console.log(

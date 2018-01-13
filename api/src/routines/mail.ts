@@ -6,6 +6,9 @@ import * as templates from '../templates';
 import { SignRequestOptions } from '../templates/SignRequest';
 import User from '../models/User';
 import { SignedInformationOptions } from '../templates/SignedInformation';
+import { ROLES } from '../constants';
+import Slot from '../models/Slot';
+import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
 
 let mailConfig;
 if (process.env.NODE_ENV === 'production') {
@@ -80,6 +83,35 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
       html,
       to: recipients,
       subject: metadata.subject,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const dispatchWeeklySummary = async () => {
+  try {
+    const teachers = await User.find({ role: ROLES.TEACHER });
+    await teachers.forEach(async (teacher) => {
+      try {
+        const slots = await Slot.find({ teacher: teacher._id });
+
+        const items: IRowData[] = slots.map(
+          slot => ({ displayname: teacher.displayname, date: slot.date, signed: slot.signed }),
+        );
+
+        const email = teacher.email;
+
+        const { html, metadata } = await WeeklySummary(items);
+
+        transporter.sendMail({
+          html,
+          to: email,
+          subject: metadata.subject,
+        });
+      } catch (error) {
+        throw error;
+      }
     });
   } catch (error) {
     throw error;
