@@ -9,8 +9,8 @@ export interface SlotModel extends Document, ISlot {
 
 export interface ISlot {
   date: Date;
-  hour_from: Number;
-  hour_to: Number;
+  hour_from: number;
+  hour_to: number;
   signed: boolean;
   student: MongoId;
   teacher: MongoId;

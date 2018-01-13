@@ -51,7 +51,7 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = handlebars.co
 </heml>
 `);
 
-const title = () => `Wöchentliche Zusammenfassung KW${1}`;
+const title = () => `Wöchentliche Zusammenfassung KW1`;
 
 export default async (items: IRowData[]): Promise<HEMLResults> => {
   const rows = items.map(item => tableRow(item));
