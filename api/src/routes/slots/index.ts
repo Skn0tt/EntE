@@ -39,6 +39,8 @@ const populate: RequestHandler = async (request: SlotRequest, response, next) =>
 const readPermissions: Permissions = {
   slots_read: true,
 };
+const oneYearBefore = new Date(+new Date() - (365 * 24 * 60 * 60 * 1000));
+const yearParams = { date: { $gte: oneYearBefore } };
 slotsRouter.get('/', async (request: SlotRequest, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
 
@@ -46,16 +48,16 @@ slotsRouter.get('/', async (request: SlotRequest, response, next) => {
     let slots;
     switch (request.user.role) {
       case ROLES.TEACHER:
-        slots = await Slot.find({ teacher: request.user._id });
+        slots = await Slot.find({ teacher: request.user._id, ...yearParams });
         break;
       case ROLES.PARENT:
-        slots = await Slot.find({ student: { $in: request.user.children } });
+        slots = await Slot.find({ student: { $in: request.user.children, ...yearParams } });
         break;
       case ROLES.STUDENT:
-        slots = await Slot.find({ student: request.user._id });
+        slots = await Slot.find({ student: request.user._id, ...yearParams });
         break;
       case ROLES.ADMIN:
-        slots = await Slot.find({});
+        slots = await Slot.find({ ...yearParams });
         break;
       default:
         break;

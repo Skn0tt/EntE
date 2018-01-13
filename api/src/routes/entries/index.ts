@@ -50,6 +50,8 @@ interface EntriesRequest extends Request {
 const readPermissions: Permissions = {
   entries_read: true,
 };
+const oneYearBefore = new Date(+new Date() - (365 * 24 * 60 * 60 * 1000));
+const yearParams = { date: { $gte: oneYearBefore } };
 entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
   
@@ -58,17 +60,18 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
       request.entries = await Entry
         .find({
           student: { $in: request.user.children },
+          ...yearParams,
         });
       
       return next();
     }
     if (request.user.role === 'teacher') {
-      request.entries = await Entry.find({});
+      request.entries = await Entry.find({ ...yearParams });
 
       return next();
     }
     if (request.user.role === 'admin') {
-      request.entries = await Entry.find({});
+      request.entries = await Entry.find({ ...yearParams });
     
       return next();
     }
@@ -76,6 +79,7 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
       request.entries = await Entry
         .find({
           student: request.user._id,
+          ...yearParams,
         });
       return next();
     }

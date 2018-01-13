@@ -24,9 +24,10 @@ import {
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
   ADD_RESPONSE,
+  REMOVE_ERROR,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 const initialState = new AppState({});
 
@@ -141,6 +142,12 @@ const reducer = handleActions({
     .update('entries', entries => entries.merge(
       Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry])),
     )),
+
+  /**
+   * REMOVE_ERROR
+   */
+  [REMOVE_ERROR]: (state: AppState, action: Action<number>) => state
+    .update('errors', (errors: List<Error>) => errors.remove(action.payload!)),
 
 } as ReducerMap<AppState, ActionType>, initialState); // tslint:disable-line:align
 

@@ -1,4 +1,4 @@
-import { Record, Map } from 'immutable';
+import { Record, Map, List } from 'immutable';
 
 export type errorPayload = {};
 export type MongoId = string;
@@ -177,7 +177,7 @@ export class AuthState extends Record({
 /**
  * Error
  */
-type ErrorState = Error[];
+type ErrorState = List<Error>;
 
 /**
  * AppState
@@ -196,7 +196,7 @@ export class AppState extends Record({
   users: Map<MongoId, User>(),
   slots: Map<MongoId, Slot>(),
   auth: new AuthState({}),
-  errors: [],
+  errors: List<Error>(),
   loading: 0,
 }) {
   constructor(props: Partial<IAppState>) {
