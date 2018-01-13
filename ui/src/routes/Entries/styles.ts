@@ -13,6 +13,9 @@ const styles = (theme: Theme): StyleRules => ({
     left: 'auto',
     position: 'fixed',
   },
+  table: {
+    overflowX: 'auto',
+  },
 });
 
 export default styles;

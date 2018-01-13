@@ -5,6 +5,9 @@ const styles = (theme: Theme): StyleRules => ({
   searchBar: {
     padding: 10,
   },
+  table: {
+    overflowX: 'auto',
+  },
 });
 
 export default styles;
