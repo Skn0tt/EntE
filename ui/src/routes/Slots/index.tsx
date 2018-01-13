@@ -71,7 +71,7 @@ class extends React.Component<Props, State> {
             />
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item className={classes.table}>
           <Table>
             <TableHead>
               <TableRow>
