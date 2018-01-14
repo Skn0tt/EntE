@@ -1,12 +1,11 @@
 import { ISlot } from '../models/Slot';
 import * as heml from 'heml';
 import * as handlebars from 'handlebars';
+import * as moment from 'moment';
 
 export interface HEMLResults {
   html: string;
-  metadata: {
-    subject: string;
-  };
+  subject: string;
 }
 
 export interface WeeklySummaryOptions {
@@ -39,22 +38,39 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = handlebars.co
     <container>
       <h1>Wöchtenliche Zusammenfassung</h1>
       
-      <table>
-        <th>
-        </th>
-        <tb>
-          {{items}}
-        </tb>
-      </table>
+          {{#if items.length}}
+            <table>
+              <tb>
+                {{#each items}}
+                  {{ this }}
+                {{/each}}
+              </tb>
+            </table>
+          {{else}}
+            <p>
+              Diese Woche hatten hat es in ihren Stunden keine Entschuldigungsanträge gegeben.
+            </p>
+          {{/if}}
     </container>
   </body>
 </heml>
 `);
 
-const title = () => `Wöchentliche Zusammenfassung KW1`;
+const getTitle = () => `Wöchentliche Zusammenfassung KW${moment().week()}`;
 
 export default async (items: IRowData[]): Promise<HEMLResults> => {
-  const rows = items.map(item => tableRow(item));
-  const data = await template({ items: rows, preview: title(), subject: title() });
-  return await heml(data);
+  try {
+    const rows = items.map(item => tableRow(item));
+    const title = getTitle();
+  
+    const data = template({
+      items: rows,
+      preview: title,
+      subject: title,
+    });
+    // const result = await heml(data);
+    return { html: data, subject: title };
+  } catch (error) {
+    throw error;
+  }
 };

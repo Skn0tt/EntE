@@ -7,7 +7,7 @@ import { SignRequestOptions } from '../templates/SignRequest';
 import User from '../models/User';
 import { SignedInformationOptions } from '../templates/SignedInformation';
 import { ROLES } from '../constants';
-import Slot from '../models/Slot';
+import Slot, { SlotModel } from '../models/Slot';
 import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
 
 let mailConfig;
@@ -89,25 +89,31 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   }
 };
 
-export const dispatchWeeklySummary = async () => {
+export const dispatchWeeklySummary = async (): Promise<void> => {
   try {
     const teachers = await User.find({ role: ROLES.TEACHER });
-    await teachers.forEach(async (teacher) => {
+    teachers.forEach(async (teacher) => {
       try {
-        const slots = await Slot.find({ teacher: teacher._id });
+        const slots: SlotModel[] = await Slot.find({ teacher: teacher._id });
 
         const items: IRowData[] = slots.map(
-          slot => ({ displayname: teacher.displayname, date: slot.date, signed: slot.signed }),
+          slot => ({
+            displayname: teacher.displayname,
+            date: slot.date,
+            signed: slot.signed,
+          }),
         );
 
         const email = teacher.email;
 
-        const { html, metadata } = await WeeklySummary(items);
+        const { html, subject } = await WeeklySummary(items);
 
-        transporter.sendMail({
+        await transporter.sendMail({
           html,
+          subject,
           to: email,
-          subject: metadata.subject,
+          from: 'entschuldigungsverfahren@simonknott.de',
+          text: 'Test',
         });
       } catch (error) {
         throw error;
