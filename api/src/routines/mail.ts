@@ -89,32 +89,40 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   }
 };
 
+const twoWeeksBefore: Date = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 export const dispatchWeeklySummary = async (): Promise<void> => {
   try {
     const teachers = await User.find({ role: ROLES.TEACHER });
     teachers.forEach(async (teacher) => {
       try {
-        const slots: SlotModel[] = await Slot.find({ teacher: teacher._id });
+        const slots: SlotModel[] = await Slot.find({
+          teacher: teacher._id,
+          date: { $gte: twoWeeksBefore },
+        });
 
-        const items: IRowData[] = slots.map(
-          slot => ({
-            displayname: teacher.displayname,
+        const items: IRowData[] = await Promise.all(slots.map(async (slot) => {
+          const student = await User.findById(slot.student);
+
+          return ({
+            displayname: student.displayname,
             date: slot.date,
             signed: slot.signed,
-          }),
-        );
+            hour_from: slot.hour_from,
+            hour_to: slot.hour_to,
+          });
+        }));
 
         const email = teacher.email;
 
         const { html, subject } = await WeeklySummary(items);
 
-        await transporter.sendMail({
+        const info = await transporter.sendMail({
           html,
           subject,
           to: email,
           from: 'entschuldigungsverfahren@simonknott.de',
-          text: 'Test',
         });
+        console.log('Mail: Dispatched WeeklySummary to', info.accepted);
       } catch (error) {
         throw error;
       }
