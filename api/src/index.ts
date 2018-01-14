@@ -4,7 +4,7 @@ import * as passport from 'passport';
 import { BasicStrategy } from 'passport-http';
 import * as mongoose from 'mongoose';
 import * as validator from 'express-validator';
-import { Promise } from 'bluebird';
+import { Promise as BBPromise } from 'bluebird';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as Raven from 'raven';
@@ -18,6 +18,8 @@ import slots from './routes/slots';
 import users from './routes/users';
 import login from './routes/login';
 import status from './routes/status';
+import dev from './routes/dev';
+import cron from './routines/cron';
 
 const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
@@ -39,12 +41,12 @@ app.use(express.json());
 app.use(validator());
 
 const mongoAddress =
-  kubernetes ?
-    'mongodb://localhost/ev' :
-    'mongodb://mongodb/ev';
+  kubernetes
+    ? 'mongodb://localhost/ev'
+    : 'mongodb://mongodb/ev';
 
 // Mongoose
-require('mongoose').Promise = Promise;
+require('mongoose').Promise = BBPromise;
 mongoose.connect(mongoAddress, { useMongoClient: true });
 
 // Security Measures
@@ -68,6 +70,7 @@ app.use('/slots', slots);
 app.use('/users', users);
 app.use('/login', login);
 app.use('/status', status);
+if (!production) { app.use('/dev', dev); }
 
 // Error Handling
 app.use(Raven.errorHandler());
@@ -79,6 +82,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
+// Cron Jobs
+if (production) { cron(); }
 
 app.listen(app.get('port'), () => {
   console.log(
