@@ -42,8 +42,8 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   try {
     const hemlTemplate = await signRequest({
       preview: 'Sign the Request!',
-      link_address: 'https://simonknott.de',
-      link_display: 'test',
+      link_address: 'http://localhost/entries/' + entry._id,
+      link_display: 'Show Entry',
       subject: 'You are requested to sign the Entry.',
     });
     const { html, metadata, errors } = await heml(hemlTemplate);
@@ -69,9 +69,9 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   try {
     const hemlTemplate = await signRequest({
       preview: 'The Entry was signed.',
-      link_address: 'https://simonknott.de',
-      link_display: 'test',
-      subject: 'Entry #42 was signed.',
+      link_address: 'http://localhost/entries/' + entry._id,
+      link_display: 'View the Entry',
+      subject: 'An Entry was signed.',
     });
     const { html, metadata, errors } = await heml(hemlTemplate);
 
