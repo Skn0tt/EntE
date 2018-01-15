@@ -65,14 +65,14 @@ class extends React.Component<Props, State> {
 
   render() {
     return (
-      <Grid container={true} direction="column">
-        <Grid item={true}>
+      <Grid container direction="column">
+        <Grid item>
           <Typography type="title">
             Kinder
           </Typography>
         </Grid>
         {/* List Children */}
-        <Grid item={true}>
+        <Grid item>
           <List>
             {this.state.children.map((id, index) => (
               <ListItem>
@@ -87,14 +87,14 @@ class extends React.Component<Props, State> {
           </List>
         </Grid>
         {/* Add Children */}
-        <Grid item={true} container={true}>
-          <Grid item={true} xs={11}>
+        <Grid item container>
+          <Grid item xs={11}>
             <TextField
-              select={true}
+              select
               label="Kind"
               value={this.state.selected}
               onChange={this.handleSelectChild}
-              fullWidth={true}
+              fullWidth
               SelectProps={{ native: true }}
               helperText="Fügen sie Kinder hinzu."
             >
@@ -108,13 +108,13 @@ class extends React.Component<Props, State> {
               ))}
             </TextField>
           </Grid>
-          <Grid item={true} xs={1}>
-            <Button fab={true} mini={true} onClick={() => this.handleAdd()}>
+          <Grid item xs={1}>
+            <Button fab mini onClick={() => this.handleAdd()}>
               <AddIcon />
             </Button>
           </Grid>
-          <Grid item={true} xs={12}>
-            <Button raised={true} color="primary" onClick={() => this.handleSubmit()}>
+          <Grid item xs={12}>
+            <Button raised color="primary" onClick={() => this.handleSubmit()}>
               Kinder aktualisieren
               <UpdateIcon />
             </Button>

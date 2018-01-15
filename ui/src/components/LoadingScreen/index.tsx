@@ -23,7 +23,7 @@ const Loading: React.SFC<Props> = (props) => {
   return (
     <Grid
       className={classes.root}
-      container={true}
+      container
       direction="row"
       alignItems="center"
       justify="center"
@@ -31,7 +31,7 @@ const Loading: React.SFC<Props> = (props) => {
       {props.authChecked && <Redirect to={{ state, pathname: '/login' }} />}
       <Grid
         className={classes.item}
-        item={true}
+        item
       >
         <CircularProgress
           size={100}

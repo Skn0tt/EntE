@@ -117,22 +117,22 @@ class extends React.Component<SlotEntryProps, State> {
   render() {
     return (
       <Grid
-        container={true}
+        container
         direction="row"
       >
 
         {/* Teacher */}
         <Grid
-          item={true}
+          item
           xs={12}
           md={4}
         >
           <TextField
-            select={true}
+            select
             label="Lehrer"
             value={this.state.teacher || ''}
             onChange={this.handleChangeTeacher}
-            fullWidth={true}
+            fullWidth
             error={!this.teacherValid()}
             SelectProps={{ native: true }}
             helperText="Wählen sie den Lehrer aus."
@@ -150,13 +150,13 @@ class extends React.Component<SlotEntryProps, State> {
         
         {/* From */}
         <Grid
-          item={true}
+          item
           xs={5}
           md={3}
         >
           <TextField
             label="Von"
-            fullWidth={true}
+            fullWidth
             value={this.state.hour_from}
             onChange={this.handleChangeFrom}
             type="number"
@@ -169,13 +169,13 @@ class extends React.Component<SlotEntryProps, State> {
 
         {/* To */}
         <Grid
-          item={true}
+          item
           xs={5}
           md={3}
         >
           <TextField
             label="Bis"
-            fullWidth={true}
+            fullWidth
             value={this.state.hour_to}
             onChange={this.handleChangeTo}
             error={!this.toValid()}
@@ -188,14 +188,14 @@ class extends React.Component<SlotEntryProps, State> {
 
         {/* Add */}
         <Grid
-          item={true}
+          item
           xs={2}
           md={2}
         >
           <Tooltip title="Hinzufügen">
             <Button
-              fab={true}
-              mini={true}
+              fab
+              mini
               disabled={!this.slotInputValid()}
               onClick={() => this.handleAddSlot()}
             >

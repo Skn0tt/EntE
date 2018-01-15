@@ -198,7 +198,7 @@ class extends React.Component<Props, State> {
       <Dialog
         fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
-        open={true}
+        open
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
@@ -220,10 +220,10 @@ class extends React.Component<Props, State> {
                 </Tooltip>
               </Grid>
               {isParent && (
-                <Grid item={true} >
+                <Grid item >
                   <TextField
-                    fullWidth={true}
-                    select={true}
+                    fullWidth
+                    select
                     label="Kind"
                     value={this.state.student}
                     onChange={this.handleChangeStudent}
@@ -240,19 +240,19 @@ class extends React.Component<Props, State> {
                   </TextField>
                 </Grid>
               )}
-              <Grid item={true} >
-                <Grid container={true} direction="row" >
-                  <Grid item={true} xs={8} >
+              <Grid item >
+                <Grid container direction="row" >
+                  <Grid item xs={8} >
                     <DatePicker
                       helperText="Von"
                       error={!this.dateValid()}
                       value={this.state.date}
                       onChange={this.handleChangeDate}
                       minDate={this.minDate}
-                      fullWidth={true}
+                      fullWidth
                     />
                   </Grid>
-                  <Grid item={true} xs={4} > 
+                  <Grid item xs={4} > 
                     <FormControlLabel
                       onChange={this.handleChangeIsRange}
                       control={<Switch />}
@@ -260,14 +260,14 @@ class extends React.Component<Props, State> {
                     /> 
                   </Grid>
                   {this.state.isRange && (
-                    <Grid item={true} xs={8} >
+                    <Grid item xs={8} >
                       <DatePicker
                         helperText="Bis"
                         error={!this.dateValid()}
                         value={this.state.dateEnd}
                         onChange={this.handleChangeDateEnd}
                         minDate={this.state.date}
-                        fullWidth={true}
+                        fullWidth
                       />
                     </Grid>
                   )}

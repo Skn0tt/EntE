@@ -81,7 +81,7 @@ class extends React.Component<Props, State> {
         {this.props.authValid && <Redirect to={from} />}
         <Dialog
           fullScreen={this.props.fullScreen}
-          open={true}
+          open
           onKeyPress={this.handleKeyPress}
         >
           <DialogTitle>Login</DialogTitle>
@@ -91,14 +91,14 @@ class extends React.Component<Props, State> {
             </DialogContentText>
             <div  className={classes.contentContainer} >
             <TextField
-              fullWidth={true}
+              fullWidth
               id="name"
               label="Name"
               autoComplete="username"
               onChange={this.handleChangeUsername}
             />
             <TextField
-              fullWidth={true}
+              fullWidth
               id="password"
               label="Password"
               type="password"

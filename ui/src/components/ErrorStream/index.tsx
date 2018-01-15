@@ -28,7 +28,7 @@ const ErrorStream: React.SFC<Props> = props => (
         message={<span>{error.message}</span>}
         autoHideDuration={6000}
         onClose={() => props.removeError(index)}
-        open={true}
+        open
         action={
           <IconButton
             onClick={() => props.removeError(index)}

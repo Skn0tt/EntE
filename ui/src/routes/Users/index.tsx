@@ -87,7 +87,7 @@ class extends React.Component<Props, State> {
                   render={({ history }) => (
                     <TableRow
                       onClick={() => history.push(`users/${user.get('_id')}`)}
-                      hover={true}
+                      hover
                     >
                       <TableCell>{user.get('username')}</TableCell>
                       <TableCell>{user.get('displayname')}</TableCell>
