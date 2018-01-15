@@ -86,3 +86,10 @@ export const ParentItems = () => (
     <Entries />
   </List>
 );
+
+export const ManagerItems = () => (
+  <List>
+    <Entries />
+    <Slots />
+  </List>
+);

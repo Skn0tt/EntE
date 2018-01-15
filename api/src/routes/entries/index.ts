@@ -8,6 +8,7 @@ import Entry, { EntryModel } from '../../models/Entry';
 import Slot, { ISlot } from '../../models/Slot';
 import * as mail from '../../routines/mail';
 import User from '../../models/User';
+import { ObjectID } from 'bson';
 
 const entriesRouter = Router();
 
@@ -56,7 +57,10 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
   if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
   
   try {
-    if (request.user.role === 'parent') {
+    if (
+      request.user.role === ROLES.PARENT ||
+      request.user.role === ROLES.MANAGER
+    ) {
       request.entries = await Entry
         .find({
           student: { $in: request.user.children },
@@ -65,17 +69,17 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
       
       return next();
     }
-    if (request.user.role === 'teacher') {
+    if (request.user.role === ROLES.TEACHER) {
       request.entries = await Entry.find({ ...yearParams });
 
       return next();
     }
-    if (request.user.role === 'admin') {
+    if (request.user.role === ROLES.ADMIN) {
       request.entries = await Entry.find({ ...yearParams });
     
       return next();
     }
-    if (request.user.role === 'student') {
+    if (request.user.role === ROLES.STUDENT) {
       request.entries = await Entry
         .find({
           student: request.user._id,
@@ -217,14 +221,16 @@ entriesRouter.put('/:entryId/sign', [
 
     if (!entry) return response.status(404).end('Couldnt find Entry.');
 
-    if (request.user.role === ROLES.ADMIN) {
-      entry.signAdmin();
+    if (request.user.role === ROLES.MANAGER) {
+      if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
+        entry.signManager();
+      }
     } else if (request.user.role === ROLES.PARENT) {
       entry.signParent();
     }
     entry.save();
 
-    if (entry.signedAdmin && entry.signedParent) {
+    if (entry.signedManager && entry.signedParent) {
       const slots = await Slot.find({ _id: { $in: entry.slots } });
       slots.forEach(slot => slot.sign());
     }

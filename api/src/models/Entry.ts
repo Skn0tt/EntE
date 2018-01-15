@@ -4,7 +4,7 @@ import * as idValidator from 'mongoose-id-validator';
 
 export interface EntryModel extends Document, IEntry {
   signParent(): void;
-  signAdmin(): void;
+  signManager(): void;
 }
 
 export interface IEntry {
@@ -13,7 +13,7 @@ export interface IEntry {
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
-  signedAdmin: boolean;
+  signedManager: boolean;
   signedParent: boolean;
 }
 
@@ -27,8 +27,8 @@ const entrySchema: Schema = new Schema({
   slots: [{ type: Schema.Types.ObjectId, ref: 'slots' }],
   forSchool: { type: Boolean, required: true },
   reason: { type: String, maxlength: 300 },
+  signedManager: { type: Boolean, required: true, default: false },
   signedParent: { type: Boolean, required: true, default: false },
-  signedAdmin: { type: Boolean, required: true, default: false },
 }, {
   versionKey: false,
 });
@@ -44,8 +44,8 @@ entrySchema.methods.signParent = function (callback) : void {
   this.signedParent = true;
   this.save(callback);
 };
-entrySchema.methods.signAdmin = function (callback) : void {
-  this.signedAdmin = true;
+entrySchema.methods.signManager = function (callback) : void {
+  this.signedManager = true;
   this.save(callback);
 };
 

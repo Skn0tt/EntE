@@ -44,11 +44,24 @@ const StudentRoutes = () => <ParentRoutes />;
 
 const TeacherRoutes = () => (
   <React.Fragment>
-  <Switch>
-    <Route exact path="/" component={Home} />
-    <Route path="/slots" component={Slots} />
-  </Switch>
-</React.Fragment>
+    <Switch>
+      <Route exact={true} path="/" component={Home} />
+      <Route path="/slots" component={Slots} />
+    </Switch>
+  </React.Fragment>
+);
+
+const ManagerRoutes = () => (
+  <React.Fragment>
+    <Switch>
+      <Route exact={true} path="/" component={Home} />
+      <Route path="/entries" component={Entries} />
+      <Route path="/slots" component={Slots} />
+    </Switch>
+    <Switch>
+      <Route path="/entries/:entryId" component={SpecificEntry} />
+    </Switch>
+  </React.Fragment>
 );
 
 interface Props {
@@ -60,6 +73,7 @@ const Routes: React.SFC<Props> = (props) => {
   if (props.role === Roles.STUDENT) return <StudentRoutes />;
   if (props.role === Roles.TEACHER) return <TeacherRoutes />;
   if (props.role === Roles.PARENT) return <ParentRoutes />;
+  if (props.role === Roles.MANAGER) return <ManagerRoutes />;
   return null;
 };
 

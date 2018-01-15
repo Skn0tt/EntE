@@ -32,6 +32,7 @@ export enum Roles {
   STUDENT = 'student',
   TEACHER = 'teacher',
   ADMIN = 'admin',
+  MANAGER = 'manager',
 }
 
 export interface IUserBase {
@@ -112,7 +113,7 @@ export interface IEntry {
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
-  signedAdmin: boolean;
+  signedManager: boolean;
   signedParent: boolean;
 }
 
@@ -133,7 +134,7 @@ export class Entry extends Record({
   student: '',
   slots: [],
   forSchool: false,
-  signedAdmin: false,
+  signedManager: false,
   signedParent: false,
 }) {
   constructor(props: Partial<IEntry>) {
