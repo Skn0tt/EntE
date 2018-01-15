@@ -15,7 +15,14 @@ import LoadingIndicator from '../LoadingIndicator';
 import * as select from '../../redux/selectors';
 
 import styles from './styles';
-import { AdminItems, StandardItems, TeacherItems, StudentItems, ParentItems } from './items';
+import {
+  AdminItems,
+  ManagerItems,
+  StandardItems,
+  TeacherItems,
+  StudentItems,
+  ParentItems,
+} from './items';
 import RefreshButton from '../RefreshButton';
 import { connect } from 'react-redux';
 import { AppState, Roles } from '../../interfaces/index';
@@ -64,6 +71,7 @@ class extends React.Component<Props, State> {
         {this.props.role === Roles.TEACHER && <TeacherItems />}
         {this.props.role === Roles.PARENT && <ParentItems />}
         {this.props.role === Roles.STUDENT && <StudentItems />}
+        {this.props.role === Roles.MANAGER && <ManagerItems />}
       </div>
     );
 

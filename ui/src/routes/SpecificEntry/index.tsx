@@ -97,13 +97,13 @@ const SpecificEntry: React.SFC<Props> = (props) => {
         <List>
           {/* Admin */}
           <ListItem>
-            {entry.get('signedAdmin') ?
+            {entry.get('signedManager') ?
               <SignedAvatar />
               : <UnsignedAvatar />
             }
-            <ListItemText primary="Admin" />
-            {!entry.get('signedAdmin') &&
-              props.role === Roles.ADMIN && (
+            <ListItemText primary="Stufenleiter" />
+            {!entry.get('signedManager') &&
+              props.role === Roles.MANAGER && (
               <ListItemSecondaryAction>
                 <Button
                   className={classes.signEntryButton}

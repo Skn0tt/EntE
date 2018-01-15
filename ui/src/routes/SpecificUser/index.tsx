@@ -49,7 +49,10 @@ const SpecificUser: React.SFC<Props> = (props) => {
   
   if (!user) return null;
 
-  const isParent = user.get('role') === Roles.PARENT;
+  const showChildren =
+    user.get('role') === Roles.PARENT ||
+    user.get('role') === Roles.MANAGER;
+  
   return (
     <Dialog
       open={true}
@@ -69,7 +72,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
         <EmailUpdate userId={userId} />
         <Divider />
         <DisplaynameUpdate userId={userId} />
-        {isParent && (
+        {showChildren && (
           <React.Fragment>
             <Divider />
             <ChildrenUpdate userId={userId}/>

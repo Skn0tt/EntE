@@ -8,6 +8,7 @@ import Entry, { EntryModel } from '../../models/Entry';
 import Slot, { ISlot } from '../../models/Slot';
 import * as mail from '../../routines/mail';
 import User from '../../models/User';
+import { ObjectID } from 'bson';
 
 const entriesRouter = Router();
 
@@ -221,7 +222,7 @@ entriesRouter.put('/:entryId/sign', [
     if (!entry) return response.status(404).end('Couldnt find Entry.');
 
     if (request.user.role === ROLES.MANAGER) {
-      if (request.user.children.findIndex(entry.student) !== -1) {
+      if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
         entry.signManager();
       }
     } else if (request.user.role === ROLES.PARENT) {

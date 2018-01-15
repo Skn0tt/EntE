@@ -110,7 +110,7 @@ class extends React.Component<Props, State> {
                       <TableCell>{entry.get('date').toDateString()}</TableCell>
                       <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
                       <TableCell>{truncate(entry.get('reason'), 20, '...')}</TableCell>
-                      <TableCell>{entry.get('signedAdmin')
+                      <TableCell>{entry.get('signedManager')
                         ? <SignedAvatar />
                         : <UnsignedAvatar />
                       }</TableCell>

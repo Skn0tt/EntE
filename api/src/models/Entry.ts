@@ -28,7 +28,7 @@ const entrySchema: Schema = new Schema({
   forSchool: { type: Boolean, required: true },
   reason: { type: String, maxlength: 300 },
   signedManager: { type: Boolean, required: true, default: false },
-  signedAdmin: { type: Boolean, required: true, default: false },
+  signedParent: { type: Boolean, required: true, default: false },
 }, {
   versionKey: false,
 });
@@ -45,7 +45,7 @@ entrySchema.methods.signParent = function (callback) : void {
   this.save(callback);
 };
 entrySchema.methods.signManager = function (callback) : void {
-  this.signedAdmin = true;
+  this.signedManager = true;
   this.save(callback);
 };
 
