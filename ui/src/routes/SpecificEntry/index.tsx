@@ -67,9 +67,11 @@ const SpecificEntry: React.SFC<Props> = (props) => {
         </Typography>
         <Table>
           <TableHead>
-            <TableCell>Von</TableCell>
-            <TableCell>Bis</TableCell>
-            <TableCell>Lehrer</TableCell>
+            <TableRow>
+              <TableCell>Von</TableCell>
+              <TableCell>Bis</TableCell>
+              <TableCell>Lehrer</TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {props.getSlots(entry.get('slots')).map(slot => (
