@@ -13,11 +13,21 @@ interface Permissions {
 const adminPermissions: Permissions = {
   slots_read: true,
   entries_read: true,
-  entries_create: true,
-  entries_write: true,
+  entries_create: false,
+  entries_write: false,
   teachers_read: true,
   users_read: true,
   users_write: true,
+};
+
+const managerPermissions: Permissions = {
+  slots_read: true,
+  entries_read: true,
+  entries_create: false,
+  entries_write: true,
+  teachers_read: true,
+  users_read: true,
+  users_write: false,
 };
 
 const studentPermissions: Permissions = {
@@ -75,6 +85,7 @@ const check = (role: ROLES, neededPermissions: Permissions) : boolean => {
   if (role === ROLES.TEACHER) return compare(teacherPermissions, neededPermissions);
   if (role === ROLES.PARENT) return compare(parentPermissions, neededPermissions);
   if (role === ROLES.STUDENT) return compare(studentPermissions, neededPermissions);
+  if (role === ROLES.MANAGER) return compare(managerPermissions, neededPermissions);
   return false;
 };
 
