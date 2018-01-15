@@ -170,7 +170,7 @@ usersRouter.post('/', [
 const updatePermissions : Permissions = {
   users_write: true,
 };
-usersRouter.put('/:userId', [
+usersRouter.patch('/:userId', [
   body('role').isIn(roles).optional(),
   body('email').isEmail().optional(),
   body('username').isAlphanumeric().optional(),
