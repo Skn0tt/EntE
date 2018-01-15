@@ -13,10 +13,10 @@ import {
   Dialog,
   Button,
   FormControl,
-  Switch,
   List as MUIList,
   TextField,
   Grid,
+  Radio,
 } from 'material-ui';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
@@ -30,8 +30,9 @@ import * as moment from 'moment';
 import 'moment/locale/de';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
-import Tooltip from 'material-ui/Tooltip/Tooltip';
 import Typography from 'material-ui/Typography/Typography';
+import RadioGroup from 'material-ui/Radio/RadioGroup';
+import FormLabel from 'material-ui/Form/FormLabel';
 
 /**
  * ## Moment Setup
@@ -46,6 +47,16 @@ const immutableDelete = (arr: any[], index: number) =>
   arr.slice(0, index).concat(arr.slice(index + 1));
 
 const oneDay: number = 24 * 60 * 60 * 1000;
+
+enum forSchool {
+  SCHULISCH = 'SCHULISCH',
+  KRANKHEIT = 'KRANKHEIT',
+}
+
+enum kind {
+  SINGLE = 'SINGLE',
+  MULTIPLE = 'MULTIPLE',
+}
 
 interface IProps {
   getRole(): Roles;
@@ -133,11 +144,11 @@ class extends React.Component<Props, State> {
     this.setState({ date, dateEnd });
   }
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-  handleChangeForSchool = (event: React.ChangeEvent<{}>, checked: boolean) =>
-    this.setState({ forSchool: checked })
+  handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ forSchool: event.target.value === forSchool.SCHULISCH })
 
-  handleChangeIsRange = (event: React.ChangeEvent<{}>, checked: boolean) =>
-    this.setState({ isRange: checked })
+  handleChangeKind = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ isRange: event.target.value === kind.MULTIPLE })
 
   handleAddSlot = (slot: ISlotCreate) => {
     if (this.state.slots.indexOf(slot) !== -1) return;
@@ -204,20 +215,47 @@ class extends React.Component<Props, State> {
         <DialogContent>
           <Grid container direction="column" spacing={40}>
             <Grid item container direction="column">
-              <Grid item>
-                <Tooltip title="Entschuldigung Schulischer Art/Krankheit?">
-                  <FormControl>
-                    <FormControlLabel
-                      onChange={this.handleChangeForSchool}
-                      control={<Switch />}
-                      label={
-                        this.state.forSchool
-                          ? 'Schulisch'
-                          : 'Krankheit'
-                      }
-                    />
+              <Grid item container direction="row">
+                <Grid item xs={6}>
+                  <FormControl required>
+                    <FormLabel component="legend">Dauer</FormLabel>
+                    <RadioGroup
+                      onChange={this.handleChangeKind}
+                      value={this.state.isRange ? kind.MULTIPLE : kind.SINGLE}
+                    >
+                      <FormControlLabel
+                        value={kind.SINGLE}
+                        control={<Radio />}
+                        label="Eintägig"
+                      />
+                      <FormControlLabel
+                        value={kind.MULTIPLE}
+                        control={<Radio />}
+                        label="Mehrtägig"
+                      />
+                    </RadioGroup>
                   </FormControl>
-                </Tooltip>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl required>
+                    <FormLabel component="legend">Grund</FormLabel>
+                    <RadioGroup
+                      onChange={this.handleChangeForSchool}
+                      value={this.state.forSchool ? forSchool.SCHULISCH : forSchool.KRANKHEIT}
+                    >
+                      <FormControlLabel
+                        value={forSchool.KRANKHEIT}
+                        control={<Radio />}
+                        label="Krankheit"
+                      />
+                      <FormControlLabel
+                        value={forSchool.SCHULISCH}
+                        control={<Radio />}
+                        label="Schulisch"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
               </Grid>
               {isParent && (
                 <Grid item >
@@ -240,31 +278,26 @@ class extends React.Component<Props, State> {
                   </TextField>
                 </Grid>
               )}
-              <Grid item >
-                <Grid container direction="row" >
-                  <Grid item xs={8} >
+              <Grid item={true} >
+                <Grid container={true} direction="row" >
+                  <Grid item={true} xs={this.state.isRange ? 6 : 12} >
                     <DatePicker
                       helperText="Von"
                       error={!this.dateValid()}
                       value={this.state.date}
+                      autoOk
                       onChange={this.handleChangeDate}
                       minDate={this.minDate}
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={4} > 
-                    <FormControlLabel
-                      onChange={this.handleChangeIsRange}
-                      control={<Switch />}
-                      label="Mehrtägig"
-                    /> 
-                  </Grid>
                   {this.state.isRange && (
-                    <Grid item xs={8} >
+                    <Grid item={true} xs={6} >
                       <DatePicker
                         helperText="Bis"
                         error={!this.dateValid()}
                         value={this.state.dateEnd}
+                        autoOk
                         onChange={this.handleChangeDateEnd}
                         minDate={this.state.date}
                         fullWidth
@@ -277,7 +310,7 @@ class extends React.Component<Props, State> {
             <Grid item>
               <TextField
                 helperText="Wieso haben sie gefehlt? Maximal 300 Zeichen"
-                placeholder="Grund (Optional)"
+                placeholder="Bemerkung (Optional, z.B. Grund)"
                 onChange={this.handleChangeReason}
                 error={!this.reasonValid()}
                 multiline
@@ -285,7 +318,7 @@ class extends React.Component<Props, State> {
               />
             </Grid>
             {!this.state.isRange && (
-              <Grid item>
+              <Grid item xs={12}>
                 <Typography type="title">
                   Stunden
                 </Typography>

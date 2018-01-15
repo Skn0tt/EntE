@@ -4,7 +4,6 @@ import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles, Grid, TextField, Button } from 'material-ui';
 import * as select from '../../../../redux/selectors';
-import { Add as AddIcon } from 'material-ui-icons';
 
 import styles from './styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
@@ -125,7 +124,7 @@ class extends React.Component<SlotEntryProps, State> {
         <Grid
           item
           xs={12}
-          md={4}
+          md={3}
         >
           <TextField
             select
@@ -150,9 +149,8 @@ class extends React.Component<SlotEntryProps, State> {
         
         {/* From */}
         <Grid
-          item
-          xs={5}
-          md={3}
+          item={true}
+          xs={3}
         >
           <TextField
             label="Von"
@@ -169,9 +167,8 @@ class extends React.Component<SlotEntryProps, State> {
 
         {/* To */}
         <Grid
-          item
-          xs={5}
-          md={3}
+          item={true}
+          xs={3}
         >
           <TextField
             label="Bis"
@@ -188,18 +185,16 @@ class extends React.Component<SlotEntryProps, State> {
 
         {/* Add */}
         <Grid
-          item
-          xs={2}
-          md={2}
+          item={true}
+          xs={3}
         >
           <Tooltip title="Hinzufügen">
             <Button
-              fab
-              mini
+              raised
               disabled={!this.slotInputValid()}
               onClick={() => this.handleAddSlot()}
             >
-              <AddIcon />
+              Hinzufügen
             </Button>
           </Tooltip>
         </Grid>
