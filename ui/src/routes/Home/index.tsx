@@ -10,36 +10,36 @@ interface Props extends WithStyles, RouteComponentProps<{}> {}
 
 const Home: React.SFC<Props> = props => (
   <Grid
-    container={true}
+    container
     justify="center"
     alignItems="center"
   >
     <Grid
-      item={true}
+      item
     >
       <Button
         component={p => <Link to="/createEntry" {...p} />}
-        raised={true}
+        raised
       >
         Neuer Eintrag
       </Button>
     </Grid>
     <Grid
-      item={true}
+      item
     >
       <Button
         component={p => <Link to="/entries" {...p} />}
-        raised={true}
+        raised
       >
         Meine Einträge
       </Button>
     </Grid>
     <Grid
-      item={true}
+      item
     >
       <Button
         component={p => <Link to="/createUser" {...p} />}
-        raised={true}
+        raised
       >
         Neuer Nutzer
       </Button>

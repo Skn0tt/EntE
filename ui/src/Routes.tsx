@@ -14,7 +14,7 @@ import CreateUser from './routes/CreateUser';
 const AdminRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact={true} path="/" component={Home} />
+      <Route exact path="/" component={Home} />
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
@@ -31,7 +31,7 @@ const AdminRoutes = () => (
 const ParentRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact={true} path="/" component={Home} />
+      <Route exact path="/" component={Home} />
       <Route path="/entries" component={Entries} />
     </Switch>
     <Switch>

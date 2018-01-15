@@ -116,22 +116,22 @@ class extends React.Component<SlotEntryProps, State> {
   render() {
     return (
       <Grid
-        container={true}
+        container
         direction="row"
       >
 
         {/* Teacher */}
         <Grid
-          item={true}
+          item
           xs={12}
           md={3}
         >
           <TextField
-            select={true}
+            select
             label="Lehrer"
             value={this.state.teacher || ''}
             onChange={this.handleChangeTeacher}
-            fullWidth={true}
+            fullWidth
             error={!this.teacherValid()}
             SelectProps={{ native: true }}
             helperText="Wählen sie den Lehrer aus."
@@ -154,7 +154,7 @@ class extends React.Component<SlotEntryProps, State> {
         >
           <TextField
             label="Von"
-            fullWidth={true}
+            fullWidth
             value={this.state.hour_from}
             onChange={this.handleChangeFrom}
             type="number"
@@ -172,7 +172,7 @@ class extends React.Component<SlotEntryProps, State> {
         >
           <TextField
             label="Bis"
-            fullWidth={true}
+            fullWidth
             value={this.state.hour_to}
             onChange={this.handleChangeTo}
             error={!this.toValid()}

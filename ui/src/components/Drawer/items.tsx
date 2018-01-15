@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 const Slots = () => (
   <Route
     render={({ history }) => (
-      <ListItem button={true} onClick={() => history.push('/slots')}>
+      <ListItem button onClick={() => history.push('/slots')}>
         <ListItemIcon>
           <WatchLater />
         </ListItemIcon>
@@ -19,7 +19,7 @@ const Slots = () => (
 const Users = () => (
   <Route
     render={({ history }) => (
-      <ListItem button={true} onClick={() => history.push('/users')}>
+      <ListItem button onClick={() => history.push('/users')}>
         <ListItemIcon>
           <Person />
         </ListItemIcon>
@@ -32,7 +32,7 @@ const Users = () => (
 const Entries = () => (
   <Route
     render={({ history }) => (
-      <ListItem button={true} onClick={() => history.push('/entries')}>
+      <ListItem button onClick={() => history.push('/entries')}>
         <ListItemIcon>
           <InsertDriveFile />
         </ListItemIcon>
@@ -45,7 +45,7 @@ const Entries = () => (
 const Home = () => (
   <Route
     render={({ history }) => (
-      <ListItem button={true} onClick={() => history.push('/')}>
+      <ListItem button onClick={() => history.push('/')}>
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>

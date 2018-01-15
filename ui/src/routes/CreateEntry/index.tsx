@@ -209,7 +209,7 @@ class extends React.Component<Props, State> {
       <Dialog
         fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
-        open={true}
+        open
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
@@ -258,10 +258,10 @@ class extends React.Component<Props, State> {
                 </Grid>
               </Grid>
               {isParent && (
-                <Grid item={true} >
+                <Grid item >
                   <TextField
-                    fullWidth={true}
-                    select={true}
+                    fullWidth
+                    select
                     label="Kind"
                     value={this.state.student}
                     onChange={this.handleChangeStudent}
@@ -288,7 +288,7 @@ class extends React.Component<Props, State> {
                       autoOk
                       onChange={this.handleChangeDate}
                       minDate={this.minDate}
-                      fullWidth={true}
+                      fullWidth
                     />
                   </Grid>
                   {this.state.isRange && (
@@ -300,7 +300,7 @@ class extends React.Component<Props, State> {
                         autoOk
                         onChange={this.handleChangeDateEnd}
                         minDate={this.state.date}
-                        fullWidth={true}
+                        fullWidth
                       />
                     </Grid>
                   )}

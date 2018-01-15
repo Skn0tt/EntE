@@ -144,16 +144,16 @@ class extends React.Component<Props, State> {
       <Dialog
         fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
-        open={true}
+        open
       >
         <DialogTitle>Neuer Nutzer</DialogTitle>
         <DialogContent>
           <form className={classes.container} onKeyPress={this.handleKeyPress} >
-            <Grid container={true} direction="column">
-              <Grid container={true} xs={12} direction="row">
-                <Grid item={true} xs={12} lg={6}>
+            <Grid container direction="column">
+              <Grid container xs={12} direction="row">
+                <Grid item xs={12} lg={6}>
                   <TextField
-                    fullWidth={true}
+                    fullWidth
                     error={!this.usernameValid()}
                     id="username"
                     label="Username"
@@ -162,10 +162,10 @@ class extends React.Component<Props, State> {
                     margin="normal"
                   />
                 </Grid>
-                <Grid item={true} xs={12} lg={6}>
+                <Grid item xs={12} lg={6}>
                   <TextField
                     error={!this.displaynameValid()}
-                    fullWidth={true}
+                    fullWidth
                     id="displayname"
                     label="Displayname"
                     value={this.state.displayname}
@@ -173,9 +173,9 @@ class extends React.Component<Props, State> {
                     margin="normal"
                   />
                 </Grid>
-                <Grid item={true} xs={12} lg={6}>
+                <Grid item xs={12} lg={6}>
                   <TextField
-                    fullWidth={true}
+                    fullWidth
                     error={!this.emailValid()}
                     id="email"
                     label="Email"
@@ -185,9 +185,9 @@ class extends React.Component<Props, State> {
                     margin="normal"
                   />
                 </Grid>
-                <Grid item={true} xs={12}>
+                <Grid item xs={12}>
                   <TextField
-                    fullWidth={true}
+                    fullWidth
                     id="password"
                     label="Passwort"
                     type="password"
@@ -197,13 +197,13 @@ class extends React.Component<Props, State> {
                   />
                 </Grid>
               </Grid>
-              <Grid item={true} xs={12}>
+              <Grid item xs={12}>
                 <TextField
-                  select={true}
+                  select
                   label="Rolle"
                   value={this.state.role}
                   onChange={this.handleChangeRole}
-                  fullWidth={true}
+                  fullWidth
                   SelectProps={{ native: true }}
                   helperText="Wählen sie die Rolle des Nutzers aus."
                 >
@@ -218,8 +218,8 @@ class extends React.Component<Props, State> {
                 </TextField>
               </Grid>
               {this.isParent() && (
-                <Grid item container={true} direction="column">
-                  <Grid item={true}>
+                <Grid item container direction="column">
+                  <Grid item>
                     <List>
                       {this.state.children.map((child, index) => (
                         <ListItem>
@@ -236,14 +236,14 @@ class extends React.Component<Props, State> {
                       ))}
                     </List>
                   </Grid>
-                  <Grid container={true} direction="row">
-                    <Grid item={true} xs={10}>
+                  <Grid container direction="row">
+                    <Grid item xs={10}>
                       <TextField
-                        select={true}
+                        select
                         label="Kind"
                         value={this.state.selectedChild}
                         onChange={this.handleSelectChild}
-                        fullWidth={true}
+                        fullWidth
                         SelectProps={{ native: true }}
                         helperText="Fügen sie Kinder hinzu."
                       >
@@ -257,7 +257,7 @@ class extends React.Component<Props, State> {
                         ))}
                       </TextField>
                     </Grid>
-                    <Grid item={true} xs={2}>
+                    <Grid item xs={2}>
                       <IconButton onClick={() => this.handleAddChild()}>
                         <AddIcon />
                       </IconButton>
