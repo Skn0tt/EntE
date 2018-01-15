@@ -88,6 +88,8 @@ slotsRouter.get('/:slotId', [
   try {
     const slot = await Slot.findById(slotId);
 
+    if (!slot) { return response.status(404).end(); }
+
     request.slots = [slot];
     
     return next();

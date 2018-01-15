@@ -125,8 +125,8 @@ export const createUser = async (
   return transform(response);
 };
 
-const put = async (url: string, auth: ICredentials, body?: {}) => {
-  const response = await axios.put(url, body, { auth, transformResponse: transformDates });
+const patch = async (url: string, auth: ICredentials, body?: {}) => {
+  const response = await axios.patch(url, body, { auth, transformResponse: transformDates });
   return response.data;
 };
 
@@ -134,8 +134,13 @@ export const updateUser = async (
   user: Partial<IUser>,
   auth: ICredentials,
 ): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/users/${user._id}`, auth, user);
+  const response = await patch(`${baseUrl}/users/${user._id}`, auth, user);
   return transform(response);
+};
+
+const put = async (url: string, auth: ICredentials, body?: {}) => {
+  const response = await axios.put(url, body, { auth, transformResponse: transformDates });
+  return response.data;
 };
 
 export const signEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {

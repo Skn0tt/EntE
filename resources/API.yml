@@ -1,0 +1,465 @@
+openapi: 3.0.0
+info:
+  version: "0.2"
+  title: Entschuldigungsverfahren
+  description: >-
+    Dies ist die API-Dokumentation für die Umsetzung des
+    Entschuldigungsverfahrens.
+    
+tags:
+- name: "entries"
+  description: "Operations about entries"
+- name: "slots"
+  description: "Operations about slots"
+- name: "users"
+  description: "Operations about user"
+- name: "dev"
+  description: "Development Endpoints, only available in *dev* mode"
+  
+
+servers:
+  - url: http://localhost/api
+    description: Production server (uses live data)
+
+paths:
+  # Entries
+  /entries:
+    get:
+      tags:
+      - entries
+      summary: Get all entries for current user
+      security:
+        - basic: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags:
+        - entries
+      summary: Create a new entry
+      description: Creates a new entry. Only possible for students and parents. Returns the created Entry.
+      security:
+        - basic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entry'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  '/entries/{entryId}':
+    get:
+      tags:
+        - entries
+      summary: Get specific entry
+      description: Returns the specific entry for user
+      security:
+        - basic: []
+      parameters:
+        - in: path
+          name: entryId
+          required: true
+          description: MongoId of the entry to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  '/entries/{entryId}/sign':
+    put:
+      tags:
+        - entries
+      summary: Sign specific entry
+      security:
+        - basic: []
+      parameters: 
+        - in: path
+          name: entryId
+          required: true
+          description: MongoId of the entry to sign
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# Slots
+  /slots:
+    get:
+      tags:
+      - slots
+      summary: Get all slots for current user
+      security:
+        - basic: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  '/slots/{slotId}':
+    get:
+      tags:
+      - slots
+      summary: Get specific slot
+      security:
+        - basic: []
+      parameters:
+        - in: path
+          name: slotId
+          required: true
+          description: MongoId of the slot to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        
+  # Users
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get all Users
+      security:
+        - basic: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags:
+        - users
+      summary: Create new User
+      description: Creates new User, returns it.
+      security:
+        - basic: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '409':
+          $ref: '#/components/responses/AlreadyExists'
+
+  '/users/{userId}':
+    get:
+      tags:
+      - users
+      summary: Get specific User
+      security:
+        - basic: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoId of the user to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+      - users
+      summary: Update Specific User
+      security:
+        - basic: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: MongoId of the user to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Updated Data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    # Development Endpoints
+  '/dev/dispatchWeeklySummary':
+    put:
+      tags:
+        - dev
+      summary: "Disptach 'WeeklySummary' Mail"
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  schemas:
+    StandardReturn:
+      type: object
+      required:
+        - slots
+        - users
+        - entries
+        
+      description: Requested Documents + all documents referenced in there
+      properties:
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entry'
+    Entry:
+      type: object
+      required:
+        - id
+        - student
+        - slots
+        - forSchool
+        - reason
+        - date
+        - signedAdmin
+        - signedParent
+      properties:
+        id:
+          type: string
+        reason:
+          type: string
+          description: "Reason for missing course"
+        date:
+          type: string
+          description: "Start Date"
+        dateEnd:
+          type: string
+          description: "End Date"
+        student:
+          type: string
+          description: MongoId of student
+        slots:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            description: MongoId of slot
+        forSchool:
+          type: boolean
+          description: "*Beurlaubt* (`true`) oder *Entschuldigt*"
+        signedAdmin:
+          type: boolean
+        signedParent:
+          type: boolean
+  
+    Slot:
+      type: object
+      required:
+        - id
+        - date
+        - hour_from
+        - hour_to
+        - teacher
+        - signed
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          description: Date of Slot
+        hour_from:
+          type: integer
+          description: Start of Slot
+        hour_to:
+          type: integer
+          description: End of Slot
+        signed:
+          type: boolean
+          description: True if correlating Entry was signed by all parties
+        teacher:
+          type: string
+          description: MongoId of Teacher
+          
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - displayname
+        - email
+        - children
+        - role
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+          description: Username (Alphanumeric)
+        displayname:
+          type: string
+          description: Name that is shown to Users (ASCII)
+        email:
+          type: string
+        children:
+          type: array
+          items:
+            type: string
+            description: MongoId of child
+        role:
+          type: string
+          enum:
+            - 'teacher'
+            - 'parent'
+            - 'student'
+            - 'admin'
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: 'The cause of the Error.'
+  
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationFailed:
+      description: Validation Failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AlreadyExists:
+      description: Entity already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Did not find requested resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
