@@ -104,7 +104,7 @@ class extends React.Component<Props, State> {
           <Button
             color="primary"
             fab
-            onClick={() => history.push('/createEntry')}
+            onClick={() => history.push('/createUser')}
             className={classes.fab}
           >
             <AddIcon />
