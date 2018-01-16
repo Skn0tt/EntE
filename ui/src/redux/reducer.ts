@@ -24,7 +24,10 @@ import {
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
   ADD_RESPONSE,
-  REMOVE_ERROR,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD_SUCCESS,
+  REMOVE_MESSAGE,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
@@ -37,9 +40,9 @@ const reducer = handleActions({
    */
   [CHECK_AUTH_REQUEST]: (state, action: BaseAction): AppState => state
     .update('loading', loading => loading + 1),
-  [CHECK_AUTH_ERROR]: (state, action): AppState => state
+  [CHECK_AUTH_ERROR]: (state, action: Action<Error>): AppState => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [CHECK_AUTH_SUCCESS]: (state, action): AppState => state
     .update('loading', loading => loading - 1)
     .set('auth', action.payload),
@@ -57,9 +60,9 @@ const reducer = handleActions({
    */
   [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRIES_ERROR]: (state: AppState, action): AppState => state
+  [GET_ENTRIES_ERROR]: (state: AppState, action: Action<Error>): AppState => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_ENTRIES_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1),
   
@@ -68,9 +71,9 @@ const reducer = handleActions({
    */
   [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRIES_ERROR]: (state: AppState, action): AppState => state
+  [GET_ENTRIES_ERROR]: (state: AppState, action: Action<Error>): AppState => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_ENTRIES_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1),
   
@@ -79,9 +82,9 @@ const reducer = handleActions({
    */
   [GET_ENTRY_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
-  [GET_ENTRY_ERROR]: (state, action) => state
+  [GET_ENTRY_ERROR]: (state, action: Action<Error>) => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) => state
     .update('loading', loading => loading - 1),
 
@@ -90,9 +93,9 @@ const reducer = handleActions({
    */
   [GET_SLOTS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
-  [GET_SLOTS_ERROR]: (state, action) => state
+  [GET_SLOTS_ERROR]: (state, action: Action<Error>) => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_SLOTS_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1),
 
@@ -101,9 +104,9 @@ const reducer = handleActions({
    */
   [GET_USERS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
-  [GET_USERS_ERROR]: (state, action) => state
+  [GET_USERS_ERROR]: (state, action: Action<Error>) => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_USERS_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1),
 
@@ -112,9 +115,9 @@ const reducer = handleActions({
    */
   [GET_TEACHERS_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
-  [GET_TEACHERS_ERROR]: (state, action) => state
+  [GET_TEACHERS_ERROR]: (state, action: Action<Error>) => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_TEACHERS_SUCCESS]: (state, action) => state
     .update('loading', loading => loading - 1),
 
@@ -123,11 +126,23 @@ const reducer = handleActions({
    */
   [GET_USER_REQUEST]: (state, action) => state
     .update('loading', loading => loading + 1),
-  [GET_USER_ERROR]: (state, action) => state
+  [GET_USER_ERROR]: (state, action: Action<Error>) => state
     .update('loading', loading => loading - 1)
-    .update('errors', errors => errors.push(action.payload)),
+    .update('messages', messages => messages.push(action.payload!.message)),
   [GET_USER_SUCCESS]: (state, action): AppState => state
     .update('loading', loading => loading - 1),
+
+  /**
+   * RESET_PASSWORD
+   */
+  [RESET_PASSWORD_REQUEST]: (state, action) => state
+    .update('loading', loading => loading + 1),
+  [RESET_PASSWORD_ERROR]: (state, action: Action<Error>) => state
+    .update('loading', loading => loading - 1)
+    .update('messages', errors => errors.push(action.payload!.message)),
+  [RESET_PASSWORD_SUCCESS]: (state, action): AppState => state
+    .update('loading', loading => loading - 1)
+    .update('messages', messages => messages.push(action.payload)),
 
   /**
    * ADD_RESPONSE
@@ -144,10 +159,10 @@ const reducer = handleActions({
     )),
 
   /**
-   * REMOVE_ERROR
+   * REMOVE_MESSAGE
    */
-  [REMOVE_ERROR]: (state: AppState, action: Action<number>) => state
-    .update('errors', (errors: List<Error>) => errors.remove(action.payload!)),
+  [REMOVE_MESSAGE]: (state: AppState, action: Action<number>) => state
+    .update('messages', (messages: List<Error>) => messages.remove(action.payload!)),
 
 } as ReducerMap<AppState, ActionType>, initialState); // tslint:disable-line:align
 
