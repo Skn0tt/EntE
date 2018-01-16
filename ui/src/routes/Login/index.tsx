@@ -125,7 +125,7 @@ class extends React.Component<Props, State> {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>  
+      </div>
     );
   }
 })));

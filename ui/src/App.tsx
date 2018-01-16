@@ -18,6 +18,7 @@ import MessageStream from './components/MessageStream';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Login from './routes/Login';
 import Routes from './Routes';
+import Forgot from './routes/Forgot';
 
 interface Props {
   authValid: boolean;
@@ -39,6 +40,7 @@ class App extends React.Component<Props, State> {
         <React.Fragment>
           <MessageStream />
           <Switch>
+            <Route path="/forgot/:token" component={Forgot} />
             <Route path="/loading" component={LoadingScreen} />
             <Route path="/login" component={Login} />
             <AuthenticatedRoute

@@ -28,6 +28,9 @@ import {
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_SUCCESS,
   REMOVE_MESSAGE,
+  SET_PASSWORD_REQUEST,
+  SET_PASSWORD_ERROR,
+  SET_PASSWORD_SUCCESS,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
@@ -141,6 +144,18 @@ const reducer = handleActions({
     .update('loading', loading => loading - 1)
     .update('messages', errors => errors.push(action.payload!.message)),
   [RESET_PASSWORD_SUCCESS]: (state, action): AppState => state
+    .update('loading', loading => loading - 1)
+    .update('messages', messages => messages.push(action.payload)),
+
+  /**
+   * RESET_PASSWORD
+   */
+  [SET_PASSWORD_REQUEST]: (state, action) => state
+    .update('loading', loading => loading + 1),
+  [SET_PASSWORD_ERROR]: (state, action: Action<Error>) => state
+    .update('loading', loading => loading - 1)
+    .update('messages', errors => errors.push(action.payload!.message)),
+  [SET_PASSWORD_SUCCESS]: (state, action): AppState => state
     .update('loading', loading => loading - 1)
     .update('messages', messages => messages.push(action.payload)),
 

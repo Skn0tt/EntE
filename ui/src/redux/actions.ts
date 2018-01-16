@@ -40,6 +40,9 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
   REMOVE_MESSAGE,
+  SET_PASSWORD_REQUEST,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -49,6 +52,7 @@ import {
   APIResponse,
   IUserCreate,
   IUser,
+  INewPassword,
 } from '../interfaces/index';
 
 export type ActionType =
@@ -109,6 +113,10 @@ export const removeMessage = createAction<number>(REMOVE_MESSAGE);
 export const resetPasswordRequest = createAction<string>(RESET_PASSWORD_REQUEST);
 export const resetPasswordSuccess = createAction<string>(RESET_PASSWORD_SUCCESS);
 export const resetPasswordError = createAction<Error>(RESET_PASSWORD_ERROR);
+
+export const setPasswordRequest = createAction<INewPassword>(SET_PASSWORD_REQUEST);
+export const setPasswordSuccess = createAction<string>(SET_PASSWORD_SUCCESS);
+export const setPasswordError = createAction<Error>(SET_PASSWORD_ERROR);
 
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 

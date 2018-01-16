@@ -159,6 +159,11 @@ export interface IAuth extends ICredentials {
   children: MongoId[];
 }
 
+export interface INewPassword {
+  token: string;
+  password: string;
+}
+
 export class AuthState extends Record({
   username: '',
   password: '',

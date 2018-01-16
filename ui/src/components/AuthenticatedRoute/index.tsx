@@ -22,7 +22,6 @@ const AuthenticatedRoute: React.SFC<Props & RouteComponentProps<{}>> = (props) =
   return (
     <Redirect to={{ pathname: '/loading', state: { from: props.location } }} />
   );
-
 };
 
 export default withRouter(AuthenticatedRoute);
