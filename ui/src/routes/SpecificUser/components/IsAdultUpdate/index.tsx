@@ -1,7 +1,15 @@
 import * as React from 'react';
 import styles from './styles';
 import { connect, Dispatch } from 'react-redux';
-import { withStyles, Grid, Typography, Button, FormGroup, FormControlLabel, Switch } from 'material-ui';
+import {
+  withStyles,
+  Grid,
+  Typography,
+  Button,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+} from 'material-ui';
 import { User, MongoId, AppState, IUser } from '../../../../interfaces/index';
 import { WithStyles } from 'material-ui/styles/withStyles';
 import * as select from '../../../../redux/selectors';
