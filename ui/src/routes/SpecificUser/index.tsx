@@ -19,6 +19,7 @@ import DialogActions from 'material-ui/Dialog/DialogActions';
 import DialogContentText from 'material-ui/Dialog/DialogContentText';
 import Divider from 'material-ui/Divider/Divider';
 import DisplaynameUpdate from './components/DisplaynameUpdate';
+import IsAdultUpdate from './components/IsAdultUpdate';
 
 interface RouteMatch {
   userId: MongoId;
@@ -64,12 +65,14 @@ const SpecificUser: React.SFC<Props> = (props) => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          ID: {user.get('_id')}
-          Email: {user.get('email')}
-          Role: {user.get('role')}
+          ID: {user.get('_id')} <br />
+          Email: {user.get('email')} <br />
+          Role: {user.get('role')} <br />
         </DialogContentText>
         <Divider />
         <EmailUpdate userId={userId} />
+        <Divider />
+        {user.get('role') === Roles.STUDENT && <IsAdultUpdate userId={userId}/>}
         <Divider />
         <DisplaynameUpdate userId={userId} />
         {showChildren && (

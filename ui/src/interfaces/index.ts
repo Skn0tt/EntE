@@ -40,6 +40,7 @@ export interface IUserBase {
   email: string;
   children: MongoId[];
   role: Roles;
+  isAdult: boolean;
   displayname: string;
 }
 
@@ -57,6 +58,7 @@ export class User extends Record({
   displayname: '',
   email: '',
   role: '',
+  isAdult: false,
   children: [],
 }) {
   constructor(props: Partial<IUser>) {
