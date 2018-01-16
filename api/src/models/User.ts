@@ -3,11 +3,14 @@ import * as bcrypt from 'bcrypt';
 import * as validate from 'mongoose-validator';
 import * as idValidator from 'mongoose-id-validator';
 import * as uniqueValidator from 'mongoose-unique-validator';
+import * as crypto from 'crypto';
 
 import { roles, ROLES, MongoId } from '../constants';
+import { dispatchPasswortResetLink } from '../routines/mail';
 
 export interface UserModel extends Document, IUser {
   comparePassword(candidatePassword: string): Promise<boolean>;
+  forgotPassword();
 }
 
 export interface IUser {
@@ -17,6 +20,8 @@ export interface IUser {
   password: string;
   role: ROLES;
   children: MongoId[];
+  resetPasswordToken: String;
+  resetPasswordExpires: Date;
 }
 
 /**
@@ -66,6 +71,8 @@ const userSchema : Schema = new Schema({
   password: { type: String, required: true },
   role: { type: String, enum: roles, required: true },
   children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 }, {
   versionKey: false,
 });
@@ -104,6 +111,21 @@ userSchema.methods.comparePassword = async function (candidatePassword) : Promis
   } catch (error) {
     return error;
   }
+};
+
+/**
+ * ## Forgot Password Routine
+ */
+userSchema.methods.forgotPassword = async function (): Promise<void> {
+  const buffer = await crypto.randomBytes(20);
+  const token = buffer.toString('hex');
+
+  this.resetPasswordToken = token;
+  this.resetPasswordExpires = Date.now() + 60 * 60 * 1000;
+
+  await dispatchPasswortResetLink(token, this.username, this.email);
+
+  await this.save();
 };
 
 /**

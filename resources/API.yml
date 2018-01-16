@@ -1,12 +1,14 @@
 openapi: 3.0.0
 info:
-  version: "0.2"
+  version: "0.3"
   title: Entschuldigungsverfahren
   description: >-
     Dies ist die API-Dokumentation für die Umsetzung des
     Entschuldigungsverfahrens.
     
 tags:
+- name: "auth"
+  description: "Operations about auth, not protected"
 - name: "entries"
   description: "Operations about entries"
 - name: "slots"
@@ -22,6 +24,53 @@ servers:
     description: Production server (uses live data)
 
 paths:
+  # Auth
+  '/auth/forgot/{usermame}':
+    post:
+      tags:
+      - auth
+      summary: Trigger PW Forgot Routine for
+      parameters: 
+        - in: path
+          name: username
+          required: true
+          description: username of the user to trigger the routine
+          schema:
+            type: string
+      responses:
+        '200':
+          description: If the user exists, routine got triggered.
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+  '/auth/forgot/{token}':
+    put:
+      tags:
+      - auth
+      summary: Set Password for user with given token
+      parameters:
+        - in: path
+          name: token
+          required: true
+          description: token to use for setting password
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newPassword
+              properties:
+                newPassword:
+                  type: string
+                  description: 'The new Password.'
+      responses:
+        '200':
+          description: If the token exists, it succeeded.
+
+
   # Entries
   /entries:
     get:

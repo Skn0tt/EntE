@@ -13,6 +13,7 @@ import * as Raven from 'raven';
 import authenticate from './routines/authenticate';
 
 // Routes
+import auth from './routes/auth';
 import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
@@ -59,12 +60,15 @@ if (production) {
 app.use(cors({ origin: true }));
 app.options('*', cors({ origin: true }));
 
+// Unauthenticated Routes
+app.use('/auth', auth);
+
 // Authentication
 app.use(passport.initialize());
 passport.use(new BasicStrategy(authenticate));
 app.use(passport.authenticate('basic', { session: false }));
 
-// Routes
+// Authenticated Routes
 app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);

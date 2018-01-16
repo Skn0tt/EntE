@@ -9,6 +9,8 @@ import { SignedInformationOptions } from '../templates/SignedInformation';
 import { ROLES } from '../constants';
 import Slot, { SlotModel } from '../models/Slot';
 import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
+import PasswortResetLink from '../templates/PasswortResetLink';
+import PasswortResetSuccess from '../templates/PasswortResetSuccess';
 
 let mailConfig;
 if (process.env.NODE_ENV === 'production') {
@@ -114,7 +116,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
 
         const email = teacher.email;
 
-        const { html, subject } = await WeeklySummary(items);
+        const { html, subject } = WeeklySummary(items);
 
         const info = await transporter.sendMail({
           html,
@@ -127,6 +129,41 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
         throw error;
       }
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const dispatchPasswortResetLink = async (token: string, username: string, email: string) => {
+  try {
+    const { html, subject } = PasswortResetLink(
+      `http://localhost/forgot/${token}`,
+      username,
+    );
+
+    const info = await transporter.sendMail({
+      html,
+      subject,
+      to: email,
+      from: 'entschuldigungsverfahren@simonknott.de',
+    });
+    console.log('Mail: Dispatched PasswortResetLink to', info.accepted);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const dispatchPasswortResetSuccess = async (username: string, email: string) => {
+  try {
+    const { html, subject } = PasswortResetSuccess(username);
+
+    const info = await transporter.sendMail({
+      html,
+      subject,
+      to: email,
+      from: 'entschuldigungsverfahren@simonknott.de',
+    });
+    console.log('Mail: Dispatched PasswortResetSuccess to', info.accepted);
   } catch (error) {
     throw error;
   }

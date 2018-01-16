@@ -71,17 +71,17 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = handlebars.co
 
 const getTitle = () => `Wöchentliche Zusammenfassung KW${moment().week()}`;
 
-export default async (items: IRowData[]): Promise<HEMLResults> => {
+export default (items: IRowData[]): HEMLResults => {
   try {
     const rows = items.map(item => tableRow(item));
     const title = getTitle();
   
-    const data = template({
+    const mjml = template({
       items: rows,
       preview: title,
       subject: title,
     });
-    const { errors, html } = mjml2html(data);
+    const { errors, html } = mjml2html(mjml);
     if (errors.length > 0) throw new Error('MJML Error');
     return { html, subject: title };
   } catch (error) {
