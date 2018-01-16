@@ -17,12 +17,13 @@ import {
   TextField,
 } from 'material-ui';
 import { withMobileDialog } from 'material-ui/Dialog';
-import { checkAuthRequest } from '../../redux/actions';
+import { checkAuthRequest, resetPasswordRequest } from '../../redux/actions';
 
 interface IProps {
   authValid: boolean;
   authChecked: boolean;
   checkAuth(credentials: ICredentials): Action;
+  triggerPasswordReset(username: string): Action;
 }
 interface InjectedProps {
   fullScreen: boolean;
@@ -39,19 +40,22 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   checkAuth: (auth: ICredentials) => dispatch(checkAuthRequest(auth)),
+  triggerPasswordReset: (username: string) => dispatch(resetPasswordRequest(username)),
 });
 
 type Props = IProps & WithStyles<string> & InjectedProps & RouteComponentProps<{}>;
 
 const Login =
-connect(mapStateToProps, mapDispatchToProps)(
+  connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<IProps>()(
-    withStyles(styles)(
+  withStyles(styles)(
 class extends React.Component<Props, State> {
   state: State = {
     username: '',
     password: '',
   };
+
+  handleResetPassword = () => this.props.triggerPasswordReset(this.state.username);
 
   handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
     if (event.key === 'Enter') {
@@ -109,6 +113,11 @@ class extends React.Component<Props, State> {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={() => this.handleResetPassword()}
+            >
+              Passwort Zurücksetzen
+            </Button>
+            <Button
               color="primary"
               onClick={() => this.handleSignIn()}
             >
@@ -116,7 +125,7 @@ class extends React.Component<Props, State> {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>  
+      </div>
     );
   }
 })));

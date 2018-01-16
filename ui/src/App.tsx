@@ -12,12 +12,13 @@ import { checkAuthRequest } from './redux/actions';
 import * as select from './redux/selectors';
 import Drawer from './components/Drawer';
 import LoadingScreen from './components/LoadingScreen';
-import ErrorStream from './components/ErrorStream';
+import MessageStream from './components/MessageStream';
 
 // Routes
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Login from './routes/Login';
 import Routes from './Routes';
+import Forgot from './routes/Forgot';
 
 interface Props {
   authValid: boolean;
@@ -36,19 +37,22 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route path="/loading" component={LoadingScreen} />
-          <Route path="/login" component={Login} />
-          <AuthenticatedRoute
-            authWasChecked={this.props.authChecked}
-            isLoggedIn={this.props.authValid}
-          >
-            <Drawer>
-              <Routes role={this.props.role}/>
-            </Drawer>
-            <ErrorStream />
-          </AuthenticatedRoute>
-        </Switch>
+        <React.Fragment>
+          <MessageStream />
+          <Switch>
+            <Route path="/forgot/:token" component={Forgot} />
+            <Route path="/loading" component={LoadingScreen} />
+            <Route path="/login" component={Login} />
+            <AuthenticatedRoute
+              authWasChecked={this.props.authChecked}
+              isLoggedIn={this.props.authValid}
+            >
+              <Drawer>
+                <Routes role={this.props.role}/>
+              </Drawer>
+            </AuthenticatedRoute>
+          </Switch>
+        </React.Fragment>
       </BrowserRouter>
     );
   }

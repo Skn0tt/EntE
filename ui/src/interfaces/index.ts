@@ -159,6 +159,11 @@ export interface IAuth extends ICredentials {
   children: MongoId[];
 }
 
+export interface INewPassword {
+  token: string;
+  password: string;
+}
+
 export class AuthState extends Record({
   username: '',
   password: '',
@@ -176,9 +181,9 @@ export class AuthState extends Record({
 }
 
 /**
- * Error
+ * Messages
  */
-type ErrorState = List<Error>;
+type MessagesState = List<String>;
 
 /**
  * AppState
@@ -188,7 +193,7 @@ export interface IAppState {
   users: Map<MongoId, User>;
   slots: Map<MongoId, Slot>;
   auth: AuthState;
-  errors: ErrorState;
+  messages: MessagesState;
   loading: number;
 }
 
@@ -197,7 +202,7 @@ export class AppState extends Record({
   users: Map<MongoId, User>(),
   slots: Map<MongoId, Slot>(),
   auth: new AuthState({}),
-  errors: List<Error>(),
+  messages: List<string>(),
   loading: 0,
 }) {
   constructor(props: Partial<IAppState>) {

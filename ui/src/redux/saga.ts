@@ -21,6 +21,8 @@ import {
   createUserSuccess,
   signEntryError,
   singEntrySuccess,
+  resetPasswordError,
+  resetPasswordSuccess,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -34,6 +36,8 @@ import {
   CREATE_USER_REQUEST,
   UPDATE_USER_REQUEST,
   SIGN_ENTRY_REQUEST,
+  RESET_PASSWORD_REQUEST,
+  SET_PASSWORD_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -45,6 +49,7 @@ import {
   IEntryCreate,
   IUserCreate,
   IUser,
+  INewPassword,
 } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
@@ -182,6 +187,24 @@ function* signEntrySaga(action: Action<MongoId>) {
   }
 }
 
+function* resetPasswordSaga(action: Action<string>) {
+  try {
+    const result = yield call(api.resetPassword, action.payload);
+    yield put(resetPasswordSuccess(result));
+  } catch (error) {
+    yield put(resetPasswordError(error));
+  }
+}
+
+function* setPasswordSaga(action: Action<INewPassword>) {
+  try {
+    const result = yield call(api.setPassword, action.payload!.token, action.payload!.password);
+    yield put(resetPasswordSuccess(result));
+  } catch (error) {
+    yield put(resetPasswordError(error));
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -190,6 +213,8 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
+  yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
+  yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
   yield takeEvery<Action<IUserCreate>>(CREATE_USER_REQUEST, createUserSaga);

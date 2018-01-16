@@ -147,3 +147,13 @@ export const signEntry = async (id: MongoId, auth: ICredentials): Promise<APIRes
   const response = await put(`${baseUrl}/entries/${id}/sign`, auth);
   return transform(response);
 };
+
+export const resetPassword = async (username: MongoId): Promise<string> => {
+  const result = await axios.post(`${baseUrl}/auth/forgot/${username}`);
+  return result.data;
+};
+
+export const setPassword = async (token: string, newPassword: string) => {
+  const result = await axios.put(`${baseUrl}/auth/forgot/${token}`, { newPassword });
+  return result.data;
+};

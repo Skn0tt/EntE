@@ -8,30 +8,30 @@ import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar/Snackbar';
 import { IconButton } from 'material-ui';
 import { Close as CloseIcon } from 'material-ui-icons';
-import { removeError } from '../../redux/actions';
+import { removeMessage } from '../../redux/actions';
 
 interface StateProps {
-  errors: Error[];
+  messages: String[];
 }
 
 interface DispatchProps {
-  removeError(index: number): Action;
+  removeMessage(index: number): Action;
 }
 
 type Props = StateProps & DispatchProps & WithStyles;
 
-const ErrorStream: React.SFC<Props> = props => (
+const MessageStream: React.SFC<Props> = props => (
   <div>
-    {props.errors.map((error, index) => (
+    {props.messages.map((msg, index) => (
       <Snackbar
         key={index}
-        message={<span>{error.message}</span>}
+        message={<span>{msg}</span>}
         autoHideDuration={6000}
-        onClose={() => props.removeError(index)}
+        onClose={() => props.removeMessage(index)}
         open
         action={
           <IconButton
-            onClick={() => props.removeError(index)}
+            onClick={() => props.removeMessage(index)}
             color="inherit"
           >
             <CloseIcon />
@@ -43,11 +43,11 @@ const ErrorStream: React.SFC<Props> = props => (
 );
 
 const mapStateToProps = (state: AppState) => ({
-  errors: select.getErrors(state),
+  messages: select.getMessages(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  removeError: (index: number) => dispatch(removeError(index)),
+  removeMessage: (index: number) => dispatch(removeMessage(index)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ErrorStream));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MessageStream));

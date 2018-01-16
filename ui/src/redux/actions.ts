@@ -36,7 +36,13 @@ import {
   SIGN_ENTRY_REQUEST,
   SIGN_ENTRY_SUCCESS,
   SIGN_ENTRY_ERROR,
-  REMOVE_ERROR,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  REMOVE_MESSAGE,
+  SET_PASSWORD_REQUEST,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -46,6 +52,7 @@ import {
   APIResponse,
   IUserCreate,
   IUser,
+  INewPassword,
 } from '../interfaces/index';
 
 export type ActionType =
@@ -101,7 +108,15 @@ export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
 export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
 
-export const removeError = createAction<number>(REMOVE_ERROR);
+export const removeMessage = createAction<number>(REMOVE_MESSAGE);
+
+export const resetPasswordRequest = createAction<string>(RESET_PASSWORD_REQUEST);
+export const resetPasswordSuccess = createAction<string>(RESET_PASSWORD_SUCCESS);
+export const resetPasswordError = createAction<Error>(RESET_PASSWORD_ERROR);
+
+export const setPasswordRequest = createAction<INewPassword>(SET_PASSWORD_REQUEST);
+export const setPasswordSuccess = createAction<string>(SET_PASSWORD_SUCCESS);
+export const setPasswordError = createAction<Error>(SET_PASSWORD_ERROR);
 
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 
