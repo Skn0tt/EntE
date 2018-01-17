@@ -176,7 +176,10 @@ entriesRouter.post('/', [
   try {
     const slots = await createSlots(request.body.slots, request.body.date, studentId);
 
-    const signedParent: boolean = request.user.role === ROLES.PARENT;
+    const signedParent: boolean = (
+      request.user.role === ROLES.PARENT ||
+      request.user.isAdult
+    );
 
     // TODO: Reject Parents creating entries for children that are not theirs
 

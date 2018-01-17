@@ -452,6 +452,9 @@ components:
         displayname:
           type: string
           description: Name that is shown to Users (ASCII)
+        isAdult:
+          type: boolean
+          description: "Only for students: If adult, entries are automatically signed"
         email:
           type: string
         children:

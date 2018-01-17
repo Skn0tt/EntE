@@ -61,6 +61,7 @@ class extends React.Component<Props, State> {
       : '',
     children: [],
     displayname: '',
+    isAdult: false,
     email: '',
     password: '',
     role: Roles.STUDENT,
@@ -79,6 +80,7 @@ class extends React.Component<Props, State> {
       children: this.isParent() ? this.state.children : [],
       displayname: this.state.displayname,
       email: this.state.email,
+      isAdult: this.state.isAdult,
       password: this.state.password,
       role: this.state.role,
       username: this.state.username,
@@ -100,6 +102,8 @@ class extends React.Component<Props, State> {
     this.setState({ displayname: event.target.value })
   handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ password: event.target.value })
+  handleChangeIsAdult = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) =>
+    this.setState({ isAdult: checked })
   handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ email: event.target.value })
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>

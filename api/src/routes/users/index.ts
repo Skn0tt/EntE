@@ -152,6 +152,7 @@ usersRouter.post('/', [
       role: request.body.role,
       displayname: request.body.displayname,
       password: request.body.password,
+      isAdult: request.body.isAdult,
       username: request.body.username,
       children: request.body.children,
     });
@@ -194,6 +195,7 @@ usersRouter.patch('/:userId', [
     if (body.role) user.set('role', body.role);
     if (body.displayname) user.set('displayname', body.displayname);
     if (body.children) user.set('children', body.children);
+    if ('isAdult' in body) user.set('isAdult', body.isAdult);
     if (body.password) user.set('password', body.password);
 
     await user.save();

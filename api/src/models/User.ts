@@ -19,6 +19,7 @@ export interface IUser {
   email: string;
   password: string;
   role: ROLES;
+  isAdult: boolean;
   children: MongoId[];
   resetPasswordToken: String;
   resetPasswordExpires: Date;
@@ -70,6 +71,7 @@ const userSchema : Schema = new Schema({
   email: { type: String, required: false, validate: emailValidator },
   password: { type: String, required: true },
   role: { type: String, enum: roles, required: true },
+  isAdult: { type: Boolean, required: false, default: false },
   children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
   resetPasswordToken: String,
   resetPasswordExpires: Date,
