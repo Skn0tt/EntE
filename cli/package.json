@@ -1,0 +1,21 @@
+{
+  "name": "ev-cli",
+  "version": "0.0.1",
+  "description": "The CommandLine-Interface for EntschuldigungsVerfahren.",
+  "main": "dist/index.js",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "commander": "^2.13.0",
+    "csv-parse": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/csv-parse": "^1.1.11",
+    "@types/node": "^9.3.0"
+  }
+}

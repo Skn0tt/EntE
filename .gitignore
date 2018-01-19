@@ -31,3 +31,7 @@ yarn-error.log*
 
 # Paper
 *.pdf
+
+# CLI
+cli/dist
+cli/node_modules

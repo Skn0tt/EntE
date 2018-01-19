@@ -8,6 +8,14 @@ import User, { UserModel } from '../../models/User';
 import { RequestHandler } from 'express-serve-static-core';
 import Entry from '../../models/Entry';
 import Slot from '../../models/Slot';
+import {
+  isEmail,
+  isAlphanumeric,
+  isIn,
+  isAscii, 
+  isEmpty,
+  isMongoId,
+} from 'validator';
 
 const usersRouter = Router();
 
@@ -125,39 +133,59 @@ const createPermissions : Permissions = {
 /**
  * Create new user
  */
-usersRouter.post('/', [
-  body('email').isEmail(),
-  body('displayname').isAscii(),
-  body('username').isAlphanumeric(),
-  body('role').isIn(roles),
-], async (request: UserRequest, response, next) => {
-  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
-
-  const errors = validationResult(request);
-  if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
-
+usersRouter.post('/', async (request: UserRequest, response, next) => {
+  const users = Array.isArray(request.body) ? request.body : [request.body];
+  request.body = users;
   try {
-    if (await userAlreadyExists(request.body.username)) {
-      return response.status(409).end('User already exists.');
-    }
+    for (const user of users) {
+      if (!(
+        isEmail(user.email) &&
+        isAscii(user.displayname) &&
+        isAlphanumeric(user.username) &&
+        isIn(user.role, roles) &&
+        !!user.password &&
+        (user.children || [] as string[]).every(id => isMongoId(id))
+      )) {
+        return response.status(422).end('Validation errors');
+      }
 
-    for (const child of request.body.children) {
-      if (await !childAlreadyExists(child)) {
-        return response.status(422).end(`Child ${child} doesn't exist.`);
+
+      if (await userAlreadyExists(user.username)) {
+        return response.status(409).end('User already exists.');
+      }
+    
+      for (const child of user.children || []) {
+        if (await !childAlreadyExists(child)) {
+          return response.status(422).end(`Child ${child} doesn't exist.`);
+        }
       }
     }
-    
-    const user = await User.create({
-      email: request.body.email,
-      role: request.body.role,
-      displayname: request.body.displayname,
-      password: request.body.password,
-      isAdult: request.body.isAdult,
-      username: request.body.username,
-      children: request.body.children,
-    });
 
-    request.users = [user];
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+}, async (request: UserRequest, response, next) => {
+  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+
+  try {
+    const users = request.body;
+
+    for (const user of users) {
+      const newUser = await User.create({
+        email: user.email,
+        role: user.role,
+        displayname: user.displayname,
+        password: user.password,
+        isAdult: user.isAdult,
+        username: user.username,
+        children: user.children || [],
+      });
+
+      const oldUsers = request.users || [];
+  
+      request.users = [newUser, ...oldUsers];
+    }
 
     return next();
   } catch (error) {
