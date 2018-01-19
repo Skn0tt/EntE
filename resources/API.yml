@@ -453,6 +453,9 @@ components:
         username:
           type: string
           description: Username (Alphanumeric)
+        password:
+          type: string
+          desription: Password (only on creating/patching users)
         displayname:
           type: string
           description: Name that is shown to Users (ASCII)

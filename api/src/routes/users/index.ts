@@ -183,6 +183,8 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
       });
 
       const oldUsers = request.users || [];
+
+      if (!newUser.password) { newUser.forgotPassword() }
   
       request.users = [newUser, ...oldUsers];
     }
