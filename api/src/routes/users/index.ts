@@ -157,6 +157,8 @@ usersRouter.post('/', [
       children: request.body.children,
     });
 
+    if (!user.password) { user.forgotPassword(); }
+
     request.users = [user];
 
     return next();
