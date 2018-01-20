@@ -1,7 +1,13 @@
 ---
 title: "Entwurf und Entwicklung eines E-Government-Systems zur Digitalisierung des Entschuldigungsverfahrens"
-toc: true
-output: pdf_document
+
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    highlight: pygments
+    template: eisvogel.latex
+titlepage: true
 ---
 
 # Vorwort
