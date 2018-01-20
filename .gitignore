@@ -36,5 +36,6 @@ yarn-error.log*
 cli/dist
 cli/node_modules
 
-# ev-util
-ev-util/dist
+# util
+util/dist
+util/node_modules

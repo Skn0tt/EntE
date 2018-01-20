@@ -1,9 +1,0 @@
-{
-  "name": "ev-util",
-  "version": "0.0.1",
-  "description": "Utility Package for EV",
-  "main": "dist/index.js",
-  "author": "Simon Knott",
-  "license": "MIT",
-  "private": true
-}

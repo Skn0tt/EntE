@@ -10,6 +10,7 @@ import Home from './routes/Home';
 import Slots from './routes/Slots';
 import CreateEntry from './routes/CreateEntry';
 import CreateUser from './routes/CreateUser';
+import ImportUsers from './routes/ImportUsers';
 
 const AdminRoutes = () => (
   <React.Fragment>
@@ -24,6 +25,7 @@ const AdminRoutes = () => (
       <Route path="/entries/:entryId" component={SpecificEntry} />
       <Route path="/createEntry" component={CreateEntry} />
       <Route path="/createUser" component={CreateUser} />
+      <Route path="/importUsers" component={ImportUsers} />
     </Switch>
   </React.Fragment>
 );
