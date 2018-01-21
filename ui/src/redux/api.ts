@@ -118,7 +118,7 @@ export const createEntry = async (
 };
 
 export const createUser = async (
-  user: IUserCreate,
+  user: IUserCreate[],
   auth: ICredentials,
 ): Promise<APIResponse> => {
   const response = await post(`${baseUrl}/users/`, auth, user);

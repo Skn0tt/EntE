@@ -142,12 +142,11 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
         isEmail(user.email) &&
         isAscii(user.displayname) &&
         isAlphanumeric(user.username) &&
-        isIn(user.role, roles) &&
-        !!user.password
+        isIn(user.role, roles)
       )) { return response.status(422).end('Validation errors'); }
 
       if (await userAlreadyExists(user.username)) {
-        return response.status(409).end('User already exists.');
+        return response.status(409).end(`User ${user.username} already exists.`);
       }
 
       if (user.role === ROLES.PARENT || user.role === ROLES.MANAGER) {
