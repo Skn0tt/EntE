@@ -50,6 +50,7 @@ import {
   IUserCreate,
   IUser,
   INewPassword,
+  Roles,
 } from '../interfaces/index';
 
 function* dispatchUpdates(data: APIResponse) {
@@ -151,13 +152,31 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
   }
 }
 
-function* createUserSaga(action: Action<IUserCreate>) {
+function* createUserSaga(action: Action<IUserCreate[]>) {
   try {
+    const first: IUserCreate[] = [];
+    const second: IUserCreate[] = [];
+
+    action.payload!.forEach((value) => {
+      if (
+        value.role === Roles.MANAGER || value.role === Roles.PARENT
+      ) { second.push(value); }
+      else { first.push(value); }
+    });
+    
     const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.createUser, action.payload, auth);
+    
+    if (first.length !== 0) {
+      const result = yield call(api.createUser, first, auth);
+      yield dispatchUpdates(result);
+    }
+    
+    if (second.length !== 0) {
+      const result = yield call(api.createUser, second, auth);
+      yield dispatchUpdates(result);
+    }
 
     yield put(createUserSuccess());
-    yield dispatchUpdates(result);
   } catch (error) {
     yield put(createUserError(error));
   }
@@ -217,7 +236,7 @@ function* saga() {
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
-  yield takeEvery<Action<IUserCreate>>(CREATE_USER_REQUEST, createUserSaga);
+  yield takeEvery<Action<IUserCreate[]>>(CREATE_USER_REQUEST, createUserSaga);
   yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);
 }
 

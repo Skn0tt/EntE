@@ -43,6 +43,7 @@ import {
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_SUCCESS,
   SET_PASSWORD_ERROR,
+  ADD_MESSAGE,
 } from './constants';
 import {
   MongoId,
@@ -68,7 +69,12 @@ export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUES
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
-export const createUserRequest = createAction<IUserCreate>(CREATE_USER_REQUEST);
+export const createUserRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
+  CREATE_USER_REQUEST,
+  (input) => {
+    if (Array.isArray(input)) { return input; }
+    return [input];
+  });
 export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
 export const createUserError = createAction<Error>(CREATE_USER_ERROR);
 
@@ -109,6 +115,7 @@ export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
 export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
 
 export const removeMessage = createAction<number>(REMOVE_MESSAGE);
+export const addMessage = createAction<string>(ADD_MESSAGE);
 
 export const resetPasswordRequest = createAction<string>(RESET_PASSWORD_REQUEST);
 export const resetPasswordSuccess = createAction<string>(RESET_PASSWORD_SUCCESS);

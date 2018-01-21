@@ -52,8 +52,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedProps;
 
-const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<IProps>()(withRouter(withStyles(styles)(
+const CreateUser =
+  connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<IProps>()(
+  withRouter(
+  withStyles(styles)(
 class extends React.Component<Props, State> {
   state: State = {
     selectedChild: this.props.students.length > 0
@@ -74,6 +77,8 @@ class extends React.Component<Props, State> {
   handleGoBack = () => this.props.history.push('/');
   
   handleClose = () => this.handleGoBack();
+
+  handleImport = () => this.props.history.push('/importUsers');
 
   handleSubmit = () => {
     return this.props.createUser({
@@ -273,6 +278,9 @@ class extends React.Component<Props, State> {
           </form>
         </DialogContent>
         <DialogActions>
+          <Button onClick={this.handleImport} color="accent">
+            Import
+          </Button>
           <Button onClick={this.handleClose} color="accent">
             Cancel
           </Button>

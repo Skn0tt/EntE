@@ -13,16 +13,23 @@ export interface UserModel extends Document, IUser {
   forgotPassword();
 }
 
-export interface IUser {
+export interface IUser extends IUserBase {
+  children: MongoId[];
+  resetPasswordToken: String;
+  resetPasswordExpires: Date;
+}
+
+export interface IUserCreate extends IUserBase {
+  children: string[];
+}
+
+interface IUserBase {
   username: string;
   displayname: string;
   email: string;
   password: string;
   role: ROLES;
-  isAdult: boolean;
-  children: MongoId[];
-  resetPasswordToken: String;
-  resetPasswordExpires: Date;
+  isAdult?: boolean;
 }
 
 /**
@@ -69,7 +76,7 @@ const userSchema : Schema = new Schema({
     maxlength: 50,
   },
   email: { type: String, required: false, validate: emailValidator },
-  password: { type: String, required: true },
+  password: String,
   role: { type: String, enum: roles, required: true },
   isAdult: { type: Boolean, required: false, default: false },
   children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
@@ -91,6 +98,7 @@ userSchema.plugin(uniqueValidator);
 const SALT_WORK_FACTOR = 10;
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
+  if (!this.password) return next();
 
   try {
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);

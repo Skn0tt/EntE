@@ -468,7 +468,7 @@ components:
           type: array
           items:
             type: string
-            description: MongoId of child
+            description: MongoId/username of child
         role:
           type: string
           enum:

@@ -31,6 +31,7 @@ import {
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_ERROR,
   SET_PASSWORD_SUCCESS,
+  ADD_MESSAGE,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
@@ -172,6 +173,12 @@ const reducer = handleActions({
     .update('entries', entries => entries.merge(
       Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry])),
     )),
+
+  /**
+   * ADD_MESSAGE
+   */
+  [ADD_MESSAGE]: (state: AppState, action: Action<string>): AppState => state
+    .update('messages', messages => messages.push(action.payload)),
 
   /**
    * REMOVE_MESSAGE

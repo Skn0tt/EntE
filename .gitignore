@@ -35,3 +35,7 @@ yarn-error.log*
 # CLI
 cli/dist
 cli/node_modules
+
+# util
+util/dist
+util/node_modules

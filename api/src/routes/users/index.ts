@@ -4,7 +4,7 @@ import { validationResult, body, param, oneOf } from 'express-validator/check';
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
 import { roles, ROLES, MongoId } from '../../constants';
 
-import User, { UserModel } from '../../models/User';
+import User, { UserModel, IUser, IUserCreate } from '../../models/User';
 import { RequestHandler } from 'express-serve-static-core';
 import Entry from '../../models/Entry';
 import Slot from '../../models/Slot';
@@ -125,39 +125,39 @@ usersRouter.get('/:userId', [
 
 const userAlreadyExists = async (username: string): Promise<boolean> =>
   !!(await User.findOne({ username }));
-const childAlreadyExists = async (id: string): Promise<boolean> =>
+const userExistsById = async (id: string): Promise<boolean> =>
   !!(await User.findById(id));
 const createPermissions : Permissions = {
   users_write: true,
 };
+
 /**
  * Create new user
  */
 usersRouter.post('/', async (request: UserRequest, response, next) => {
   const users = Array.isArray(request.body) ? request.body : [request.body];
-  request.body = users;
   try {
     for (const user of users) {
       if (!(
         isEmail(user.email) &&
         isAscii(user.displayname) &&
         isAlphanumeric(user.username) &&
-        isIn(user.role, roles) &&
-        !!user.password &&
-        (user.children || [] as string[]).every(id => isMongoId(id))
-      )) {
-        return response.status(422).end('Validation errors');
-      }
-
+        isIn(user.role, roles)
+      )) { return response.status(422).end('Validation errors'); }
 
       if (await userAlreadyExists(user.username)) {
-        return response.status(409).end('User already exists.');
+        return response.status(409).end(`User ${user.username} already exists.`);
       }
-    
-      for (const child of user.children || []) {
-        if (await !childAlreadyExists(child)) {
-          return response.status(422).end(`Child ${child} doesn't exist.`);
-        }
+
+      if (user.role === ROLES.PARENT || user.role === ROLES.MANAGER) {
+        user.children = await Promise.all(user.children.map(async (child): Promise<string> => {
+          if (isMongoId(child)) { return child; }
+  
+          const userInDB = await User.findOne({ username: child });
+          if (userInDB) return userInDB._id;
+
+          response.status(422).end(`Child ${child} doesn't exist`);
+        }));
       }
     }
 
@@ -173,18 +173,18 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
 
     for (const user of users) {
       const newUser = await User.create({
+        children: user.children,
         email: user.email,
         role: user.role,
         displayname: user.displayname,
         password: user.password,
         isAdult: user.isAdult,
         username: user.username,
-        children: user.children || [],
       });
 
       const oldUsers = request.users || [];
 
-      if (!newUser.password) { newUser.forgotPassword() }
+      if (!newUser.password) { newUser.forgotPassword(); }
   
       request.users = [newUser, ...oldUsers];
     }
