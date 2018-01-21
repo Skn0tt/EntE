@@ -1,24 +1,23 @@
-import { IUserBase, Roles, IUser } from "../../types/index";
-import { parse, ParseConfig } from 'papaparse';
-import validate from "./validate";
+import { IUserCreate, Roles } from '../interfaces/index';
+import { ParseConfig, parse } from 'papaparse';
 
 export interface ParseUsersResult {
-  students: IUserBase[];
-  parents: IUserBase[];
-  teachers: IUserBase[];
-  managers: IUserBase[];
-  admins: IUserBase[];
-};
+  students: IUserCreate[];
+  parents: IUserCreate[];
+  teachers: IUserCreate[];
+  managers: IUserCreate[];
+  admins: IUserCreate[];
+}
 
 const config: ParseConfig = {
   header: true,
-  dynamicTyping: true
-}
+  dynamicTyping: true,
+};
 
 const parseCSV = (input: string): ParseUsersResult => {
   const parsed = parse(input, config);
   
-  const data: {}[] = parsed.data;
+  const data: IUserCreate[] = parsed.data;
 
   const result: ParseUsersResult = {
     students: [],
@@ -28,7 +27,7 @@ const parseCSV = (input: string): ParseUsersResult => {
     admins: [],
   };
 
-  data.forEach((item: IUserBase) => {
+  data.forEach((item) => {
     switch (item.role) {
       case Roles.ADMIN:
         result.admins.push(item);
@@ -46,14 +45,9 @@ const parseCSV = (input: string): ParseUsersResult => {
         result.parents.push(item);
         break;
     }
-  })
+  });
 
-  try {
-    validate(result);
-    return result;
-  } catch (error) {
-    throw error;
-  }
-}
+  return result;
+};
 
 export default parseCSV;
