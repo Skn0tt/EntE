@@ -2,7 +2,7 @@
   "name": "entschuldigungsverfahren-api",
   "version": "0.0.1",
   "description": "Die API für das Entschuldigungsverfahren.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/Skn0tt/EntschuldigungsVerfahren",
   "author": "Simon Knott",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "build": "tsc",
     "test": "echo NO TESTS DEFINED",
     "watch": "tsc --watch",
-    "start": "node build/",
+    "start": "node dist/",
     "lint": "tslint --project ."
   },
   "dependencies": {
