@@ -125,11 +125,12 @@ usersRouter.get('/:userId', [
 
 const userAlreadyExists = async (username: string): Promise<boolean> =>
   !!(await User.findOne({ username }));
-const childAlreadyExists = async (id: string): Promise<boolean> =>
+const userExistsById = async (id: string): Promise<boolean> =>
   !!(await User.findById(id));
 const createPermissions : Permissions = {
   users_write: true,
 };
+
 /**
  * Create new user
  */
@@ -143,19 +144,24 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
         isAscii(user.displayname) &&
         isAlphanumeric(user.username) &&
         isIn(user.role, roles) &&
-        !!user.password &&
-        (user.children || [] as string[]).every(id => isMongoId(id))
+        !!user.password
       )) {
         return response.status(422).end('Validation errors');
       }
 
-
       if (await userAlreadyExists(user.username)) {
         return response.status(409).end('User already exists.');
       }
+
+      user.children = await Promise.all(user.children.map(async (child): Promise<MongoId> => {
+        if (isMongoId(child)) return child;
+
+        const childUser = await User.findOne({ username: child });
+        return childUser._id;
+      }));
     
       for (const child of user.children || []) {
-        if (await !childAlreadyExists(child)) {
+        if (await !userExistsById(child)) {
           return response.status(422).end(`Child ${child} doesn't exist.`);
         }
       }
