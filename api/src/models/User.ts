@@ -13,16 +13,23 @@ export interface UserModel extends Document, IUser {
   forgotPassword();
 }
 
-export interface IUser {
+export interface IUser extends IUserBase {
+  children: MongoId[];
+  resetPasswordToken: String;
+  resetPasswordExpires: Date;
+}
+
+export interface IUserCreate extends IUserBase {
+  children: string[];
+}
+
+interface IUserBase {
   username: string;
   displayname: string;
   email: string;
   password: string;
   role: ROLES;
-  isAdult: boolean;
-  children: MongoId[];
-  resetPasswordToken: String;
-  resetPasswordExpires: Date;
+  isAdult?: boolean;
 }
 
 /**

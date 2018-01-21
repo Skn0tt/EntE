@@ -4,7 +4,7 @@ import { validationResult, body, param, oneOf } from 'express-validator/check';
 import { check as permissionsCheck, Permissions } from '../../routines/permissions';
 import { roles, ROLES, MongoId } from '../../constants';
 
-import User, { UserModel } from '../../models/User';
+import User, { UserModel, IUser, IUserCreate } from '../../models/User';
 import { RequestHandler } from 'express-serve-static-core';
 import Entry from '../../models/Entry';
 import Slot from '../../models/Slot';
@@ -136,7 +136,6 @@ const createPermissions : Permissions = {
  */
 usersRouter.post('/', async (request: UserRequest, response, next) => {
   const users = Array.isArray(request.body) ? request.body : [request.body];
-  request.body = users;
   try {
     for (const user of users) {
       if (!(
@@ -145,25 +144,21 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
         isAlphanumeric(user.username) &&
         isIn(user.role, roles) &&
         !!user.password
-      )) {
-        return response.status(422).end('Validation errors');
-      }
+      )) { return response.status(422).end('Validation errors'); }
 
       if (await userAlreadyExists(user.username)) {
         return response.status(409).end('User already exists.');
       }
 
-      user.children = await Promise.all(user.children.map(async (child): Promise<MongoId> => {
-        if (isMongoId(child)) return child;
+      if (user.role === ROLES.PARENT || user.role === ROLES.MANAGER) {
+        user.children = await Promise.all(user.children.map(async (child): Promise<string> => {
+          if (isMongoId(child)) { return child; }
+  
+          const userInDB = await User.findOne({ username: child });
+          if (userInDB) return userInDB._id;
 
-        const childUser = await User.findOne({ username: child });
-        return childUser._id;
-      }));
-    
-      for (const child of user.children || []) {
-        if (await !userExistsById(child)) {
-          return response.status(422).end(`Child ${child} doesn't exist.`);
-        }
+          response.status(422).end(`Child ${child} doesn't exist`);
+        }));
       }
     }
 
@@ -179,13 +174,13 @@ usersRouter.post('/', async (request: UserRequest, response, next) => {
 
     for (const user of users) {
       const newUser = await User.create({
+        children: user.children,
         email: user.email,
         role: user.role,
         displayname: user.displayname,
         password: user.password,
         isAdult: user.isAdult,
         username: user.username,
-        children: user.children || [],
       });
 
       const oldUsers = request.users || [];
