@@ -77,12 +77,14 @@ class extends React.Component<Props & InjectedProps, State> {
               fullWidth
               id="password"
               label="Password"
+              type="password"
               error={!this.passwordValid()}
               onChange={this.handleChangePassword}
             />
             <TextField
               fullWidth
               id="verification"
+              type="password"
               label="Verifizierung"
               error={!this.verificationValid()}
               onChange={this.handleChangeVerification}
