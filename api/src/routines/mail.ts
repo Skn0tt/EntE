@@ -15,11 +15,11 @@ import PasswortResetSuccess from '../templates/PasswortResetSuccess';
 let mailConfig;
 if (process.env.NODE_ENV === 'production') {
   mailConfig = {
-    host: 'smtp.sendgrid.net',
+    host: 'mail.your-server.de',
     port: 587,
     auth: {
-      user: 'real.user',
-      pass: 'verysecret',
+      user: 'ev@simonknott.de‚',
+      pass: 't80bpG4676gUQ86z',
     },
   };
 } else {
