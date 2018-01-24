@@ -8,7 +8,7 @@ services:
     build: ./reverseproxy
   api:
     build: ./api
-    command: nodemon -L --inspect=0.0.0.0:5858 ./build/
+    command: nodemon -L --inspect=0.0.0.0:5858 ./dist/
     volumes:
       - ./api/build:/usr/src/app/build
     ports:
