@@ -1,11 +1,12 @@
 ---
+# Meta
 title: "Entwurf und Entwicklung eines E-Government-Systems zur Digitalisierung des Entschuldigungsverfahrens"
 subtitle: "Facharbeit Informatik, Ernst-Moritz-Arndt-Gymnasium Bonn"
 author: Simon Knott
 date: Januar 2018
 lang: de
 
-#documentclass: report
+# Settings
 papersize: A4
 template: eisvogel.latex
 toc: true
@@ -73,17 +74,4 @@ Welche Probleme können durch Digitalisierung...
 
 # Appendix
 - Erläuterung Redux (One-Way Data Flow) und Vergleich zum traditionellen MVC-Ansatz
-
-```ts
-import { ObjectId } from 'bson';
-export enum ROLES {
-  PARENT = 'parent',
-  STUDENT = 'student',
-  TEACHER = 'teacher',
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-}
-export const roles = [ROLES.ADMIN, ROLES.STUDENT, ROLES.TEACHER, ROLES.PARENT, ROLES.MANAGER];
-export type MongoId = ObjectId;
-```
 
