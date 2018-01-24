@@ -1,5 +1,6 @@
 import { EntryModel } from '../models/Entry';
 import * as mail from 'nodemailer';
+import * as sgTransport from 'nodemailer-sendgrid-transport';
 import * as heml from 'heml';
 import * as Handlebars from 'handlebars';
 import * as templates from '../templates';
@@ -12,18 +13,15 @@ import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
 import PasswortResetLink from '../templates/PasswortResetLink';
 import PasswortResetSuccess from '../templates/PasswortResetSuccess';
 
-let mailConfig;
-if (process.env.NODE_ENV === 'production') {
-  mailConfig = {
-    host: 'mail.your-server.de',
-    port: 587,
+const baseUrl = `http://${process.env.BASEURL}`;
+
+const mailConfig = process.env.NODE_ENV === 'production'
+  ? sgTransport({
     auth: {
-      user: 'ev@simonknott.de‚',
-      pass: 't80bpG4676gUQ86z',
+      api_key: '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',
     },
-  };
-} else {
-  mailConfig = {
+  })
+  : {
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
@@ -31,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
       pass: 'mWgCFb9JcJxdeKa6RE',
     },
   };
-}
+
 const transporter = mail.createTransport(mailConfig);
 
 /**
@@ -44,7 +42,7 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   try {
     const hemlTemplate = await signRequest({
       preview: 'Sign the Request!',
-      link_address: 'http://localhost/entries/' + entry._id,
+      link_address: `${baseUrl}/entries/${entry._id}`,
       link_display: 'Show Entry',
       subject: 'You are requested to sign the Entry.',
     });
@@ -71,7 +69,7 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   try {
     const hemlTemplate = await signRequest({
       preview: 'The Entry was signed.',
-      link_address: 'http://localhost/entries/' + entry._id,
+      link_address: `${baseUrl}/entries/${entry._id}`,
       link_display: 'View the Entry',
       subject: 'An Entry was signed.',
     });
@@ -137,7 +135,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
 export const dispatchPasswortResetLink = async (token: string, username: string, email: string) => {
   try {
     const { html, subject } = PasswortResetLink(
-      `http://localhost/forgot/${token}`,
+      `${baseUrl}/forgot/${token}`,
       username,
     );
 
@@ -165,7 +163,15 @@ export const dispatchPasswortResetSuccess = async (username: string, email: stri
     });
     console.log('Mail: Dispatched PasswortResetSuccess to', info.accepted);
   } catch (error) {
-    throw error;
+    console.error(error);
   }
 };
 
+export const checkEmail = async (): Promise<void> => {
+  try {
+    const result = await transporter.verify();
+    console.log('SMTP Connection Works.');
+  } catch (error) {
+    throw error;
+  }
+};

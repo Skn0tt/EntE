@@ -11,15 +11,15 @@ services:
     restart: always
     depends_on:
       - mongodb
-      - reverseproxy
   ui:
     build: ./ui
     restart: always
-    depends_on:
-      - reverseproxy
   reverseproxy:
     build: ./reverseproxy
     restart: always
+    depends_on:
+      - ui
+      - api
     ports:
       - 80:80
       - 443:443

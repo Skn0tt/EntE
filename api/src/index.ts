@@ -21,6 +21,7 @@ import login from './routes/login';
 import status from './routes/status';
 import dev from './routes/dev';
 import cron from './routines/cron';
+import { checkEmail } from './routines/mail';
 
 const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
@@ -88,6 +89,8 @@ app.use((err, req, res, next) => {
 
 // Cron Jobs
 if (production) { cron(); }
+
+checkEmail();
 
 app.listen(app.get('port'), () => {
   console.log(
