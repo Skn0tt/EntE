@@ -16,7 +16,7 @@ api/node_modules
 api/coverage
 
 ## production
-api/build
+api/dist
 
 # misc
 .DS_Store

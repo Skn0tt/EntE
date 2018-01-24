@@ -62,6 +62,7 @@ app.options('*', cors({ origin: true }));
 
 // Unauthenticated Routes
 app.use('/auth', auth);
+app.use('/status', status);
 
 // Authentication
 app.use(passport.initialize());
@@ -73,7 +74,6 @@ app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
 app.use('/login', login);
-app.use('/status', status);
 if (!production) { app.use('/dev', dev); }
 
 // Error Handling

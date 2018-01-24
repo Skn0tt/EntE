@@ -7,29 +7,19 @@ services:
       - /data/db
     container_name: "mongodb"
   api:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
+    build: ./api
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/status"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
     depends_on:
       - mongodb
       - reverseproxy
   ui:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+    build: ./ui
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
     depends_on:
       - reverseproxy
   reverseproxy:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:latest
+    build: ./reverseproxy
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
