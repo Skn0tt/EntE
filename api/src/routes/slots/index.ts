@@ -52,7 +52,7 @@ slotsRouter.get('/', async (request: SlotRequest, response, next) => {
         break;
       case ROLES.MANAGER:
       case ROLES.PARENT:
-        slots = await Slot.find({ student: { $in: request.user.children, ...yearParams } });
+        slots = await Slot.find({ student: { $in: request.user.children }, ...yearParams });
         break;
       case ROLES.STUDENT:
         slots = await Slot.find({ student: request.user._id, ...yearParams });
