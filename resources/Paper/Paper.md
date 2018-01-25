@@ -9,6 +9,7 @@ lang: de
 # Settings
 papersize: A4
 template: eisvogel.latex
+bibliography: Paper.bib
 toc: true
 toc-depth: 3
 toc-title: Inhaltsverzeichnis
@@ -74,4 +75,3 @@ Welche Probleme können durch Digitalisierung...
 
 # Appendix
 - Erläuterung Redux (One-Way Data Flow) und Vergleich zum traditionellen MVC-Ansatz
-
