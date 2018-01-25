@@ -1,0 +1,283 @@
+Attaching to entschuldigungsverfahren_reverseproxy_1, entschuldigungsverfahren_api_1, entschuldigungsverfahren_ui_1, mongodb
+[36mreverseproxy_1  |[0m 89.0.140.53 - jensliebreich [25/Jan/2018:19:20:27 +0000] "GET /api/slots HTTP/1.1" 200 23 "http://195.201.16.26/slots" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[36mreverseproxy_1  |[0m 89.0.140.53 - jensliebreich [25/Jan/2018:19:20:29 +0000] "GET /api/entries HTTP/1.1" 200 36 "http://195.201.16.26/entries" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[33mapi_1           |[0m yarn run v1.3.2
+[33mapi_1           |[0m $ node dist/index.js
+[33mapi_1           |[0m   App is running at http://localhost:80 in production mode
+[33mapi_1           |[0m   Press CTRL-C to stop
+[33mapi_1           |[0m 
+[33mapi_1           |[0m SMTP Connection Works.
+[33mapi_1           |[0m [0mGET /status [32m200 [0m3.886 ms - 2[0m
+[33mapi_1           |[0m [0mGET /slots [32m200 [0m95.960 ms - 23[0m
+[33mapi_1           |[0m [0mGET /entries [32m200 [0m81.307 ms - 36[0m
+[33mapi_1           |[0m [0mGET /status [32m200 [0m0.508 ms - 2[0m
+[33mapi_1           |[0m [0mGET /status [32m200 [0m0.400 ms - 2[0m
+[33mapi_1           |[0m [0mGET /status [32m200 [0m0.393 ms - 2[0m
+[33mapi_1           |[0m [0mGET /status [32m200 [0m0.399 ms - 2[0m
+[33mapi_1           |[0m [0mGET /status [32m200 [0m0.379 ms - 2[0m
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:00:02:18 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:00:26:20 +0000] "GET /pma/scripts/setup.php HTTP/1.0" 404 169 "-" "-"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:01:27:35 +0000] "GET / HTTP/1.0" 200 723 "-" "-"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:01:57:36 +0000] "GET / HTTP/1.0" 200 723 "-" "-"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:05:50:29 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 8.0.0; Redmi Note 3 Build/OPR6.170623.021) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:05:50:31 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 8.0.0; Redmi Note 3 Build/OPR6.170623.021) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:05:50:31 +0000] "GET /manifest.json HTTP/1.0" 200 293 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 8.0.0; Redmi Note 3 Build/OPR6.170623.021) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:01:49 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 8.0.0; Redmi Note 3 Build/OPR6.170623.021) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:03:34 +0000] "GET /forgot/3ee77292abe52e2b3a9b47e8c23cedb694aba8c7 HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:03:43 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "http://195.201.16.26/forgot/3ee77292abe52e2b3a9b47e8c23cedb694aba8c7" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:04:36 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:04:39 +0000] "GET /manifest.json HTTP/1.0" 200 293 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:07:33 +0000] "GET /createEntry HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:07:35 +0000] "GET /manifest.json HTTP/1.0" 304 0 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:11:02 +0000] "GET /entries HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:11:04 +0000] "GET /manifest.json HTTP/1.0" 304 0 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:13:00 +0000] "GET /entries HTTP/1.0" 304 0 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:13:02 +0000] "GET /manifest.json HTTP/1.0" 304 0 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:14:54 +0000] "GET /users HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:14:56 +0000] "GET /loading HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:14:56 +0000] "GET /loading/favicon.ico HTTP/1.0" 404 169 "-" "Dalvik/2.1.0 (Linux; U; Android 7.0; SM-G935F Build/NRD90M)"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:14:57 +0000] "GET /manifest.json HTTP/1.0" 304 0 "http://195.201.16.26/login" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:45 +0000] "HEAD /mysql/admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:45 +0000] "GET /mysql/admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:48 +0000] "HEAD /mysql/sqlmanager/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:49 +0000] "GET /mysql/sqlmanager/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:55 +0000] "HEAD /phpMyadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:32:55 +0000] "GET /phpMyadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:01 +0000] "HEAD /phpmyadmin2/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:01 +0000] "GET /phpmyadmin2/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[35mmongodb         |[0m 2018-01-24T22:24:25.690+0000 I CONTROL  [initandlisten] MongoDB starting : pid=1 port=27017 dbpath=/data/db 64-bit host=46869cd2a3e7
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] db version v3.6.2
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] git version: 489d177dbd0f0420a8ca04d39fd78d0a2c539420
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1t  3 May 2016
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] allocator: tcmalloc
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] modules: none
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] build environment:
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten]     distmod: debian81
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten]     distarch: x86_64
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten]     target_arch: x86_64
+[35mmongodb         |[0m 2018-01-24T22:24:25.691+0000 I CONTROL  [initandlisten] options: { net: { bindIpAll: true } }
+[35mmongodb         |[0m 2018-01-24T22:24:25.692+0000 I STORAGE  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.692+0000 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+[35mmongodb         |[0m 2018-01-24T22:24:25.692+0000 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+[35mmongodb         |[0m 2018-01-24T22:24:25.692+0000 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=464M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+[35mmongodb         |[0m 2018-01-24T22:24:25.743+0000 I CONTROL  [initandlisten] 
+[35mmongodb         |[0m 2018-01-24T22:24:25.744+0000 I STORAGE  [initandlisten] createCollection: admin.system.version with provided UUID: 6e4e6292-f20e-4336-912a-f4a6df6072da
+[35mmongodb         |[0m 2018-01-24T22:24:25.751+0000 I COMMAND  [initandlisten] setting featureCompatibilityVersion to 3.6
+[35mmongodb         |[0m 2018-01-24T22:24:25.755+0000 I STORAGE  [initandlisten] createCollection: local.startup_log with generated UUID: 80711b1f-f0d8-4e04-887b-d33297a932f1
+[35mmongodb         |[0m 2018-01-24T22:24:25.762+0000 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+[35mmongodb         |[0m 2018-01-24T22:24:25.762+0000 I NETWORK  [initandlisten] waiting for connections on port 27017
+[35mmongodb         |[0m 2018-01-24T22:24:28.549+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:46552 #1 (1 connection now open)
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:01 +0000] "HEAD /phpmyadmin3/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:01 +0000] "GET /phpmyadmin3/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:02 +0000] "HEAD /phpmyadmin4/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:02 +0000] "GET /phpmyadmin4/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "HEAD /phpmy/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "GET /phpmy/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "HEAD /phppma/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "GET /phppma/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "HEAD /myadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:05 +0000] "GET /myadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:09 +0000] "HEAD /MyAdmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:09 +0000] "GET /MyAdmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:09 +0000] "HEAD /program/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:09 +0000] "GET /program/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:12 +0000] "HEAD /dbadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:12 +0000] "GET /dbadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:16 +0000] "HEAD /db/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:16 +0000] "GET /db/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:16 +0000] "HEAD /admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[35mmongodb         |[0m 2018-01-24T22:24:28.554+0000 I NETWORK  [conn1] received client metadata from 172.18.0.4:46552 conn: { driver: { name: "nodejs", version: "2.2.34" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-112-generic" }, platform: "Node.js v9.4.0, LE, mongodb-core: 2.1.18" }
+[35mmongodb         |[0m 2018-01-24T22:24:28.566+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:46554 #2 (2 connections now open)
+[35mmongodb         |[0m 2018-01-24T22:24:28.575+0000 I STORAGE  [conn1] createCollection: ev.users with generated UUID: dd1c6094-1804-4341-a7ce-b4a4e6cf2f50
+[35mmongodb         |[0m 2018-01-24T22:24:28.588+0000 I INDEX    [conn1] build index on: ev.users properties: { v: 2, unique: true, key: { username: 1 }, name: "username_1", ns: "ev.users", background: true }
+[35mmongodb         |[0m 2018-01-24T22:24:28.588+0000 I INDEX    [conn1] build index done.  scanned 0 total records. 0 secs
+[35mmongodb         |[0m 2018-01-24T22:29:25.763+0000 I STORAGE  [thread3] createCollection: config.system.sessions with generated UUID: 05e96da5-d7cb-4a16-889b-7ffc50ffef4f
+[35mmongodb         |[0m 2018-01-24T22:29:25.781+0000 I INDEX    [thread3] build index on: config.system.sessions properties: { v: 2, key: { lastUse: 1 }, name: "lsidTTLIndex", ns: "config.system.sessions", expireAfterSeconds: 1800 }
+[35mmongodb         |[0m 2018-01-24T22:29:25.781+0000 I INDEX    [thread3] 	 building index using bulk method; build may temporarily use up to 500 megabytes of RAM
+[35mmongodb         |[0m 2018-01-24T22:29:25.781+0000 I INDEX    [thread3] build index done.  scanned 0 total records. 0 secs
+[35mmongodb         |[0m 2018-01-25T07:08:47.035+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:48740 #3 (3 connections now open)
+[35mmongodb         |[0m 2018-01-25T07:08:47.037+0000 I STORAGE  [conn2] createCollection: ev.slots with generated UUID: 35455d02-2655-4aa0-b36b-c8ccfc72d42b
+[35mmongodb         |[0m 2018-01-25T07:08:47.049+0000 I STORAGE  [conn2] createCollection: ev.entries with generated UUID: 444453c3-c654-4563-9b5e-eda33d7e786c
+[35mmongodb         |[0m 2018-01-25T07:10:58.331+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:48764 #4 (4 connections now open)
+[35mmongodb         |[0m 2018-01-25T19:19:41.202+0000 I NETWORK  [conn1] end connection 172.18.0.4:46552 (1 connection now open)
+[35mmongodb         |[0m 2018-01-25T19:19:41.202+0000 I NETWORK  [conn2] end connection 172.18.0.4:46554 (2 connections now open)
+[35mmongodb         |[0m 2018-01-25T19:19:41.202+0000 I NETWORK  [conn3] end connection 172.18.0.4:48740 (3 connections now open)
+[35mmongodb         |[0m 2018-01-25T19:19:41.202+0000 I NETWORK  [conn4] end connection 172.18.0.4:48764 (0 connections now open)
+[35mmongodb         |[0m 2018-01-25T19:19:44.281+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:52266 #5 (1 connection now open)
+[35mmongodb         |[0m 2018-01-25T19:19:44.285+0000 I NETWORK  [conn5] received client metadata from 172.18.0.4:52266 conn: { driver: { name: "nodejs", version: "2.2.34" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-112-generic" }, platform: "Node.js v9.4.0, LE, mongodb-core: 2.1.18" }
+[35mmongodb         |[0m 2018-01-25T19:19:44.298+0000 I NETWORK  [listener] connection accepted from 172.18.0.4:52268 #6 (2 connections now open)
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:16 +0000] "GET /admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:17 +0000] "HEAD /mysql/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:17 +0000] "GET /mysql/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:17 +0000] "HEAD /database/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "GET /database/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "HEAD /db/phpmyadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "GET /db/phpmyadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "HEAD /db/phpMyAdmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "GET /db/phpMyAdmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "HEAD /sqlmanager/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:18 +0000] "GET /sqlmanager/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:22 +0000] "HEAD /php-myadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:22 +0000] "GET /php-myadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:28 +0000] "HEAD /mysql-admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:28 +0000] "GET /mysql-admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:28 +0000] "HEAD /admin/phpmyadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:28 +0000] "GET /admin/phpmyadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:31 +0000] "HEAD /admin/sysadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:31 +0000] "GET /admin/sysadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "HEAD /admin/sqladmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "GET /admin/sqladmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "HEAD /admin/db/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "GET /admin/db/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "HEAD /admin/web/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "GET /admin/web/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "HEAD /admin/pMA/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:32 +0000] "GET /admin/pMA/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "HEAD /mysql/pma/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "GET /mysql/pma/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "HEAD /mysql/db/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "GET /mysql/db/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "HEAD /mysql/web/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "GET /mysql/web/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "HEAD /mysql/pMA/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:33 +0000] "GET /mysql/pMA/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:34 +0000] "HEAD /sql/phpmanager/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:34 +0000] "GET /sql/phpmanager/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:37 +0000] "HEAD /sql/php-myadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:37 +0000] "GET /sql/php-myadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:37 +0000] "HEAD /sql/phpmy-admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:37 +0000] "GET /sql/phpmy-admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:37 +0000] "HEAD /sql/sql/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "GET /sql/sql/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "HEAD /sql/myadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "GET /sql/myadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "HEAD /sql/webadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "GET /sql/webadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "HEAD /sql/sqlweb/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:38 +0000] "GET /sql/sqlweb/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "HEAD /sql/websql/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "GET /sql/websql/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "HEAD /sql/webdb/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "GET /sql/webdb/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "HEAD /sql/sqladmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:39 +0000] "GET /sql/sqladmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:42 +0000] "HEAD /sql/phpmyadmin2/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:42 +0000] "GET /sql/phpmyadmin2/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "HEAD /sql/phpMyAdmin2/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "GET /sql/phpMyAdmin2/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "HEAD /sql/phpMyAdmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "GET /sql/phpMyAdmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "HEAD /db/myadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:43 +0000] "GET /db/myadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:44 +0000] "HEAD /db/webadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:44 +0000] "GET /db/webadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:44 +0000] "HEAD /db/dbweb/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:44 +0000] "GET /db/dbweb/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:47 +0000] "HEAD /db/webdb/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:47 +0000] "GET /db/webdb/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:47 +0000] "HEAD /db/dbadmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:48 +0000] "GET /db/dbadmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:48 +0000] "HEAD /db/db-admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:48 +0000] "GET /db/db-admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:54 +0000] "HEAD /db/phpMyAdmin-3/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:54 +0000] "GET /db/phpMyAdmin-3/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:57 +0000] "HEAD /administrator/phpMyAdmin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:57 +0000] "GET /administrator/phpMyAdmin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "HEAD /administrator/db/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "GET /administrator/db/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "HEAD /administrator/web/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "GET /administrator/web/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "HEAD /administrator/pma/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "GET /administrator/pma/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:58 +0000] "HEAD /administrator/PMA/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "GET /administrator/PMA/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "HEAD /administrator/admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "GET /administrator/admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "HEAD /phpMyAdmin2/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "GET /phpMyAdmin2/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "HEAD /phpMyAdmin3/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:33:59 +0000] "GET /phpMyAdmin3/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "HEAD /phpMyAdmin4/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "GET /phpMyAdmin4/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "HEAD /phpMyAdmin-3/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "GET /phpMyAdmin-3/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "HEAD /php-my-admin/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "GET /php-my-admin/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "HEAD /PMA2011/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:00 +0000] "GET /PMA2011/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:01 +0000] "HEAD /PMA2012/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:01 +0000] "GET /PMA2012/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:04 +0000] "HEAD /PMA2014/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:04 +0000] "GET /PMA2014/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:04 +0000] "HEAD /PMA2015/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:04 +0000] "GET /PMA2015/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:04 +0000] "HEAD /PMA2016/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:05 +0000] "GET /PMA2016/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:05 +0000] "HEAD /PMA2017/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:05 +0000] "GET /PMA2017/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:08 +0000] "HEAD /pma2011/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:08 +0000] "GET /pma2011/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:11 +0000] "HEAD /pma2013/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:11 +0000] "GET /pma2013/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:11 +0000] "HEAD /pma2014/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "GET /pma2014/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "HEAD /pma2015/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "GET /pma2015/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "HEAD /pma2016/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "GET /pma2016/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "HEAD /pma2017/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:12 +0000] "GET /pma2017/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "HEAD /pma2018/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "GET /pma2018/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "HEAD /phpmyadmin2011/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "GET /phpmyadmin2011/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "HEAD /phpmyadmin2012/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "GET /phpmyadmin2012/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "HEAD /phpmyadmin2013/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:13 +0000] "GET /phpmyadmin2013/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:14 +0000] "HEAD /phpmyadmin2014/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:14 +0000] "GET /phpmyadmin2014/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "HEAD /phpmyadmin2016/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "GET /phpmyadmin2016/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "HEAD /phpmyadmin2017/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "GET /phpmyadmin2017/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "HEAD /phpmyadmin2018/ HTTP/1.0" 200 0 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:07:34:17 +0000] "GET /phpmyadmin2018/ HTTP/1.0" 200 723 "-" "Mozilla/5.0 muhstik-scan"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:11:55 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:12:02 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "http://195.201.16.26/entries" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:12:32 +0000] "GET /static/js/main.b155b042.js.map HTTP/1.0" 200 10089198 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:12:32 +0000] "GET /static/css/main.12e1cc9b.css.map HTTP/1.0" 200 5421 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:17:12 +0000] "GET /slots HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:17:13 +0000] "GET /static/css/main.12e1cc9b.css.map HTTP/1.0" 200 5421 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:17:16 +0000] "GET /static/js/main.b155b042.js.map HTTP/1.0" 200 10089198 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:24:33 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0(WindowsNT6.1;rv:31.0)Gecko/20100101Firefox/31.0"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:27:57 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:27:57 +0000] "GET /static/css/main.12e1cc9b.css.map HTTP/1.0" 200 5421 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:27:58 +0000] "GET /static/js/main.b155b042.js.map HTTP/1.0" 200 10089198 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:28:04 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "http://195.201.16.26/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:08:52:27 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 8.0.0; Redmi Note 3 Build/OPR6.170623.021) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:09:03:58 +0000] "GET /static/js/main.b155b042.js.map HTTP/1.0" 200 10089198 "-" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50728)"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:11:00:29 +0000] "GET / HTTP/1.0" 200 723 "-" "-"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:03:51 +0000] "GET / HTTP/1.0" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:04:03 +0000] "GET /favicon.ico HTTP/1.0" 304 0 "http://195.201.16.26/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:05:40 +0000] "GET /forgot/eb8bfec5da1b7a0b82a636d81cc3cfd528950c6b HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:05:41 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "http://195.201.16.26/forgot/eb8bfec5da1b7a0b82a636d81cc3cfd528950c6b" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:06:13 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:34:18 +0000] "GET /loading HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G935F Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/6.2 Chrome/56.0.2924.87 Mobile Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:15:34:18 +0000] "GET /loading/favicon.ico HTTP/1.0" 404 169 "-" "Dalvik/2.1.0 (Linux; U; Android 7.0; SM-G935F Build/NRD90M)"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:16:04:51 +0000] "GET / HTTP/1.0" 200 723 "-" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:16:04:54 +0000] "GET /robots.txt HTTP/1.0" 404 169 "-" "-"
+[32mui_1            |[0m 2018/01/25 16:04:56 [error] 5#5: *222 open() "/usr/share/nginx/html/sitemap.xml" failed (2: No such file or directory), client: 172.18.0.5, server: ui, request: "GET /sitemap.xml HTTP/1.0", host: "ui"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:16:04:56 +0000] "GET /sitemap.xml HTTP/1.0" 404 169 "-" "-"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:16:05:00 +0000] "GET /favicon.ico HTTP/1.0" 200 15086 "-" "python-requests/2.18.1"
+[32mui_1            |[0m 172.18.0.5 - - [25/Jan/2018:19:14:34 +0000] "GET / HTTP/1.0" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
