@@ -97,14 +97,15 @@ Viele davon sind sehr gut automatisierbar:
 Seit dem Aufkommen der Computertechnik wurden sowohl in staatlichen als auch privaten Einrichtungen viele dieser administrativen Aufgaben digitalisiert, um einen weniger fehleranfälligen und auch effizienteren Ablauf gewährleisten zu können.
 Diese Entwicklung fasst man unter dem Begriff *E-Government* zusammen.
 
-Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^1] oder der Digitale Pass in *Estland*[^2].
+Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^Elster] oder der Digitale Pass in *Estland*[^DigitalPass].
 
-[^1]: TODO: Elster
-[^2]: TODO: Recherchieren (War es das? War es doch ein anderes Land?)
+[^Elster]: TODO: Elster
+[^DigitalPass]: TODO: Recherchieren (War es das? War es doch ein anderes Land?)
 
+### Inhalt dieser Facharbeit
 Inhalt dieser Facharbeit ist es, ein neues, digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so sämtlichen beteiligten Arbeit abnimmt und Fehlern vorbeugt.
 
-Im Rahmen dieser Facharbeit werde ich erklären, *wie* und *wieso* ich dieses System modelliert und implementiert habe.
+Im Rahmen dieser Facharbeit werde ich erläutern, *wie* und *wieso* ich dieses System modelliert und implementiert habe.
 Dabei lege ich besonderen Fokus auf folgende Aspekte:
 
 - Skalierbarkeit
@@ -113,8 +114,6 @@ Dabei lege ich besonderen Fokus auf folgende Aspekte:
 
 Ich möchte dabei soweit es geht die *Best Practices* der Webentwicklung erfüllen um am Ende vor allem in Hinblick auf Sicherheit und Nutzbarkeit ein einsetzbares Produkt in den Händen zu halten.
 
-- Definitionen
-  - Was ist E-Government?
 
 //TODO: Bleibt das wirklich drin?
 ## Vor- und Nachteile der Digitalisierung
@@ -124,12 +123,42 @@ Welche Probleme können durch Digitalisierung...
 - ...entstehen?
 
 # Hauptteil
-//TODO: Recherchieren
 ## Datenschutz
+//TODO: Recherchieren
+
 - Was darf ich überhaupt speichern?
 - Was muss beachtet werden (Deutsches Recht)
 
 ## Modellierung
+### Prozess
+Das digitale Entschuldigungsverfahren ist stark an den alten Entschuldigungszettel angelehnt.
+
+Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag.
+Darin steht:
+- Startdatum
+- Enddatum (Falls das Versäumnis mehrtägig ist)
+- Art (Schulisch/Krankheit)
+- Bemerkung
+- Beliebig viele *Stunden* (Falls das Versäumnis eintägig ist)
+
+Eine *Stunde* entspricht einem Unterrichtsblock, der verpasst wurde.
+Darin steht:
+- Start, Ende des Blocks (Schulstunde)
+- Lehrer
+
+Nachdem dieser Antrag erstellt wurde, bekommt der Stufenleiter diesen angezeigt.
+Er kann dann prüfen, ob der Antrag zulässig ist, und den Antrag dementsprechend annehmen oder ablehnen.
+Wurde der Eintrag von einem Schüler erstellt, so wird der Antrag zusätzlich den Eltern angezeigt, die diesen dann genehmigen müssen.
+Falls die Eltern den Eintrag erstellen, so ist dieser schon bei der Erstellung genehmigt.
+
+Die zeitaufwändige Überprüfung des Antrags in der Excel-Tabelle entfällt, genauso wie die Krankmeldung im Sekretariat:
+Dabei geht es nur darum, dass der Schüler die Schule von seinem Versäumnis unterrichtet, dies tut er innerhalb dieses Prozesses durch die Erstellung des Antrags.
+
+Die Lehrer sind aus dem Prozess erst einmal enthalten: Sie sind nicht nötig, um einen Entschuldigungsantrag zu validieren.
+Sie haben allerdings Zugriff auf alle *Stunden*, die bei ihnen Versäumt wurden und sehen, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
+Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
+Auf dieser Basis können dann die Kurshefte auf den aktuellen Stand gebracht werden.
+
 ### System
 #### Architektur
 Das neue Entschuldigungsverfahren soll als Web-Anwendung umgesetzt werden.
@@ -150,13 +179,13 @@ Die Last auf dem Server steigt also mit der Anzahl der Nutzer.
 Der Server hat dabei bei jeder Anfrage sowohl die Arbeit, die Daten aus der Datenbank abzufragen, als auch die Seite aufzubauen.
 
 Beim Zweiten Ansatz liefert der Server dem Client jedes mal die gleiche HTML-Seite aus.
-Diese Seite enthält nun JavaScript-Code, der vom Client aus HTTP-Anfragen an eine Entwicklerschnittstelle[^4] schickt.
-Diese API liefert dem Client die relevanten Daten zurück, dieser zeigt diese über Veränderungen in der DOM[^5] dem Nutzer an.
+Diese Seite enthält nun JavaScript-Code, der vom Client aus HTTP-Anfragen an eine Entwicklerschnittstelle[^API] schickt.
+Diese API liefert dem Client die relevanten Daten zurück, dieser zeigt diese über Veränderungen in der DOM[^DOM] dem Nutzer an.
 Fragt zum Beispiel ein Schüler seine Übersichtsseite an, so wird ihm zuerst die Standard-HTML-Seite ausgeliefert.
 Der JavaScript-Code auf dieser Seite fragt nun bei der *API* die letzten $5$ Entschuldigungsanträge an, wartet auf die Antwort und erweitert die Anzeige um die Ergebnisse der Anfrage.
 
-[^4]: Von nun an als *API* bezeichnet
-[^5]: Document Object Model TODO: Ist das richtig?
+[^API]: Von nun an als *API* bezeichnet
+[^DOM]: Document Object Model TODO: Ist das richtig?
 
 Auf den ersten Blick sieht die zweite, Client-seitige Methode, wie ein unnötiger Mehraufwand aus - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
 Tatsächlich hat sie aber andere Vorteile: Da die HTML-Seite an sich immer die gleiche ist, lässt sich diese statisch ausliefern.
@@ -176,12 +205,22 @@ Daneben müssen alle Clients für die zweite Architektur ihrerseits performant g
 Für das Entschuldigungsverfahren habe ich mich für den Zweiten Ansatz entschieden, da er sehr gut zum Konzept passt: Ich habe kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Seite Client-Seitig zu rendern.
 
-#### Stack
-Mein Software-Stack basiert im groben auf dem *MERN*[^7]-Stack:
+### Datenbank
+- Entity-Relationship-Diagramm
+- Wieso ist sie so modelliert?
 
-[^7]: [MERN](http://mern.io/)
+### API
+- Denormalisierte Daten
+- REST
 
-##### **M**ongoDB
+## Umsetzung
+
+### Stack
+Mein Software-Stack basiert im groben auf dem *MERN*[^MERN]-Stack:
+
+[^MERN]: [MERN](http://mern.io/)
+
+#### **M**ongoDB
 MongoDB ist eine NoSQL-Datenbank die speziell für die Verwaltung von Dokumenten gedacht ist.
 Ein Service bietet über das *mongodb://*-Protokoll zugriff auf mehrere Datenbanken.
 Jede Datenbank sollte einer Anwendung zugeteilt sein.
@@ -195,14 +234,14 @@ So kann man einfache Datenbank-Abfragen machen, ohne SQL lernen zu müssen.
 In Zukunft ist es durchaus denkbar, auf eine SQL-Datenbank umzustellen - schließlich werden relationale Daten gespeichert.
 Für den Anfang funktioniert die MongoDB aber sehr gut.
 
-##### **E**xpress
+#### **E**xpress
 Express ist ein Framework, um mit Node.js und Javascript HTTP-Dienste zu schreiben.
 Es erledigt Aufgaben wie Routing, Error-Handling oder Middlewares und hat eine große Community, die viele Pakete bereitstellt.
 Standard-Funktionen einer API wie Authentication, CORS[^CORS] oder Input-Validation können durch bereites bestehende Middlwares für Express gelöst werden.
 
 [^CORS]: Cross-Origin-Request-System, TODO: Find link
 
-##### **R**eact
+#### **R**eact
 React ist das Herzstück des Web-Frontends.
 Es wurde vor TODO: x Jahren von Facebook entwickelt, um einfach dynamische Single-Page-Webapps schreiben zu können.
 React ist inzwischen eines der größten Open-Source-Projekte und wird kontinuierlich verbessert.
@@ -230,7 +269,7 @@ Typischer React-Code sieht zum Beispiel so aus:
 </Grid>
 ```
 
-##### **N**ode.js
+#### **N**ode.js
 Node.js ist eine Laufzeit-Umgebung, die die Ausführung von JavaScript außerhalb des Browsers ermöglicht.
 Sie basiert auf Googles V8-Engine die auch in Chrome eingesetzt wird.
 Node.js macht JavaScript zur einzigen echten FullStack-Sprache: JavaScript läuft durch sie neben dem Browser auch auf dem Server.
@@ -238,36 +277,43 @@ Node.js macht JavaScript zur einzigen echten FullStack-Sprache: JavaScript läuf
 Alle Teile des Entschuldigungsverfahrens sind in JavaScript geschrieben: Das Frontend in React, das Backend in Node.js.
 Hierdurch ist der Code sehr einfach zu maintainen (TODO: Anderes wort finden).
 
-##### Sonstige Tools
-- Dependencies, benutzte Tools/Frameworks/Libraries
-  - Was brauche ich wieso?
-  - Wieso dieses Tool statt einem anderen?
+#### Sonstige Tools
 
-#### API
-- Denormalisierte Daten
-- REST
+**Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird. Siehe Anhang.  
+**Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript. Wurde von Facebook entwickelt.  
+**Redux** ist eine Implementierung der Flux-Architektur (TODO: Whitepaper zitieren) für One-Way-Dataflow in Javascript. Siehe Anhang.  
+**Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
+Mit **MJML** lassen sich responsive Emails erzeugen, die in jedem Email-Client gut aussehen.  
+**Mongoose** bietet Schema-Validierung und eine schönere API für die arbeit mit MongoDB.  
+**Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man von Fehlern mitbekommt.  
+**Nodemailer** ermöglicht Node.js-Anwendunge, über SMTP Emails zu verschicken.  
 
-### Datenbank
-- Entity-Relationship-Diagramm
-- Wieso ist sie so modelliert?
+### Passwörter
 
-## Umsetzung
+Jeder Nutzer meldet sich im System mit Passwort und Benutzername an.
+Die API braucht daher eine Möglichkeit, das Passwort auf seine Gültigkeit zu überprüfen.
+Die Passwörter müssen also in der Datenbank gespeichert werden, dabei aber so sicher wie möglich abgelegt werden.
+
+Die sicherlich trivialste Möglichkeit ist es, die Passwörter bei der Nutzererstellung im Klartext zu speichern.
+Dann kann bei der Anmeldung einfach das übergebene Passwort verglichen werden.
+Kommt nun jedoch irgendjemand an die Inhalte der Datenbank, sei es ein böswilliger Hacker oder ein neugieriger Admininstrator, sind dort die Passwörter einfach sichtbar.
+Dieses Risiko sollte man niemals eingehen.
+
+Möglichkeit zwei ist es, die Passwörter verschlüsselt zu speichern.
+Nutzt man Algorithmen wie RSA (TODO: Tut man das wirklich? Gibt's für pw bessere?), hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der weiß wie - dafür muss er nur in den Besitz des Quellcodes und eventuell eines Privaten Schlüssels kommen - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+
+Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
+Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
+Möchte man einen Nutzer autentifizieren (TODO: Richtiges wort? (authenticate etc...)), so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
+
+Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus.
+Bei diesem kann man durch einen zusätzlichen Parameter die Laufzeit einstellen, um den Algorithmus langsamer zu machen.
+Dies macht in der Anwendung keinen großen Unterschied, macht aber Brute-Force-Angriffe deutlich schwieriger.
+
+
 - Interessante Code-Teile erklärt
-  - Hashing mit [bcrypt](https://de.wikipedia.org/wiki/Bcrypt)
   - API: DB-Anfragen, denormalisierte Daten
-- Kurze Erläuterung der wichtigsten Frameworks:
-  - React (Component-Basiertes UI-Framework für Single-Page Webapps)
-  - Express (HTTP Framework im Backend)
-  - Mongoose (Wrapper für MongoDB, bietet u.A. Client-Side Validation)
-
-## Containerisierung
-(Evtl im Appendix, je nach Länge des Rests)
-
-- Kurze Erklärung Docker
-- Erläuterung: Vorzüge Stateless Architecture
-- Distributed Deployments mit Kubernetes
-  - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
-  - Darbietung am Beispiel in der T-Cloud
 
 # Fazit
 - Zusammenfassung
@@ -275,4 +321,24 @@ Hierdurch ist der Code sehr einfach zu maintainen (TODO: Anderes wort finden).
 - Ausblick auf weitere Fragestellungen
 
 # Appendix
-- Erläuterung Redux (One-Way Data Flow) und Vergleich zum traditionellen MVC-Ansatz
+
+## Hash-Funktionen
+Eine Hash-Funktion ist wie eine Gleichung, die man nur in eine Richtung effizient lösen kann.
+Gibt man einen Wert in eine Hash-Funktion, so kann man mit wenig Aufwand den Hash berechnen.
+Möchte man nun allerdings aus einem Hash den Wert zurückberechnen, so geht dies nur über Brute-Force.
+
+Eine simple Hash-Funktion ist die mathematische Modulo-Funktion: $5 \bmod 3 = x$ ist einfach, aber $5 \bmod x = 2$ hat unendlich viele Lösungen.
+Eine Hash-Funktion aus der Informatik hat zusätzlich die Eigenschaft, dass ihre Ergebnisse eindeutig sind: Zu einem Ausgabewert passt nur ein Eingabewert, anders als bei Modulo.
+
+TODO: beenden
+
+## Containerisierung
+- Kurze Erklärung Docker
+- Erläuterung: Vorzüge Stateless Architecture
+- Distributed Deployments mit Kubernetes
+  - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
+  - Darbietung am Beispiel in der T-Cloud
+
+## Redux
+- Erläuterung
+- Vergleich zum traditionellen MVC-Ansatz
