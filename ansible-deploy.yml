@@ -1,7 +1,6 @@
----
 - name: Update Compose
   hosts: all
   tasks:
     - docker_service:
-      project_src: "./"
----
+      project_name: EntschuldigungsVerfahren
+      project_src: "."
