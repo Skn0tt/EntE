@@ -146,5 +146,8 @@ release:staging:
     - master
   tags:
     - ansible
+  environment:
+    name: staging
+    url: http://bull.simonknott.de
   script:
     - ansible-playbook -i staging.yml ansible-deploy.yml
