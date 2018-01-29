@@ -38,5 +38,7 @@
         - { name: docker-py, version: "latest", install: "true" }
         - { name: docker-compose, version: "latest", install: "true" }
       when: (item.version!="latest" and item.install)
-    - docker_service:
-      project_src: "./"
+
+    - name: Deploy
+      docker_service:
+        project_src: "./"
