@@ -20,7 +20,6 @@ Build API:
   stage: build
   only:
     - master
-  when: manual
   services:
     - docker:dind
   before_script:
@@ -35,7 +34,6 @@ Build UI:
   stage: build
   only:
     - master
-  when: manual
   services:
     - docker:dind
   before_script:
@@ -50,7 +48,6 @@ Build Reverse Proxy:
   stage: build
   only:
     - master
-  when: manual
   services:
     - docker:dind
   before_script:
@@ -70,7 +67,6 @@ Compose Startup Test:
   stage: test
   only:
     - master
-  when: manual
   services:
     - docker:dind
   before_script:
@@ -85,7 +81,6 @@ Test API:
   stage: test
   except:
     - master
-  when: manual
   before_script:
     - cd api
     - yarn
@@ -109,7 +104,6 @@ Lint API:
   stage: test
   except:
     - master
-  when: manual
   before_script:
     - cd api
     - yarn
@@ -121,7 +115,6 @@ Lint UI:
   stage: test
   except:
     - master
-  when: manual
   before_script:
     - cd ui
     - yarn
@@ -133,7 +126,6 @@ Credentials:
   stage: test
   except:
     - master
-  when: manual
   script:
     - cd ui/src/interfaces
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
