@@ -41,6 +41,7 @@
 
     - name: Deploy
       docker_service:
+        project_name: Entschuldigungsverfahren
         definition:
           version: '3'
           services:
