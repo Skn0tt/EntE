@@ -3,5 +3,5 @@
   hosts: all
   tasks:
     - docker_service:
-      project_src: './'
+      project_src: "./"
 ---
