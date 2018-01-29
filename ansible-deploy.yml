@@ -1,0 +1,7 @@
+---
+- name: Update Compose
+  hosts: all
+  tasks:
+    - docker_service:
+      project_src: '.'
+---

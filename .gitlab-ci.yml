@@ -1,8 +1,3 @@
-stages:
-  - build
-  - test
-  - upload
-
 variables:
   CONTAINER_BASE: registry.gitlab.com/skn0tt/entschuldigungsverfahren
   CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_NAME
@@ -11,6 +6,11 @@ variables:
   CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:latest
   CONTAINER_REVERSEPROXY_TEST_IMAGE: $CONTAINER_BASE/reverseproxy:$CI_COMMIT_REF_NAME
   CONTAINER_REVERSEPROXY_RELEASE_IMAGE: $CONTAINER_BASE/reverseproxy:latest
+
+stages:
+  - build
+  - test
+  - release
 
 #
 # Build
@@ -138,3 +138,13 @@ Credentials:
     - cd ui/src/interfaces
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
     - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
+
+release:staging:
+  stage: release
+  image: williamyeh/ansible:debian9
+  only:
+    - master
+  tags:
+    - ansible
+  script:
+    - ansible-playbook -i staging.yml ansible-deploy.yml
