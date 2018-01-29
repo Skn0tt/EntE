@@ -10,7 +10,9 @@ lang: de
 papersize: A4
 template: eisvogel.latex
 bibliography: Paper.bib
-toc: true
+fontsize: 12pt
+mainfont: Times New Roman
+linestretch: 1.5
 toc-depth: 3
 toc-title: Inhaltsverzeichnis
 pagestyle: headings
@@ -21,6 +23,11 @@ titlepage-rule-color: "F5A623"
 # Vorwort
 - Danksagungen
 
+\newpage
+
+\tableofcontents
+
+\newpage
 # Einleitung
 An meiner Schule, dem Ernst-Moritz-Arndt-Gymnasium in Bonn, herrscht schon länger Unzufriedenheit über das Entschuldigungsverfahren.
 Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
@@ -122,6 +129,7 @@ Welche Probleme können durch Digitalisierung...
 - ...behoben werden?
 - ...entstehen?
 
+\newpage
 # Hauptteil
 ## Datenschutz
 //TODO: Recherchieren
@@ -152,10 +160,11 @@ Wurde der Eintrag von einem Schüler erstellt, so wird der Antrag zusätzlich de
 Falls die Eltern den Eintrag erstellen, so ist dieser schon bei der Erstellung genehmigt.
 
 Die zeitaufwändige Überprüfung des Antrags in der Excel-Tabelle entfällt, genauso wie die Krankmeldung im Sekretariat:
-Dabei geht es nur darum, dass der Schüler die Schule von seinem Versäumnis unterrichtet, dies tut er innerhalb dieses Prozesses durch die Erstellung des Antrags.
+Sinn dieser ist es, sicherzustellen dass der Schüler die Schule von seinem Versäumnis unterrichtet.
+Dies tut er innerhalb dieses Prozesses durch die Erstellung des Antrags.
 
-Die Lehrer sind aus dem Prozess erst einmal enthalten: Sie sind nicht nötig, um einen Entschuldigungsantrag zu validieren.
-Sie haben allerdings Zugriff auf alle *Stunden*, die bei ihnen Versäumt wurden und sehen, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
+Die Lehrer sind aus dem Prozess erst einmal enthalten: Interaktion ihrerseits ist nicht nötig, um einen Entschuldigungsantrag zu validieren.
+Sie haben allerdings Zugriff auf alle *Stunden*, die bei ihnen versäumt wurden und sehen, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
 Auf dieser Basis können dann die Kurshefte auf den aktuellen Stand gebracht werden.
 
@@ -210,8 +219,72 @@ Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performan
 - Wieso ist sie so modelliert?
 
 ### API
-- Denormalisierte Daten
-- REST
+Die anzuzeigenden Daten erhält der Client von einer API.
+Diese ist nach dem REST-Prinzip [@rest] aufgebaut und zeichnet sich insbesondere durch die Darstellung der Daten als *Ressourcen* sowie die *Zustandslosigkeit* des Protokolls aus.
+
+#### Routen
+Die Modellierung auf *Ressourcen*-Basis bedeutet, dass die Pfade der API jeweils einer Ressource bzw. einem Datensatz entsprechen.
+Sie steht im Gegensatz zum *RPC*-Modell (*R*emote-*P*rocedure-*C*all), bei dem Anfragen durch Aktionen beschrieben werden.
+*Ressourcen*-Orientierte Strukturen ermöglichen eine bessere Verschachtelung der Routen.
+
+Beispiel: Die selbe Anfrage nach der Stunde mit der ID $x$ als *Ressource* ist ziemlich eindeutig:
+> `GET /users/x`
+
+Mit RPC sind verschiedenste Pfade denkbar:
+> - `GET /getUser?id=x`
+> - `GET /user?id=x`
+> - `GET /readUser?id=x`
+
+Im speziellen Fall des Entschuldigungsverfahrens exisitieren folgende Pfade:
+
+- `GET /users` (Alle Nutzer anfragen)
+- `GET /entries` (Alle Einträge anfragen)
+- `GET /slots` (Alle Stunden anfragen)
+
+Möchte man nur eine bestimmte Ressource anfragen, spezifiziert man deren ID:
+
+- `GET /users/[userId]` (Speziellen Nutzer anfragen)
+- `GET /entries/[entryId]` (Speziellen Eintrag anfragen)
+- `GET /slots/[slotsId]` (Spezielle Stunde anfragen)
+
+Als ID werden die von der MongoDB vergebenen Dokumenten-IDs verwendet.
+
+Möchte man auf diesen Ressourcen Aktionen ausführen, so verwendet man andere HTTP-Verben:
+- `POST /users` (Neuen Nutzer erstellen)
+- `PATH /users/[userId]` (Nutzer bearbeiten)
+- `PUT /entries/[entryId]/sign` (Eintrag unterschreiben)
+
+Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im QuellCode zu finden.
+
+#### Zustandslosigkeit
+Jede Anfrage an die API muss alle für die Beantwortung der Anfrage relevanten Daten enthalten.
+Dazu gehört:
+
+- Angefragte Ressource
+- Anmeldedaten
+- Eventuelle Filter
+
+Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer erst einmal beim Server anmeldet.
+Dieser speichert dann, dass der Client angemeldet ist und liefert bei der nächsten Anfrage Daten aus.
+
+Zustandslose Architekturen sind dagegen Server-agnostisch:
+Man kann den selben Server-Dienst mehrmals ausführen und jede Anfrage an einen anderen Server schicken.
+Die Anfrage wird von jedem gleich beantwortet, unabhängig von den vorhergegangenen Anfragen.
+
+Dies ermöglicht unter anderem Versions-Aktualisierungen ohne Downtime oder dynamisches, Horizontales skalieren.
+Erläuterungen hierzu finden sich im Appendix.
+
+#### Sicherheit
+Die API muss gegen unbefugten Zugriff gesichert sein.
+Hierzu gibt es verschiedenste Ansätze, einige davon werden im Anhang vorgestellt.
+Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei schickt der Client einfach bei jeder Anfrage Nutzernamen und Passwort im Klartext mit.
+
+Mit Software wie WireShark[^Wireshark] lassen sich die Netzwerkpakete allerdings leicht abfangen, dann kann man problemlos das Passwort auslesen.
+*Basic Auth* darf daher niemals über unverschlüsselten Kommunikationswege verwendet werden!
+Sämtlichen Netzwerkverkehr wird über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Die dafür notwendigen Zertifikate werden über Let's Encrypt beschafft.
+
+[^Wireshark]: [Wireshark](https://www.wireshark.org/)
 
 ## Umsetzung
 
@@ -281,7 +354,7 @@ Hierdurch ist der Code sehr einfach zu maintainen (TODO: Anderes wort finden).
 
 **Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird. Siehe Anhang.  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript. Wurde von Facebook entwickelt.  
-**Redux** ist eine Implementierung der Flux-Architektur (TODO: Whitepaper zitieren) für One-Way-Dataflow in Javascript. Siehe Anhang.  
+**Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript. Siehe Anhang.  
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
 Mit **MJML** lassen sich responsive Emails erzeugen, die in jedem Email-Client gut aussehen.  
 **Mongoose** bietet Schema-Validierung und eine schönere API für die arbeit mit MongoDB.  
@@ -315,11 +388,13 @@ Dies macht in der Anwendung keinen großen Unterschied, macht aber Brute-Force-A
 - Interessante Code-Teile erklärt
   - API: DB-Anfragen, denormalisierte Daten
 
+\newpage
 # Fazit
 - Zusammenfassung
 - Persönliche Beurteilung
 - Ausblick auf weitere Fragestellungen
 
+\newpage
 # Appendix
 
 ## Hash-Funktionen
@@ -339,6 +414,13 @@ TODO: beenden
   - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
   - Darbietung am Beispiel in der T-Cloud
 
-## Redux
+## Flux
 - Erläuterung
 - Vergleich zum traditionellen MVC-Ansatz
+
+## Authentifizierungs-Verfahren
+- Evtl Alternative: Bearer mit HMACs (vermutlich JWT)
+
+\newpage
+# Bibliographie
+
