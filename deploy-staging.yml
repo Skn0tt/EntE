@@ -41,4 +41,29 @@
 
     - name: Deploy
       docker_service:
-        project_src: "./"
+        definition:
+          version: '3'
+          services:
+            mongodb:
+              image: mongo:latest
+              volumes:
+                - /data/db
+            api:
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api
+              restart: always
+              environment:
+                NODE_ENV: "production"
+              depends_on:
+                - mongodb
+            ui:
+              build: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui
+              restart: always
+            reverseproxy:
+              build: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy
+              restart: always
+              depends_on:
+                - ui
+                - api
+              ports:
+                - 80:80
+                - 443:443

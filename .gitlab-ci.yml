@@ -150,4 +150,4 @@ release:staging:
     name: staging
     url: http://bull.simonknott.de
   script:
-    - ansible-playbook -i staging.yml ansible-deploy.yml
+    - ansible-playbook -i staging.yml deploy-staging.yml
