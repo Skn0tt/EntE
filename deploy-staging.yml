@@ -57,10 +57,10 @@
               depends_on:
                 - mongodb
             ui:
-              build: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui
               restart: always
             reverseproxy:
-              build: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy
               restart: always
               depends_on:
                 - ui
