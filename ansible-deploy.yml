@@ -2,5 +2,4 @@
   hosts: all
   tasks:
     - docker_service:
-      project_name: EntschuldigungsVerfahren
-      project_src: "."
+      project_src: "./"
