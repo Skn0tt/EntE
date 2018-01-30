@@ -1,8 +1,6 @@
 version: '3'
 
 services:
-  reverseproxy:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:$CI_COMMIT_REF_NAME
   api:
     image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:$CI_COMMIT_REF_NAME
   ui:

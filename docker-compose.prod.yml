@@ -9,7 +9,6 @@ services:
   
   # API Service
   api:
-    build: ./api/Dockerfile.Prod
     environment:
       NODE_ENV: "production"
 

@@ -1,8 +1,9 @@
-FROM node as build
+FROM node AS build
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
-RUN yarn
+RUN yarn --frozen-lockfile
+
 COPY . ./
 RUN yarn build
 
