@@ -13,7 +13,7 @@ import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
 import PasswortResetLink from '../templates/PasswortResetLink';
 import PasswortResetSuccess from '../templates/PasswortResetSuccess';
 
-const baseUrl = `http://${process.env.BASEURL}`;
+const baseUrl = `https://${process.env.HOST}`;
 
 const mailConfig = process.env.NODE_ENV === 'production'
   ? sgTransport({

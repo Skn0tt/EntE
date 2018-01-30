@@ -1,6 +1,9 @@
 - name: Update Compose
   hosts: all
   user: root
+  environment:
+    HOST: bull.simonknott.de
+    LETSENCRYPT_EMAIL: simoknott@gmail.com
   tasks:
     - name: Deploy
       docker_service:
@@ -11,23 +14,27 @@
             mongodb:
               image: mongo:latest
               volumes:
-                - /data/db
+                - "/data/db"
             api:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api
+              build: ./api/Dockerfile
               restart: always
-              environment:
-                NODE_ENV: "production"
               depends_on:
                 - mongodb
+              environment:
+                - VIRTUAL_HOST=api.bull.simonknott.de
             ui:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui
+              build: ./ui
               restart: always
-            reverseproxy:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy
-              restart: always
-              depends_on:
-                - ui
-                - api
+              environment:
+                - VIRTUAL_HOST=bull.simonknott.de
+            nginx-proxy:
+              image: jwilder/nginx-proxy
               ports:
                 - 80:80
                 - 443:443
+              volumes:
+                - "/etc/nginx/vhost.d"
+                - "/usr/share/nginx/html"
+                - "/var/run/docker.sock:/tmp/docker.sock:ro"
+                - "/etc/nginx/certs"
+

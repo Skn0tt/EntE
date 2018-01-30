@@ -4,13 +4,8 @@ services:
   mongodb:
     ports:
       - 3500:27017
-  reverseproxy:
-    build: ./reverseproxy
   api:
-    build: ./api
     command: nodemon -L --inspect=0.0.0.0:5858
-    environment:
-      BASEURL: localhost
     volumes:
       - ./api/dist:/usr/src/app/dist
     ports:
