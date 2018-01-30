@@ -13,17 +13,17 @@
               volumes:
                 - /data/db
             api:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:master
               restart: always
               environment:
                 NODE_ENV: "production"
               depends_on:
                 - mongodb
             ui:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:master
               restart: always
             reverseproxy:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/reverseproxy:master
               restart: always
               depends_on:
                 - ui
