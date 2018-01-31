@@ -14,7 +14,6 @@ services:
       - HOST
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
-      - LETSENCRYPT_HOST=${HOST}
   ui:
     build: ./ui
     restart: always
