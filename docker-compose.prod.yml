@@ -1,10 +1,27 @@
-version: '3'
+version: '2'
 
 services:
-  reverseproxy:
+  ui:
     environment:
-      API_KEY: 'ca4e2488d58ecdf4781177d40ac8e99f'
-      AMPLIFY_IMAGENAME: 'EntschuldigungsVerfahren'
+      LETSENCRYPT_HOST: ${HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
   api:
     environment:
       NODE_ENV: "production"
+      LETSENCRYPT_HOST: ${HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+  nginx-proxy:
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    volumes:
+      - "/etc/nginx/certs"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+

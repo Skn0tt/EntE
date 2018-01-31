@@ -1,8 +1,9 @@
-FROM node as build
+FROM node AS build
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
-RUN yarn
+RUN yarn --frozen-lockfile
+
 COPY . ./
 RUN yarn build
 
@@ -16,5 +17,5 @@ RUN yarn global add nodemon
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "-f", "http://localhost/status" ]
 
-EXPOSE 80
+EXPOSE 3000
 CMD [ "yarn", "start" ]

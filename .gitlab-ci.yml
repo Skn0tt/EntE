@@ -28,7 +28,7 @@ Build API:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - cd api
-    - docker build -t $CONTAINER_API_TEST_IMAGE -f Dockerfile.Prod .
+    - docker build -t $CONTAINER_API_TEST_IMAGE -f Dockerfile .
     - docker push $CONTAINER_API_TEST_IMAGE
 
 Build UI:

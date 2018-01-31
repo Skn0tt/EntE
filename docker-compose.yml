@@ -1,25 +1,31 @@
-version: '3'
+version: '2'
 
 services:
   mongodb:
     image: mongo:latest
     volumes:
-      - /data/db
-    container_name: "mongodb"
+      - "/data/db"
   api:
     build: ./api
     restart: always
     depends_on:
       - mongodb
+    environment:
+      - HOST
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/api/
   ui:
     build: ./ui
     restart: always
-  reverseproxy:
-    build: ./reverseproxy
-    restart: always
-    depends_on:
-      - ui
-      - api
+    environment:
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/
+  nginx-proxy:
+    image: joshtrow/nginx-proxy
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
+    restart: always
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
