@@ -47,22 +47,6 @@ Build UI:
     - docker build -t $CONTAINER_UI_TEST_IMAGE .
     - docker push $CONTAINER_UI_TEST_IMAGE
 
-Build Reverse Proxy:
-  image: docker
-  stage: build
-  only:
-    - master
-  services:
-    - docker:dind
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd reverseproxy
-    - docker build -t $CONTAINER_REVERSEPROXY_TEST_IMAGE .
-    - docker push $CONTAINER_REVERSEPROXY_TEST_IMAGE
-
 #
 # Test
 #
