@@ -16,7 +16,7 @@
               volumes:
                 - "/data/db"
             api:
-              build: ./api
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:master
               restart: always
               depends_on:
                 - mongodb
@@ -28,7 +28,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             ui:
-              build: ./ui
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:master
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
