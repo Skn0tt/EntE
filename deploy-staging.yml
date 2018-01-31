@@ -16,25 +16,28 @@
               volumes:
                 - "/data/db"
             api:
-              build: ./api/Dockerfile
+              build: ./api
               restart: always
               depends_on:
                 - mongodb
               environment:
-                - VIRTUAL_HOST=api.bull.simonknott.de
+                - HOST
+                - VIRTUAL_HOST=${HOST}
+                - VIRTUAL_PATH=/api/
             ui:
               build: ./ui
               restart: always
               environment:
-                - VIRTUAL_HOST=bull.simonknott.de
+                - VIRTUAL_HOST=${HOST}
+                - VIRTUAL_PATH=/
             nginx-proxy:
-              image: jwilder/nginx-proxy
+              image: joshtrow/nginx-proxy
               ports:
                 - 80:80
                 - 443:443
+                - 8080:8080
+              restart: always
               volumes:
-                - "/etc/nginx/vhost.d"
-                - "/usr/share/nginx/html"
                 - "/var/run/docker.sock:/tmp/docker.sock:ro"
-                - "/etc/nginx/certs"
+
 

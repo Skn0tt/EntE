@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   mongodb:
@@ -12,19 +12,21 @@ services:
       - mongodb
     environment:
       - HOST
-      - VIRTUAL_HOST=api.${HOST}
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/api/
+      - LETSENCRYPT_HOST=${HOST}
   ui:
     build: ./ui
     restart: always
     environment:
       - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: joshtrow/nginx-proxy
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
+    restart: always
     volumes:
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"

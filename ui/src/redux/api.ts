@@ -13,7 +13,7 @@ import {
 } from '../interfaces/index';
 import axios from 'axios';
 
-const baseUrl = window && `${location.protocol}//api.${location.hostname}`;
+const baseUrl = window && `${location.protocol}//${location.hostname}/api`;
 
 const defaultResponse: APIResponse = {
   entries: [],

@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   mongodb:
@@ -10,5 +10,3 @@ services:
       - ./api/dist:/usr/src/app/dist
     ports:
       - "5858:5858"
-  ui:
-    build: ./ui
