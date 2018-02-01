@@ -8,6 +8,7 @@
     - name: Deploy
       docker_service:
         project_name: Entschuldigungsverfahren
+        pull: yes
         definition:
           version: '2'
           services:
