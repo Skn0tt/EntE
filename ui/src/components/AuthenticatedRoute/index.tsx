@@ -3,7 +3,6 @@ import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 
 interface IProps {
   isLoggedIn: boolean;
-  authWasChecked: boolean;
 }
 
 type Props = IProps;
@@ -15,12 +14,8 @@ const AuthenticatedRoute: React.SFC<Props & RouteComponentProps<{}>> = (props) =
     </React.Fragment>
   );
   
-  if (props.authWasChecked) return (
-    <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-  );
-  
   return (
-    <Redirect to={{ pathname: '/loading', state: { from: props.location } }} />
+    <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
   );
 };
 

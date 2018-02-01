@@ -55,9 +55,7 @@ const reducer = handleActions({
    * LOGOUT
    */
   [LOGOUT]: (state: AppState, action: BaseAction): AppState => state
-    .set('auth', new AuthState({
-      checked: true,
-    })),
+    .set('auth', new AuthState({})),
   
   /**
    * SIGN_ENTRY

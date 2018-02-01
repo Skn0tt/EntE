@@ -21,7 +21,6 @@ import { checkAuthRequest, resetPasswordRequest } from '../../redux/actions';
 
 interface IProps {
   authValid: boolean;
-  authChecked: boolean;
   checkAuth(credentials: ICredentials): Action;
   triggerPasswordReset(username: string): Action;
 }
@@ -35,7 +34,6 @@ interface State {
 
 const mapStateToProps = (state: AppState) => ({
   authValid: select.isAuthValid(state),
-  authChecked: select.wasAuthChecked(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
