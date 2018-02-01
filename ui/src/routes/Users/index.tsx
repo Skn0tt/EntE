@@ -116,7 +116,7 @@ class extends React.Component<Props, State> {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.users.sort(this.sort).filter(this.filter).map(user => (
+              {this.props.users.filter(this.filter).sort(this.sort).map(user => (
                 <Route
                   key={user.get('_id')}
                   render={({ history }) => (
