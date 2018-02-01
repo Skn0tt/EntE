@@ -21,7 +21,7 @@ services:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
   nginx-proxy:
-    image: joshtrow/nginx-proxy
+    build: ./nginx-proxy
     ports:
       - 80:80
       - 443:443
