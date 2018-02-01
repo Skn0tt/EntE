@@ -11,7 +11,6 @@ import { checkAuthRequest } from './redux/actions';
 
 import * as select from './redux/selectors';
 import Drawer from './components/Drawer';
-import LoadingScreen from './components/LoadingScreen';
 import MessageStream from './components/MessageStream';
 
 // Routes
@@ -22,7 +21,6 @@ import Forgot from './routes/Forgot';
 
 interface Props {
   authValid: boolean;
-  authChecked: boolean;
   authCredentials: ICredentials;
   role: Roles;
   checkAuth(credentials: ICredentials): Action;
@@ -41,10 +39,8 @@ class App extends React.Component<Props, State> {
           <MessageStream />
           <Switch>
             <Route path="/forgot/:token" component={Forgot} />
-            <Route path="/loading" component={LoadingScreen} />
             <Route path="/login" component={Login} />
             <AuthenticatedRoute
-              authWasChecked={this.props.authChecked}
               isLoggedIn={this.props.authValid}
             >
               <Drawer>
@@ -62,7 +58,6 @@ const mapStateToProps = (state: AppState) => ({
   authCredentials: select.getAuthCredentials(state),
   authValid: select.isAuthValid(state),
   role: select.getRole(state),
-  authChecked: select.wasAuthChecked(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   checkAuth: (credentials: ICredentials) => dispatch(checkAuthRequest(credentials)),

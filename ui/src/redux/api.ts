@@ -48,7 +48,6 @@ const transformAuth = (data: IAPIResponse, auth: ICredentials) => ({
   auth: new AuthState({
     ...auth,
     ...data.auth,
-    checked: true,
   }),
   ...transform(data),
 });
@@ -69,7 +68,7 @@ export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
   }
 
   return ({
-    auth: new AuthState({ checked: true }),
+    auth: new AuthState({}),
     ...defaultResponse,
   });
 };

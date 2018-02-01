@@ -157,7 +157,6 @@ export interface ICredentials {
 export interface IAuth extends ICredentials {
   role: Roles;
   displayname: string;
-  checked: boolean;
   children: MongoId[];
 }
 
@@ -172,7 +171,6 @@ export class AuthState extends Record({
   displayname: '',
   role: '',
   children: [],
-  checked: false,
 }) {
   constructor(props: Partial<IAuth>) {
     super(props);
