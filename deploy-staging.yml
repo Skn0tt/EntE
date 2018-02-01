@@ -36,7 +36,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             nginx-proxy:
-              image: joshtrow/nginx-proxy
+              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/nginx-proxy:master
               ports:
                 - 80:80
                 - 443:443
