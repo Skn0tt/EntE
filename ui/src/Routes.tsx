@@ -23,7 +23,6 @@ const AdminRoutes = () => (
     <Switch>
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/createEntry" component={CreateEntry} />
       <Route path="/createUser" component={CreateUser} />
       <Route path="/importUsers" component={ImportUsers} />
     </Switch>

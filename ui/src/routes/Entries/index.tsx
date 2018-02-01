@@ -1,12 +1,21 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
-import { Table, TableRow, TableHead, TableCell, TableBody, Grid } from 'material-ui';
+import {
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Grid,
+  Tooltip,
+  TableSortLabel,
+} from 'material-ui';
 import styles from './styles';
 import { Add as AddIcon } from 'material-ui-icons';
 
 import * as select from '../../redux/selectors';
-import { Entry, AppState, MongoId, User } from '../../interfaces/index';
+import { Entry, AppState, MongoId, User, IEntry, Roles } from '../../interfaces/index';
 import { Action } from 'redux';
 import SignedAvatar from '../SpecificEntry/elements/SignedAvatar';
 import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
@@ -18,6 +27,7 @@ import Button from 'material-ui/Button/Button';
 
 interface StateProps {
   entries: Entry[];
+  role: Roles;
   getUser(id: MongoId): User;
 }
 
@@ -25,12 +35,17 @@ interface DispatchProps {
   getEntries(): Action;
 }
 
+type Rows = keyof IEntry | 'name';
+
 interface State {
   searchTerm: string;
+  sortField: Rows;
+  sortUp: boolean;
 }
 
 const mapStateToProps = (state: AppState) => ({
   entries: select.getEntries(state),
+  role: select.getRole(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
@@ -53,7 +68,23 @@ const Entries =
 class extends React.Component<Props, State> {
   state: State = {
     searchTerm: '',
+    sortField: 'date',
+    sortUp: true,
   };
+
+  sort = (a: Entry, b: Entry): number => {
+    if (this.state.sortField === 'name') {
+      return this.props.getUser(a.get('student')).get('displayname').localeCompare(
+        this.props.getUser(b.get('student')).get('displayname'),
+      ) * (this.state.sortUp ? 1 : -1);
+    }
+    if (this.state.sortField === 'date') {
+      return (a.get('date').getTime() - b.get('date').getTime()) * (this.state.sortUp ? 1 : -1);
+    }
+    return a.get(this.state.sortField)!.toString().localeCompare(
+      b.get(this.state.sortField)!.toString(),
+    ) * (this.state.sortUp ? 1 : -1);
+  }
 
   filter = (entry: Entry): boolean => (
     this.props.getUser(entry.get('student'))
@@ -61,8 +92,29 @@ class extends React.Component<Props, State> {
     this.props.getUser(entry.get('student'))
       .get('email').toLocaleLowerCase().includes(this.state.searchTerm.toLocaleLowerCase())
   )
-    
 
+  TableHeadCell: React.SFC<{ field: Rows }> = props => (
+    <TableCell>
+      <Tooltip
+        title="Sort"
+        enterDelay={300}
+      >
+        <TableSortLabel
+          active={this.state.sortField === props.field}
+          direction={this.state.sortUp ? 'asc' : 'desc' }
+          onClick={() => {
+            if (this.state.sortField !== props.field) {
+              return this.setState({ sortField: props.field, sortUp: true });
+            }
+            return this.setState({ sortUp: !this.state.sortUp });
+          }}
+        >
+          {props.children}
+        </TableSortLabel>
+      </Tooltip>
+    </TableCell>
+  )
+    
   handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ searchTerm: event.target.value })
 
@@ -85,16 +137,16 @@ class extends React.Component<Props, State> {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Datum</TableCell>
-                <TableCell>Schulisch</TableCell>
-                <TableCell>Begründung</TableCell>
-                <TableCell>Admin</TableCell>
-                <TableCell>Eltern</TableCell>
+                <this.TableHeadCell field="name">Name</this.TableHeadCell>
+                <this.TableHeadCell field="date">Datum</this.TableHeadCell>
+                <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
+                <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
+                <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
+                <this.TableHeadCell field="signedParent">Eltern</this.TableHeadCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.entries.filter(this.filter).map(entry => (
+              {this.props.entries.filter(this.filter).sort(this.sort).map(entry => (
                 <Route
                   key={entry.get('_id')}
                   render={({ history }) => (
@@ -125,16 +177,18 @@ class extends React.Component<Props, State> {
             </TableBody>
           </Table>
         </Grid>
-        <Route render={({ history }) => (
-          <Button
-            color="primary"
-            fab
-            onClick={() => history.push('/createEntry')}
-            className={classes.fab}
-          >
-            <AddIcon />
-          </Button>
-        )}/>
+        {(this.props.role === Roles.PARENT || this.props.role === Roles.STUDENT) &&
+          <Route render={({ history }) => (
+            <Button
+              color="primary"
+              fab
+              onClick={() => history.push('/createEntry')}
+              className={classes.fab}
+            >
+              <AddIcon />
+            </Button>
+          )}/>
+        }
       </Grid>
     );
   }
