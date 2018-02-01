@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { User, AppState } from '../../interfaces/index';
+import { User, AppState, IUser } from '../../interfaces/index';
 import {
   Table,
   TableRow,
@@ -15,6 +15,8 @@ import {
   Grid,
   TextField,
   Button,
+  Tooltip,
+  TableSortLabel,
 } from 'material-ui';
 import { Add as AddIcon } from 'material-ui-icons';
 import { Route } from 'react-router';
@@ -29,6 +31,8 @@ const mapStateToProps = (state: AppState) => ({
 
 interface State {
   searchTerm: string;
+  sortField: keyof IUser;
+  sortUp: boolean;
 }
 
 type Props = StateProps & WithStyles;
@@ -39,7 +43,16 @@ const Users =
 class extends React.Component<Props, State> {
   state: State = {
     searchTerm: '',
+    sortField: 'username',
+    sortUp: false,
   };
+
+  sort = (a: User, b: User): number =>
+    a.get(this.state.sortField).toString()
+      .localeCompare(
+        b.get(this.state.sortField).toString(),
+      )
+    * (this.state.sortUp ? 1 : -1)
 
   handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ searchTerm: event.target.value })
@@ -53,6 +66,28 @@ class extends React.Component<Props, State> {
       .includes(this.state.searchTerm.toLocaleLowerCase()) ||
     user.get('role').toLocaleLowerCase()
       .includes(this.state.searchTerm.toLocaleLowerCase())
+  )
+
+  TableHeadCell: React.SFC<{ field: keyof IUser }> = props => (
+    <TableCell>
+      <Tooltip
+        title="Sort"
+        enterDelay={300}
+      >
+        <TableSortLabel
+          active={this.state.sortField === props.field}
+          direction={this.state.sortUp ? 'asc' : 'desc' }
+          onClick={() => {
+            if (this.state.sortField !== props.field) {
+              return this.setState({ sortField: props.field, sortUp: true });
+            }
+            return this.setState({ sortUp: !this.state.sortUp });
+          }}
+        >
+          {props.children}
+        </TableSortLabel>
+      </Tooltip>
+    </TableCell>
   )
 
   render() {
@@ -74,14 +109,14 @@ class extends React.Component<Props, State> {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
+                <this.TableHeadCell field="username">Username</this.TableHeadCell>
+                <this.TableHeadCell field="displayname">Name</this.TableHeadCell>
+                <this.TableHeadCell field="email">Email</this.TableHeadCell>
+                <this.TableHeadCell field="role">Role</this.TableHeadCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.users.filter(this.filter).map(user => (
+              {this.props.users.sort(this.sort).filter(this.filter).map(user => (
                 <Route
                   key={user.get('_id')}
                   render={({ history }) => (
