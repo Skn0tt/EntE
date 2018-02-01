@@ -1,7 +1,16 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
-import { Table, TableRow, TableHead, TableCell, TableBody, Grid, Tooltip, TableSortLabel } from 'material-ui';
+import {
+  Table,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Grid,
+  Tooltip,
+  TableSortLabel,
+} from 'material-ui';
 import styles from './styles';
 import { Add as AddIcon } from 'material-ui-icons';
 
