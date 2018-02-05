@@ -3,7 +3,7 @@
 title: "Entwurf und Entwicklung eines E-Government-Systems zur Digitalisierung des Entschuldigungsverfahrens"
 subtitle: "Facharbeit Informatik, Ernst-Moritz-Arndt-Gymnasium Bonn"
 author: Simon Knott
-date: Januar 2018
+date: Februar 2018
 lang: de
 
 # Settings
@@ -21,7 +21,17 @@ titlepage-rule-color: "F5A623"
 ---
 
 # Vorwort
-- Danksagungen
+Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
+Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, ein Vortrag oder eine Online-Dokumentation.
+Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit niemals hätte schreiben können.
+Speziell mit der Frontend-Entwicklung und der Arbeit mit APIs habe ich während meiner Arbeit bei OrbiTeam viel Erfahrung sammeln können, auch dafür möchte ich mich sehr bedanken.
+
+Fast alle im digitalen Entschuldigungverfahren verwendeten Tools und Frameworks sind kostenlos und frei zugänglich.
+Die Open-Source-Community ermöglicht, ohne riesigen Kapitaleinsatz großartige Produkte zu entwickeln.
+Ich möchte mich deshalb bei allen Open-Source-Contributors sowie den dahinter stehenden Firmen bedanken, dass sie ihre Arbeit unter Open-Source-Lizenzen veröffentlichen.
+
+Des weiteren geht ein großer Dank an meine Schule, das Ernst-Moritz-Arndt-Gymnasium, die mein Interesse an der Informatik schon früh gefördert hat und tollen Informatik-Unterricht gibt.
+Im speziellen möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
 
 \newpage
 
@@ -101,13 +111,13 @@ Viele davon sind sehr gut automatisierbar:
 - Lehrer von Antrag in Kenntnis setzen (aktuell: durch Schüler, viele Laufwege)
 - Zusammenzählen der Versäumnisse am Ende eines Halbjahres (aktuell: manuell durch Lehrer)
 
-Seit dem Aufkommen der Computertechnik wurden sowohl in staatlichen als auch privaten Einrichtungen viele dieser administrativen Aufgaben digitalisiert, um einen weniger fehleranfälligen und auch effizienteren Ablauf gewährleisten zu können.
-Diese Entwicklung fasst man unter dem Begriff *E-Government* zusammen.
+Seit dem Aufkommen der Computertechnik wurden sowohl in staatlichen als auch privaten Einrichtungen viele dieser administrativen Aufgaben digitalisiert, um einen weniger fehleranfälligen und effizienteren Ablauf gewährleisten zu können.
+Diese Entwicklung fasst wird unter dem Begriff *E-Government* zusammengefasst.
 
-Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^Elster] oder der Digitale Pass in *Estland*[^DigitalPass].
+Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^Elster] oder die Digitale Staatsbürgerschaft in *Estland*[^E-Residency].
 
-[^Elster]: TODO: Elster
-[^DigitalPass]: TODO: Recherchieren (War es das? War es doch ein anderes Land?)
+[^Elster]: [Elster](https://www.elster.de)
+[^E-Residency]: [Estonia E-Residency](https://e-resident.gov.ee/)
 
 ### Inhalt dieser Facharbeit
 Inhalt dieser Facharbeit ist es, ein neues, digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so sämtlichen beteiligten Arbeit abnimmt und Fehlern vorbeugt.
@@ -119,23 +129,48 @@ Dabei lege ich besonderen Fokus auf folgende Aspekte:
 - Nutzbarkeit
 - Sicherheit
 
-Ich möchte dabei soweit es geht die *Best Practices* der Webentwicklung erfüllen um am Ende vor allem in Hinblick auf Sicherheit und Nutzbarkeit ein einsetzbares Produkt in den Händen zu halten.
-
-
-//TODO: Bleibt das wirklich drin?
-## Vor- und Nachteile der Digitalisierung
-Welche Probleme können durch Digitalisierung...
-
-- ...behoben werden?
-- ...entstehen?
-
+Ich möchte dabei soweit es geht die *Best Practices* der modernen Webentwicklung erfüllen um am Ende im Hinblick auf Sicherheit und Nutzbarkeit ein einsetzbares Produkt in den Händen zu halten.
 \newpage
+
 # Hauptteil
 ## Datenschutz
-//TODO: Recherchieren
 
-- Was darf ich überhaupt speichern?
-- Was muss beachtet werden (Deutsches Recht)
+Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
+
+> Die automatisierte Verarbeitung der personenbezogenen Daten ist zulässig [...] wenn jeweils über die Konfiguration die Vertraulichkeit, Integrität, Verfügbarkeit, Authentizität, Revisionsfähigkeit und Transparenz gemäß §10 des Datenschutzgesetzes Nordrhein-Westfalen gewährleistet sind.
+[@sgvnrw2017]
+
+Dabei werden die genannten Eigenschaften in §10 des DSG-NRW wiefolgt aufgeschlüsselt:
+
+> Dabei sind Maßnahmen zu treffen, die geeignet sind zu gewährleisten, dass  
+> 1. nur Befugte personenbezogene Daten zur Kenntnis nehmen können (Vertraulichkeit),  
+> 2. personenbezogene Daten während der Verarbeitung unversehrt, vollständig und aktuell bleiben (Integrität),  
+> 3. personenbezogene Daten zeitgerecht zur Verfügung stehen und ordnungsgemäß verarbeitet werden können (Verfügbarkeit),  
+> 4. jederzeit personenbezogene Daten ihrem Ursprung zugeordnet werden können (Authentizität),  
+> 5. festgestellt werden kann, wer wann welche personenbezogenen Daten in welcher Weise verarbeitet hat (Revisionsfähigkeit),  
+> 6. die Verfahrensweisen bei der Verarbeitung personenbezogener Daten vollständig, aktuell und in einer Weise dokumentiert sind, dass sie in zumutbarer Zeit nachvollzogen werden können (Transparenz).
+[@dsgNrw2018]
+
+Für das Digitale Entschuldigungsverfahren bedeutet dies, dass insbesondere eine Versionierung erfolgen muss.
+Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
+
+Weiter besagt das Schulgesetz, welche Daten eine Schule speichern darf.
+Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
+
+> - Beurlaubung:
+>   - Beginn, Ende, Grund
+> - Schulversäumnis:
+>   - Beginn, Ende, Grund
+[@sgvnrw2017]
+
+Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
+Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
+Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das Entschuldigungsverfahren.
+Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein muss und auch sämtlichen Vertragspartner eine solche Dokumentation führen.
+Darunter fallen auch Hosting-Anbieter, die vormals als unbeteiligte Drittanbieter angesehen wurden.
+Aufhorchen sollte man, wenn man Dienste wie Google Analytics verwendet: Auch diese sind dokumentationspflichtig.
+
+Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auch auf die Kontrolle des Hosting-Anbieters.
 
 ## Modellierung
 ### Prozess
@@ -143,6 +178,7 @@ Das digitale Entschuldigungsverfahren ist stark an den alten Entschuldigungszett
 
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag.
 Darin steht:
+
 - Startdatum
 - Enddatum (Falls das Versäumnis mehrtägig ist)
 - Art (Schulisch/Krankheit)
@@ -151,6 +187,7 @@ Darin steht:
 
 Eine *Stunde* entspricht einem Unterrichtsblock, der verpasst wurde.
 Darin steht:
+
 - Start, Ende des Blocks (Schulstunde)
 - Lehrer
 
@@ -194,21 +231,23 @@ Fragt zum Beispiel ein Schüler seine Übersichtsseite an, so wird ihm zuerst di
 Der JavaScript-Code auf dieser Seite fragt nun bei der *API* die letzten $5$ Entschuldigungsanträge an, wartet auf die Antwort und erweitert die Anzeige um die Ergebnisse der Anfrage.
 
 [^API]: Von nun an als *API* bezeichnet
-[^DOM]: Document Object Model TODO: Ist das richtig?
+[^DOM]: Document Object Model
 
-Auf den ersten Blick sieht die zweite, Client-seitige Methode, wie ein unnötiger Mehraufwand aus - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
-Tatsächlich hat sie aber andere Vorteile: Da die HTML-Seite an sich immer die gleiche ist, lässt sich diese statisch ausliefern.
-Man kann CDN-Dienste benutzen, um die Auslieferungszeiten möglichst gering zu halten.
+Auf den ersten Blick erscheint die zweite, Client-seitige Methode, als unnötiger Mehraufwand - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
+Tatsächlich hat sie aber andere Vorteile: Da die HTML-Seite an sich immer die gleiche ist, lässt sich diese statisch ausliefern und lokal zwischenspeichern.
+Man kann CDN-Dienste wie Cloudflare[^Cloudflare] benutzen, um die Auslieferungszeiten möglichst gering zu halten.
 Um die Datenübertragung noch weiter zu reduzieren, kann man diese Seite Cachen und so die Menge der übertragenen Daten auf ein Minimum reduzieren.
 Die *Time-To-First-Draw*, also die Zeit, bis der Nutzer etwas von der Seite sieht, ist minimal: Sobald die HTML-Seite fertig geladen hat, zeigt der Browser schon Daten an.
 Man muss somit nicht mehr auf langsame Datenbankanfragen im Server warten und sieht sofort eine Benutzeroberfläche, dies verbessert die User Experience ungemein.
 Des weiteren kann dadurch der Server stark entlastet werden: er muss mit diesem Ansatz nur noch die Datenbankanfragen beantworten und nicht die HTML-Seiten zusammenbauen.
 
+[^Cloudflare]: [Cloudflare](https://www.cloudflare.com)
+
 Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine Datensätze anzeigen.
 Lassen sich die Daten dann noch Cachen, kann man mit dieser Architektur viel Performance rausholen.
 
-Nicht sehr gut geeignet ist dieser Ansatz für Webseiten die auf statischen Daten aufbauen, z.B. Blogs oder Magazine.
-Hier liefern viele Anfragen die gleichen Antworten werden besser gecached.
+Nicht sehr gut geeignet ist dieser Ansatz für Webseiten, die auf statischen Daten aufbauen, z.B. Blogs oder Magazine.
+Diese werden dann auch besser statisch ausgeliefert und verzichten ganz auf 
 Daneben müssen alle Clients für die zweite Architektur ihrerseits performant genug sein muss bzw. überhaupt erst einmal JavaScript-Support bieten sollte.
 
 Für das Entschuldigungsverfahren habe ich mich für den Zweiten Ansatz entschieden, da er sehr gut zum Konzept passt: Ich habe kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
@@ -264,14 +303,13 @@ Dazu gehört:
 - Anmeldedaten
 - Eventuelle Filter
 
-Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer erst einmal beim Server anmeldet.
-Dieser speichert dann, dass der Client angemeldet ist und liefert bei der nächsten Anfrage Daten aus.
+Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu Beginn einer Session beim Server anmeldet.
+Dieser speichert eine Kennung des Clients und liefert bei der nächsten Anfrage passende Daten aus.
 
-Zustandslose Architekturen sind dagegen Server-agnostisch:
-Man kann den selben Server-Dienst mehrmals ausführen und jede Anfrage an einen anderen Server schicken.
-Die Anfrage wird von jedem gleich beantwortet, unabhängig von den vorhergegangenen Anfragen.
+Bei zustandslosen Architekturen sind Anfragen dagegen in sich selbst geschlossen und können so unabhängig von vorhergegangenen Anfragen bearbeitet werden.
+Man kann nun den selben Server-Dienst mehrmals auf unterschiedlichen Rechnern ausführen und jede Anfrage an einen anderen Server schicken.
 
-Dies ermöglicht unter anderem Versions-Aktualisierungen ohne Downtime oder dynamisches, Horizontales skalieren.
+Dies ermöglicht unter anderem Versions-Aktualisierungen ohne Downtime oder horizontales Skalieren, um kurzfristige Lastspitzen abzufangen.
 Erläuterungen hierzu finden sich im Appendix.
 
 #### Sicherheit
@@ -281,8 +319,8 @@ Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für da
 
 Mit Software wie WireShark[^Wireshark] lassen sich die Netzwerkpakete allerdings leicht abfangen, dann kann man problemlos das Passwort auslesen.
 *Basic Auth* darf daher niemals über unverschlüsselten Kommunikationswege verwendet werden!
-Sämtlichen Netzwerkverkehr wird über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
-Die dafür notwendigen Zertifikate werden über Let's Encrypt beschafft.
+Sämtlicher Netzwerkverkehr wird über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Die dafür notwendigen Zertifikate kauft man traditionell bei Certificate-Authorities wie [Symantec](https://www.symantec.com/de/de/ssl-sem-page/), seit einigen Jahren kann man diese auch kostenlos über Community-Zertifizierer wie Let's Encrypt erhalten.
 
 [^Wireshark]: [Wireshark](https://www.wireshark.org/)
 
@@ -310,37 +348,14 @@ Für den Anfang funktioniert die MongoDB aber sehr gut.
 #### **E**xpress
 Express ist ein Framework, um mit Node.js und Javascript HTTP-Dienste zu schreiben.
 Es erledigt Aufgaben wie Routing, Error-Handling oder Middlewares und hat eine große Community, die viele Pakete bereitstellt.
-Standard-Funktionen einer API wie Authentication, CORS[^CORS] oder Input-Validation können durch bereites bestehende Middlwares für Express gelöst werden.
-
-[^CORS]: Cross-Origin-Request-System, TODO: Find link
+Standard-Funktionen einer API wie Authentication, CORS [@cors] oder Input-Validation können durch bereites bestehende Middlwares für Express gelöst werden.
 
 #### **R**eact
 React ist das Herzstück des Web-Frontends.
 Es wurde vor TODO: x Jahren von Facebook entwickelt, um einfach dynamische Single-Page-Webapps schreiben zu können.
-React ist inzwischen eines der größten Open-Source-Projekte und wird kontinuierlich verbessert.
+React ist inzwischen eines der größten Open-Source-Projekte und wird kontinuierlich weiterentwickelt.
 Es beschäftigt sich nur mit der eigentlichen Anzeige der Website, alles andere wird von anderen Bibliotheken gemacht.
 In React schreibt man einzelne Komponenten mithilfe von JSX, einer HTML-Ähnlichen schreibweise um andere Komponenten zu einer neuen Komponente zu orchestrieren (TODO: besseres wort finden).
-Typischer React-Code sieht zum Beispiel so aus:
-
-```tsx
-<Grid container justify="center" alignItems="center" >
-  <Grid item>
-    <Button raised>
-      Neuer Eintrag
-    </Button>
-  </Grid>
-  <Grid item>
-    <Button raised>
-      Meine Einträge
-    </Button>
-  </Grid>
-  <Grid item>
-    <Button raised>
-      Neuer Nutzer
-    </Button>
-  </Grid>
-</Grid>
-```
 
 #### **N**ode.js
 Node.js ist eine Laufzeit-Umgebung, die die Ausführung von JavaScript außerhalb des Browsers ermöglicht.
@@ -348,7 +363,7 @@ Sie basiert auf Googles V8-Engine die auch in Chrome eingesetzt wird.
 Node.js macht JavaScript zur einzigen echten FullStack-Sprache: JavaScript läuft durch sie neben dem Browser auch auf dem Server.
 
 Alle Teile des Entschuldigungsverfahrens sind in JavaScript geschrieben: Das Frontend in React, das Backend in Node.js.
-Hierdurch ist der Code sehr einfach zu maintainen (TODO: Anderes wort finden).
+Hierdurch ist der Code sehr einfach instand zu halten.
 
 #### Sonstige Tools
 
@@ -373,17 +388,16 @@ Kommt nun jedoch irgendjemand an die Inhalte der Datenbank, sei es ein böswilli
 Dieses Risiko sollte man niemals eingehen.
 
 Möglichkeit zwei ist es, die Passwörter verschlüsselt zu speichern.
-Nutzt man Algorithmen wie RSA (TODO: Tut man das wirklich? Gibt's für pw bessere?), hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
-Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der weiß wie - dafür muss er nur in den Besitz des Quellcodes und eventuell eines Privaten Schlüssels kommen - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+Nutzt man Algorithmen wie RSA oder AES hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
 
 Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
-Möchte man einen Nutzer autentifizieren (TODO: Richtiges wort? (authenticate etc...)), so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
+Möchte man einen Nutzer autentifizieren, so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
 
-Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus.
+Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus [@bcrypt].
 Bei diesem kann man durch einen zusätzlichen Parameter die Laufzeit einstellen, um den Algorithmus langsamer zu machen.
-Dies macht in der Anwendung keinen großen Unterschied, macht aber Brute-Force-Angriffe deutlich schwieriger.
-
+Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Force-Angriffe sind dadurch aber deutlich aufwändiger.
 
 - Interessante Code-Teile erklärt
   - API: DB-Anfragen, denormalisierte Daten
@@ -397,29 +411,11 @@ Dies macht in der Anwendung keinen großen Unterschied, macht aber Brute-Force-A
 \newpage
 # Appendix
 
-## Hash-Funktionen
-Eine Hash-Funktion ist wie eine Gleichung, die man nur in eine Richtung effizient lösen kann.
-Gibt man einen Wert in eine Hash-Funktion, so kann man mit wenig Aufwand den Hash berechnen.
-Möchte man nun allerdings aus einem Hash den Wert zurückberechnen, so geht dies nur über Brute-Force.
-
-Eine simple Hash-Funktion ist die mathematische Modulo-Funktion: $5 \bmod 3 = x$ ist einfach, aber $5 \bmod x = 2$ hat unendlich viele Lösungen.
-Eine Hash-Funktion aus der Informatik hat zusätzlich die Eigenschaft, dass ihre Ergebnisse eindeutig sind: Zu einem Ausgabewert passt nur ein Eingabewert, anders als bei Modulo.
-
-TODO: beenden
-
 ## Containerisierung
 - Kurze Erklärung Docker
 - Erläuterung: Vorzüge Stateless Architecture
 - Distributed Deployments mit Kubernetes
   - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
-  - Darbietung am Beispiel in der T-Cloud
-
-## Flux
-- Erläuterung
-- Vergleich zum traditionellen MVC-Ansatz
-
-## Authentifizierungs-Verfahren
-- Evtl Alternative: Bearer mit HMACs (vermutlich JWT)
 
 \newpage
 # Bibliographie
