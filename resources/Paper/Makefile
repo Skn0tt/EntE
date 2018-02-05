@@ -1,6 +1,8 @@
-Paper.pdf: Paper.md Paper.bib
+Paper.pdf: Paper.md Paper.bib DB.pdf eisvogel.latex
 	pandoc Paper.md -o Paper.pdf \
-		--filter mermaid-filter \
 		--template eisvogel \
 		--listings \
 		--filter pandoc-citeproc
+	
+DB.pdf: DB.gv
+	neato -T pdf DB.gv > DB.pdf

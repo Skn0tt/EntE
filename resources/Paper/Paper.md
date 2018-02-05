@@ -254,6 +254,9 @@ Für das Entschuldigungsverfahren habe ich mich für den Zweiten Ansatz entschie
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Seite Client-Seitig zu rendern.
 
 ### Datenbank
+
+![Entity-Relationship-Diagramm](DB.pdf)
+
 - Entity-Relationship-Diagramm
 - Wieso ist sie so modelliert?
 
@@ -344,6 +347,7 @@ So kann man einfache Datenbank-Abfragen machen, ohne SQL lernen zu müssen.
 
 In Zukunft ist es durchaus denkbar, auf eine SQL-Datenbank umzustellen - schließlich werden relationale Daten gespeichert.
 Für den Anfang funktioniert die MongoDB aber sehr gut.
+
 
 #### **E**xpress
 Express ist ein Framework, um mit Node.js und Javascript HTTP-Dienste zu schreiben.

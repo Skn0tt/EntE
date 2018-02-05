@@ -1,0 +1,67 @@
+graph ER {
+  layout = neato;
+  overlap = false;
+
+  // Entities
+  // User
+	node [shape=box]; User;
+	
+  User -- { node [shape=ellipse];
+    username;
+    displayname;
+    role;
+    email;
+    password;
+  };
+
+  // Entry
+  node [shape=box]; Entry;
+	
+  Entry -- { node [shape=ellipse];
+    date;
+    dateEnd;
+    forSchool;
+    signedAdmin;
+    signedParent;
+  };
+
+  // Slot
+  node [shape=box]; Slot;
+	
+  Slot -- { node [shape=ellipse];
+    hour_from;
+    hour_to;
+  };
+
+  // Relationships
+	node [
+    shape=diamond;
+    style=filled;
+    color=lightgrey;
+  ]
+
+  node [] {
+    slots;
+    teacher;
+    children;
+  }
+  node [ label="student"] {
+    student;
+    student2;
+  }
+
+  User -- children [label="n"];
+  children -- User [label="m"];
+
+  Entry -- student [label="n"];
+  student -- User [label="1"];
+
+  Entry -- slots [label="1"];
+  slots -- Slot [label="n"];
+
+  Slot -- teacher [label="n"];
+  teacher -- User [label="1"];
+  
+  Slot -- student2 [label="n"];
+  student2 -- User [label="1"];
+}
