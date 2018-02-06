@@ -1,67 +1,60 @@
 graph ER {
-  layout = neato;
+  layout = dot;
   overlap = false;
 
   // Entities
   // User
-	node [shape=box]; User;
-	
-  User -- { node [shape=ellipse];
-    username;
-    displayname;
-    role;
-    email;
-    password;
-  };
+  subgraph clusterUser {
+    style=filled
+    bgcolor=steelblue1
+    node [shape=box]; User;
+    node [shape=ellipse];
+    User -- {
+      username;
+      displayname;
+      role;
+      email;
+      password;
+    };
+
+    User:se -- children:nw;
+  }
 
   // Entry
-  node [shape=box]; Entry;
-	
-  Entry -- { node [shape=ellipse];
-    date;
-    dateEnd;
-    forSchool;
-    signedAdmin;
-    signedParent;
-  };
-
+  subgraph clusterEntry {
+    style=filled
+    bgcolor=olivedrab1
+    node [shape=box]; Entry;
+    node [shape=ellipse];
+    Entry -- {
+      date;
+      dateEnd;
+      forSchool;
+      signedAdmin;
+      signedParent;
+      student;
+    };
+  }
+  
   // Slot
-  node [shape=box]; Slot;
-	
-  Slot -- { node [shape=ellipse];
-    hour_from;
-    hour_to;
-  };
-
-  // Relationships
-	node [
-    shape=diamond;
-    style=filled;
-    color=lightgrey;
-  ]
-
-  node [] {
-    slots;
-    teacher;
-    children;
-  }
-  node [ label="student"] {
-    student;
-    student2;
+  subgraph clusterSlot {
+    style=filled
+    bgcolor=goldenrod1
+    node [shape=box];Slot;
+    node [shape=ellipse];
+    Slot -- {
+      hour_from;
+      hour_to;
+      teacher;
+    };
+    Slot -- { node [label="student"] student2 };
   }
 
-  User -- children [label="n"];
-  children -- User [label="m"];
-
-  Entry -- student [label="n"];
+  children:ne -- User:e [label="n"];
+  
   student -- User [label="1"];
 
-  Entry -- slots [label="1"];
-  slots -- Slot [label="n"];
-
-  Slot -- teacher [label="n"];
   teacher -- User [label="1"];
   
-  Slot -- student2 [label="n"];
   student2 -- User [label="1"];
 }

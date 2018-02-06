@@ -8,7 +8,6 @@ lang: de
 
 # Settings
 papersize: A4
-template: eisvogel.latex
 bibliography: Paper.bib
 fontsize: 12pt
 mainfont: Times New Roman
@@ -18,6 +17,8 @@ toc-title: Inhaltsverzeichnis
 pagestyle: headings
 titlepage: true
 titlepage-rule-color: "F5A623"
+header-includes: |
+  \usepackage{graphicx}
 ---
 
 # Vorwort
@@ -38,6 +39,7 @@ Im speziellen möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die 
 \tableofcontents
 
 \newpage
+
 # Einleitung
 An meiner Schule, dem Ernst-Moritz-Arndt-Gymnasium in Bonn, herrscht schon länger Unzufriedenheit über das Entschuldigungsverfahren.
 Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
@@ -116,8 +118,8 @@ Diese Entwicklung fasst wird unter dem Begriff *E-Government* zusammengefasst.
 
 Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^Elster] oder die Digitale Staatsbürgerschaft in *Estland*[^E-Residency].
 
-[^Elster]: [Elster](https://www.elster.de)
-[^E-Residency]: [Estonia E-Residency](https://e-resident.gov.ee/)
+[^Elster]: [Elster: https://www.elster.de](https://www.elster.de)
+[^E-Residency]: [Estonia E-Residency: https://e-resident.gov.ee/](https://e-resident.gov.ee/)
 
 ### Inhalt dieser Facharbeit
 Inhalt dieser Facharbeit ist es, ein neues, digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so sämtlichen beteiligten Arbeit abnimmt und Fehlern vorbeugt.
@@ -138,20 +140,9 @@ Ich möchte dabei soweit es geht die *Best Practices* der modernen Webentwicklun
 Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
 
 > Die automatisierte Verarbeitung der personenbezogenen Daten ist zulässig [...] wenn jeweils über die Konfiguration die Vertraulichkeit, Integrität, Verfügbarkeit, Authentizität, Revisionsfähigkeit und Transparenz gemäß §10 des Datenschutzgesetzes Nordrhein-Westfalen gewährleistet sind.
-[@sgvnrw2017]
+> [@sgvnrw2017]
 
-Dabei werden die genannten Eigenschaften in §10 des DSG-NRW wiefolgt aufgeschlüsselt:
-
-> Dabei sind Maßnahmen zu treffen, die geeignet sind zu gewährleisten, dass  
-> 1. nur Befugte personenbezogene Daten zur Kenntnis nehmen können (Vertraulichkeit),  
-> 2. personenbezogene Daten während der Verarbeitung unversehrt, vollständig und aktuell bleiben (Integrität),  
-> 3. personenbezogene Daten zeitgerecht zur Verfügung stehen und ordnungsgemäß verarbeitet werden können (Verfügbarkeit),  
-> 4. jederzeit personenbezogene Daten ihrem Ursprung zugeordnet werden können (Authentizität),  
-> 5. festgestellt werden kann, wer wann welche personenbezogenen Daten in welcher Weise verarbeitet hat (Revisionsfähigkeit),  
-> 6. die Verfahrensweisen bei der Verarbeitung personenbezogener Daten vollständig, aktuell und in einer Weise dokumentiert sind, dass sie in zumutbarer Zeit nachvollzogen werden können (Transparenz).
-[@dsgNrw2018]
-
-Für das Digitale Entschuldigungsverfahren bedeutet dies, dass insbesondere eine Versionierung erfolgen muss.
+Für das Digitale Entschuldigungsverfahren bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
 Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
 
 Weiter besagt das Schulgesetz, welche Daten eine Schule speichern darf.
@@ -161,16 +152,15 @@ Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
 >   - Beginn, Ende, Grund
 > - Schulversäumnis:
 >   - Beginn, Ende, Grund
-[@sgvnrw2017]
+> [@sgvnrw2017]
 
 Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das Entschuldigungsverfahren.
-Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein muss und auch sämtlichen Vertragspartner eine solche Dokumentation führen.
+Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein muss und auch sämtliche Vertragspartner eine solche Dokumentation führen.
 Darunter fallen auch Hosting-Anbieter, die vormals als unbeteiligte Drittanbieter angesehen wurden.
 Aufhorchen sollte man, wenn man Dienste wie Google Analytics verwendet: Auch diese sind dokumentationspflichtig.
-
-Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auch auf die Kontrolle des Hosting-Anbieters.
+Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
 ## Modellierung
 ### Prozess
@@ -214,8 +204,8 @@ Solche Aktionen sind zum Beispiel das Erstellen, Einsehen oder Unterzeichnen ein
 Dem Benutzer muss also von seiner Rolle im Prozess verschiedene Information angezeigt werden.
 Zur Umsetzung dessen gibt es zwei beliebte Architekturen:
 
-1. Dynamisches Generieren der angezeigten Seite auf dem Server (z.B. mit PHP, Ruby on Rails, ...) TODO: Namen suchen
-2. Dynamisches Rendern der Daten auf Client-Seite (mit Browser-seitigem JavaScript) TODO: Namen suchen
+1. Dynamisches Generieren der angezeigten Seite auf dem Server (z.B. mit PHP, Ruby on Rails, ...)
+2. Dynamisches Rendern der Daten auf Client-Seite (mit Browser-seitigem JavaScript)
 
 Der Unterschied ist klein aber äußerst relevant:
 Bei der ersten Architektur muss der Server bei jeder Seitenanfrage für den anfragenden Client eine HTML-Seite zusammenbauen.
@@ -241,7 +231,7 @@ Die *Time-To-First-Draw*, also die Zeit, bis der Nutzer etwas von der Seite sieh
 Man muss somit nicht mehr auf langsame Datenbankanfragen im Server warten und sieht sofort eine Benutzeroberfläche, dies verbessert die User Experience ungemein.
 Des weiteren kann dadurch der Server stark entlastet werden: er muss mit diesem Ansatz nur noch die Datenbankanfragen beantworten und nicht die HTML-Seiten zusammenbauen.
 
-[^Cloudflare]: [Cloudflare](https://www.cloudflare.com)
+[^Cloudflare]: [Cloudflare: https://www.cloudflare.com](https://www.cloudflare.com)
 
 Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine Datensätze anzeigen.
 Lassen sich die Daten dann noch Cachen, kann man mit dieser Architektur viel Performance rausholen.
@@ -255,7 +245,7 @@ Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performan
 
 ### Datenbank
 
-![Entity-Relationship-Diagramm](DB.pdf)
+\ref{erd}
 
 - Entity-Relationship-Diagramm
 - Wieso ist sie so modelliert?
@@ -266,18 +256,8 @@ Diese ist nach dem REST-Prinzip [@rest] aufgebaut und zeichnet sich insbesondere
 
 #### Routen
 Die Modellierung auf *Ressourcen*-Basis bedeutet, dass die Pfade der API jeweils einer Ressource bzw. einem Datensatz entsprechen.
-Sie steht im Gegensatz zum *RPC*-Modell (*R*emote-*P*rocedure-*C*all), bei dem Anfragen durch Aktionen beschrieben werden.
-*Ressourcen*-Orientierte Strukturen ermöglichen eine bessere Verschachtelung der Routen.
 
-Beispiel: Die selbe Anfrage nach der Stunde mit der ID $x$ als *Ressource* ist ziemlich eindeutig:
-> `GET /users/x`
-
-Mit RPC sind verschiedenste Pfade denkbar:
-> - `GET /getUser?id=x`
-> - `GET /user?id=x`
-> - `GET /readUser?id=x`
-
-Im speziellen Fall des Entschuldigungsverfahrens exisitieren folgende Pfade:
+Es existieren zum Beispiel folgende Pfade:
 
 - `GET /users` (Alle Nutzer anfragen)
 - `GET /entries` (Alle Einträge anfragen)
@@ -292,11 +272,12 @@ Möchte man nur eine bestimmte Ressource anfragen, spezifiziert man deren ID:
 Als ID werden die von der MongoDB vergebenen Dokumenten-IDs verwendet.
 
 Möchte man auf diesen Ressourcen Aktionen ausführen, so verwendet man andere HTTP-Verben:
+
 - `POST /users` (Neuen Nutzer erstellen)
-- `PATH /users/[userId]` (Nutzer bearbeiten)
+- `PATCH /users/[userId]` (Nutzer bearbeiten)
 - `PUT /entries/[entryId]/sign` (Eintrag unterschreiben)
 
-Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im QuellCode zu finden.
+Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im beigefügten QuellCode zu finden.
 
 #### Zustandslosigkeit
 Jede Anfrage an die API muss alle für die Beantwortung der Anfrage relevanten Daten enthalten.
@@ -325,63 +306,32 @@ Mit Software wie WireShark[^Wireshark] lassen sich die Netzwerkpakete allerdings
 Sämtlicher Netzwerkverkehr wird über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
 Die dafür notwendigen Zertifikate kauft man traditionell bei Certificate-Authorities wie [Symantec](https://www.symantec.com/de/de/ssl-sem-page/), seit einigen Jahren kann man diese auch kostenlos über Community-Zertifizierer wie Let's Encrypt erhalten.
 
-[^Wireshark]: [Wireshark](https://www.wireshark.org/)
+[^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
 ## Umsetzung
 
 ### Stack
 Mein Software-Stack basiert im groben auf dem *MERN*[^MERN]-Stack:
 
-[^MERN]: [MERN](http://mern.io/)
+- MongoDB (Datenbank)
+- Express (API-Framework)
+- React (UI-Library)
+- Node.js (Server-Side JavaScript)
 
-#### **M**ongoDB
-MongoDB ist eine NoSQL-Datenbank die speziell für die Verwaltung von Dokumenten gedacht ist.
-Ein Service bietet über das *mongodb://*-Protokoll zugriff auf mehrere Datenbanken.
-Jede Datenbank sollte einer Anwendung zugeteilt sein.
-Dabei enthält eine Datenbank mehrere sogenannte *Collections*, eine simple Anhäufung von Dokumenten.
-Im Gegensatz zu SQL-Datenbanken muss hier nicht erst das Schema jeder Tabelle festgelegt werden, darauf achtet MongoDB nicht.
-Jedes Dokument kann beliebige Daten enthalten und hat zwingend eine eindeutige ID, mit der man in konstanter Zeit darauf zugreifen kann.
+[^MERN]: [MERN: http://mern.io/](http://mern.io/)
 
-Die Wahl fiel in diesem Fall auf MongoDB, da es dafür sehr gute JavaScript-Treiber gibt.
-So kann man einfache Datenbank-Abfragen machen, ohne SQL lernen zu müssen.
-
-In Zukunft ist es durchaus denkbar, auf eine SQL-Datenbank umzustellen - schließlich werden relationale Daten gespeichert.
-Für den Anfang funktioniert die MongoDB aber sehr gut.
-
-
-#### **E**xpress
-Express ist ein Framework, um mit Node.js und Javascript HTTP-Dienste zu schreiben.
-Es erledigt Aufgaben wie Routing, Error-Handling oder Middlewares und hat eine große Community, die viele Pakete bereitstellt.
-Standard-Funktionen einer API wie Authentication, CORS [@cors] oder Input-Validation können durch bereites bestehende Middlwares für Express gelöst werden.
-
-#### **R**eact
-React ist das Herzstück des Web-Frontends.
-Es wurde vor TODO: x Jahren von Facebook entwickelt, um einfach dynamische Single-Page-Webapps schreiben zu können.
-React ist inzwischen eines der größten Open-Source-Projekte und wird kontinuierlich weiterentwickelt.
-Es beschäftigt sich nur mit der eigentlichen Anzeige der Website, alles andere wird von anderen Bibliotheken gemacht.
-In React schreibt man einzelne Komponenten mithilfe von JSX, einer HTML-Ähnlichen schreibweise um andere Komponenten zu einer neuen Komponente zu orchestrieren (TODO: besseres wort finden).
-
-#### **N**ode.js
-Node.js ist eine Laufzeit-Umgebung, die die Ausführung von JavaScript außerhalb des Browsers ermöglicht.
-Sie basiert auf Googles V8-Engine die auch in Chrome eingesetzt wird.
-Node.js macht JavaScript zur einzigen echten FullStack-Sprache: JavaScript läuft durch sie neben dem Browser auch auf dem Server.
-
-Alle Teile des Entschuldigungsverfahrens sind in JavaScript geschrieben: Das Frontend in React, das Backend in Node.js.
-Hierdurch ist der Code sehr einfach instand zu halten.
-
-#### Sonstige Tools
+Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 
 **Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird. Siehe Anhang.  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript. Wurde von Facebook entwickelt.  
-**Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript. Siehe Anhang.  
+**Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript.
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
 Mit **MJML** lassen sich responsive Emails erzeugen, die in jedem Email-Client gut aussehen.  
 **Mongoose** bietet Schema-Validierung und eine schönere API für die arbeit mit MongoDB.  
-**Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man von Fehlern mitbekommt.  
+**Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man Fehler erkannt werden.  
 **Nodemailer** ermöglicht Node.js-Anwendunge, über SMTP Emails zu verschicken.  
 
 ### Passwörter
-
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an.
 Die API braucht daher eine Möglichkeit, das Passwort auf seine Gültigkeit zu überprüfen.
 Die Passwörter müssen also in der Datenbank gespeichert werden, dabei aber so sicher wie möglich abgelegt werden.
@@ -403,17 +353,32 @@ Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus [@bcrypt].
 Bei diesem kann man durch einen zusätzlichen Parameter die Laufzeit einstellen, um den Algorithmus langsamer zu machen.
 Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Force-Angriffe sind dadurch aber deutlich aufwändiger.
 
-- Interessante Code-Teile erklärt
-  - API: DB-Anfragen, denormalisierte Daten
-
 \newpage
+
 # Fazit
-- Zusammenfassung
-- Persönliche Beurteilung
-- Ausblick auf weitere Fragestellungen
+
+Im Laufe dieser Facharbeit habe ich viel über die Entwicklung komplexer Websysteme gelernt.
+Jedes große Thema der Webentwicklung wurde kurz angekratzt: API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung, automatisierte E-Mails...
+Dabei habe ich in viele der Konzepte gute Einblicke erhalten und bin sicher in deren Entwicklung.
+
+Ich denke, dass das Produkt, welches am Ende entstanden ist, das Potenzial hat das Entschuldigungsverfahren an unserer Schule deutlich zu verbessern.
+Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
+Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
+
+Wenn ich das Tool jetzt noch einmal schreiben würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um größere Datenintegrität gewährleisten zu können.
+
+Einige Lehrern zeigen großes Interesse am digitalen Entschuldigungsverfahren - bleibt zu hoffen, dass auch die Schulleitung diese sieht.
 
 \newpage
+
 # Appendix
+
+\appendix
+
+![Entity-Relationship-Diagramm DB\label{erd}](DB.pdf)
+
+\section{}
+
 
 ## Containerisierung
 - Kurze Erklärung Docker
