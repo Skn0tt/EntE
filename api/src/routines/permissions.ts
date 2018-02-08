@@ -52,7 +52,7 @@ const parentPermissions: Permissions = {
 
 const teacherPermissions: Permissions = {
   slots_read: true,
-  entries_read: true,
+  entries_read: false,
   entries_create: false,
   entries_write: false,
   teachers_read: true,
