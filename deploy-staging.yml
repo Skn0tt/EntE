@@ -56,5 +56,3 @@
                 - nginx-proxy
               volumes:
                 - "/var/run/docker.sock:/var/run/docker.sock:ro"
-              environment:
-                - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
