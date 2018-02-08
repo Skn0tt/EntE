@@ -352,14 +352,9 @@ Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungs
 
 # Appendix
 
-\appendix
+![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
-
-![KlassenDiagramm\label{class-diagramm}](DB.pdf)
-
-![Entity-Relationship-Diagramm DB\label{erd}](DB.pdf)
-
-![Entschuldigungszettel\label{entschuldigungs-zettel}](DB.pdf)
+![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf)
 
 
 ## Containerisierung

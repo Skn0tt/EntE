@@ -1,8 +1,11 @@
-Paper.pdf: Paper.md Paper.bib DB.pdf eisvogel.latex
+Paper.pdf: Paper.md Paper.bib DB.png eisvogel.latex
 	pandoc Paper.md -o Paper.pdf \
 		--template eisvogel \
 		--listings \
 		--filter pandoc-citeproc
 	
-DB.pdf: DB.gv
-	neato -T pdf DB.gv > DB.pdf
+# ERD.pdf: ERD.gv
+#	neato -T pdf ERD.gv > ERD.pdf
+
+DB.png: DB.plantuml
+	plantuml DB.plantuml
