@@ -1,0 +1,46 @@
+@startuml DB
+class User {
+  id: ObjectID
+  username: string
+  displayname: string
+  email: string
+  password: string
+  role: Roles
+  children: ObjectID[]
+}
+class Entry {
+  id: ObjectID
+  date: Date
+  dateEnd: Date
+  student: ObjectID
+  slots: ObjectID[]
+  forSchool: bool
+  reason: string
+  signedManager: bool
+  sigendParent: bool
+  signManager()
+  signParent()
+}
+class Slot {
+  id: ObjectID
+  date: Date
+  hour_from: number
+  hour_to: number
+  signed: bool
+  student: ObjectID
+  teacher: ObjectID
+}
+enum Roles {
+  PARENT
+  MANAGER
+  STUDENT
+  ADMIN
+  TEACHER
+}
+
+User "n" --> "n" User : isParentOf
+Entry "1" --> "n" Slot : consistsOf
+User "1" --> "n" Entry : creates
+
+
+@enduml

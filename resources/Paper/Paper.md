@@ -3,12 +3,11 @@
 title: "Entwurf und Entwicklung eines E-Government-Systems zur Digitalisierung des Entschuldigungsverfahrens"
 subtitle: "Facharbeit Informatik, Ernst-Moritz-Arndt-Gymnasium Bonn"
 author: Simon Knott
-date: Januar 2018
+date: Februar 2018
 lang: de
 
 # Settings
 papersize: A4
-template: eisvogel.latex
 bibliography: Paper.bib
 fontsize: 12pt
 mainfont: Times New Roman
@@ -21,35 +20,40 @@ titlepage-rule-color: "F5A623"
 ---
 
 # Vorwort
-- Danksagungen
+Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
+Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, ein Vortrag oder Tutorial.
+Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit niemals hätte schreiben können.
+Speziell mit der Frontend-Entwicklung und der Arbeit mit APIs habe ich während meiner Arbeit bei OrbiTeam viel Erfahrung sammeln können, auch dafür möchte ich mich sehr bedanken.
+
+Fast alle im digitalen Entschuldigungverfahren verwendeten Tools und Frameworks sind kostenlos und frei zugänglich.
+Die Open-Source-Community ermöglicht, ohne riesigen Kapitaleinsatz großartige Produkte zu entwickeln.
+Ich möchte mich deshalb bei allen Open-Source-Contributors sowie den dahinter stehenden Firmen bedanken, dass sie ihre Arbeit unter Open-Source-Lizenzen veröffentlichen.
+
+Des weiteren geht ein großer Dank an meine Schule, das Ernst-Moritz-Arndt-Gymnasium, die mein Interesse an der Informatik schon früh gefördert hat und tollen Informatik-Unterricht gibt.
+Zusätzlich möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
 
 \newpage
 
 \tableofcontents
 
 \newpage
+
 # Einleitung
 An meiner Schule, dem Ernst-Moritz-Arndt-Gymnasium in Bonn, herrscht schon länger Unzufriedenheit über das Entschuldigungsverfahren.
 Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
-Dieses Problem betrifft nicht nur unsere Schule - versäumte Stunden zu entschuldigen ist ein Prozess, der an jeder Schule durchgeführt werden muss und auch an vielen anderen Schulen sehr ähnlich zu unserem verläuft.
+Dieses Problem betrifft nicht nur unsere Schule, denn das Entschuldigen versäumter Stunden ist ein Prozess, der an jeder Schule durchgeführt werden muss und an vielen anderen Schulen sehr ähnlich verläuft.
 
-### Status Quo
-Aktuell ist das Entschuldigungsverfahren an meiner Schule mithilfe eines kleinen DIN-A4-Zettels gelöst, auf dem sich mehrere Tabellen mit jeweils den folgenden Feldern befinden:
+## Status Quo
+Aktuell ist das Entschuldigungsverfahren an meiner Schule mithilfe eines kleinen DIN-A4-Zettels gelöst, auf dem man alle zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
 
-- Datum
-- Zeit
-- Grund
-- Unterschrift d. Eltern
-- Unterschrift d. Stufenleiters
-- Unterschrift aller Lehrer, deren Unterricht versäumt wurde
-
-Diese Daten trägt man in verschiedene Tabellen ein, abhängig davon ob das Versäumnis durch Krankheit, Beurlaubung oder Schulischen Veranstaltung hervorgerufen wurde, die verschiedenen Typen werden auf dem Zeugnis unterschiedlich vermerkt.
-
-Der Entschuldigungsprozess läuft dann wiefolgt ab:
+Der Entschuldigungsprozess läuft wiefolgt ab:
 
 *Am Tag der Krankheit, nur im Krankheitsfall:*
 
 1. Die Eltern des Schülers (bei Volljährigkeit der Schüler selbst) rufen im Sekretariat an, um den Schüler Krank zu melden
+
+Zweck des Anrufes ist es, dass die Schule von einem Krankheitsfall Unterrichtet wird.
+So werden versäumte Stunden nur entschuldigt, wenn die Schule von der Krankheit weiß, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
 
 *Nach Wiederkehr des Schülers:*
 
@@ -60,19 +64,19 @@ Der Entschuldigungsprozess läuft dann wiefolgt ab:
 
 Der zweite Teil des Prozesses muss binnen 14 Tagen nach Wiedererscheinen vollendet werden, andernfalls wird der Eintrag vom Stufenleiter nicht akzeptiert.
 
-Als Schüler muss man also pro Eintrag auf seinem Entschuldigungszettel $1 + 1 + n$ Unterschriften sammeln, wobei $n = \text{Versäumte Lehrer}$.
+Als Schüler ist es also pro Eintrag notwendig, $1 + 1 + n$ Unterschriften zu sammeln, wobei $n = \text{Versäumte Lehrer}$.
 Fehlt man einen Tag lang, so sind das bei $5$ Lehrern schon $7$ Unterschriften.
 Jede Unterschrift, die man vergisst, bedeutet für die unentschuldigte Stunde eine Bewertung von null Punkten und kann die Noten erheblich beeinträchtigen.
 
-Verfehlt man die 14-Tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und werdem auf dem Zeugnis als solche vermerkt.
+Verfehlt ein Schüler die 14-Tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und werdem auf dem Zeugnis als solche vermerkt.
 Dabei ist es in einigen Fällen gar nicht möglich, diese Frist einzuhalten, zum Beispiel wenn der betroffene Lehrer selbst krank ist.
 
-Das System ist also für den Schüler viel Arbeit und unnötig fehleranfällig.
+Das aktuelle System ist also aufgrund der genannten Punkte für Schüler viel Arbeit und fehleranfällig.
 
-Der Stufenleiter trägt im Prozess die Aufgabe der Koordinierung und Kontrolle:
-Ihm liegen jeden Tag eine Reihe Zettel zur Unterzeichnung vor, die er alle auf ihre Zulässigkeit überprüfen muss.
-Dafür muss er bei Krankheit in der mit dem Sekretariat gemeinsam geführten Excel-Tabelle nach dem angegebenen Datum suchen und überprüfen, ob der Schüler am entsprechenden Tag morgens krankgemeldet wurde.
-Alleine diese Anfrage an die Tabelle dauert pro Eintrag ca. 10 Sekunden, da die Tabelle zur Synchronisierung auf einem Netzlaufwerk liegt.
+Der Stufenleiter ist innerhalb des Verfahrens die koordinierede und kontrollierende Instanz:
+Ihm liegt jeden Tag ein Stapel an Zetteln zur Unterzeichnung vor, die er auf ihre Zulässigkeit überprüfen muss.
+Dafür muss er bei Krankheit in einer gemeinsam mit dem Sekretariat geführten Excel-Tabelle nach dem angegebenen Datum suchen und überprüfen, ob der Schüler am entsprechenden Tag morgens krankgemeldet wurde.
+Alleine die Anfrage an die Tabelle dauert pro Eintrag einige Zeit, da die Tabelle sehr groß ist.
 Ist dann der Eintrag überprüft, muss bei einigen Schülern noch nach Regelmäßigkeiten oder Auffälligkeiten gesucht werden, die auf gezieltes Verpassen des Unterrichts hindeuten.
 
 TODO: Kühn fragen, ob das alles ist
@@ -80,19 +84,15 @@ TODO: Kühn fragen, ob das alles ist
 Laut Angaben von *Thilo Kühn*, einem der Stufenleiter am Ernst-Moritz-Arndt-Gymnasium, nimmt diese Arbeit jede Woche gut zwei Stunden in Anspruch.
 Diese Arbeit fällt jeweils für jede der drei Stufen an, vier mal im Monat.
 
-Lehrer haben änhlichen Aufwand:
-Sie bekommen so gut wie jede Stunde Entschuldigungszettel ihrer Schüler, die sie dann in ihrem Kursheft als entschuldigt markieren müssen.
-Dafür nutzen die meisten Lehrer Einzelarbeitsphasen, in denen sie dann allerdings keinen Schülern helfen können oder anderweitig ihrem Bildungsauftrag nachkommen können.
+Auch Lehrer haben einen großen Aufwand:
+Ihnen werden jede Stunde Entschuldigungszettel vorgelegt, die sie dann in ihrem Kursheft als entschuldigt markieren müssen.
+Dafür nutzen die meisten Lehrer Einzelarbeitsphasen, in denen sie dann weder Schülern helfen noch anderweitig ihrem Bildungsauftrag nachkommen können.
 Der Arbeitsaufwand für diese Zettel ist nicht so hoch wie für die Stufenleiter, birgt allerdings eine hohe Fehleranfälligkeit:
 Wird ein Entschuldigungszettel unterschrieben, aber der Eintrag im Kursheft nicht als "Entschuldigt" markiert, so gilt diese Stunde immer noch als "Unentschuldigt" - der Schüler denkt aber, der Prozess sei für ihn abgeschlossen.
 
-Fehler geschehen dort häufig.
-Auch mir selbst ist es schon passiert, dass auf meinem Entschuldigungszettel mehr versäumte Stunden vermerkt waren als dann tatsächlich auf meinem Zeugnis standen.
-Dies liegt dann unter anderem an der Nachlässigkeit der Stufenleitung, die nicht jeden einzelnen Zettel penibel kontrolliert.
-Grund dafür ist, dass es dann noch mehr Arbeit werden würde, alle Zettel zu kontrollieren.
-So werden aktuell nur Einträge von auffälligen Schülern wirklich genau überprüft.
+Zusammenfassend lässt sich sagen, dass das aktuelle Verfahren viel Arbeit und eine große Fehleranfälligkeit birgt, aus Sicht aller Beteiligten.
 
-### Was ist E-Government?
+## Was ist E-Government?
 Das aktuelle Verfahren beruht auf vielen manuellen, repetitiven Arbeitsschritten.
 Viele davon sind sehr gut automatisierbar:
 
@@ -101,41 +101,56 @@ Viele davon sind sehr gut automatisierbar:
 - Lehrer von Antrag in Kenntnis setzen (aktuell: durch Schüler, viele Laufwege)
 - Zusammenzählen der Versäumnisse am Ende eines Halbjahres (aktuell: manuell durch Lehrer)
 
-Seit dem Aufkommen der Computertechnik wurden sowohl in staatlichen als auch privaten Einrichtungen viele dieser administrativen Aufgaben digitalisiert, um einen weniger fehleranfälligen und auch effizienteren Ablauf gewährleisten zu können.
-Diese Entwicklung fasst man unter dem Begriff *E-Government* zusammen.
+Mit dem Aufkommen der Computertechnik werden sowohl in staatlichen als auch privaten Einrichtungen immer mehr dieser administrativen Aufgaben digitalisiert, um einen effizienteren Ablauf gewährleisten zu können.
+Diese Entwicklung wird unter dem Begriff *E-Government* zusammengefasst.
 
-Beispiele dafür sind zum Beispiel die Online-Ticketvergabe im Stadthaus, die digitale Steuererklärung via *Elster*[^Elster] oder der Digitale Pass in *Estland*[^DigitalPass].
+Beispiele dafür finden sich in der Online-Ticketvergabe im Stadthaus, der digitalen Steuererklärung via *Elster*[^Elster] oder einer Digitalen Staatsbürgerschaft in *Estland*[^E-Residency].
 
-[^Elster]: TODO: Elster
-[^DigitalPass]: TODO: Recherchieren (War es das? War es doch ein anderes Land?)
+[^Elster]: [Elster: https://www.elster.de](https://www.elster.de)
+[^E-Residency]: [Estonia E-Residency: https://e-resident.gov.ee/](https://e-resident.gov.ee/)
 
-### Inhalt dieser Facharbeit
-Inhalt dieser Facharbeit ist es, ein neues, digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so sämtlichen beteiligten Arbeit abnimmt und Fehlern vorbeugt.
+## Inhalt dieser Facharbeit
+Inhalt dieser Facharbeit ist es, ein digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so den Beteiligten die Arbeit erleichtert und Fehlern vorbeugt.
 
-Im Rahmen dieser Facharbeit werde ich erläutern, *wie* und *wieso* ich dieses System modelliert und implementiert habe.
-Dabei lege ich besonderen Fokus auf folgende Aspekte:
+Da eine Auseinandersetzung mit der genauen Implementierung den Rahmen dieses Textes sprengen würde, möchte ich mich weitestgehend auf die Modellierung des Systems beschränken.
 
-- Skalierbarkeit
-- Nutzbarkeit
-- Sicherheit
+Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
 
-Ich möchte dabei soweit es geht die *Best Practices* der Webentwicklung erfüllen um am Ende vor allem in Hinblick auf Sicherheit und Nutzbarkeit ein einsetzbares Produkt in den Händen zu halten.
+- gute Skalierbarkeit
+- intuitive Nutzung
+- Standard-konforme Sicherheit
 
+Ich möchte dabei soweit es geht die *Best Practices* der modernen Webentwicklung erfüllen um am Ende ein nutzbares Produkt in den Händen zu halten.
 
-//TODO: Bleibt das wirklich drin?
-## Vor- und Nachteile der Digitalisierung
-Welche Probleme können durch Digitalisierung...
-
-- ...behoben werden?
-- ...entstehen?
+Dieser Text ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus dem beigefügten QuellCode.
 
 \newpage
+
 # Hauptteil
 ## Datenschutz
-//TODO: Recherchieren
 
-- Was darf ich überhaupt speichern?
-- Was muss beachtet werden (Deutsches Recht)
+Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
+
+> Die automatisierte Verarbeitung der personenbezogenen Daten ist zulässig [...] wenn jeweils über die Konfiguration die Vertraulichkeit, Integrität, Verfügbarkeit, Authentizität, Revisionsfähigkeit und Transparenz gemäß §10 des Datenschutzgesetzes Nordrhein-Westfalen gewährleistet sind.
+> [@sgvnrw2017]
+
+Für das Digitale Entschuldigungsverfahren bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
+Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
+
+Weiter besagt das Schulgesetz, welche Daten eine Schule speichern darf.
+Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
+
+> - Beurlaubung:
+>   - Beginn, Ende, Grund
+> - Schulversäumnis:
+>   - Beginn, Ende, Grund
+> [@sgvnrw2017]
+
+Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
+Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
+Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das Entschuldigungsverfahren.
+Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein muss und auch sämtliche Vertragspartner eine solche Dokumentation führen.
+Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
 ## Modellierung
 ### Prozess
@@ -143,6 +158,7 @@ Das digitale Entschuldigungsverfahren ist stark an den alten Entschuldigungszett
 
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag.
 Darin steht:
+
 - Startdatum
 - Enddatum (Falls das Versäumnis mehrtägig ist)
 - Art (Schulisch/Krankheit)
@@ -151,22 +167,24 @@ Darin steht:
 
 Eine *Stunde* entspricht einem Unterrichtsblock, der verpasst wurde.
 Darin steht:
+
 - Start, Ende des Blocks (Schulstunde)
 - Lehrer
 
+(vergleiche \ref{class-Diagramm})
+
 Nachdem dieser Antrag erstellt wurde, bekommt der Stufenleiter diesen angezeigt.
-Er kann dann prüfen, ob der Antrag zulässig ist, und den Antrag dementsprechend annehmen oder ablehnen.
-Wurde der Eintrag von einem Schüler erstellt, so wird der Antrag zusätzlich den Eltern angezeigt, die diesen dann genehmigen müssen.
-Falls die Eltern den Eintrag erstellen, so ist dieser schon bei der Erstellung genehmigt.
+Er kann nun die Zulässigkeit des Antrags prüfen und ihn dann entsprechend annehmen oder ablehnen.
+Falls die Eltern den Eintrag erstellen, so ist dieser schon bei der Erstellung von ihnen genehmigt.
+Wurde der Eintrag von einem Schüler erstellt, so muss er noch von den Eltern genehmigt werden.
 
 Die zeitaufwändige Überprüfung des Antrags in der Excel-Tabelle entfällt, genauso wie die Krankmeldung im Sekretariat:
-Sinn dieser ist es, sicherzustellen dass der Schüler die Schule von seinem Versäumnis unterrichtet.
-Dies tut er innerhalb dieses Prozesses durch die Erstellung des Antrags.
+Die Unterrichtung der Schule über einen Krankheitsfall geschieht mit der Erstellung eines solchen Eintrags.
 
-Die Lehrer sind aus dem Prozess erst einmal enthalten: Interaktion ihrerseits ist nicht nötig, um einen Entschuldigungsantrag zu validieren.
-Sie haben allerdings Zugriff auf alle *Stunden*, die bei ihnen versäumt wurden und sehen, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
+Die Lehrer sind dem Prozess erst einmal außen vor: Interaktion ihrerseits ist nicht nötig, um einen Entschuldigungsantrag anzunehmen.
+Sie haben allerdings Zugriff auf alle *Stunden*, die bei ihnen versäumt wurden und sehen somit, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
-Auf dieser Basis können dann die Kurshefte auf den aktuellen Stand gebracht werden.
+Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
 
 ### System
 #### Architektur
@@ -174,49 +192,43 @@ Das neue Entschuldigungsverfahren soll als Web-Anwendung umgesetzt werden.
 Jeder Nutzer des Systems (Schüler, Eltern, Lehrer, Stufenleiter und Administratoren) erhalten eigene Zugangsdaten, mit denen sie die für sie relevanten Daten einsehen und damit interagieren können.
 Solche Aktionen sind zum Beispiel das Erstellen, Einsehen oder Unterzeichnen eines Antrags.
 
-Dem Benutzer muss also von seiner Rolle im Prozess verschiedene Information angezeigt werden.
+Da jeder Nutzer andere Entschuldigungsanträge sieht, muss die Seite dynamisch an den zugreifenden Nutzer angepasst werden.
 Zur Umsetzung dessen gibt es zwei beliebte Architekturen:
 
-1. Dynamisches Generieren der angezeigten Seite auf dem Server (z.B. mit PHP, Ruby on Rails, ...) TODO: Namen suchen
-2. Dynamisches Rendern der Daten auf Client-Seite (mit Browser-seitigem JavaScript) TODO: Namen suchen
+1. Dynamisches Generieren der angezeigten Seite auf dem Server (z.B. mit PHP, Ruby on Rails, ...)
+2. Dynamisches Rendern der Daten auf Client-Seite (mit Browser-seitigem JavaScript)
 
-Der Unterschied ist klein aber äußerst relevant:
+Der Unterschied ist klein, aber äußerst relevant:
 Bei der ersten Architektur muss der Server bei jeder Seitenanfrage für den anfragenden Client eine HTML-Seite zusammenbauen.
 Fragt zum Beispiel ein Schüler seine Übersichtsseite an, so werden aus der Datenbank die $n$ letzten Einträge dieses Schülers abgefragt und in eine kleine HTML-Tabelle eingetragen.
 Die Seite wird dann vielleicht noch durch einen Header, den sich alle Seiten teilen, erweitert und dem Nutzer zurückgesendet.
-Die Last auf dem Server steigt also mit der Anzahl der Nutzer.
+Die Last auf dem Server steigt also mit Anzahl der Nutzer sowie Anfragen.
 Der Server hat dabei bei jeder Anfrage sowohl die Arbeit, die Daten aus der Datenbank abzufragen, als auch die Seite aufzubauen.
 
 Beim Zweiten Ansatz liefert der Server dem Client jedes mal die gleiche HTML-Seite aus.
 Diese Seite enthält nun JavaScript-Code, der vom Client aus HTTP-Anfragen an eine Entwicklerschnittstelle[^API] schickt.
-Diese API liefert dem Client die relevanten Daten zurück, dieser zeigt diese über Veränderungen in der DOM[^DOM] dem Nutzer an.
-Fragt zum Beispiel ein Schüler seine Übersichtsseite an, so wird ihm zuerst die Standard-HTML-Seite ausgeliefert.
+Diese API liefert dem Client die relevanten Daten zurück, der diese dann über Veränderungen in der DOM[^DOM] dem Nutzer anzeigt.
+Möchte zum Beispiel ein Schüler seine Übersichtsseite sehen, so wird ihm zuerst die Standard-HTML-Seite ausgeliefert.
 Der JavaScript-Code auf dieser Seite fragt nun bei der *API* die letzten $5$ Entschuldigungsanträge an, wartet auf die Antwort und erweitert die Anzeige um die Ergebnisse der Anfrage.
 
 [^API]: Von nun an als *API* bezeichnet
-[^DOM]: Document Object Model TODO: Ist das richtig?
+[^DOM]: Document Object Model
 
-Auf den ersten Blick sieht die zweite, Client-seitige Methode, wie ein unnötiger Mehraufwand aus - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
-Tatsächlich hat sie aber andere Vorteile: Da die HTML-Seite an sich immer die gleiche ist, lässt sich diese statisch ausliefern.
-Man kann CDN-Dienste benutzen, um die Auslieferungszeiten möglichst gering zu halten.
-Um die Datenübertragung noch weiter zu reduzieren, kann man diese Seite Cachen und so die Menge der übertragenen Daten auf ein Minimum reduzieren.
+Auf den ersten Blick erscheint die zweite, Client-seitige Methode, als unnötiger Mehraufwand - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
+Tatsächlich hat sie aber andere Vorteile: Da die HTML-Seite immer die gleiche ist, lässt sich diese statisch ausliefern und lokal zwischenspeichern.
+Man kann CDN-Dienste wie Cloudflare[^Cloudflare] benutzen, um die Auslieferungszeiten möglichst gering zu halten.
+Um die Datenübertragung noch weiter zu reduzieren, kann die Seite auf dem Endgerät über einen Cache vorgehalten und so die übertragenen Daten auf ein Minimum reduziert werden.
 Die *Time-To-First-Draw*, also die Zeit, bis der Nutzer etwas von der Seite sieht, ist minimal: Sobald die HTML-Seite fertig geladen hat, zeigt der Browser schon Daten an.
 Man muss somit nicht mehr auf langsame Datenbankanfragen im Server warten und sieht sofort eine Benutzeroberfläche, dies verbessert die User Experience ungemein.
-Des weiteren kann dadurch der Server stark entlastet werden: er muss mit diesem Ansatz nur noch die Datenbankanfragen beantworten und nicht die HTML-Seiten zusammenbauen.
+Für den Server entfällt der Arbeitsschritt des Seiten-Renderns komplett.
 
-Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine Datensätze anzeigen.
-Lassen sich die Daten dann noch Cachen, kann man mit dieser Architektur viel Performance rausholen.
+[^Cloudflare]: [Cloudflare: https://www.cloudflare.com](https://www.cloudflare.com)
 
-Nicht sehr gut geeignet ist dieser Ansatz für Webseiten die auf statischen Daten aufbauen, z.B. Blogs oder Magazine.
-Hier liefern viele Anfragen die gleichen Antworten werden besser gecached.
-Daneben müssen alle Clients für die zweite Architektur ihrerseits performant genug sein muss bzw. überhaupt erst einmal JavaScript-Support bieten sollte.
+Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine, dynamische Datensätze anzeigen.
+Nicht sehr gut geeignet ist dieser Ansatz für Webseiten, die auf statischen Daten aufbauen, wie z.B. Blogs oder Magazine.
 
 Für das Entschuldigungsverfahren habe ich mich für den Zweiten Ansatz entschieden, da er sehr gut zum Konzept passt: Ich habe kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
-Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Seite Client-Seitig zu rendern.
-
-### Datenbank
-- Entity-Relationship-Diagramm
-- Wieso ist sie so modelliert?
+Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Anwendung Client-Seitig zu rendern.
 
 ### API
 Die anzuzeigenden Daten erhält der Client von einer API.
@@ -224,18 +236,9 @@ Diese ist nach dem REST-Prinzip [@rest] aufgebaut und zeichnet sich insbesondere
 
 #### Routen
 Die Modellierung auf *Ressourcen*-Basis bedeutet, dass die Pfade der API jeweils einer Ressource bzw. einem Datensatz entsprechen.
-Sie steht im Gegensatz zum *RPC*-Modell (*R*emote-*P*rocedure-*C*all), bei dem Anfragen durch Aktionen beschrieben werden.
-*Ressourcen*-Orientierte Strukturen ermöglichen eine bessere Verschachtelung der Routen.
+Sämtliche Daten werden in normalisierter Form in JSON-Notation zurückgeliefert.
 
-Beispiel: Die selbe Anfrage nach der Stunde mit der ID $x$ als *Ressource* ist ziemlich eindeutig:
-> `GET /users/x`
-
-Mit RPC sind verschiedenste Pfade denkbar:
-> - `GET /getUser?id=x`
-> - `GET /user?id=x`
-> - `GET /readUser?id=x`
-
-Im speziellen Fall des Entschuldigungsverfahrens exisitieren folgende Pfade:
+Es existieren zum Beispiel folgende Pfade:
 
 - `GET /users` (Alle Nutzer anfragen)
 - `GET /entries` (Alle Einträge anfragen)
@@ -249,12 +252,13 @@ Möchte man nur eine bestimmte Ressource anfragen, spezifiziert man deren ID:
 
 Als ID werden die von der MongoDB vergebenen Dokumenten-IDs verwendet.
 
-Möchte man auf diesen Ressourcen Aktionen ausführen, so verwendet man andere HTTP-Verben:
+Möchte man auf diesen *Ressourcen* nun Aktionen ausführen, so verwendet man andere HTTP-Verben:
+
 - `POST /users` (Neuen Nutzer erstellen)
-- `PATH /users/[userId]` (Nutzer bearbeiten)
+- `PATCH /users/[userId]` (Nutzer bearbeiten)
 - `PUT /entries/[entryId]/sign` (Eintrag unterschreiben)
 
-Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im QuellCode zu finden.
+Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im beigefügten QuellCode zu finden.
 
 #### Zustandslosigkeit
 Jede Anfrage an die API muss alle für die Beantwortung der Anfrage relevanten Daten enthalten.
@@ -264,163 +268,102 @@ Dazu gehört:
 - Anmeldedaten
 - Eventuelle Filter
 
-Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer erst einmal beim Server anmeldet.
-Dieser speichert dann, dass der Client angemeldet ist und liefert bei der nächsten Anfrage Daten aus.
+Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu Beginn einer Session beim Server anmeldet und dann Einstellungen wie Filter speichert.
 
-Zustandslose Architekturen sind dagegen Server-agnostisch:
-Man kann den selben Server-Dienst mehrmals ausführen und jede Anfrage an einen anderen Server schicken.
-Die Anfrage wird von jedem gleich beantwortet, unabhängig von den vorhergegangenen Anfragen.
+Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen und können so unabhängig von vorhergegangenen Anfragen bearbeitet werden.
 
-Dies ermöglicht unter anderem Versions-Aktualisierungen ohne Downtime oder dynamisches, Horizontales skalieren.
-Erläuterungen hierzu finden sich im Appendix.
+Erläuterungen über die Vorzüge einer Zustandslosen Architektur finden sich im Appendix.
 
 #### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
-Hierzu gibt es verschiedenste Ansätze, einige davon werden im Anhang vorgestellt.
 Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei schickt der Client einfach bei jeder Anfrage Nutzernamen und Passwort im Klartext mit.
 
-Mit Software wie WireShark[^Wireshark] lassen sich die Netzwerkpakete allerdings leicht abfangen, dann kann man problemlos das Passwort auslesen.
-*Basic Auth* darf daher niemals über unverschlüsselten Kommunikationswege verwendet werden!
-Sämtlichen Netzwerkverkehr wird über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
-Die dafür notwendigen Zertifikate werden über Let's Encrypt beschafft.
+Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark] lassen sich Netzwerkpakete leicht abfangen.
+Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
+*Basic Auth* darf daher niemals über unverschlüsselte Kommunikationswege verwendet werden!
+Sämtlicher Netzwerkverkehr wird im EntschuldigungsVerfahren über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encrypt bezogen.
 
-[^Wireshark]: [Wireshark](https://www.wireshark.org/)
+[^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
 ## Umsetzung
 
 ### Stack
 Mein Software-Stack basiert im groben auf dem *MERN*[^MERN]-Stack:
 
-[^MERN]: [MERN](http://mern.io/)
+- MongoDB (Datenbank)
+- Express (API-Framework)
+- React (UI-Library)
+- Node.js (Server-Side JavaScript)
 
-#### **M**ongoDB
-MongoDB ist eine NoSQL-Datenbank die speziell für die Verwaltung von Dokumenten gedacht ist.
-Ein Service bietet über das *mongodb://*-Protokoll zugriff auf mehrere Datenbanken.
-Jede Datenbank sollte einer Anwendung zugeteilt sein.
-Dabei enthält eine Datenbank mehrere sogenannte *Collections*, eine simple Anhäufung von Dokumenten.
-Im Gegensatz zu SQL-Datenbanken muss hier nicht erst das Schema jeder Tabelle festgelegt werden, darauf achtet MongoDB nicht.
-Jedes Dokument kann beliebige Daten enthalten und hat zwingend eine eindeutige ID, mit der man in konstanter Zeit darauf zugreifen kann.
+[^MERN]: [MERN: http://mern.io/](http://mern.io/)
 
-Die Wahl fiel in diesem Fall auf MongoDB, da es dafür sehr gute JavaScript-Treiber gibt.
-So kann man einfache Datenbank-Abfragen machen, ohne SQL lernen zu müssen.
+Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 
-In Zukunft ist es durchaus denkbar, auf eine SQL-Datenbank umzustellen - schließlich werden relationale Daten gespeichert.
-Für den Anfang funktioniert die MongoDB aber sehr gut.
-
-#### **E**xpress
-Express ist ein Framework, um mit Node.js und Javascript HTTP-Dienste zu schreiben.
-Es erledigt Aufgaben wie Routing, Error-Handling oder Middlewares und hat eine große Community, die viele Pakete bereitstellt.
-Standard-Funktionen einer API wie Authentication, CORS[^CORS] oder Input-Validation können durch bereites bestehende Middlwares für Express gelöst werden.
-
-[^CORS]: Cross-Origin-Request-System, TODO: Find link
-
-#### **R**eact
-React ist das Herzstück des Web-Frontends.
-Es wurde vor TODO: x Jahren von Facebook entwickelt, um einfach dynamische Single-Page-Webapps schreiben zu können.
-React ist inzwischen eines der größten Open-Source-Projekte und wird kontinuierlich verbessert.
-Es beschäftigt sich nur mit der eigentlichen Anzeige der Website, alles andere wird von anderen Bibliotheken gemacht.
-In React schreibt man einzelne Komponenten mithilfe von JSX, einer HTML-Ähnlichen schreibweise um andere Komponenten zu einer neuen Komponente zu orchestrieren (TODO: besseres wort finden).
-Typischer React-Code sieht zum Beispiel so aus:
-
-```tsx
-<Grid container justify="center" alignItems="center" >
-  <Grid item>
-    <Button raised>
-      Neuer Eintrag
-    </Button>
-  </Grid>
-  <Grid item>
-    <Button raised>
-      Meine Einträge
-    </Button>
-  </Grid>
-  <Grid item>
-    <Button raised>
-      Neuer Nutzer
-    </Button>
-  </Grid>
-</Grid>
-```
-
-#### **N**ode.js
-Node.js ist eine Laufzeit-Umgebung, die die Ausführung von JavaScript außerhalb des Browsers ermöglicht.
-Sie basiert auf Googles V8-Engine die auch in Chrome eingesetzt wird.
-Node.js macht JavaScript zur einzigen echten FullStack-Sprache: JavaScript läuft durch sie neben dem Browser auch auf dem Server.
-
-Alle Teile des Entschuldigungsverfahrens sind in JavaScript geschrieben: Das Frontend in React, das Backend in Node.js.
-Hierdurch ist der Code sehr einfach zu maintainen (TODO: Anderes wort finden).
-
-#### Sonstige Tools
-
-**Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird. Siehe Anhang.  
+**Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird (Siehe Anhang).  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript. Wurde von Facebook entwickelt.  
-**Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript. Siehe Anhang.  
+**Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript.  
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
 Mit **MJML** lassen sich responsive Emails erzeugen, die in jedem Email-Client gut aussehen.  
 **Mongoose** bietet Schema-Validierung und eine schönere API für die arbeit mit MongoDB.  
-**Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man von Fehlern mitbekommt.  
+**Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man Fehler erkannt werden.  
 **Nodemailer** ermöglicht Node.js-Anwendunge, über SMTP Emails zu verschicken.  
 
 ### Passwörter
-
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an.
 Die API braucht daher eine Möglichkeit, das Passwort auf seine Gültigkeit zu überprüfen.
 Die Passwörter müssen also in der Datenbank gespeichert werden, dabei aber so sicher wie möglich abgelegt werden.
 
 Die sicherlich trivialste Möglichkeit ist es, die Passwörter bei der Nutzererstellung im Klartext zu speichern.
-Dann kann bei der Anmeldung einfach das übergebene Passwort verglichen werden.
+Dann kann bei der Anmeldung das übergebene Passwort verglichen werden.
 Kommt nun jedoch irgendjemand an die Inhalte der Datenbank, sei es ein böswilliger Hacker oder ein neugieriger Admininstrator, sind dort die Passwörter einfach sichtbar.
 Dieses Risiko sollte man niemals eingehen.
 
 Möglichkeit zwei ist es, die Passwörter verschlüsselt zu speichern.
-Nutzt man Algorithmen wie RSA (TODO: Tut man das wirklich? Gibt's für pw bessere?), hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
-Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der weiß wie - dafür muss er nur in den Besitz des Quellcodes und eventuell eines Privaten Schlüssels kommen - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+Nutzt man Algorithmen wie RSA oder AES hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
 
 Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
-Möchte man einen Nutzer autentifizieren (TODO: Richtiges wort? (authenticate etc...)), so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
+Möchte man einen Nutzer autentifizieren, so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
 
-Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus.
+Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus [@bcrypt].
 Bei diesem kann man durch einen zusätzlichen Parameter die Laufzeit einstellen, um den Algorithmus langsamer zu machen.
-Dies macht in der Anwendung keinen großen Unterschied, macht aber Brute-Force-Angriffe deutlich schwieriger.
-
-
-- Interessante Code-Teile erklärt
-  - API: DB-Anfragen, denormalisierte Daten
+Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Force-Angriffe sind dadurch aber deutlich aufwändiger.
 
 \newpage
+
 # Fazit
-- Zusammenfassung
-- Persönliche Beurteilung
-- Ausblick auf weitere Fragestellungen
+
+Im Laufe dieser Facharbeit habe ich viel über die Entwicklung komplexer Websysteme gelernt.
+Viele große Themen der Webentwicklung wurden kurz angekratzt, darunter API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung und automatisierte E-Mails.
+Dabei habe ich in viele der Konzepte gute Einblicke erhalten können.
+
+Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um größere Datenintegrität gewährleisten zu können.
+Dann müßte allerdings auch das Datenbank-Schema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
+
+Ich denke dass das Produkt, welches am Ende entstanden ist, das Potenzial hat das Entschuldigungsverfahren an unserer Schule deutlich zu verbessern.
+Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
+Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
+
+Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungsverfahren - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
 
 \newpage
+
 # Appendix
 
-## Hash-Funktionen
-Eine Hash-Funktion ist wie eine Gleichung, die man nur in eine Richtung effizient lösen kann.
-Gibt man einen Wert in eine Hash-Funktion, so kann man mit wenig Aufwand den Hash berechnen.
-Möchte man nun allerdings aus einem Hash den Wert zurückberechnen, so geht dies nur über Brute-Force.
+![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
-Eine simple Hash-Funktion ist die mathematische Modulo-Funktion: $5 \bmod 3 = x$ ist einfach, aber $5 \bmod x = 2$ hat unendlich viele Lösungen.
-Eine Hash-Funktion aus der Informatik hat zusätzlich die Eigenschaft, dass ihre Ergebnisse eindeutig sind: Zu einem Ausgabewert passt nur ein Eingabewert, anders als bei Modulo.
+![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf)
 
-TODO: beenden
 
 ## Containerisierung
 - Kurze Erklärung Docker
 - Erläuterung: Vorzüge Stateless Architecture
 - Distributed Deployments mit Kubernetes
   - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
-  - Darbietung am Beispiel in der T-Cloud
-
-## Flux
-- Erläuterung
-- Vergleich zum traditionellen MVC-Ansatz
-
-## Authentifizierungs-Verfahren
-- Evtl Alternative: Bearer mit HMACs (vermutlich JWT)
 
 \newpage
-# Bibliographie
 
+# Bibliographie
+\bibliography{Paper.bib}
