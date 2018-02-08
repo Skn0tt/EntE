@@ -309,6 +309,34 @@ Mit **MJML** lassen sich responsive Emails erzeugen, die in jedem Email-Client g
 **Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces und sammelt diese anonymisiert, damit man Fehler erkannt werden.  
 **Nodemailer** ermöglicht Node.js-Anwendunge, über SMTP Emails zu verschicken.  
 
+### API, Datenbankanfragen
+Am Beispiel der Route `GET /entries` möchte ich den API-Quellcode einmal exemplarisch erläutern.
+Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
+
+Erreicht die API eine Anfrage, so wird diese durch eine Reihe an Middlewares geleitet.
+Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen.
+Eine solche Middleware erfüllt zum Beispiel die Autorisierung, eine andere die Beantwortung der Anfrage, eine andere die Fehlerbehandlung.
+Eine Middleware erhält folgende Parameter übergeben:
+
+1. `request`: Enthält alle Informationen über die Anfrage
+2. `response`: Ermöglicht das Beantworten der Anfrage
+3. `next`: Beendet die Middleware und leitet die Anfrage an die nächste weiter.
+
+Dabei sollte eine Middleware die Anfrage in jedem Fall beantworten oder `next()` aufrufen, sonst erhält der Client keine Antwort.
+
+#### 1. Einträge
+Diese Middleware soll alle Einträge für den anfragenden Benutzer abrufen.
+Abhängig von der Rolle des Nutzers werden verschiedene Einträge ausgegeben.
+Die Informationen über den anfragenden Nutzer sind in `request.user` gespeichert (siehe Z. 4).
+Falls der Nutzer ein Schüler ist, rufen wir alle Einträge ab, die seine Nutzer-ID im Feld `student` gespeichert haben (Z. 5f).
+Diese speichern wir in `request.entries`, so kann auch die nächste Middleware darauf zugreifen.
+
+Falls während der Anfrage ein Fehler auftritt, wird dieser durch die `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, Z. 11).
+
+#### 2. Abhängigkeiten
+Ein `Entry` alleine ist wenig aussagekräftig, da einige seiner Felder über *IDs* auf andere Objekte verweisen.
+Diese Middleware ermittelt alle Abhängigkeiten der `Entry`-Objekte und beantwortet dann die Anfrage.
+
 ### Passwörter
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an.
 Die API braucht daher eine Möglichkeit, das Passwort auf seine Gültigkeit zu überprüfen.
@@ -352,9 +380,66 @@ Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungs
 
 # Appendix
 
+\appendix
+
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf)
+
+\lstdefinelanguage{TypeScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, try, catch, const, let, async, await},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\begin{lstlisting}[language=TypeScript, caption=GET /entries, label=getEntriesRoute]
+router.get('/entries', async (request, response, next) => {
+  try {
+    /* ...andere Fälle... */
+    if (request.user.role === ROLES.STUDENT) {
+      request.entries = await Entry.find({
+        student: request.user._id
+      });
+    }
+
+    return next();
+  } catch (error) { return next(error); }
+}, async (request, response, next) => {
+  try {
+    /* collect all slotIds */
+    const slotIds: MongoId[] = [];
+    request.entries.forEach(entry => slotIds.push(...entry.slots));
+
+    /* request slots */
+    const slots = await Slot
+      .find({ _id: { $in: slotIds } });
+    
+    /* collect all userIds */
+    const userIds: MongoId[] = [];
+    slots.forEach(slot => userIds.push(slot.teacher, slot.student));
+    request.entries.forEach(entry => userIds.push(entry.student));
+
+    /* request slots */
+    const users = await User
+      .find({ _id: { $in: userIds } })
+      .select('-password'); // omit Passwords
+  
+    return response.json({
+      slots,
+      users,
+      entries: request.entries
+    });
+  } catch (error) { return next(error); }
+});
+\end{lstlisting}
 
 
 ## Containerisierung
