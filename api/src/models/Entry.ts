@@ -13,6 +13,7 @@ export interface IEntry {
   student: MongoId;
   slots: MongoId[];
   forSchool: boolean;
+  reason: string;
   signedManager: boolean;
   signedParent: boolean;
 }

@@ -69,11 +69,6 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
       
       return next();
     }
-    if (request.user.role === ROLES.TEACHER) {
-      request.entries = await Entry.find({ ...yearParams });
-
-      return next();
-    }
     if (request.user.role === ROLES.ADMIN) {
       request.entries = await Entry.find({ ...yearParams });
     
@@ -91,7 +86,7 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
     return next(error);
   }
 
-  return response.status(400).end;
+  return response.status(400).end();
 }, populate);
 
 
