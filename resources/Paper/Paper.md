@@ -311,9 +311,15 @@ Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 Am Beispiel der Route `GET /entries` möchte ich den API-Quellcode einmal exemplarisch erläutern.
 Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
 
-Erreicht die API eine Anfrage, so wird diese durch eine Reihe an Middlewares geleitet.
-Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen.
-Eine solche Middleware erfüllt zum Beispiel die Autorisierung, eine andere die Beantwortung der Anfrage, eine andere die Fehlerbehandlung.
+Erreicht die API eine Anfrage, so wird diese durch eine Reihe an *Middlewares* geleitet.
+Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen, unter anderem:
+
+- Authentifizierung
+- Autorisierung
+- Validierung der Anfrage
+- Beantwortung der Anfrage
+- Fehlerbehandlung
+
 Eine Middleware erhält folgende Parameter übergeben:
 
 1. `request`: Enthält alle Informationen über die Anfrage
@@ -322,18 +328,22 @@ Eine Middleware erhält folgende Parameter übergeben:
 
 Dabei sollte eine Middleware die Anfrage in jedem Fall beantworten oder `next()` aufrufen, sonst erhält der Client keine Antwort.
 
-#### 1. Einträge
-Diese Middleware soll alle Einträge für den anfragenden Benutzer abrufen.
-Abhängig von der Rolle des Nutzers werden verschiedene Einträge ausgegeben.
-Die Informationen über den anfragenden Nutzer sind in `request.user` gespeichert (siehe Z. 4).
-Falls der Nutzer ein Schüler ist, rufen wir alle Einträge ab, die seine Nutzer-ID im Feld `student` gespeichert haben (Z. 5f).
-Diese speichern wir in `request.entries`, so kann auch die nächste Middleware darauf zugreifen.
+Aufgabe der ersten Middleware (Z. 1 - 12) ist es, alle zur Anfragenden passenden `Entry`-Objekte abzurufen.
+Relevant dafür ist die Rolle des Nutzers: Ein Admin erhält alle Einträge zurück, ein Schüler nur seine eigenen, ein Elternteil nur die seiner Kinder.
+Im Beispiel wird exemplarisch der Fall gelistet, dass ein Schüler anfragt (Z. 4 - 8).
+Es werden nun alle `Entry`-Objekte abgerufen, deren `student`-Feld mit der ID des anfragenden Nutzers übereinstimmt (Z. 6).
+Damit auch die nächste Middleware darauf zugreifen kann, werden diese in `request.entries` gespeichert (Z. 5).
 
-Falls während der Anfrage ein Fehler auftritt, wird dieser durch die `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, Z. 11).
+Aufgabe der zweiten Middleware (Z. 13 - 38) ist es, sämtliche Abhängigkeiten der zuvor ermittelten `Entry`-Objekte zu ermitteln.
+Dies muss passieren, da ein `Entry` alleine ist wenig aussagekräftig ist.
+Einige seiner Felder verweisen über *IDs* auf andere Objekte (siehe Abbildung \ref{class-diagramm}).
+Es werden also erst alle den Einträgen zugehörigen `Slot`-Objekte abgefragt (Z. 14 - 20);
 
-#### 2. Abhängigkeiten
-Ein `Entry` alleine ist wenig aussagekräftig, da einige seiner Felder über *IDs* auf andere Objekte verweisen.
-Diese Middleware ermittelt alle Abhängigkeiten der `Entry`-Objekte und beantwortet dann die Anfrage.
+Nun werden alle Nutzer angefragt, die durch einen vorher gefundenen `Slot` oder `Entry` referenziert sind (Z. 23 - 30).
+
+Zum Schluss werden alle gefundenen Objekte in *JSON-Notation* zurückgesandt, die Anfrage ist abgeschlossen.
+
+Falls während einer der Middlewares ein Fehler auftritt, wird dieser durch eine `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, 11 bzw. Z. 13, 37).
 
 ### Passwörter
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an, die Passwörter müssen so sicher wie möglich gespeichert werden.
