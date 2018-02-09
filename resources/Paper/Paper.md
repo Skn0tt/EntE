@@ -29,8 +29,7 @@ Fast alle im digitalen Entschuldigungverfahren verwendeten Tools und Frameworks 
 Die Open-Source-Community ermöglicht, ohne riesigen Kapitaleinsatz großartige Produkte zu entwickeln.
 Ich möchte mich deshalb bei allen Mitgliedern der Open-Source-Community sowie den dahinter stehenden Unternehmen bedanken, die ihre Arbeit unter Open-Source-Lizenzen veröffentlichen.
 
-Des weiteren geht ein großer Dank an meine Schule, das Ernst-Moritz-Arndt-Gymnasium, die mein Interesse an der Informatik schon früh gefördert hat und tollen Informatik-Unterricht gibt.
-Zusätzlich möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
+Des weiteren möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
 
 \newpage
 
@@ -50,15 +49,15 @@ Der Entschuldigungsprozess läuft wiefolgt ab:
 
 *Am Tag der Krankheit, nur im Krankheitsfall:*
 
-1. Die Eltern des Schülers (bei Volljährigkeit der Schüler selbst) rufen im Sekretariat an, um den Schüler Krank zu melden.
+1. Die Eltern des Schülers (bei Volljährigkeit der Schüler selbst) rufen im Sekretariat an, um den Schüler krankzumelden.
 
-Zweck des Anrufes ist es, dass die Schule von einem Krankheitsfall Unterrichtet wird.
+Zweck des Anrufes ist es, dass die Schule von einem Krankheitsfall unterrichtet wird.
 So werden versäumte Stunden nur entschuldigt, wenn die Schule von der Krankheit weiß, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
 
 *Nach Wiederkehr des Schülers:*
 
 1. Der Schüler trägt Datum, Zeit, Grund und die Kürzel der betroffenen Lehrer auf seinem Entschuldigungszettel ein.
-2. Er lässt diesen Eintrag von seinen Eltern unterzeichnen.
+2. Er lässt diesen Eintrag von seinen Eltern unterzeichnen (entfällt bei Volljährigkeit).
 3. Er lässt diesen Eintrag von seinem Stufenleiter unterzeichnen.
 4. Er lässt diesen Eintrag von jeder Lehrkraft, deren Unterricht er versäumte, unterzeichnen.
 
@@ -68,12 +67,12 @@ Als Schüler ist es also pro Eintrag notwendig, $1 + 1 + n$ Unterschriften zu sa
 Fehlt man einen Tag lang, so sind das bei $5$ Lehrern schon $7$ Unterschriften.
 Jede Unterschrift, die man vergisst, bedeutet für die unentschuldigte Stunde eine Null-Bewertung und kann die Zeugnis-Note erheblich beeinträchtigen.
 
-Verfehlt ein Schüler die 14-Tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und werdem auf dem Zeugnis als solche vermerkt.
+Verfehlt ein Schüler die 14-Tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und n auf dem Zeugnis als solche vermerkt.
 Dabei ist es in einigen Fällen gar nicht möglich, diese Frist einzuhalten, zum Beispiel wenn der betroffene Lehrer selbst krank ist.
 
 Das aktuelle System ist also aufgrund der genannten Punkte für Schüler viel Arbeit und fehleranfällig.
 
-Der Stufenleiter ist innerhalb des Verfahrens die koordinierede und kontrollierende Instanz:
+Der Stufenleiter ist innerhalb des Verfahrens die koordinierende und kontrollierende Instanz:
 Ihm liegt jeden Tag ein Stapel an Zetteln zur Unterzeichnung vor, die er auf ihre Zulässigkeit überprüfen muss.
 Dafür muss er bei Krankheit in einer gemeinsam mit dem Sekretariat geführten Excel-Tabelle nach dem angegebenen Datum suchen und überprüfen, ob der Schüler am entsprechenden Tag morgens krankgemeldet wurde.
 Alleine die Anfrage an die Tabelle dauert pro Eintrag einige Zeit, da die Tabelle sehr groß ist.
@@ -82,7 +81,7 @@ Ist dann der Eintrag überprüft, muss bei einigen Schülern noch nach Regelmä�
 TODO: Kühn fragen, ob das alles ist
 
 Laut Angaben von *Thilo Kühn*, einem der Stufenleiter am Ernst-Moritz-Arndt-Gymnasium, nimmt diese Arbeit jede Woche gut zwei Stunden in Anspruch.
-Diese Arbeit fällt für jede der drei Stufen an, vier mal im Monat.
+Diese Arbeit fällt für jede der drei Stufen an, viermal im Monat.
 
 Auch Lehrer haben einen großen Aufwand:  
 Ihnen werden jede Stunde Entschuldigungszettel vorgelegt, die sie dann in ihrem Kursheft als entschuldigt markieren müssen.
@@ -96,7 +95,7 @@ Zusammenfassend lässt sich sagen, dass das aktuelle Verfahren für alle Beteili
 Das aktuelle Verfahren beruht auf vielen repetitiven, manuellen Arbeitsschritten.
 Viele davon sind sehr gut automatisierbar:
 
-- Krankmeldung am Morgen des Versäumnis-Tages (aktuell: durch Eltern & Sekretariat)
+- Krankmeldung am Morgen des Tags der Versäumnis (aktuell: durch Eltern & Sekretariat)
 - Überprüfung der Zulässigkeit eines Antrags anhand des Datums (aktuell: durch Stufenleiter)
 - Lehrer von Antrag in Kenntnis setzen (aktuell: durch Schüler, viele Laufwege)
 - Zusammenzählen der Versäumnisse am Ende eines Halbjahres (aktuell: manuell durch Lehrer)
@@ -112,7 +111,7 @@ Beispiele dafür finden sich in der Online-Ticketvergabe in der Stadtverwaltung,
 ## Inhalt dieser Facharbeit
 Inhalt dieser Facharbeit ist es, ein digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so den Beteiligten Arbeit abnimmt sowie Fehlern vorbeugt.
 
-Da eine Auseinandersetzung mit der genauen Implementierung den Rahmen dieses Textes sprengen würde, möchte ich mich weitestgehend auf die Modellierung des Systems fokussieren, einzelne Stellen der Implementierung werden exemplarisch erläutert.
+Da eine Auseinandersetzung mit der genauen Implementierung den Rahmen dieses Textes übersteigen würde, möchte ich mich weitestgehend auf die Modellierung des Systems fokussieren, einzelne Stellen der Implementierung werden exemplarisch erläutert.
 
 Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
 
@@ -122,7 +121,7 @@ Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
 
 Ich möchte dabei soweit es geht die *Best Practices* der modernen Webentwicklung erfüllen um am Ende ein nutzbares Produkt in den Händen zu halten.
 
-Dieser Text ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung, der QuellCode ist beigefügt.
+Dieser Text ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung. Der QuellCode ist beigefügt.
 
 \newpage
 
@@ -149,7 +148,7 @@ Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
 Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das Entschuldigungsverfahren.
-Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein muss und auch sämtliche Vertragspartner eine solche Dokumentation führen.
+Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
 Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
 ## Modellierung
@@ -203,9 +202,9 @@ Die Seite wird dann vielleicht noch durch einen Header, den sich alle Seiten tei
 Die Last auf dem Server steigt also mit Anzahl der Nutzer und Anfragen.
 Der Server hat dabei bei jeder Anfrage sowohl die Arbeit, die Daten aus der Datenbank abzufragen, als auch die Seite aufzubauen.
 
-Beim Zweiten Ansatz liefert der Server dem Client jedes mal die gleiche HTML-Seite aus.
+Beim Zweiten Ansatz liefert der Server dem Client jedes Mal die gleiche HTML-Seite aus.
 Diese Seite enthält JavaScript-Code, der vom Client aus HTTP-Anfragen an eine Entwicklerschnittstelle[^API] schickt.
-Diese API liefert dem Client die relevanten Daten zurück, der diese dann über Veränderungen im DOM[^DOM] dem Nutzer anzeigt.
+Diese API liefert dem Client die relevanten Daten zurück, dieser zeigt sie über Veränderungen im DOM[^DOM] dem Nutzer an.
 Möchte zum Beispiel ein Schüler seine Übersichtsseite sehen, so wird ihm zuerst die Standard-HTML-Seite ausgeliefert.
 Der JavaScript-Code auf dieser Seite fragt nun bei der API die letzten $n$ Entschuldigungsanträge an, wartet auf die Antwort und erweitert die Anzeige um die Ergebnisse der Anfrage.
 
@@ -274,12 +273,12 @@ Erläuterungen über die Vorzüge einer Zustandslosen Architektur finden sich im
 
 #### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
-Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei schickt der Client zu jeder Anfrage Nutzernamen und Passwort mit.
+Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
 Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark] lassen sich Netzwerkpakete leicht abfangen.
 Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
 *Basic Auth* darf daher niemals über unverschlüsselte Kommunikationswege verwendet werden!
-Sämtlicher Netzwerkverkehr wird im EntschuldigungsVerfahren über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Sämtlicher Netzwerkverkehr wird im Entschuldigungsverfahren über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
 Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encrypt bezogen.
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
@@ -287,7 +286,7 @@ Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encr
 ## Umsetzung
 
 ### Stack
-Mein Software-Stack basiert im groben auf dem *MERN*[^MERN]-Stack:
+Mein Software-Stack basiert auf dem *MERN*[^MERN]-Stack:
 
 - MongoDB (Datenbank)
 - Express (API-Framework)
@@ -320,7 +319,7 @@ Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion e
 - Beantwortung der Anfrage
 - Fehlerbehandlung
 
-Eine Middleware erhält folgende Parameter übergeben:
+Eine Middleware erhält folgende Parameter:
 
 1. `request`: Enthält alle Informationen über die Anfrage
 2. `response`: Ermöglicht das Beantworten der Anfrage
@@ -329,19 +328,19 @@ Eine Middleware erhält folgende Parameter übergeben:
 Dabei sollte eine Middleware die Anfrage in jedem Fall beantworten oder `next()` aufrufen, sonst erhält der Client keine Antwort.
 
 Aufgabe der ersten Middleware (Z. 1 - 12) ist es, alle zur Anfragenden passenden `Entry`-Objekte abzurufen.
-Relevant dafür ist die Rolle des Nutzers: Ein Admin erhält alle Einträge zurück, ein Schüler nur seine eigenen, ein Elternteil nur die seiner Kinder.
+Relevant dafür ist die Rolle des Nutzers: Ein Administrator erhält alle Einträge zurück, ein Schüler nur seine eigenen, ein Elternteil nur die seiner Kinder.
 Im Beispiel wird exemplarisch der Fall gelistet, dass ein Schüler anfragt (Z. 4 - 8).
 Es werden nun alle `Entry`-Objekte abgerufen, deren `student`-Feld mit der ID des anfragenden Nutzers übereinstimmt (Z. 6).
 Damit auch die nächste Middleware darauf zugreifen kann, werden diese in `request.entries` gespeichert (Z. 5).
 
 Aufgabe der zweiten Middleware (Z. 13 - 38) ist es, sämtliche Abhängigkeiten der zuvor ermittelten `Entry`-Objekte zu ermitteln.
-Dies muss passieren, da ein `Entry` alleine ist wenig aussagekräftig ist.
+Dies muss passieren, da ein `Entry` alleine nicht sehr aussagekräftig ist.
 Einige seiner Felder verweisen über *IDs* auf andere Objekte (siehe Abbildung \ref{class-diagramm}).
-Es werden also erst alle den Einträgen zugehörigen `Slot`-Objekte abgefragt (Z. 14 - 20);
+Es werden also erst alle den Einträgen zugehörigen `Slot`-Objekte abgefragt (Z. 14 - 20).
 
 Nun werden alle Nutzer angefragt, die durch einen vorher gefundenen `Slot` oder `Entry` referenziert sind (Z. 23 - 30).
 
-Zum Schluss werden alle gefundenen Objekte in *JSON-Notation* zurückgesandt, die Anfrage ist abgeschlossen.
+Zum Schluss werden alle gefundenen Objekte in *JSON-Notation* zurückgesendet, die Anfrage ist abgeschlossen.
 
 Falls während einer der Middlewares ein Fehler auftritt, wird dieser durch eine `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, 11 bzw. Z. 13, 37).
 
@@ -359,7 +358,7 @@ Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt w
 
 Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
-Möchte man einen Nutzer autentifizieren, so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
+Möchte man einen Nutzer authentifizieren, so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
 
 Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus [@bcrypt], denn bei diesem kann man durch einen zusätzlichen Parameter den Algorithmus verlangsamen.
 Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Force-Angriffe sind dadurch aber deutlich aufwändiger.
@@ -373,7 +372,7 @@ Viele große Themen der Webentwicklung wurden gestreift, darunter API-Entwicklun
 Dabei habe ich in viele der Konzepte gute Einblicke erhalten können.
 
 Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um größere Datenintegrität gewährleisten zu können.
-Dann müßte das Datenbank-Schema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
+Dann müsste das Datenbankschema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
 
 Ich denke dass das Produkt, welches am Ende entstanden ist, das Potenzial hat das Entschuldigungsverfahren an unserer Schule deutlich zu verbessern.
 Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
