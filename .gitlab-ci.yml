@@ -144,14 +144,10 @@ release:staging:
   image: williamyeh/ansible:debian9
   only:
     - master
+  tags:
+    - ansible
   environment:
     name: staging
     url: http://bull.simonknott.de
-  before_script:
-    - mkdir ~/.ssh
-    - touch ~/.ssh/id_rsa
-    - touch ~/.ssh/id_rsa.pub
-    - echo $SSH_KEY_ANSIBLE > ~/.ssh/id_rsa
-    - echo $SSH_KEY_ANSIBLE_PUB > ~/.ssh/id_rsa.pub
   script:
     - ansible-playbook -i staging.yml deploy-staging.yml
