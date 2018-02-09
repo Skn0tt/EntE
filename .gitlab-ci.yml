@@ -144,8 +144,6 @@ release:staging:
   image: williamyeh/ansible:debian9
   only:
     - master
-  tags:
-    - ansible
   environment:
     name: staging
     url: http://bull.simonknott.de
