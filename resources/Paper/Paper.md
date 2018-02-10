@@ -447,10 +447,34 @@ router.get('/entries', async (request, response, next) => {
 
 
 ## Containerisierung
-- Kurze Erklärung Docker
-- Erläuterung: Vorzüge Stateless Architecture
-- Distributed Deployments mit Kubernetes
-  - Erklärung des Konzepts: Redundanz und *Horizontal Scaling* statt *Monolithischem Vertical Scaling*
+Seit einigen Jahren gibt es in der DevOps-Szene einen Trend weg von virtualisierten, hin zu containerisierten Deployments.
+Die Containerisierung lässt sich als logische Evolution der Virtualisierung ansehen.
+
+Beide Ansätze möchten eine Abstraktion der Anwendung vom Host-Computer erreichen, durch die Abhängigkeitsprobleme zwischen verschiedenen Anwenungen beseitigt und die Auslieferung der Applikationen besser automatisiert werden können.
+In der Virtualisierung wird dafür ein komplettes Betriebssystem emuliert, inklusive Kernel und eigenem Dateisystem.
+Applikationen innerhalb einer Virtuelle Maschine können daher nur auf Dienste innerhalb ihrer Maschine zugreifen, Verbindungen mit dem Host müssen gesondert erstellt werden.
+So kann jede Applikation ihre eigenen Abhängigkeiten mitführen, zur Auslieferung muss nur die VM gestartet werden.
+Virtualisierung kann also zuvor genannte Probleme beheben, schafft jedoch ein neues: Für jede VM muss ein eigenes Betriebssystem ausgeführt werden.
+Diese zusätzliche Last erzeugt viel Overhead und höhere Kosten, die die Vorteile ein Stück weit zunichte machen.
+
+Dieser Nachteil wird durch Containerisierung beseitigt:  
+Hier laufen alle Applikationen direkt auf dem Host-Betriebssystem, ohne zwischengeschaltete Gast-VM.
+Um die Dienste weiterhin voneinander abzuschirmen, erhält jeder Container mithilfe von Tools wie `chroot` sein eigenes Dateisystem und Netzwerkinterface.
+Einzelne Container sind dadurch wie VMs voneinander abgeschirmt, weisen aber nicht deren Overhead vor (siehe Abbildung \ref{containerVsVM}).
+
+![Containers vs. VMs [@Docker:ContainerVsVM]\label{containerVsVM}](https://www.sdxcentral.com/wp-content/uploads/2016/01/containers-versus-virtual-machines-docker-inc-rightscale.jpg)
+
+Ein IBM Research Report aus dem Jahr 2014 hat die Performance-Unterschiede zwischen den beiden Industrie-Standards KVM (Virtualisierung) und Docker (Containerisierung) untersucht.
+Dabei war die Performance von Docker-Containern in fast allen Fällen mit gleichauf mit nativen Deployments, KVM zeigt sich in allen Disziplinen bis auf Netzwerk-Latenz und Sequenzielles Lesen deutlich weniger performant [@Docker:ContainerVsVM].
+
+Durch den verschwindend geringen Overhead ermöglicht eine Container-Basierte Anwendung sogennante *Microservice-Architekturen*.
+Dabei ist eine Anwendung in mehrere zustandslose Dienste aufgeteilt, die unabängig von einander ausgeliefert werden und über ein platformagnostisches Protokoll wie HTTP oder eine Message Queue miteinander kommunizieren.
+
+Da die Dienste zustandslos sind, kann man diese horizontal skalieren und so zum Beispiel Lastspitzen kurzfristig auszugleichen.
+Die gesamte Anwendung kann so sehr genau an die aktuelle Situation angepasst werden und spart so Rechenleistung und Geld.
+Durch die horizontale Skalierung wird die Anwendung außerdem resilienter, da ein Fehlerhafter Dienst einfach ersetzt werden kann, und es können Rolling-Deployments ohne Downtime durchgeführt werden.
+
+- Container@Google, Netflix
 
 \newpage
 
