@@ -117,6 +117,8 @@ export interface IEntry {
   forSchool: boolean;
   signedManager: boolean;
   signedParent: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IEntryCreate {
@@ -138,6 +140,8 @@ export class Entry extends Record({
   forSchool: false,
   signedManager: false,
   signedParent: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 }) {
   constructor(props: Partial<IEntry>) {
     super(props);

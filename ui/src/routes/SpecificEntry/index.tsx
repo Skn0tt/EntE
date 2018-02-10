@@ -59,7 +59,9 @@ const SpecificEntry: React.SFC<Props> = (props) => {
     >
       <DialogContent>
         <DialogContentText>
-          ID: {entry.get('_id')}
+          ID: {entry.get('_id')} <br/>
+          Erstellt: {entry.get('createdAt').toLocaleDateString()} <br/>
+          Aktualisiert: {entry.get('updatedAt').toLocaleDateString()} <br/>
         </DialogContentText>
         {/* Slots */}
         <Typography type="title">

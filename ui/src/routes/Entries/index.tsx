@@ -81,6 +81,12 @@ class extends React.Component<Props, State> {
     if (this.state.sortField === 'date') {
       return (a.get('date').getTime() - b.get('date').getTime()) * (this.state.sortUp ? 1 : -1);
     }
+    if (this.state.sortField === 'createdAt') {
+      return (
+        (a.get('createdAt').getTime() - b.get('createdAt').getTime())
+          * (this.state.sortUp ? 1 : -1)
+      );
+    }
     return a.get(this.state.sortField)!.toString().localeCompare(
       b.get(this.state.sortField)!.toString(),
     ) * (this.state.sortUp ? 1 : -1);
@@ -139,6 +145,7 @@ class extends React.Component<Props, State> {
               <TableRow>
                 <this.TableHeadCell field="name">Name</this.TableHeadCell>
                 <this.TableHeadCell field="date">Datum</this.TableHeadCell>
+                <this.TableHeadCell field="createdAt">Erstellt</this.TableHeadCell>
                 <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
                 <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
                 <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
@@ -160,6 +167,7 @@ class extends React.Component<Props, State> {
                           .get('displayname')
                         }</TableCell>
                       <TableCell>{entry.get('date').toDateString()}</TableCell>
+                      <TableCell>{entry.get('createdAt').toDateString()}</TableCell>
                       <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
                       <TableCell>{truncate(entry.get('reason'), 20, '...')}</TableCell>
                       <TableCell>{entry.get('signedManager')
