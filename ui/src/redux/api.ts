@@ -21,12 +21,10 @@ const defaultResponse: APIResponse = {
   users: [],
 };
 
-const reviver = (key: string, value: any) => {
-  if (['date', 'dateEnd'].indexOf(key) !== -1) {
-    return new Date(value);
-  }
-  return value;
-};
+const reviver = (key: string, value: any) =>
+  ['date', 'dateEnd', 'createdAt', 'updatedAt'].indexOf(key) !== -1
+    ? new Date(value)
+    : value;
 
 const transformDates = (data: string) => {
   const input = JSON.parse(data, reviver);
