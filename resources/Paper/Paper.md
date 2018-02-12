@@ -19,17 +19,25 @@ titlepage: true
 titlepage-rule-color: "F5A623"
 ---
 
-# Vorwort
+TODO:
+- Hervorheben, was MEINE Leistung ist und warum sie großartig ist
+- Screenshots/Showcase des Programms
+- Ausformulierung der Erleichterung
+- Name der Software (ELENT)
+- Diagramme
+
+# Danksagung
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
 Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, Vortrag oder Tutorial.
-Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit niemals hätte schreiben können.
-Speziell mit der Frontend-Entwicklung und der Arbeit mit APIs habe ich während meiner Arbeit bei OrbiTeam viel Erfahrung sammeln können, auch dafür möchte ich mich sehr bedanken.
+Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit nur mit sehr viel Mühe hätte schreiben können.
 
+Die Open-Source-Community ermöglicht es, großartige Produkte zu entwickeln.
 Fast alle im digitalen Entschuldigungverfahren verwendeten Tools und Frameworks sind kostenlos und frei zugänglich.
-Die Open-Source-Community ermöglicht, ohne riesigen Kapitaleinsatz großartige Produkte zu entwickeln.
-Ich möchte mich deshalb bei allen Mitgliedern der Open-Source-Community sowie den dahinter stehenden Unternehmen bedanken, die ihre Arbeit unter Open-Source-Lizenzen veröffentlichen.
+Ich möchte mich deshalb bei allen Mitgliedern der Open-Source-Community sowie den dahinter stehenden Unternehmen bedanken, die ihre Arbeit unter Open-Source-Lizenzen veröffentlichen und sie der Allgemeinheit zugänglich machen.
 
 Des weiteren möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
+Ich möchte mich auch bei meinen Kolleginnen und Kollegen bei OrbiTeam für ihre Tipps und Ratschläge bedanken.
+Dort konnte ich während meiner Arbeit viel Erfahrung bei der Frontend-Entwicklung sammeln.
 
 \newpage
 
@@ -38,60 +46,58 @@ Des weiteren möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die s
 \newpage
 
 # Einleitung
-An meiner Schule, dem Ernst-Moritz-Arndt-Gymnasium in Bonn, herrscht seit einiger Zeit Unzufriedenheit über das Entschuldigungsverfahren.
-Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
-Dieses Problem betrifft nicht nur unsere Schule, denn das Entschuldigen versäumter Stunden ist ein Prozess, der an jeder Schule durchgeführt wird und an vielen anderen Schulen sehr ähnlich verläuft.
+An jeder Schule müssen die Fehlzeiten der Schüler nachgehalten werden.
+Dabei ist es wichtig, schulisch oder durch Krankheit bedingte Versäumnisse sowie unentschuldigte Fehlzeiten zu erfassen, da diese auf dem Zeugnis vermerkt werden müssen und auch Noten beeinflussen.
+
+Dieses Verfahren wird an vielen Schulen auf Papier-Basis durchgeführt, so auch am Ernst-Moritz-Arndt-Gymnasium.
+Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System jedoch als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
 
 ## Status Quo
-Aktuell ist das Entschuldigungsverfahren mithilfe eines kleinen DIN-A4-Zettels gelöst, auf dem man alle zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
+Aktuell ist das Entschuldigungsverfahren der Oberstufe an unserer Schule durch den Entschuldigungszettel gelöst, auf dem der Schüler zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
 
-Der Entschuldigungsprozess läuft wiefolgt ab:
+Der Entschuldigungsprozess läuft wie folgt ab:
 
 *Am Tag der Krankheit, nur im Krankheitsfall:*
 
 1. Die Eltern des Schülers (bei Volljährigkeit der Schüler selbst) rufen im Sekretariat an, um den Schüler krankzumelden.
 
-Zweck des Anrufes ist es, dass die Schule von einem Krankheitsfall unterrichtet wird.
-So werden versäumte Stunden nur entschuldigt, wenn die Schule von der Krankheit weiß, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
+Zweck des Anrufes ist es, die Schule über den Krankheitsfall zu unterrichten.
+So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldung erhalten hat, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
 
-*Nach Wiederkehr des Schülers:*
+*Nach Wiederkehr des Schülers sind folgende Schritte notwendig:*
 
 1. Der Schüler trägt Datum, Zeit, Grund und die Kürzel der betroffenen Lehrer auf seinem Entschuldigungszettel ein.
 2. Er lässt diesen Eintrag von seinen Eltern unterzeichnen (entfällt bei Volljährigkeit).
 3. Er lässt diesen Eintrag von seinem Stufenleiter unterzeichnen.
 4. Er lässt diesen Eintrag von jeder Lehrkraft, deren Unterricht er versäumte, unterzeichnen.
 
-Der zweite Teil des Prozesses muss binnen 14 Tagen nach Wiedererscheinen vollendet werden, andernfalls wird der Eintrag vom Stufenleiter nicht akzeptiert.
+Der zweite Teil des Prozesses muss innerhalb von 14 Tagen nach Rückkehr in den Unterricht vollendet werden, andernfalls wird der Eintrag vom Stufenleiter nicht akzeptiert.
 
+### Aufwandsabschätzung
 Als Schüler ist es also pro Eintrag notwendig, $1 + 1 + n$ Unterschriften zu sammeln, wobei $n = \text{Versäumte Lehrer}$.
 Fehlt man einen Tag lang, so sind das bei $5$ Lehrern schon $7$ Unterschriften.
 Jede Unterschrift, die man vergisst, bedeutet für die unentschuldigte Stunde eine Null-Bewertung und kann die Zeugnis-Note erheblich beeinträchtigen.
 
-Verfehlt ein Schüler die 14-Tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und n auf dem Zeugnis als solche vermerkt.
+Verfehlt ein Schüler die 14-tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und auf dem Zeugnis als solche vermerkt.
 Dabei ist es in einigen Fällen gar nicht möglich, diese Frist einzuhalten, zum Beispiel wenn der betroffene Lehrer selbst krank ist.
-
 Das aktuelle System ist also aufgrund der genannten Punkte für Schüler viel Arbeit und fehleranfällig.
 
 Der Stufenleiter ist innerhalb des Verfahrens die koordinierende und kontrollierende Instanz:
-Ihm liegt jeden Tag ein Stapel an Zetteln zur Unterzeichnung vor, die er auf ihre Zulässigkeit überprüfen muss.
+Ihm liegt jeden Tag eine große Anzahl an Zetteln zur Unterzeichnung vor, die er auf ihre Zulässigkeit überprüfen muss.
 Dafür muss er bei Krankheit in einer gemeinsam mit dem Sekretariat geführten Excel-Tabelle nach dem angegebenen Datum suchen und überprüfen, ob der Schüler am entsprechenden Tag morgens krankgemeldet wurde.
 Alleine die Anfrage an die Tabelle dauert pro Eintrag einige Zeit, da die Tabelle sehr groß ist.
 Ist dann der Eintrag überprüft, muss bei einigen Schülern noch nach Regelmäßigkeiten oder Auffälligkeiten gesucht werden, die auf gezieltes Verpassen des Unterrichts hindeuten.
 
-TODO: Kühn fragen, ob das alles ist
+TODO: Kühn fragen, ob das alles, richtig ist; fragen, ob ihm die Nennung recht ist
 
-Laut Angaben von *Thilo Kühn*, einem der Stufenleiter am Ernst-Moritz-Arndt-Gymnasium, nimmt diese Arbeit jede Woche gut zwei Stunden in Anspruch.
-Diese Arbeit fällt für jede der drei Stufen an, viermal im Monat.
+Laut Angaben von *Thilo Kühn*, einem der Stufenleiter am Ernst-Moritz-Arndt-Gymnasium, nimmt diese Arbeit jede Woche gut zwei Stunden in Anspruch und fällt für jede der drei Stufen an.
 
-Auch Lehrer haben einen großen Aufwand:  
-Ihnen werden jede Stunde Entschuldigungszettel vorgelegt, die sie dann in ihrem Kursheft als entschuldigt markieren müssen.
-Dafür nutzen die meisten Lehrer Einzelarbeitsphasen, in denen sie dann weder Schülern helfen noch anderweitig ihrem Bildungsauftrag nachkommen können.
+Auch die Fachlehrer haben einen großen Aufwand:  
+Ihnen werden in jeder Stunde Entschuldigungszettel vorgelegt, die sie dann in ihrem Kursheft als entschuldigt markieren müssen.
+Dafür nutzen die meisten Lehrer Einzelarbeitsphasen, in denen sie dann weder Schülern helfen noch anderen Aufgaben nachkommen können.
 Der Arbeitsaufwand für diese Zettel ist nicht so hoch wie für die Stufenleiter, birgt allerdings eine hohe Fehleranfälligkeit:
 Wird ein Entschuldigungszettel unterschrieben, aber der Eintrag im Kursheft nicht als "Entschuldigt" markiert, so gilt diese Stunde immer noch als "Unentschuldigt" - der Schüler denkt aber, der Prozess sei für ihn abgeschlossen.
 
-Zusammenfassend lässt sich sagen, dass das aktuelle Verfahren für alle Beteiligten viel Arbeit bedeutet und außerdem sehr Fehleranfällig ist.
-
-## Was ist E-Government?
 Das aktuelle Verfahren beruht auf vielen repetitiven, manuellen Arbeitsschritten.
 Viele davon sind sehr gut automatisierbar:
 
@@ -100,18 +106,24 @@ Viele davon sind sehr gut automatisierbar:
 - Lehrer von Antrag in Kenntnis setzen (aktuell: durch Schüler, viele Laufwege)
 - Zusammenzählen der Versäumnisse am Ende eines Halbjahres (aktuell: manuell durch Lehrer)
 
+Zusammenfassend lässt sich sagen, dass das aktuelle Verfahren für alle Beteiligten viel Arbeit bedeutet und außerdem sehr fehleranfällig ist.
+
+## Was ist E-Government?
+
 Mit dem Aufkommen der Computertechnik werden sowohl in staatlichen als auch privaten Einrichtungen immer mehr dieser administrativen Aufgaben digitalisiert, um einen effizienteren Ablauf gewährleisten zu können.
 Diese Entwicklung wird unter dem Begriff *E-Government* zusammengefasst.
 
 Beispiele dafür finden sich in der Online-Ticketvergabe in der Stadtverwaltung, der digitalen Steuererklärung via *Elster* [^Elster] oder der Digitalen Staatsbürgerschaft in *Estland* [^E-Residency].
 
+TODO:
+- Historie
+- Quellen
+
 [^Elster]: [Elster: https://www.elster.de](https://www.elster.de)
 [^E-Residency]: [Estonia E-Residency: https://e-resident.gov.ee/](https://e-resident.gov.ee/)
 
-## Inhalt dieser Facharbeit
-Inhalt dieser Facharbeit ist es, ein digitales Entschuldigungsverfahren zu entwickeln, welches diese Aufgaben automatisiert und so den Beteiligten Arbeit abnimmt sowie Fehlern vorbeugt.
-
-Da eine Auseinandersetzung mit der genauen Implementierung den Rahmen dieses Textes übersteigen würde, möchte ich mich weitestgehend auf die Modellierung des Systems fokussieren, einzelne Stellen der Implementierung werden exemplarisch erläutert.
+## Ziel dieser Facharbeit
+Ziel dieser Facharbeit ist es, das Entschuldigungsverfahren in einem elektronischen Prozess abzubilden, welches diese Aufgaben automatisiert und so den Beteiligten Arbeit abnimmt sowie Fehlern vorbeugt.
 
 Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
 
@@ -119,13 +131,16 @@ Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
 - intuitive Nutzung
 - Standard-konforme Sicherheit
 
-Ich möchte dabei soweit es geht die *Best Practices* der modernen Webentwicklung erfüllen um am Ende ein nutzbares Produkt in den Händen zu halten.
+Ich möchte dabei die *Best Practices* der modernen Webentwicklung erfüllen, um am Ende ein nutzbares Produkt entwickeln und an die Nutzer am Ernst-Moritz-Arndt-Gymnasium übergeben zu können.
 
-Dieser Text ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung. Der QuellCode ist beigefügt.
+Im Rahmen dieses Dokuments beschränke ich mich weitestgehend auf Modellierung und Beschreibung des Systems.
+Exemplarisch werden einzelne Teile der Implementierung dargestellt.
+
+TODO: Kurze Darstellung des geplanten Systems, deren Vorteile/Zugriffsmöglichkeiten. Auch als Bild!
+
+Dieser Text ist als Dokumentation der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung, deren Quelltext beigefügt ist.
 
 \newpage
-
-# Hauptteil
 ## Datenschutz
 
 Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
@@ -136,7 +151,7 @@ Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zuge
 Für das Digitale Entschuldigungsverfahren bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
 Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
 
-Weiter besagt das Schulgesetz, welche Daten eine Schule speichern darf.
+Weiter besagt das Schulgesetz, welche Daten von einer Schule gespeichert werden dürfen.
 Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
 
 > - Beurlaubung:
@@ -147,21 +162,21 @@ Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
 
 Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
-Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das Entschuldigungsverfahren.
+Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das hier vorgestellte Entschuldigungsverfahren.
 Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
 Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
-## Modellierung
-### Prozess
+# Modellierung
+## Prozess
 Das digitale Entschuldigungsverfahren ist stark an den alten Entschuldigungszettel angelehnt.
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag, im System als *Entry* bezeichnet.
-Dieser speichert:
+Dieser enthält:
 
 - Startdatum
 - Enddatum (Falls das Versäumnis mehrtägig ist)
 - Art (Schulisch/Krankheit)
 - Bemerkung
-- Beliebig viele *Slots* (Falls das Versäumnis eintägig ist)
+- Beliebig viele *Slots*
 
 Ein *Slot* entspricht einem Unterrichtsblock, der verpasst wurde.
 Darin steht:
@@ -180,12 +195,12 @@ Die zeitaufwändige Überprüfung des Antrags in der Excel-Tabelle entfällt, ge
 Die Unterrichtung der Schule über einen Krankheitsfall geschieht mit der Erstellung eines solchen Eintrags.
 
 Die Lehrer sind dem Prozess erst einmal außen vor: Interaktion ihrerseits ist nicht nötig, um einen Entschuldigungsantrag anzunehmen.
-Sie haben allerdings Lesezugriff auf alle *Stunden*, die bei ihnen versäumt wurden und sehen somit, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
+Sie haben allerdings Lesezugriff auf alle *Slots*, die bei ihnen versäumt wurden und sehen somit, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
 Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
 
-### System
-#### Architektur
+## System
+### Architektur
 Das neue Entschuldigungsverfahren soll als Web-Anwendung umgesetzt werden.
 Jeder Nutzer des Systems (Schüler, Eltern, Lehrer, Stufenleiter und Administratoren) erhält Zugangsdaten, mit denen sie die für sie relevanten Daten einsehen und damit interagieren können.
 Solche Aktionen sind zum Beispiel das Erstellen oder Unterzeichnen eines Antrags.
@@ -269,9 +284,7 @@ Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu
 
 Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen und können so unabhängig von vorhergegangenen Anfragen bearbeitet werden.
 
-Erläuterungen über die Vorzüge einer Zustandslosen Architektur finden sich im Appendix.
-
-#### Sicherheit
+### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
 Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
@@ -283,9 +296,9 @@ Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encr
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
-## Umsetzung
+# Umsetzung
 
-### Stack
+## Stack
 Mein Software-Stack basiert auf dem *MERN*[^MERN]-Stack:
 
 - MongoDB (Datenbank)
@@ -306,7 +319,7 @@ Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 **Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces, damit Fehler frühzeitig erkannt werden können.  
 **Nodemailer** ermöglicht Node.js-Anwendungen, über SMTP Emails zu verschicken.  
 
-### API, Datenbankanfragen
+## API, Datenbankanfragen
 Am Beispiel der Route `GET /entries` möchte ich den API-Quellcode einmal exemplarisch erläutern.
 Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
 
@@ -344,7 +357,7 @@ Zum Schluss werden alle gefundenen Objekte in *JSON-Notation* zurückgesendet, d
 
 Falls während einer der Middlewares ein Fehler auftritt, wird dieser durch eine `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, 11 bzw. Z. 13, 37).
 
-### Passwörter
+## Passwörter
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an, die Passwörter müssen so sicher wie möglich gespeichert werden.
 
 Die sicherlich trivialste Möglichkeit ist es, die Passwörter bei der Nutzererstellung im Klartext zu speichern.
