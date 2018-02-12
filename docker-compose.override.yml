@@ -5,5 +5,8 @@ services:
     ports:
       - 3500:27017
   api:
+    ports:
+      - 5555:5555
+    command: "nodemon --inspect=0.0.0.0:5555"
     volumes:
       - ./api/dist:/usr/src/app/dist
