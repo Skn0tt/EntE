@@ -304,7 +304,7 @@ Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 **MJML** erzeugt responsive Emails.  
 **Mongoose** bietet Schema-Validierung und eine entwicklerfreundliche API für die Arbeit mit MongoDB.  
 **Sentry** sammelt alle Fehlermeldungen inklusive Stack-Traces, damit Fehler frühzeitig erkannt werden können.  
-**Nodemailer** ermöglicht Node.js-Anwendunge, über SMTP Emails zu verschicken.  
+**Nodemailer** ermöglicht Node.js-Anwendungen, über SMTP Emails zu verschicken.  
 
 ### API, Datenbankanfragen
 Am Beispiel der Route `GET /entries` möchte ich den API-Quellcode einmal exemplarisch erläutern.
@@ -349,7 +349,7 @@ Jeder Nutzer meldet sich im System mit Passwort und Benutzername an, die Passwö
 
 Die sicherlich trivialste Möglichkeit ist es, die Passwörter bei der Nutzererstellung im Klartext zu speichern.
 Dann kann bei der Anmeldung das übergebene Passwort verglichen werden.
-Kommt nun jemand an die Inhalte der Datenbank, zum Beispiel ein Hacker oder Admininstrator, sind dort die Passwörter im Klartext sichtbar.
+Kommt nun jemand an die Inhalte der Datenbank, zum Beispiel ein Hacker oder Administrator, sind dort die Passwörter im Klartext sichtbar.
 Dieses Risiko darf man niemals eingehen.
 
 Möglichkeit Zwei ist es, die Passwörter verschlüsselt zu speichern:
@@ -445,7 +445,6 @@ router.get('/entries', async (request, response, next) => {
 });
 \end{lstlisting}
 
-
 ## Containerisierung
 Seit einigen Jahren gibt es in der DevOps-Szene einen Trend weg von virtualisierten, hin zu containerisierten Deployments.
 Die Containerisierung lässt sich als logische Evolution der Virtualisierung ansehen.
@@ -472,9 +471,18 @@ Dabei ist eine Anwendung in mehrere zustandslose Dienste aufgeteilt, die unabän
 
 Da die Dienste zustandslos sind, kann man diese horizontal skalieren und so zum Beispiel Lastspitzen kurzfristig auszugleichen.
 Die gesamte Anwendung kann so sehr genau an die aktuelle Situation angepasst werden und spart so Rechenleistung und Geld.
-Durch die horizontale Skalierung wird die Anwendung außerdem resilienter, da ein Fehlerhafter Dienst einfach ersetzt werden kann, und es können Rolling-Deployments ohne Downtime durchgeführt werden.
+Durch die horizontale Skalierung wird die Anwendung außerdem resilienter, da ein fehlerhafter Dienst einfach ersetzt werden kann, und es können Rolling-Deployments ohne Downtime durchgeführt werden.
 
-- Container@Google, Netflix
+Große Unternehmen setzen schon länger auf vollständig Containerisierte Anwendungen.
+So berichtet Netflix von über einer Million gestarteter Container pro Woche [@containersAtNetflix], Google sogar mehr als zwei Millionen [@containersAtGoogle].
+Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen werden, da in Test-Umgebungen dieselben Container wie in Produktiv-Umgebungen verwendet werden und es keine Fehler durch unterschiedliche Versionen der Abhängigkeiten mehr gibt [@containersAtNetflix].
+
+Microservices und Container haben großes Potential, um die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
+Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
+Für kleine Projekte wie das Entschuldigungsverfahren bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
+
+[^kubernetes]: [https://kubernetes.io/](https://kubernetes.io/)
+[^openstack]: [https://www.openstack.org/](https://www.openstack.org/)
 
 \newpage
 
