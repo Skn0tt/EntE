@@ -52,11 +52,14 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
     
     const recipients = parents.map(parent => parent.email);
   
-    transporter.sendMail({
+    const info = await transporter.sendMail({
       html,
       to: recipients,
       subject: metadata.subject,
+      from: 'entschuldigungsverfahren@simonknott.de',
     });
+
+    console.log('Mail: Dispatched SignRequest to', info.accepted);
   } catch (error) {
     throw error;
   }
@@ -79,11 +82,14 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
     
     const recipients = parents.map(parent => parent.email);
   
-    transporter.sendMail({
+    const info = await transporter.sendMail({
       html,
       to: recipients,
       subject: metadata.subject,
+      from: 'entschuldigungsverfahren@simonknott.de',
     });
+
+    console.log('Mail: Dispatched SignedInformation to', info.accepted);
   } catch (error) {
     throw error;
   }

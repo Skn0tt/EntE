@@ -15,7 +15,7 @@
       "type": "node",
       "request": "attach",
       "name": "Docker: Attach to Node",
-      "port": 5858,
+      "port": 5555,
       "address": "localhost",
       "restart": true,
       "localRoot": "${workspaceRoot}/api",
