@@ -12,7 +12,7 @@ import {
   TableSortLabel,
 } from 'material-ui';
 import styles from './styles';
-import { Add as AddIcon } from 'material-ui-icons';
+import { Add as AddIcon, Check as CheckIcon } from 'material-ui-icons';
 
 import * as select from '../../redux/selectors';
 import { Entry, AppState, MongoId, User, IEntry, Roles } from '../../interfaces/index';
@@ -24,7 +24,6 @@ import { getEntriesRequest } from '../../redux/actions';
 import { Route } from 'react-router';
 import TextField from 'material-ui/TextField/TextField';
 import Button from 'material-ui/Button/Button';
-import { Check as CheckIcon } from 'material-ui-icons';
 
 interface StateProps {
   entries: Entry[];
