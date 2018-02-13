@@ -189,7 +189,7 @@ class extends React.Component<Props, State> {
           <Route render={({ history }) => (
             <Button
               color="primary"
-              fab
+              variant="fab"
               onClick={() => history.push('/createEntry')}
               className={classes.fab}
             >

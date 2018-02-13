@@ -278,10 +278,10 @@ class extends React.Component<Props, State> {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleImport} color="accent">
+          <Button onClick={this.handleImport} color="secondary">
             Import
           </Button>
-          <Button onClick={this.handleClose} color="accent">
+          <Button onClick={this.handleClose} color="secondary">
             Cancel
           </Button>
           <Button

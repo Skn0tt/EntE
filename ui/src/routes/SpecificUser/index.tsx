@@ -84,7 +84,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
       </DialogContent>
       <DialogActions>
         <Button
-          dense
+          size="small"
           color="primary"
           onClick={() => props.history.push('/users')}
         >

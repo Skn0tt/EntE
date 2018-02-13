@@ -58,7 +58,7 @@ class extends React.Component<Props, State> {
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography type="title">
+          <Typography variant="title">
             Erwachsen
           </Typography>
         </Grid>
@@ -76,7 +76,7 @@ class extends React.Component<Props, State> {
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
-          <Button raised color="primary" onClick={() => this.handleSubmit()}>
+          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
             Aktualisieren
             <UpdateIcon />
           </Button>

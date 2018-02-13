@@ -64,7 +64,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
           Aktualisiert: {entry.get('updatedAt').toLocaleDateString()} <br/>
         </DialogContentText>
         {/* Slots */}
-        <Typography type="title">
+        <Typography variant="title">
           Stunden
         </Typography>
         <Table>
@@ -88,14 +88,14 @@ const SpecificEntry: React.SFC<Props> = (props) => {
           </TableBody>
         </Table>
         {/* Reason */}
-        <Typography type="title">
+        <Typography variant="title">
           Begründung
         </Typography>
-        <Typography type="body1">
+        <Typography variant="body1">
           {entry.get('reason')}
         </Typography>
         {/* Signed */}
-        <Typography type="title">
+        <Typography variant="title">
           Signiert
         </Typography>
         <List>
@@ -143,7 +143,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
       </DialogContent>
       <DialogActions>
         <Button
-          dense
+          size="small"
           color="primary"
           onClick={() => props.history.push('/users')}
         >

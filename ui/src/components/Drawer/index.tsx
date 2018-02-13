@@ -82,14 +82,14 @@ class extends React.Component<Props, State> {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton
-                color="contrast"
+                color="secondary"
                 aria-label="open drawer"
                 onClick={this.handleDrawerToggle}
                 className={classes.navIconHide}
               >
                 <MenuIcon />
               </IconButton>
-              <Typography type="title" color="inherit" noWrap>
+              <Typography variant="title" color="inherit" noWrap>
                 EntschuldigungsVerfahren
               </Typography>
               <div className={classes.grow} />
@@ -98,7 +98,7 @@ class extends React.Component<Props, State> {
           </AppBar>
           <Hidden mdUp>
             <MUIDrawer
-              type="temporary"
+              variant="temporary"
               open={this.state.mobileOpen}
               classes={{
                 paper: classes.drawerPaper,
@@ -113,7 +113,7 @@ class extends React.Component<Props, State> {
           </Hidden>
           <Hidden smDown implementation="css">
             <MUIDrawer
-              type="permanent"
+              variant="permanent"
               open
               classes={{
                 paper: classes.drawerPaper,

@@ -190,7 +190,7 @@ class extends React.Component<SlotEntryProps, State> {
         >
           <Tooltip title="Hinzufügen">
             <Button
-              raised
+              variant="raised"
               disabled={!this.slotInputValid()}
               onClick={() => this.handleAddSlot()}
             >
