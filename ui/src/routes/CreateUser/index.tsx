@@ -120,7 +120,8 @@ class extends React.Component<Props, State> {
   handleRemoveChildren = (index: number) =>
     this.setState({ children: this.state.children.slice(index, index) })
   
-  hasChildren = (): boolean => this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
+  hasChildren = (): boolean =>
+    this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
 
   /**
    * ## Validation
