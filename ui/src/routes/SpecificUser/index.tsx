@@ -88,7 +88,7 @@ const SpecificUser: React.SFC<Props> = (props) => {
           color="primary"
           onClick={() => props.history.push('/users')}
         >
-          Close
+          Schließen
         </Button>
       </DialogActions>
     </Dialog>

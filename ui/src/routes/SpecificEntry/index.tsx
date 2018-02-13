@@ -8,7 +8,7 @@ import { AppState, MongoId, Entry, User, Slot, Roles } from '../../interfaces/in
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Table, List } from 'material-ui';
+import { Button, Table, List, Grid } from 'material-ui';
 import { getEntryRequest, signEntryRequest } from '../../redux/actions';
 import SignedAvatar from './elements/SignedAvatar';
 import UnsignedAvatar from './elements/UnsignedAvatar';
@@ -58,88 +58,106 @@ const SpecificEntry: React.SFC<Props> = (props) => {
       onClose={() => props.history.push('/entries')}
     >
       <DialogContent>
-        <DialogContentText>
-          ID: {entry.get('_id')} <br/>
-          Erstellt: {entry.get('createdAt').toLocaleDateString()} <br/>
-          Aktualisiert: {entry.get('updatedAt').toLocaleDateString()} <br/>
-        </DialogContentText>
-        {/* Slots */}
-        <Typography variant="title">
-          Stunden
-        </Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Von</TableCell>
-              <TableCell>Bis</TableCell>
-              <TableCell>Lehrer</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.getSlots(entry.get('slots')).map(slot => (
-              <TableRow
-                key={slot.get('_id')}
-              >
-                <TableCell>{slot.get('hour_from')}</TableCell>
-                <TableCell>{slot.get('hour_to')}</TableCell>
-                <TableCell>{props.getUser(slot.get('teacher')).get('displayname')}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        {/* Reason */}
-        <Typography variant="title">
-          Begründung
-        </Typography>
-        <Typography variant="body1">
-          {entry.get('reason')}
-        </Typography>
-        {/* Signed */}
-        <Typography variant="title">
-          Signiert
-        </Typography>
-        <List>
-          {/* Admin */}
-          <ListItem>
-            {entry.get('signedManager') ?
-              <SignedAvatar />
-              : <UnsignedAvatar />
-            }
-            <ListItemText primary="Stufenleiter" />
-            {!entry.get('signedManager') &&
-              props.role === Roles.MANAGER && (
-              <ListItemSecondaryAction>
-                <Button
-                  className={classes.signEntryButton}
-                  onClick={() => props.signEntry(entry.get('_id'))}
-                >
-                  Sign
-                  <AssignmentTurnedInIcon />
-                </Button>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-          {/* Parents */}
-          <ListItem>
-            {entry.get('signedParent') ?
-              <SignedAvatar />
-              : <UnsignedAvatar />
-            }
-            <ListItemText primary="Eltern" />
-            {!entry.get('signedParent') &&
-              props.role === Roles.PARENT && (
-              <ListItemSecondaryAction>
-                <Button
-                  className={classes.signEntryButton}
-                  onClick={() => props.signEntry(entry.get('_id'))}
-                >
-                  Sign
-                  <AssignmentTurnedInIcon />
-                </Button>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-        </List>
+        <Grid container direction="column">
+          {/* ID */}
+          <Grid item>
+            <DialogContentText>
+              ID: {entry.get('_id')} <br/>
+            </DialogContentText>
+          </Grid>
+
+          <Grid item>
+            <Typography variant="title">
+              Info
+            </Typography>
+            <Typography variant="body1">
+              <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br/>
+              <i>Begründung:</i> {entry.get('reason') || '-'} <br/>
+              <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br/>
+              <i>Datum:</i> {entry.get('dateEnd')
+                ? `Von ${entry.get('date').toLocaleDateString()}
+                  bis ${entry.get('dateEnd')!.toLocaleDateString()}`
+                : entry.get('date').toLocaleDateString()
+                } <br/>
+            </Typography>
+          </Grid>
+
+          {/* Slots */}
+          <Grid item>
+            <Typography variant="title">
+              Stunden
+            </Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Von</TableCell>
+                  <TableCell>Bis</TableCell>
+                  <TableCell>Lehrer</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {props.getSlots(entry.get('slots')).map(slot => (
+                  <TableRow
+                    key={slot.get('_id')}
+                  >
+                    <TableCell>{slot.get('hour_from')}</TableCell>
+                    <TableCell>{slot.get('hour_to')}</TableCell>
+                    <TableCell>{props.getUser(slot.get('teacher')).get('displayname')}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Grid>
+
+          {/* Signed */}
+          <Grid item>
+            <Typography variant="title">
+              Signiert
+            </Typography>
+            <List>
+              {/* Admin */}
+              <ListItem>
+                {entry.get('signedManager') ?
+                  <SignedAvatar />
+                  : <UnsignedAvatar />
+                }
+                <ListItemText primary="Stufenleiter" />
+                {!entry.get('signedManager') &&
+                  props.role === Roles.MANAGER && (
+                  <ListItemSecondaryAction>
+                    <Button
+                      className={classes.signEntryButton}
+                      onClick={() => props.signEntry(entry.get('_id'))}
+                    >
+                      Sign
+                      <AssignmentTurnedInIcon />
+                    </Button>
+                  </ListItemSecondaryAction>
+                )}
+              </ListItem>
+              {/* Parents */}
+              <ListItem>
+                {entry.get('signedParent') ?
+                  <SignedAvatar />
+                  : <UnsignedAvatar />
+                }
+                <ListItemText primary="Eltern" />
+                {!entry.get('signedParent') &&
+                  props.role === Roles.PARENT && (
+                  <ListItemSecondaryAction>
+                    <Button
+                      className={classes.signEntryButton}
+                      onClick={() => props.signEntry(entry.get('_id'))}
+                    >
+                      Sign
+                      <AssignmentTurnedInIcon />
+                    </Button>
+                  </ListItemSecondaryAction>
+                )}
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button
@@ -147,7 +165,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
           color="primary"
           onClick={() => props.history.push('/users')}
         >
-          Close
+          Schließen
         </Button>
       </DialogActions>
     </Dialog>
