@@ -17,12 +17,12 @@ toc-title: Inhaltsverzeichnis
 pagestyle: headings
 titlepage: true
 titlepage-rule-color: "F5A623"
+numbersections: true
 ---
 
 TODO:
 - Ausformulierung der Erleichterung
 - Name der Software (ELENT)
-- Diagramme
 
 # Danksagung
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
@@ -197,6 +197,8 @@ Sie haben allerdings Lesezugriff auf alle *Slots*, die bei ihnen versäumt wurde
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
 Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
 
+Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}.
+
 ## System
 ### Architektur
 Das neue Entschuldigungsverfahren soll als Web-Anwendung umgesetzt werden.
@@ -290,7 +292,6 @@ Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark]
 Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
 *Basic Auth* darf daher niemals über unverschlüsselte Kommunikationswege verwendet werden!
 Sämtlicher Netzwerkverkehr wird im Entschuldigungsverfahren über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
-Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encrypt bezogen.
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
@@ -397,14 +398,13 @@ Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsä
 Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungsverfahren - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
 
 \newpage
-
 # Appendix
 
-\appendix
+![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
 
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
-![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf)
+![Nutzungs-Diagramm\label{use-diagram}](Use.png)
 
 ![Screenshot /entries\label{screenshot-entries}](Screenshot-entries.png)
 
@@ -479,7 +479,7 @@ Hier laufen alle Applikationen direkt auf dem Host-Betriebssystem, ohne zwischen
 Um die Dienste weiterhin voneinander abzuschirmen, erhält jeder Container mithilfe von Tools wie `chroot` sein eigenes Dateisystem und Netzwerkinterface.
 Einzelne Container sind dadurch wie VMs voneinander abgeschirmt, weisen aber nicht deren Overhead vor (siehe Abbildung \ref{containerVsVM}).
 
-![Containers vs. VMs [@Docker:ContainerVsVM]\label{containerVsVM}](https://www.sdxcentral.com/wp-content/uploads/2016/01/containers-versus-virtual-machines-docker-inc-rightscale.jpg)
+![Containers vs. VMs [@Docker:ContainerVsVM]\label{containerVsVM}](ContainerVsVM.jpg)
 
 Ein IBM Research Report aus dem Jahr 2014 hat die Performance-Unterschiede zwischen den beiden Industrie-Standards KVM (Virtualisierung) und Docker (Containerisierung) untersucht.
 Dabei war die Performance von Docker-Containern in fast allen Fällen mit gleichauf mit nativen Deployments, KVM zeigt sich in allen Disziplinen bis auf Netzwerk-Latenz und Sequenzielles Lesen deutlich weniger performant [@Docker:ContainerVsVM].
@@ -499,8 +499,8 @@ Microservices und Container haben großes Potential, um die Entwicklung großer 
 Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
 Für kleine Projekte wie das Entschuldigungsverfahren bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
 
-[^kubernetes]: [https://kubernetes.io/](https://kubernetes.io/)
-[^openstack]: [https://www.openstack.org/](https://www.openstack.org/)
+[^kubernetes]: [Kubernetes: https://kubernetes.io/](https://kubernetes.io/)
+[^openstack]: [OpenStack: https://www.openstack.org/](https://www.openstack.org/)
 
 \newpage
 

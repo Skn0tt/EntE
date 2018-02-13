@@ -1,4 +1,4 @@
-Paper.pdf: Paper.md Paper.bib DB.png eisvogel.latex
+Paper.pdf: Paper.md Paper.bib DB.png Use.png eisvogel.latex
 	pandoc Paper.md -o Paper.pdf \
 		--template eisvogel \
 		--listings \
@@ -9,3 +9,6 @@ Paper.pdf: Paper.md Paper.bib DB.png eisvogel.latex
 
 DB.png: DB.plantuml
 	plantuml DB.plantuml
+
+Use.png: Use.plantuml
+	plantuml Use.plantuml
