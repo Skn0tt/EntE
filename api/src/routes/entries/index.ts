@@ -219,12 +219,12 @@ entriesRouter.put('/:entryId/sign', [
 
     if (!entry) return response.status(404).end('Couldnt find Entry.');
 
-    if (request.user.role === ROLES.MANAGER) {
-      if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
+    if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
+      if (request.user.role === ROLES.MANAGER) {
         entry.signManager();
+      } else if (request.user.role === ROLES.PARENT) {
+        entry.signParent();
       }
-    } else if (request.user.role === ROLES.PARENT) {
-      entry.signParent();
     }
     entry.save();
 
