@@ -1,5 +1,5 @@
 import { handleActions, Action, BaseAction, ReducerMap } from 'redux-actions';
-import { Entry, AppState, AuthState, APIResponse, MongoId, User, Slot } from '../interfaces/index';
+import { Entry, AppState, APIResponse, MongoId, User, Slot } from '../interfaces/index';
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -54,8 +54,7 @@ const reducer = handleActions({
   /**
    * LOGOUT
    */
-  [LOGOUT]: (state: AppState, action: BaseAction): AppState => state
-    .set('auth', new AuthState({})),
+  [LOGOUT]: (state: AppState, action: BaseAction): AppState => new AppState({}),
   
   /**
    * SIGN_ENTRY
