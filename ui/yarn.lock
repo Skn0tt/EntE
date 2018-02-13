@@ -3467,9 +3467,9 @@ material-ui-icons@^1.0.0-beta.17:
   dependencies:
     recompose "^0.26.0"
 
-material-ui-pickers@^1.0.0-beta.11:
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/material-ui-pickers/-/material-ui-pickers-1.0.0-beta.11.tgz#b669194c76556e8a84da8b2723dc01d17a2e4891"
+material-ui-pickers@^1.0.0-beta.15.1:
+  version "1.0.0-beta.15.1"
+  resolved "https://registry.yarnpkg.com/material-ui-pickers/-/material-ui-pickers-1.0.0-beta.15.1.tgz#37f29e8e26a1b5fbc8a183a61fe1d8f9e830d47c"
   dependencies:
     moment-range "^3.0.3"
     react-text-mask "^5.0.2"

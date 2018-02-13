@@ -12,11 +12,11 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import {
   Dialog,
   Button,
-  FormControl,
   List as MUIList,
   TextField,
   Grid,
-  Radio,
+  Checkbox,
+  Icon,
 } from 'material-ui';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
@@ -31,8 +31,6 @@ import 'moment/locale/de';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import Typography from 'material-ui/Typography/Typography';
-import RadioGroup from 'material-ui/Radio/RadioGroup';
-import FormLabel from 'material-ui/Form/FormLabel';
 
 /**
  * ## Moment Setup
@@ -47,16 +45,6 @@ const immutableDelete = (arr: any[], index: number) =>
   arr.slice(0, index).concat(arr.slice(index + 1));
 
 const oneDay: number = 24 * 60 * 60 * 1000;
-
-enum forSchool {
-  SCHULISCH = 'SCHULISCH',
-  KRANKHEIT = 'KRANKHEIT',
-}
-
-enum kind {
-  SINGLE = 'SINGLE',
-  MULTIPLE = 'MULTIPLE',
-}
 
 interface IProps {
   getRole(): Roles;
@@ -145,10 +133,10 @@ class extends React.Component<Props, State> {
   }
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
   handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ forSchool: event.target.value === forSchool.SCHULISCH })
+    this.setState({ forSchool: event.target.checked })
 
-  handleChangeKind = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ isRange: event.target.value === kind.MULTIPLE })
+  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ isRange: event.target.checked })
 
   handleAddSlot = (slot: ISlotCreate) => {
     if (this.state.slots.indexOf(slot) !== -1) return;
@@ -217,44 +205,26 @@ class extends React.Component<Props, State> {
             <Grid item container direction="column">
               <Grid item container direction="row">
                 <Grid item xs={6}>
-                  <FormControl required>
-                    <FormLabel component="legend">Dauer</FormLabel>
-                    <RadioGroup
-                      onChange={this.handleChangeKind}
-                      value={this.state.isRange ? kind.MULTIPLE : kind.SINGLE}
-                    >
-                      <FormControlLabel
-                        value={kind.SINGLE}
-                        control={<Radio />}
-                        label="Eintägig"
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.isRange}
+                        onChange={this.handleChangeIsRange}
                       />
-                      <FormControlLabel
-                        value={kind.MULTIPLE}
-                        control={<Radio />}
-                        label="Mehrtägig"
-                      />
-                    </RadioGroup>
-                  </FormControl>
+                    }
+                    label="Mehrtägig"
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormControl required>
-                    <FormLabel component="legend">Grund</FormLabel>
-                    <RadioGroup
-                      onChange={this.handleChangeForSchool}
-                      value={this.state.forSchool ? forSchool.SCHULISCH : forSchool.KRANKHEIT}
-                    >
-                      <FormControlLabel
-                        value={forSchool.KRANKHEIT}
-                        control={<Radio />}
-                        label="Krankheit"
-                      />
-                      <FormControlLabel
-                        value={forSchool.SCHULISCH}
-                        control={<Radio />}
-                        label="Schulisch"
-                      />
-                    </RadioGroup>
-                  </FormControl>
+                  <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={this.state.forSchool}
+                          onChange={this.handleChangeForSchool}
+                        />
+                      }
+                      label="Schulisch"
+                    />
                 </Grid>
               </Grid>
               {isParent && (
@@ -283,6 +253,13 @@ class extends React.Component<Props, State> {
                   <Grid item={true} xs={this.state.isRange ? 6 : 12} >
                     <DatePicker
                       helperText="Von"
+                      leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
+                      rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
+                      labelFunc={
+                        (date: moment.Moment, invalidLabel: string) => !!date
+                          ? date.toDate().toLocaleDateString()
+                          : invalidLabel
+                      }
                       error={!this.dateValid()}
                       value={this.state.date}
                       autoOk
@@ -297,6 +274,11 @@ class extends React.Component<Props, State> {
                         helperText="Bis"
                         error={!this.dateValid()}
                         value={this.state.dateEnd}
+                        labelFunc={
+                          (date: moment.Moment, invalidLabel: string) => !!date
+                          ? date.toDate().toLocaleDateString()
+                            : invalidLabel
+                        }
                         autoOk
                         onChange={this.handleChangeDateEnd}
                         minDate={this.state.date}
