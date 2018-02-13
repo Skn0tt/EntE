@@ -11,6 +11,7 @@ import Slots from './routes/Slots';
 import CreateEntry from './routes/CreateEntry';
 import CreateUser from './routes/CreateUser';
 import ImportUsers from './routes/ImportUsers';
+import NotFound from './routes/NotFound';
 
 const AdminRoutes = () => (
   <React.Fragment>
@@ -19,12 +20,13 @@ const AdminRoutes = () => (
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
+      <Route path="/createUser" component={CreateUser} />
+      <Route path="/importUsers" component={ImportUsers} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/createUser" component={CreateUser} />
-      <Route path="/importUsers" component={ImportUsers} />
     </Switch>
   </React.Fragment>
 );
@@ -34,10 +36,11 @@ const ParentRoutes = () => (
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/entries" component={Entries} />
+      <Route path="/createEntry" component={CreateEntry} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
       <Route path="/entries/:entryId" component={SpecificEntry} />
-      <Route path="/createEntry" component={CreateEntry} />
     </Switch>
   </React.Fragment>
 );
@@ -48,6 +51,7 @@ const TeacherRoutes = () => (
     <Switch>
       <Route exact={true} path="/" component={Home} />
       <Route path="/slots" component={Slots} />
+      <Route component={NotFound} />
     </Switch>
   </React.Fragment>
 );
@@ -58,6 +62,7 @@ const ManagerRoutes = () => (
       <Route exact={true} path="/" component={Home} />
       <Route path="/entries" component={Entries} />
       <Route path="/slots" component={Slots} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
       <Route path="/entries/:entryId" component={SpecificEntry} />
