@@ -32,6 +32,10 @@ yarn-error.log*
 # Paper
 *.pdf
 *.png
+*.jpg
+
+!resources/Paper/ContainerVsVM.jpg
+!resources/Paper/Screenshot-entries.png
 
 # CLI
 cli/dist

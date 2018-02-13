@@ -22,7 +22,7 @@ numbersections: true
 
 TODO:
 - Ausformulierung der Erleichterung
-- Name der Software (ELENT)
+- Name der Software (DigEnt)
 
 # Danksagung
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
@@ -405,6 +405,8 @@ Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungs
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
 ![Nutzungs-Diagramm\label{use-diagram}](Use.png)
+
+![Sequence-Diagramm\label{sequence-diagram}](Sequence.png)
 
 ![Screenshot /entries\label{screenshot-entries}](Screenshot-entries.png)
 
