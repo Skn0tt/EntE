@@ -22,9 +22,8 @@ numbersections: true
 
 TODO:
 - Ausformulierung der Erleichterung
-- Name der Software (DigEnt)
 
-# Danksagung
+\section*{Danksagung}
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
 Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, Vortrag oder Tutorial.
 Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit nur mit sehr viel Mühe hätte schreiben können.
@@ -123,34 +122,34 @@ TODO:
 ## Ziel dieser Facharbeit
 Ziel dieser Facharbeit ist es, das Entschuldigungsverfahren in einem elektronischen Prozess abzubilden, welches diese Aufgaben automatisiert und so den Beteiligten Arbeit abnimmt sowie Fehlern vorbeugt.
 
-Dabei lege ich besonderen Fokus auf folgende Eigenschaften des Systems:
+Dabei wird besonderer Fokus auf folgende Eigenschaften des Systems gelegt:
 
 - gute Skalierbarkeit
 - intuitive Nutzung
 - Standard-konforme Sicherheit
 
-Ich möchte dabei die *Best Practices* der modernen Webentwicklung erfüllen, um am Ende ein nutzbares Produkt entwickeln und an die Nutzer am Ernst-Moritz-Arndt-Gymnasium übergeben zu können.
+Ich möchte dabei die *Best Practices* der modernen Webentwicklung erfüllen, um am Ende ein nutzbares Produkt zu entwickeln und an die Nutzer am Ernst-Moritz-Arndt-Gymnasium übergeben zu können.
 
-Im Rahmen dieses Dokuments beschränke ich mich weitestgehend auf Modellierung und Beschreibung des Systems.
+Diese Dokumentation beschränket sich weitestgehend auf Modellierung und Beschreibung des Systems.
 Exemplarisch werden einzelne Teile der Implementierung dargestellt.
 
-TODO: Kurze Darstellung des geplanten Systems, deren Vorteile/Zugriffsmöglichkeiten. Auch als Bild!
-
-Dieser Text ist als Dokumentation der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung, deren Quelltext beigefügt ist.
+Die Dokumentation ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung, deren Quelltext beigefügt ist.
+Der Name des Programms ist "DigEnt", eine Abkürzung für "Digitales Entschuldigungsverfahren".
+Das Logo ist in Abbildung \ref{logo} zu sehen.
 
 \newpage
 ## Datenschutz
 
-Die in  Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
+Die in Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
 
 > Die automatisierte Verarbeitung der personenbezogenen Daten ist zulässig [...] wenn jeweils über die Konfiguration die Vertraulichkeit, Integrität, Verfügbarkeit, Authentizität, Revisionsfähigkeit und Transparenz gemäß §10 des Datenschutzgesetzes Nordrhein-Westfalen gewährleistet sind.
 > [@sgvnrw2017]
 
-Für das Digitale Entschuldigungsverfahren bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
+Für *DigEnt* bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
 Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
 
 Weiter besagt das Schulgesetz, welche Daten von einer Schule gespeichert werden dürfen.
-Die für das Entschuldigungsverfahren wichtigen Daten sind aufgeführt:
+Die für *DigEnt* wichtigen Daten sind aufgeführt:
 
 > - Beurlaubung:
 >   - Beginn, Ende, Grund
@@ -162,11 +161,11 @@ Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das hier vorgestellte Entschuldigungsverfahren.
 Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
-Da es für das Entschuldigungsverfahren keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
+Da es für *DigEnt* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
 # Modellierung
 ## Prozess
-Das digitale Entschuldigungsverfahren ist stark an den alten Entschuldigungszettel angelehnt.
+*DigEnt* ist stark an den alten Entschuldigungszettel angelehnt.
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag, im System als *Entry* bezeichnet.
 Dieser enthält:
 
@@ -197,11 +196,11 @@ Sie haben allerdings Lesezugriff auf alle *Slots*, die bei ihnen versäumt wurde
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
 Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
 
-Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}.
+Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}, Abbildung \ref{activity-diagram}.
 
 ## System
 ### Architektur
-Das neue Entschuldigungsverfahren soll als Web-Anwendung umgesetzt werden.
+*DigEnt* soll als Web-Anwendung umgesetzt werden.
 Jeder Nutzer des Systems (Schüler, Eltern, Lehrer, Stufenleiter und Administratoren) erhält Zugangsdaten, mit denen sie die für sie relevanten Daten einsehen und damit interagieren können.
 Solche Aktionen sind zum Beispiel das Erstellen oder Unterzeichnen eines Antrags.
 
@@ -239,7 +238,7 @@ Für den Server entfällt der Arbeitsschritt des Seiten-Renderns komplett.
 Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine, dynamische Datensätze anzeigen.
 Nicht sehr gut geeignet ist dieser Ansatz für Webseiten, die auf statischen Daten aufbauen, wie z.B. Blogs oder Magazine.
 
-Für das Entschuldigungsverfahren habe ich mich für den Zweiten Ansatz entschieden, da er sehr gut zum System passt: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
+Für *DigEnt* ist der Zweite Ansatz besser geeignet: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Anwendung Client-Seitig zu rendern.
 
 ### API
@@ -286,18 +285,18 @@ Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen
 
 ### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
-Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, habe ich für das Entschuldigungsverfahren *Basic Auth* verwendet: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
+Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *DigEnt* *Basic Auth*: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
 Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark] lassen sich Netzwerkpakete leicht abfangen.
 Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
 *Basic Auth* darf daher niemals über unverschlüsselte Kommunikationswege verwendet werden!
-Sämtlicher Netzwerkverkehr wird im Entschuldigungsverfahren über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Sämtlicher Netzwerkverkehr wird in *DigEnt* über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
 # Umsetzung
 
-Diese Facharbeit besteht neben der Dokumentation aus einer vollständigen Implementierung des beschriebenen Systems, welche um die acht tausend Zeilen Code umfasst und vollständig in Typescript[^typescript] geschrieben wurde.
+Die Implementierung des beschriebenen Systems umfasst zum Zeitpunkt der Abgabe ungefähr Acht tausend Zeilen Code und ist vollständig in Typescript[^typescript] geschrieben.
 In Abbildung \ref{screenshot-entries} ist ein Screenshot der `/entries`-Seite zu sehen, auf der man eine Übersicht über seine eingereichten Anträge erhält und einen neuen Eintrag erstellen kann.
 
 [^typescript]: [Typescript: https://www.typescriptlang.org/](https://www.typescriptlang.org/)
@@ -314,7 +313,7 @@ Der Stack basiert auf *MERN*[^MERN]:
 
 Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 
-**Docker** ist ein Container-Ökosystem mithilfe dessen das Entschuldigungsverfahren ausgeliefert wird (Siehe Anhang).  
+**Docker** ist ein Container-Ökosystem mithilfe dessen *DigEnt* ausgeliefert wird (Siehe Anhang).  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript.  
 **Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript.  
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
@@ -324,7 +323,7 @@ Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 **Nodemailer** ermöglicht Node.js-Anwendungen, über SMTP Emails zu verschicken.  
 
 ## API, Datenbankanfragen
-Am Beispiel der Route `GET /entries` möchte ich den API-Quellcode einmal exemplarisch erläutern.
+Im folgenden wird am Beispiel der Route `GET /entries` der API-Quellcode exemplarisch erläutert.
 Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
 
 Erreicht die API eine Anfrage, so wird diese durch eine Reihe an *Middlewares* geleitet.
@@ -371,7 +370,7 @@ Dieses Risiko darf man niemals eingehen.
 
 Möglichkeit Zwei ist es, die Passwörter verschlüsselt zu speichern:
 Nutzt man Algorithmen wie RSA oder AES hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
-Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn das Entschuldigungsverfahren dies kann, kann dies auch jeder andere, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn *DigEnt* Zugriff darauf aht, hat diesen dies auch eine dritte Partei, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
 
 Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
@@ -384,9 +383,9 @@ Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Fo
 
 # Fazit
 
-Im Laufe dieser Facharbeit habe ich viel über die Entwicklung komplexer Websysteme gelernt.
+Im Laufe dieser Facharbeit habe konnte ich viel über die Entwicklung komplexer Websysteme lernen.
 Viele große Themen der Webentwicklung wurden gestreift, darunter API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung und automatisierte E-Mails.
-Dabei habe ich in viele der Konzepte gute Einblicke erhalten können.
+Dabei konnten in viele der Konzepte gute Einblicke erhalten werden.
 
 Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um größere Datenintegrität gewährleisten zu können.
 Dann müsste das Datenbankschema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
@@ -395,10 +394,12 @@ Ich denke dass das Produkt, welches am Ende entstanden ist, das Potenzial hat da
 Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
 Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
 
-Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungsverfahren - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
+Einige Lehrer und Schüler zeigen großes Interesse an *DigEnt* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
 
 \newpage
 # Appendix
+
+![Logo DigEnt\label{logo}](Entschuldigungszettel.pdf)
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
 
@@ -406,9 +407,9 @@ Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungs
 
 ![Nutzungs-Diagramm\label{use-diagram}](Use.png)
 
-![Sequence-Diagramm\label{sequence-diagram}](Sequence.png)
+![Aktivitäts-Diagramm\label{activity-diagram}](Activity.png)
 
-![Screenshot /entries\label{screenshot-entries}](Screenshot-entries.png)
+![Screenshot `/entries`\label{screenshot-entries}](Screenshot-entries.png)
 
 \lstdefinelanguage{TypeScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, try, catch, const, let, async, await},
@@ -499,7 +500,7 @@ Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen w
 
 Microservices und Container haben großes Potential, um die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
 Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
-Für kleine Projekte wie das Entschuldigungsverfahren bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
+Für kleine Projekte wie *DigEnt* bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
 
 [^kubernetes]: [Kubernetes: https://kubernetes.io/](https://kubernetes.io/)
 [^openstack]: [OpenStack: https://www.openstack.org/](https://www.openstack.org/)

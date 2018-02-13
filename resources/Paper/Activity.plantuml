@@ -1,0 +1,12 @@
+@startuml Activity
+
+(*) --> "Schüler erstellt Eintrag"
+--> "Eltern signieren Eintrag"
+--> "Stufenleiter signiert Eintrag"
+
+(*) --> "Eltern erstellen Eintrag"
+--> "Stufenleiter signiert Eintrag"
+--> "Lehrer werden informiert"
+--> (*)
+
+@enduml
