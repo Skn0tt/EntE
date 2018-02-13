@@ -21,7 +21,6 @@ titlepage-rule-color: "F5A623"
 
 TODO:
 - Hervorheben, was MEINE Leistung ist und warum sie großartig ist
-- Screenshots/Showcase des Programms
 - Ausformulierung der Erleichterung
 - Name der Software (ELENT)
 - Diagramme
@@ -184,7 +183,7 @@ Darin steht:
 - Start, Ende des Blocks (Schulstunde)
 - Lehrer
 
-(vergleiche \ref{class-diagramm})
+(vergleiche Abbildung \ref{class-diagramm})
 
 Sobald ein Antrag erstellt wurde, bekommt der Stufenleiter diesen angezeigt.
 Er kann nun die Zulässigkeit des Antrags prüfen und ihn dann entsprechend annehmen oder ablehnen.
@@ -298,6 +297,11 @@ Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encr
 
 # Umsetzung
 
+Diese Facharbeit besteht neben der Dokumentation aus einer Implementierung des beschriebenen Systems.
+In Abbildung \ref{screenshot-entries} ist ein Screenshot der `/entries`-Seite zu sehen, auf der man eine Übersicht über seine eingereichten Anträge erhält und einen neuen Eintrag erstellen kann.
+
+Im folgenden wird auf die Implementierung des Systems eingegangen.
+
 ## Stack
 Mein Software-Stack basiert auf dem *MERN*[^MERN]-Stack:
 
@@ -402,6 +406,8 @@ Einige Lehrer und Schüler zeigen großes Interesse am digitalen Entschuldigungs
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf)
+
+![Screenshot /entries\label{screenshot-entries}](Screenshot-entries.png)
 
 \lstdefinelanguage{TypeScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, try, catch, const, let, async, await},
