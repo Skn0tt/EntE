@@ -134,7 +134,7 @@ Diese Dokumentation beschränket sich weitestgehend auf Modellierung und Beschre
 Exemplarisch werden einzelne Teile der Implementierung dargestellt.
 
 Die Dokumentation ist als erster Teil der Facharbeit zu verstehen, der zweite Teil besteht aus der fertigen Implementierung, deren Quelltext beigefügt ist.
-Der Name des Programms ist "DigEnt", eine Abkürzung für "Digitales Entschuldigungsverfahren".
+Der Name des Programms ist "EntE", eine Abkürzung für "**Ent**schuldigung **E**lektronisch".
 Das Logo ist in Abbildung \ref{logo} zu sehen.
 
 \newpage
@@ -145,11 +145,11 @@ Die in Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugel
 > Die automatisierte Verarbeitung der personenbezogenen Daten ist zulässig [...] wenn jeweils über die Konfiguration die Vertraulichkeit, Integrität, Verfügbarkeit, Authentizität, Revisionsfähigkeit und Transparenz gemäß §10 des Datenschutzgesetzes Nordrhein-Westfalen gewährleistet sind.
 > [@sgvnrw2017]
 
-Für *DigEnt* bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
+Für *EntE* bedeutet "Revisionsfähigkeit" insbesondere, dass eine Versionierung erfolgen muss.
 Im bisherigen System ist dies nicht erfolgt, über den Zeitpunkt der Unterschriften ist nichts bekannt.
 
 Weiter besagt das Schulgesetz, welche Daten von einer Schule gespeichert werden dürfen.
-Die für *DigEnt* wichtigen Daten sind aufgeführt:
+Die für *EntE* wichtigen Daten sind aufgeführt:
 
 > - Beurlaubung:
 >   - Beginn, Ende, Grund
@@ -161,11 +161,11 @@ Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das hier vorgestellte Entschuldigungsverfahren.
 Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
-Da es für *DigEnt* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
+Da es für *EntE* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
 
 # Modellierung
 ## Prozess
-*DigEnt* ist stark an den alten Entschuldigungszettel angelehnt.
+*EntE* ist stark an den alten Entschuldigungszettel angelehnt.
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag, im System als *Entry* bezeichnet.
 Dieser enthält:
 
@@ -200,7 +200,7 @@ Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}, Abbildung \ref{a
 
 ## System
 ### Architektur
-*DigEnt* soll als Web-Anwendung umgesetzt werden.
+*EntE* soll als Web-Anwendung umgesetzt werden.
 Jeder Nutzer des Systems (Schüler, Eltern, Lehrer, Stufenleiter und Administratoren) erhält Zugangsdaten, mit denen sie die für sie relevanten Daten einsehen und damit interagieren können.
 Solche Aktionen sind zum Beispiel das Erstellen oder Unterzeichnen eines Antrags.
 
@@ -238,7 +238,7 @@ Für den Server entfällt der Arbeitsschritt des Seiten-Renderns komplett.
 Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine, dynamische Datensätze anzeigen.
 Nicht sehr gut geeignet ist dieser Ansatz für Webseiten, die auf statischen Daten aufbauen, wie z.B. Blogs oder Magazine.
 
-Für *DigEnt* ist der Zweite Ansatz besser geeignet: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
+Für *EntE* ist der Zweite Ansatz besser geeignet: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Anwendung Client-Seitig zu rendern.
 
 ### API
@@ -285,12 +285,12 @@ Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen
 
 ### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
-Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *DigEnt* *Basic Auth*: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
+Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *EntE* *Basic Auth*: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
 Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark] lassen sich Netzwerkpakete leicht abfangen.
 Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
 *Basic Auth* darf daher niemals über unverschlüsselte Kommunikationswege verwendet werden!
-Sämtlicher Netzwerkverkehr wird in *DigEnt* über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
+Sämtlicher Netzwerkverkehr wird in *EntE* über das **T**ransport-**L**evel-**S**ecurity-Protokoll [@tls] verschlüsselt.
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
@@ -313,7 +313,7 @@ Der Stack basiert auf *MERN*[^MERN]:
 
 Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 
-**Docker** ist ein Container-Ökosystem mithilfe dessen *DigEnt* ausgeliefert wird (Siehe Anhang).  
+**Docker** ist ein Container-Ökosystem mithilfe dessen *EntE* ausgeliefert wird (Siehe Anhang).  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript.  
 **Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript.  
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
@@ -370,7 +370,7 @@ Dieses Risiko darf man niemals eingehen.
 
 Möglichkeit Zwei ist es, die Passwörter verschlüsselt zu speichern:
 Nutzt man Algorithmen wie RSA oder AES hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
-Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn *DigEnt* Zugriff darauf aht, hat diesen dies auch eine dritte Partei, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn *EntE* Zugriff darauf aht, hat diesen dies auch eine dritte Partei, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
 
 Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
@@ -394,12 +394,12 @@ Ich denke dass das Produkt, welches am Ende entstanden ist, das Potenzial hat da
 Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
 Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
 
-Einige Lehrer und Schüler zeigen großes Interesse an *DigEnt* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
+Einige Lehrer und Schüler zeigen großes Interesse an *EntE* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
 
 \newpage
 # Appendix
 
-![Logo DigEnt\label{logo}](Entschuldigungszettel.pdf)
+![Logo EntE\label{logo}](Entschuldigungszettel.pdf)
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
 
@@ -500,7 +500,7 @@ Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen w
 
 Microservices und Container haben großes Potential, um die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
 Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
-Für kleine Projekte wie *DigEnt* bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
+Für kleine Projekte wie *EntE* bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
 
 [^kubernetes]: [Kubernetes: https://kubernetes.io/](https://kubernetes.io/)
 [^openstack]: [OpenStack: https://www.openstack.org/](https://www.openstack.org/)
