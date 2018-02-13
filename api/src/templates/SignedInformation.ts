@@ -1,26 +1,37 @@
-export interface SignedInformationOptions {
-  subject: string;
-  preview: string;
-  link_display: string;
-  link_address: string;
-}
+import { mjml2html } from 'mjml';
+import * as Handlebars from 'handlebars';
 
-export default `
-<heml>
-  <head>
-    <subject>{{subject}}</subject>
-    <preview>{{preview}}</preview>
-  </head>
-  <body>
-    <container>
-      <h1>
-        EntschuldigungsVerfahren
-      </h1>
-      Eines ihrer Kinder hat einen neuen Eintrag erstellt.<br />
-      Sie finden diese unter folgender Addresse:<br />
-      
-      <a href="{{link_address}}">{{link_display}}</a>
-    </container>
-  </body>
-</heml>
-`;
+const title = 'Ein Eintrag wurde signiert.';
+
+const template = Handlebars.compile(`
+<mjml>
+  <mj-body>
+    <mj-container>
+      <mj-section>
+        <mj-column>
+
+          <mj-divider border-color="black" />
+
+          <mj-text font-size="20px" font-family="helvetica">
+            Ein Eintrag wurde signiert.
+          </mj-text>
+
+          <mj-text>
+            Sie finden diesen unter folgender Addresse:<br />
+            
+            <a href="{{linkAddress}}">{{linkDisplay}}</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-container>
+  </mj-body>
+</mjml>
+`);
+
+export default (linkAddress: string) => {
+  const mjml = template({ linkAddress, linkDisplay: linkAddress });
+  const { errors, html } = mjml2html(mjml);
+  if (errors.length > 0) throw new Error('MJML Error');
+  return { html, subject: title };
+};
+

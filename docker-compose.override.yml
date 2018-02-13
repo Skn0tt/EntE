@@ -7,7 +7,7 @@ services:
   api:
     ports:
       - 5555:5555
-    command: "nodemon --inspect=0.0.0.0:5555"
+    command: "nodemon --inspect=0.0.0.0:5555 --watch dist"
     environment:
       - VIRTUAL_PORT=3000
     volumes:

@@ -1,17 +1,15 @@
 import { EntryModel } from '../models/Entry';
 import * as mail from 'nodemailer';
 import * as sgTransport from 'nodemailer-sendgrid-transport';
-import * as heml from 'heml';
 import * as Handlebars from 'handlebars';
-import * as templates from '../templates';
-import { SignRequestOptions } from '../templates/SignRequest';
 import User from '../models/User';
-import { SignedInformationOptions } from '../templates/SignedInformation';
 import { ROLES } from '../constants';
 import Slot, { SlotModel } from '../models/Slot';
 import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
-import PasswortResetLink from '../templates/PasswortResetLink';
-import PasswortResetSuccess from '../templates/PasswortResetSuccess';
+import PasswordResetLink from '../templates/PasswordResetLink';
+import PasswordResetSuccess from '../templates/PasswordResetSuccess';
+import SignedInformation from '../templates/SignedInformation';
+import SignRequest from '../templates/SignRequest';
 
 const baseUrl = `https://${process.env.HOST}`;
 
@@ -35,18 +33,9 @@ const transporter = mail.createTransport(mailConfig);
 /**
  * ## Handlebars Templates
  */
-const signRequest: HandlebarsTemplateDelegate<SignRequestOptions>
-  = Handlebars.compile(templates.signRequest);
-
 export const dispatchSignRequest = async (entry: EntryModel) => {
   try {
-    const hemlTemplate = await signRequest({
-      preview: 'Sign the Request!',
-      link_address: `${baseUrl}/entries/${entry._id}`,
-      link_display: 'Show Entry',
-      subject: 'You are requested to sign the Entry.',
-    });
-    const { html, metadata, errors } = await heml(hemlTemplate);
+    const { html, subject } = SignRequest(`${baseUrl}/entries/${entry._id}`);
 
     const parents = await User.find({ children: entry.student }).select('email');
     
@@ -54,8 +43,8 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   
     const info = await transporter.sendMail({
       html,
+      subject,
       to: recipients,
-      subject: metadata.subject,
       from: 'entschuldigungsverfahren@simonknott.de',
     });
 
@@ -65,18 +54,9 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   }
 };
 
-const signedInformation: HandlebarsTemplateDelegate<SignedInformationOptions>
-  = Handlebars.compile(templates.signedInformation);
-
 export const dispatchSignedInformation = async (entry: EntryModel) => {
   try {
-    const hemlTemplate = await signRequest({
-      preview: 'The Entry was signed.',
-      link_address: `${baseUrl}/entries/${entry._id}`,
-      link_display: 'View the Entry',
-      subject: 'An Entry was signed.',
-    });
-    const { html, metadata, errors } = await heml(hemlTemplate);
+    const { html, subject } = SignedInformation(`${baseUrl}/entries/${entry._id}`);
 
     const parents = await User.find({ children: entry.student }).select('email');
     
@@ -84,8 +64,8 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
   
     const info = await transporter.sendMail({
       html,
+      subject,
       to: recipients,
-      subject: metadata.subject,
       from: 'entschuldigungsverfahren@simonknott.de',
     });
 
@@ -140,7 +120,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
 
 export const dispatchPasswortResetLink = async (token: string, username: string, email: string) => {
   try {
-    const { html, subject } = PasswortResetLink(
+    const { html, subject } = PasswordResetLink(
       `${baseUrl}/forgot/${token}`,
       username,
     );
@@ -159,7 +139,7 @@ export const dispatchPasswortResetLink = async (token: string, username: string,
 
 export const dispatchPasswortResetSuccess = async (username: string, email: string) => {
   try {
-    const { html, subject } = PasswortResetSuccess(username);
+    const { html, subject } = PasswordResetSuccess(username);
 
     const info = await transporter.sendMail({
       html,
