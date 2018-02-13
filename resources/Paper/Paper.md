@@ -20,7 +20,6 @@ titlepage-rule-color: "F5A623"
 ---
 
 TODO:
-- Hervorheben, was MEINE Leistung ist und warum sie großartig ist
 - Ausformulierung der Erleichterung
 - Name der Software (ELENT)
 - Diagramme
@@ -297,13 +296,13 @@ Die dafür notwendigen Zertifikate werden vom Community-Zertifizierer Let's Encr
 
 # Umsetzung
 
-Diese Facharbeit besteht neben der Dokumentation aus einer Implementierung des beschriebenen Systems.
+Diese Facharbeit besteht neben der Dokumentation aus einer vollständigen Implementierung des beschriebenen Systems, welche um die acht tausend Zeilen Code umfasst und vollständig in Typescript[^typescript] geschrieben wurde.
 In Abbildung \ref{screenshot-entries} ist ein Screenshot der `/entries`-Seite zu sehen, auf der man eine Übersicht über seine eingereichten Anträge erhält und einen neuen Eintrag erstellen kann.
 
-Im folgenden wird auf die Implementierung des Systems eingegangen.
+[^typescript]: [Typescript: https://www.typescriptlang.org/](https://www.typescriptlang.org/)
 
 ## Stack
-Mein Software-Stack basiert auf dem *MERN*[^MERN]-Stack:
+Der Stack basiert auf *MERN*[^MERN]:
 
 - MongoDB (Datenbank)
 - Express (API-Framework)
