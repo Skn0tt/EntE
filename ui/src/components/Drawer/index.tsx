@@ -82,7 +82,6 @@ class extends React.Component<Props, State> {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton
-                color="secondary"
                 aria-label="open drawer"
                 onClick={this.handleDrawerToggle}
                 className={classes.navIconHide}
