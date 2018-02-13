@@ -319,10 +319,10 @@ class extends React.Component<Props, State> {
             </Grid>
             {!this.state.isRange && (
               <Grid item xs={12}>
-                <Typography type="title">
+                <Typography variant="title">
                   Stunden
                 </Typography>
-                <Typography type="caption">
+                <Typography variant="caption">
                   Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
                   Erstellen sie dafür für jede Stunde einen Eintrag.
                 </Typography>
@@ -340,7 +340,7 @@ class extends React.Component<Props, State> {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="accent">
+          <Button onClick={this.handleClose} color="secondary">
             Cancel
           </Button>
           <Button

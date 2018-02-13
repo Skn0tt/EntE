@@ -9,7 +9,7 @@ interface Props {}
 const LoadingIndicator: React.SFC<Props & WithStyles<string>> = props => (
   <LinearProgress
     className={props.classes.loading}
-    mode="query"
+    variant="query"
   />
 );
 

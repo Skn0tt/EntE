@@ -41,6 +41,7 @@ const styles = (theme: Theme): StyleRules =>  ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+    color: 'white',
   },
   drawerPaper: {
     width: 250,

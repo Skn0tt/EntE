@@ -67,7 +67,7 @@ class extends React.Component<Props, State> {
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography type="title">
+          <Typography variant="title">
             Kinder
           </Typography>
         </Grid>
@@ -109,12 +109,12 @@ class extends React.Component<Props, State> {
             </TextField>
           </Grid>
           <Grid item xs={1}>
-            <Button fab mini onClick={() => this.handleAdd()}>
+            <Button variant="fab" mini onClick={() => this.handleAdd()}>
               <AddIcon />
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Button raised color="primary" onClick={() => this.handleSubmit()}>
+            <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
               Kinder aktualisieren
               <UpdateIcon />
             </Button>

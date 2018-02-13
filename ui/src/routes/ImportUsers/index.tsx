@@ -90,7 +90,7 @@ class extends React.Component<Props, State> {
           </Grid>
         </Grid>
         <DialogActions>
-          <Button onClick={this.handleClose} color="accent">
+          <Button onClick={this.handleClose} color="secondary">
             Cancel
           </Button>
           <Button

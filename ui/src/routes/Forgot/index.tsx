@@ -92,7 +92,7 @@ class extends React.Component<Props & InjectedProps, State> {
           </DialogContent>
           <DialogActions>
             <Button
-              raised
+              variant="raised"
               disabled={!this.inputValid()}
               onClick={() => this.handleSetPassword()}
             >
