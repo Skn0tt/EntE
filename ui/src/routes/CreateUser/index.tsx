@@ -121,7 +121,7 @@ class extends React.Component<Props, State> {
     this.setState({ children: this.state.children.slice(index, index) })
   
   hasChildren = (): boolean =>
-    this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
+    this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER
 
   /**
    * ## Validation
