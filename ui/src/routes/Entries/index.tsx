@@ -24,6 +24,7 @@ import { getEntriesRequest } from '../../redux/actions';
 import { Route } from 'react-router';
 import TextField from 'material-ui/TextField/TextField';
 import Button from 'material-ui/Button/Button';
+import { Check as CheckIcon } from 'material-ui-icons';
 
 interface StateProps {
   entries: Entry[];
@@ -166,10 +167,14 @@ class extends React.Component<Props, State> {
                           .getUser(entry.get('student'))
                           .get('displayname')
                         }</TableCell>
-                      <TableCell>{entry.get('date').toDateString()}</TableCell>
-                      <TableCell>{entry.get('createdAt').toDateString()}</TableCell>
-                      <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
-                      <TableCell>{truncate(entry.get('reason'), 20, '...')}</TableCell>
+                      <TableCell>{entry.get('dateEnd')
+                        ? `${entry.get('date').toLocaleDateString()} -
+                        ${entry.get('dateEnd')!.toLocaleDateString()}`
+                        : entry.get('date').toLocaleDateString()
+                      }</TableCell>
+                      <TableCell>{entry.get('createdAt').toLocaleDateString()}</TableCell>
+                      <TableCell>{entry.get('forSchool') ? <CheckIcon /> : 'Nein'}</TableCell>
+                      <TableCell>{truncate(entry.get('reason') || '-', 20, '...')}</TableCell>
                       <TableCell>{entry.get('signedManager')
                         ? <SignedAvatar />
                         : <UnsignedAvatar />
