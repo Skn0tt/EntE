@@ -1,7 +1,7 @@
 @startuml Use
 skinparam componentStyle uml2
 
-frame "DigEnt" {
+frame "EntE" {
   folder "Entry" {
     ["Slot 1"] as S1
     ["Slot 2"] as S2

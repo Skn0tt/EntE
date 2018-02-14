@@ -1,5 +1,7 @@
 @startuml Activity
 
+note right: Start
+
 (*) --> "Schüler erstellt Eintrag"
 --> "Eltern signieren Eintrag"
 --> "Stufenleiter signiert Eintrag"
@@ -8,5 +10,7 @@
 --> "Stufenleiter signiert Eintrag"
 --> "Lehrer werden informiert"
 --> (*)
+
+note right: Ende
 
 @enduml
