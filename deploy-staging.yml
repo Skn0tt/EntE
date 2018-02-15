@@ -7,7 +7,7 @@
   tasks:
     - name: Deploy
       docker_service:
-        project_name: Entschuldigungsverfahren
+        project_name: EntE
         pull: yes
         definition:
           version: '2'
@@ -17,7 +17,7 @@
               volumes:
                 - "/data/db"
             api:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:master
+              image: registry.gitlab.com/skn0tt/EntE/api:master
               restart: always
               depends_on:
                 - mongodb
@@ -29,7 +29,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             ui:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:master
+              image: registry.gitlab.com/skn0tt/EntE/ui:master
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
@@ -37,7 +37,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             nginx-proxy:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/nginx-proxy:master
+              image: registry.gitlab.com/skn0tt/EntE/nginx-proxy:master
               ports:
                 - 80:80
                 - 443:443

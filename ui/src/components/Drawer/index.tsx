@@ -86,7 +86,7 @@ class extends React.Component<Props, State> {
                 <MenuIcon />
               </IconButton>
               <Typography variant="title" color="inherit" noWrap>
-                EntschuldigungsVerfahren
+                EntE
               </Typography>
               <div className={classes.grow} />
               <RefreshButton />

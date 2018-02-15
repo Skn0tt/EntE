@@ -1,9 +1,9 @@
 {
-  "name": "entschuldigungsverfahren-api",
+  "name": "ente-api",
   "version": "0.0.1",
-  "description": "Die API für das Entschuldigungsverfahren.",
+  "description": "Die API für EntE.",
   "main": "dist/index.js",
-  "repository": "https://github.com/Skn0tt/EntschuldigungsVerfahren",
+  "repository": "https://gitlab.com/Skn0tt/EntE",
   "author": "Simon Knott",
   "license": "MIT",
   "private": true,

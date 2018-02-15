@@ -1,7 +1,7 @@
-# EntschuldigungsVerfahren-UI
+# EntE-UI
 > Facharbeit Q1, Simon Knott
 
-This is the frontend of *Entschuldigungsverfahren*.
+This is the frontend of *EntE*.
 It is based upon React and communicates with the API over HTTP.
 
 The App is written in Typescript.

@@ -1,5 +1,6 @@
 {
-  "name": "entschuldigungsverfahren-ui",
+  "name": "ente-ui",
+  "repository": "https://gitlab.com/skn0tt/EntE",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

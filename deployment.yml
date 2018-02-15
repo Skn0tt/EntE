@@ -19,7 +19,7 @@ spec:
       imagePullSecrets:
       - name: gitlab
       containers:
-        - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:latest
+        - image: registry.gitlab.com/skn0tt/EntE/ui:latest
           name: ui
           ports:
           - containerPort: 80
@@ -74,7 +74,7 @@ spec:
           volumeMounts:
           - name: mongodb-persistent-storage
             mountPath: /data/db
-        - image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:latest
+        - image: registry.gitlab.com/skn0tt/EntE/api:latest
           name: api
           env:
             - name: "KUBERNETES"

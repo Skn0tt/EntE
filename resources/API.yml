@@ -1,10 +1,9 @@
 openapi: 3.0.0
 info:
   version: "0.3"
-  title: Entschuldigungsverfahren
+  title: EntE
   description: >-
-    Dies ist die API-Dokumentation für die Umsetzung des
-    Entschuldigungsverfahrens.
+    Dies ist die API-Dokumentation für EntE.
     
 tags:
 - name: "auth"
