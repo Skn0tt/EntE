@@ -65,7 +65,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
               ID: {entry.get('_id')} <br/>
             </DialogContentText>
           </Grid>
-
+          
           <Grid item>
             <Typography variant="title">
               Info
@@ -159,6 +159,7 @@ const SpecificEntry: React.SFC<Props> = (props) => {
           </Grid>
         </Grid>
       </DialogContent>
+
       <DialogActions>
         <Button
           size="small"

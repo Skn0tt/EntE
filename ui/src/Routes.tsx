@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Roles } from './interfaces/index';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, Redirect } from 'react-router';
 
 import Entries from './routes/Entries';
 import Users from './routes/Users';
 import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
-import Home from './routes/Home';
 import Slots from './routes/Slots';
 import CreateEntry from './routes/CreateEntry';
 import CreateUser from './routes/CreateUser';
@@ -16,7 +15,7 @@ import NotFound from './routes/NotFound';
 const AdminRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
@@ -34,7 +33,7 @@ const AdminRoutes = () => (
 const ParentRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
       <Route path="/createEntry" component={CreateEntry} />
       <Route component={NotFound} />
@@ -49,7 +48,7 @@ const StudentRoutes = () => <ParentRoutes />;
 const TeacherRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact={true} path="/" component={Home} />
+      <Redirect exact from="/" to="/slots" />
       <Route path="/slots" component={Slots} />
       <Route component={NotFound} />
     </Switch>
@@ -59,7 +58,7 @@ const TeacherRoutes = () => (
 const ManagerRoutes = () => (
   <React.Fragment>
     <Switch>
-      <Route exact={true} path="/" component={Home} />
+      <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
       <Route path="/slots" component={Slots} />
       <Route component={NotFound} />
