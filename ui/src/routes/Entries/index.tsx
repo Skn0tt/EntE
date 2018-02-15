@@ -30,10 +30,18 @@ interface StateProps {
   role: Roles;
   getUser(id: MongoId): User;
 }
+const mapStateToProps = (state: AppState) => ({
+  entries: select.getEntries(state),
+  role: select.getRole(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
+});
 
 interface DispatchProps {
   getEntries(): Action;
 }
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  getEntries: () => dispatch(getEntriesRequest()),
+});
 
 type Rows = keyof IEntry | 'name';
 
@@ -42,17 +50,6 @@ interface State {
   sortField: Rows;
   sortUp: boolean;
 }
-
-const mapStateToProps = (state: AppState) => ({
-  entries: select.getEntries(state),
-  role: select.getRole(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getEntries: () => dispatch(getEntriesRequest()),
-});
-
 type Props = StateProps & DispatchProps & WithStyles;
 
 const truncate = (str: string, length: number, ending: string) => {
@@ -71,6 +68,10 @@ class extends React.Component<Props, State> {
     sortField: 'date',
     sortUp: true,
   };
+
+  componentDidMount() {
+    this.props.getEntries();
+  }
 
   sort = (a: Entry, b: Entry): number => {
     if (this.state.sortField === 'name') {
