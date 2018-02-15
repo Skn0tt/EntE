@@ -113,6 +113,7 @@ class extends React.Component<Props> {
                   <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br/>
                   <i>Begründung:</i> {entry.get('reason') || '-'} <br/>
                   <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br/>
+                  <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')} <br/>
                   <i>Datum:</i> {entry.get('dateEnd')
                     ? `Von ${entry.get('date').toLocaleDateString()}
                       bis ${entry.get('dateEnd')!.toLocaleDateString()}`

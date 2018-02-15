@@ -4,13 +4,13 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../redux/selectors';
-import { AppState, MongoId, User, Roles } from '../../interfaces/index';
+import { AppState, MongoId, User } from '../../interfaces/index';
 import { Action } from 'redux';
 import ChildrenUpdate from './components/ChildrenUpdate';
 import EmailUpdate from './components/EmailUpdate';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Dialog } from 'material-ui';
+import { Button, Dialog, CircularProgress } from 'material-ui';
 import { getUserRequest } from '../../redux/actions';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
@@ -25,88 +25,101 @@ interface RouteMatch {
   userId: MongoId;
 }
 
-interface MUIInjectedProps {
+interface InjectedProps {
   fullScreen: boolean;
 }
 
 interface StateProps {
   getUser(id: MongoId): User;
+  loading: boolean;
 }
+const mapStateToProps = (state: AppState) => ({
+  getUser: (id: MongoId) => select.getUser(id)(state),
+  loading: select.isLoading(state),
+});
 
 interface DispatchProps {
   requestUser(id: MongoId): Action;
 }
-
-type Props =
-  StateProps &
-  DispatchProps &
-  MUIInjectedProps &
-  WithStyles &
-  RouteComponentProps<RouteMatch>;
-
-const SpecificUser: React.SFC<Props> = (props) => {
-  const { userId } = props.match.params;
-  const user = props.getUser(userId);
-  
-  if (!user) return null;
-
-  const showChildren =
-    user.get('role') === Roles.PARENT ||
-    user.get('role') === Roles.MANAGER;
-  
-  return (
-    <Dialog
-      open
-      onClose={() => props.history.push('/users')}
-      fullScreen={props.fullScreen}
-    >
-      <DialogTitle>
-        {user.get('displayname')}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          ID: {user.get('_id')} <br />
-          Email: {user.get('email')} <br />
-          Role: {user.get('role')} <br />
-        </DialogContentText>
-        <Divider />
-        <EmailUpdate userId={userId} />
-        <Divider />
-        {user.get('role') === Roles.STUDENT && <IsAdultUpdate userId={userId}/>}
-        <Divider />
-        <DisplaynameUpdate userId={userId} />
-        {showChildren && (
-          <React.Fragment>
-            <Divider />
-            <ChildrenUpdate userId={userId}/>
-          </React.Fragment>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => props.history.push('/users')}
-        >
-          Schließen
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
-
-const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state),
-});
-
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
 });
 
-export default
+type Props =
+  StateProps &
+  DispatchProps &
+  InjectedProps &
+  WithStyles &
+  RouteComponentProps<RouteMatch>;
+
+const SpecificUser =
   withRouter(
   withMobileDialog<Props>()(
   connect<StateProps, DispatchProps, Props>(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
-    SpecificUser,
-  ))));
+class extends React.Component<Props> {
+  componentDidMount() {
+    const { userId } = this.props.match.params;
+    const user = this.props.getUser(userId);
+    
+    if (!user) {
+      this.props.requestUser(userId);
+    }
+  }
+  render() {
+    const { props } = this;
+    const { loading } = props;
+    const { userId } = props.match.params;
+    const user = props.getUser(userId);
+    
+    return (
+      <Dialog
+        open
+        onClose={() => props.history.push('/users')}
+        fullScreen={props.fullScreen}
+      >
+        {!!user
+        ? (
+          <React.Fragment>
+            <DialogTitle>
+              {user.get('displayname')}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                ID: {user.get('_id')} <br />
+                Email: {user.get('email')} <br />
+                Role: {user.get('role')} <br />
+              </DialogContentText>
+              <Divider />
+              <EmailUpdate userId={userId} />
+              <Divider />
+              {user.isStudent() && <IsAdultUpdate userId={userId}/>}
+              <Divider />
+              <DisplaynameUpdate userId={userId} />
+              {user.hasChildren() && (
+                <React.Fragment>
+                  <Divider />
+                  <ChildrenUpdate userId={userId}/>
+                </React.Fragment>
+              )}
+            </DialogContent>
+          </React.Fragment>
+        )
+        : (
+          loading && <CircularProgress />
+        )}
+        <DialogActions>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => props.history.push('/users')}
+          >
+            Schließen
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}))));
+
+export default SpecificUser;

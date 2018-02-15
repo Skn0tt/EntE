@@ -67,6 +67,14 @@ export class User extends Record({
   get<T extends keyof IUser>(value: T): IUser[T] {
     return super.get(value);
   }
+  
+  isManager = () => this.get('role') === Roles.MANAGER;
+  isParent = () => this.get('role') === Roles.PARENT;
+  isAdmin = () => this.get('role') === Roles.ADMIN;
+  isStudent = () => this.get('role') === Roles.STUDENT;
+  isTeacher = () => this.get('role') === Roles.TEACHER;
+  
+  hasChildren = () => this.isManager() || this.isParent();
 }
 
 /**

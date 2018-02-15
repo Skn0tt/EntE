@@ -40,14 +40,10 @@ export const getSlotsById =
 
 export const getTeachers = createSelector(
   [getUsers],
-  users => users.filter(
-    user => user.get('role') === Roles.TEACHER,
-  ),
+  users => users.filter(user => user.isTeacher()),
 );
 
 export const getStudents = createSelector(
   [getUsers],
-  users => users.filter(
-    user => user.get('role') === Roles.STUDENT,
-  ),
+  users => users.filter(user => user.isStudent()),
 );
