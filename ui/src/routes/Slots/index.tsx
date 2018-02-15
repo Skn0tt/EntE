@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { connect } from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 import {
   Table,
   TableRow,
@@ -20,29 +20,36 @@ import SignedAvatar from '../SpecificEntry/elements/SignedAvatar';
 import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
 
 import { Route } from 'react-router';
+import { getSlotsRequest } from '../../redux/actions';
+import { Action } from 'redux';
 
 interface StateProps {
   slots: Slot[];
   getUser(id: MongoId): User;
 }
-
 const mapStateToProps = (state: AppState) => ({
   slots: select.getSlots(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
-type Rows = keyof ISlot | 'name';
+interface DispatchProps {
+  getSlots(): Action;
+}
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  getSlots: () => dispatch(getSlotsRequest()),
+});
 
+type Props = StateProps & DispatchProps & WithStyles;
+
+type Rows = keyof ISlot | 'name';
 interface State {
   searchTerm: string;
   sortField: Rows;
   sortUp: boolean;
 }
 
-type Props = StateProps & WithStyles;
-
 const Slots =
-  connect(mapStateToProps)(
+  connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
 class extends React.Component<Props, State> {
   state: State = {
@@ -50,6 +57,10 @@ class extends React.Component<Props, State> {
     sortField: 'date',
     sortUp: true,
   };
+
+  componentDidMount() {
+    this.props.getSlots();
+  }
 
   sort = (a: Slot, b: Slot): number => {
     if (this.state.sortField === 'date') {
