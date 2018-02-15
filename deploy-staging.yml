@@ -36,7 +36,7 @@
                 - VIRTUAL_PATH=/
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
-            nginx-proxy:
+            proxy:
               image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
               ports:
                 - 80:80
@@ -50,10 +50,10 @@
                 - "/usr/share/nginx/html"
               labels:
                 - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-            letsencrypt-nginx-proxy-companion:
+            letsencrypt:
               image: jrcs/letsencrypt-nginx-proxy-companion
               volumes_from:
-                - nginx-proxy
+                - proxy
               volumes:
                 - "/var/run/docker.sock:/var/run/docker.sock:ro"
               
