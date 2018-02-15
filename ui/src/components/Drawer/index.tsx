@@ -18,7 +18,6 @@ import styles from './styles';
 import {
   AdminItems,
   ManagerItems,
-  StandardItems,
   TeacherItems,
   StudentItems,
   ParentItems,
@@ -64,8 +63,6 @@ class extends React.Component<Props, State> {
     const drawer = (
       <div>
         <LoginStatus />
-        <Divider />
-        <StandardItems />
         <Divider />
         {this.props.role === Roles.ADMIN && <AdminItems />}
         {this.props.role === Roles.TEACHER && <TeacherItems />}
