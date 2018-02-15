@@ -1,5 +1,5 @@
 variables:
-  CONTAINER_BASE: registry.gitlab.com/skn0tt/entschuldigungsverfahren
+  CONTAINER_BASE: registry.gitlab.com/skn0tt/EntE
   CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_NAME
   CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:latest
   CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_NAME

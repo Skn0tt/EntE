@@ -45,7 +45,7 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
       html,
       subject,
       to: recipients,
-      from: 'entschuldigungsverfahren@simonknott.de',
+      from: 'EntE@simonknott.de',
     });
 
     console.log('Mail: Dispatched SignRequest to', info.accepted);
@@ -66,7 +66,7 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
       html,
       subject,
       to: recipients,
-      from: 'entschuldigungsverfahren@simonknott.de',
+      from: 'EntE@simonknott.de',
     });
 
     console.log('Mail: Dispatched SignedInformation to', info.accepted);
@@ -106,7 +106,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
           html,
           subject,
           to: email,
-          from: 'entschuldigungsverfahren@simonknott.de',
+          from: 'EntE@simonknott.de',
         });
         console.log('Mail: Dispatched WeeklySummary to', info.accepted);
       } catch (error) {
@@ -129,7 +129,7 @@ export const dispatchPasswortResetLink = async (token: string, username: string,
       html,
       subject,
       to: email,
-      from: 'entschuldigungsverfahren@simonknott.de',
+      from: 'EntE@simonknott.de',
     });
     console.log('Mail: Dispatched PasswortResetLink to', info.accepted);
   } catch (error) {
@@ -145,7 +145,7 @@ export const dispatchPasswortResetSuccess = async (username: string, email: stri
       html,
       subject,
       to: email,
-      from: 'entschuldigungsverfahren@simonknott.de',
+      from: 'EntE@simonknott.de',
     });
     console.log('Mail: Dispatched PasswortResetSuccess to', info.accepted);
   } catch (error) {

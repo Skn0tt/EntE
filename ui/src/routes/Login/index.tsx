@@ -89,7 +89,7 @@ class extends React.Component<Props, State> {
           <DialogTitle>Login</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Bitte melden sie sich an, um das Entschuldigungsverfahren zu nutzen.
+              Bitte melden sie sich an, um EntE zu nutzen.
             </DialogContentText>
             <div  className={classes.contentContainer} >
             <TextField

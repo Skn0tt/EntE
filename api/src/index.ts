@@ -44,8 +44,8 @@ app.use(validator());
 
 const mongoAddress =
   kubernetes
-    ? 'mongodb://localhost/ev'
-    : 'mongodb://mongodb/ev';
+    ? 'mongodb://localhost/ente'
+    : 'mongodb://mongodb/ente';
 
 // Mongoose
 require('mongoose').Promise = BBPromise;
