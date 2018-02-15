@@ -17,7 +17,7 @@
               volumes:
                 - "/data/db"
             api:
-              image: registry.gitlab.com/skn0tt/EntE/api:master
+              image: registry.gitlab.com/skn0tt/ente/api:master
               restart: always
               depends_on:
                 - mongodb
@@ -29,7 +29,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             ui:
-              image: registry.gitlab.com/skn0tt/EntE/ui:master
+              image: registry.gitlab.com/skn0tt/ente/ui:master
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
@@ -37,7 +37,7 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             nginx-proxy:
-              image: registry.gitlab.com/skn0tt/EntE/nginx-proxy:master
+              image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
               ports:
                 - 80:80
                 - 443:443
