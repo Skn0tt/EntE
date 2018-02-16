@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { AppState, User, MongoId, ISlotCreate } from '../../../../interfaces/index';
+import { AppState, User, MongoId, ISlotCreate } from '../../../../../../interfaces/index';
 import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles, Grid, TextField, Button } from 'material-ui';
-import * as select from '../../../../redux/selectors';
+import * as select from '../../../../../../redux/selectors';
 
 import styles from './styles';
 import { WithStyles } from 'material-ui/styles/withStyles';

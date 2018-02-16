@@ -10,6 +10,8 @@ export const getMessages = (state: AppState): String[] => state.get('messages').
  * Auth
  */
 export const isAuthValid = (state: AppState): boolean => state.getIn(['auth', 'role']) !== '';
+export const isParent = (state: AppState): boolean =>
+  state.getIn(['auth', 'role']) === Roles.PARENT;
 
 export const getRole = (state: AppState): Roles => state.getIn(['auth', 'role']);
 export const getAuthCredentials = (state: AppState): ICredentials => ({

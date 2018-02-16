@@ -3,8 +3,14 @@ import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
-import * as select from '../../redux/selectors';
-import { AppState, User, Roles, MongoId, ISlotCreate, IEntryCreate } from '../../interfaces/index';
+import * as select from '../../../../redux/selectors';
+import {
+  AppState,
+  User,
+  MongoId,
+  ISlotCreate,
+  IEntryCreate,
+} from '../../../../interfaces/index';
 import { Action } from 'redux';
 import { DatePicker } from 'material-ui-pickers';
 
@@ -21,7 +27,7 @@ import {
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
-import { createEntryRequest } from '../../redux/actions';
+import { createEntryRequest } from '../../../../redux/actions';
 import FormControlLabel from 'material-ui/Form/FormControlLabel';
 import SlotListItem from './elements/SlotListItem';
 import SlotEntry from './components/SlotEntry';
@@ -46,12 +52,9 @@ const immutableDelete = (arr: any[], index: number) =>
 
 const oneDay: number = 24 * 60 * 60 * 1000;
 
-interface IProps {
-  getRole(): Roles;
-  children: User[];
-  getTeachers(): User[];
-  getUser(id: MongoId): User;
-  createEntry(entry: IEntryCreate): Action;
+interface OwnProps {
+  onClose(): void;
+  show: boolean;
 }
 
 interface InjectedProps {
@@ -68,22 +71,37 @@ interface State {
   forSchool: boolean;
 }
 
+interface StateProps {
+  isParent: boolean;
+  children: User[];
+  teachers: User[];
+  getUser(id: MongoId): User;
+}
 const mapStateToProps = (state: AppState) => ({
   children: select.getChildren(state),
-  getRole: () => select.getRole(state),
-  getTeachers: () => select.getTeachers(state),
+  isParent: select.isParent(state),
+  teachers: select.getTeachers(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
+interface DispatchProps {
+  createEntry(entry: IEntryCreate): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry)),
 });
 
-type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedProps;
+type Props =
+  OwnProps & 
+  DispatchProps &
+  StateProps &
+  RouteComponentProps<{}> &
+  WithStyles<string> &
+  InjectedProps;
 
 const CreateEntry =
   connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<IProps>()(
+  withMobileDialog<OwnProps & DispatchProps & StateProps>()(
   withRouter(
   withStyles(styles)(
 class extends React.Component<Props, State> {
@@ -165,7 +183,7 @@ class extends React.Component<Props, State> {
     +this.state.dateEnd > +this.state.date
   )
   studentValid = (): boolean => (
-    this.props.getRole() !== Roles.PARENT ||
+    this.props.isParent ||
     !!this.state.student
   )
   slotsValid = (): boolean => (
@@ -191,13 +209,13 @@ class extends React.Component<Props, State> {
   minDate: Date = new Date(+new Date - 14 * 24 * 60 * 60 * 1000);
 
   render() {
-    const isParent = this.props.getRole() === Roles.PARENT;
+    const { isParent } = this.props;
 
     return (
       <Dialog
         fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
-        open
+        open={this.props.show}
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
