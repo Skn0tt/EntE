@@ -16,10 +16,10 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.7",
-    "react-redux": "5.0.6",
+    "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "redux": "3.7.2",
+    "redux": "^3.7.2",
     "redux-actions": "2.2.1",
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.16.0",
@@ -48,7 +48,7 @@
     "@types/redux-immutable": "^3.0.38",
     "react-scripts-ts": "^2.8.0",
     "redux-devtools-extension": "^2.13.2",
-    "tslint-config-airbnb": "^5.4.2",
-    "snyk": "^1.69.7"
+    "snyk": "^1.69.7",
+    "tslint-config-airbnb": "^5.4.2"
   }
 }
