@@ -28,6 +28,10 @@ authRouter.put('/forgot/:token', async (request, response, next) => {
     const token: string = request.params.token;
     const user = await User.findOne({ resetPasswordToken: token });
 
+    if (!user) {
+      return response.status(404).end();
+    }
+
     if (+user.resetPasswordExpires >= Date.now()) {
       const newPassword = request.body.newPassword;
 
@@ -40,7 +44,7 @@ authRouter.put('/forgot/:token', async (request, response, next) => {
       await dispatchPasswortResetSuccess(user.username, user.email);
     }
 
-    response.status(200).send('If token existed, it succeeded.');
+    return response.status(200).send('If token existed, it succeeded.');
   } catch (error) {
     return next(error);
   }
