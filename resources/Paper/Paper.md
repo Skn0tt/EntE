@@ -59,8 +59,7 @@ Der Entschuldigungsprozess läuft wie folgt ab:
 1. Die Eltern des Schülers (bei Volljährigkeit der Schüler selbst) rufen im Sekretariat an, um den Schüler krankzumelden.
 
 Zweck des Anrufes ist es, die Schule über den Krankheitsfall zu unterrichten.
-So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldung erhalten hat, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
-[vgl. @schulgesetz]
+So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldung erhalten hat, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden [vgl. §43, Art. 2 Schulgesetz @schulgesetz].
 
 *Nach Wiederkehr des Schülers sind folgende Schritte notwendig:*
 
