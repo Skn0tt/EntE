@@ -59,32 +59,35 @@ const emailValidator = [
 /**
  * # Schema
  */
-const userSchema : Schema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    index: { unique: true },
-    validate: usernameValidator,
-    minlength: 3,
-    maxlength: 50,
+const userSchema: Schema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      index: { unique: true },
+      validate: usernameValidator,
+      minlength: 3,
+      maxlength: 50,
+    },
+    displayname: {
+      type: String,
+      required: true,
+      validate: displaynameValidator,
+      minlength: 3,
+      maxlength: 50,
+    },
+    email: { type: String, required: false, validate: emailValidator },
+    password: String,
+    role: { type: String, enum: roles, required: true },
+    isAdult: { type: Boolean, required: false, default: false },
+    children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
-  displayname: {
-    type: String,
-    required: true,
-    validate: displaynameValidator,
-    minlength: 3,
-    maxlength: 50,
+  {
+    versionKey: false,
   },
-  email: { type: String, required: false, validate: emailValidator },
-  password: String,
-  role: { type: String, enum: roles, required: true },
-  isAdult: { type: Boolean, required: false, default: false },
-  children: [{ type: Schema.Types.ObjectId, ref: 'users' }],
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-}, {
-  versionKey: false,
-});
+);
 
 userSchema.plugin(idValidator);
 userSchema.plugin(uniqueValidator);
@@ -96,7 +99,7 @@ userSchema.plugin(uniqueValidator);
  * ## Hash password before saving
  */
 const SALT_WORK_FACTOR = 10;
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   if (!this.password) return next();
 
@@ -113,7 +116,7 @@ userSchema.pre('save', async function (next) {
 /**
  * ## Validate password
  */
-userSchema.methods.comparePassword = async function (candidatePassword) : Promise<boolean> {
+userSchema.methods.comparePassword = async function(candidatePassword): Promise<boolean> {
   const password = this.password;
   try {
     const isValid = await bcrypt.compare(candidatePassword, this.password);
@@ -126,7 +129,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) : Promis
 /**
  * ## Forgot Password Routine
  */
-userSchema.methods.forgotPassword = async function (): Promise<void> {
+userSchema.methods.forgotPassword = async function(): Promise<void> {
   const buffer = await crypto.randomBytes(20);
   const token = buffer.toString('hex');
 
@@ -141,7 +144,7 @@ userSchema.methods.forgotPassword = async function (): Promise<void> {
 /**
  * # Model
  */
-const user : Model<UserModel> = model('users', userSchema);
+const user: Model<UserModel> = model('users', userSchema);
 
 user.create({
   username: 'admin',

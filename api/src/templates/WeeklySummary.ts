@@ -75,7 +75,7 @@ export default (items: IRowData[]): HEMLResults => {
   try {
     const rows = items.map(item => tableRow(item));
     const title = getTitle();
-  
+
     const mjml = template({
       items: rows,
       preview: title,

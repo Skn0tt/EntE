@@ -19,22 +19,25 @@ export interface ISlot {
 /**
  * # Schema
  */
-const slotSchema = new Schema({
-  date: { type: Date, required: true, default: Date.now() },
-  hour_from: { type: Number, required: true, min: 1, max: 12 },
-  hour_to: { type: Number, required: true, min: 1, max: 12 },
-  signed: { type: Boolean, required: true, default: false },
-  student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-  teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-}, {
-  versionKey: false,
-});
+const slotSchema = new Schema(
+  {
+    date: { type: Date, required: true, default: Date.now() },
+    hour_from: { type: Number, required: true, min: 1, max: 12 },
+    hour_to: { type: Number, required: true, min: 1, max: 12 },
+    signed: { type: Boolean, required: true, default: false },
+    student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+    teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+  },
+  {
+    versionKey: false,
+  },
+);
 slotSchema.plugin(idValidator);
 
 /**
  * # Schema Methods
  */
-slotSchema.methods.sign = function (callback) : void {
+slotSchema.methods.sign = function(callback): void {
   this.signed = true;
   this.save(callback);
 };
@@ -42,6 +45,6 @@ slotSchema.methods.sign = function (callback) : void {
 /**
  * # Model
  */
-const slot : Model<SlotModel> = model('slots', slotSchema);
+const slot: Model<SlotModel> = model('slots', slotSchema);
 
 export default slot;

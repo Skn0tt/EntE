@@ -13,20 +13,21 @@ import SignRequest from '../templates/SignRequest';
 
 const baseUrl = `https://${process.env.HOST}`;
 
-const mailConfig = process.env.NODE_ENV === 'production'
-  ? sgTransport({
-    auth: {
-      api_key: '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',
-    },
-  })
-  : {
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-      user: 'louf4yh5lnkyg2h3@ethereal.email',
-      pass: 'mWgCFb9JcJxdeKa6RE',
-    },
-  };
+const mailConfig =
+  process.env.NODE_ENV === 'production'
+    ? sgTransport({
+        auth: {
+          api_key: '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',
+        },
+      })
+    : {
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+          user: 'louf4yh5lnkyg2h3@ethereal.email',
+          pass: 'mWgCFb9JcJxdeKa6RE',
+        },
+      };
 
 const transporter = mail.createTransport(mailConfig);
 
@@ -38,9 +39,9 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
     const { html, subject } = SignRequest(`${baseUrl}/entries/${entry._id}`);
 
     const parents = await User.find({ children: entry.student }).select('email');
-    
+
     const recipients = parents.map(parent => parent.email);
-  
+
     const info = await transporter.sendMail({
       html,
       subject,
@@ -59,9 +60,9 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
     const { html, subject } = SignedInformation(`${baseUrl}/entries/${entry._id}`);
 
     const parents = await User.find({ children: entry.student }).select('email');
-    
+
     const recipients = parents.map(parent => parent.email);
-  
+
     const info = await transporter.sendMail({
       html,
       subject,
@@ -79,24 +80,26 @@ const twoWeeksBefore: Date = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 export const dispatchWeeklySummary = async (): Promise<void> => {
   try {
     const teachers = await User.find({ role: ROLES.TEACHER });
-    teachers.forEach(async (teacher) => {
+    teachers.forEach(async teacher => {
       try {
         const slots: SlotModel[] = await Slot.find({
           teacher: teacher._id,
           date: { $gte: twoWeeksBefore },
         });
 
-        const items: IRowData[] = await Promise.all(slots.map(async (slot) => {
-          const student = await User.findById(slot.student);
+        const items: IRowData[] = await Promise.all(
+          slots.map(async slot => {
+            const student = await User.findById(slot.student);
 
-          return ({
-            displayname: student.displayname,
-            date: slot.date,
-            signed: slot.signed,
-            hour_from: slot.hour_from,
-            hour_to: slot.hour_to,
-          });
-        }));
+            return {
+              displayname: student.displayname,
+              date: slot.date,
+              signed: slot.signed,
+              hour_from: slot.hour_from,
+              hour_to: slot.hour_to,
+            };
+          }),
+        );
 
         const email = teacher.email;
 
@@ -120,10 +123,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
 
 export const dispatchPasswortResetLink = async (token: string, username: string, email: string) => {
   try {
-    const { html, subject } = PasswordResetLink(
-      `${baseUrl}/forgot/${token}`,
-      username,
-    );
+    const { html, subject } = PasswordResetLink(`${baseUrl}/forgot/${token}`, username);
 
     const info = await transporter.sendMail({
       html,
