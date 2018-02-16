@@ -120,10 +120,6 @@ class extends React.Component<Props, State> {
   /**
    * ## Action Handlers
    */
-  handleGoBack = () => this.props.history.goBack();
-  
-  handleClose = () => this.handleGoBack();
-
   handleSubmit = () => this.props.createEntry({
     date: this.state.date,
     dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
@@ -183,7 +179,7 @@ class extends React.Component<Props, State> {
     +this.state.dateEnd > +this.state.date
   )
   studentValid = (): boolean => (
-    this.props.isParent ||
+    !this.props.isParent ||
     !!this.state.student
   )
   slotsValid = (): boolean => (
@@ -214,7 +210,7 @@ class extends React.Component<Props, State> {
     return (
       <Dialog
         fullScreen={this.props.fullScreen}
-        onClose={this.handleGoBack}
+        onClose={this.props.onClose}
         open={this.props.show}
       >
         <DialogTitle>Neuer Eintrag</DialogTitle>
@@ -340,13 +336,13 @@ class extends React.Component<Props, State> {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="secondary">
+          <Button onClick={this.props.onClose} color="secondary">
             Cancel
           </Button>
           <Button
             onClick={() => {
               this.handleSubmit();
-              this.handleClose();
+              this.props.onClose();
             }}
             disabled={!this.inputValid()}
             color="primary"

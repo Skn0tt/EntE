@@ -83,6 +83,8 @@ class extends React.Component<Props> {
     }
   }
 
+  onClose = () => this.props.history.push('/entries');
+
   render() {
     const { props } = this;
     const { classes, loading } = this.props;
@@ -93,7 +95,7 @@ class extends React.Component<Props> {
       <Dialog
         open
         fullScreen={props.fullScreen}
-        onClose={() => props.history.push('/entries')}
+        onClose={this.onClose}
       >
         <DialogContent>
           {!!entry
@@ -214,7 +216,7 @@ class extends React.Component<Props> {
           <Button
             size="small"
             color="primary"
-            onClick={() => props.history.push('/users')}
+            onClick={this.onClose}
           >
             Schließen
           </Button>

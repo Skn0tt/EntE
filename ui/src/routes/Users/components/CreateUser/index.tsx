@@ -26,6 +26,7 @@ import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
 import validateEmail from '../../../../services/validateEmail';
+import ImportUsers from '../ImportUsers';
 
 interface OwnProps {
   onClose(): void;
@@ -38,6 +39,7 @@ interface InjectedProps {
 
 interface State extends IUserCreate {
   selectedChild: MongoId;
+  showImportUsers: boolean;
 }
 
 interface StateProps {
@@ -81,16 +83,18 @@ class extends React.Component<Props, State> {
     password: '',
     role: Roles.STUDENT,
     username: '',
+    showImportUsers: false,
   };
 
   /**
    * ## Action Handlers
    */
-  handleGoBack = () => this.props.onClose();
+  handleGoBack = () => this.handleClose();
   
-  handleClose = () => this.handleGoBack();
+  handleClose = () => this.props.onClose();
 
-  handleImport = () => this.props.history.push('/importUsers');
+  handleShowImport = () => this.setState({ showImportUsers: true });
+  handleCloseImport = () => this.setState({ showImportUsers: false });
 
   handleSubmit = () => {
     return this.props.createUser({
@@ -163,152 +167,155 @@ class extends React.Component<Props, State> {
     const { classes } = this.props;
 
     return (
-      <Dialog
-        fullScreen={this.props.fullScreen}
-        onClose={this.handleGoBack}
-        open={this.props.show}
-      >
-        <DialogTitle>Neuer Nutzer</DialogTitle>
-        <DialogContent>
-          <form className={classes.container} onKeyPress={this.handleKeyPress} >
-            <Grid container direction="column">
-              <Grid container xs={12} direction="row">
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    error={!this.usernameValid()}
-                    id="username"
-                    label="Username"
-                    value={this.state.username}
-                    onChange={this.handleChangeUsername}
-                    margin="normal"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    error={!this.displaynameValid()}
-                    fullWidth
-                    id="displayname"
-                    label="Displayname"
-                    value={this.state.displayname}
-                    onChange={this.handleChangeDisplayname}
-                    margin="normal"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    error={!this.emailValid()}
-                    id="email"
-                    label="Email"
-                    type="email"
-                    value={this.state.email}
-                    onChange={this.handleChangeEmail}
-                    margin="normal"
-                  />
+      <React.Fragment>
+        <Dialog
+          fullScreen={this.props.fullScreen}
+          onClose={this.handleGoBack}
+          open={this.props.show}
+        >
+          <DialogTitle>Neuer Nutzer</DialogTitle>
+          <DialogContent>
+            <form className={classes.container} onKeyPress={this.handleKeyPress} >
+              <Grid container direction="column">
+                <Grid container xs={12} direction="row">
+                  <Grid item xs={12} lg={6}>
+                    <TextField
+                      fullWidth
+                      error={!this.usernameValid()}
+                      id="username"
+                      label="Username"
+                      value={this.state.username}
+                      onChange={this.handleChangeUsername}
+                      margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={6}>
+                    <TextField
+                      error={!this.displaynameValid()}
+                      fullWidth
+                      id="displayname"
+                      label="Displayname"
+                      value={this.state.displayname}
+                      onChange={this.handleChangeDisplayname}
+                      margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={6}>
+                    <TextField
+                      fullWidth
+                      error={!this.emailValid()}
+                      id="email"
+                      label="Email"
+                      type="email"
+                      value={this.state.email}
+                      onChange={this.handleChangeEmail}
+                      margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      id="password"
+                      label="Passwort"
+                      type="password"
+                      value={this.state.password}
+                      onChange={this.handleChangePassword}
+                      margin="normal"
+                    />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    select
+                    label="Rolle"
+                    value={this.state.role}
+                    onChange={this.handleChangeRole}
                     fullWidth
-                    id="password"
-                    label="Passwort"
-                    type="password"
-                    value={this.state.password}
-                    onChange={this.handleChangePassword}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  label="Rolle"
-                  value={this.state.role}
-                  onChange={this.handleChangeRole}
-                  fullWidth
-                  SelectProps={{ native: true }}
-                  helperText="Wählen sie die Rolle des Nutzers aus."
-                >
-                  {Object.keys(Roles).map(role => (
-                    <option
-                      key={Roles[role]}
-                      value={Roles[role]}
-                    >
-                      {Roles[role]}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              {this.hasChildren() && (
-                <Grid item container direction="column">
-                  <Grid item>
-                    <List>
-                      {this.state.children.map((child, index) => (
-                        <ListItem>
-                          <ListItemText primary={this.props.getUser(child).get('displayname')}/>
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label="Delete"
-                              onClick={() => this.handleRemoveChildren(index)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Grid>
-                  <Grid container direction="row">
-                    <Grid item xs={10}>
-                      <TextField
-                        select
-                        label="Kind"
-                        value={this.state.selectedChild}
-                        onChange={this.handleSelectChild}
-                        fullWidth
-                        SelectProps={{ native: true }}
-                        helperText="Fügen sie Kinder hinzu."
+                    SelectProps={{ native: true }}
+                    helperText="Wählen sie die Rolle des Nutzers aus."
+                  >
+                    {Object.keys(Roles).map(role => (
+                      <option
+                        key={Roles[role]}
+                        value={Roles[role]}
                       >
-                        {this.props.students.map(student => (
-                          <option
-                            key={student.get('_id')}
-                            value={student.get('_id')}
-                          >
-                            {student.get('displayname')}
-                          </option>
+                        {Roles[role]}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                {this.hasChildren() && (
+                  <Grid item container direction="column">
+                    <Grid item>
+                      <List>
+                        {this.state.children.map((child, index) => (
+                          <ListItem>
+                            <ListItemText primary={this.props.getUser(child).get('displayname')}/>
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                aria-label="Delete"
+                                onClick={() => this.handleRemoveChildren(index)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
                         ))}
-                      </TextField>
+                      </List>
                     </Grid>
-                    <Grid item xs={2}>
-                      <IconButton onClick={() => this.handleAddChild()}>
-                        <AddIcon />
-                      </IconButton>
+                    <Grid container direction="row">
+                      <Grid item xs={10}>
+                        <TextField
+                          select
+                          label="Kind"
+                          value={this.state.selectedChild}
+                          onChange={this.handleSelectChild}
+                          fullWidth
+                          SelectProps={{ native: true }}
+                          helperText="Fügen sie Kinder hinzu."
+                        >
+                          {this.props.students.map(student => (
+                            <option
+                              key={student.get('_id')}
+                              value={student.get('_id')}
+                            >
+                              {student.get('displayname')}
+                            </option>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <IconButton onClick={() => this.handleAddChild()}>
+                          <AddIcon />
+                        </IconButton>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              )}
-            </Grid>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleImport} color="secondary">
-            Import
-          </Button>
-          <Button onClick={this.handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              this.handleSubmit();
-              this.handleClose();
-            }}
-            disabled={!this.inputValid()}
-            color="primary"
-          >
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
+                )}
+              </Grid>
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleShowImport} color="secondary">
+              Import
+            </Button>
+            <Button onClick={this.handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                this.handleSubmit();
+                this.handleClose();
+              }}
+              disabled={!this.inputValid()}
+              color="primary"
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <ImportUsers onClose={this.handleCloseImport} show={this.state.showImportUsers} />
+      </React.Fragment>
     );
   }
 }))));

@@ -66,6 +66,9 @@ class extends React.Component<Props> {
       this.props.requestUser(userId);
     }
   }
+  onClose = () => this.props.history.goBack();
+  onGoBack = () => this.onClose();
+
   render() {
     const { props } = this;
     const { loading } = props;
@@ -75,7 +78,7 @@ class extends React.Component<Props> {
     return (
       <Dialog
         open
-        onClose={() => props.history.push('/users')}
+        onClose={this.onGoBack}
         fullScreen={props.fullScreen}
       >
         {!!user
@@ -112,7 +115,7 @@ class extends React.Component<Props> {
           <Button
             size="small"
             color="primary"
-            onClick={() => props.history.push('/users')}
+            onClick={this.onClose}
           >
             Schließen
           </Button>
