@@ -30,54 +30,57 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
 
-const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-class extends React.Component<Props, State> {
-  user = (): User => this.props.getUser(this.props.userId);
+const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    class extends React.Component<Props, State> {
+      user = (): User => this.props.getUser(this.props.userId);
 
-  state: State = {
-    email: this.user().get('email'),
-  };
+      state: State = {
+        email: this.user().get('email'),
+      };
 
-  handleSubmit = () => this.props.updateUser({
-    _id: this.props.userId,
-    email: this.state.email,
-  })
+      handleSubmit = () =>
+        this.props.updateUser({
+          _id: this.props.userId,
+          email: this.state.email,
+        });
 
-  handleChange: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
-    email: event.target.value,
-  })
+      handleChange: React.ChangeEventHandler<HTMLInputElement> = event =>
+        this.setState({
+          email: event.target.value,
+        });
 
-  /**
-   * Validation
-   */
-  emailValid = (): boolean => validateEmail(this.state.email);
+      /**
+       * Validation
+       */
+      emailValid = (): boolean => validateEmail(this.state.email);
 
-  render() {
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="title">
-            Email
-          </Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            type="email"
-            error={!this.emailValid()}
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-            Email aktualisieren
-            <UpdateIcon />
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-}));
+      render() {
+        return (
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="title">Email</Typography>
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                type="email"
+                error={!this.emailValid()}
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
+                Email aktualisieren
+                <UpdateIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      }
+    },
+  ),
+);
 
 export default DisplayNameUpdate;

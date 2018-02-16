@@ -15,7 +15,7 @@ export interface Style {
 
 const drawerWidth = 240;
 
-const styles = (theme: Theme): StyleRules =>  ({
+const styles = (theme: Theme): StyleRules => ({
   root: {
     width: '100%',
     zIndex: 1,

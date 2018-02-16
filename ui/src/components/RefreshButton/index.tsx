@@ -11,28 +11,23 @@ interface Props {
   getSlots(): Action;
 }
 
-const renderPaths: string[] = [
-  '/entries',
-  '/users',
-  '/slots',
-];
+const renderPaths: string[] = ['/entries', '/users', '/slots'];
 
 const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
-const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props => (
-  shouldRender(props.location.pathname) ?
-  (
+const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props =>
+  shouldRender(props.location.pathname) ? (
     <Button
       onClick={() => {
         const { location } = props;
         switch (location.pathname) {
-          case('/entries'):
+          case '/entries':
             props.getEntries();
             break;
-          case('/users'):
+          case '/users':
             props.getUsers();
             break;
-          case('/slots'):
+          case '/slots':
             props.getSlots();
             break;
           default:
@@ -43,8 +38,7 @@ const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props => (
     >
       Aktualisieren
     </Button>
-  ) : null
-);
+  ) : null;
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   getEntries: () => dispatch(getEntriesRequest()),

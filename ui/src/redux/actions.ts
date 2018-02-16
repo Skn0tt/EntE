@@ -57,24 +57,27 @@ import {
 } from '../interfaces/index';
 
 export type ActionType =
-  IEntryCreate |
-  Error |
-  MongoId |
-  ICredentials |
-  AuthState |
-  Error |
-  APIResponse;
+  | IEntryCreate
+  | Error
+  | MongoId
+  | ICredentials
+  | AuthState
+  | Error
+  | APIResponse;
 
 export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
-export const createUserRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
+export const createUserRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
   CREATE_USER_REQUEST,
-  (input) => {
-    if (Array.isArray(input)) { return input; }
+  input => {
+    if (Array.isArray(input)) {
+      return input;
+    }
     return [input];
-  });
+  },
+);
 export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
 export const createUserError = createAction<Error>(CREATE_USER_ERROR);
 

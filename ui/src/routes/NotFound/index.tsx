@@ -9,12 +9,10 @@ type Props = WithStyles;
 const NotFound: React.SFC<Props> = props => (
   <Grid container alignItems="center" justify="center">
     <Grid item>
-      <img src={Diggie} height={400}/>
+      <img src={Diggie} height={400} />
     </Grid>
     <Grid item>
-      <Typography variant="title">
-        Die Seite wurde nicht gefunden.
-      </Typography>
+      <Typography variant="title">Die Seite wurde nicht gefunden.</Typography>
     </Grid>
   </Grid>
 );

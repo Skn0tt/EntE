@@ -43,7 +43,7 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { 
+import {
   APIResponse,
   ICredentials,
   MongoId,
@@ -60,9 +60,9 @@ function* dispatchUpdates(data: APIResponse) {
 }
 
 function* checkAuthSaga(action: Action<ICredentials>) {
-  try {
+  try {
     const result = yield call(api.checkAuth, action.payload);
-    
+
     yield dispatchUpdates(result);
     yield put(checkAuthSuccess(result.auth));
   } catch (error) {
@@ -72,10 +72,10 @@ function* checkAuthSaga(action: Action<ICredentials>) {
 }
 
 function* getEntrySaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getEntry, action.payload, auth);
-    
+
     yield put(getEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
@@ -111,7 +111,7 @@ function* getSlotsSaga() {
 }
 
 function* getUserSaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getUser, action.payload, auth);
 
@@ -124,7 +124,7 @@ function* getUserSaga(action: Action<MongoId>) {
 }
 
 function* getUsersSaga() {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getUsers, auth);
 
@@ -137,7 +137,7 @@ function* getUsersSaga() {
 }
 
 function* getTeachersSaga() {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getTeachers, auth);
 
@@ -150,7 +150,7 @@ function* getTeachersSaga() {
 }
 
 function* createEntrySaga(action: Action<IEntryCreate>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.createEntry, action.payload, auth);
 
@@ -162,24 +162,25 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
 }
 
 function* createUserSaga(action: Action<IUserCreate[]>) {
-  try {
+  try {
     const first: IUserCreate[] = [];
     const second: IUserCreate[] = [];
 
-    action.payload!.forEach((value) => {
-      if (
-        value.role === Roles.MANAGER || value.role === Roles.PARENT
-      ) { second.push(value); }
-      else { first.push(value); }
+    action.payload!.forEach(value => {
+      if (value.role === Roles.MANAGER || value.role === Roles.PARENT) {
+        second.push(value);
+      } else {
+        first.push(value);
+      }
     });
-    
+
     const auth = yield select(selectors.getAuthCredentials);
-    
+
     if (first.length !== 0) {
       const result = yield call(api.createUser, first, auth);
       yield dispatchUpdates(result);
     }
-    
+
     if (second.length !== 0) {
       const result = yield call(api.createUser, second, auth);
       yield dispatchUpdates(result);
@@ -192,7 +193,7 @@ function* createUserSaga(action: Action<IUserCreate[]>) {
 }
 
 function* updateUserSaga(action: Action<Partial<IUser>>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.updateUser, action.payload, auth);
 
@@ -204,7 +205,7 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
 }
 
 function* signEntrySaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.signEntry, action.payload, auth);
 
@@ -219,7 +220,7 @@ function* signEntrySaga(action: Action<MongoId>) {
 function* resetPasswordSaga(action: Action<string>) {
   try {
     const result = yield call(api.resetPassword, action.payload);
-    
+
     yield put(addMessage(lang().message.resetPassword.success));
     yield put(resetPasswordSuccess(result));
   } catch (error) {
@@ -231,7 +232,7 @@ function* resetPasswordSaga(action: Action<string>) {
 function* setPasswordSaga(action: Action<INewPassword>) {
   try {
     const result = yield call(api.setPassword, action.payload!.token, action.payload!.password);
-    
+
     yield put(addMessage(lang().message.setPassword.success));
     yield put(resetPasswordSuccess(result));
   } catch (error) {

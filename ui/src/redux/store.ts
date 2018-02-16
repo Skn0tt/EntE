@@ -18,27 +18,21 @@ const composeEnhancers = composeWithDevTools({});
 const ravenMiddleWare = ravenForRedux(Raven, {
   actionTransformer: (action: Action<AuthState | {}>) => {
     if (action.type === CHECK_AUTH_SUCCESS) {
-      return ({
+      return {
         payload: (action.payload as AuthState).delete('password'),
         ...action,
-      });
+      };
     }
     return action;
   },
-  stateTransformer: (state: AppState) => (
-    state
-      .get('auth')
-      .delete('password')
-  ),
+  stateTransformer: (state: AppState) => state.get('auth').delete('password'),
   getUserContext: (state: AppState) => ({ username: select.getUsername(state) }),
 });
 
-const store = createStore(reducer, composeEnhancers(
-  applyMiddleware(
-    sagaMiddleware,
-    ravenMiddleWare,
-  ),
-));
+const store = createStore(
+  reducer,
+  composeEnhancers(applyMiddleware(sagaMiddleware, ravenMiddleWare)),
+);
 
 sagaMiddleware.run(saga);
 

@@ -29,47 +29,46 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
 
-const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-class extends React.Component<Props, State> {
-  user = (): User => this.props.getUser(this.props.userId);
+const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    class extends React.Component<Props, State> {
+      user = (): User => this.props.getUser(this.props.userId);
 
-  state: State = {
-    displayname: this.user().get('displayname'),
-  };
+      state: State = {
+        displayname: this.user().get('displayname'),
+      };
 
-  handleSubmit = () => this.props.updateUser({
-    _id: this.props.userId,
-    displayname: this.state.displayname,
-  })
+      handleSubmit = () =>
+        this.props.updateUser({
+          _id: this.props.userId,
+          displayname: this.state.displayname,
+        });
 
-  handleChange: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
-    displayname: event.target.value,
-  })
+      handleChange: React.ChangeEventHandler<HTMLInputElement> = event =>
+        this.setState({
+          displayname: event.target.value,
+        });
 
-  render() {
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="title">
-            Anzeigename
-          </Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            value={this.state.displayname}
-            onChange={this.handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-            Anzeigenamen aktualisieren
-            <UpdateIcon />
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-}));
+      render() {
+        return (
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="title">Anzeigename</Typography>
+            </Grid>
+            <Grid item>
+              <TextField fullWidth value={this.state.displayname} onChange={this.handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
+                Anzeigenamen aktualisieren
+                <UpdateIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      }
+    },
+  ),
+);
 
 export default DisplayNameUpdate;

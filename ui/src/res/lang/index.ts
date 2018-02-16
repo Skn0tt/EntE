@@ -4,7 +4,7 @@ export interface Translation {
   message: {
     sign: {
       error: string;
-    },
+    };
     request: {
       error: string;
     };

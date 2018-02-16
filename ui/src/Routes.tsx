@@ -67,7 +67,7 @@ interface Props {
   role: Roles;
 }
 
-const Routes: React.SFC<Props> = (props) => {
+const Routes: React.SFC<Props> = props => {
   if (props.role === Roles.ADMIN) return <AdminRoutes />;
   if (props.role === Roles.STUDENT) return <StudentRoutes />;
   if (props.role === Roles.TEACHER) return <TeacherRoutes />;
