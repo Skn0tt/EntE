@@ -8,6 +8,18 @@
       "type": "shell",
       "command": "cd resources/Paper && make Paper.pdf && open Paper.pdf",
       "problemMatcher": []
+    },
+    {
+      "label": "SpinUp Dev",
+      "type": "shell",
+      "command": "./start-dev.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "SpinUp UI",
+      "type": "shell",
+      "command": "cd ui && yarn start",
+      "problemMatcher": []
     }
   ]
 }

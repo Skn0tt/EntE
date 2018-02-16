@@ -61,6 +61,10 @@ const styles = (theme: Theme): StyleRules =>  ({
       marginLeft: drawerWidth,
     },
   },
+  loadingIndicator: {
+    position: 'fixed',
+    width: '100%',
+  },
 });
 
 export default styles;
