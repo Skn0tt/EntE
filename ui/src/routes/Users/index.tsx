@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { connect } from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 
 import styles from './styles';
 
@@ -20,14 +20,24 @@ import {
 } from 'material-ui';
 import { Add as AddIcon } from 'material-ui-icons';
 import { Route } from 'react-router';
+import { getUsersRequest } from '../../redux/actions';
+import { Action } from 'redux';
 
 interface StateProps {
   users: User[];
 }
-
 const mapStateToProps = (state: AppState) => ({
   users: select.getUsers(state),
 });
+
+interface DispatchProps {
+  getUsers(): Action;
+}
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  getUsers: () => dispatch(getUsersRequest()),
+});
+
+type Props = StateProps & DispatchProps & WithStyles;
 
 interface State {
   searchTerm: string;
@@ -35,10 +45,8 @@ interface State {
   sortUp: boolean;
 }
 
-type Props = StateProps & WithStyles;
-
 const Users =
-  connect(mapStateToProps)(
+  connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
 class extends React.Component<Props, State> {
   state: State = {
@@ -46,6 +54,10 @@ class extends React.Component<Props, State> {
     sortField: 'username',
     sortUp: false,
   };
+
+  componentDidMount() {
+    this.props.getUsers();
+  }
 
   sort = (a: User, b: User): number =>
     a.get(this.state.sortField).toString()
@@ -138,7 +150,7 @@ class extends React.Component<Props, State> {
         <Route render={({ history }) => (
           <Button
             color="primary"
-            fab
+            variant="fab"
             onClick={() => history.push('/createUser')}
             className={classes.fab}
           >

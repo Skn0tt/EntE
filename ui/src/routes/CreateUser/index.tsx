@@ -82,7 +82,7 @@ class extends React.Component<Props, State> {
 
   handleSubmit = () => {
     return this.props.createUser({
-      children: this.isParent() ? this.state.children : [],
+      children: this.hasChildren() ? this.state.children : [],
       displayname: this.state.displayname,
       email: this.state.email,
       isAdult: this.state.isAdult,
@@ -120,7 +120,8 @@ class extends React.Component<Props, State> {
   handleRemoveChildren = (index: number) =>
     this.setState({ children: this.state.children.slice(index, index) })
   
-  isParent = (): boolean => this.state.role === Roles.PARENT;
+  hasChildren = (): boolean =>
+    this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER
 
   /**
    * ## Validation
@@ -136,7 +137,7 @@ class extends React.Component<Props, State> {
     validateEmail(this.state.email)
   )
   childrenValid = (): boolean => (
-    !this.isParent() ||
+    !this.hasChildren() ||
     this.state.children.length > 0
   )
   inputValid = (): boolean => (
@@ -226,7 +227,7 @@ class extends React.Component<Props, State> {
                   ))}
                 </TextField>
               </Grid>
-              {this.isParent() && (
+              {this.hasChildren() && (
                 <Grid item container direction="column">
                   <Grid item>
                     <List>
@@ -278,10 +279,10 @@ class extends React.Component<Props, State> {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleImport} color="accent">
+          <Button onClick={this.handleImport} color="secondary">
             Import
           </Button>
-          <Button onClick={this.handleClose} color="accent">
+          <Button onClick={this.handleClose} color="secondary">
             Cancel
           </Button>
           <Button

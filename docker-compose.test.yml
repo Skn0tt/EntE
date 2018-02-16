@@ -2,6 +2,6 @@ version: '2'
 
 services:
   api:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:$CI_COMMIT_REF_NAME
+    image: registry.gitlab.com/skn0tt/ente/api:$CI_COMMIT_REF_NAME
   ui:
-    image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:$CI_COMMIT_REF_NAME
+    image: registry.gitlab.com/skn0tt/ente/ui:$CI_COMMIT_REF_NAME

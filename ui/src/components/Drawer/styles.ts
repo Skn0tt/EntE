@@ -41,6 +41,7 @@ const styles = (theme: Theme): StyleRules =>  ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+    color: 'white',
   },
   drawerPaper: {
     width: 250,
@@ -59,6 +60,10 @@ const styles = (theme: Theme): StyleRules =>  ({
       marginTop: 64,
       marginLeft: drawerWidth,
     },
+  },
+  loadingIndicator: {
+    position: 'fixed',
+    width: '100%',
   },
 });
 

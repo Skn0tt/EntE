@@ -69,11 +69,6 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
       
       return next();
     }
-    if (request.user.role === ROLES.TEACHER) {
-      request.entries = await Entry.find({ ...yearParams });
-
-      return next();
-    }
     if (request.user.role === ROLES.ADMIN) {
       request.entries = await Entry.find({ ...yearParams });
     
@@ -91,7 +86,7 @@ entriesRouter.get('/', async (request: EntriesRequest, response, next) => {
     return next(error);
   }
 
-  return response.status(400).end;
+  return response.status(400).end();
 }, populate);
 
 
@@ -224,12 +219,12 @@ entriesRouter.put('/:entryId/sign', [
 
     if (!entry) return response.status(404).end('Couldnt find Entry.');
 
-    if (request.user.role === ROLES.MANAGER) {
-      if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
+    if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
+      if (request.user.role === ROLES.MANAGER) {
         entry.signManager();
+      } else if (request.user.role === ROLES.PARENT) {
+        entry.signParent();
       }
-    } else if (request.user.role === ROLES.PARENT) {
-      entry.signParent();
     }
     entry.save();
 

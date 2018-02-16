@@ -12,7 +12,7 @@ import {
   TableSortLabel,
 } from 'material-ui';
 import styles from './styles';
-import { Add as AddIcon } from 'material-ui-icons';
+import { Add as AddIcon, Check as CheckIcon } from 'material-ui-icons';
 
 import * as select from '../../redux/selectors';
 import { Entry, AppState, MongoId, User, IEntry, Roles } from '../../interfaces/index';
@@ -30,10 +30,18 @@ interface StateProps {
   role: Roles;
   getUser(id: MongoId): User;
 }
+const mapStateToProps = (state: AppState) => ({
+  entries: select.getEntries(state),
+  role: select.getRole(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
+});
 
 interface DispatchProps {
   getEntries(): Action;
 }
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  getEntries: () => dispatch(getEntriesRequest()),
+});
 
 type Rows = keyof IEntry | 'name';
 
@@ -42,17 +50,6 @@ interface State {
   sortField: Rows;
   sortUp: boolean;
 }
-
-const mapStateToProps = (state: AppState) => ({
-  entries: select.getEntries(state),
-  role: select.getRole(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getEntries: () => dispatch(getEntriesRequest()),
-});
-
 type Props = StateProps & DispatchProps & WithStyles;
 
 const truncate = (str: string, length: number, ending: string) => {
@@ -72,6 +69,10 @@ class extends React.Component<Props, State> {
     sortUp: true,
   };
 
+  componentDidMount() {
+    this.props.getEntries();
+  }
+
   sort = (a: Entry, b: Entry): number => {
     if (this.state.sortField === 'name') {
       return this.props.getUser(a.get('student')).get('displayname').localeCompare(
@@ -80,6 +81,12 @@ class extends React.Component<Props, State> {
     }
     if (this.state.sortField === 'date') {
       return (a.get('date').getTime() - b.get('date').getTime()) * (this.state.sortUp ? 1 : -1);
+    }
+    if (this.state.sortField === 'createdAt') {
+      return (
+        (a.get('createdAt').getTime() - b.get('createdAt').getTime())
+          * (this.state.sortUp ? 1 : -1)
+      );
     }
     return a.get(this.state.sortField)!.toString().localeCompare(
       b.get(this.state.sortField)!.toString(),
@@ -139,6 +146,7 @@ class extends React.Component<Props, State> {
               <TableRow>
                 <this.TableHeadCell field="name">Name</this.TableHeadCell>
                 <this.TableHeadCell field="date">Datum</this.TableHeadCell>
+                <this.TableHeadCell field="createdAt">Erstellt</this.TableHeadCell>
                 <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
                 <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
                 <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
@@ -159,9 +167,14 @@ class extends React.Component<Props, State> {
                           .getUser(entry.get('student'))
                           .get('displayname')
                         }</TableCell>
-                      <TableCell>{entry.get('date').toDateString()}</TableCell>
-                      <TableCell>{entry.get('forSchool') ? 'Ja' : 'Nein'}</TableCell>
-                      <TableCell>{truncate(entry.get('reason'), 20, '...')}</TableCell>
+                      <TableCell>{entry.get('dateEnd')
+                        ? `${entry.get('date').toLocaleDateString()} -
+                        ${entry.get('dateEnd')!.toLocaleDateString()}`
+                        : entry.get('date').toLocaleDateString()
+                      }</TableCell>
+                      <TableCell>{entry.get('createdAt').toLocaleDateString()}</TableCell>
+                      <TableCell>{entry.get('forSchool') ? <CheckIcon /> : 'Nein'}</TableCell>
+                      <TableCell>{truncate(entry.get('reason') || '-', 20, '...')}</TableCell>
                       <TableCell>{entry.get('signedManager')
                         ? <SignedAvatar />
                         : <UnsignedAvatar />
@@ -181,7 +194,7 @@ class extends React.Component<Props, State> {
           <Route render={({ history }) => (
             <Button
               color="primary"
-              fab
+              variant="fab"
               onClick={() => history.push('/createEntry')}
               className={classes.fab}
             >

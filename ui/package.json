@@ -1,13 +1,14 @@
 {
-  "name": "entschuldigungsverfahren-ui",
+  "name": "ente-ui",
+  "repository": "https://gitlab.com/skn0tt/EntE",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "axios": "^0.17.1",
     "immutable": "^3.8.2",
-    "material-ui": "^1.0.0-beta.25",
+    "material-ui": "^1.0.0-beta.33",
     "material-ui-icons": "^1.0.0-beta.17",
-    "material-ui-pickers": "^1.0.0-beta.11",
+    "material-ui-pickers": "^1.0.0-beta.15.1",
     "moment": "^2.20.1",
     "papaparse": "^4.3.6",
     "raven-for-redux": "^1.1.1",
@@ -19,7 +20,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-actions": "^2.2.1",
+    "redux-actions": "2.2.1",
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
@@ -28,7 +29,7 @@
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "test": "snyk test && react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "lint": "tslint --project ."
   },
@@ -47,6 +48,7 @@
     "@types/redux-immutable": "^3.0.38",
     "react-scripts-ts": "^2.8.0",
     "redux-devtools-extension": "^2.13.2",
+    "snyk": "^1.69.7",
     "tslint-config-airbnb": "^5.4.2"
   }
 }

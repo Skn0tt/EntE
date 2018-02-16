@@ -8,7 +8,7 @@ import * as select from '../../redux/selectors';
 import { AppState } from '../../interfaces/index';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
-import { ExitToApp as ExitToAppIcon } from 'material-ui-icons';
+import { PowerSettingsNew as PowerSettingsNewIcon } from 'material-ui-icons';
 import { Action } from 'redux-actions';
 import { logout } from '../../redux/actions';
 import ListItemIcon from 'material-ui/List/ListItemIcon';
@@ -24,7 +24,7 @@ const LoginStatus: React.SFC<Props & WithStyles<string>> = props => (
       <ListItem>
         <ListItemIcon>
           <IconButton aria-label="logout" onClick={() => props.logout()}>
-            <ExitToAppIcon />
+            <PowerSettingsNewIcon />
           </IconButton>
         </ListItemIcon>
         <ListItemText primary={props.displayname}/>

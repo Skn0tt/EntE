@@ -1,13 +1,14 @@
 import { Schema, model, Document, Model } from 'mongoose';
 import { MongoId } from '../constants';
 import * as idValidator from 'mongoose-id-validator';
+import * as timestamps from 'mongoose-timestamp';
 
 export interface EntryModel extends Document, IEntry {
   signParent(): void;
   signManager(): void;
 }
 
-export interface IEntry {
+export interface IEntryBase {
   date: Date;
   dateEnd: Date;
   student: MongoId;
@@ -17,6 +18,14 @@ export interface IEntry {
   signedManager: boolean;
   signedParent: boolean;
 }
+
+interface IEntryTimestamps {
+  createdAt: Date;
+  updatedAt: Date;
+}
+type IEntryPlugins = IEntryTimestamps;
+
+export type IEntry = IEntryBase & IEntryPlugins;
 
 /**
  * # Schema
@@ -34,6 +43,7 @@ const entrySchema: Schema = new Schema({
   versionKey: false,
 });
 entrySchema.plugin(idValidator);
+entrySchema.plugin(timestamps);
 
 /**
  * # Schema Methods

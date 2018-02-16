@@ -36,11 +36,4 @@ yarn-error.log*
 
 !resources/Paper/ContainerVsVM.jpg
 !resources/Paper/Screenshot-entries.png
-
-# CLI
-cli/dist
-cli/node_modules
-
-# util
-util/dist
-util/node_modules
+!ui/src/res/*.png

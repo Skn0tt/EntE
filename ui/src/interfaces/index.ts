@@ -67,6 +67,14 @@ export class User extends Record({
   get<T extends keyof IUser>(value: T): IUser[T] {
     return super.get(value);
   }
+  
+  isManager = () => this.get('role') === Roles.MANAGER;
+  isParent = () => this.get('role') === Roles.PARENT;
+  isAdmin = () => this.get('role') === Roles.ADMIN;
+  isStudent = () => this.get('role') === Roles.STUDENT;
+  isTeacher = () => this.get('role') === Roles.TEACHER;
+  
+  hasChildren = () => this.isManager() || this.isParent();
 }
 
 /**
@@ -117,6 +125,8 @@ export interface IEntry {
   forSchool: boolean;
   signedManager: boolean;
   signedParent: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IEntryCreate {
@@ -138,6 +148,8 @@ export class Entry extends Record({
   forSchool: false,
   signedManager: false,
   signedParent: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
 }) {
   constructor(props: Partial<IEntry>) {
     super(props);

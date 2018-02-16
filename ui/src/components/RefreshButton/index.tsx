@@ -39,9 +39,9 @@ const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props => (
             break;
         }
       }}
-      raised
+      variant="raised"
     >
-      Refresh
+      Aktualisieren
     </Button>
   ) : null
 );

@@ -1,7 +1,7 @@
-# EntschuldigungsVerfahren-API
+# EntE-API
 > Facharbeit Q1, Simon Knott
 
-This is the Backend of *Entschuldigungsverfahren*.
+This is the Backend of *EntE*.
 It is based upon Node.js and uses a MongoDB in the Background.
 It provides a simple REST-API that the frontend accesses.
 

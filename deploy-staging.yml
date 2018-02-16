@@ -7,7 +7,7 @@
   tasks:
     - name: Deploy
       docker_service:
-        project_name: Entschuldigungsverfahren
+        project_name: EntE
         pull: yes
         definition:
           version: '2'
@@ -17,7 +17,7 @@
               volumes:
                 - "/data/db"
             api:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/api:master
+              image: registry.gitlab.com/skn0tt/ente/api:master
               restart: always
               depends_on:
                 - mongodb
@@ -29,15 +29,15 @@
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
             ui:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/ui:master
+              image: registry.gitlab.com/skn0tt/ente/ui:master
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
                 - VIRTUAL_PATH=/
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
-            nginx-proxy:
-              image: registry.gitlab.com/skn0tt/entschuldigungsverfahren/nginx-proxy:master
+            proxy:
+              image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
               ports:
                 - 80:80
                 - 443:443
@@ -50,11 +50,10 @@
                 - "/usr/share/nginx/html"
               labels:
                 - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-            letsencrypt-nginx-proxy-companion:
+            letsencrypt:
               image: jrcs/letsencrypt-nginx-proxy-companion
               volumes_from:
-                - nginx-proxy
+                - proxy
               volumes:
                 - "/var/run/docker.sock:/var/run/docker.sock:ro"
-              environment:
-                - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
+              

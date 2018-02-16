@@ -9,16 +9,15 @@ import {
   withStyles,
   Drawer as MUIDrawer,
   WithStyles,
+  LinearProgress,
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
-import LoadingIndicator from '../LoadingIndicator';
 import * as select from '../../redux/selectors';
 
 import styles from './styles';
 import {
   AdminItems,
   ManagerItems,
-  StandardItems,
   TeacherItems,
   StudentItems,
   ParentItems,
@@ -59,13 +58,11 @@ class extends React.Component<Props, State> {
   handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
 
   render() {
-    const { classes } = this.props;
+    const { classes, loading } = this.props;
 
     const drawer = (
       <div>
         <LoginStatus />
-        <Divider />
-        <StandardItems />
         <Divider />
         {this.props.role === Roles.ADMIN && <AdminItems />}
         {this.props.role === Roles.TEACHER && <TeacherItems />}
@@ -77,20 +74,22 @@ class extends React.Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        {this.props.loading && <LoadingIndicator />}
         <div className={classes.appFrame}>
           <AppBar className={classes.appBar}>
+            {loading && <LinearProgress
+              variant="query"
+              className={classes.loadingIndicator}
+            />}
             <Toolbar>
               <IconButton
-                color="contrast"
                 aria-label="open drawer"
                 onClick={this.handleDrawerToggle}
                 className={classes.navIconHide}
               >
                 <MenuIcon />
               </IconButton>
-              <Typography type="title" color="inherit" noWrap>
-                EntschuldigungsVerfahren
+              <Typography variant="title" color="inherit" noWrap>
+                EntE
               </Typography>
               <div className={classes.grow} />
               <RefreshButton />
@@ -98,7 +97,7 @@ class extends React.Component<Props, State> {
           </AppBar>
           <Hidden mdUp>
             <MUIDrawer
-              type="temporary"
+              variant="temporary"
               open={this.state.mobileOpen}
               classes={{
                 paper: classes.drawerPaper,
@@ -113,7 +112,7 @@ class extends React.Component<Props, State> {
           </Hidden>
           <Hidden smDown implementation="css">
             <MUIDrawer
-              type="permanent"
+              variant="permanent"
               open
               classes={{
                 paper: classes.drawerPaper,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { WatchLater, InsertDriveFile, Person, Home as HomeIcon } from 'material-ui-icons';
+import { WatchLater, InsertDriveFile, Person } from 'material-ui-icons';
 import { Route } from 'react-router-dom';
 
 const Slots = () => (
@@ -40,25 +40,6 @@ const Entries = () => (
       </ListItem>
     )}
   />
-);
-
-const Home = () => (
-  <Route
-    render={({ history }) => (
-      <ListItem button onClick={() => history.push('/')}>
-        <ListItemIcon>
-          <HomeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Home" />
-      </ListItem>
-    )}
-  />
-);
-
-export const StandardItems = () => (
-  <List>
-    <Home />
-  </List>
 );
 
 export const AdminItems = () => (

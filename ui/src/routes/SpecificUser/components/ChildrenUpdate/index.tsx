@@ -48,7 +48,9 @@ class extends React.Component<Props, State> {
     selected: this.props.students.length > 0
       ? this.props.students[0].get('_id')
       : '',
-    children: this.props.getUser(this.props.userId).get('children'),
+    children:
+      this.props.getUser(this.props.userId)
+        && this.props.getUser(this.props.userId).get('children'),
   };
     
 
@@ -67,14 +69,14 @@ class extends React.Component<Props, State> {
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography type="title">
+          <Typography variant="title">
             Kinder
           </Typography>
         </Grid>
         {/* List Children */}
         <Grid item>
           <List>
-            {this.state.children.map((id, index) => (
+            {this.state.children && this.state.children.map((id, index) => (
               <ListItem>
                 <ListItemText primary={this.props.getUser(id).get('displayname')} />
                 <ListItemSecondaryAction>
@@ -109,12 +111,12 @@ class extends React.Component<Props, State> {
             </TextField>
           </Grid>
           <Grid item xs={1}>
-            <Button fab mini onClick={() => this.handleAdd()}>
+            <Button variant="fab" mini onClick={() => this.handleAdd()}>
               <AddIcon />
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Button raised color="primary" onClick={() => this.handleSubmit()}>
+            <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
               Kinder aktualisieren
               <UpdateIcon />
             </Button>
