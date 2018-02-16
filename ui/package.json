@@ -31,6 +31,7 @@
     "build": "react-scripts-ts build",
     "test": "snyk test && react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
+    "analyze": "source-map-explorer build/static/js/main.*",
     "lint": "tslint --project ."
   },
   "devDependencies": {
@@ -49,6 +50,7 @@
     "react-scripts-ts": "^2.8.0",
     "redux-devtools-extension": "^2.13.2",
     "snyk": "^1.69.7",
+    "source-map-explorer": "^1.5.0",
     "tslint-config-airbnb": "^5.4.2"
   }
 }
