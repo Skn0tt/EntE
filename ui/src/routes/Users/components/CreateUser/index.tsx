@@ -3,8 +3,8 @@ import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
-import * as select from '../../redux/selectors';
-import { AppState, User, Roles, IUserCreate, MongoId } from '../../interfaces/index';
+import * as select from '../../../../redux/selectors';
+import { AppState, User, Roles, IUserCreate, MongoId } from '../../../../interfaces/index';
 
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
@@ -19,18 +19,17 @@ import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import { Action } from 'redux';
-import { createUserRequest } from '../../redux/actions';
+import { createUserRequest } from '../../../../redux/actions';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
-import validateEmail from '../../services/validateEmail';
+import validateEmail from '../../../../services/validateEmail';
 
-interface IProps {
-  students: User[];
-  getUser(id: MongoId): User;
-  createUser(user: IUserCreate): Action;
+interface OwnProps {
+  onClose(): void;
+  show: boolean;
 }
 
 interface InjectedProps {
@@ -41,20 +40,33 @@ interface State extends IUserCreate {
   selectedChild: MongoId;
 }
 
+interface StateProps {
+  students: User[];
+  getUser(id: MongoId): User;
+}
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
   students: select.getStudents(state),
 });
 
+interface DispatchProps {
+  createUser(user: IUserCreate): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createUser: (user: IUserCreate) => dispatch(createUserRequest(user)),
 });
 
-type Props = IProps & RouteComponentProps<{}> & WithStyles<string> & InjectedProps;
+type Props =
+  OwnProps &
+  StateProps &
+  DispatchProps &
+  RouteComponentProps<{}> &
+  WithStyles<string> &
+  InjectedProps;
 
 const CreateUser =
   connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<IProps>()(
+  withMobileDialog<OwnProps & StateProps & DispatchProps>()(
   withRouter(
   withStyles(styles)(
 class extends React.Component<Props, State> {
@@ -74,7 +86,7 @@ class extends React.Component<Props, State> {
   /**
    * ## Action Handlers
    */
-  handleGoBack = () => this.props.history.push('/');
+  handleGoBack = () => this.props.onClose();
   
   handleClose = () => this.handleGoBack();
 
@@ -154,7 +166,7 @@ class extends React.Component<Props, State> {
       <Dialog
         fullScreen={this.props.fullScreen}
         onClose={this.handleGoBack}
-        open
+        open={this.props.show}
       >
         <DialogTitle>Neuer Nutzer</DialogTitle>
         <DialogContent>
