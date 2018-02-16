@@ -4,16 +4,20 @@ import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { Dialog, Grid, Button } from 'material-ui';
 import { withMobileDialog } from 'material-ui/Dialog';
 import { connect } from 'react-redux';
-import { AppState, IUserCreate } from '../../interfaces/index';
+import { AppState, IUserCreate } from '../../../../interfaces/index';
 import { Dispatch, Action } from 'redux';
-import { RouteComponentProps } from 'react-router';
 // tslint:disable-next-line:import-name
 import Dropzone from 'react-dropzone';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import parseCSV from './services/parseCSV';
-import { createUserRequest, addMessage } from '../../redux/actions';
-import UnsignedAvatar from '../SpecificEntry/elements/UnsignedAvatar';
-import SignedAvatar from '../SpecificEntry/elements/SignedAvatar';
+import { createUserRequest, addMessage } from '../../../../redux/actions';
+import UnsignedAvatar from '../../../SpecificEntry/elements/UnsignedAvatar';
+import SignedAvatar from '../../../SpecificEntry/elements/SignedAvatar';
+
+interface OwnProps {
+  onClose(): void;
+  show: boolean;
+}
 
 interface StateProps {}
 const mapStateToProps = (state: AppState) => ({});
@@ -36,12 +40,17 @@ interface State {
   error: boolean;
 }
 
-type Props = DispatchProps & StateProps & WithStyles & InjectedProps & RouteComponentProps<{}>;
+type Props =
+  OwnProps &
+  DispatchProps &
+  StateProps &
+  WithStyles &
+  InjectedProps;
 
 const ImportUsers =
   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<OwnProps & DispatchProps & StateProps>()(
   withStyles(styles)(
-  withMobileDialog<Props>()(
 class extends React.Component<Props, State> {
   state: State = {
     users: [],
@@ -58,7 +67,7 @@ class extends React.Component<Props, State> {
     }
   }
 
-  handleClose = () => this.props.history.goBack();
+  handleClose = () => this.props.onClose();
   handleSubmit = async () => {
     this.props.createUsers(this.state.users);
   }
@@ -73,8 +82,8 @@ class extends React.Component<Props, State> {
     return (
       <Dialog
         fullScreen={props.fullScreen}
-        onClose={() => props.history.goBack()}
-        open
+        onClose={this.handleClose}
+        open={this.props.show}
       >
         <Grid container direction="column">
           <Grid item xs={12}>

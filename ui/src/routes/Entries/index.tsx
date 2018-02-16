@@ -24,6 +24,7 @@ import { getEntriesRequest } from '../../redux/actions';
 import { Route } from 'react-router';
 import TextField from 'material-ui/TextField/TextField';
 import Button from 'material-ui/Button/Button';
+import CreateEntry from './components/CreateEntry';
 
 interface StateProps {
   entries: Entry[];
@@ -49,6 +50,7 @@ interface State {
   searchTerm: string;
   sortField: Rows;
   sortUp: boolean;
+  showCreateEntry: boolean;
 }
 type Props = StateProps & DispatchProps & WithStyles;
 
@@ -67,11 +69,15 @@ class extends React.Component<Props, State> {
     searchTerm: '',
     sortField: 'date',
     sortUp: true,
+    showCreateEntry: false,
   };
 
   componentDidMount() {
     this.props.getEntries();
   }
+
+  showCreateEntry = () => this.setState({ showCreateEntry: true });
+  closeCreateEntry = () => this.setState({ showCreateEntry: false });
 
   sort = (a: Entry, b: Entry): number => {
     if (this.state.sortField === 'name') {
@@ -129,80 +135,83 @@ class extends React.Component<Props, State> {
     const { classes } = this.props;
 
     return (
-      <Grid container direction="column">
-        <Grid item container direction="row">
-          <Grid item xs={12}>
-            <TextField
-              placeholder="Suchen"
-              fullWidth
-              className={classes.searchBar}
-              onChange={this.handleChangeSearch}
-            />
-          </Grid>
-        </Grid>
-        <Grid item className={classes.table}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <this.TableHeadCell field="name">Name</this.TableHeadCell>
-                <this.TableHeadCell field="date">Datum</this.TableHeadCell>
-                <this.TableHeadCell field="createdAt">Erstellt</this.TableHeadCell>
-                <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
-                <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
-                <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
-                <this.TableHeadCell field="signedParent">Eltern</this.TableHeadCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.entries.filter(this.filter).sort(this.sort).map(entry => (
-                <Route
-                  key={entry.get('_id')}
-                  render={({ history }) => (
-                    <TableRow
-                      onClick={() => history.push(`/entries/${entry.get('_id')}`)}
-                      hover
-                    >
-                      <TableCell>{
-                        this.props
-                          .getUser(entry.get('student'))
-                          .get('displayname')
-                        }</TableCell>
-                      <TableCell>{entry.get('dateEnd')
-                        ? `${entry.get('date').toLocaleDateString()} -
-                        ${entry.get('dateEnd')!.toLocaleDateString()}`
-                        : entry.get('date').toLocaleDateString()
-                      }</TableCell>
-                      <TableCell>{entry.get('createdAt').toLocaleDateString()}</TableCell>
-                      <TableCell>{entry.get('forSchool') ? <CheckIcon /> : 'Nein'}</TableCell>
-                      <TableCell>{truncate(entry.get('reason') || '-', 20, '...')}</TableCell>
-                      <TableCell>{entry.get('signedManager')
-                        ? <SignedAvatar />
-                        : <UnsignedAvatar />
-                      }</TableCell>
-                      <TableCell>{entry.get('signedParent')
-                        ? <SignedAvatar />
-                        : <UnsignedAvatar />
-                      }</TableCell>
-                    </TableRow>
-                  )}
+        <React.Fragment>
+          <Grid container direction="column">
+            <Grid item container direction="row">
+              <Grid item xs={12}>
+                <TextField
+                  placeholder="Suchen"
+                  fullWidth
+                  className={classes.searchBar}
+                  onChange={this.handleChangeSearch}
                 />
-              ))}
-            </TableBody>
-          </Table>
-        </Grid>
-        {(this.props.role === Roles.PARENT || this.props.role === Roles.STUDENT) &&
-          <Route render={({ history }) => (
-            <Button
-              color="primary"
-              variant="fab"
-              onClick={() => history.push('/createEntry')}
-              className={classes.fab}
-            >
-              <AddIcon />
-            </Button>
-          )}/>
-        }
-      </Grid>
+              </Grid>
+            </Grid>
+            <Grid item className={classes.table}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <this.TableHeadCell field="name">Name</this.TableHeadCell>
+                    <this.TableHeadCell field="date">Datum</this.TableHeadCell>
+                    <this.TableHeadCell field="createdAt">Erstellt</this.TableHeadCell>
+                    <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
+                    <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
+                    <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
+                    <this.TableHeadCell field="signedParent">Eltern</this.TableHeadCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.props.entries.filter(this.filter).sort(this.sort).map(entry => (
+                    <Route
+                      key={entry.get('_id')}
+                      render={({ history }) => (
+                        <TableRow
+                          onClick={() => history.push(`/entries/${entry.get('_id')}`)}
+                          hover
+                        >
+                          <TableCell>{
+                            this.props
+                              .getUser(entry.get('student'))
+                              .get('displayname')
+                            }</TableCell>
+                          <TableCell>{entry.get('dateEnd')
+                            ? `${entry.get('date').toLocaleDateString()} -
+                            ${entry.get('dateEnd')!.toLocaleDateString()}`
+                            : entry.get('date').toLocaleDateString()
+                          }</TableCell>
+                          <TableCell>{entry.get('createdAt').toLocaleDateString()}</TableCell>
+                          <TableCell>{entry.get('forSchool') ? <CheckIcon /> : 'Nein'}</TableCell>
+                          <TableCell>{truncate(entry.get('reason') || '-', 20, '...')}</TableCell>
+                          <TableCell>{entry.get('signedManager')
+                            ? <SignedAvatar />
+                            : <UnsignedAvatar />
+                          }</TableCell>
+                          <TableCell>{entry.get('signedParent')
+                            ? <SignedAvatar />
+                            : <UnsignedAvatar />
+                          }</TableCell>
+                        </TableRow>
+                      )}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+            {(this.props.role === Roles.PARENT || this.props.role === Roles.STUDENT) &&
+              <Route render={({ history }) => (
+                <Button
+                  color="primary"
+                  variant="fab"
+                  onClick={this.showCreateEntry}
+                  className={classes.fab}
+                >
+                  <AddIcon />
+                </Button>
+              )}/>
+            }
+          </Grid>
+          <CreateEntry onClose={this.closeCreateEntry} show={this.state.showCreateEntry} />
+        </React.Fragment>
     );
   }
 }));

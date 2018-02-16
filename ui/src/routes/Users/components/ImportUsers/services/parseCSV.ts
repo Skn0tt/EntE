@@ -1,4 +1,4 @@
-import { IUserCreate } from '../../../interfaces/index';
+import { IUserCreate } from '../../../../../interfaces/index';
 import { parse as papaparse, ParseResult } from 'papaparse';
 
 const parse = function (file: File) {

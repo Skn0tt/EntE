@@ -7,9 +7,6 @@ import Users from './routes/Users';
 import SpecificEntry from './routes/SpecificEntry';
 import SpecificUser from './routes/SpecificUser';
 import Slots from './routes/Slots';
-import CreateEntry from './routes/CreateEntry';
-import CreateUser from './routes/CreateUser';
-import ImportUsers from './routes/ImportUsers';
 import NotFound from './routes/NotFound';
 
 const AdminRoutes = () => (
@@ -19,8 +16,6 @@ const AdminRoutes = () => (
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
-      <Route path="/createUser" component={CreateUser} />
-      <Route path="/importUsers" component={ImportUsers} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
@@ -35,7 +30,6 @@ const ParentRoutes = () => (
     <Switch>
       <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
-      <Route path="/createEntry" component={CreateEntry} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
