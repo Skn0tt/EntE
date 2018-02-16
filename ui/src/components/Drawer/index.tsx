@@ -9,9 +9,9 @@ import {
   withStyles,
   Drawer as MUIDrawer,
   WithStyles,
+  LinearProgress,
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
-import LoadingIndicator from '../LoadingIndicator';
 import * as select from '../../redux/selectors';
 
 import styles from './styles';
@@ -58,7 +58,7 @@ class extends React.Component<Props, State> {
   handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
 
   render() {
-    const { classes } = this.props;
+    const { classes, loading } = this.props;
 
     const drawer = (
       <div>
@@ -74,9 +74,12 @@ class extends React.Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        {this.props.loading && <LoadingIndicator />}
         <div className={classes.appFrame}>
           <AppBar className={classes.appBar}>
+            {loading && <LinearProgress
+              variant="query"
+              className={classes.loadingIndicator}
+            />}
             <Toolbar>
               <IconButton
                 aria-label="open drawer"

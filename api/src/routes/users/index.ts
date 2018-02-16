@@ -38,11 +38,17 @@ const populate: RequestHandler = async (request: UserRequest, response, next) =>
     const slots = await Slot
       .find({ _id: { $in: slotIds } });
 
-    const teacherIds: MongoId[] = [];
-    slots.forEach(slot => teacherIds.push(slot.teacher));
+    const relatedUsers: MongoId[] = [];
+    
+    // Teachers
+    slots.forEach(slot => relatedUsers.push(slot.teacher));
+
+    // Children
+    users.forEach(user => relatedUsers.push(...user.children));
+    
     users = users.concat(...(
       await User
-        .find({ _id: { $in: teacherIds } })
+        .find({ _id: { $in: relatedUsers } })
         .select('-password')
       ),
     );
