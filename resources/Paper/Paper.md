@@ -68,15 +68,14 @@ So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldun
 3. Er lässt diesen Eintrag von seinem Stufenleiter unterzeichnen.
 4. Er lässt diesen Eintrag von jeder Lehrkraft, deren Unterricht er versäumte, unterzeichnen.
 
-Der zweite Teil des Prozesses muss innerhalb von 14 Tagen nach Rückkehr in den Unterricht vollendet werden, andernfalls wird der Eintrag vom Stufenleiter nicht akzeptiert.
+Schritt Zwei muss innerhalb einer Woche nach Rückkehr in den Unterricht vollendet werden, für Schritt Vier ist dann eine weitere Woche Zeit.
 
 ### Aufwandsabschätzung
 Als Schüler ist es also pro Eintrag notwendig, $1 + 1 + n$ Unterschriften zu sammeln, wobei $n = \text{Versäumte Lehrer}$.
 Fehlt man einen Tag lang, so sind das bei $5$ Lehrern schon $7$ Unterschriften.
 Jede Unterschrift, die man vergisst, bedeutet für die unentschuldigte Stunde eine Null-Bewertung und kann die Zeugnis-Note erheblich beeinträchtigen.
 
-Verfehlt ein Schüler die 14-tägige Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und auf dem Zeugnis als solche vermerkt.
-Dabei ist es in einigen Fällen gar nicht möglich, diese Frist einzuhalten, zum Beispiel wenn der betroffene Lehrer selbst krank ist.
+Verfehlt ein Schüler die Frist, sind alle bis dahin nicht unterzeichneten Stunden unentschuldigt und auf dem Zeugnis als solche vermerkt.
 Das aktuelle System ist also aufgrund der genannten Punkte für Schüler viel Arbeit und fehleranfällig.
 
 Der Stufenleiter ist innerhalb des Verfahrens die koordinierende und kontrollierende Instanz:
@@ -85,8 +84,6 @@ Dafür muss er bei Krankheit in einer gemeinsam mit dem Sekretariat geführten E
 Alleine die Anfrage an die Tabelle dauert pro Eintrag einige Zeit, da die Tabelle sehr groß ist.
 Ist dann der Eintrag überprüft, muss bei einigen Schülern noch nach Regelmäßigkeiten oder Auffälligkeiten gesucht werden, die auf gezieltes Verpassen des Unterrichts hindeuten.
 
-TODO: Kühn fragen, ob das alles, richtig ist; fragen, ob ihm die Nennung recht ist
-
 Laut Angaben von *Thilo Kühn*, einem der Stufenleiter am Ernst-Moritz-Arndt-Gymnasium, nimmt diese Arbeit jede Woche gut zwei Stunden in Anspruch und fällt für jede der drei Stufen an.
 
 Auch die Fachlehrer haben einen großen Aufwand:  
@@ -94,6 +91,7 @@ Ihnen werden in jeder Stunde Entschuldigungszettel vorgelegt, die sie dann in ih
 Dafür nutzen die meisten Lehrer Einzelarbeitsphasen, in denen sie dann weder Schülern helfen noch anderen Aufgaben nachkommen können.
 Der Arbeitsaufwand für diese Zettel ist nicht so hoch wie für die Stufenleiter, birgt allerdings eine hohe Fehleranfälligkeit:
 Wird ein Entschuldigungszettel unterschrieben, aber der Eintrag im Kursheft nicht als "Entschuldigt" markiert, so gilt diese Stunde immer noch als "Unentschuldigt" - der Schüler denkt aber, der Prozess sei für ihn abgeschlossen.
+Des weiteren birgt die Unterscheidung zwischen *schulischen* und *nicht-schulischen* Anträgen für den Fachlehrer Verwechslungsgefahr, da ein *schulisches* Versäumnis nicht auf dem Zeugnis gelistet wird.
 
 Das aktuelle Verfahren beruht auf vielen repetitiven, manuellen Arbeitsschritten.
 Viele davon sind sehr gut automatisierbar:
