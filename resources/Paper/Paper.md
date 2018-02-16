@@ -60,6 +60,7 @@ Der Entschuldigungsprozess läuft wie folgt ab:
 
 Zweck des Anrufes ist es, die Schule über den Krankheitsfall zu unterrichten.
 So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldung erhalten hat, versäumte Klausuren dürfen ohne diese Mitteilung nicht nachgeschrieben werden.
+[vgl. @schulgesetz]
 
 *Nach Wiederkehr des Schülers sind folgende Schritte notwendig:*
 
@@ -153,13 +154,13 @@ Die für *EntE* wichtigen Daten sind aufgeführt:
 >   - Beginn, Ende, Grund
 > - Schulversäumnis:
 >   - Beginn, Ende, Grund
-> [@sgvnrw2017]
+> [vgl. @sgvnrw2017]
 
 Ab dem 25. Mai 2018 ist die neue Datenschutz-Grundverordnung (DSGVO) umzusetzen.
 Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten erfassen.
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das hier vorgestellte Entschuldigungsverfahren.
 Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
-Da es für *EntE* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [@iXdsgvo].
+Da es für *EntE* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [vgl. @iXdsgvo].
 
 # Modellierung
 ## Prozess
@@ -241,7 +242,7 @@ Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performan
 
 ### API
 Die anzuzeigenden Daten erhält der Client von einer API.
-Diese ist nach dem REST-Prinzip [@rest] aufgebaut und zeichnet sich insbesondere durch die Darstellung der Daten als *Ressourcen* sowie die *Zustandslosigkeit* des Protokolls aus.
+Diese ist nach dem REST-Prinzip [vgl. @rest] aufgebaut und zeichnet sich insbesondere durch die Darstellung der Daten als *Ressourcen* sowie die *Zustandslosigkeit* des Protokolls aus.
 
 #### Routen
 Die Modellierung auf *Ressourcen*-Basis bedeutet, dass die Pfade der API jeweils einer Ressource bzw. einem Datensatz entsprechen.
@@ -483,7 +484,7 @@ Einzelne Container sind dadurch wie VMs voneinander abgeschirmt, weisen aber nic
 ![Containers vs. VMs [@Docker:ContainerVsVM]\label{containerVsVM}](ContainerVsVM.jpg)
 
 Ein IBM Research Report aus dem Jahr 2014 hat die Performance-Unterschiede zwischen den beiden Industrie-Standards KVM (Virtualisierung) und Docker (Containerisierung) untersucht.
-Dabei war die Performance von Docker-Containern in fast allen Fällen mit gleichauf mit nativen Deployments, KVM zeigt sich in allen Disziplinen bis auf Netzwerk-Latenz und Sequenzielles Lesen deutlich weniger performant [@Docker:ContainerVsVM].
+Dabei war die Performance von Docker-Containern in fast allen Fällen mit gleichauf mit nativen Deployments, KVM zeigt sich in allen Disziplinen bis auf Netzwerk-Latenz und Sequenzielles Lesen deutlich weniger performant [@felter2015updated].
 
 Durch den verschwindend geringen Overhead ermöglicht eine Container-Basierte Anwendung sogennante *Microservice-Architekturen*.
 Dabei ist eine Anwendung in mehrere zustandslose Dienste aufgeteilt, die unabängig von einander ausgeliefert werden und über ein platformagnostisches Protokoll wie HTTP oder eine Message Queue miteinander kommunizieren.
@@ -493,8 +494,8 @@ Die gesamte Anwendung kann so sehr genau an die aktuelle Situation angepasst wer
 Durch die horizontale Skalierung wird die Anwendung außerdem resilienter, da ein fehlerhafter Dienst einfach ersetzt werden kann, und es können Rolling-Deployments ohne Downtime durchgeführt werden.
 
 Große Unternehmen setzen schon länger auf vollständig Containerisierte Anwendungen.
-So berichtet Netflix von über einer Million gestarteter Container pro Woche [@containersAtNetflix], Google sogar mehr als zwei Millionen [@containersAtGoogle].
-Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen werden, da in Test-Umgebungen dieselben Container wie in Produktiv-Umgebungen verwendet werden und es keine Fehler durch unterschiedliche Versionen der Abhängigkeiten mehr gibt [@containersAtNetflix].
+So berichtet Netflix von über einer Million gestarteter Container pro Woche [vgl. @containersAtNetflix], Google sogar mehr als zwei Millionen [vgl. @containersAtGoogle].
+Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen werden, da in Test-Umgebungen dieselben Container wie in Produktiv-Umgebungen verwendet werden und es keine Fehler durch unterschiedliche Versionen der Abhängigkeiten mehr gibt [vgl. @containersAtNetflix].
 
 Microservices und Container haben großes Potential, um die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
 Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
