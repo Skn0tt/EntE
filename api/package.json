@@ -17,7 +17,7 @@
     "prettier": "prettier --write src/**/*"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json,css,md}": ["yarn prettier", "git add"]
+    "*.{ts,tsx}": ["yarn prettier", "git add"]
   },
   "dependencies": {
     "bcrypt": "1.0.3",
