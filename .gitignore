@@ -32,5 +32,9 @@ yarn-error.log*
 # Paper
 *.pdf
 *.png
-!ui/src/res/*.png
 
+*.jpg
+
+!resources/Paper/ContainerVsVM.jpg
+!resources/Paper/Screenshot-entries.png
+!ui/src/res/img/*.png

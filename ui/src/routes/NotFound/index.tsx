@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Grid, Typography, WithStyles, withStyles } from 'material-ui';
 import styles from './styles';
 
-const Diggie = require('../../res/Diggie.png');
+const Diggie = require('../../res/img/Diggie.png');
 
 type Props = WithStyles;
 

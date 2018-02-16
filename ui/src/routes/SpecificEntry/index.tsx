@@ -26,6 +26,7 @@ import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
+import lang from '../../res/lang';
 
 interface RouteMatch {
   entryId: MongoId;
@@ -173,7 +174,7 @@ class extends React.Component<Props> {
                           className={classes.signEntryButton}
                           onClick={() => props.signEntry(entry.get('_id'))}
                         >
-                          Sign
+                          {lang().ui.specificEntry.sign}
                           <AssignmentTurnedInIcon />
                         </Button>
                       </ListItemSecondaryAction>
@@ -193,7 +194,7 @@ class extends React.Component<Props> {
                           className={classes.signEntryButton}
                           onClick={() => props.signEntry(entry.get('_id'))}
                         >
-                          Sign
+                          {lang().ui.specificEntry.sign}
                           <AssignmentTurnedInIcon />
                         </Button>
                       </ListItemSecondaryAction>
