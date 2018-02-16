@@ -7,6 +7,7 @@ services:
       - "/data/db"
   api:
     build: ./api
+    image: registry.gitlab.com/skn0tt/ente/api
     restart: always
     depends_on:
       - mongodb
@@ -16,12 +17,14 @@ services:
       - VIRTUAL_PATH=/api/
   ui:
     build: ./ui
+    image: registry.gitlab.com/skn0tt/ente/ui
     restart: always
     environment:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
   nginx-proxy:
     build: ./nginx-proxy
+    image: registry.gitlab.com/skn0tt/ente/nginx-proxy
     ports:
       - 80:80
       - 443:443

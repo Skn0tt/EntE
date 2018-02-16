@@ -12,13 +12,25 @@
     {
       "label": "SpinUp Dev",
       "type": "shell",
-      "command": "./start-dev.sh",
+      "command": "docker-compose -f docker-compose.yml -f docker-compose.override.yml up",
       "problemMatcher": []
     },
     {
       "label": "SpinUp UI",
       "type": "shell",
       "command": "cd ui && yarn start",
+      "problemMatcher": []
+    },
+    {
+      "label": "Watch API",
+      "type": "shell",
+      "command": "cd api && yarn watch",
+      "problemMatcher": []
+    },
+    {
+      "label": "Attach Logs",
+      "type": "shell",
+      "command": "docker-compose -f docker-compose.yml -f docker-compose.override.yml logs -f",
       "problemMatcher": []
     }
   ]

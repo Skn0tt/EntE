@@ -48,7 +48,9 @@ class extends React.Component<Props, State> {
     selected: this.props.students.length > 0
       ? this.props.students[0].get('_id')
       : '',
-    children: this.props.getUser(this.props.userId).get('children'),
+    children:
+      this.props.getUser(this.props.userId)
+        && this.props.getUser(this.props.userId).get('children'),
   };
     
 
@@ -74,7 +76,7 @@ class extends React.Component<Props, State> {
         {/* List Children */}
         <Grid item>
           <List>
-            {this.state.children.map((id, index) => (
+            {this.state.children && this.state.children.map((id, index) => (
               <ListItem>
                 <ListItemText primary={this.props.getUser(id).get('displayname')} />
                 <ListItemSecondaryAction>
