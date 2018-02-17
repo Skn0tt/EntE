@@ -30,10 +30,7 @@ const MessageStream: React.SFC<Props> = props => (
         onClose={() => props.removeMessage(index)}
         open
         action={
-          <IconButton
-            onClick={() => props.removeMessage(index)}
-            color="inherit"
-          >
+          <IconButton onClick={() => props.removeMessage(index)} color="inherit">
             <CloseIcon />
           </IconButton>
         }

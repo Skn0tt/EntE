@@ -27,7 +27,7 @@ const LoginStatus: React.SFC<Props & WithStyles<string>> = props => (
             <PowerSettingsNewIcon />
           </IconButton>
         </ListItemIcon>
-        <ListItemText primary={props.displayname}/>
+        <ListItemText primary={props.displayname} />
       </ListItem>
     </List>
   </div>

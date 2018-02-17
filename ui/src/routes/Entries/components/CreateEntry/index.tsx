@@ -4,26 +4,12 @@ import { connect, Dispatch } from 'react-redux';
 import styles from './styles';
 
 import * as select from '../../../../redux/selectors';
-import {
-  AppState,
-  User,
-  MongoId,
-  ISlotCreate,
-  IEntryCreate,
-} from '../../../../interfaces/index';
+import { AppState, User, MongoId, ISlotCreate, IEntryCreate } from '../../../../interfaces/index';
 import { Action } from 'redux';
 import { DatePicker } from 'material-ui-pickers';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import {
-  Dialog,
-  Button,
-  List as MUIList,
-  TextField,
-  Grid,
-  Checkbox,
-  Icon,
-} from 'material-ui';
+import { Dialog, Button, List as MUIList, TextField, Grid, Checkbox, Icon } from 'material-ui';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
@@ -84,275 +70,250 @@ const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
 
-interface DispatchProps {
+interface DispatchProps {
   createEntry(entry: IEntryCreate): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry)),
 });
 
-type Props =
-  OwnProps & 
+type Props = OwnProps &
   DispatchProps &
   StateProps &
   RouteComponentProps<{}> &
   WithStyles<string> &
   InjectedProps;
 
-const CreateEntry =
-  connect(mapStateToProps, mapDispatchToProps)(
+const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<OwnProps & DispatchProps & StateProps>()(
-  withRouter(
-  withStyles(styles)(
-class extends React.Component<Props, State> {
-  state: State = {
-    student: this.props.children.length > 0
-      ? this.props.children[0].get('_id')
-      : undefined,
-    isRange: false,
-    date: new Date(),
-    dateEnd: new Date(),
-    reason: '',
-    slots: [],
-    forSchool: false,
-  };
+    withRouter(
+      withStyles(styles)(
+        class extends React.Component<Props, State> {
+          state: State = {
+            student: this.props.children.length > 0 ? this.props.children[0].get('_id') : undefined,
+            isRange: false,
+            date: new Date(),
+            dateEnd: new Date(),
+            reason: '',
+            slots: [],
+            forSchool: false,
+          };
 
-  /**
-   * ## Action Handlers
-   */
-  handleSubmit = () => this.props.createEntry({
-    date: this.state.date,
-    dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
-    slots: this.state.isRange ? [] : this.state.slots,
-    reason: this.state.reason,
-    forSchool: this.state.forSchool,
-    student: this.state.student,
-  })
+          /**
+           * ## Action Handlers
+           */
+          handleSubmit = () =>
+            this.props.createEntry({
+              date: this.state.date,
+              dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
+              slots: this.state.isRange ? [] : this.state.slots,
+              reason: this.state.reason,
+              forSchool: this.state.forSchool,
+              student: this.state.student,
+            });
 
-  handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
-    if (event.key === 'Enter' && this.inputValid()) {
-      this.handleSubmit();
-    }
-  }
+          handleKeyPress: React.KeyboardEventHandler<{}> = event => {
+            if (event.key === 'Enter' && this.inputValid()) {
+              this.handleSubmit();
+            }
+          };
 
-  /**
-   * ## Input Handlers
-   */
-  handleChangeDate = (date: Date) => {
-    const dateEnd = this.state.dateEnd <= date
-      ? new Date(+date + oneDay)
-      : this.state.dateEnd;
-    
-    this.setState({ date, dateEnd });
-  }
-  handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-  handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ forSchool: event.target.checked })
+          /**
+           * ## Input Handlers
+           */
+          handleChangeDate = (date: Date) => {
+            const dateEnd =
+              this.state.dateEnd <= date ? new Date(+date + oneDay) : this.state.dateEnd;
 
-  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ isRange: event.target.checked })
+            this.setState({ date, dateEnd });
+          };
+          handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
+          handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
+            this.setState({ forSchool: event.target.checked });
 
-  handleAddSlot = (slot: ISlotCreate) => {
-    if (this.state.slots.indexOf(slot) !== -1) return;
+          handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
+            this.setState({ isRange: event.target.checked });
 
-    this.setState({ slots: [...this.state.slots, slot] });
-  }
+          handleAddSlot = (slot: ISlotCreate) => {
+            if (this.state.slots.indexOf(slot) !== -1) return;
 
-  handleChangeReason = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ reason: event.target.value })
+            this.setState({ slots: [...this.state.slots, slot] });
+          };
 
-  handleRemoveSlot = (index: number) =>
-    this.setState({ slots: immutableDelete(this.state.slots, index) })
+          handleChangeReason = (event: React.ChangeEvent<HTMLInputElement>) =>
+            this.setState({ reason: event.target.value });
 
-  handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ student: event.target.value })
+          handleRemoveSlot = (index: number) =>
+            this.setState({ slots: immutableDelete(this.state.slots, index) });
 
-  /**
-   * ## Validation
-   */
-  dateValid = (): boolean => (
-    // Less than 14 Days ago
-    +this.state.date > +this.minDate
-  )
-  dateEndValid = (): boolean => (
-    !this.state.isRange ||
-    +this.state.dateEnd > +this.state.date
-  )
-  studentValid = (): boolean => (
-    !this.props.isParent ||
-    !!this.state.student
-  )
-  slotsValid = (): boolean => (
-    this.state.isRange ||
-    this.state.slots.length > 0
-  )
-  reasonValid = (): boolean => (
-    !this.state.reason ||
-    this.state.reason.length < 300
-  )
+          handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
+            this.setState({ student: event.target.value });
 
-  inputValid = () => (
-    this.dateValid() &&
-    this.dateEndValid() &&
-    this.reasonValid() &&
-    this.studentValid() &&
-    this.slotsValid()
-  )
+          /**
+           * ## Validation
+           */
+          dateValid = (): boolean =>
+            // Less than 14 Days ago
+            +this.state.date > +this.minDate;
+          dateEndValid = (): boolean =>
+            !this.state.isRange || +this.state.dateEnd > +this.state.date;
+          studentValid = (): boolean => !this.props.isParent || !!this.state.student;
+          slotsValid = (): boolean => this.state.isRange || this.state.slots.length > 0;
+          reasonValid = (): boolean => !this.state.reason || this.state.reason.length < 300;
 
-  /**
-   * ## Data
-   */
-  minDate: Date = new Date(+new Date - 14 * 24 * 60 * 60 * 1000);
+          inputValid = () =>
+            this.dateValid() &&
+            this.dateEndValid() &&
+            this.reasonValid() &&
+            this.studentValid() &&
+            this.slotsValid();
 
-  render() {
-    const { isParent } = this.props;
+          /**
+           * ## Data
+           */
+          minDate: Date = new Date(+new Date() - 14 * 24 * 60 * 60 * 1000);
 
-    return (
-      <Dialog
-        fullScreen={this.props.fullScreen}
-        onClose={this.props.onClose}
-        open={this.props.show}
-      >
-        <DialogTitle>Neuer Eintrag</DialogTitle>
-        <DialogContent>
-          <Grid container direction="column" spacing={40}>
-            <Grid item container direction="column">
-              <Grid item container direction="row">
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={this.state.isRange}
-                        onChange={this.handleChangeIsRange}
-                      />
-                    }
-                    label="Mehrtägig"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={this.state.forSchool}
-                          onChange={this.handleChangeForSchool}
-                        />
-                      }
-                      label="Schulisch"
-                    />
-                </Grid>
-              </Grid>
-              {isParent && (
-                <Grid item >
-                  <TextField
-                    fullWidth
-                    select
-                    label="Kind"
-                    value={this.state.student}
-                    onChange={this.handleChangeStudent}
-                    helperText="Wählen sie das betroffene Kind aus."
-                  >
-                    {this.props.children.map(child => (
-                      <MenuItem
-                        key={child.get('_id')}
-                        value={child.get('_id')}
-                      >
-                        {child.get('displayname')}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              )}
-              <Grid item={true} >
-                <Grid container={true} direction="row" >
-                  <Grid item={true} xs={this.state.isRange ? 6 : 12} >
-                    <DatePicker
-                      helperText="Von"
-                      leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
-                      rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
-                      labelFunc={
-                        (date: moment.Moment, invalidLabel: string) => !!date
-                          ? date.toDate().toLocaleDateString()
-                          : invalidLabel
-                      }
-                      error={!this.dateValid()}
-                      value={this.state.date}
-                      autoOk
-                      onChange={this.handleChangeDate}
-                      minDate={this.minDate}
-                      fullWidth
-                    />
-                  </Grid>
-                  {this.state.isRange && (
-                    <Grid item={true} xs={6} >
-                      <DatePicker
-                        helperText="Bis"
-                        error={!this.dateValid()}
-                        value={this.state.dateEnd}
-                        labelFunc={
-                          (date: moment.Moment, invalidLabel: string) => !!date
-                          ? date.toDate().toLocaleDateString()
-                            : invalidLabel
-                        }
-                        autoOk
-                        onChange={this.handleChangeDateEnd}
-                        minDate={this.state.date}
+          render() {
+            const { isParent } = this.props;
+
+            return (
+              <Dialog
+                fullScreen={this.props.fullScreen}
+                onClose={this.props.onClose}
+                open={this.props.show}
+              >
+                <DialogTitle>Neuer Eintrag</DialogTitle>
+                <DialogContent>
+                  <Grid container direction="column" spacing={40}>
+                    <Grid item container direction="column">
+                      <Grid item container direction="row">
+                        <Grid item xs={6}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={this.state.isRange}
+                                onChange={this.handleChangeIsRange}
+                              />
+                            }
+                            label="Mehrtägig"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={this.state.forSchool}
+                                onChange={this.handleChangeForSchool}
+                              />
+                            }
+                            label="Schulisch"
+                          />
+                        </Grid>
+                      </Grid>
+                      {isParent && (
+                        <Grid item>
+                          <TextField
+                            fullWidth
+                            select
+                            label="Kind"
+                            value={this.state.student}
+                            onChange={this.handleChangeStudent}
+                            helperText="Wählen sie das betroffene Kind aus."
+                          >
+                            {this.props.children.map(child => (
+                              <MenuItem key={child.get('_id')} value={child.get('_id')}>
+                                {child.get('displayname')}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      )}
+                      <Grid item={true}>
+                        <Grid container={true} direction="row">
+                          <Grid item={true} xs={this.state.isRange ? 6 : 12}>
+                            <DatePicker
+                              helperText="Von"
+                              leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
+                              rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
+                              labelFunc={(date: moment.Moment, invalidLabel: string) =>
+                                !!date ? date.toDate().toLocaleDateString() : invalidLabel
+                              }
+                              error={!this.dateValid()}
+                              value={this.state.date}
+                              autoOk
+                              onChange={this.handleChangeDate}
+                              minDate={this.minDate}
+                              fullWidth
+                            />
+                          </Grid>
+                          {this.state.isRange && (
+                            <Grid item={true} xs={6}>
+                              <DatePicker
+                                helperText="Bis"
+                                error={!this.dateValid()}
+                                value={this.state.dateEnd}
+                                labelFunc={(date: moment.Moment, invalidLabel: string) =>
+                                  !!date ? date.toDate().toLocaleDateString() : invalidLabel
+                                }
+                                autoOk
+                                onChange={this.handleChangeDateEnd}
+                                minDate={this.state.date}
+                                fullWidth
+                              />
+                            </Grid>
+                          )}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        helperText="Wieso haben sie gefehlt? Maximal 300 Zeichen"
+                        placeholder="Bemerkung (Optional, z.B. Grund)"
+                        onChange={this.handleChangeReason}
+                        error={!this.reasonValid()}
+                        multiline
                         fullWidth
                       />
                     </Grid>
-                  )}
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <TextField
-                helperText="Wieso haben sie gefehlt? Maximal 300 Zeichen"
-                placeholder="Bemerkung (Optional, z.B. Grund)"
-                onChange={this.handleChangeReason}
-                error={!this.reasonValid()}
-                multiline
-                fullWidth
-              />
-            </Grid>
-            {!this.state.isRange && (
-              <Grid item xs={12}>
-                <Typography variant="title">
-                  Stunden
-                </Typography>
-                <Typography variant="caption">
-                  Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
-                  Erstellen sie dafür für jede Stunde einen Eintrag.
-                </Typography>
-                <MUIList>
-                  {this.state.slots.map((slot, index) => (
-                    <SlotListItem 
-                      slot={slot}
-                      delete={() => this.handleRemoveSlot(index)}
-                    />
-                  ))}
-                </MUIList>
-                <SlotEntry onAdd={slot => this.handleAddSlot(slot)}/>
-              </Grid>
-            )}
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.props.onClose} color="secondary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              this.handleSubmit();
-              this.props.onClose();
-            }}
-            disabled={!this.inputValid()}
-            color="primary"
-          >
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}))));
+                    {!this.state.isRange && (
+                      <Grid item xs={12}>
+                        <Typography variant="title">Stunden</Typography>
+                        <Typography variant="caption">
+                          Fügen sie die Stunden hinzu, die sie entschuldigen möchten. Erstellen sie
+                          dafür für jede Stunde einen Eintrag.
+                        </Typography>
+                        <MUIList>
+                          {this.state.slots.map((slot, index) => (
+                            <SlotListItem slot={slot} delete={() => this.handleRemoveSlot(index)} />
+                          ))}
+                        </MUIList>
+                        <SlotEntry onAdd={slot => this.handleAddSlot(slot)} />
+                      </Grid>
+                    )}
+                  </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.props.onClose} color="secondary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      this.handleSubmit();
+                      this.props.onClose();
+                    }}
+                    disabled={!this.inputValid()}
+                    color="primary"
+                  >
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            );
+          }
+        },
+      ),
+    ),
+  ),
+);
 
 export default CreateEntry;

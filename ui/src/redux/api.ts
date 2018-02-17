@@ -22,9 +22,7 @@ const defaultResponse: APIResponse = {
 };
 
 const reviver = (key: string, value: any) =>
-  ['date', 'dateEnd', 'createdAt', 'updatedAt'].indexOf(key) !== -1
-    ? new Date(value)
-    : value;
+  ['date', 'dateEnd', 'createdAt', 'updatedAt'].indexOf(key) !== -1 ? new Date(value) : value;
 
 const transformDates = (data: string) => {
   const input = JSON.parse(data, reviver);
@@ -51,24 +49,20 @@ const transformAuth = (data: IAPIResponse, auth: ICredentials) => ({
 });
 
 export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
-  if ((auth.username !== '') &&
-      (auth.password !== '')
-  ) {
+  if (auth.username !== '' && auth.password !== '') {
     const response = await axios.get(`${baseUrl}/login`, {
       auth,
-      validateStatus: status =>
-        (status === 401) ||
-        (status === 200),
+      validateStatus: status => status === 401 || status === 200,
       transformResponse: transformDates,
     });
 
     if (response.status === 200) return transformAuth(response.data, auth);
   }
 
-  return ({
+  return {
     auth: new AuthState({}),
     ...defaultResponse,
-  });
+  };
 };
 
 export const getEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
@@ -108,16 +102,13 @@ const post = async (url: string, auth: ICredentials, body?: {}) => {
 
 export const createEntry = async (
   entry: IEntryCreate,
-  auth: ICredentials)
-  : Promise<APIResponse> => {
+  auth: ICredentials,
+): Promise<APIResponse> => {
   const response = await post(`${baseUrl}/entries/`, auth, entry);
   return transform(response);
 };
 
-export const createUser = async (
-  user: IUserCreate[],
-  auth: ICredentials,
-): Promise<APIResponse> => {
+export const createUser = async (user: IUserCreate[], auth: ICredentials): Promise<APIResponse> => {
   const response = await post(`${baseUrl}/users/`, auth, user);
   return transform(response);
 };
@@ -151,6 +142,6 @@ export const resetPassword = async (username: MongoId): Promise<string> => {
 };
 
 export const setPassword = async (token: string, newPassword: string) => {
-  const result = await axios.put(`${baseUrl}/auth/forgot/${token}`, { newPassword });
+  const result = await axios.put(`${baseUrl}/auth/forgot/${token}`, { newPassword });
   return result.data;
 };

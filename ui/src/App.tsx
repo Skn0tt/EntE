@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect, Dispatch } from 'react-redux';
 import { AppState, ICredentials, Roles } from './interfaces/index';
 import { Action } from 'redux';
@@ -40,11 +36,9 @@ class App extends React.Component<Props, State> {
           <Switch>
             <Route path="/forgot/:token" component={Forgot} />
             <Route path="/login" component={Login} />
-            <AuthenticatedRoute
-              isLoggedIn={this.props.authValid}
-            >
+            <AuthenticatedRoute isLoggedIn={this.props.authValid}>
               <Drawer>
-                <Routes role={this.props.role}/>
+                <Routes role={this.props.role} />
               </Drawer>
             </AuthenticatedRoute>
           </Switch>

@@ -34,4 +34,3 @@ export default (linkAddress: string) => {
   if (errors.length > 0) throw new Error('MJML Error');
   return { html, subject: title };
 };
-

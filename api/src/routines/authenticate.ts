@@ -10,7 +10,7 @@ const authenticate = async (username, password, done) => {
     if (valid) {
       return done(null, user);
     }
-    
+
     return done(null, false);
   } catch (err) {
     return done(err);

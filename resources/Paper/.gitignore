@@ -1,0 +1,7 @@
+*.pdf
+*.png
+*.jpg
+*.svg
+
+!ContainerVsVM.jpg
+!Entschuldigungszettel.pdf

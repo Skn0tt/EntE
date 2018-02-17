@@ -3,6 +3,22 @@
   "repository": "https://gitlab.com/skn0tt/EntE",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "precommit": "lint-staged",
+    "build": "react-scripts-ts build",
+    "test": "snyk test && react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "lint": "tslint --project .",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn prettier",
+      "git add"
+    ]
+  },
   "dependencies": {
     "axios": "^0.17.1",
     "immutable": "^3.8.2",
@@ -16,6 +32,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.7",
+    "react-loadable": "^5.3.1",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -26,13 +43,6 @@
     "reselect": "^3.0.1",
     "typeface-roboto": "^0.0.45"
   },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "snyk test && react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
-    "lint": "tslint --project ."
-  },
   "devDependencies": {
     "@types/jest": "^21.1.9",
     "@types/jss": "^9.3.0",
@@ -41,14 +51,22 @@
     "@types/react": "^16.0.31",
     "@types/react-dom": "^16.0.3",
     "@types/react-dropzone": "^4.2.0",
+    "@types/react-loadable": "^5.3.3",
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.20",
     "@types/react-router-dom": "^4.2.3",
     "@types/redux-actions": "^2.2.3",
     "@types/redux-immutable": "^3.0.38",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.1",
+    "prettier": "^1.10.2",
     "react-scripts-ts": "^2.8.0",
     "redux-devtools-extension": "^2.13.2",
     "snyk": "^1.69.7",
-    "tslint-config-airbnb": "^5.4.2"
+    "source-map-explorer": "^1.5.0",
+    "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.4.2",
+    "tslint-config-prettier": "^1.8.0",
+    "typescript": "^2.7.2"
   }
 }
