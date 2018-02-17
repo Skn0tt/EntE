@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router';
 import * as Loadable from 'react-loadable';
 import { CircularProgress } from 'material-ui';
 
-const Loading: React.SFC<{}> = () => <CircularProgress />;
+const Loading = () => <CircularProgress />;
 
 const LoadableEntries = Loadable({
   loader: () => import('./routes/Entries'),
