@@ -41,11 +41,8 @@ const styles = (theme: Theme): StyleRules => ({
   },
   content: {
     width: '100%',
-    height: 'calc(100% - 56px)',
-    marginTop: 56,
+    marginTop: 64,
     [theme.breakpoints.up('md')]: {
-      height: 'calc(100% - 64px)',
-      marginTop: 64,
       marginLeft: drawerWidth,
     },
   },
