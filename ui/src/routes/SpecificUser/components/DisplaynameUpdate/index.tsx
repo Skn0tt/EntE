@@ -10,24 +10,28 @@ import * as select from '../../../../redux/selectors';
 import styles from './styles';
 import { updateUserRequest } from '../../../../redux/actions';
 import Typography from 'material-ui/Typography/Typography';
+import lang from '../../../../res/lang';
 
-interface IProps {
-  userId: MongoId;
-  updateUser(user: Partial<IUser>): Action;
+interface StateProps {
   getUser(id: MongoId): User;
 }
-interface State {
-  displayname: string;
-}
-
-type Props = IProps & WithStyles;
-
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
+
+interface DispatchProps {
+  userId: MongoId;
+  updateUser(user: Partial<IUser>): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
+
+type Props = StateProps & DispatchProps & WithStyles;
+
+interface State {
+  displayname: string;
+}
 
 const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
@@ -53,14 +57,14 @@ const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
         return (
           <Grid container direction="column">
             <Grid item>
-              <Typography variant="title">Anzeigename</Typography>
+              <Typography variant="title">{lang().ui.specificUser.displaynameTitle}</Typography>
             </Grid>
             <Grid item>
               <TextField fullWidth value={this.state.displayname} onChange={this.handleChange} />
             </Grid>
             <Grid item xs={12}>
               <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-                Anzeigenamen aktualisieren
+                {lang().ui.specificUser.refreshDisplayname}
                 <UpdateIcon />
               </Button>
             </Grid>

@@ -16,28 +16,35 @@ import Typography from 'material-ui/Typography/Typography';
 
 import styles from './styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
+import lang from '../../../../res/lang';
 
-interface InjectedProps {
-  students: User[];
-  getUser(id: MongoId): User;
-  updateUser(user: Partial<IUser>): Action;
-}
-interface IProps {
+interface OwnProps {
   userId: MongoId;
 }
+
+interface StateProps {
+  students: User[];
+  getUser(id: MongoId): User;
+}
+const mapStateToProps = (state: AppState) => ({
+  getUser: (id: MongoId) => select.getUser(id)(state),
+  students: select.getStudents(state),
+});
+
+interface DispatchProps {
+  updateUser(user: Partial<IUser>): Action;
+}
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
+});
+
+type Props = StateProps & DispatchProps & OwnProps & WithStyles;
+
 interface State {
   children: MongoId[];
   selected: MongoId;
 }
 
-const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state),
-  students: select.getStudents(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
-});
-type Props = IProps & InjectedProps & WithStyles;
 const ChildrenUpdate = connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
     class extends React.Component<Props, State> {
@@ -64,7 +71,7 @@ const ChildrenUpdate = connect(mapStateToProps, mapDispatchToProps)(
         return (
           <Grid container direction="column">
             <Grid item>
-              <Typography variant="title">Kinder</Typography>
+              <Typography variant="title">{lang().ui.specificUser.childrenTitle}</Typography>
             </Grid>
             {/* List Children */}
             <Grid item>
@@ -87,12 +94,12 @@ const ChildrenUpdate = connect(mapStateToProps, mapDispatchToProps)(
               <Grid item xs={11}>
                 <TextField
                   select
-                  label="Kind"
+                  label={lang().ui.specificUser.child}
                   value={this.state.selected}
                   onChange={this.handleSelectChild}
                   fullWidth
                   SelectProps={{ native: true }}
-                  helperText="Fügen sie Kinder hinzu."
+                  helperText={lang().ui.specificUser.addChildren}
                 >
                   {this.props.students.map(student => (
                     <option key={student.get('_id')} value={student.get('_id')}>
@@ -108,7 +115,7 @@ const ChildrenUpdate = connect(mapStateToProps, mapDispatchToProps)(
               </Grid>
               <Grid item xs={12}>
                 <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-                  Kinder aktualisieren
+                  {lang().ui.specificUser.refreshChildren}
                   <UpdateIcon />
                 </Button>
               </Grid>

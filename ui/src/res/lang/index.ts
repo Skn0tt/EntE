@@ -17,8 +17,28 @@ export interface Translation {
     };
   };
   ui: {
+    common: {
+      close: string;
+    };
     specificEntry: {
       sign: string;
+    };
+    specificUser: {
+      id: string;
+      role: string;
+      email: string;
+      emailTitle: string;
+      child: string;
+      childrenTitle: string;
+      adultTitle: string;
+      adult: string;
+      notAdult: string;
+      refresh: string;
+      addChildren: string;
+      displaynameTitle: string;
+      refreshEmail: string;
+      refreshChildren: string;
+      refreshDisplayname: string;
     };
   };
 }

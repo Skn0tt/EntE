@@ -185,7 +185,7 @@ const Entries = connect(mapStateToProps, mapDispatchToProps)(
                               <TableCell>
                                 {entry.get('dateEnd')
                                   ? `${entry.get('date').toLocaleDateString()} -
-                            ${entry.get('dateEnd')!.toLocaleDateString()}`
+                        ${entry.get('dateEnd')!.toLocaleDateString()}`
                                   : entry.get('date').toLocaleDateString()}
                               </TableCell>
                               <TableCell>{entry.get('createdAt').toLocaleDateString()}</TableCell>

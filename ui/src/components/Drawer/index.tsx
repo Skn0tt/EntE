@@ -22,26 +22,22 @@ import { AppState, Roles } from '../../interfaces/index';
 import { withRouter, RouteComponentProps } from 'react-router';
 import LoginStatus from '../LoginStatus';
 
-interface OwnProps {}
-
 interface StateProps {
   loading: boolean;
   role: Roles;
 }
-
-interface State {
-  mobileOpen: boolean;
-}
-
 const mapStateToProps = (state: AppState) => ({
   loading: select.isLoading(state),
   role: select.getRole(state),
 });
 
-type Props = OwnProps & StateProps & RouteComponentProps<{}> & WithStyles<string>;
+type Props = StateProps & RouteComponentProps<{}> & WithStyles;
+interface State {
+  mobileOpen: boolean;
+}
 
 const Drawer = withRouter(
-  connect<StateProps, null, OwnProps>(mapStateToProps)(
+  connect<StateProps>(mapStateToProps)(
     withStyles(styles)(
       class extends React.Component<Props, State> {
         state = {

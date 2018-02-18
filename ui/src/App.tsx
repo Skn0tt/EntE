@@ -15,15 +15,27 @@ import Login from './routes/Login';
 import Routes from './Routes';
 import Forgot from './routes/Forgot';
 
-interface Props {
+interface StateProps {
   authValid: boolean;
   authCredentials: ICredentials;
   role: Roles;
+}
+const mapStateToProps = (state: AppState) => ({
+  authCredentials: select.getAuthCredentials(state),
+  authValid: select.isAuthValid(state),
+  role: select.getRole(state),
+});
+
+interface DispatchProps {
   checkAuth(credentials: ICredentials): Action;
 }
-interface State {}
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  checkAuth: (credentials: ICredentials) => dispatch(checkAuthRequest(credentials)),
+});
 
-class App extends React.Component<Props, State> {
+type Props = StateProps & DispatchProps;
+
+class App extends React.Component<Props> {
   componentWillMount() {
     this.props.checkAuth(this.props.authCredentials);
   }
@@ -47,14 +59,5 @@ class App extends React.Component<Props, State> {
     );
   }
 }
-
-const mapStateToProps = (state: AppState) => ({
-  authCredentials: select.getAuthCredentials(state),
-  authValid: select.isAuthValid(state),
-  role: select.getRole(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  checkAuth: (credentials: ICredentials) => dispatch(checkAuthRequest(credentials)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
