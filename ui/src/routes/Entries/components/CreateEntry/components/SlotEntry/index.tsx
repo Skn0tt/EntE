@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { AppState, User, MongoId, ISlotCreate } from '../../../../../../interfaces/index';
-import { Dispatch, Action } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles, Grid, TextField, Button } from 'material-ui';
 import * as select from '../../../../../../redux/selectors';
@@ -9,11 +8,20 @@ import styles from './styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
 import Tooltip from 'material-ui/Tooltip/Tooltip';
 
-interface Props {
-  teachers: User[];
+interface OwnProps {
   onAdd(slot: ISlotCreate): void;
+}
+
+interface StateProps {
+  teachers: User[];
   getUser(id: MongoId): User;
 }
+const mapStateToProps = (state: AppState) => ({
+  teachers: select.getTeachers(state),
+  getUser: (id: MongoId) => select.getUser(id)(state),
+});
+
+type Props = StateProps & OwnProps & WithStyles;
 
 interface State {
   hour_from: string;
@@ -21,16 +29,9 @@ interface State {
   teacher: MongoId;
 }
 
-const mapStateToProps = (state: AppState) => ({
-  teachers: select.getTeachers(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
-
-type SlotEntryProps = Props & WithStyles;
-const SlotEntry = connect(mapStateToProps, mapDispatchToProps)(
+const SlotEntry = connect(mapStateToProps)(
   withStyles(styles)(
-    class extends React.Component<SlotEntryProps, State> {
+    class extends React.Component<Props, State> {
       state: State = {
         hour_from: '1',
         hour_to: '2',

@@ -47,16 +47,6 @@ interface InjectedProps {
   fullScreen: boolean;
 }
 
-interface State {
-  isRange: boolean;
-  date: Date;
-  dateEnd: Date;
-  reason?: string;
-  student?: MongoId;
-  slots: ISlotCreate[];
-  forSchool: boolean;
-}
-
 interface StateProps {
   isParent: boolean;
   children: User[];
@@ -83,6 +73,16 @@ type Props = OwnProps &
   RouteComponentProps<{}> &
   WithStyles<string> &
   InjectedProps;
+
+interface State {
+  isRange: boolean;
+  date: Date;
+  dateEnd: Date;
+  reason?: string;
+  student?: MongoId;
+  slots: ISlotCreate[];
+  forSchool: boolean;
+}
 
 const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<OwnProps & DispatchProps & StateProps>()(

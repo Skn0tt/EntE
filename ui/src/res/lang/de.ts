@@ -17,6 +17,26 @@ const de: Translation = {
     },
   },
   ui: {
+    common: {
+      close: 'Schließen',
+    },
+    specificUser: {
+      id: 'ID',
+      email: 'Email',
+      role: 'Rolle',
+      addChildren: 'Kinder Hinzufügen',
+      adult: 'Erwachsen',
+      notAdult: 'Nicht Erwachsen',
+      child: 'Kind',
+      childrenTitle: 'Kinder',
+      displaynameTitle: 'Displayname',
+      emailTitle: 'Email',
+      refresh: 'Aktualisieren',
+      refreshChildren: 'Kinder Aktualisieren',
+      refreshDisplayname: 'Displayname Aktualisieren',
+      refreshEmail: 'Email Aktualisieren',
+      adultTitle: 'Erwachsen',
+    },
     specificEntry: {
       sign: 'Unterschreiben',
     },

@@ -13,12 +13,23 @@ import { Action } from 'redux-actions';
 import { logout } from '../../redux/actions';
 import ListItemIcon from 'material-ui/List/ListItemIcon';
 
-interface Props {
+interface StateProps {
   displayname: string;
+}
+const mapStateToProps = (state: AppState) => ({
+  displayname: select.getDisplayname(state),
+});
+
+interface DispatchProps {
   logout(): Action<void>;
 }
+const mapDispatchToProps = (dispatch: Dispatch<Action<void>>) => ({
+  logout: () => dispatch(logout()),
+});
 
-const LoginStatus: React.SFC<Props & WithStyles<string>> = props => (
+type Props = StateProps & DispatchProps & WithStyles;
+
+const LoginStatus: React.SFC<Props> = props => (
   <div className={props.classes.container}>
     <List>
       <ListItem>
@@ -32,13 +43,5 @@ const LoginStatus: React.SFC<Props & WithStyles<string>> = props => (
     </List>
   </div>
 );
-
-const mapStateToProps = (state: AppState) => ({
-  displayname: select.getDisplayname(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action<void>>) => ({
-  logout: () => dispatch(logout()),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginStatus));

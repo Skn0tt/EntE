@@ -11,23 +11,24 @@ import { setPasswordRequest } from '../../redux/actions';
 interface RouteProps {
   token: string;
 }
-interface DispatchProps {
-  setPassword(token: string, newPassword: string): Action;
-}
+
 interface InjectedProps {
   fullScreen: boolean;
+}
+interface DispatchProps {
+  setPassword(token: string, newPassword: string): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   setPassword: (token: string, password: string) =>
     dispatch(setPasswordRequest({ token, password })),
 });
 
+type Props = DispatchProps & RouteComponentProps<RouteProps> & WithStyles;
+
 interface State {
   password: string;
   verficication: string;
 }
-
-type Props = DispatchProps & RouteComponentProps<RouteProps> & WithStyles;
 
 const Forgot = connect(undefined, mapDispatchToProps)(
   withStyles(styles)(

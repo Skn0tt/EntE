@@ -16,6 +16,7 @@ import * as select from '../../../../redux/selectors';
 import { updateUserRequest } from '../../../../redux/actions';
 import { Action } from 'redux';
 import { Update as UpdateIcon } from 'material-ui-icons';
+import lang from '../../../../res/lang';
 
 interface OwnProps {
   userId: MongoId;
@@ -58,19 +59,23 @@ const IsAdultUpdate = connect(mapStateToProps, mapDispatchToProps)(
         return (
           <Grid container direction="column">
             <Grid item>
-              <Typography variant="title">Erwachsen</Typography>
+              <Typography variant="title">{lang().ui.specificUser.adultTitle}</Typography>
             </Grid>
             <Grid item>
               <FormGroup>
                 <FormControlLabel
                   control={<Switch checked={this.state.isAdult} onChange={this.handleChange} />}
-                  label={this.state.isAdult ? 'Erwachsen' : 'Nicht Erwachsen'}
+                  label={
+                    this.state.isAdult
+                      ? lang().ui.specificUser.adult
+                      : lang().ui.specificUser.notAdult
+                  }
                 />
               </FormGroup>
             </Grid>
             <Grid item xs={12}>
               <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-                Aktualisieren
+                {lang().ui.specificUser.refresh}
                 <UpdateIcon />
               </Button>
             </Grid>

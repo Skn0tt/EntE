@@ -19,33 +19,36 @@ import {
 import { withMobileDialog } from 'material-ui/Dialog';
 import { checkAuthRequest, resetPasswordRequest } from '../../redux/actions';
 
-interface IProps {
-  authValid: boolean;
-  checkAuth(credentials: ICredentials): Action;
-  triggerPasswordReset(username: string): Action;
-}
 interface InjectedProps {
   fullScreen: boolean;
 }
-interface State {
-  username: string;
-  password: string;
-}
 
+interface StateProps {
+  authValid: boolean;
+}
 const mapStateToProps = (state: AppState) => ({
   authValid: select.isAuthValid(state),
 });
 
+interface DispatchProps {
+  checkAuth(credentials: ICredentials): Action;
+  triggerPasswordReset(username: string): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   checkAuth: (auth: ICredentials) => dispatch(checkAuthRequest(auth)),
   triggerPasswordReset: (username: string) => dispatch(resetPasswordRequest(username)),
 });
 
-type Props = IProps & WithStyles<string> & InjectedProps & RouteComponentProps<{}>;
+type Props = StateProps & DispatchProps & InjectedProps & WithStyles & RouteComponentProps<{}>;
+
+interface State {
+  username: string;
+  password: string;
+}
 
 const Login = connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<IProps>()(
-    withStyles(styles)(
+  withStyles(styles)(
+    withMobileDialog<Props>()(
       class extends React.Component<Props, State> {
         state: State = {
           username: '',

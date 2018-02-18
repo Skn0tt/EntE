@@ -1,18 +1,6 @@
 import { StyleRules } from 'material-ui/styles/withStyles';
 import { Theme } from 'material-ui/styles/createMuiTheme';
 
-export interface Style {
-  root: string;
-  appFrame: string;
-  appBar: string;
-  appBarBar: string;
-  grow: string;
-  navIconHide: string;
-  drawerHeader: string;
-  drawerPaper: string;
-  content: string;
-}
-
 const drawerWidth = 240;
 
 const styles = (theme: Theme): StyleRules => ({

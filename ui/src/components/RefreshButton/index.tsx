@@ -5,17 +5,24 @@ import { Action } from 'redux';
 import { getEntriesRequest, getUsersRequest, getSlotsRequest } from '../../redux/actions';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-interface Props {
+interface DispatchProps {
   getEntries(): Action;
   getUsers(): Action;
   getSlots(): Action;
 }
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  getEntries: () => dispatch(getEntriesRequest()),
+  getUsers: () => dispatch(getUsersRequest()),
+  getSlots: () => dispatch(getSlotsRequest()),
+});
 
 const renderPaths: string[] = ['/entries', '/users', '/slots'];
 
 const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
-const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props =>
+type Props = DispatchProps & RouteComponentProps<{}>;
+
+const RefreshButton: React.SFC<Props> = props =>
   shouldRender(props.location.pathname) ? (
     <Button
       onClick={() => {
@@ -39,11 +46,5 @@ const RefreshButton: React.SFC<Props & RouteComponentProps<{}>> = props =>
       Aktualisieren
     </Button>
   ) : null;
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getEntries: () => dispatch(getEntriesRequest()),
-  getUsers: () => dispatch(getUsersRequest()),
-  getSlots: () => dispatch(getSlotsRequest()),
-});
 
 export default withRouter(connect(undefined, mapDispatchToProps)(RefreshButton));

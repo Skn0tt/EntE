@@ -11,24 +11,31 @@ import styles from './styles';
 import { updateUserRequest } from '../../../../redux/actions';
 import Typography from 'material-ui/Typography/Typography';
 import validateEmail from '../../../../services/validateEmail';
+import lang from '../../../../res/lang';
 
-interface IProps {
+interface OwnProps {
   userId: MongoId;
-  updateUser(user: Partial<IUser>): Action;
+}
+
+interface StateProps {
   getUser(id: MongoId): User;
 }
-interface State {
-  email: string;
-}
-
-type Props = IProps & WithStyles;
-
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
+
+interface DispatchProps {
+  updateUser(user: Partial<IUser>): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
+
+type Props = OwnProps & StateProps & DispatchProps & WithStyles;
+
+interface State {
+  email: string;
+}
 
 const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
@@ -59,7 +66,7 @@ const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
         return (
           <Grid container direction="column">
             <Grid item>
-              <Typography variant="title">Email</Typography>
+              <Typography variant="title">{lang().ui.specificUser.emailTitle}</Typography>
             </Grid>
             <Grid item>
               <TextField
@@ -72,7 +79,7 @@ const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
             </Grid>
             <Grid item xs={12}>
               <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-                Email aktualisieren
+                {lang().ui.specificUser.refreshEmail}
                 <UpdateIcon />
               </Button>
             </Grid>

@@ -20,6 +20,7 @@ import DialogContentText from 'material-ui/Dialog/DialogContentText';
 import Divider from 'material-ui/Divider/Divider';
 import DisplaynameUpdate from './components/DisplaynameUpdate';
 import IsAdultUpdate from './components/IsAdultUpdate';
+import lang from '../../res/lang';
 
 interface RouteMatch {
   userId: MongoId;
@@ -80,9 +81,9 @@ const SpecificUser = withRouter(
                     <DialogTitle>{user.get('displayname')}</DialogTitle>
                     <DialogContent>
                       <DialogContentText>
-                        ID: {user.get('_id')} <br />
-                        Email: {user.get('email')} <br />
-                        Role: {user.get('role')} <br />
+                        {lang().ui.specificUser.id}: {user.get('_id')} <br />
+                        {lang().ui.specificUser.email}: {user.get('email')} <br />
+                        {lang().ui.specificUser.role}: {user.get('role')} <br />
                       </DialogContentText>
                       <Divider />
                       <EmailUpdate userId={userId} />
@@ -103,7 +104,7 @@ const SpecificUser = withRouter(
                 )}
                 <DialogActions>
                   <Button size="small" color="primary" onClick={this.onClose}>
-                    Schließen
+                    {lang().ui.common.close}
                   </Button>
                 </DialogActions>
               </Dialog>

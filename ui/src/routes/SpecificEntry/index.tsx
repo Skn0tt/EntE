@@ -190,7 +190,7 @@ const SpecificEntry = withRouter(
 
                 <DialogActions>
                   <Button size="small" color="primary" onClick={this.onClose}>
-                    Schließen
+                    {lang().ui.common.close}
                   </Button>
                 </DialogActions>
               </Dialog>
