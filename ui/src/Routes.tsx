@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Roles } from './interfaces/index';
 import { Switch, Route, Redirect } from 'react-router';
 import * as Loadable from 'react-loadable';
-import { CircularProgress } from 'material-ui';
+import LoadingIndicator from './elements/LoadingIndicator';
 
-const Loading = () => <CircularProgress />;
+const Loading = () => <LoadingIndicator />;
 
 const LoadableEntries = Loadable({
   loader: () => import('./routes/Entries'),

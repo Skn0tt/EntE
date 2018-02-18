@@ -8,7 +8,7 @@ import { AppState, MongoId, Entry, User, Slot, Roles } from '../../interfaces/in
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Table, List, Grid, CircularProgress } from 'material-ui';
+import { Button, Table, List, Grid } from 'material-ui';
 import { getEntryRequest, signEntryRequest } from '../../redux/actions';
 import SignedAvatar from './elements/SignedAvatar';
 import UnsignedAvatar from './elements/UnsignedAvatar';
@@ -26,6 +26,7 @@ import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
+import LoadingIndicator from '../../elements/LoadingIndicator';
 import lang from '../../res/lang';
 
 interface RouteMatch {
@@ -184,7 +185,7 @@ const SpecificEntry = withRouter(
                       </Grid>
                     </Grid>
                   ) : (
-                    loading && <CircularProgress />
+                    loading && <LoadingIndicator />
                   )}
                 </DialogContent>
 
