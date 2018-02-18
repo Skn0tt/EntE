@@ -11,6 +11,8 @@ import { Action } from 'redux';
 import CreateUser from './components/CreateUser';
 import Table from '../../components/Table';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Button } from 'material-ui';
+import { Add as AddIcon } from 'material-ui-icons';
 
 interface StateProps {
   users: User[];
@@ -48,16 +50,17 @@ const Users = connect(mapStateToProps, mapDispatchToProps)(
         closeCreateModal = () => this.setState({ showCreateModal: false });
 
         render() {
-          const { users, history } = this.props;
-
-          /*<this.TableHeadCell field="username">Username</this.TableHeadCell>
-                      <this.TableHeadCell field="displayname">Name</this.TableHeadCell>
-                      <this.TableHeadCell field="email">Email</this.TableHeadCell>
-                      <this.TableHeadCell field="role">Role</this.TableHeadCell>
-        */
+          const { users, history, classes } = this.props;
 
           return (
             <React.Fragment>
+              {/* Modals */}
+              <CreateUser
+                onClose={() => this.closeCreateModal()}
+                show={this.state.showCreateModal}
+              />
+
+              {/* Main */}
               <Table
                 headers={['Username', 'Displayname', 'Email', 'Role']}
                 items={users}
@@ -70,10 +73,16 @@ const Users = connect(mapStateToProps, mapDispatchToProps)(
                 ]}
                 onClick={(user: User) => history.push(`/users/${user.get('_id')}`)}
               />
-              <CreateUser
-                onClose={() => this.closeCreateModal()}
-                show={this.state.showCreateModal}
-              />
+
+              {/* FAB */}
+              <Button
+                color="primary"
+                variant="fab"
+                onClick={this.showCreateModal}
+                className={classes.fab}
+              >
+                <AddIcon />
+              </Button>
             </React.Fragment>
           );
         }

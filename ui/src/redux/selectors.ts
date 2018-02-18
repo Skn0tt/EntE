@@ -14,6 +14,15 @@ export const isParent = (state: AppState): boolean =>
   state.getIn(['auth', 'role']) === Roles.PARENT;
 
 export const getRole = (state: AppState): Roles => state.getIn(['auth', 'role']);
+
+export const hasChildren = createSelector(
+  [getRole],
+  role => role === Roles.MANAGER || role === Roles.PARENT,
+);
+export const canCreateEntries = createSelector(
+  [getRole],
+  role => role === Roles.STUDENT || role === Roles.PARENT,
+);
 export const getAuthCredentials = (state: AppState): ICredentials => ({
   username: state.get('auth').get('username'),
   password: state.get('auth').get('password'),

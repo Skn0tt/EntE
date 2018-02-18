@@ -14,7 +14,7 @@ import {
 import TableHeadCell from './elements/TableHeadCell';
 import lang from '../../res/lang';
 
-type Item = ReadonlyArray<string>;
+type Item = ReadonlyArray<string | boolean>;
 
 interface OwnProps<T> {
   defaultSortField?: number;
@@ -23,6 +23,8 @@ interface OwnProps<T> {
   headers: ReadonlyArray<string>;
   onClick?: (item: T) => void;
   keyExtractor?: (item: T) => string | number;
+  trueElement?: JSX.Element;
+  falseElement?: JSX.Element;
   sort?: (a: T, b: T) => number;
   filter?: (item: T) => boolean;
 }
@@ -56,13 +58,24 @@ const Table = withStyles(styles)(
     // Methods
     filter = (item: T): boolean => {
       const value = this.props.cellExtractor(item)[this.state.sortField];
+
+      if (typeof value === 'boolean') {
+        return true;
+      }
+
       return value.includes(this.state.searchTerm);
     };
     sort = (a: T, b: T): number => {
       const valueA = this.props.cellExtractor(a)[this.state.sortField];
       const valueB = this.props.cellExtractor(b)[this.state.sortField];
-      return valueA.localeCompare(valueB) * (this.state.sortUp ? 1 : -1);
+      if (typeof valueA === 'boolean') {
+        return valueA === valueB ? 0 : valueA ? -1 : 1;
+      }
+
+      return valueA.localeCompare(valueB as string) * (this.state.sortUp ? 1 : -1);
     };
+    truncate = (str: string, length: number, ending: string) =>
+      str.length > length ? str.substring(0, length - ending.length) + ending : str;
 
     render(): JSX.Element {
       const {
@@ -74,6 +87,8 @@ const Table = withStyles(styles)(
         sort,
         filter,
         cellExtractor,
+        trueElement,
+        falseElement,
       } = this.props;
       const { sortField, sortUp } = this.state;
 
@@ -117,7 +132,11 @@ const Table = withStyles(styles)(
                       hover={!!onClick}
                     >
                       {cellExtractor(item).map((value, index) => (
-                        <TableCell key={index}>{value}</TableCell>
+                        <TableCell key={index}>
+                          {typeof value === 'string'
+                            ? this.truncate(value, 20, '...')
+                            : value ? trueElement : falseElement}
+                        </TableCell>
                       ))}
                     </TableRow>
                   ))}
