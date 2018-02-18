@@ -28,10 +28,10 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 interface DispatchProps {
-  getEntries(): Action;
+  requestEntries(): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getEntries: () => dispatch(getEntriesRequest()),
+  requestEntries: () => dispatch(getEntriesRequest()),
 });
 
 interface State {
@@ -48,7 +48,7 @@ const Entries = connect(mapStateToProps, mapDispatchToProps)(
         };
 
         componentDidMount() {
-          this.props.getEntries();
+          this.props.requestEntries();
         }
 
         showCreateEntry = () => this.setState({ showCreateEntry: true });
@@ -56,16 +56,6 @@ const Entries = connect(mapStateToProps, mapDispatchToProps)(
 
         render() {
           const { classes, canCreateEntries, entries, getUser, history } = this.props;
-
-          /*
-        <this.TableHeadCell field="name">Name</this.TableHeadCell>
-        <this.TableHeadCell field="date">Datum</this.TableHeadCell>
-        <this.TableHeadCell field="createdAt">Erstellt</this.TableHeadCell>
-        <this.TableHeadCell field="forSchool">Schulisch</this.TableHeadCell>
-        <this.TableHeadCell field="reason">Begründung</this.TableHeadCell>
-        <this.TableHeadCell field="signedManager">Stufenleiter</this.TableHeadCell>
-        <this.TableHeadCell field="signedParent">Eltern</this.TableHeadCell>
-        */
 
           return (
             <React.Fragment>

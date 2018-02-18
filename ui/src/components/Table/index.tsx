@@ -14,7 +14,8 @@ import {
 import TableHeadCell from './elements/TableHeadCell';
 import lang from '../../res/lang';
 
-type Item = ReadonlyArray<string | boolean>;
+type AllowedValues = string | number | boolean;
+type Item = ReadonlyArray<AllowedValues>;
 
 interface OwnProps<T> {
   defaultSortField?: number;
@@ -63,8 +64,9 @@ const Table = withStyles(styles)(
         return true;
       }
 
-      return value.includes(this.state.searchTerm);
+      return ('' + value).includes(this.state.searchTerm);
     };
+    sortMulti = () => (this.state.sortUp ? 1 : -1);
     sort = (a: T, b: T): number => {
       const valueA = this.props.cellExtractor(a)[this.state.sortField];
       const valueB = this.props.cellExtractor(b)[this.state.sortField];
@@ -72,10 +74,23 @@ const Table = withStyles(styles)(
         return valueA === valueB ? 0 : valueA ? -1 : 1;
       }
 
-      return valueA.localeCompare(valueB as string) * (this.state.sortUp ? 1 : -1);
+      if (typeof valueA === 'number') {
+        return (valueA - (valueB as number)) * this.sortMulti();
+      }
+
+      return valueA.localeCompare(valueB as string) * this.sortMulti();
     };
     truncate = (str: string, length: number, ending: string) =>
       str.length > length ? str.substring(0, length - ending.length) + ending : str;
+    show = (value: AllowedValues) => {
+      if (typeof value === 'string') {
+        return this.truncate(value, 20, '...');
+      }
+      if (typeof value === 'boolean') {
+        return value ? this.props.trueElement : this.props.falseElement;
+      }
+      return value;
+    };
 
     render(): JSX.Element {
       const {
@@ -87,8 +102,6 @@ const Table = withStyles(styles)(
         sort,
         filter,
         cellExtractor,
-        trueElement,
-        falseElement,
       } = this.props;
       const { sortField, sortUp } = this.state;
 
@@ -132,11 +145,7 @@ const Table = withStyles(styles)(
                       hover={!!onClick}
                     >
                       {cellExtractor(item).map((value, index) => (
-                        <TableCell key={index}>
-                          {typeof value === 'string'
-                            ? this.truncate(value, 20, '...')
-                            : value ? trueElement : falseElement}
-                        </TableCell>
+                        <TableCell key={index}>{this.show(value)}</TableCell>
                       ))}
                     </TableRow>
                   ))}
