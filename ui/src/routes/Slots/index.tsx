@@ -35,14 +35,7 @@ const Slots = connect(mapStateToProps, mapDispatchToProps)(
 
     render() {
       const { getUser, slots } = this.props;
-      /*
-        <this.TableHeadCell field="name">Name</this.TableHeadCell>
-        <this.TableHeadCell field="date">Datum</this.TableHeadCell>
-        <this.TableHeadCell field="hour_from">Von</this.TableHeadCell>
-        <this.TableHeadCell field="hour_to">Bis</this.TableHeadCell>
-        <this.TableHeadCell field="signed">Signiert</this.TableHeadCell>
-        <this.TableHeadCell field="teacher">Lehrer</this.TableHeadCell>
-        */
+
       return (
         <Table
           headers={['Name', 'Datum', 'Von', 'Bis', 'Signiert', 'Lehrer']}
