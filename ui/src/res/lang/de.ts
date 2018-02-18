@@ -20,6 +20,10 @@ const de: Translation = {
     common: {
       close: 'Schließen',
     },
+    table: {
+      search: 'Suchen',
+      sortTooltip: field => `Nach ${field} sortieren`,
+    },
     specificUser: {
       id: 'ID',
       email: 'Email',

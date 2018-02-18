@@ -20,6 +20,10 @@ export interface Translation {
     common: {
       close: string;
     };
+    table: {
+      search: string;
+      sortTooltip: (fieldname: string) => string;
+    };
     specificEntry: {
       sign: string;
     };
