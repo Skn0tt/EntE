@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "HTTPS=true react-scripts-ts start",
     "precommit": "lint-staged",
     "build": "react-scripts-ts build",
     "test": "snyk test && react-scripts-ts test --env=jsdom",
