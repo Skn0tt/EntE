@@ -3,9 +3,9 @@ skinparam componentStyle uml2
 
 frame "EntE" {
   folder "Entry" {
-    ["Slot 1"] as S1
-    ["Slot 2"] as S2
-    ["Slot 3"] as S3
+    [Slot 1] as S1
+    [Slot 2] as S2
+    [Slot 3] as S3
   }
 }
 

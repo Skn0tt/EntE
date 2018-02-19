@@ -20,9 +20,6 @@ titlepage-rule-color: "F5A623"
 numbersections: true
 ---
 
-TODO:
-- Ausformulierung der Erleichterung
-
 \section*{Danksagung}
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
 Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, Vortrag oder Tutorial.
@@ -110,10 +107,6 @@ Diese Entwicklung wird unter dem Begriff *E-Government* zusammengefasst.
 
 Beispiele dafür finden sich in der Online-Ticketvergabe in der Stadtverwaltung, der digitalen Steuererklärung via *Elster* [^Elster] oder der Digitalen Staatsbürgerschaft in *Estland* [^E-Residency].
 
-TODO:
-- Historie
-- Quellen
-
 [^Elster]: [Elster: https://www.elster.de](https://www.elster.de)
 [^E-Residency]: [Estonia E-Residency: https://e-resident.gov.ee/](https://e-resident.gov.ee/)
 
@@ -195,6 +188,8 @@ Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die vers�
 Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
 
 Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}, Abbildung \ref{activity-diagram}.
+
+Durch die zentrale Verwaltung der Anträge fällt nun für jede Partei nur Schritt an, die in der Einleitung genannten, repetitiven Arbeitsschritte entfallen.
 
 ## System
 ### Architektur
@@ -397,9 +392,10 @@ Einige Lehrer und Schüler zeigen großes Interesse an *EntE* - bleibt zu hoffen
 \newpage
 # Appendix
 
-![Logo EntE\label{logo}](Entschuldigungszettel.pdf)
+![Logo EntE\label{logo}](Logo.png)
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
+
 
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
