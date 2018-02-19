@@ -10,66 +10,69 @@ import * as select from '../../../../redux/selectors';
 import styles from './styles';
 import { updateUserRequest } from '../../../../redux/actions';
 import Typography from 'material-ui/Typography/Typography';
+import lang from '../../../../res/lang';
 
-interface IProps {
-  userId: MongoId;
-  updateUser(user: Partial<IUser>): Action;
+interface StateProps {
   getUser(id: MongoId): User;
 }
-interface State {
-  displayname: string;
-}
-
-type Props = IProps & WithStyles;
-
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
+
+interface DispatchProps {
+  userId: MongoId;
+  updateUser(user: Partial<IUser>): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
 
-const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-class extends React.Component<Props, State> {
-  user = (): User => this.props.getUser(this.props.userId);
+type Props = StateProps & DispatchProps & WithStyles;
 
-  state: State = {
-    displayname: this.user().get('displayname'),
-  };
+interface State {
+  displayname: string;
+}
 
-  handleSubmit = () => this.props.updateUser({
-    _id: this.props.userId,
-    displayname: this.state.displayname,
-  })
+const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    class extends React.Component<Props, State> {
+      user = (): User => this.props.getUser(this.props.userId);
 
-  handleChange: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
-    displayname: event.target.value,
-  })
+      state: State = {
+        displayname: this.user().get('displayname'),
+      };
 
-  render() {
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="title">
-            Anzeigename
-          </Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            value={this.state.displayname}
-            onChange={this.handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-            Anzeigenamen aktualisieren
-            <UpdateIcon />
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-}));
+      handleSubmit = () =>
+        this.props.updateUser({
+          _id: this.props.userId,
+          displayname: this.state.displayname,
+        });
+
+      handleChange: React.ChangeEventHandler<HTMLInputElement> = event =>
+        this.setState({
+          displayname: event.target.value,
+        });
+
+      render() {
+        return (
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="title">{lang().ui.specificUser.displaynameTitle}</Typography>
+            </Grid>
+            <Grid item>
+              <TextField fullWidth value={this.state.displayname} onChange={this.handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
+                {lang().ui.specificUser.refreshDisplayname}
+                <UpdateIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      }
+    },
+  ),
+);
 
 export default DisplayNameUpdate;

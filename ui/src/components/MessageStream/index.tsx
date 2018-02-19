@@ -13,41 +13,36 @@ import { removeMessage } from '../../redux/actions';
 interface StateProps {
   messages: String[];
 }
+const mapStateToProps = (state: AppState) => ({
+  messages: select.getMessages(state),
+});
 
 interface DispatchProps {
   removeMessage(index: number): Action;
 }
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  removeMessage: (index: number) => dispatch(removeMessage(index)),
+});
 
 type Props = StateProps & DispatchProps & WithStyles;
 
 const MessageStream: React.SFC<Props> = props => (
-  <div>
+  <React.Fragment>
     {props.messages.map((msg, index) => (
       <Snackbar
         key={index}
         message={<span>{msg}</span>}
         autoHideDuration={6000}
-        onClose={() => props.removeMessage(index)}
+        onClose={(event, reason) => reason !== 'clickaway' && props.removeMessage(index)}
         open
         action={
-          <IconButton
-            onClick={() => props.removeMessage(index)}
-            color="inherit"
-          >
+          <IconButton onClick={() => props.removeMessage(index)} color="inherit">
             <CloseIcon />
           </IconButton>
         }
       />
     ))}
-  </div>
+  </React.Fragment>
 );
-
-const mapStateToProps = (state: AppState) => ({
-  messages: select.getMessages(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  removeMessage: (index: number) => dispatch(removeMessage(index)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MessageStream));

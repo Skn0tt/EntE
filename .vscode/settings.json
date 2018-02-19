@@ -1,36 +1,5 @@
 {
-  "git.enableCommitSigning": false,
-  "cSpell.language": "de",
-  "cSpell.words": [
-    "Addressen",
-    "DSGVO",
-    "Revisionsfähigkeit",
-    "Versionierung",
-    "Zertifizierer"
-  ],
-  "cSpell.enabledLanguageIds": [
-    "c",
-    "cpp",
-    "csharp",
-    "css",
-    "go",
-    "handlebars",
-    "html",
-    "jade",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "latex",
-    "less",
-    "markdown",
-    "php",
-    "plaintext",
-    "pub",
-    "python",
-    "restructuredtext",
-    "scss",
-    "text",
-    "typescriptreact",
-    "yml"
-  ]
+  "git.enableCommitSigning": true,
+  "tslint.packageManager": "yarn",
+  "tslint.exclude": "node_modules"
 }

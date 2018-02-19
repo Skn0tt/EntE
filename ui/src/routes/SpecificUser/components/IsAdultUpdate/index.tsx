@@ -16,6 +16,7 @@ import * as select from '../../../../redux/selectors';
 import { updateUserRequest } from '../../../../redux/actions';
 import { Action } from 'redux';
 import { Update as UpdateIcon } from 'material-ui-icons';
+import lang from '../../../../res/lang';
 
 interface OwnProps {
   userId: MongoId;
@@ -39,51 +40,50 @@ type State = {
   isAdult: boolean;
 };
 
-const IsAdultUpdate =
-  connect(mapStateToProps, mapDispatchToProps)(
+const IsAdultUpdate = connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
-class extends React.Component<Props, State> {
-  state: State = {
-    isAdult: this.props.user(this.props.userId).get('isAdult'),
-  };
+    class extends React.Component<Props, State> {
+      state: State = {
+        isAdult: this.props.user(this.props.userId).get('isAdult'),
+      };
 
-  handleSubmit = () => this.props.updateUser({
-    isAdult: this.state.isAdult,
-    _id: this.props.userId,
-  })
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) =>
-    this.setState({ isAdult: checked })
+      handleSubmit = () =>
+        this.props.updateUser({
+          isAdult: this.state.isAdult,
+          _id: this.props.userId,
+        });
+      handleChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) =>
+        this.setState({ isAdult: checked });
 
-  render() {
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="title">
-            Erwachsen
-          </Typography>
-        </Grid>
-        <Grid item>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.isAdult}
-                  onChange={this.handleChange}
+      render() {
+        return (
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="title">{lang().ui.specificUser.adultTitle}</Typography>
+            </Grid>
+            <Grid item>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Switch checked={this.state.isAdult} onChange={this.handleChange} />}
+                  label={
+                    this.state.isAdult
+                      ? lang().ui.specificUser.adult
+                      : lang().ui.specificUser.notAdult
+                  }
                 />
-              }
-              label={this.state.isAdult ? 'Erwachsen' : 'Nicht Erwachsen'}
-            />
-          </FormGroup>
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-            Aktualisieren
-            <UpdateIcon />
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-}));
+              </FormGroup>
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
+                {lang().ui.specificUser.refresh}
+                <UpdateIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      }
+    },
+  ),
+);
 
 export default IsAdultUpdate;

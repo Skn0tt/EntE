@@ -11,73 +11,83 @@ import styles from './styles';
 import { updateUserRequest } from '../../../../redux/actions';
 import Typography from 'material-ui/Typography/Typography';
 import validateEmail from '../../../../services/validateEmail';
+import lang from '../../../../res/lang';
 
-interface IProps {
+interface OwnProps {
   userId: MongoId;
-  updateUser(user: Partial<IUser>): Action;
+}
+
+interface StateProps {
   getUser(id: MongoId): User;
 }
-interface State {
-  email: string;
-}
-
-type Props = IProps & WithStyles;
-
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
 });
+
+interface DispatchProps {
+  updateUser(user: Partial<IUser>): Action;
+}
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   updateUser: (user: Partial<IUser>) => dispatch(updateUserRequest(user)),
 });
 
-const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(
-class extends React.Component<Props, State> {
-  user = (): User => this.props.getUser(this.props.userId);
+type Props = OwnProps & StateProps & DispatchProps & WithStyles;
 
-  state: State = {
-    email: this.user().get('email'),
-  };
+interface State {
+  email: string;
+}
 
-  handleSubmit = () => this.props.updateUser({
-    _id: this.props.userId,
-    email: this.state.email,
-  })
+const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(
+    class extends React.Component<Props, State> {
+      user = (): User => this.props.getUser(this.props.userId);
 
-  handleChange: React.ChangeEventHandler<HTMLInputElement> = event => this.setState({
-    email: event.target.value,
-  })
+      state: State = {
+        email: this.user().get('email'),
+      };
 
-  /**
-   * Validation
-   */
-  emailValid = (): boolean => validateEmail(this.state.email);
+      handleSubmit = () =>
+        this.props.updateUser({
+          _id: this.props.userId,
+          email: this.state.email,
+        });
 
-  render() {
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="title">
-            Email
-          </Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            fullWidth
-            type="email"
-            error={!this.emailValid()}
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
-            Email aktualisieren
-            <UpdateIcon />
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-}));
+      handleChange: React.ChangeEventHandler<HTMLInputElement> = event =>
+        this.setState({
+          email: event.target.value,
+        });
+
+      /**
+       * Validation
+       */
+      emailValid = (): boolean => validateEmail(this.state.email);
+
+      render() {
+        return (
+          <Grid container direction="column">
+            <Grid item>
+              <Typography variant="title">{lang().ui.specificUser.emailTitle}</Typography>
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                type="email"
+                error={!this.emailValid()}
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="raised" color="primary" onClick={() => this.handleSubmit()}>
+                {lang().ui.specificUser.refreshEmail}
+                <UpdateIcon />
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      }
+    },
+  ),
+);
 
 export default DisplayNameUpdate;

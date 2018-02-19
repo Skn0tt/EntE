@@ -65,9 +65,9 @@ const teacherPermissions: Permissions = {
  * @param has
  * @param needs
  */
-const compare = (has: Permissions, needs: Permissions) : boolean => {
+const compare = (has: Permissions, needs: Permissions): boolean => {
   let result = true;
-  Object.keys(needs).forEach((key) => {
+  Object.keys(needs).forEach(key => {
     if (needs[key] && !has[key]) result = false;
   });
 
@@ -80,7 +80,7 @@ const compare = (has: Permissions, needs: Permissions) : boolean => {
  * @param neededPermissions that the api needs
  * @returns true when valid
  */
-const check = (role: ROLES, neededPermissions: Permissions) : boolean => {
+const check = (role: ROLES, neededPermissions: Permissions): boolean => {
   if (role === ROLES.ADMIN) return compare(adminPermissions, neededPermissions);
   if (role === ROLES.TEACHER) return compare(teacherPermissions, neededPermissions);
   if (role === ROLES.PARENT) return compare(parentPermissions, neededPermissions);
@@ -89,7 +89,4 @@ const check = (role: ROLES, neededPermissions: Permissions) : boolean => {
   return false;
 };
 
-export {
-  check,
-  Permissions,
-};
+export { check, Permissions };

@@ -26,6 +26,7 @@ import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
 import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
+import lang from '../../res/lang';
 
 interface RouteMatch {
   entryId: MongoId;
@@ -50,7 +51,6 @@ const mapStateToProps = (state: AppState) => ({
   role: select.getRole(state),
 });
 
-
 interface DispatchProps {
   requestEntry(id: MongoId): Action;
   signEntry(id: MongoId): Action;
@@ -60,167 +60,146 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   signEntry: (id: MongoId) => dispatch(signEntryRequest(id)),
 });
 
-type Props =
-  WithStyles &
+type Props = WithStyles &
   RouteComponentProps<RouteMatch> &
   InjectedProps &
   StateProps &
   DispatchProps;
 
-const SpecificEntry =
-  withRouter(
+const SpecificEntry = withRouter(
   connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-  withMobileDialog<Props>()(
-class extends React.Component<Props> {
-  componentDidMount() {
-    const { entryId } = this.props.match.params;
-    const user = this.props.getUser(entryId);
+    withStyles(styles)(
+      withMobileDialog<Props>()(
+        class extends React.Component<Props> {
+          componentDidMount() {
+            const { entryId } = this.props.match.params;
+            const user = this.props.getUser(entryId);
 
-    if (!user) {
-      this.props.requestEntry(entryId);
-    }
-  }
+            if (!user) {
+              this.props.requestEntry(entryId);
+            }
+          }
 
-  render() {
-    const { props } = this;
-    const { classes, loading } = this.props;
-    const { entryId } = this.props.match.params;
-    const entry = this.props.getEntry(entryId);
+          onClose = () => this.props.history.push('/entries');
 
-    return (
-      <Dialog
-        open
-        fullScreen={props.fullScreen}
-        onClose={() => props.history.push('/entries')}
-      >
-        <DialogContent>
-          {!!entry
-          ? (
-            <Grid container direction="column">
-              {/* ID */}
-              <Grid item>
-                <DialogContentText>
-                  ID: {entry.get('_id')} <br/>
-                </DialogContentText>
-              </Grid>
-              
-              <Grid item>
-                <Typography variant="title">
-                  Info
-                </Typography>
-                <Typography variant="body1">
-                  <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br/>
-                  <i>Begründung:</i> {entry.get('reason') || '-'} <br/>
-                  <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br/>
-                  <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')} <br/>
-                  <i>Datum:</i> {entry.get('dateEnd')
-                    ? `Von ${entry.get('date').toLocaleDateString()}
+          render() {
+            const { props } = this;
+            const { classes, loading } = this.props;
+            const { entryId } = this.props.match.params;
+            const entry = this.props.getEntry(entryId);
+
+            return (
+              <Dialog open fullScreen={props.fullScreen} onClose={this.onClose}>
+                <DialogContent>
+                  {!!entry ? (
+                    <Grid container direction="column">
+                      {/* ID */}
+                      <Grid item>
+                        <DialogContentText>
+                          ID: {entry.get('_id')} <br />
+                        </DialogContentText>
+                      </Grid>
+
+                      <Grid item>
+                        <Typography variant="title">Info</Typography>
+                        <Typography variant="body1">
+                          <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br />
+                          <i>Begründung:</i> {entry.get('reason') || '-'} <br />
+                          <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br />
+                          <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')}{' '}
+                          <br />
+                          <i>Datum:</i>{' '}
+                          {entry.get('dateEnd')
+                            ? `Von ${entry.get('date').toLocaleDateString()}
                       bis ${entry.get('dateEnd')!.toLocaleDateString()}`
-                    : entry.get('date').toLocaleDateString()
-                    } <br/>
-                </Typography>
-              </Grid>
+                            : entry.get('date').toLocaleDateString()}{' '}
+                          <br />
+                        </Typography>
+                      </Grid>
 
-              {/* Slots */}
-              <Grid item>
-                <Typography variant="title">
-                  Stunden
-                </Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Von</TableCell>
-                      <TableCell>Bis</TableCell>
-                      <TableCell>Lehrer</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.getSlots(entry.get('slots')).map(slot => (
-                      <TableRow key={slot.get('_id')}>
-                        <TableCell>
-                          {slot.get('hour_from')}
-                        </TableCell>
-                        <TableCell>
-                          {slot.get('hour_to')}
-                        </TableCell>
-                        <TableCell>
-                          {props.getUser(slot.get('teacher')).get('displayname')}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Grid>
+                      {/* Slots */}
+                      <Grid item>
+                        <Typography variant="title">Stunden</Typography>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Von</TableCell>
+                              <TableCell>Bis</TableCell>
+                              <TableCell>Lehrer</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {props.getSlots(entry.get('slots')).map(slot => (
+                              <TableRow key={slot.get('_id')}>
+                                <TableCell>{slot.get('hour_from')}</TableCell>
+                                <TableCell>{slot.get('hour_to')}</TableCell>
+                                <TableCell>
+                                  {props.getUser(slot.get('teacher')).get('displayname')}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </Grid>
 
-              {/* Signed */}
-              <Grid item>
-                <Typography variant="title">
-                  Signiert
-                </Typography>
-                <List>
-                  {/* Admin */}
-                  <ListItem>
-                    {entry.get('signedManager') ?
-                      <SignedAvatar />
-                      : <UnsignedAvatar />
-                    }
-                    <ListItemText primary="Stufenleiter" />
-                    {!entry.get('signedManager') &&
-                      props.role === Roles.MANAGER && (
-                      <ListItemSecondaryAction>
-                        <Button
-                          className={classes.signEntryButton}
-                          onClick={() => props.signEntry(entry.get('_id'))}
-                        >
-                          Sign
-                          <AssignmentTurnedInIcon />
-                        </Button>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                  {/* Parents */}
-                  <ListItem>
-                    {entry.get('signedParent') ?
-                      <SignedAvatar />
-                      : <UnsignedAvatar />
-                    }
-                    <ListItemText primary="Eltern" />
-                    {!entry.get('signedParent') &&
-                      props.role === Roles.PARENT && (
-                      <ListItemSecondaryAction>
-                        <Button
-                          className={classes.signEntryButton}
-                          onClick={() => props.signEntry(entry.get('_id'))}
-                        >
-                          Sign
-                          <AssignmentTurnedInIcon />
-                        </Button>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-          )
-          : (
-            loading && <CircularProgress />
-          )
-        }
-        </DialogContent>
+                      {/* Signed */}
+                      <Grid item>
+                        <Typography variant="title">Signiert</Typography>
+                        <List>
+                          {/* Admin */}
+                          <ListItem>
+                            {entry.get('signedManager') ? <SignedAvatar /> : <UnsignedAvatar />}
+                            <ListItemText primary="Stufenleiter" />
+                            {!entry.get('signedManager') &&
+                              props.role === Roles.MANAGER && (
+                                <ListItemSecondaryAction>
+                                  <Button
+                                    className={classes.signEntryButton}
+                                    onClick={() => props.signEntry(entry.get('_id'))}
+                                  >
+                                    {lang().ui.specificEntry.sign}
+                                    <AssignmentTurnedInIcon />
+                                  </Button>
+                                </ListItemSecondaryAction>
+                              )}
+                          </ListItem>
+                          {/* Parents */}
+                          <ListItem>
+                            {entry.get('signedParent') ? <SignedAvatar /> : <UnsignedAvatar />}
+                            <ListItemText primary="Eltern" />
+                            {!entry.get('signedParent') &&
+                              props.role === Roles.PARENT && (
+                                <ListItemSecondaryAction>
+                                  <Button
+                                    className={classes.signEntryButton}
+                                    onClick={() => props.signEntry(entry.get('_id'))}
+                                  >
+                                    {lang().ui.specificEntry.sign}
+                                    <AssignmentTurnedInIcon />
+                                  </Button>
+                                </ListItemSecondaryAction>
+                              )}
+                          </ListItem>
+                        </List>
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    loading && <CircularProgress />
+                  )}
+                </DialogContent>
 
-        <DialogActions>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => props.history.push('/users')}
-          >
-            Schließen
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}))));
+                <DialogActions>
+                  <Button size="small" color="primary" onClick={this.onClose}>
+                    {lang().ui.common.close}
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            );
+          }
+        },
+      ),
+    ),
+  ),
+);
 
 export default SpecificEntry;

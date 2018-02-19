@@ -23,6 +23,7 @@ import {
   singEntrySuccess,
   resetPasswordError,
   resetPasswordSuccess,
+  addMessage,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -42,7 +43,7 @@ import {
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
-import { 
+import {
   APIResponse,
   ICredentials,
   MongoId,
@@ -52,30 +53,33 @@ import {
   INewPassword,
   Roles,
 } from '../interfaces/index';
+import lang from '../res/lang';
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
 
 function* checkAuthSaga(action: Action<ICredentials>) {
-  try {
+  try {
     const result = yield call(api.checkAuth, action.payload);
-    
+
     yield dispatchUpdates(result);
     yield put(checkAuthSuccess(result.auth));
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(checkAuthError(error));
   }
 }
 
 function* getEntrySaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getEntry, action.payload, auth);
-    
+
     yield put(getEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getEntryError(error));
   }
 }
@@ -88,6 +92,7 @@ function* getEntriesSaga() {
     yield put(getEntriesSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getEntriesError(error));
   }
 }
@@ -100,48 +105,52 @@ function* getSlotsSaga() {
     yield put(getSlotsSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getSlotsError(error));
   }
 }
 
 function* getUserSaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getUser, action.payload, auth);
 
     yield put(getUserSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getUserError(error));
   }
 }
 
 function* getUsersSaga() {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getUsers, auth);
 
     yield put(getUsersSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getUsersError(error));
   }
 }
 
 function* getTeachersSaga() {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.getTeachers, auth);
 
     yield put(getTeachersSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(getTeachersError(error));
   }
 }
 
 function* createEntrySaga(action: Action<IEntryCreate>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.createEntry, action.payload, auth);
 
@@ -153,24 +162,25 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
 }
 
 function* createUserSaga(action: Action<IUserCreate[]>) {
-  try {
+  try {
     const first: IUserCreate[] = [];
     const second: IUserCreate[] = [];
 
-    action.payload!.forEach((value) => {
-      if (
-        value.role === Roles.MANAGER || value.role === Roles.PARENT
-      ) { second.push(value); }
-      else { first.push(value); }
+    action.payload!.forEach(value => {
+      if (value.role === Roles.MANAGER || value.role === Roles.PARENT) {
+        second.push(value);
+      } else {
+        first.push(value);
+      }
     });
-    
+
     const auth = yield select(selectors.getAuthCredentials);
-    
+
     if (first.length !== 0) {
       const result = yield call(api.createUser, first, auth);
       yield dispatchUpdates(result);
     }
-    
+
     if (second.length !== 0) {
       const result = yield call(api.createUser, second, auth);
       yield dispatchUpdates(result);
@@ -183,7 +193,7 @@ function* createUserSaga(action: Action<IUserCreate[]>) {
 }
 
 function* updateUserSaga(action: Action<Partial<IUser>>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.updateUser, action.payload, auth);
 
@@ -195,13 +205,14 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
 }
 
 function* signEntrySaga(action: Action<MongoId>) {
-  try {
+  try {
     const auth = yield select(selectors.getAuthCredentials);
     const result = yield call(api.signEntry, action.payload, auth);
 
     yield put(singEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
+    yield put(addMessage(lang().message.sign.error));
     yield put(signEntryError(error));
   }
 }
@@ -209,8 +220,11 @@ function* signEntrySaga(action: Action<MongoId>) {
 function* resetPasswordSaga(action: Action<string>) {
   try {
     const result = yield call(api.resetPassword, action.payload);
+
+    yield put(addMessage(lang().message.resetPassword.success));
     yield put(resetPasswordSuccess(result));
   } catch (error) {
+    yield put(addMessage(lang().message.request.error));
     yield put(resetPasswordError(error));
   }
 }
@@ -218,8 +232,11 @@ function* resetPasswordSaga(action: Action<string>) {
 function* setPasswordSaga(action: Action<INewPassword>) {
   try {
     const result = yield call(api.setPassword, action.payload!.token, action.payload!.password);
+
+    yield put(addMessage(lang().message.setPassword.success));
     yield put(resetPasswordSuccess(result));
   } catch (error) {
+    yield put(addMessage(lang().message.setPassword.error));
     yield put(resetPasswordError(error));
   }
 }

@@ -20,6 +20,7 @@ import DialogContentText from 'material-ui/Dialog/DialogContentText';
 import Divider from 'material-ui/Divider/Divider';
 import DisplaynameUpdate from './components/DisplaynameUpdate';
 import IsAdultUpdate from './components/IsAdultUpdate';
+import lang from '../../res/lang';
 
 interface RouteMatch {
   userId: MongoId;
@@ -45,81 +46,74 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
 });
 
-type Props =
-  StateProps &
+type Props = StateProps &
   DispatchProps &
   InjectedProps &
   WithStyles &
   RouteComponentProps<RouteMatch>;
 
-const SpecificUser =
-  withRouter(
+const SpecificUser = withRouter(
   withMobileDialog<Props>()(
-  connect<StateProps, DispatchProps, Props>(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-class extends React.Component<Props> {
-  componentDidMount() {
-    const { userId } = this.props.match.params;
-    const user = this.props.getUser(userId);
-    
-    if (!user) {
-      this.props.requestUser(userId);
-    }
-  }
-  render() {
-    const { props } = this;
-    const { loading } = props;
-    const { userId } = props.match.params;
-    const user = props.getUser(userId);
-    
-    return (
-      <Dialog
-        open
-        onClose={() => props.history.push('/users')}
-        fullScreen={props.fullScreen}
-      >
-        {!!user
-        ? (
-          <React.Fragment>
-            <DialogTitle>
-              {user.get('displayname')}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                ID: {user.get('_id')} <br />
-                Email: {user.get('email')} <br />
-                Role: {user.get('role')} <br />
-              </DialogContentText>
-              <Divider />
-              <EmailUpdate userId={userId} />
-              <Divider />
-              {user.isStudent() && <IsAdultUpdate userId={userId}/>}
-              <Divider />
-              <DisplaynameUpdate userId={userId} />
-              {user.hasChildren() && (
-                <React.Fragment>
-                  <Divider />
-                  <ChildrenUpdate userId={userId}/>
-                </React.Fragment>
-              )}
-            </DialogContent>
-          </React.Fragment>
-        )
-        : (
-          loading && <CircularProgress />
-        )}
-        <DialogActions>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => props.history.push('/users')}
-          >
-            Schließen
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}))));
+    connect<StateProps, DispatchProps, Props>(mapStateToProps, mapDispatchToProps)(
+      withStyles(styles)(
+        class extends React.Component<Props> {
+          componentDidMount() {
+            const { userId } = this.props.match.params;
+            const user = this.props.getUser(userId);
+
+            if (!user) {
+              this.props.requestUser(userId);
+            }
+          }
+          onClose = () => this.props.history.goBack();
+          onGoBack = () => this.onClose();
+
+          render() {
+            const { props } = this;
+            const { loading } = props;
+            const { userId } = props.match.params;
+            const user = props.getUser(userId);
+
+            return (
+              <Dialog open onClose={this.onGoBack} fullScreen={props.fullScreen}>
+                {!!user ? (
+                  <React.Fragment>
+                    <DialogTitle>{user.get('displayname')}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        {lang().ui.specificUser.id}: {user.get('_id')} <br />
+                        {lang().ui.specificUser.email}: {user.get('email')} <br />
+                        {lang().ui.specificUser.role}: {user.get('role')} <br />
+                      </DialogContentText>
+                      <Divider />
+                      <EmailUpdate userId={userId} />
+                      <Divider />
+                      {user.isStudent() && <IsAdultUpdate userId={userId} />}
+                      <Divider />
+                      <DisplaynameUpdate userId={userId} />
+                      {user.hasChildren() && (
+                        <React.Fragment>
+                          <Divider />
+                          <ChildrenUpdate userId={userId} />
+                        </React.Fragment>
+                      )}
+                    </DialogContent>
+                  </React.Fragment>
+                ) : (
+                  loading && <CircularProgress />
+                )}
+                <DialogActions>
+                  <Button size="small" color="primary" onClick={this.onClose}>
+                    {lang().ui.common.close}
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            );
+          }
+        },
+      ),
+    ),
+  ),
+);
 
 export default SpecificUser;
