@@ -31,7 +31,7 @@ Ich möchte mich deshalb bei allen Mitgliedern der Open-Source-Community sowie d
 
 Des weiteren möchte ich mich bei Thilo Kühn und Jens Liebreich bedanken, die sich für mich viel Zeit genommen haben um mir die Anforderungen an das Entschuldigungsverfahren zu erklären, sowie bei Benjamin Reichelt, der diese Facharbeit betreut hat und mir bei Fragen und Problemen immer zur Seite stand.
 Ich möchte mich auch bei meinen Kolleginnen und Kollegen bei OrbiTeam für ihre Tipps und Ratschläge bedanken.
-Dort konnte ich während meiner Arbeit viel Erfahrung bei der Frontend-Entwicklung sammeln.
+Dort konnte ich während meiner Arbeit viel Erfahrung in der Frontend-Entwicklung sammeln.
 
 \newpage
 
@@ -41,13 +41,13 @@ Dort konnte ich während meiner Arbeit viel Erfahrung bei der Frontend-Entwicklu
 
 # Einleitung
 An jeder Schule müssen die Fehlzeiten der Schüler nachgehalten werden.
-Dabei ist es wichtig, schulisch oder durch Krankheit bedingte Versäumnisse sowie unentschuldigte Fehlzeiten zu erfassen, da diese auf dem Zeugnis vermerkt werden müssen und auch Noten beeinflussen.
+Dabei ist es wichtig, schulisch oder durch Krankheit bedingte Versäumnisse sowie unentschuldigte Fehlzeiten zu erfassen, da diese auf dem Zeugnis vermerkt werden müssen und Noten beeinflussen.
 
 Dieses Verfahren wird an vielen Schulen auf Papier-Basis durchgeführt, so auch am Ernst-Moritz-Arndt-Gymnasium.
 Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System jedoch als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
 
 ## Status Quo
-Aktuell ist das Entschuldigungsverfahren der Oberstufe an unserer Schule durch den Entschuldigungszettel gelöst, auf dem der Schüler zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
+Aktuell ist das Entschuldigungsverfahren der Oberstufe an unserer Schule durch den Entschuldigungszettel gelöst, auf dem der Schüler die zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
 
 Der Entschuldigungsprozess läuft wie folgt ab:
 
@@ -128,7 +128,6 @@ Die Dokumentation ist als erster Teil der Facharbeit zu verstehen, der zweite Te
 Der Name des Programms ist "EntE", eine Abkürzung für "**Ent**schuldigung **E**lektronisch".
 Das Logo ist in Abbildung \ref{logo} zu sehen.
 
-\newpage
 ## Datenschutz
 
 Die in Nordrhein-Westfalen geltende "Verordnung über die zur Verarbeitung zugelassenen Daten von Schülerinnen, Schülern und Eltern" besagt:
@@ -153,6 +152,8 @@ Von dieser Verordnung sind alle Dienste betroffen, die personenbezogene Daten er
 Da die DSGVO schon IP-Addressen als solche wertet, fällt jeder Online-Dienst darunter - auch das hier vorgestellte Entschuldigungsverfahren.
 Die DSGVO schreibt vor, dass die Sicherheitsmaßnahmen der gesamten Auftragsverarbeitung dokumentiert sein müssen und auch sämtliche Vertragspartner eine solche Dokumentation führen.
 Da es für *EntE* keine dritten Vertragspartner gibt, beschränkt sich die Einhaltung der DSGVO auf die Kontrolle des Hosting-Anbieters [vgl. @iXdsgvo].
+
+\newpage
 
 # Modellierung
 ## Prozess
@@ -185,11 +186,9 @@ Die Unterrichtung der Schule über einen Krankheitsfall geschieht mit der Erstel
 Die Lehrer sind dem Prozess erst einmal außen vor: Interaktion ihrerseits ist nicht nötig, um einen Entschuldigungsantrag anzunehmen.
 Sie haben allerdings Lesezugriff auf alle *Slots*, die bei ihnen versäumt wurden und sehen somit, ob der zugehörige Entschuldigungsantrag erfolgreich angenommen wurde.
 Am Ende jeder Woche erhalten alle Lehrer eine Benachrichtigung, in der die versäumten Stunden der letzten Woche aufgeführt sind.
-Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden.
+Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden (siehe Abbildung \ref{use-diagram}, Abbildung \ref{activity-diagram}).
 
-Zur besseren Visualisierung: siehe Abbildung \ref{use-diagram}, Abbildung \ref{activity-diagram}.
-
-Durch die zentrale Verwaltung der Anträge fällt nun für jede Partei nur Schritt an, die in der Einleitung genannten, repetitiven Arbeitsschritte entfallen.
+Durch die zentrale Verwaltung der Anträge fällt nun für jede Partei nur ein Schritt an, die in der Einleitung genannten, repetitiven Arbeitsschritte entfallen.
 
 ## System
 ### Architektur
@@ -221,8 +220,8 @@ Der JavaScript-Code auf dieser Seite fragt nun bei der API die letzten $n$ Entsc
 Auf den ersten Blick erscheint die zweite, Client-seitige Methode, als unnötiger Mehraufwand - schließlich müssen zwei Anfragen getätigt werden, um die gewollten Daten anzuzeigen.
 Tatsächlich hat sie aber große Vorteile: Da die HTML-Seite immer die gleiche ist, lässt sich diese statisch ausliefern und lokal zwischenspeichern.
 Man kann CDN-Dienste wie Cloudflare[^Cloudflare] benutzen, um die Auslieferungszeiten möglichst gering zu halten.
-Um die Datenübertragung noch weiter zu reduzieren, kann die Seite auf dem Endgerät über einen Cache vorgehalten und so die übertragenen Daten auf ein Minimum reduziert werden.
-Die *Time-To-First-Draw*, also die Zeit, bis der Nutzer etwas von der Seite sieht, ist minimal: Sobald die HTML-Seite fertig geladen hat, zeigt der Browser schon Daten an.
+Um die Datenübertragung noch weiter zu reduzieren, kann die Seite auf dem Endgerät über einen Cache vorgehalten und so die übertragenen Daten auf ein Minimum beschränken.
+Die *Time-To-First-Draw*, also die Zeit, bis der Nutzer etwas von der Seite sieht, ist minimal: Sobald die HTML-Seite fertig geladen hat, zeigt der Browser schon die Oberfläche an.
 Man muss somit nicht mehr auf langsame Datenbankanfragen im Server warten und sieht sofort eine Benutzeroberfläche, dies verbessert die User Experience ungemein.
 Für den Server entfällt der Arbeitsschritt des Seiten-Renderns komplett.
 
@@ -231,7 +230,7 @@ Für den Server entfällt der Arbeitsschritt des Seiten-Renderns komplett.
 Der zweite Ansatz eignet sich insbesondere für Web-Apps, die kleine, dynamische Datensätze anzeigen.
 Nicht sehr gut geeignet ist dieser Ansatz für Webseiten, die auf statischen Daten aufbauen, wie z.B. Blogs oder Magazine.
 
-Für *EntE* ist der Zweite Ansatz besser geeignet: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
+Für *EntE* ist der zweite Ansatz besser geeignet: Es gibt kleine Datensätze (Entschuldigungen, Nutzer) und eine gleichbleibende Website.
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Anwendung Client-Seitig zu rendern.
 
 ### API
@@ -272,13 +271,13 @@ Dazu gehört:
 - Anmeldedaten
 - Eventuelle Filter
 
-Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu Beginn einer Session beim Server anmeldet und dann Einstellungen wie Filter speichert.
+Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu Beginn einer Session beim Server anmeldet und dann Einstellungen wie zum Beispiel Filter speichert.
 
 Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen und können so unabhängig von vorhergegangenen Anfragen bearbeitet werden.
 
 ### Sicherheit
 Die API muss gegen unbefugten Zugriff gesichert sein.
-Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *EntE* *Basic Auth*: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
+Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *EntE* *Basic Auth* [@basicauth]: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
 Dies alleine ist aber sehr unsicher, denn mit Software wie WireShark[^Wireshark] lassen sich Netzwerkpakete leicht abfangen.
 Hat man ein solches unverschlüsseltes Paket abgefangen, kann man Benutzername und Passwort einfach auslesen.
@@ -287,9 +286,11 @@ Sämtlicher Netzwerkverkehr wird in *EntE* über das **T**ransport-**L**evel-**S
 
 [^Wireshark]: [Wireshark: https://www.wireshark.org/](https://www.wireshark.org/)
 
+\newpage
+
 # Umsetzung
 
-Die Implementierung des beschriebenen Systems umfasst zum Zeitpunkt der Abgabe ungefähr Acht tausend Zeilen Code und ist vollständig in Typescript[^typescript] geschrieben.
+Die Implementierung des beschriebenen Systems umfasst zum Zeitpunkt der Abgabe ungefähr Acht tausend Zeilen Code und ist vollständig in *Typescript[^typescript]* geschrieben.
 In Abbildung \ref{screenshot-entries} ist ein Screenshot der `/entries`-Seite zu sehen, auf der man eine Übersicht über seine eingereichten Anträge erhält und einen neuen Eintrag erstellen kann.
 
 [^typescript]: [Typescript: https://www.typescriptlang.org/](https://www.typescriptlang.org/)
@@ -306,7 +307,7 @@ Der Stack basiert auf *MERN*[^MERN]:
 
 Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 
-**Docker** ist ein Container-Ökosystem mithilfe dessen *EntE* ausgeliefert wird (Siehe Anhang).  
+**Docker** ist ein Container-Ökosystem mithilfe dessen *EntE* ausgeliefert wird (siehe \ref{containerisierung}).  
 **Immutable.js** ist eine Bibliothek für unveränderliche Datenstrukturen in JavaScript.  
 **Redux** ist eine Implementierung der Flux-Architektur [@flux] für One-Way-Dataflow in Javascript.  
 **Bcrypt** ist ein Hashing-Algorithmus, der speziell für Passwörter entwickelt wurde.  
@@ -320,7 +321,7 @@ Im folgenden wird am Beispiel der Route `GET /entries` der API-Quellcode exempla
 Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
 
 Erreicht die API eine Anfrage, so wird diese durch eine Reihe an *Middlewares* geleitet.
-Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen, unter anderem:
+Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen, zum Beispiel:
 
 - Authentifizierung
 - Autorisierung
@@ -363,11 +364,13 @@ Dieses Risiko darf man niemals eingehen.
 
 Möglichkeit Zwei ist es, die Passwörter verschlüsselt zu speichern:
 Nutzt man Algorithmen wie RSA oder AES hat ein Hacker wenig Chancen und die Datenbank ist vor ihm sicher.
-Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn *EntE* Zugriff darauf aht, hat diesen dies auch eine dritte Partei, der den privaten Schlüssel kennt - ein Administrator kann also immernoch auf alle Passwörter zugreifen.
+Allerdings muss ein verschlüsseltes Passwort zur Überprüfung entschlüsselt werden - und wenn *EntE* Zugriff darauf hat, hat diesen auch jede dritte Partei, der den privaten Schlüssel kennt - ein Administrator kann also immer noch auf alle Passwörter zugreifen.
 
-Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen verwendet:
+Den besten Umgang mit Passwörtern erreicht man, wenn man Hash-Funktionen[^hash] verwendet:
 Dann kennt weder Datenbank, Server noch Administrator die Passwörter seiner Nutzer, da man nur den Hash des Passworts abspeichert.
 Möchte man einen Nutzer authentifizieren, so berechnet man den Hash des übermittelten Passworts und vergleicht diesen mit dem in der Datenbank hinterlegten.
+
+[^hash]: Hash-Funktionen sind mathematische Einweg-Funktionen: Sie lassen sich nur in eine Richtung eindeutig lösen.
 
 Für Passwörter benutzt man sehr gerne den Bcrypt-Algorithmus [@bcrypt], denn bei diesem kann man durch einen zusätzlichen Parameter den Algorithmus verlangsamen.
 Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Force-Angriffe sind dadurch aber deutlich aufwändiger.
@@ -376,18 +379,24 @@ Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Fo
 
 # Fazit
 
-Im Laufe dieser Facharbeit habe konnte ich viel über die Entwicklung komplexer Websysteme lernen.
-Viele große Themen der Webentwicklung wurden gestreift, darunter API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung und automatisierte E-Mails.
-Dabei konnten in viele der Konzepte gute Einblicke erhalten werden.
+Ziel dieser Facharbeit war es, ein funktionsfähiges Websystem zu entwickeln, welches das Entschuldigungsverfahren an Schulen vereinfachen kann.
+Dafür wurden Prozesse und Architektur des Systems modelliert und anschließend implementiert.
+Es wurden viele große Themen der Webentwicklung gestreift, darunter API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung und automatisierte E-Mails.
+Während der Entstehung dieses Programmes konnte ich viele vorhandene Fähigkeiten einsetzen, habe aber auch viel neues gelernt.
 
-Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um größere Datenintegrität gewährleisten zu können.
+Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um einfacher Datenintegrität gewährleisten zu können.
 Dann müsste das Datenbankschema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
+Außerdem hätte ich anstatt Basic-Auth das Bearer-Schema [@bearerauth] implementiert, da man so andere Dienste leicht mit den gleichen Benutzerkonten verwenden kann.
 
-Ich denke dass das Produkt, welches am Ende entstanden ist, das Potenzial hat das Entschuldigungsverfahren an unserer Schule deutlich zu verbessern.
-Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die den Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
-Interessant wird es sein zu sehen, welche Fehler im Produktiveinsatz dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
+Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die *EntE*s Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
+Interessant wird es sein zu sehen, welche Fehler dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
+Dafür muss die Sicherung der Daten gewährleistet sein, denkbar sind zum Beispiel regelmäßige Ausdrucke der Datensätze und Datenbank-Backups.
 
-Einige Lehrer und Schüler zeigen großes Interesse an *EntE* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
+*EntE* bringt geringe Anforderungen an die benötigte Infrastruktur mit sich:
+Man kann mit alltäglichen Geräten wie Smartphone oder Notebook darauf zugreifen, jederzeit und überall.
+Der vereinfachte Prozess bedeutet eine große Arbeitserleichterung für alle Betroffenen.
+
+Einige Lehrer, Schüler und Eltern des Ernst-Moritz-Arndt-Gymnasiums zeigen großes Interesse an *EntE* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
 
 \newpage
 # Appendix
@@ -460,15 +469,15 @@ router.get('/entries', async (request, response, next) => {
 });
 \end{lstlisting}
 
-## Containerisierung
+## Containerisierung \label{containerisierung}
 Seit einigen Jahren gibt es in der DevOps-Szene einen Trend weg von virtualisierten, hin zu containerisierten Deployments.
 Die Containerisierung lässt sich als logische Evolution der Virtualisierung ansehen.
 
 Beide Ansätze möchten eine Abstraktion der Anwendung vom Host-Computer erreichen, durch die Abhängigkeitsprobleme zwischen verschiedenen Anwenungen beseitigt und die Auslieferung der Applikationen besser automatisiert werden können.
 In der Virtualisierung wird dafür ein komplettes Betriebssystem emuliert, inklusive Kernel und eigenem Dateisystem.
-Applikationen innerhalb einer Virtuelle Maschine können daher nur auf Dienste innerhalb ihrer Maschine zugreifen, Verbindungen mit dem Host müssen gesondert erstellt werden.
+Applikationen innerhalb einer virtuellen Maschine können daher nur auf Dienste innerhalb ihrer Maschine zugreifen, Verbindungen mit dem Host müssen gesondert erstellt werden.
 So kann jede Applikation ihre eigenen Abhängigkeiten mitführen, zur Auslieferung muss nur die VM gestartet werden.
-Virtualisierung kann also zuvor genannte Probleme beheben, schafft jedoch ein neues: Für jede VM muss ein eigenes Betriebssystem ausgeführt werden.
+Virtualisierung kann also zuvor genannte Probleme beheben, schafft jedoch ein neues: Für jede VM muss ein zusätzliches Gast-Betriebssystem ausgeführt werden.
 Diese zusätzliche Last erzeugt viel Overhead und höhere Kosten, die die Vorteile ein Stück weit zunichte machen.
 
 Dieser Nachteil wird durch Containerisierung beseitigt:  
@@ -492,7 +501,7 @@ Große Unternehmen setzen schon länger auf vollständig Containerisierte Anwend
 So berichtet Netflix von über einer Million gestarteter Container pro Woche [vgl. @containersAtNetflix], Google sogar mehr als zwei Millionen [vgl. @containersAtGoogle].
 Durch Container konnte eine deutlich angenehmere Entwicklerumgebung geschaffen werden, da in Test-Umgebungen dieselben Container wie in Produktiv-Umgebungen verwendet werden und es keine Fehler durch unterschiedliche Versionen der Abhängigkeiten mehr gibt [vgl. @containersAtNetflix].
 
-Microservices und Container haben großes Potential, um die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
+Microservices und Container haben großes Potential, die Entwicklung großer Applikationen zu vereinfachen und effizient auf Clustern in Cloud-Umgebungen auszuführen.
 Das Thema ist in letzter Zeit immer mehr in den Fokus der Open-Source-Community gerückt und es werden großartige Tools wie Kubernetes[^kubernetes] oder OpenStack[^openstack] dafür entwickelt.
 Für kleine Projekte wie *EntE* bleibt eine echte Microservice-Architektur zu aufwendig, kann sich aber für größere Projekte auf lange Sicht bezahlt machen.
 
