@@ -1,7 +1,7 @@
 open: Paper.pdf
 	open Paper.pdf
 
-Paper.pdf: Paper.md Paper.bib DB.png Use.png Activity.png eisvogel.latex Screenshot-entries.png Entschuldigungszettel.pdf
+Paper.pdf: Paper.md Paper.bib DB.png Use.png Activity.png eisvogel.latex Screenshot-entries.png Entschuldigungszettel.pdf Logo.png
 	pandoc Paper.md -o Paper.pdf \
 		--template eisvogel \
 		--listings \
