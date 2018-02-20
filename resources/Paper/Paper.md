@@ -379,24 +379,26 @@ Dieser Rechenaufwand macht in der Anwendung keinen großen Unterschied, Brute-Fo
 
 # Fazit
 
-Ziel dieser Facharbeit war es, ein funktionsfähiges Websystem zu entwickeln, welches das Entschuldigungsverfahren an Schulen vereinfachen kann.
+Ziel dieser Facharbeit war die Entwicklung eines funktionsfähigen Websystems, welches das Entschuldigungsverfahren an Schulen vereinfacht.
 Dafür wurden Prozesse und Architektur des Systems modelliert und anschließend implementiert.
-Es wurden viele große Themen der Webentwicklung gestreift, darunter API-Entwicklung, Datenbank-Systeme, WebApps, Authentifizierungsmethoden, TLS-Verschlüsselung und automatisierte E-Mails.
-Während der Entstehung dieses Programmes konnte ich viele vorhandene Fähigkeiten einsetzen, habe aber auch viel neues gelernt.
+Zu den wesentlichen Aufgaben gehörten die Entwicklung eiens Web-Frontends, inklusive API, Datenbank-System, Authentifizierungsmechanismen, TLS-Verschlüsselung und Versand automatisierter E-Mails.
 
-Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um einfacher Datenintegrität gewährleisten zu können.
-Dann müsste das Datenbankschema ein wenig abgeändert werden, um es auf SQL-Charakteristika anzupassen.
-Außerdem hätte ich anstatt Basic-Auth das Bearer-Schema [@bearerauth] implementiert, da man so andere Dienste leicht mit den gleichen Benutzerkonten verwenden kann.
-
-Es bleiben einige Schönheitsfehler wie die fehlende Versionierung, die *EntE*s Produktiveinsatz erschweren - diese lassen sich jedoch relativ einfach beheben.
-Interessant wird es sein zu sehen, welche Fehler dann tatsächlich auftreten - es gibt immer Fälle, an die man vorher nicht gedacht hat.
-Dafür muss die Sicherung der Daten gewährleistet sein, denkbar sind zum Beispiel regelmäßige Ausdrucke der Datensätze und Datenbank-Backups.
-
+Mit der aktuellen Version von *EntE* liegt nun ein vollständiges, elektronisches System zur Entschuldigungsverwaltung vor, welches den Beteiligten Personen die Arbeit erleichtern soll.
+Eine lauffähige Installation steht den Lehrern des Ernst-Moritz-Arndt-Gymnasium und anderen Interessierten auf einem Webserver zur Verfügung.
 *EntE* bringt geringe Anforderungen an die benötigte Infrastruktur mit sich:
 Man kann mit alltäglichen Geräten wie Smartphone oder Notebook darauf zugreifen, jederzeit und überall.
-Der vereinfachte Prozess bedeutet eine große Arbeitserleichterung für alle Betroffenen.
 
-Einige Lehrer, Schüler und Eltern des Ernst-Moritz-Arndt-Gymnasiums zeigen großes Interesse an *EntE* - bleibt zu hoffen, dass auch die Schulleitung die Vorteile sieht.
+Vor dem Produktiveinsatz wird die Ergänzung folgender Erweiterungen empfohlen:
+Für die Sicherung der Daten sollte ein regelmäßiges Backup eingerichtet sein, denkbar sind zum Beispiel regelmäßige Ausdrucke der Datensätze und Datenbank-Kopien.
+Wichtig wäre auch ein revisionssicheres Datenformat, in dem Manipulationen und Änderungen des Datenbestandes nachgehalten werden.
+
+Während der Entstehung dieses Programmes konnte ich einige vorhandene Programmierfähigkeiten einsetzen, habe aber auch viel neues gelernt.
+Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um einfacher Datenintegrität gewährleisten zu können.
+Außerdem hätte ich anstatt des *Basic-Auth*-Verfahrens das *Bearer-Schema* [@bearerauth] implementiert, da man so andere Dienste leicht mit den gleichen Benutzerkonten verwenden kann.
+
+Der vereinfachte Entschuldigungsprozess bedeutet eine große Arbeitserleichterung für alle Betroffenen.
+Lehrer, Schüler und Eltern des Ernst-Moritz-Arndt-Gymnasiums zeigen großes Interesse an *EntE*.
+Ich hoffe, dass die Schulleitung ebenfalls den Einsatz der Software unterstützt und würde mich freuen, wenn das System zukünftig erfolgreich genutzt würde.
 
 \newpage
 # Appendix
@@ -404,7 +406,6 @@ Einige Lehrer, Schüler und Eltern des Ernst-Moritz-Arndt-Gymnasiums zeigen gro�
 ![Logo EntE\label{logo}](Logo.png)
 
 ![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
-
 
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 
