@@ -389,8 +389,8 @@ Eine lauffähige Installation steht den Lehrern des Ernst-Moritz-Arndt-Gymnasium
 Man kann mit alltäglichen Geräten wie Smartphone oder Notebook darauf zugreifen, jederzeit und überall.
 
 Vor dem Produktiveinsatz wird die Ergänzung folgender Erweiterungen empfohlen:
-Für die Sicherung der Daten sollte ein regelmäßiges Backup eingerichtet sein, denkbar sind zum Beispiel regelmäßige Ausdrucke der Datensätze und Datenbank-Kopien.
-Wichtig wäre auch ein revisionssicheres Datenformat, in dem Manipulationen und Änderungen des Datenbestandes nachgehalten werden.
+Für die Sicherung der Daten sollte ein regelmäßiges Backup eingerichtet sein.
+Wichtig wäre auch ein revisionssicheres Datenformat, in dem Änderungen des Datenbestandes nachgehalten werden.
 
 Während der Entstehung dieses Programmes konnte ich einige vorhandene Programmierfähigkeiten einsetzen, habe aber auch viel neues gelernt.
 Wenn ich das System jetzt noch einmal entwickeln würde, hätte ich von Beginn an auf eine SQL-Datenbank gesetzt, um einfacher Datenintegrität gewährleisten zu können.
