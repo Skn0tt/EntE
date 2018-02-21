@@ -10,7 +10,7 @@ import ChildrenUpdate from './components/ChildrenUpdate';
 import EmailUpdate from './components/EmailUpdate';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Dialog, CircularProgress } from 'material-ui';
+import { Button, Dialog } from 'material-ui';
 import { getUserRequest } from '../../redux/actions';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
@@ -20,6 +20,7 @@ import DialogContentText from 'material-ui/Dialog/DialogContentText';
 import Divider from 'material-ui/Divider/Divider';
 import DisplaynameUpdate from './components/DisplaynameUpdate';
 import IsAdultUpdate from './components/IsAdultUpdate';
+import LoadingIndicator from '../../elements/LoadingIndicator';
 import lang from '../../res/lang';
 
 interface RouteMatch {
@@ -100,7 +101,7 @@ const SpecificUser = withRouter(
                     </DialogContent>
                   </React.Fragment>
                 ) : (
-                  loading && <CircularProgress />
+                  loading && <LoadingIndicator />
                 )}
                 <DialogActions>
                   <Button size="small" color="primary" onClick={this.onClose}>

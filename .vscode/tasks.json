@@ -32,6 +32,12 @@
       "type": "shell",
       "command": "docker-compose -f docker-compose.yml -f docker-compose.override.yml logs -f",
       "problemMatcher": []
+    },
+    {
+      "label": "Prettier UI",
+      "type": "shell",
+      "command": "cd ui && yarn prettier",
+      "problemMatcher": []
     }
   ]
 }

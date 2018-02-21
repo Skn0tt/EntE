@@ -52,15 +52,18 @@ export interface IUser extends IUserBase {
   _id: MongoId;
 }
 
-export class User extends Record({
-  _id: '',
-  username: '',
-  displayname: '',
-  email: '',
-  role: '',
-  isAdult: false,
-  children: [],
-}) {
+export class User extends Record(
+  {
+    _id: '',
+    username: '',
+    displayname: '',
+    email: '',
+    role: '',
+    isAdult: false,
+    children: [],
+  },
+  'User',
+) {
   constructor(props: Partial<IUser>) {
     super(props);
   }
@@ -93,15 +96,18 @@ export interface ISlotCreate {
   teacher: MongoId;
 }
 
-export class Slot extends Record({
-  _id: '',
-  date: new Date(0),
-  hour_from: -1,
-  hour_to: -1,
-  signed: false,
-  student: '',
-  teacher: '',
-}) {
+export class Slot extends Record(
+  {
+    _id: '',
+    date: new Date(0),
+    hour_from: -1,
+    hour_to: -1,
+    signed: false,
+    student: '',
+    teacher: '',
+  },
+  'Slot',
+) {
   constructor(props: Partial<ISlot>) {
     super(props);
   }
@@ -138,19 +144,22 @@ export interface IEntryCreate {
   forSchool: boolean;
 }
 
-export class Entry extends Record({
-  _id: '',
-  date: new Date(),
-  dateEnd: new Date(),
-  reason: '',
-  student: '',
-  slots: [],
-  forSchool: false,
-  signedManager: false,
-  signedParent: false,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-}) {
+export class Entry extends Record(
+  {
+    _id: '',
+    date: new Date(),
+    dateEnd: new Date(),
+    reason: '',
+    student: '',
+    slots: [],
+    forSchool: false,
+    signedManager: false,
+    signedParent: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  'Entry',
+) {
   constructor(props: Partial<IEntry>) {
     super(props);
   }
@@ -177,13 +186,16 @@ export interface INewPassword {
   password: string;
 }
 
-export class AuthState extends Record({
-  username: '',
-  password: '',
-  displayname: '',
-  role: '',
-  children: [],
-}) {
+export class AuthState extends Record(
+  {
+    username: '',
+    password: '',
+    displayname: '',
+    role: '',
+    children: [],
+  },
+  'AuthState',
+) {
   constructor(props: Partial<IAuth>) {
     super(props);
   }
@@ -209,14 +221,17 @@ export interface IAppState {
   loading: number;
 }
 
-export class AppState extends Record({
-  entries: Map<MongoId, Entry>(),
-  users: Map<MongoId, User>(),
-  slots: Map<MongoId, Slot>(),
-  auth: new AuthState({}),
-  messages: List<string>(),
-  loading: 0,
-}) {
+export class AppState extends Record(
+  {
+    entries: Map<MongoId, Entry>(),
+    users: Map<MongoId, User>(),
+    slots: Map<MongoId, Slot>(),
+    auth: new AuthState({}),
+    messages: List<string>(),
+    loading: 0,
+  },
+  'AppState',
+) {
   constructor(props: Partial<IAppState>) {
     super(props);
   }
