@@ -6,7 +6,7 @@
     {
       "label": "PDF",
       "type": "shell",
-      "command": "cd resources/Paper && make Paper.pdf && open Paper.pdf",
+      "command": "cd resources/Paper && make open",
       "problemMatcher": []
     },
     {
