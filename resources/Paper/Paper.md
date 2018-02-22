@@ -405,7 +405,7 @@ Ich hoffe, dass die Schulleitung ebenfalls den Einsatz der Software unterstützt
 
 ![Logo EntE\label{logo}](Logo.png)
 
-![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.pdf){ height=700px }
+![Entschuldigungszettel\label{entschuldigungs-zettel}](Entschuldigungszettel.png){ height=700px }
 
 ![Klassendiagramm Datenbank\label{class-diagramm}](DB.png){ height=700px }
 

@@ -2,8 +2,9 @@
 *.png
 *.jpg
 *.svg
+*.epub
 
 !ContainerVsVM.jpg
-!Entschuldigungszettel.pdf
+!Entschuldigungszettel.png
 !Screenshot-entries.png
 !Logo.png
