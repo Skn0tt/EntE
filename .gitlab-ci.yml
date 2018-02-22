@@ -139,7 +139,7 @@ Credentials:
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
     - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
 
-release:staging:
+.release:staging:
   stage: release
   image: williamyeh/ansible:debian9
   only:
