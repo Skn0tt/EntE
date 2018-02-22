@@ -84,7 +84,7 @@ Build nginx-proxy:
   script:
     - docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 
-Test API:
+.Test API:
   image: node
   stage: test
   except:
@@ -139,7 +139,7 @@ Credentials:
     - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
     - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
 
-release:staging:
+.release:staging:
   stage: release
   image: williamyeh/ansible:debian9
   only:

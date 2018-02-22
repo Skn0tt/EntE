@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "precommit": "lint-staged",
-    "test": "snyk test && echo NO TESTS DEFINED",
+    "test": "echo NO TESTS DEFINED",
+    "snyk": "snyk test",
     "watch": "tsc --watch",
     "start": "node dist/index.js",
     "lint": "tslint --project .",
