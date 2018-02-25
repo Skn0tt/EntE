@@ -1,12 +1,14 @@
 import User from '../models/User';
+import { ROLES } from '../constants';
 
-const authenticate = async (username, password, done) => {
+export const basic = async (username: string, password: string, done: (err: Error, user?: any) => void) => {
   try {
     const user = await User.findOne({ username });
-    if (user === null) return done(null, false);
+    if (!user) {
+      return done(null, false);
+    }
 
     const valid = await user.comparePassword(password);
-
     if (valid) {
       return done(null, user);
     }
@@ -17,4 +19,21 @@ const authenticate = async (username, password, done) => {
   }
 };
 
-export default authenticate;
+interface JWT_Payload {
+  username: string;
+  role: ROLES;
+}
+
+export const jwt = async (jwt_payload: JWT_Payload, done: (err: Error, user?: any) => void) => {
+  try {
+    const user = await User.findOne({ username: jwt_payload.username });
+
+    if (!user) {
+      return done(new Error('Couldnt find User'));
+    }
+
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}

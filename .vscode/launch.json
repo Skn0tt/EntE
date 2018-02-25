@@ -18,7 +18,7 @@
       "port": 5555,
       "address": "localhost",
       "restart": true,
-      "localRoot": "${workspaceRoot}/api",
+      "localRoot": "${workspaceRoot}/api/",
       "remoteRoot": "/usr/src/app/",
       "protocol": "inspector"
     }

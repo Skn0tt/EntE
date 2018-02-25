@@ -8,6 +8,8 @@ info:
 tags:
 - name: "auth"
   description: "Operations about auth, not protected"
+- name: "token"
+  description: "Operations about acquiring tokens"
 - name: "entries"
   description: "Operations about entries"
 - name: "slots"
@@ -23,6 +25,12 @@ servers:
     description: Production server (uses live data)
 
 paths:
+  # Token
+  '/token/':
+    get:
+      tags:
+        - token
+      summary: Request a new JWT
   # Auth
   '/auth/forgot/{usermame}':
     post:
