@@ -12,6 +12,7 @@ tokenRouter.get('/', async (r, w, n) => {
       username: r.user.username,
       displayname: r.user.displayname,
       role: r.user.role,
+      children: r.user.children,
     };
 
     const token = JWT.sign(payload, jwtSecret, {

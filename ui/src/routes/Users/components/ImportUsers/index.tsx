@@ -10,7 +10,7 @@ import { Dispatch, Action } from 'redux';
 import Dropzone from 'react-dropzone';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import parseCSV from './services/parseCSV';
-import { createUserRequest, addMessage } from '../../../../redux/actions';
+import { createUsersRequest, addMessage } from '../../../../redux/actions';
 import UnsignedAvatar from '../../../SpecificEntry/elements/UnsignedAvatar';
 import SignedAvatar from '../../../SpecificEntry/elements/SignedAvatar';
 
@@ -27,7 +27,7 @@ interface DispatchProps {
   addMessage(msg: string): void;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUsers: (users: IUserCreate[]) => dispatch(createUserRequest(users)),
+  createUsers: (users: IUserCreate[]) => dispatch(createUsersRequest(users)),
   addMessage: (msg: string) => dispatch(addMessage(msg)),
 });
 
