@@ -16,9 +16,6 @@ import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   GET_USERS_ERROR,
-  CHECK_AUTH_REQUEST,
-  CHECK_AUTH_SUCCESS,
-  CHECK_AUTH_ERROR,
   LOGOUT,
   GET_TEACHERS_SUCCESS,
   GET_TEACHERS_REQUEST,
@@ -27,9 +24,6 @@ import {
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
   ADD_RESPONSE,
-  CREATE_USER_REQUEST,
-  CREATE_USER_SUCCESS,
-  CREATE_USER_ERROR,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
@@ -44,33 +38,33 @@ import {
   SET_PASSWORD_SUCCESS,
   SET_PASSWORD_ERROR,
   ADD_MESSAGE,
+  GET_TOKEN_REQUEST,
+  GET_TOKEN_SUCCESS,
+  GET_TOKEN_ERROR,
+  REFRESH_TOKEN_REQUEST,
+  REFRESH_TOKEN_SUCCESS,
+  REFRESH_TOKEN_ERROR,
+  CREATE_USERS_REQUEST,
+  CREATE_USERS_SUCCESS,
+  CREATE_USERS_ERROR,
 } from './constants';
 import {
   MongoId,
-  AuthState,
-  ICredentials,
   IEntryCreate,
   APIResponse,
   IUserCreate,
   IUser,
   INewPassword,
+  ICredentials,
+  TokenInfo,
 } from '../interfaces/index';
-
-export type ActionType =
-  | IEntryCreate
-  | Error
-  | MongoId
-  | ICredentials
-  | AuthState
-  | Error
-  | APIResponse;
 
 export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
-export const createUserRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
-  CREATE_USER_REQUEST,
+export const createUsersRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
+  CREATE_USERS_REQUEST,
   input => {
     if (Array.isArray(input)) {
       return input;
@@ -78,8 +72,8 @@ export const createUserRequest = createAction<IUserCreate[], IUserCreate | IUser
     return [input];
   },
 );
-export const createUserSuccess = createAction(CREATE_USER_SUCCESS);
-export const createUserError = createAction<Error>(CREATE_USER_ERROR);
+export const createUsersSuccess = createAction(CREATE_USERS_SUCCESS);
+export const createUsersError = createAction<Error>(CREATE_USERS_ERROR);
 
 export const signEntryRequest = createAction<MongoId>(SIGN_ENTRY_REQUEST);
 export const singEntrySuccess = createAction(SIGN_ENTRY_SUCCESS);
@@ -113,9 +107,13 @@ export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
 export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
 export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
 
-export const checkAuthRequest = createAction<ICredentials>(CHECK_AUTH_REQUEST);
-export const checkAuthSuccess = createAction<AuthState>(CHECK_AUTH_SUCCESS);
-export const checkAuthError = createAction<Error>(CHECK_AUTH_ERROR);
+export const getTokenRequest = createAction<ICredentials>(GET_TOKEN_REQUEST);
+export const getTokenSuccess = createAction<TokenInfo>(GET_TOKEN_SUCCESS);
+export const getTokenError = createAction<Error>(GET_TOKEN_ERROR);
+
+export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);
+export const refreshTokenSuccess = createAction<TokenInfo>(REFRESH_TOKEN_SUCCESS);
+export const refreshTokenError = createAction<Error>(REFRESH_TOKEN_ERROR);
 
 export const removeMessage = createAction<number>(REMOVE_MESSAGE);
 export const addMessage = createAction<string>(ADD_MESSAGE);

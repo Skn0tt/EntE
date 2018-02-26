@@ -1,5 +1,5 @@
 import { handleActions, Action, BaseAction, ReducerMap } from 'redux-actions';
-import { Entry, AppState, APIResponse, MongoId, User, Slot } from '../interfaces/index';
+import { Entry, AppState, APIResponse, MongoId, User, Slot, TokenInfo } from '../interfaces/index';
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -13,9 +13,6 @@ import {
   GET_USER_SUCCESS,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
-  CHECK_AUTH_REQUEST,
-  CHECK_AUTH_ERROR,
-  CHECK_AUTH_SUCCESS,
   LOGOUT,
   GET_TEACHERS_REQUEST,
   GET_TEACHERS_ERROR,
@@ -32,6 +29,12 @@ import {
   SET_PASSWORD_ERROR,
   SET_PASSWORD_SUCCESS,
   ADD_MESSAGE,
+  GET_TOKEN_REQUEST,
+  GET_TOKEN_ERROR,
+  GET_TOKEN_SUCCESS,
+  REFRESH_TOKEN_ERROR,
+  REFRESH_TOKEN_SUCCESS,
+  REFRESH_TOKEN_REQUEST,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
@@ -41,14 +44,32 @@ const initialState = new AppState({});
 const reducer = handleActions(
   {
     /**
-     * CHECK_AUTH
+     * GET_TOKEN
      */
-    [CHECK_AUTH_REQUEST]: (state, action: BaseAction): AppState =>
+    [GET_TOKEN_REQUEST]: (state) =>
       state.update('loading', loading => loading + 1),
-    [CHECK_AUTH_ERROR]: (state, action: Action<Error>): AppState =>
+    [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update('loading', loading => loading - 1),
-    [CHECK_AUTH_SUCCESS]: (state, action): AppState =>
-      state.update('loading', loading => loading - 1).set('auth', action.payload),
+    [GET_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) => state
+      .update('loading', loading => loading - 1)
+      .setIn(['auth', 'token'], action.payload!.token)
+      .setIn(['auth', 'exp'], action.payload!.exp)
+      .setIn(['auth', 'role'], action.payload!.role)
+      .setIn(['auth', 'displayname'], action.payload!.displayname),
+
+    /**
+     * REFRESH_TOKEN
+     */
+    [REFRESH_TOKEN_REQUEST]: (state) =>
+      state.update('loading', loading => loading + 1),
+    [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
+      state.update('loading', loading => loading - 1),
+    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) => state
+      .update('loading', loading => loading - 1)
+      .setIn(['auth', 'token'], action.payload!.token)
+      .setIn(['auth', 'exp'], action.payload!.exp)
+      .setIn(['auth', 'role'], action.payload!.role)
+      .setIn(['auth', 'displayname'], action.payload!.displayname),
 
     /**
      * LOGOUT

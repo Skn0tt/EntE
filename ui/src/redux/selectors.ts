@@ -1,19 +1,24 @@
-import { AppState, MongoId, ICredentials, User, Slot, Entry, Roles } from '../interfaces/index';
+import { AppState, MongoId, User, Slot, Entry, Roles } from '../interfaces/index';
 import { createSelector } from 'reselect';
+
+type Selector<T> = (state: AppState) => T;
+
 /**
  * State
  */
-export const isLoading = (state: AppState): boolean => state.get('loading') > 0;
-export const getMessages = (state: AppState): String[] => state.get('messages').toArray();
+export const isLoading: Selector<boolean> = state => state.get('loading') > 0;
+export const getMessages: Selector<String[]> = state => state.get('messages').toArray();
 
 /**
  * Auth
  */
-export const isAuthValid = (state: AppState): boolean => state.getIn(['auth', 'role']) !== '';
-export const isParent = (state: AppState): boolean =>
+export const isAuthValid: Selector<boolean> = state =>
+  state.getIn(['auth', 'token']) !== '' && 
+  +(state.getIn(['auth', 'exp']) as Date) < Date.now();
+export const isParent: Selector<boolean> = state =>
   state.getIn(['auth', 'role']) === Roles.PARENT;
 
-export const getRole = (state: AppState): Roles => state.getIn(['auth', 'role']);
+export const getRole: Selector<Roles> = state => state.getIn(['auth', 'role']);
 
 export const hasChildren = createSelector(
   [getRole],
@@ -23,27 +28,24 @@ export const canCreateEntries = createSelector(
   [getRole],
   role => role === Roles.STUDENT || role === Roles.PARENT,
 );
-export const getAuthCredentials = (state: AppState): ICredentials => ({
-  username: state.get('auth').get('username'),
-  password: state.get('auth').get('password'),
-});
-export const getChildren = (state: AppState): User[] =>
+export const getToken: Selector<string> = state => state.getIn(['auth', 'token'])
+export const getChildren: Selector<User[]> = state =>
   state.getIn(['auth', 'children']).map((id: MongoId) => getUser(id)(state));
 
-export const getUsername = (state: AppState): string => state.getIn(['auth', 'username']);
-export const getDisplayname = (state: AppState): string => state.getIn(['auth', 'displayname']);
+export const getUsername: Selector<string> = state => state.getIn(['auth', 'username']);
+export const getDisplayname: Selector<string> = state => state.getIn(['auth', 'displayname']);
 
 /**
  * Data
  */
-export const getEntry = (id: MongoId) => (state: AppState): Entry => state.getIn(['entries', id]);
-export const getEntries = (state: AppState) => state.get('entries').toArray();
+export const getEntry = (id: MongoId): Selector<Entry> => state => state.getIn(['entries', id]);
+export const getEntries: Selector<Entry[]> = state => state.get('entries').toArray();
 
-export const getUser = (id: MongoId) => (state: AppState): User => state.getIn(['users', id]);
-export const getUsers = (state: AppState) => state.get('users').toArray();
+export const getUser = (id: MongoId): Selector<User> => state => state.getIn(['users', id]);
+export const getUsers: Selector<User[]> = state => state.get('users').toArray();
 
-export const getSlots = (state: AppState) => state.get('slots').toArray();
-export const getSlotsById = (ids: MongoId[]) => (state: AppState): Slot[] =>
+export const getSlots: Selector<Slot[]> = state => state.get('slots').toArray();
+export const getSlotsById = (ids: MongoId[]): Selector<Slot[]> => state =>
   ids.map(id => state.getIn(['slots', id]));
 
 export const getTeachers = createSelector([getUsers], users =>

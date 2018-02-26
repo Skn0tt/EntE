@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as passport from 'passport';
 import { BasicStrategy } from 'passport-http';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import * as mongoose from 'mongoose';
 import * as validator from 'express-validator';
 import { Promise as BBPromise } from 'bluebird';
@@ -10,19 +11,20 @@ import * as helmet from 'helmet';
 import * as Raven from 'raven';
 
 // Routines
-import authenticate from './routines/authenticate';
+import * as authenticate from './routines/authenticate';
+import { checkEmail } from './routines/mail';
+import cron from './routines/cron';
 
 // Routes
 import auth from './routes/auth';
 import entries from './routes/entries';
 import slots from './routes/slots';
 import users from './routes/users';
-import login from './routes/login';
 import status from './routes/status';
 import dev from './routes/dev';
-import cron from './routines/cron';
-import { checkEmail } from './routines/mail';
+import token from './routes/token';
 
+const jwtSecret = process.env.JWT_SECRET || 'supersecret';
 const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
 const app = express();
@@ -67,14 +69,18 @@ app.use('/status', status);
 
 // Authentication
 app.use(passport.initialize());
-passport.use(new BasicStrategy(authenticate));
-app.use(passport.authenticate('basic', { session: false }));
+passport.use(new JwtStrategy({
+  secretOrKey: jwtSecret,
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+}, authenticate.jwt));
+passport.use(new BasicStrategy(authenticate.basic));
+app.use(passport.authenticate(['jwt', 'basic'], { session: false }));
 
 // Authenticated Routes
+app.use('/token', token);
 app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
-app.use('/login', login);
 if (!production) { app.use('/dev', dev); }
 
 // Error Handling

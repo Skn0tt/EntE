@@ -171,11 +171,20 @@ export class Entry extends Record(
 /**
  * Auth
  */
+export interface TokenInfo {
+  token: string;
+  displayname: string;
+  role: Roles;
+  exp: Date;
+  children: MongoId[];
+}
 export interface ICredentials {
   username: string;
   password: string;
 }
 export interface IAuth extends ICredentials {
+  token: string;
+  exp: Date;
   role: Roles;
   displayname: string;
   children: MongoId[];
@@ -188,8 +197,8 @@ export interface INewPassword {
 
 export class AuthState extends Record(
   {
-    username: '',
-    password: '',
+    token: '',
+    exp: new Date(),
     displayname: '',
     role: '',
     children: [],

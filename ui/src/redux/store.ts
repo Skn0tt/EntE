@@ -8,7 +8,7 @@ import ravenForRedux from 'raven-for-redux';
 import saga from './saga';
 import { AppState, AuthState } from '../interfaces/index';
 import * as select from './selectors';
-import { CHECK_AUTH_SUCCESS } from './constants';
+import { GET_TOKEN_REQUEST } from './constants';
 import { Action } from 'redux-actions';
 
 const sagaMiddleware = reduxSaga({
@@ -17,9 +17,9 @@ const sagaMiddleware = reduxSaga({
 const composeEnhancers = composeWithDevTools({});
 const ravenMiddleWare = ravenForRedux(Raven, {
   actionTransformer: (action: Action<AuthState | {}>) => {
-    if (action.type === CHECK_AUTH_SUCCESS) {
+    if (action.type === GET_TOKEN_REQUEST) {
       return {
-        payload: (action.payload as AuthState).delete('password'),
+        payload: "deleted",
         ...action,
       };
     }

@@ -1,4 +1,5 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import {
   getEntryError,
   getEntriesError,
@@ -8,8 +9,6 @@ import {
   getUsersSuccess,
   getUserSuccess,
   getUsersError,
-  checkAuthSuccess,
-  checkAuthError,
   getTeachersError,
   getTeachersSuccess,
   getSlotsSuccess,
@@ -17,64 +16,93 @@ import {
   addResponse,
   createEntrySuccess,
   createEntryError,
-  createUserError,
-  createUserSuccess,
+  createUsersError,
+  createUsersSuccess,
   signEntryError,
   singEntrySuccess,
   resetPasswordError,
   resetPasswordSuccess,
   addMessage,
+  getTokenSuccess,
+  refreshTokenSuccess,
+  getTokenError,
+  refreshTokenError,
+  logout,
+  refreshTokenRequest,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
   GET_ENTRIES_REQUEST,
   GET_USER_REQUEST,
   GET_USERS_REQUEST,
-  CHECK_AUTH_REQUEST,
   GET_TEACHERS_REQUEST,
   GET_SLOTS_REQUEST,
   CREATE_ENTRY_REQUEST,
-  CREATE_USER_REQUEST,
   UPDATE_USER_REQUEST,
   SIGN_ENTRY_REQUEST,
   RESET_PASSWORD_REQUEST,
   SET_PASSWORD_REQUEST,
+  REFRESH_TOKEN_REQUEST,
+  GET_TOKEN_REQUEST,
+  CREATE_USERS_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
 import * as selectors from './selectors';
 import {
   APIResponse,
-  ICredentials,
   MongoId,
   IEntryCreate,
   IUserCreate,
   IUser,
   INewPassword,
   Roles,
+  ICredentials,
+  TokenInfo,
 } from '../interfaces/index';
 import lang from '../res/lang';
+
+const tokenRefreshDelay = 1000 * 60 * 5;
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
 
-function* checkAuthSaga(action: Action<ICredentials>) {
+function* getTokenSaga(action: Action<ICredentials>) {
   try {
-    const result = yield call(api.checkAuth, action.payload);
+    const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
 
-    yield dispatchUpdates(result);
-    yield put(checkAuthSuccess(result.auth));
+    yield put(getTokenSuccess(tokenInfo));
+    
+    yield delay(tokenRefreshDelay);
+    yield put(refreshTokenRequest())
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
-    yield put(checkAuthError(error));
+    yield put(getTokenError(error));
+    yield put(logout());
+  }
+}
+
+function* refreshTokenSaga(action: Action<void>) {
+  try {
+    const token = yield select(selectors.getToken);
+    const tokenInfo: TokenInfo = yield call(api.refreshToken, token);
+
+    yield put(refreshTokenSuccess(tokenInfo));
+
+    yield delay(tokenRefreshDelay);
+    yield put(refreshTokenRequest())
+  } catch (error) {
+    yield put(addMessage(lang().message.request.error));
+    yield put(refreshTokenError(error));
+    yield put(logout());
   }
 }
 
 function* getEntrySaga(action: Action<MongoId>) {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getEntry, action.payload, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getEntry, action.payload, token);
 
     yield put(getEntrySuccess());
     yield dispatchUpdates(result);
@@ -86,8 +114,8 @@ function* getEntrySaga(action: Action<MongoId>) {
 
 function* getEntriesSaga() {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getEntries, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getEntries, token);
 
     yield put(getEntriesSuccess());
     yield dispatchUpdates(result);
@@ -99,8 +127,8 @@ function* getEntriesSaga() {
 
 function* getSlotsSaga() {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getSlots, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getSlots, token);
 
     yield put(getSlotsSuccess());
     yield dispatchUpdates(result);
@@ -112,8 +140,8 @@ function* getSlotsSaga() {
 
 function* getUserSaga(action: Action<MongoId>) {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getUser, action.payload, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getUser, action.payload, token);
 
     yield put(getUserSuccess());
     yield dispatchUpdates(result);
@@ -125,8 +153,8 @@ function* getUserSaga(action: Action<MongoId>) {
 
 function* getUsersSaga() {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getUsers, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getUsers, token);
 
     yield put(getUsersSuccess());
     yield dispatchUpdates(result);
@@ -138,8 +166,8 @@ function* getUsersSaga() {
 
 function* getTeachersSaga() {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.getTeachers, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getTeachers, token);
 
     yield put(getTeachersSuccess());
     yield dispatchUpdates(result);
@@ -151,8 +179,8 @@ function* getTeachersSaga() {
 
 function* createEntrySaga(action: Action<IEntryCreate>) {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.createEntry, action.payload, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.createEntry, action.payload, token);
 
     yield put(createEntrySuccess());
     yield dispatchUpdates(result);
@@ -161,7 +189,7 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
   }
 }
 
-function* createUserSaga(action: Action<IUserCreate[]>) {
+function* createUsersSaga(action: Action<IUserCreate[]>) {
   try {
     const first: IUserCreate[] = [];
     const second: IUserCreate[] = [];
@@ -174,40 +202,40 @@ function* createUserSaga(action: Action<IUserCreate[]>) {
       }
     });
 
-    const auth = yield select(selectors.getAuthCredentials);
+    const token = yield select(selectors.getToken);
 
     if (first.length !== 0) {
-      const result = yield call(api.createUser, first, auth);
+      const result = yield call(api.createUser, first, token);
       yield dispatchUpdates(result);
     }
 
     if (second.length !== 0) {
-      const result = yield call(api.createUser, second, auth);
+      const result = yield call(api.createUser, second, token);
       yield dispatchUpdates(result);
     }
 
-    yield put(createUserSuccess());
+    yield put(createUsersSuccess());
   } catch (error) {
-    yield put(createUserError(error));
+    yield put(createUsersError(error));
   }
 }
 
 function* updateUserSaga(action: Action<Partial<IUser>>) {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.updateUser, action.payload, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.updateUser, action.payload, token);
 
-    yield put(createUserSuccess());
+    yield put(createUsersSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(createUserError(error));
+    yield put(createUsersError(error));
   }
 }
 
 function* signEntrySaga(action: Action<MongoId>) {
   try {
-    const auth = yield select(selectors.getAuthCredentials);
-    const result = yield call(api.signEntry, action.payload, auth);
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.signEntry, action.payload, token);
 
     yield put(singEntrySuccess());
     yield dispatchUpdates(result);
@@ -251,9 +279,10 @@ function* saga() {
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
-  yield takeEvery<Action<ICredentials>>(CHECK_AUTH_REQUEST, checkAuthSaga);
+  yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
+  yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
-  yield takeEvery<Action<IUserCreate[]>>(CREATE_USER_REQUEST, createUserSaga);
+  yield takeEvery<Action<IUserCreate[]>>(CREATE_USERS_REQUEST, createUsersSaga);
   yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);
 }
 

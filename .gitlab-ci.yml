@@ -129,16 +129,6 @@ Lint UI:
   script:
     - yarn lint
 
-Credentials:
-  image: frolvlad/alpine-bash
-  stage: test
-  except:
-    - master
-  script:
-    - cd ui/src/interfaces
-    - "grep -nwc index.ts -e \"username: '',\" | grep -q 2"
-    - "grep -nwc index.ts -e \"password: '',\" | grep -q 1"
-
 .release:staging:
   stage: release
   image: williamyeh/ansible:debian9

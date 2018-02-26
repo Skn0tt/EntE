@@ -2,24 +2,18 @@ import {
   Entry,
   User,
   MongoId,
-  ICredentials,
-  AuthState,
   Slot,
   APIResponse,
   IAPIResponse,
   IEntryCreate,
   IUserCreate,
   IUser,
+  ICredentials,
+  TokenInfo,
 } from '../interfaces/index';
 import axios from 'axios';
 
 const baseUrl = window && `${location.protocol}//${location.hostname}/api`;
-
-const defaultResponse: APIResponse = {
-  entries: [],
-  slots: [],
-  users: [],
-};
 
 const reviver = (key: string, value: any) =>
   ['date', 'dateEnd', 'createdAt', 'updatedAt'].indexOf(key) !== -1 ? new Date(value) : value;
@@ -29,8 +23,13 @@ const transformDates = (data: string) => {
   return input;
 };
 
-const get = async (url: string, auth: ICredentials) => {
-  const response = await axios.get(url, { auth, transformResponse: transformDates });
+const get = async (url: string, token: string) => {
+  const response = await axios.get(url, {
+    transformResponse: transformDates,
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
   return response.data;
 };
 
@@ -40,99 +39,119 @@ const transform = (data: IAPIResponse): APIResponse => ({
   users: data.users ? data.users.map(user => new User(user)) : [],
 });
 
-const transformAuth = (data: IAPIResponse, auth: ICredentials) => ({
-  auth: new AuthState({
-    ...auth,
-    ...data.auth,
-  }),
-  ...transform(data),
-});
+export const getTokenInfo = (token: string): TokenInfo => {
+  const payload = JSON.parse(atob(token.split('.')[1]));
 
-export const checkAuth = async (auth: ICredentials): Promise<APIResponse> => {
-  if (auth.username !== '' && auth.password !== '') {
-    const response = await axios.get(`${baseUrl}/login`, {
-      auth,
-      validateStatus: status => status === 401 || status === 200,
-      transformResponse: transformDates,
-    });
+  return ({
+    token,
+    exp: new Date(payload.exp),
+    displayname: payload.displayname,
+    role: payload.role,
+    children: payload.children,
+  });
+}
 
-    if (response.status === 200) return transformAuth(response.data, auth);
+export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
+  const response = await axios.get(`${baseUrl}/token`, {
+    auth,
+  });
+
+  return getTokenInfo(response.data);
+}
+
+export const refreshToken = async (token: string): Promise<TokenInfo> => {
+  try {
+    const result = await get(`${baseUrl}/token`, token);
+
+    return getTokenInfo(result);
+  } catch (error) {
+    throw error;
   }
+}
 
-  return {
-    auth: new AuthState({}),
-    ...defaultResponse,
-  };
-};
-
-export const getEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/entries/${id}`, auth);
+export const getEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/entries/${id}`, token);
   return transform(data);
 };
 
-export const getEntries = async (auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/entries`, auth);
+export const getEntries = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/entries`, token);
   return transform(data);
 };
 
-export const getSlots = async (auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/slots`, auth);
+export const getSlots = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/slots`, token);
   return transform(data);
 };
 
-export const getUser = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users/${id}`, auth);
+export const getUser = async (id: MongoId, token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/users/${id}`, token);
   return transform(data);
 };
 
-export const getUsers = async (auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users`, auth);
+export const getUsers = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/users`, token);
   return transform(data);
 };
 
-export const getTeachers = async (auth: ICredentials): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users?role=teacher`, auth);
+export const getTeachers = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/users?role=teacher`, token);
   return transform(data);
 };
 
-const post = async (url: string, auth: ICredentials, body?: {}) => {
-  const response = await axios.post(url, body, { auth, transformResponse: transformDates });
+const post = async (url: string, token: string, body?: {}) => {
+  const response = await axios.post(url, body, {
+    transformResponse: transformDates,
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
   return response.data;
 };
 
 export const createEntry = async (
   entry: IEntryCreate,
-  auth: ICredentials,
+  token: string,
 ): Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/entries/`, auth, entry);
+  const response = await post(`${baseUrl}/entries/`, token, entry);
   return transform(response);
 };
 
-export const createUser = async (user: IUserCreate[], auth: ICredentials): Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/users/`, auth, user);
+export const createUser = async (user: IUserCreate[], token: string): Promise<APIResponse> => {
+  const response = await post(`${baseUrl}/users/`, token, user);
   return transform(response);
 };
 
-const patch = async (url: string, auth: ICredentials, body?: {}) => {
-  const response = await axios.patch(url, body, { auth, transformResponse: transformDates });
+const patch = async (url: string, token: string, body?: {}) => {
+  const response = await axios.patch(url, body, {
+    transformResponse: transformDates,
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
   return response.data;
 };
 
 export const updateUser = async (
   user: Partial<IUser>,
-  auth: ICredentials,
+  token: string,
 ): Promise<APIResponse> => {
-  const response = await patch(`${baseUrl}/users/${user._id}`, auth, user);
+  const response = await patch(`${baseUrl}/users/${user._id}`, token, user);
   return transform(response);
 };
 
-const put = async (url: string, auth: ICredentials, body?: {}) => {
-  const response = await axios.put(url, body, { auth, transformResponse: transformDates });
+const put = async (url: string, token: string, body?: {}) => {
+  const response = await axios.put(url, body, {
+    transformResponse: transformDates,
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
   return response.data;
 };
 
-export const signEntry = async (id: MongoId, auth: ICredentials): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/entries/${id}/sign`, auth);
+export const signEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
+  const response = await put(`${baseUrl}/entries/${id}/sign`, token);
   return transform(response);
 };
 

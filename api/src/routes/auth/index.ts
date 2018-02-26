@@ -1,5 +1,6 @@
 import { Router, Response, NextFunction, Request } from 'express';
 import { param, validationResult } from 'express-validator/check';
+import * as JWT from 'jsonwebtoken';
 import User from '../../models/User';
 import { dispatchPasswortResetSuccess } from '../../routines/mail';
 

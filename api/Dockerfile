@@ -8,6 +8,7 @@ COPY . ./
 RUN yarn build
 
 FROM node
+WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/dist ./dist
 COPY package.json yarn.lock ./
 

@@ -13,7 +13,7 @@ import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import { Action } from 'redux';
-import { createUserRequest } from '../../../../redux/actions';
+import { createUsersRequest } from '../../../../redux/actions';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
@@ -49,7 +49,7 @@ interface DispatchProps {
   createUser(user: IUserCreate): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUser: (user: IUserCreate) => dispatch(createUserRequest(user)),
+  createUser: (user: IUserCreate) => dispatch(createUsersRequest(user)),
 });
 
 type Props = OwnProps &

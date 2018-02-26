@@ -17,7 +17,7 @@ import {
   TextField,
 } from 'material-ui';
 import { withMobileDialog } from 'material-ui/Dialog';
-import { checkAuthRequest, resetPasswordRequest } from '../../redux/actions';
+import { resetPasswordRequest, getTokenRequest } from '../../redux/actions';
 
 interface InjectedProps {
   fullScreen: boolean;
@@ -35,7 +35,7 @@ interface DispatchProps {
   triggerPasswordReset(username: string): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  checkAuth: (auth: ICredentials) => dispatch(checkAuthRequest(auth)),
+  checkAuth: (auth: ICredentials) => dispatch(getTokenRequest(auth)),
   triggerPasswordReset: (username: string) => dispatch(resetPasswordRequest(username)),
 });
 
