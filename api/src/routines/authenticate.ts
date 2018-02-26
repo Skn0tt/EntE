@@ -2,7 +2,11 @@ import User, { UserModel } from '../models/User';
 import { ROLES } from '../constants';
 import { JWT_PAYLOAD } from '../routes/token';
 
-export const basic = async (username: string, password: string, done: (err: Error, user?: any) => void) => {
+export const basic = async (
+  username: string,
+  password: string,
+  done: (err: Error, user?: any) => void,
+) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
@@ -20,10 +24,7 @@ export const basic = async (username: string, password: string, done: (err: Erro
   }
 };
 
-const isValid = (user: UserModel, jwt: JWT_PAYLOAD): boolean => (
-  user &&
-  user.role === jwt.role
-)
+const isValid = (user: UserModel, jwt: JWT_PAYLOAD): boolean => user && user.role === jwt.role;
 
 export const jwt = async (jwtPayload: JWT_PAYLOAD, done: (err: Error, user?: any) => void) => {
   try {
@@ -37,4 +38,4 @@ export const jwt = async (jwtPayload: JWT_PAYLOAD, done: (err: Error, user?: any
   } catch (err) {
     return done(err);
   }
-}
+};
