@@ -29,6 +29,7 @@ import {
   refreshTokenError,
   logout,
   refreshTokenRequest,
+  updateUserSuccess,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -75,7 +76,7 @@ function* getTokenSaga(action: Action<ICredentials>) {
     yield put(getTokenSuccess(tokenInfo));
     
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(getTokenError(error));
@@ -91,7 +92,7 @@ function* refreshTokenSaga(action: Action<void>) {
     yield put(refreshTokenSuccess(tokenInfo));
 
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(refreshTokenError(error));
@@ -225,7 +226,7 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.updateUser, action.payload, token);
 
-    yield put(createUsersSuccess());
+    yield put(updateUserSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
     yield put(createUsersError(error));
@@ -271,16 +272,16 @@ function* setPasswordSaga(action: Action<INewPassword>) {
 
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
-  yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
+  yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
   yield takeEvery<Action<MongoId>>(GET_USER_REQUEST, getUserSaga);
-  yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
-  yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
-  yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
-  yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
-  yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
-  yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
-  yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
-  yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
+  yield takeEvery<Action<void>>(GET_USERS_REQUEST, getUsersSaga);
+  yield takeEvery<Action<void>>(GET_SLOTS_REQUEST, getSlotsSaga);
+  yield takeEvery<Action<void>>(GET_TEACHERS_REQUEST, getTeachersSaga);
+  yield takeEvery<Action<MongoId>>(SIGN_ENTRY_REQUEST, signEntrySaga);
+  yield takeEvery<Action<string>>(RESET_PASSWORD_REQUEST, resetPasswordSaga);
+  yield takeEvery<Action<INewPassword>>(SET_PASSWORD_REQUEST, setPasswordSaga);
+  yield takeEvery<Action<ICredentials>>(GET_TOKEN_REQUEST, getTokenSaga);
+  yield takeEvery<Action<void>>(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
   yield takeEvery<Action<IUserCreate[]>>(CREATE_USERS_REQUEST, createUsersSaga);
   yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);
