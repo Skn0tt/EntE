@@ -3,7 +3,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Hidden,
   Divider,
   withStyles,
@@ -21,6 +20,7 @@ import { connect } from 'react-redux';
 import { AppState, Roles } from '../../interfaces/index';
 import { withRouter, RouteComponentProps } from 'react-router';
 import LoginStatus from '../LoginStatus';
+import lang from '../../res/lang';
 
 interface StateProps {
   loading: boolean;
@@ -76,9 +76,7 @@ const Drawer = withRouter(
                     >
                       <MenuIcon />
                     </IconButton>
-                    <Typography variant="title" color="inherit" noWrap>
-                      EntE
-                    </Typography>
+                    <img className={classes.logo} src={lang().app.logo} height={24} />
                     <div className={classes.grow} />
                     <RefreshButton />
                   </Toolbar>

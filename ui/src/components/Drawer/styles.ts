@@ -25,6 +25,14 @@ const styles = (theme: Theme): StyleRules => ({
   grow: {
     flex: '1 1 auto',
   },
+  logo: {
+    display: 'block',
+    [theme.breakpoints.down('sm')]: {
+      position: 'fixed',
+      left: '50%',
+      marginLeft: '-75px',
+    },
+  },
   navIconHide: {
     [theme.breakpoints.up('md')]: {
       display: 'none',
