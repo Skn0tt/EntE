@@ -1,9 +1,19 @@
 import * as React from 'react';
-import { Button } from 'material-ui';
+import { IconButton, CircularProgress } from 'material-ui';
 import { Dispatch, connect } from 'react-redux';
 import { Action } from 'redux';
 import { getEntriesRequest, getUsersRequest, getSlotsRequest } from '../../redux/actions';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Refresh as RefreshIcon } from 'material-ui-icons';
+import { AppState } from '../../interfaces';
+import * as select from '../../redux/selectors';
+
+interface StateProps {
+  loading: boolean;
+}
+const mapStateToProps = (state: AppState) => ({
+  loading: select.isLoading(state),
+});
 
 interface DispatchProps {
   getEntries(): Action;
@@ -20,11 +30,13 @@ const renderPaths: string[] = ['/entries', '/users', '/slots'];
 
 const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
-type Props = DispatchProps & RouteComponentProps<{}>;
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
 const RefreshButton: React.SFC<Props> = props =>
-  shouldRender(props.location.pathname) ? (
-    <Button
+  props.loading ? (
+    <CircularProgress style={{ color: 'white' }} />
+  ) : shouldRender(props.location.pathname) ? (
+    <IconButton
       onClick={() => {
         const { location } = props;
         switch (location.pathname) {
@@ -41,10 +53,10 @@ const RefreshButton: React.SFC<Props> = props =>
             break;
         }
       }}
-      variant="raised"
+      style={{ color: 'white' }}
     >
-      Aktualisieren
-    </Button>
+      <RefreshIcon />
+    </IconButton>
   ) : null;
 
-export default withRouter(connect(undefined, mapDispatchToProps)(RefreshButton));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RefreshButton));

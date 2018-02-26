@@ -27,8 +27,8 @@ const get = async (url: string, token: string) => {
   const response = await axios.get(url, {
     transformResponse: transformDates,
     headers: {
-      'Authorization': 'Bearer ' + token
-    }
+      Authorization: 'Bearer ' + token,
+    },
   });
   return response.data;
 };
@@ -42,14 +42,14 @@ const transform = (data: IAPIResponse): APIResponse => ({
 export const getTokenInfo = (token: string): TokenInfo => {
   const payload = JSON.parse(atob(token.split('.')[1]));
 
-  return ({
+  return {
     token,
     exp: new Date(payload.exp),
     displayname: payload.displayname,
     role: payload.role,
     children: payload.children,
-  });
-}
+  };
+};
 
 export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
   const response = await axios.get(`${baseUrl}/token`, {
@@ -57,7 +57,7 @@ export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
   });
 
   return getTokenInfo(response.data);
-}
+};
 
 export const refreshToken = async (token: string): Promise<TokenInfo> => {
   try {
@@ -67,7 +67,7 @@ export const refreshToken = async (token: string): Promise<TokenInfo> => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const getEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
   const data = await get(`${baseUrl}/entries/${id}`, token);
@@ -103,16 +103,13 @@ const post = async (url: string, token: string, body?: {}) => {
   const response = await axios.post(url, body, {
     transformResponse: transformDates,
     headers: {
-      'Authorization': 'Bearer ' + token
-    }
+      Authorization: 'Bearer ' + token,
+    },
   });
   return response.data;
 };
 
-export const createEntry = async (
-  entry: IEntryCreate,
-  token: string,
-): Promise<APIResponse> => {
+export const createEntry = async (entry: IEntryCreate, token: string): Promise<APIResponse> => {
   const response = await post(`${baseUrl}/entries/`, token, entry);
   return transform(response);
 };
@@ -126,16 +123,13 @@ const patch = async (url: string, token: string, body?: {}) => {
   const response = await axios.patch(url, body, {
     transformResponse: transformDates,
     headers: {
-      'Authorization': 'Bearer ' + token
-    }
+      Authorization: 'Bearer ' + token,
+    },
   });
   return response.data;
 };
 
-export const updateUser = async (
-  user: Partial<IUser>,
-  token: string,
-): Promise<APIResponse> => {
+export const updateUser = async (user: Partial<IUser>, token: string): Promise<APIResponse> => {
   const response = await patch(`${baseUrl}/users/${user._id}`, token, user);
   return transform(response);
 };
@@ -144,8 +138,8 @@ const put = async (url: string, token: string, body?: {}) => {
   const response = await axios.put(url, body, {
     transformResponse: transformDates,
     headers: {
-      'Authorization': 'Bearer ' + token
-    }
+      Authorization: 'Bearer ' + token,
+    },
   });
   return response.data;
 };

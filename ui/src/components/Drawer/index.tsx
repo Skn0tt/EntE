@@ -8,7 +8,7 @@ import {
   withStyles,
   Drawer as MUIDrawer,
   WithStyles,
-  LinearProgress,
+  // LinearProgress,
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
 import * as select from '../../redux/selectors';
@@ -47,7 +47,7 @@ const Drawer = withRouter(
         handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
 
         render() {
-          const { classes, loading } = this.props;
+          const { classes } = this.props;
 
           const drawer = (
             <div>
@@ -65,9 +65,6 @@ const Drawer = withRouter(
             <div className={classes.root}>
               <div className={classes.appFrame}>
                 <AppBar className={classes.appBar}>
-                  {loading && (
-                    <LinearProgress variant="query" className={classes.loadingIndicator} />
-                  )}
                   <Toolbar>
                     <IconButton
                       aria-label="open drawer"

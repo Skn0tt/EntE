@@ -73,9 +73,9 @@ function* getTokenSaga(action: Action<ICredentials>) {
     const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
 
     yield put(getTokenSuccess(tokenInfo));
-    
+
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(getTokenError(error));
@@ -91,7 +91,7 @@ function* refreshTokenSaga(action: Action<void>) {
     yield put(refreshTokenSuccess(tokenInfo));
 
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(refreshTokenError(error));

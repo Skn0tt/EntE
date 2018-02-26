@@ -30,7 +30,7 @@ const styles = (theme: Theme): StyleRules => ({
     [theme.breakpoints.down('sm')]: {
       position: 'fixed',
       left: '50%',
-      marginLeft: '-75px',
+      marginLeft: '-62px',
     },
   },
   navIconHide: {
