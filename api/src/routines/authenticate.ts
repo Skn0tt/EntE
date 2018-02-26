@@ -1,5 +1,6 @@
-import User from '../models/User';
+import User, { UserModel } from '../models/User';
 import { ROLES } from '../constants';
+import { JWT_PAYLOAD } from '../routes/token';
 
 export const basic = async (username: string, password: string, done: (err: Error, user?: any) => void) => {
   try {
@@ -19,16 +20,16 @@ export const basic = async (username: string, password: string, done: (err: Erro
   }
 };
 
-interface JWT_Payload {
-  username: string;
-  role: ROLES;
-}
+const isValid = (user: UserModel, jwt: JWT_PAYLOAD): boolean => (
+  user &&
+  user.role === jwt.role
+)
 
-export const jwt = async (jwt_payload: JWT_Payload, done: (err: Error, user?: any) => void) => {
+export const jwt = async (jwtPayload: JWT_PAYLOAD, done: (err: Error, user?: any) => void) => {
   try {
-    const user = await User.findOne({ username: jwt_payload.username });
+    const user = await User.findOne({ username: jwtPayload.username });
 
-    if (!user) {
+    if (!isValid(user, jwtPayload)) {
       return done(new Error('Couldnt find User'));
     }
 
