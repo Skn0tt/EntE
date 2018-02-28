@@ -29,6 +29,8 @@ import {
   refreshTokenError,
   logout,
   refreshTokenRequest,
+  getChildrenSuccess,
+  getChildrenRequest,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -45,6 +47,7 @@ import {
   REFRESH_TOKEN_REQUEST,
   GET_TOKEN_REQUEST,
   CREATE_USERS_REQUEST,
+  GET_CHILDREN_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -73,9 +76,11 @@ function* getTokenSaga(action: Action<ICredentials>) {
     const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
 
     yield put(getTokenSuccess(tokenInfo));
-    
+
+    yield put(getChildrenRequest());
+
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(getTokenError(error));
@@ -91,11 +96,23 @@ function* refreshTokenSaga(action: Action<void>) {
     yield put(refreshTokenSuccess(tokenInfo));
 
     yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest())
+    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(refreshTokenError(error));
     yield put(logout());
+  }
+}
+
+function* getChildrenSaga(action: Action<void>) {
+  try {
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.getChildren, token);
+
+    yield put(getChildrenSuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(getEntryError(error));
   }
 }
 
@@ -281,6 +298,7 @@ function* saga() {
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
+  yield takeEvery(GET_CHILDREN_REQUEST, getChildrenSaga);
   yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
   yield takeEvery<Action<IUserCreate[]>>(CREATE_USERS_REQUEST, createUsersSaga);
   yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);

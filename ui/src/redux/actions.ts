@@ -47,6 +47,9 @@ import {
   CREATE_USERS_REQUEST,
   CREATE_USERS_SUCCESS,
   CREATE_USERS_ERROR,
+  GET_CHILDREN_REQUEST,
+  GET_CHILDREN_SUCCESS,
+  GET_CHILDREN_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -102,6 +105,10 @@ export const getUsersError = createAction<Error>(GET_USERS_ERROR);
 export const getTeachersRequest = createAction(GET_TEACHERS_REQUEST);
 export const getTeachersSuccess = createAction(GET_TEACHERS_SUCCESS);
 export const getTeachersError = createAction<Error>(GET_TEACHERS_ERROR);
+
+export const getChildrenRequest = createAction(GET_CHILDREN_REQUEST);
+export const getChildrenSuccess = createAction(GET_CHILDREN_SUCCESS);
+export const getChildrenError = createAction<Error>(GET_CHILDREN_ERROR);
 
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
 export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
