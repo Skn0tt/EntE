@@ -47,6 +47,12 @@ import {
   CREATE_USERS_REQUEST,
   CREATE_USERS_SUCCESS,
   CREATE_USERS_ERROR,
+  GET_CHILDREN_REQUEST,
+  GET_CHILDREN_SUCCESS,
+  GET_CHILDREN_ERROR,
+  GET_NEEDED_USERS_ERROR,
+  GET_NEEDED_USERS_SUCCESS,
+  GET_NEEDED_USERS_REQUEST,
 } from './constants';
 import {
   MongoId,
@@ -103,9 +109,17 @@ export const getTeachersRequest = createAction(GET_TEACHERS_REQUEST);
 export const getTeachersSuccess = createAction(GET_TEACHERS_SUCCESS);
 export const getTeachersError = createAction<Error>(GET_TEACHERS_ERROR);
 
+export const getChildrenRequest = createAction(GET_CHILDREN_REQUEST);
+export const getChildrenSuccess = createAction(GET_CHILDREN_SUCCESS);
+export const getChildrenError = createAction<Error>(GET_CHILDREN_ERROR);
+
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
 export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
 export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
+
+export const getNeededUsersRequest = createAction(GET_NEEDED_USERS_REQUEST);
+export const getNeededUsersSuccess = createAction(GET_NEEDED_USERS_SUCCESS);
+export const getNeededUsersError = createAction<Error>(GET_NEEDED_USERS_ERROR);
 
 export const getTokenRequest = createAction<ICredentials>(GET_TOKEN_REQUEST);
 export const getTokenSuccess = createAction<TokenInfo>(GET_TOKEN_SUCCESS);

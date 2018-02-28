@@ -69,6 +69,16 @@ export const refreshToken = async (token: string): Promise<TokenInfo> => {
   }
 };
 
+export const getChildren = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/users?filter=children`, token);
+  return transform(data);
+};
+
+export const getNeededUsers = async (token: string): Promise<APIResponse> => {
+  const data = await get(`${baseUrl}/users?filter=needed`, token);
+  return transform(data);
+};
+
 export const getEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
   const data = await get(`${baseUrl}/entries/${id}`, token);
   return transform(data);
@@ -95,7 +105,7 @@ export const getUsers = async (token: string): Promise<APIResponse> => {
 };
 
 export const getTeachers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users?role=teacher`, token);
+  const data = await get(`${baseUrl}/users?filter=teachers`, token);
   return transform(data);
 };
 
