@@ -19,7 +19,7 @@ const ravenMiddleWare = ravenForRedux(Raven, {
   actionTransformer: (action: Action<AuthState | {}>) => {
     if (action.type === GET_TOKEN_REQUEST) {
       return {
-        payload: "deleted",
+        payload: 'deleted',
         ...action,
       };
     }

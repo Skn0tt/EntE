@@ -13,10 +13,8 @@ export const getMessages: Selector<String[]> = state => state.get('messages').to
  * Auth
  */
 export const isAuthValid: Selector<boolean> = state =>
-  state.getIn(['auth', 'token']) !== '' && 
-  +(state.getIn(['auth', 'exp']) as Date) < Date.now();
-export const isParent: Selector<boolean> = state =>
-  state.getIn(['auth', 'role']) === Roles.PARENT;
+  state.getIn(['auth', 'token']) !== '' && +(state.getIn(['auth', 'exp']) as Date) < Date.now();
+export const isParent: Selector<boolean> = state => state.getIn(['auth', 'role']) === Roles.PARENT;
 
 export const getRole: Selector<Roles> = state => state.getIn(['auth', 'role']);
 
@@ -28,7 +26,7 @@ export const canCreateEntries = createSelector(
   [getRole],
   role => role === Roles.STUDENT || role === Roles.PARENT,
 );
-export const getToken: Selector<string> = state => state.getIn(['auth', 'token'])
+export const getToken: Selector<string> = state => state.getIn(['auth', 'token']);
 export const getChildren: Selector<User[]> = state =>
   state.getIn(['auth', 'children']).map((id: MongoId) => getUser(id)(state));
 
