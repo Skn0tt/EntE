@@ -80,9 +80,9 @@ function* getTokenSaga(action: Action<ICredentials>) {
     const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
 
     yield put(getTokenSuccess(tokenInfo));
-
+    
     yield put(getNeededUsersRequest());
-
+    
     yield delay(tokenRefreshDelay);
     yield put(refreshTokenRequest());
   } catch (error) {
