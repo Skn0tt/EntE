@@ -72,26 +72,52 @@ const readPermissions : Permissions = {
 const readTeacherPermissions : Permissions = {
   teachers_read: true,
 };
+enum FILTER {
+  TEACHER = 'teachers',
+  CHILDREN = 'children',
+  NEEDED = 'needed',
+}
 usersRouter.get('/', (request: UserRequest, response, next) => {
   if (!permissionsCheck(
     request.user.role,
-    request.query.role === ROLES.TEACHER ?
-      readTeacherPermissions :
-      readPermissions,
+    (
+      request.query.filter === FILTER.TEACHER ||
+      request.query.filter === FILTER.CHILDREN ||
+      request.query.filter === FILTER.NEEDED
+    )
+      ? readTeacherPermissions
+      : readPermissions,
   )) {
     return response.status(403).end();
   }
   return next();
 }, async (request: UserRequest, response, next) => {
   try {
-    const users =
-      request.query.role === ROLES.TEACHER ?
-        await User
-          .find({ role: 'teacher' })
-          .select('-password') :
-        await User
+    let users;
+    switch (request.query.filter) {
+      case FILTER.TEACHER:
+        users = await User
+          .find({ role: ROLES.TEACHER })
+          .select('-password');
+        break;
+      case FILTER.CHILDREN:
+        users = await User
+          .find({ _id: { $in: request.user.children }})
+          .select('-password');
+        break;
+      case FILTER.NEEDED:
+        users = await User
+          .find({ $or: [
+            { _id: { $in: request.user.children }},
+            { role: ROLES.TEACHER }
+          ]})
+          .select('-password');
+        break;
+      default:
+        users = await User
           .find({})
           .select('-password');
+    }
     
     request.users = users;
     
