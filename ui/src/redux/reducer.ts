@@ -44,9 +44,27 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_ERROR,
   UPDATE_USER_SUCCESS,
+  GET_CHILDREN_REQUEST,
+  GET_CHILDREN_ERROR,
+  GET_CHILDREN_SUCCESS,
+  GET_NEEDED_USERS_ERROR,
+  GET_NEEDED_USERS_REQUEST,
+  GET_NEEDED_USERS_SUCCESS,
+  SIGN_ENTRY_ERROR,
+  SIGN_ENTRY_REQUEST,
+  SIGN_ENTRY_SUCCESS,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
+
+const asyncReducers = (request: string, error: string, success: string) => ({
+  [request]: (state: AppState, action: Action<void>) =>
+    state.update('loading', loading => loading + 1),
+  [error]: (state: AppState, action: Action<Error>) =>
+    state.update('loading', loading => loading - 1),
+  [success]: (state: AppState, action: Action<void>): AppState =>
+    state.update('loading', loading => loading - 1),
+});
 
 const initialState = new AppState({});
 
@@ -55,9 +73,7 @@ const reducer = handleActions(
     /**
      * # Auth
      */
-    /**
-     * ## GET_TOKEN
-     */
+    // ## GET_TOKEN
     [GET_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
     [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update('loading', loading => loading - 1),
@@ -69,9 +85,7 @@ const reducer = handleActions(
         .setIn(['auth', 'role'], action.payload!.role)
         .setIn(['auth', 'displayname'], action.payload!.displayname),
 
-    /**
-     * ## REFRESH_TOKEN
-     */
+    // ## REFRESH_TOKEN
     [REFRESH_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
     [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update('loading', loading => loading - 1),
@@ -83,98 +97,49 @@ const reducer = handleActions(
         .setIn(['auth', 'role'], action.payload!.role)
         .setIn(['auth', 'displayname'], action.payload!.displayname),
 
-    /**
-     * ## LOGOUT
-     */
+    // ## LOGOUT
     [LOGOUT]: (state: AppState, action: BaseAction): AppState => new AppState({}),
 
-    /**
-     * ## RESET_PASSWORD
-     */
-    [RESET_PASSWORD_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [RESET_PASSWORD_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [RESET_PASSWORD_SUCCESS]: (state, action): AppState =>
-      state.update('loading', loading => loading - 1),
+    // ## RESET_PASSWORD
+    ...asyncReducers(RESET_PASSWORD_REQUEST, RESET_PASSWORD_ERROR, RESET_PASSWORD_SUCCESS),
 
-    /**
-     * ## SET_PASSWORD
-     */
-    [SET_PASSWORD_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [SET_PASSWORD_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [SET_PASSWORD_SUCCESS]: (state, action): AppState =>
-      state.update('loading', loading => loading - 1),
+    // ## SET_PASSWORD
+    ...asyncReducers(SET_PASSWORD_REQUEST, SET_PASSWORD_ERROR, SET_PASSWORD_SUCCESS),
 
     /**
      * # Interaction
      */
-    /**
-     * ## SIGN_ENTRY
-     */
-    [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState =>
-      state.update('loading', loading => loading + 1),
-    [GET_ENTRIES_ERROR]: (state: AppState, action: Action<Error>): AppState =>
-      state.update('loading', loading => loading - 1),
-    [GET_ENTRIES_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## SIGN_ENTRY
+    ...asyncReducers(SIGN_ENTRY_REQUEST, SIGN_ENTRY_ERROR, SIGN_ENTRY_SUCCESS),
 
     /**
      * # GET
      */
-    /**
-     * ## GET_ENTRIES
-     */
-    [GET_ENTRIES_REQUEST]: (state: AppState, action: BaseAction): AppState =>
-      state.update('loading', loading => loading + 1),
-    [GET_ENTRIES_ERROR]: (state: AppState, action: Action<Error>): AppState =>
-      state.update('loading', loading => loading - 1),
-    [GET_ENTRIES_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## GET_ENTRIES
+    ...asyncReducers(GET_ENTRIES_REQUEST, GET_ENTRIES_ERROR, GET_ENTRIES_SUCCESS),
 
-    /**
-     * ## GET_ENTRY
-     */
-    [GET_ENTRY_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [GET_ENTRY_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [GET_ENTRY_SUCCESS]: (state, action: Action<Entry>) =>
-      state.update('loading', loading => loading - 1),
+    // ## GET_ENTRY
+    ...asyncReducers(GET_ENTRY_REQUEST, GET_ENTRY_ERROR, GET_ENTRY_SUCCESS),
 
-    /**
-     * ## GET_SLOTS
-     */
-    [GET_SLOTS_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [GET_SLOTS_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [GET_SLOTS_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## GET_SLOTS
+    ...asyncReducers(GET_SLOTS_REQUEST, GET_SLOTS_ERROR, GET_SLOTS_SUCCESS),
 
-    /**
-     * ## GET_USER
-     */
-    [GET_USER_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [GET_USER_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [GET_USER_SUCCESS]: (state, action): AppState =>
-      state.update('loading', loading => loading - 1),
+    // ## GET_USER
+    ...asyncReducers(GET_USER_REQUEST, GET_USER_ERROR, GET_USER_SUCCESS),
 
-    /**
-     * ## GET_USERS
-     */
-    [GET_USERS_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [GET_USERS_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [GET_USERS_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## GET_USERS
+    ...asyncReducers(GET_USERS_REQUEST, GET_USERS_ERROR, GET_USERS_SUCCESS),
 
-    /**
-     * ## GET_TEACHERS
-     */
-    [GET_TEACHERS_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [GET_TEACHERS_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [GET_TEACHERS_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## GET_TEACHERS
+    ...asyncReducers(GET_TEACHERS_REQUEST, GET_TEACHERS_ERROR, GET_TEACHERS_SUCCESS),
 
-    /**
-     * ## ADD_RESPONSE
-     */
+    // ## GET_CHILDREN
+    ...asyncReducers(GET_CHILDREN_REQUEST, GET_CHILDREN_ERROR, GET_CHILDREN_SUCCESS),
+
+    // ## GET_NEEDED_USERS
+    ...asyncReducers(GET_NEEDED_USERS_REQUEST, GET_NEEDED_USERS_ERROR, GET_NEEDED_USERS_SUCCESS),
+
+    // ## ADD_RESPONSE
     [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
       state
         .update('users', users =>
@@ -196,45 +161,26 @@ const reducer = handleActions(
     /**
      * # CREATE
      */
-    /**
-     * ## CREATE_ENTRY
-     */
-    [CREATE_ENTRY_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [CREATE_ENTRY_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [CREATE_ENTRY_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## CREATE_ENTRY
+    ...asyncReducers(CREATE_ENTRY_REQUEST, CREATE_ENTRY_ERROR, CREATE_ENTRY_SUCCESS),
 
-    /**
-     * ## CREATE_USERS
-     */
-    [CREATE_USERS_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [CREATE_USERS_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [CREATE_USERS_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## CREATE_USERS
+    ...asyncReducers(CREATE_USERS_REQUEST, CREATE_USERS_ERROR, CREATE_USERS_SUCCESS),
 
     /**
      * # UPDATE
      */
-    /**
-     * ## UPDATE_USERS
-     */
-    [UPDATE_USER_REQUEST]: (state, action) => state.update('loading', loading => loading + 1),
-    [UPDATE_USER_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
-    [UPDATE_USER_SUCCESS]: (state, action) => state.update('loading', loading => loading - 1),
+    // ## UPDATE_USERS
+    ...asyncReducers(UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR),
 
     /**
      * # UI
      */
-    /**
-     * ## ADD_MESSAGE
-     */
+    // ## ADD_MESSAGE
     [ADD_MESSAGE]: (state: AppState, action: Action<string>): AppState =>
       state.update('messages', messages => messages.push(action.payload)),
 
-    /**
-     * ## REMOVE_MESSAGE
-     */
+    // ## REMOVE_MESSAGE
     [REMOVE_MESSAGE]: (state: AppState, action: Action<number>) =>
       state.update('messages', (messages: List<Error>) => messages.remove(action.payload!)),
   } as ReducerMap<AppState, ActionType>,
