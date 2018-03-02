@@ -1,6 +1,10 @@
 import de from './de';
 
 export interface Translation {
+  app: {
+    name: string;
+    logo: string;
+  };
   message: {
     sign: {
       error: string;

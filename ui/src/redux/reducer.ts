@@ -58,30 +58,30 @@ const reducer = handleActions(
     /**
      * ## GET_TOKEN
      */
-    [GET_TOKEN_REQUEST]: (state) =>
-      state.update('loading', loading => loading + 1),
+    [GET_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
     [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update('loading', loading => loading - 1),
-    [GET_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) => state
-      .update('loading', loading => loading - 1)
-      .setIn(['auth', 'token'], action.payload!.token)
-      .setIn(['auth', 'exp'], action.payload!.exp)
-      .setIn(['auth', 'role'], action.payload!.role)
-      .setIn(['auth', 'displayname'], action.payload!.displayname),
+    [GET_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
+      state
+        .update('loading', loading => loading - 1)
+        .setIn(['auth', 'token'], action.payload!.token)
+        .setIn(['auth', 'exp'], action.payload!.exp)
+        .setIn(['auth', 'role'], action.payload!.role)
+        .setIn(['auth', 'displayname'], action.payload!.displayname),
 
     /**
      * ## REFRESH_TOKEN
      */
-    [REFRESH_TOKEN_REQUEST]: (state) =>
-      state.update('loading', loading => loading + 1),
+    [REFRESH_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
     [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update('loading', loading => loading - 1),
-    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) => state
-      .update('loading', loading => loading - 1)
-      .setIn(['auth', 'token'], action.payload!.token)
-      .setIn(['auth', 'exp'], action.payload!.exp)
-      .setIn(['auth', 'role'], action.payload!.role)
-      .setIn(['auth', 'displayname'], action.payload!.displayname),
+    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
+      state
+        .update('loading', loading => loading - 1)
+        .setIn(['auth', 'token'], action.payload!.token)
+        .setIn(['auth', 'exp'], action.payload!.exp)
+        .setIn(['auth', 'role'], action.payload!.role)
+        .setIn(['auth', 'displayname'], action.payload!.displayname),
 
     /**
      * ## LOGOUT
@@ -175,23 +175,23 @@ const reducer = handleActions(
     /**
      * ## ADD_RESPONSE
      */
-   [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
-     state
-       .update('users', users =>
-         users.merge(
-           Map<MongoId, User>(action.payload!.users.map(user => [user.get('_id'), user])),
-         ),
-       )
-       .update('slots', slots =>
-         slots.merge(
-           Map<MongoId, Slot>(action.payload!.slots.map(slot => [slot.get('_id'), slot])),
-         ),
-       )
-       .update('entries', entries =>
-         entries.merge(
-           Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry])),
-         ),
-       ),
+    [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
+      state
+        .update('users', users =>
+          users.merge(
+            Map<MongoId, User>(action.payload!.users.map(user => [user.get('_id'), user])),
+          ),
+        )
+        .update('slots', slots =>
+          slots.merge(
+            Map<MongoId, Slot>(action.payload!.slots.map(slot => [slot.get('_id'), slot])),
+          ),
+        )
+        .update('entries', entries =>
+          entries.merge(
+            Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry])),
+          ),
+        ),
 
     /**
      * # CREATE

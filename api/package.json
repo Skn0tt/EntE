@@ -47,6 +47,7 @@
     "passport-http": "^0.3.0",
     "passport-jwt": "^3.0.1",
     "raven": "^2.3.0",
+    "react": "^15.6.2",
     "validator": "^9.2.0"
   },
   "devDependencies": {
