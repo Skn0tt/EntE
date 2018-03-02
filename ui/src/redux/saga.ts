@@ -34,6 +34,7 @@ import {
   getNeededUsersSuccess,
   getNeededUsersError,
   getNeededUsersRequest,
+  updateUserSuccess,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -80,9 +81,9 @@ function* getTokenSaga(action: Action<ICredentials>) {
     const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
 
     yield put(getTokenSuccess(tokenInfo));
-    
+
     yield put(getNeededUsersRequest());
-    
+
     yield delay(tokenRefreshDelay);
     yield put(refreshTokenRequest());
   } catch (error) {
@@ -258,7 +259,7 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.updateUser, action.payload, token);
 
-    yield put(createUsersSuccess());
+    yield put(updateUserSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
     yield put(createUsersError(error));
@@ -304,7 +305,7 @@ function* setPasswordSaga(action: Action<INewPassword>) {
 
 function* saga() {
   yield takeEvery<Action<MongoId>>(GET_ENTRY_REQUEST, getEntrySaga);
-  yield takeEvery(GET_ENTRIES_REQUEST, getEntriesSaga);
+  yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
   yield takeEvery<Action<MongoId>>(GET_USER_REQUEST, getUserSaga);
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
