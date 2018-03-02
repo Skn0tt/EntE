@@ -3,13 +3,12 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Hidden,
   Divider,
   withStyles,
   Drawer as MUIDrawer,
   WithStyles,
-  LinearProgress,
+  // LinearProgress,
 } from 'material-ui';
 import { Menu as MenuIcon } from 'material-ui-icons';
 import * as select from '../../redux/selectors';
@@ -21,6 +20,7 @@ import { connect } from 'react-redux';
 import { AppState, Roles } from '../../interfaces/index';
 import { withRouter, RouteComponentProps } from 'react-router';
 import LoginStatus from '../LoginStatus';
+import lang from '../../res/lang';
 
 interface StateProps {
   loading: boolean;
@@ -47,7 +47,7 @@ const Drawer = withRouter(
         handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
 
         render() {
-          const { classes, loading } = this.props;
+          const { classes } = this.props;
 
           const drawer = (
             <div>
@@ -65,9 +65,6 @@ const Drawer = withRouter(
             <div className={classes.root}>
               <div className={classes.appFrame}>
                 <AppBar className={classes.appBar}>
-                  {loading && (
-                    <LinearProgress variant="query" className={classes.loadingIndicator} />
-                  )}
                   <Toolbar>
                     <IconButton
                       aria-label="open drawer"
@@ -76,9 +73,7 @@ const Drawer = withRouter(
                     >
                       <MenuIcon />
                     </IconButton>
-                    <Typography variant="title" color="inherit" noWrap>
-                      EntE
-                    </Typography>
+                    <img className={classes.logo} src={lang().app.logo} height={24} />
                     <div className={classes.grow} />
                     <RefreshButton />
                   </Toolbar>

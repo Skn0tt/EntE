@@ -125,9 +125,17 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
             this.setState({ children: [...this.state.children, this.state.selectedChild] });
           handleRemoveChildren = (index: number) =>
             this.setState({ children: this.state.children.slice(index, index) });
-
           hasChildren = (): boolean =>
             this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
+
+          /**
+           * ## Misc
+           */
+          updateSelected = () => {
+            if (this.state.selectedChild === '' && this.props.students.length > 0) {
+              this.setState({ selectedChild: this.props.students[0].get('_id') });
+            }
+          };
 
           /**
            * ## Validation
@@ -144,6 +152,8 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
 
           render() {
             const { classes } = this.props;
+
+            this.updateSelected();
 
             return (
               <React.Fragment>

@@ -1,6 +1,10 @@
 import { Translation } from '.';
 
 const de: Translation = {
+  app: {
+    name: 'EntE',
+    logo: require('../img/Logo.svg'),
+  },
   message: {
     sign: {
       error: 'Unterschrift fehlgeschlagen.',
