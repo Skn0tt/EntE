@@ -2,8 +2,8 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as passport from 'passport';
 import * as mongoose from 'mongoose';
-import BasicStrategy from './authentication/strategies/basic';
-import JwtStrategy from './authentication/strategies/jwt';
+import basic from './authentication/strategies/basic';
+import jwt from './authentication/strategies/jwt';
 import * as validator from 'express-validator';
 import { Promise as BBPromise } from 'bluebird';
 import * as cors from 'cors';
@@ -65,8 +65,8 @@ app.use('/status', status);
 
 // Authentication
 app.use(passport.initialize());
-passport.use('jwt', JwtStrategy);
-passport.use('basic', BasicStrategy);
+passport.use('jwt', jwt);
+passport.use('basic', basic);
 app.use(passport.authenticate(['jwt', 'basic'], { session: false }));
 
 // Authenticated Routes

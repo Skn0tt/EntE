@@ -38,7 +38,7 @@ const validate = async (token: string): Promise<JWT_PAYLOAD> => {
   }
 };
 
-const JwtStrategy = new BearerStrategy(async (token, done) => {
+const jwtStrategy = new BearerStrategy(async (token, done) => {
   try {
     const payload = await validate(token);
     if (!payload) {
@@ -56,4 +56,4 @@ const JwtStrategy = new BearerStrategy(async (token, done) => {
   }
 });
 
-export default JwtStrategy;
+export default jwtStrategy;

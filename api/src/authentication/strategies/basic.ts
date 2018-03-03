@@ -3,7 +3,7 @@ import { ROLES } from '../../constants';
 import { JWT_PAYLOAD } from '../../routes/token';
 import { BasicStrategy } from 'passport-http';
 
-const BasicStrat = new BasicStrategy(async (username, password, done) => {
+const basicStrategy = new BasicStrategy(async (username, password, done) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
@@ -21,4 +21,4 @@ const BasicStrat = new BasicStrategy(async (username, password, done) => {
   }
 });
 
-export default BasicStrat;
+export default basicStrategy;
