@@ -158,6 +158,6 @@ export const checkEmail = async (): Promise<void> => {
     const result = await transporter.verify();
     console.log('SMTP Connection Works.');
   } catch (error) {
-    console.log('Error: SMTP couldn\'t connect.');
+    console.log("Error: SMTP couldn't connect.");
   }
 };

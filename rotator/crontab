@@ -1,0 +1,1 @@
+0,15,30,25 * * * * node /usr/src/app/dist/index.js
