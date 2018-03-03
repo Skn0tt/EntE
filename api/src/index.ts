@@ -1,9 +1,9 @@
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as passport from 'passport';
-import { BasicStrategy } from 'passport-http';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import * as mongoose from 'mongoose';
+import BasicStrategy from './authentication/strategies/basic';
+import JwtStrategy from './authentication/strategies/jwt';
 import * as validator from 'express-validator';
 import { Promise as BBPromise } from 'bluebird';
 import * as cors from 'cors';
@@ -11,7 +11,6 @@ import * as helmet from 'helmet';
 import * as Raven from 'raven';
 
 // Routines
-import * as authenticate from './routines/authenticate';
 import { checkEmail } from './routines/mail';
 import cron from './routines/cron';
 
@@ -24,7 +23,7 @@ import status from './routes/status';
 import dev from './routes/dev';
 import token from './routes/token';
 
-const jwtSecret = process.env.JWT_SECRET || 'supersecret';
+const jwtSecret = process.env.JWT_SECRET || 'supersecret';
 const production = process.env.NODE_ENV === 'production';
 const kubernetes = process.env.KUBERNETES === 'true';
 const app = express();
@@ -44,10 +43,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(validator());
 
-const mongoAddress =
-  kubernetes
-    ? 'mongodb://localhost/ente'
-    : 'mongodb://mongodb/ente';
+const mongoAddress = kubernetes ? 'mongodb://localhost/ente' : 'mongodb://mongodb/ente';
 
 // Mongoose
 require('mongoose').Promise = BBPromise;
@@ -69,11 +65,8 @@ app.use('/status', status);
 
 // Authentication
 app.use(passport.initialize());
-passport.use(new JwtStrategy({
-  secretOrKey: jwtSecret,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-}, authenticate.jwt));
-passport.use(new BasicStrategy(authenticate.basic));
+passport.use('jwt', JwtStrategy);
+passport.use('basic', BasicStrategy);
 app.use(passport.authenticate(['jwt', 'basic'], { session: false }));
 
 // Authenticated Routes
@@ -81,7 +74,9 @@ app.use('/token', token);
 app.use('/entries', entries);
 app.use('/slots', slots);
 app.use('/users', users);
-if (!production) { app.use('/dev', dev); }
+if (!production) {
+  app.use('/dev', dev);
+}
 
 // Error Handling
 app.use(Raven.errorHandler());
@@ -94,13 +89,15 @@ app.use((err, req, res, next) => {
 });
 
 // Cron Jobs
-if (production) { cron(); }
+if (production) {
+  cron();
+}
 
 checkEmail();
 
 app.listen(app.get('port'), () => {
   console.log(
-    ('  App is running at http://localhost:%d in %s mode'),
+    '  App is running at http://localhost:%d in %s mode',
     app.get('port'),
     app.get('env'),
   );

@@ -4,6 +4,8 @@ variables:
   CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:latest
   CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_NAME
   CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:latest
+  CONTAINER_ROTATOR_TEST_IMAGE: $CONTAINER_BASE/rotator:$CI_COMMIT_REF_NAME
+  CONTAINER_ROTATOR_RELEASE_IMAGE: $CONTAINER_BASE/rotator:latest
   CONTAINER_PROXY_TEST_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_REF_NAME
   CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:latest
 
@@ -62,6 +64,22 @@ Build nginx-proxy:
     - cd nginx-proxy
     - docker build -t $CONTAINER_PROXY_TEST_IMAGE .
     - docker push $CONTAINER_PROXY_TEST_IMAGE
+
+Build rotator:
+  image: docker
+  stage: build
+  only:
+    - master
+  services:
+    - docker:dind
+  tags:
+    - docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd rotator
+    - docker build -t $CONTAINER_ROTATOR_TEST_IMAGE .
+    - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
 #
 # Test

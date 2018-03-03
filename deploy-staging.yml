@@ -21,6 +21,7 @@
               restart: always
               depends_on:
                 - mongodb
+                - redis
               environment:
                 - HOST
                 - VIRTUAL_HOST=${HOST}
@@ -36,6 +37,12 @@
                 - VIRTUAL_PATH=/
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL
+            redis:
+              image: redis
+            rotator:
+              image: registry.gitlab.com/skn0tt/ente/rotator:master
+              depends_on:
+                - redis
             proxy:
               image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
               ports:
