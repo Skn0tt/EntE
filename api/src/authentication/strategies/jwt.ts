@@ -45,7 +45,7 @@ const jwtStrategy = new BearerStrategy(async (token, done) => {
       return done(null, false);
     }
 
-    const user = User.findOne({ username: payload.username, role: payload.role });
+    const user = await User.findOne({ username: payload.username, role: payload.role });
     if (!user) {
       return done(null, false);
     }

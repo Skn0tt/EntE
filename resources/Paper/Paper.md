@@ -40,6 +40,7 @@ Dort konnte ich während meiner Arbeit viel Erfahrung in der Frontend-Entwicklun
 \newpage
 
 # Einleitung
+
 An jeder Schule müssen die Fehlzeiten der Schüler nachgehalten werden.
 Dabei ist es wichtig, schulisch oder durch Krankheit bedingte Versäumnisse sowie unentschuldigte Fehlzeiten zu erfassen, da diese auf dem Zeugnis vermerkt werden müssen und Noten beeinflussen.
 
@@ -47,6 +48,7 @@ Dieses Verfahren wird an vielen Schulen auf Papier-Basis durchgeführt, so auch 
 Sowohl Schüler, Lehrer als auch Stufenleiter sehen das aktuelle System jedoch als zu aufwändig und fehleranfällig an - hier herrscht Nachbesserungsbedarf.
 
 ## Status Quo
+
 Aktuell ist das Entschuldigungsverfahren der Oberstufe an unserer Schule durch den Entschuldigungszettel gelöst, auf dem der Schüler die zu entschuldigenden Stunden einträgt (siehe Abbildung \ref{entschuldigungs-zettel}).
 
 Der Entschuldigungsprozess läuft wie folgt ab:
@@ -68,6 +70,7 @@ So werden versäumte Stunden nur entschuldigt, wenn die Schule zuvor eine Meldun
 Schritt Zwei muss innerhalb einer Woche nach Rückkehr in den Unterricht vollendet werden, für Schritt Vier ist dann eine weitere Woche Zeit.
 
 ### Aufwandsabschätzung
+
 Als Schüler ist es also pro Eintrag notwendig, $1 + 1 + n$ Unterschriften zu sammeln, wobei $n = \text{Versäumte Lehrer}$.
 Fehlt man einen Tag lang, so sind das bei $5$ Lehrern schon $7$ Unterschriften.
 Jede Unterschrift, die man vergisst, bedeutet für die unentschuldigte Stunde eine Null-Bewertung und kann die Zeugnis-Note erheblich beeinträchtigen.
@@ -111,6 +114,7 @@ Beispiele dafür finden sich in der Online-Ticketvergabe in der Stadtverwaltung,
 [^E-Residency]: [Estonia E-Residency: https://e-resident.gov.ee/](https://e-resident.gov.ee/)
 
 ## Ziel dieser Facharbeit
+
 Ziel dieser Facharbeit ist es, das Entschuldigungsverfahren in einem elektronischen Prozess abzubilden, welches diese Aufgaben automatisiert und so den Beteiligten Arbeit abnimmt sowie Fehlern vorbeugt.
 
 Dabei wird besonderer Fokus auf folgende Eigenschaften des Systems gelegt:
@@ -156,7 +160,9 @@ Da es für *EntE* keine dritten Vertragspartner gibt, beschränkt sich die Einha
 \newpage
 
 # Modellierung
+
 ## Prozess
+
 *EntE* ist stark an den alten Entschuldigungszettel angelehnt.
 Bei Versäumnis einer Stunde erstellen Schüler oder Eltern einen neuen Entschuldigungsantrag, im System als *Entry* bezeichnet.
 Dieser enthält:
@@ -191,7 +197,9 @@ Auf dieser Basis können die Kurshefte auf den aktuellen Stand gebracht werden (
 Durch die zentrale Verwaltung der Anträge fällt nun für jede Partei nur ein Schritt an, die in der Einleitung genannten, repetitiven Arbeitsschritte entfallen.
 
 ## System
+
 ### Architektur
+
 *EntE* soll als Web-Anwendung umgesetzt werden.
 Jeder Nutzer des Systems (Schüler, Eltern, Lehrer, Stufenleiter und Administratoren) erhält Zugangsdaten, mit denen sie die für sie relevanten Daten einsehen und damit interagieren können.
 Solche Aktionen sind zum Beispiel das Erstellen oder Unterzeichnen eines Antrags.
@@ -208,7 +216,7 @@ Die Seite wird dann vielleicht noch durch einen Header, den sich alle Seiten tei
 Die Last auf dem Server steigt also mit Anzahl der Nutzer und Anfragen.
 Der Server hat dabei bei jeder Anfrage sowohl die Arbeit, die Daten aus der Datenbank abzufragen, als auch die Seite aufzubauen.
 
-Beim Zweiten Ansatz liefert der Server dem Client jedes Mal die gleiche HTML-Seite aus.
+Beim zweiten Ansatz liefert der Server dem Client jedes Mal die gleiche HTML-Seite aus.
 Diese Seite enthält JavaScript-Code, der vom Client aus HTTP-Anfragen an eine Entwicklerschnittstelle[^API] schickt.
 Diese API liefert dem Client die relevanten Daten zurück, dieser zeigt sie über Veränderungen im DOM[^DOM] dem Nutzer an.
 Möchte zum Beispiel ein Schüler seine Übersichtsseite sehen, so wird ihm zuerst die Standard-HTML-Seite ausgeliefert.
@@ -234,10 +242,12 @@ Für *EntE* ist der zweite Ansatz besser geeignet: Es gibt kleine Datensätze (E
 Alle Ziel-Clients (PCs, Smartphones) haben JavaScript-Support und sind performant genug, um die Anwendung Client-Seitig zu rendern.
 
 ### API
+
 Die anzuzeigenden Daten erhält der Client von einer API.
 Diese ist nach dem REST-Prinzip [vgl. @rest] aufgebaut und zeichnet sich insbesondere durch die Darstellung der Daten als *Ressourcen* sowie die *Zustandslosigkeit* des Protokolls aus.
 
 #### Routen
+
 Die Modellierung auf *Ressourcen*-Basis bedeutet, dass die Pfade der API jeweils einer Ressource bzw. einem Datensatz entsprechen.
 Sämtliche Daten werden in normalisierter Form in JSON-Notation zurückgeliefert.
 
@@ -264,6 +274,7 @@ Möchte man auf diesen *Ressourcen* nun Aktionen ausführen, so verwendet man an
 Dies ist ein Auszug aus den verfügbaren Routen, die vollständige Dokumentation ist im OpenAPI-Format im beigefügten QuellCode zu finden.
 
 #### Zustandslosigkeit
+
 Jede Anfrage an die API muss alle für die Beantwortung der Anfrage relevanten Daten enthalten.
 Dazu gehört:
 
@@ -276,6 +287,7 @@ Dies steht im Gegensatz zu traditionellen Ansätzen, in denen sich der Nutzer zu
 Bei zustandslosen Architekturen dagegen sind Anfragen in sich selbst geschlossen und können so unabhängig von vorhergegangenen Anfragen bearbeitet werden.
 
 ### Sicherheit
+
 Die API muss gegen unbefugten Zugriff gesichert sein.
 Um den Entwicklungsaufwand in dieser Hinsicht gering zu halten, verwendet *EntE* *Basic Auth* [@basicauth]: Dabei überträgt der Client zu jeder Anfrage Nutzernamen und Passwort des Nutzers.
 
@@ -290,12 +302,13 @@ Sämtlicher Netzwerkverkehr wird in *EntE* über das **T**ransport-**L**evel-**S
 
 # Umsetzung
 
-Die Implementierung des beschriebenen Systems umfasst zum Zeitpunkt der Abgabe ungefähr Acht tausend Zeilen Code und ist vollständig in *Typescript[^typescript]* geschrieben.
+Die Implementierung des beschriebenen Systems umfasst zum Zeitpunkt der Abgabe ungefähr achttausend Zeilen Code und ist vollständig in *Typescript[^typescript]* geschrieben.
 In Abbildung \ref{screenshot-entries} ist ein Screenshot der `/entries`-Seite zu sehen, auf der man eine Übersicht über seine eingereichten Anträge erhält und einen neuen Eintrag erstellen kann.
 
 [^typescript]: [Typescript: https://www.typescriptlang.org/](https://www.typescriptlang.org/)
 
 ## Stack
+
 Der Stack basiert auf *MERN*[^MERN]:
 
 - MongoDB (Datenbank)
@@ -317,8 +330,9 @@ Daneben werden noch folgende andere Bibliotheken/Tools verwendet:
 **Nodemailer** ermöglicht Node.js-Anwendungen, über SMTP Emails zu verschicken.  
 
 ## API, Datenbankanfragen
+
 Im folgenden wird am Beispiel der Route `GET /entries` der API-Quellcode exemplarisch erläutert.
-Den QuellCode finden sie zur Referenz in Listing \ref{getEntriesRoute} im Appendix.
+Den QuellCode findet man zur Referenz in Listing \ref{getEntriesRoute} des Appendix.
 
 Erreicht die API eine Anfrage, so wird diese durch eine Reihe an *Middlewares* geleitet.
 Eine Middleware stellt einen Teil der Route dar und sollte genau eine Funktion erfüllen, zum Beispiel:
@@ -355,6 +369,7 @@ Zum Schluss werden alle gefundenen Objekte in *JSON-Notation* zurückgesendet, d
 Falls während einer der Middlewares ein Fehler auftritt, wird dieser durch eine `try`/`catch`-Clause abgefangen und an den Error-Handler weitergeleitet (Z. 2, 11 bzw. Z. 13, 37).
 
 ## Passwörter
+
 Jeder Nutzer meldet sich im System mit Passwort und Benutzername an, die Passwörter müssen so sicher wie möglich gespeichert werden.
 
 Die sicherlich trivialste Möglichkeit ist es, die Passwörter bei der Nutzererstellung im Klartext zu speichern.
@@ -401,6 +416,7 @@ Lehrer, Schüler und Eltern des Ernst-Moritz-Arndt-Gymnasiums zeigen großes Int
 Ich hoffe, dass die Schulleitung ebenfalls den Einsatz der Software unterstützt und würde mich freuen, wenn das System zukünftig erfolgreich genutzt würde.
 
 \newpage
+
 # Appendix
 
 ![Logo EntE\label{logo}](Logo.png)
@@ -471,6 +487,7 @@ router.get('/entries', async (request, response, next) => {
 \end{lstlisting}
 
 ## Containerisierung \label{containerisierung}
+
 Seit einigen Jahren gibt es in der DevOps-Szene einen Trend weg von virtualisierten, hin zu containerisierten Deployments.
 Die Containerisierung lässt sich als logische Evolution der Virtualisierung ansehen.
 
@@ -512,4 +529,5 @@ Für kleine Projekte wie *EntE* bleibt eine echte Microservice-Architektur zu au
 \newpage
 
 # Bibliographie
+
 \bibliography{Paper.bib}
