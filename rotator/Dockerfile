@@ -14,7 +14,6 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --production --frozen-lockfile
 
-
 # src: https://firefart.at/post/docker_and_cron_jobs/
 ENV APP_USER appuser
 
@@ -23,4 +22,4 @@ RUN adduser -g "App User" -D $APP_USER
 COPY crontab /var/spool/cron/crontabs/$APP_USER
 RUN chmod 0600 /var/spool/cron/crontabs/$APP_USER
 
-CMD ["crond", "-f", "-d", "8"]
+CMD node dist/index.js && crond -f -d 8 
