@@ -147,7 +147,7 @@ Lint UI:
   script:
     - yarn lint
 
-.release:staging:
+release:staging:
   stage: release
   image: williamyeh/ansible:debian9
   only:
