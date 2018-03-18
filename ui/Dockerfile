@@ -1,5 +1,5 @@
 # Build Static Files
-FROM node:alpine as build-deps
+FROM node as build-deps
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
@@ -9,19 +9,12 @@ COPY . ./
 RUN yarn build
 
 # Host Static Files
-FROM nginx:alpine as server
+FROM socialengine/nginx-spa
 
 # Install Curl (for Healthcheck)
-RUN apk add --no-cache curl
+RUN apt-get update; apt-get -y install curl;
 
 # Copy over static content
-COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
-
-# Copy Nginx Config
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build-deps /usr/src/app/build /app
 
 HEALTHCHECK CMD curl --fail -A "healthcheck" http://localhost || exit 1
-
-# Run
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]

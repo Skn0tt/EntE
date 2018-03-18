@@ -12,6 +12,7 @@ services:
     depends_on:
       - mongodb
       - redis
+      - rotator
     environment:
       - HOST
       - VIRTUAL_HOST=${HOST}
@@ -38,5 +39,8 @@ services:
       - 443:443
       - 8080:8080
     restart: always
+    depends_on:
+      - api
+      - ui
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
