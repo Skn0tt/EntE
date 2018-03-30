@@ -104,7 +104,7 @@ const SpecificEntry = withRouter(
                       <Grid item>
                         <Typography variant="title">Info</Typography>
                         <Typography variant="body1">
-                          <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br />
+                          <i>Erstellt:</i> {entry.get('createdAt').toLocaleString()} <br />
                           <i>Begründung:</i> {entry.get('reason') || '-'} <br />
                           <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br />
                           <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')}{' '}
