@@ -16,6 +16,9 @@ import Button from 'material-ui/Button/Button';
 import CreateEntry from './components/CreateEntry';
 import Table from '../../components/Table';
 
+/**
+ * # Component Types
+ */
 interface StateProps {
   entries: Entry[];
   canCreateEntries: boolean;
@@ -39,6 +42,9 @@ interface State {
 }
 type Props = StateProps & DispatchProps & WithStyles & RouteComponentProps<{}>;
 
+/**
+ * # Component
+ */
 const Entries = connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(
     withRouter(
@@ -80,7 +86,7 @@ const Entries = connect(mapStateToProps, mapDispatchToProps)(
                 cellExtractor={(entry: Entry) => [
                   getUser(entry.get('student')).get('displayname'),
                   entry.get('date').toLocaleDateString(),
-                  entry.get('createdAt').toLocaleDateString(),
+                  entry.get('createdAt').toLocaleString(),
                   entry.get('forSchool') ? 'Ja' : 'Nein',
                   entry.get('reason'),
                   entry.get('signedManager'),
