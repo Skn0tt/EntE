@@ -7,6 +7,6 @@
     "rules": {
         "strict-boolean-expressions": false,
         "align": false,
-        "import-name": false,
+        "import-name": false
     }
 }
