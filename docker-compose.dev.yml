@@ -7,9 +7,9 @@ services:
   api:
     ports:
       - 5555:5555
-    command: "nodemon --inspect=0.0.0.0:5555 --watch dist"
+    command: "nodemon ./packages/api/ --inspect=0.0.0.0:5555 --watch ./packages/api/dist"
     environment:
       - VIRTUAL_PORT=3000
       - JWT_SECRET=secret
     volumes:
-      - ./api/dist:/usr/src/app/dist
+      - ./packages/api/dist:/usr/src/app/packages/api/dist

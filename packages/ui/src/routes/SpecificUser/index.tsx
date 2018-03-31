@@ -1,27 +1,27 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { connect, Dispatch } from 'react-redux';
-import styles from './styles';
+import * as React from "react";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import { connect, Dispatch } from "react-redux";
+import styles from "./styles";
 
-import * as select from '../../redux/selectors';
-import { AppState, MongoId, User } from '../../interfaces/index';
-import { Action } from 'redux';
-import ChildrenUpdate from './components/ChildrenUpdate';
-import EmailUpdate from './components/EmailUpdate';
+import * as select from "../../redux/selectors";
+import { AppState, MongoId, User } from "../../interfaces/index";
+import { Action } from "redux";
+import ChildrenUpdate from "./components/ChildrenUpdate";
+import EmailUpdate from "./components/EmailUpdate";
 
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Dialog } from 'material-ui';
-import { getUserRequest } from '../../redux/actions';
-import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
-import DialogTitle from 'material-ui/Dialog/DialogTitle';
-import DialogContent from 'material-ui/Dialog/DialogContent';
-import DialogActions from 'material-ui/Dialog/DialogActions';
-import DialogContentText from 'material-ui/Dialog/DialogContentText';
-import Divider from 'material-ui/Divider/Divider';
-import DisplaynameUpdate from './components/DisplaynameUpdate';
-import IsAdultUpdate from './components/IsAdultUpdate';
-import LoadingIndicator from '../../elements/LoadingIndicator';
-import lang from '../../res/lang';
+import { withRouter, RouteComponentProps } from "react-router";
+import { Button, Dialog } from "material-ui";
+import { getUserRequest } from "../../redux/actions";
+import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import DialogTitle from "material-ui/Dialog/DialogTitle";
+import DialogContent from "material-ui/Dialog/DialogContent";
+import DialogActions from "material-ui/Dialog/DialogActions";
+import DialogContentText from "material-ui/Dialog/DialogContentText";
+import Divider from "material-ui/Divider/Divider";
+import DisplaynameUpdate from "./components/DisplaynameUpdate";
+import IsAdultUpdate from "./components/IsAdultUpdate";
+import LoadingIndicator from "../../elements/LoadingIndicator";
+import lang from "../../res/lang";
 
 interface RouteMatch {
   userId: MongoId;
@@ -37,14 +37,14 @@ interface StateProps {
 }
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
-  loading: select.isLoading(state),
+  loading: select.isLoading(state)
 });
 
 interface DispatchProps {
   requestUser(id: MongoId): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
+  requestUser: (id: MongoId) => dispatch(getUserRequest(id))
 });
 
 type Props = StateProps &
@@ -55,7 +55,10 @@ type Props = StateProps &
 
 const SpecificUser = withRouter(
   withMobileDialog<Props>()(
-    connect<StateProps, DispatchProps, Props>(mapStateToProps, mapDispatchToProps)(
+    connect<StateProps, DispatchProps, Props>(
+      mapStateToProps,
+      mapDispatchToProps
+    )(
       withStyles(styles)(
         class extends React.Component<Props> {
           componentDidMount() {
@@ -70,21 +73,22 @@ const SpecificUser = withRouter(
           onGoBack = () => this.onClose();
 
           render() {
-            const { props } = this;
-            const { loading } = props;
-            const { userId } = props.match.params;
-            const user = props.getUser(userId);
+            const { fullScreen, loading, match, getUser } = this.props;
+
+            const { userId } = match.params;
+            const user = getUser(userId);
 
             return (
-              <Dialog open onClose={this.onGoBack} fullScreen={props.fullScreen}>
+              <Dialog open onClose={this.onGoBack} fullScreen={fullScreen}>
                 {!!user ? (
                   <React.Fragment>
-                    <DialogTitle>{user.get('displayname')}</DialogTitle>
+                    <DialogTitle>{user.get("displayname")}</DialogTitle>
                     <DialogContent>
                       <DialogContentText>
-                        {lang().ui.specificUser.id}: {user.get('_id')} <br />
-                        {lang().ui.specificUser.email}: {user.get('email')} <br />
-                        {lang().ui.specificUser.role}: {user.get('role')} <br />
+                        {lang().ui.specificUser.id}: {user.get("_id")} <br />
+                        {lang().ui.specificUser.email}: {user.get("email")}{" "}
+                        <br />
+                        {lang().ui.specificUser.role}: {user.get("role")} <br />
                       </DialogContentText>
                       <Divider />
                       <EmailUpdate userId={userId} />
@@ -111,10 +115,10 @@ const SpecificUser = withRouter(
               </Dialog>
             );
           }
-        },
-      ),
-    ),
-  ),
+        }
+      )
+    )
+  )
 );
 
 export default SpecificUser;

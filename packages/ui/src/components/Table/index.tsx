@@ -1,6 +1,6 @@
-import * as React from 'react';
-import styles from './styles';
-import withStyles from 'material-ui/styles/withStyles';
+import * as React from "react";
+import styles from "./styles";
+import withStyles from "material-ui/styles/withStyles";
 import {
   TableCell,
   Grid,
@@ -9,10 +9,10 @@ import {
   TableRow,
   TableBody,
   WithStyles,
-  Table as MUITable,
-} from 'material-ui';
-import TableHeadCell from './elements/TableHeadCell';
-import lang from '../../res/lang';
+  Table as MUITable
+} from "material-ui";
+import TableHeadCell from "./elements/TableHeadCell";
+import lang from "../../res/lang";
 
 type AllowedValues = string | number | boolean;
 type Item = ReadonlyArray<AllowedValues>;
@@ -41,9 +41,9 @@ interface State {
 const Table = withStyles(styles)(
   class Table<T> extends React.Component<Props<T>, State> {
     state: State = {
-      searchTerm: '',
+      searchTerm: "",
       sortField: this.props.defaultSortField || 0,
-      sortUp: false,
+      sortUp: false
     };
 
     // Handlers
@@ -60,33 +60,35 @@ const Table = withStyles(styles)(
     filter = (item: T): boolean => {
       const value = this.props.cellExtractor(item)[this.state.sortField];
 
-      if (typeof value === 'boolean') {
+      if (typeof value === "boolean") {
         return true;
       }
 
-      return ('' + value).includes(this.state.searchTerm);
+      return ("" + value).indexOf(this.state.searchTerm) !== -1;
     };
     sortMulti = () => (this.state.sortUp ? 1 : -1);
     sort = (a: T, b: T): number => {
       const valueA = this.props.cellExtractor(a)[this.state.sortField];
       const valueB = this.props.cellExtractor(b)[this.state.sortField];
-      if (typeof valueA === 'boolean') {
+      if (typeof valueA === "boolean") {
         return valueA === valueB ? 0 : valueA ? -1 : 1;
       }
 
-      if (typeof valueA === 'number') {
+      if (typeof valueA === "number") {
         return (valueA - (valueB as number)) * this.sortMulti();
       }
 
       return valueA.localeCompare(valueB as string) * this.sortMulti();
     };
     truncate = (str: string, length: number, ending: string) =>
-      str.length > length ? str.substring(0, length - ending.length) + ending : str;
+      str.length > length
+        ? str.substring(0, length - ending.length) + ending
+        : str;
     show = (value: AllowedValues) => {
-      if (typeof value === 'string') {
-        return this.truncate(value, 20, '...');
+      if (typeof value === "string") {
+        return this.truncate(value, 20, "...");
       }
-      if (typeof value === 'boolean') {
+      if (typeof value === "boolean") {
         return value ? this.props.trueElement : this.props.falseElement;
       }
       return value;
@@ -101,7 +103,7 @@ const Table = withStyles(styles)(
         headers,
         sort,
         filter,
-        cellExtractor,
+        cellExtractor
       } = this.props;
       const { sortField, sortUp } = this.state;
 
@@ -155,7 +157,7 @@ const Table = withStyles(styles)(
         </Grid>
       );
     }
-  },
+  }
 );
 
 export default Table;

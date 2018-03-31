@@ -1,18 +1,18 @@
-import * as React from 'react';
-import styles from './styles';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { Dialog, Grid, Button } from 'material-ui';
-import { withMobileDialog } from 'material-ui/Dialog';
-import { connect } from 'react-redux';
-import { AppState, IUserCreate } from '../../../../interfaces/index';
-import { Dispatch, Action } from 'redux';
+import * as React from "react";
+import styles from "./styles";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import { Dialog, Grid, Button } from "material-ui";
+import { withMobileDialog } from "material-ui/Dialog";
+import { connect } from "react-redux";
+import { AppState, IUserCreate } from "../../../../interfaces/index";
+import { Dispatch, Action } from "redux";
 // tslint:disable-next-line:import-name
-import Dropzone from 'react-dropzone';
-import DialogActions from 'material-ui/Dialog/DialogActions';
-import parseCSV from './services/parseCSV';
-import { createUsersRequest, addMessage } from '../../../../redux/actions';
-import UnsignedAvatar from '../../../SpecificEntry/elements/UnsignedAvatar';
-import SignedAvatar from '../../../SpecificEntry/elements/SignedAvatar';
+import Dropzone from "react-dropzone";
+import DialogActions from "material-ui/Dialog/DialogActions";
+import parseCSV from "./services/parseCSV";
+import { createUsersRequest, addMessage } from "../../../../redux/actions";
+import UnsignedAvatar from "../../../SpecificEntry/elements/UnsignedAvatar";
+import SignedAvatar from "../../../SpecificEntry/elements/SignedAvatar";
 
 interface OwnProps {
   onClose(): void;
@@ -28,7 +28,7 @@ interface DispatchProps {
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createUsers: (users: IUserCreate[]) => dispatch(createUsersRequest(users)),
-  addMessage: (msg: string) => dispatch(addMessage(msg)),
+  addMessage: (msg: string) => dispatch(addMessage(msg))
 });
 
 interface InjectedProps {
@@ -42,13 +42,16 @@ interface State {
 
 type Props = OwnProps & DispatchProps & StateProps & WithStyles & InjectedProps;
 
-const ImportUsers = connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(
+const ImportUsers = connect<StateProps, DispatchProps>(
+  mapStateToProps,
+  mapDispatchToProps
+)(
   withMobileDialog<OwnProps & DispatchProps & StateProps>()(
     withStyles(styles)(
       class extends React.Component<Props, State> {
         state: State = {
           users: [],
-          error: true,
+          error: true
         };
 
         onDrop = async (accepted: File[], rejected: File[]) => {
@@ -72,9 +75,14 @@ const ImportUsers = connect<StateProps, DispatchProps>(mapStateToProps, mapDispa
         inputValid = (): boolean => !this.state.error;
 
         render() {
-          const { props, state } = this;
+          const { show, fullScreen } = this.props;
+          const { error } = this.state;
           return (
-            <Dialog fullScreen={props.fullScreen} onClose={this.handleClose} open={this.props.show}>
+            <Dialog
+              fullScreen={fullScreen}
+              onClose={this.handleClose}
+              open={show}
+            >
               <Grid container direction="column">
                 <Grid item xs={12}>
                   <Dropzone accept="text/csv" onDrop={this.onDrop}>
@@ -82,7 +90,7 @@ const ImportUsers = connect<StateProps, DispatchProps>(mapStateToProps, mapDispa
                   </Dropzone>
                 </Grid>
                 <Grid item xs={12}>
-                  {state.error ? <UnsignedAvatar /> : <SignedAvatar />}
+                  {error ? <UnsignedAvatar /> : <SignedAvatar />}
                 </Grid>
               </Grid>
               <DialogActions>
@@ -103,9 +111,9 @@ const ImportUsers = connect<StateProps, DispatchProps>(mapStateToProps, mapDispa
             </Dialog>
           );
         }
-      },
-    ),
-  ),
+      }
+    )
+  )
 );
 
 export default ImportUsers;

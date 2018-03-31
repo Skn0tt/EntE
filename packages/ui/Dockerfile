@@ -1,20 +1,21 @@
-# Build Static Files
-FROM node as build-deps
+FROM node as build
 WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
 
-RUN yarn install --frozen-lockfile
+COPY package.json yarn.lock tsconfig.json lerna.json ./
 
-COPY . ./
-RUN yarn build
+COPY packages/ui ./packages/ui
 
-# Host Static Files
+RUN yarn --frozen-lockfile
+RUN yarn lerna bootstrap
+
+RUN yarn --cwd packages/ui build
+
 FROM socialengine/nginx-spa
 
 # Install Curl (for Healthcheck)
 RUN apt-get update; apt-get -y install curl;
 
 # Copy over static content
-COPY --from=build-deps /usr/src/app/build /app
+COPY --from=build /usr/src/app/packages/ui/build /app/
 
 HEALTHCHECK CMD curl --fail -A "healthcheck" http://localhost || exit 1

@@ -1,25 +1,21 @@
-FROM node AS build
-WORKDIR /usr/src/app
-
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-
-COPY . ./
-RUN yarn build
-
 FROM node:alpine
 WORKDIR /usr/src/app
-COPY --from=build /usr/src/app/dist ./dist
-COPY package.json yarn.lock ./
 
-RUN yarn install --production --frozen-lockfile
+COPY package.json yarn.lock tsconfig.json lerna.json ./
+
+COPY packages/rotator ./packages/rotator
+
+RUN yarn --frozen-lockfile
+RUN yarn lerna bootstrap
+
+RUN yarn --cwd packages/rotator build
 
 # src: https://firefart.at/post/docker_and_cron_jobs/
 ENV APP_USER appuser
 
 RUN adduser -g "App User" -D $APP_USER
 
-COPY crontab /var/spool/cron/crontabs/$APP_USER
+COPY packages/rotator/crontab /var/spool/cron/crontabs/$APP_USER
 RUN chmod 0600 /var/spool/cron/crontabs/$APP_USER
 
-CMD node dist/index.js && crond -f -d 8 
+CMD yarn --cwd packages/rotator start && crond -f -d 8 

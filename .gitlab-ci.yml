@@ -18,7 +18,7 @@ stages:
 # Build
 #
 Build API:
-  image: docker
+  image: skn0tt/dind-make
   stage: build
   only:
     - master
@@ -29,12 +29,12 @@ Build API:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd api
-    - docker build -t $CONTAINER_API_TEST_IMAGE -f Dockerfile .
+    - cd packages/api
+    - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
     - docker push $CONTAINER_API_TEST_IMAGE
 
 Build UI:
-  image: docker
+  image: skn0tt/dind-make
   stage: build
   only:
     - master
@@ -45,12 +45,12 @@ Build UI:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd ui
-    - docker build -t $CONTAINER_UI_TEST_IMAGE .
+    - cd packages/ui
+    - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
     - docker push $CONTAINER_UI_TEST_IMAGE
 
 Build nginx-proxy:
-  image: docker
+  image: skn0tt/dind-make
   stage: build
   only:
     - master
@@ -61,12 +61,12 @@ Build nginx-proxy:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd nginx-proxy
-    - docker build -t $CONTAINER_PROXY_TEST_IMAGE .
+    - cd packages/nginx-proxy
+    - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
     - docker push $CONTAINER_PROXY_TEST_IMAGE
 
 Build rotator:
-  image: docker
+  image: skn0tt/dind-make
   stage: build
   only:
     - master
@@ -77,8 +77,8 @@ Build rotator:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd rotator
-    - docker build -t $CONTAINER_ROTATOR_TEST_IMAGE .
+    - cd packages/rotator
+    - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
     - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
 #
@@ -108,7 +108,7 @@ Build rotator:
   except:
     - master
   before_script:
-    - cd api
+    - cd packages/api
     - yarn
   script:
     - yarn test
@@ -119,7 +119,7 @@ Test UI:
   except:
     - master
   before_script:
-    - cd api
+    - cd packages/ui
     - yarn
   script:
     - yarn test
@@ -131,7 +131,7 @@ Lint API:
   except:
     - master
   before_script:
-    - cd api
+    - cd packages/api
     - yarn
   script:
     - yarn lint
@@ -142,7 +142,7 @@ Lint UI:
   except:
     - master
   before_script:
-    - cd ui
+    - cd packages/ui
     - yarn
   script:
     - yarn lint

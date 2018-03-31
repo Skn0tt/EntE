@@ -5,8 +5,8 @@ services:
     image: mongo:latest
     volumes:
       - "/data/db"
+  
   api:
-    build: ./api
     image: registry.gitlab.com/skn0tt/ente/api
     restart: always
     depends_on:
@@ -17,22 +17,22 @@ services:
       - HOST
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
+  
   redis:
     image: redis
+
   rotator:
-    build: ./rotator
     image: registry.gitlab.com/skn0tt/ente/rotator
     depends_on:
       - redis
   ui:
-    build: ./ui
     image: registry.gitlab.com/skn0tt/ente/ui
     restart: always
     environment:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
   nginx-proxy:
-    build: ./nginx-proxy
+    build: ./packages/nginx-proxy
     image: registry.gitlab.com/skn0tt/ente/nginx-proxy
     ports:
       - 80:80

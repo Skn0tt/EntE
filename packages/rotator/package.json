@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Rotates JWT secrets",
   "main": "dist/index.js",
-  "repository": "https://gitlab.com/Skn0tt/EntE/tree/master/ente-rotator",
+  "repository": "https://gitlab.com/Skn0tt/EntE/tree/master/packages/rotator",
   "author": "Simon Knott",
   "license": "MIT",
   "private": true,
@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@types/redis": "^2.8.6",
-    "prettier": "^1.11.1",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.7.0",
     "tslint-config-prettier": "^1.9.0",
