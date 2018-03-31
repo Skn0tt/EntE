@@ -149,6 +149,7 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
             this.childrenValid() &&
             this.displaynameValid() &&
             this.emailValid();
+          selectedChildValid = (): boolean => !!this.state.selectedChild
 
           render() {
             const { classes } = this.props;
@@ -270,7 +271,7 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
                                 </TextField>
                               </Grid>
                               <Grid item xs={2}>
-                                <IconButton onClick={() => this.handleAddChild()}>
+                                <IconButton onClick={() => this.handleAddChild()} disabled={!this.selectedChildValid()}>
                                   <AddIcon />
                                 </IconButton>
                               </Grid>

@@ -5,7 +5,7 @@ import * as timestamps from 'mongoose-timestamp';
 
 export interface EntryModel extends Document, IEntry {
   signParent(): void;
-  signManager(): void;
+  setSignatureManager(b: boolean): void;
 }
 
 export interface IEntryBase {
@@ -58,8 +58,8 @@ entrySchema.methods.signParent = function(callback): void {
   this.signedParent = true;
   this.save(callback);
 };
-entrySchema.methods.signManager = function(callback): void {
-  this.signedManager = true;
+entrySchema.methods.setSignatureManager = function(b: boolean, callback): void {
+  this.signedManager = b;
   this.save(callback);
 };
 

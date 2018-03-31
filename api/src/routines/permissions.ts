@@ -1,4 +1,5 @@
 import { ROLES } from '../constants';
+import { RequestHandler } from 'express';
 
 interface Permissions {
   slots_read?: boolean;
@@ -90,3 +91,13 @@ const check = (role: ROLES, neededPermissions: Permissions): boolean => {
 };
 
 export { check, Permissions };
+
+const rbac = (neededPermissions: Permissions): RequestHandler => (req, res, next) => {
+  if (!check(req.user.role, neededPermissions)) {
+    return res.status(403).end();
+  }
+
+  next();
+};
+
+export default rbac;

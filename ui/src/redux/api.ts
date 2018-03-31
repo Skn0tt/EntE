@@ -155,9 +155,19 @@ const put = async (url: string, token: string, body?: {}) => {
 };
 
 export const signEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/entries/${id}/sign`, token);
+  const response = await put(`${baseUrl}/entries/${id}/signed`, token, { value: true });
   return transform(response);
 };
+
+export const unsignEntry = async (id: MongoId, token: string): Promise<APIResponse> => {
+  const response = await put(`${baseUrl}/entries/${id}/signed`, token, { value: false });
+  return transform(response);
+};
+
+export const patchForSchool = async (id: MongoId, forSchool: boolean, token: string): Promise<APIResponse> => {
+  const response = await patch(`${baseUrl}/entries/${id}`, token, { forSchool });
+  return transform(response);
+}
 
 export const resetPassword = async (username: MongoId): Promise<string> => {
   const result = await axios.post(`${baseUrl}/auth/forgot/${username}`);

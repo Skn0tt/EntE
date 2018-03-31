@@ -47,6 +47,7 @@ const de: Translation = {
     },
     specificEntry: {
       sign: 'Unterschreiben',
+      unsign: 'Signatur Zurücknehmen'
     },
   },
 };

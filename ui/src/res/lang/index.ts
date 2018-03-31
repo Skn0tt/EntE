@@ -30,6 +30,7 @@ export interface Translation {
     };
     specificEntry: {
       sign: string;
+      unsign: string;
     };
     specificUser: {
       id: string;

@@ -8,8 +8,8 @@ import { AppState, MongoId, Entry, User, Slot, Roles } from '../../interfaces/in
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Table, List, Grid } from 'material-ui';
-import { getEntryRequest, signEntryRequest } from '../../redux/actions';
+import { Button, Table, List, Grid, Checkbox } from 'material-ui';
+import { getEntryRequest, signEntryRequest, unsignEntryRequest, patchForSchoolRequest } from '../../redux/actions';
 import SignedAvatar from './elements/SignedAvatar';
 import UnsignedAvatar from './elements/UnsignedAvatar';
 import TableHead from 'material-ui/Table/TableHead';
@@ -24,11 +24,14 @@ import Typography from 'material-ui/Typography/Typography';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
-import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
+import { AssignmentTurnedIn as AssignmentTurnedInIcon, AssignmentReturned as AssignmentReturnedIcon } from 'material-ui-icons';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import LoadingIndicator from '../../elements/LoadingIndicator';
 import lang from '../../res/lang';
 
+/**
+ * # Component Types
+ */
 interface RouteMatch {
   entryId: MongoId;
 }
@@ -44,7 +47,7 @@ interface StateProps {
   loading: boolean;
   role: Roles;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   getEntry: (id: MongoId) => select.getEntry(id)(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
   getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
@@ -55,10 +58,14 @@ const mapStateToProps = (state: AppState) => ({
 interface DispatchProps {
   requestEntry(id: MongoId): Action;
   signEntry(id: MongoId): Action;
+  unsignEntry(id: MongoId): Action;
+  patchForSchool(id: MongoId, forSchool: boolean): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  requestEntry: (id: MongoId) => dispatch(getEntryRequest(id)),
-  signEntry: (id: MongoId) => dispatch(signEntryRequest(id)),
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
+  requestEntry: id => dispatch(getEntryRequest(id)),
+  signEntry: id => dispatch(signEntryRequest(id)),
+  unsignEntry: id => dispatch(unsignEntryRequest(id)),
+  patchForSchool: (id, forSchool) => dispatch(patchForSchoolRequest({ id, forSchool })),
 });
 
 type Props = WithStyles &
@@ -67,6 +74,9 @@ type Props = WithStyles &
   StateProps &
   DispatchProps;
 
+/**
+ * # Component
+ */
 const SpecificEntry = withRouter(
   connect(mapStateToProps, mapDispatchToProps)(
     withStyles(styles)(
@@ -88,6 +98,7 @@ const SpecificEntry = withRouter(
             const { classes, loading } = this.props;
             const { entryId } = this.props.match.params;
             const entry = this.props.getEntry(entryId);
+            const { role, patchForSchool } = this.props;
 
             return (
               <Dialog open fullScreen={props.fullScreen} onClose={this.onClose}>
@@ -106,7 +117,16 @@ const SpecificEntry = withRouter(
                         <Typography variant="body1">
                           <i>Erstellt:</i> {entry.get('createdAt').toLocaleString()} <br />
                           <i>Begründung:</i> {entry.get('reason') || '-'} <br />
-                          <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br />
+                          <i>Schulisch:</i> {
+                            role === Roles.MANAGER
+                              ? (
+                                <Checkbox
+                                  checked={entry.get("forSchool")}
+                                  onChange={() => patchForSchool(entry.get("_id"), !entry.get("forSchool"))}
+                                />
+                              )
+                              : (entry.get('forSchool') ? 'Ja' : 'Nein')
+                            } <br />
                           <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')}{' '}
                           <br />
                           <i>Datum:</i>{' '}
@@ -147,23 +167,37 @@ const SpecificEntry = withRouter(
                       <Grid item>
                         <Typography variant="title">Signiert</Typography>
                         <List>
+
                           {/* Admin */}
                           <ListItem>
                             {entry.get('signedManager') ? <SignedAvatar /> : <UnsignedAvatar />}
                             <ListItemText primary="Stufenleiter" />
-                            {!entry.get('signedManager') &&
-                              props.role === Roles.MANAGER && (
-                                <ListItemSecondaryAction>
-                                  <Button
-                                    className={classes.signEntryButton}
-                                    onClick={() => props.signEntry(entry.get('_id'))}
-                                  >
-                                    {lang().ui.specificEntry.sign}
-                                    <AssignmentTurnedInIcon />
-                                  </Button>
-                                </ListItemSecondaryAction>
+                            {props.role === Roles.MANAGER && (
+                              entry.get('signedManager')
+                                ? (
+                                  <ListItemSecondaryAction>
+                                    <Button
+                                      className={classes.unsignEntryButton}
+                                      onClick={() => props.unsignEntry(entry.get('_id'))}
+                                    >
+                                      <AssignmentReturnedIcon />
+                                    </Button>
+                                  </ListItemSecondaryAction>
+                                )
+                                : (
+                                  <ListItemSecondaryAction>
+                                    <Button
+                                      className={classes.signEntryButton}
+                                      onClick={() => props.signEntry(entry.get('_id'))}
+                                      variant="raised"
+                                    >
+                                      <AssignmentTurnedInIcon />
+                                    </Button>
+                                  </ListItemSecondaryAction>
+                                )
                               )}
                           </ListItem>
+
                           {/* Parents */}
                           <ListItem>
                             {entry.get('signedParent') ? <SignedAvatar /> : <UnsignedAvatar />}

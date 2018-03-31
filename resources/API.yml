@@ -39,7 +39,7 @@ paths:
               schema:
                 type: string
   # Auth
-  '/auth/forgot/{usermame}':
+  '/auth/forgot/{username}':
     post:
       tags:
       - auth
@@ -158,7 +158,44 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/entries/{entryId}/sign':
+    patch:
+      tags:
+        - entries
+      summary: Patch specific entry
+      description: Edits a specifc Entry and returns it
+      security:
+        - basic: []
+      parameters:
+        - in: path
+          name: entryId
+          required: true
+          description: MongoId of the entry to get
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                forSchool:
+                  type: boolean
+          
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardReturn'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  '/entries/{entryId}/signed':
     put:
       tags:
         - entries
@@ -172,6 +209,17 @@ paths:
           description: MongoId of the entry to sign
           schema:
             type: string
+      requestBody:
+        description: Value to set to
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: boolean
+                  description: Value to set the signature to
       responses:
         '200':
           description: OK
