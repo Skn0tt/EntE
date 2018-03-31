@@ -64,10 +64,8 @@ const oneYearBefore = new Date(+new Date() - 365 * 24 * 60 * 60 * 1000);
 const yearParams = { date: { $gte: oneYearBefore } };
 entriesRouter.get(
   "/",
+  rbac(readPermissions),
   async (request: EntriesRequest, response, next) => {
-    if (!permissionsCheck(request.user.role, readPermissions))
-      return response.status(403).end();
-
     try {
       if (
         request.user.role === ROLES.PARENT ||
@@ -170,18 +168,13 @@ const twoWeeksBefore: Date = new Date(+new Date() - 14 * 24 * 60 * 60 * 1000);
 
 entriesRouter.post(
   "/",
+  rbac(createPermissions),
   [
     body("date").isAfter(twoWeeksBefore.toISOString()),
     body("reason").isLength({ max: 300 })
   ],
+  validate,
   async (request: EntriesRequest, response: Response, next) => {
-    if (!permissionsCheck(request.user.role, createPermissions))
-      return response.status(403).end();
-
-    const errors = validationResult(request);
-    if (!errors.isEmpty())
-      return response.status(422).json({ errors: errors.mapped() });
-
     const studentId =
       request.user.role === ROLES.PARENT
         ? request.body.student
@@ -215,7 +208,9 @@ entriesRouter.post(
         forSchool: request.body.forSchool
       });
 
-      if (!entry.signedParent) mail.dispatchSignRequest(entry);
+      if (!entry.signedParent) {
+        mail.dispatchSignRequest(entry);
+      }
 
       request.entries = [entry];
 
@@ -244,7 +239,9 @@ entriesRouter.patch(
     try {
       const entry = await Entry.findById(entryId);
 
-      if (!entry) return response.status(404).end("Couldnt find Entry.");
+      if (!entry) {
+        return response.status(404).end("Couldnt find Entry.");
+      }
 
       entry.set("forSchool", body.forSchool);
       entry.save();
