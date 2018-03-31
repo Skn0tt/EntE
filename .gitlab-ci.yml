@@ -113,7 +113,7 @@ Build rotator:
   script:
     - yarn test
 
-Test UI:
+.Test UI:
   image: node
   stage: test
   except:
