@@ -50,10 +50,8 @@ const oneYearBefore = new Date(+new Date() - 365 * 24 * 60 * 60 * 1000);
 const yearParams = { date: { $gte: oneYearBefore } };
 slotsRouter.get(
   "/",
+  rbac(readPermissions),
   async (request: SlotRequest, response, next) => {
-    if (!permissionsCheck(request.user.role, readPermissions))
-      return response.status(403).end();
-
     try {
       let slots;
       switch (request.user.role) {
