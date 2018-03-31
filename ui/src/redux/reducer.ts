@@ -53,6 +53,9 @@ import {
   SIGN_ENTRY_ERROR,
   SIGN_ENTRY_REQUEST,
   SIGN_ENTRY_SUCCESS,
+  UNSIGN_ENTRY_ERROR,
+  UNSIGN_ENTRY_SUCCESS,
+  UNSIGN_ENTRY_REQUEST,
 } from './constants';
 import { ActionType } from 'redux-saga/effects';
 import { Map, List } from 'immutable';
@@ -111,6 +114,7 @@ const reducer = handleActions(
      */
     // ## SIGN_ENTRY
     ...asyncReducers(SIGN_ENTRY_REQUEST, SIGN_ENTRY_ERROR, SIGN_ENTRY_SUCCESS),
+    ...asyncReducers(UNSIGN_ENTRY_REQUEST, UNSIGN_ENTRY_ERROR, UNSIGN_ENTRY_SUCCESS),
 
     /**
      * # GET

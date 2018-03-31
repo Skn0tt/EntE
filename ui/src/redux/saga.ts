@@ -19,7 +19,7 @@ import {
   createUsersError,
   createUsersSuccess,
   signEntryError,
-  singEntrySuccess,
+  signEntrySuccess,
   resetPasswordError,
   resetPasswordSuccess,
   addMessage,
@@ -35,6 +35,8 @@ import {
   getNeededUsersError,
   getNeededUsersRequest,
   updateUserSuccess,
+  unsignEntryError,
+  unsignEntrySuccess,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -53,6 +55,7 @@ import {
   CREATE_USERS_REQUEST,
   GET_CHILDREN_REQUEST,
   GET_NEEDED_USERS_REQUEST,
+  UNSIGN_ENTRY_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -271,11 +274,24 @@ function* signEntrySaga(action: Action<MongoId>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.signEntry, action.payload, token);
 
-    yield put(singEntrySuccess());
+    yield put(signEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
     yield put(addMessage(lang().message.sign.error));
     yield put(signEntryError(error));
+  }
+}
+
+function* unsignEntrySaga(action: Action<MongoId>) {
+  try {
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.unsignEntry, action.payload, token);
+
+    yield put(unsignEntrySuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(addMessage(lang().message.sign.error));
+    yield put(unsignEntryError(error));
   }
 }
 
@@ -311,6 +327,7 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
+  yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
   yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);

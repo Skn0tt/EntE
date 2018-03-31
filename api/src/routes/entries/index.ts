@@ -212,7 +212,7 @@ entriesRouter.put(
 
     const entryId = request.params.entryId;
 
-    const setValue = request.body;
+    const setValue = request.body.value;
 
     try {
       const entry = await Entry.findById(entryId);

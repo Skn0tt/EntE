@@ -9,7 +9,7 @@ import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Table, List, Grid } from 'material-ui';
-import { getEntryRequest, signEntryRequest } from '../../redux/actions';
+import { getEntryRequest, signEntryRequest, unsignEntryRequest } from '../../redux/actions';
 import SignedAvatar from './elements/SignedAvatar';
 import UnsignedAvatar from './elements/UnsignedAvatar';
 import TableHead from 'material-ui/Table/TableHead';
@@ -24,11 +24,14 @@ import Typography from 'material-ui/Typography/Typography';
 import ListItem from 'material-ui/List/ListItem';
 import ListItemText from 'material-ui/List/ListItemText';
 import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
-import { AssignmentTurnedIn as AssignmentTurnedInIcon } from 'material-ui-icons';
+import { AssignmentTurnedIn as AssignmentTurnedInIcon, AssignmentReturned as AssignmentReturnedIcon } from 'material-ui-icons';
 import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
 import LoadingIndicator from '../../elements/LoadingIndicator';
 import lang from '../../res/lang';
 
+/**
+ * # Component Types
+ */
 interface RouteMatch {
   entryId: MongoId;
 }
@@ -44,7 +47,7 @@ interface StateProps {
   loading: boolean;
   role: Roles;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   getEntry: (id: MongoId) => select.getEntry(id)(state),
   getUser: (id: MongoId) => select.getUser(id)(state),
   getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
@@ -55,10 +58,12 @@ const mapStateToProps = (state: AppState) => ({
 interface DispatchProps {
   requestEntry(id: MongoId): Action;
   signEntry(id: MongoId): Action;
+  unsignEntry(id: MongoId): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
   requestEntry: (id: MongoId) => dispatch(getEntryRequest(id)),
   signEntry: (id: MongoId) => dispatch(signEntryRequest(id)),
+  unsignEntry: (id: MongoId) => dispatch(unsignEntryRequest(id))
 });
 
 type Props = WithStyles &
@@ -67,6 +72,9 @@ type Props = WithStyles &
   StateProps &
   DispatchProps;
 
+/**
+ * # Component
+ */
 const SpecificEntry = withRouter(
   connect(mapStateToProps, mapDispatchToProps)(
     withStyles(styles)(
@@ -147,23 +155,37 @@ const SpecificEntry = withRouter(
                       <Grid item>
                         <Typography variant="title">Signiert</Typography>
                         <List>
+
                           {/* Admin */}
                           <ListItem>
                             {entry.get('signedManager') ? <SignedAvatar /> : <UnsignedAvatar />}
                             <ListItemText primary="Stufenleiter" />
-                            {!entry.get('signedManager') &&
-                              props.role === Roles.MANAGER && (
-                                <ListItemSecondaryAction>
-                                  <Button
-                                    className={classes.signEntryButton}
-                                    onClick={() => props.signEntry(entry.get('_id'))}
-                                  >
-                                    {lang().ui.specificEntry.sign}
-                                    <AssignmentTurnedInIcon />
-                                  </Button>
-                                </ListItemSecondaryAction>
+                            {props.role === Roles.MANAGER && (
+                              entry.get('signedManager')
+                                ? (
+                                  <ListItemSecondaryAction>
+                                    <Button
+                                      className={classes.unsignEntryButton}
+                                      onClick={() => props.unsignEntry(entry.get('_id'))}
+                                    >
+                                      <AssignmentReturnedIcon />
+                                    </Button>
+                                  </ListItemSecondaryAction>
+                                )
+                                : (
+                                  <ListItemSecondaryAction>
+                                    <Button
+                                      className={classes.signEntryButton}
+                                      onClick={() => props.signEntry(entry.get('_id'))}
+                                      variant="raised"
+                                    >
+                                      <AssignmentTurnedInIcon />
+                                    </Button>
+                                  </ListItemSecondaryAction>
+                                )
                               )}
                           </ListItem>
+
                           {/* Parents */}
                           <ListItem>
                             {entry.get('signedParent') ? <SignedAvatar /> : <UnsignedAvatar />}
