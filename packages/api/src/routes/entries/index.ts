@@ -1,14 +1,17 @@
-import { Router, Response, Request, RequestHandler } from 'express';
-import { body, validationResult, param } from 'express-validator/check';
+import { Router, Response, Request, RequestHandler } from "express";
+import { body, validationResult, param } from "express-validator/check";
 
-import rbac, { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles, MongoId, ROLES } from '../../constants';
+import rbac, {
+  check as permissionsCheck,
+  Permissions
+} from "../../routines/permissions";
+import { roles, MongoId, ROLES } from "../../constants";
 
-import Entry, { EntryModel } from '../../models/Entry';
-import Slot, { ISlot } from '../../models/Slot';
-import * as mail from '../../routines/mail';
-import User from '../../models/User';
-import { ObjectID } from 'bson';
+import Entry, { EntryModel } from "../../models/Entry";
+import Slot, { ISlot } from "../../models/Slot";
+import * as mail from "../../routines/mail";
+import User from "../../models/User";
+import { ObjectID } from "bson";
 
 const entriesRouter = Router();
 
@@ -18,7 +21,7 @@ const populate = async (request: EntriesRequest, response, next) => {
     request.entries.forEach(entry => slotIds.push(...entry.slots));
 
     const slots = await Slot.find({
-      _id: { $in: slotIds },
+      _id: { $in: slotIds }
     });
 
     const userIds: MongoId[] = [];
@@ -26,13 +29,13 @@ const populate = async (request: EntriesRequest, response, next) => {
     request.entries.forEach(entry => userIds.push(entry.student));
 
     const users = await User.find({
-      _id: { $in: userIds },
-    }).select('-password');
+      _id: { $in: userIds }
+    }).select("-password");
 
     return response.json({
       slots,
       users,
-      entries: request.entries,
+      entries: request.entries
     });
   } catch (error) {
     return next(error);
@@ -55,20 +58,24 @@ interface EntriesRequest extends Request {
   entries: EntryModel[];
 }
 const readPermissions: Permissions = {
-  entries_read: true,
+  entries_read: true
 };
 const oneYearBefore = new Date(+new Date() - 365 * 24 * 60 * 60 * 1000);
 const yearParams = { date: { $gte: oneYearBefore } };
 entriesRouter.get(
-  '/',
+  "/",
   async (request: EntriesRequest, response, next) => {
-    if (!permissionsCheck(request.user.role, readPermissions)) return response.status(403).end();
+    if (!permissionsCheck(request.user.role, readPermissions))
+      return response.status(403).end();
 
     try {
-      if (request.user.role === ROLES.PARENT || request.user.role === ROLES.MANAGER) {
+      if (
+        request.user.role === ROLES.PARENT ||
+        request.user.role === ROLES.MANAGER
+      ) {
         request.entries = await Entry.find({
           student: { $in: request.user.children },
-          ...yearParams,
+          ...yearParams
         });
 
         return next();
@@ -81,7 +88,7 @@ entriesRouter.get(
       if (request.user.role === ROLES.STUDENT) {
         request.entries = await Entry.find({
           student: request.user._id,
-          ...yearParams,
+          ...yearParams
         });
         return next();
       }
@@ -91,32 +98,34 @@ entriesRouter.get(
 
     return response.status(400).end();
   },
-  populate,
+  populate
 );
 
 /**
  * Get specific entry
  */
 const readSpecificPermissions: Permissions = {
-  entries_read: true,
+  entries_read: true
 };
 entriesRouter.get(
-  '/:entryId',
-  [param('entryId').isMongoId()],
+  "/:entryId",
+  [param("entryId").isMongoId()],
   async (request: EntriesRequest, response: Response, next) => {
     if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
       return response.status(403).end();
     }
 
     const errors = validationResult(request);
-    if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
+    if (!errors.isEmpty())
+      return response.status(422).json({ errors: errors.mapped() });
 
     const entryId = request.params.entryId;
 
     try {
       const entry = await Entry.findById(entryId);
 
-      if (entry === null) return response.status(404).end('Couldnt find Entry.');
+      if (entry === null)
+        return response.status(404).end("Couldnt find Entry.");
 
       request.entries = [entry];
       next();
@@ -124,7 +133,7 @@ entriesRouter.get(
       return next(error);
     }
   },
-  populate,
+  populate
 );
 
 /**
@@ -136,7 +145,7 @@ const teacherExists = async (id: MongoId): Promise<boolean> => {
 };
 
 const createPermissions: Permissions = {
-  entries_create: true,
+  entries_create: true
 };
 const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
   const result = [];
@@ -150,7 +159,7 @@ const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
       hour_from: item.hour_from,
       hour_to: item.hour_to,
       teacher: item.teacher,
-      student: studentId,
+      student: studentId
     });
     result.push(slot._id);
   }
@@ -160,24 +169,39 @@ const createSlots = async (items: [ISlot], date: Date, studentId: MongoId) => {
 const twoWeeksBefore: Date = new Date(+new Date() - 14 * 24 * 60 * 60 * 1000);
 
 entriesRouter.post(
-  '/',
-  [body('date').isAfter(twoWeeksBefore.toISOString()), body('reason').isLength({ max: 300 })],
+  "/",
+  [
+    body("date").isAfter(twoWeeksBefore.toISOString()),
+    body("reason").isLength({ max: 300 })
+  ],
   async (request: EntriesRequest, response: Response, next) => {
-    if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
+    if (!permissionsCheck(request.user.role, createPermissions))
+      return response.status(403).end();
 
     const errors = validationResult(request);
-    if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
+    if (!errors.isEmpty())
+      return response.status(422).json({ errors: errors.mapped() });
 
-    const studentId = request.user.role === ROLES.PARENT ? request.body.student : request.user._id;
+    const studentId =
+      request.user.role === ROLES.PARENT
+        ? request.body.student
+        : request.user._id;
 
     if (!request.body.dateEnd && request.body.slots.length === 0) {
-      return response.status(422).end('Entry that is no range needs to have one or more slots.');
+      return response
+        .status(422)
+        .end("Entry that is no range needs to have one or more slots.");
     }
 
     try {
-      const slots = await createSlots(request.body.slots, request.body.date, studentId);
+      const slots = await createSlots(
+        request.body.slots,
+        request.body.date,
+        studentId
+      );
 
-      const signedParent: boolean = request.user.role === ROLES.PARENT || request.user.isAdult;
+      const signedParent: boolean =
+        request.user.role === ROLES.PARENT || request.user.isAdult;
 
       // TODO: Reject Parents creating entries for children that are not theirs
 
@@ -188,7 +212,7 @@ entriesRouter.post(
         date: request.body.date,
         dateEnd: request.body.dateEnd,
         student: studentId,
-        forSchool: request.body.forSchool,
+        forSchool: request.body.forSchool
       });
 
       if (!entry.signedParent) mail.dispatchSignRequest(entry);
@@ -200,18 +224,18 @@ entriesRouter.post(
       return next(error);
     }
   },
-  populate,
+  populate
 );
 
 /**
  * # Edit Entry
  */
 entriesRouter.patch(
-  '/:entryId',
+  "/:entryId",
   rbac({
-    entries_write: true,
+    entries_write: true
   }),
-  [param('entryId').isMongoId(), body('forSchool').isBoolean()],
+  [param("entryId").isMongoId(), body("forSchool").isBoolean()],
   validate,
   async (request: EntriesRequest, response: Response, next) => {
     const entryId = request.params.entryId;
@@ -220,9 +244,9 @@ entriesRouter.patch(
     try {
       const entry = await Entry.findById(entryId);
 
-      if (!entry) return response.status(404).end('Couldnt find Entry.');
+      if (!entry) return response.status(404).end("Couldnt find Entry.");
 
-      entry.set('forSchool', body.forSchool);
+      entry.set("forSchool", body.forSchool);
       entry.save();
 
       request.entries = [entry];
@@ -232,25 +256,21 @@ entriesRouter.patch(
       return next(error);
     }
   },
-  populate,
+  populate
 );
 
 /**
  * Sign Entry
  */
 const signEntryPermissions: Permissions = {
-  entries_write: true,
+  entries_write: true
 };
 entriesRouter.put(
-  '/:entryId/signed',
-  [param('entryId').isMongoId(), body('value').isBoolean()],
+  "/:entryId/signed",
+  [param("entryId").isMongoId(), body("value").isBoolean()],
+  rbac(signEntryPermissions),
+  validate,
   async (request: EntriesRequest, response, next) => {
-    if (!permissionsCheck(request.user.role, signEntryPermissions))
-      return response.status(403).end();
-
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
-
     const entryId = request.params.entryId;
 
     const setValue = request.body.value;
@@ -258,7 +278,9 @@ entriesRouter.put(
     try {
       const entry = await Entry.findById(entryId);
 
-      if (!entry) return response.status(404).end('Couldnt find Entry.');
+      if (!entry) {
+        return response.status(404).end("Couldnt find Entry.");
+      }
 
       if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
         if (request.user.role === ROLES.MANAGER) {
@@ -286,7 +308,7 @@ entriesRouter.put(
       return next(error);
     }
   },
-  populate,
+  populate
 );
 
 export default entriesRouter;
