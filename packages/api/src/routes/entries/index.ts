@@ -108,24 +108,20 @@ const readSpecificPermissions: Permissions = {
 entriesRouter.get(
   "/:entryId",
   [param("entryId").isMongoId()],
+  rbac(readSpecificPermissions),
+  validate,
   async (request: EntriesRequest, response: Response, next) => {
-    if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
-      return response.status(403).end();
-    }
-
-    const errors = validationResult(request);
-    if (!errors.isEmpty())
-      return response.status(422).json({ errors: errors.mapped() });
-
     const entryId = request.params.entryId;
 
     try {
       const entry = await Entry.findById(entryId);
 
-      if (entry === null)
+      if (entry === null) {
         return response.status(404).end("Couldnt find Entry.");
+      }
 
       request.entries = [entry];
+
       next();
     } catch (error) {
       return next(error);
