@@ -56,6 +56,9 @@ import {
   UNSIGN_ENTRY_ERROR,
   UNSIGN_ENTRY_SUCCESS,
   UNSIGN_ENTRY_REQUEST,
+  PATCH_FORSCHOOL_REQUEST,
+  PATCH_FORSCHOOL_SUCCESS,
+  PATCH_FORSCHOOL_ERROR,
 } from './constants';
 import {
   MongoId,
@@ -91,6 +94,14 @@ export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
 export const unsignEntryRequest = createAction<MongoId>(UNSIGN_ENTRY_REQUEST);
 export const unsignEntrySuccess = createAction(UNSIGN_ENTRY_SUCCESS);
 export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
+
+export type PatchForSchoolPayload = {
+  id: MongoId;
+  forSchool: boolean;
+}
+export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(PATCH_FORSCHOOL_REQUEST);
+export const patchForSchoolSuccess = createAction(PATCH_FORSCHOOL_SUCCESS);
+export const patchForSchoolError = createAction<Error>(PATCH_FORSCHOOL_ERROR);
 
 export const updateUserRequest = createAction<Partial<IUser>>(UPDATE_USER_REQUEST);
 export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);

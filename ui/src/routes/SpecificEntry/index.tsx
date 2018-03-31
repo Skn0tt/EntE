@@ -8,8 +8,8 @@ import { AppState, MongoId, Entry, User, Slot, Roles } from '../../interfaces/in
 import { Action } from 'redux';
 
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Table, List, Grid } from 'material-ui';
-import { getEntryRequest, signEntryRequest, unsignEntryRequest } from '../../redux/actions';
+import { Button, Table, List, Grid, Checkbox } from 'material-ui';
+import { getEntryRequest, signEntryRequest, unsignEntryRequest, patchForSchoolRequest } from '../../redux/actions';
 import SignedAvatar from './elements/SignedAvatar';
 import UnsignedAvatar from './elements/UnsignedAvatar';
 import TableHead from 'material-ui/Table/TableHead';
@@ -59,11 +59,13 @@ interface DispatchProps {
   requestEntry(id: MongoId): Action;
   signEntry(id: MongoId): Action;
   unsignEntry(id: MongoId): Action;
+  patchForSchool(id: MongoId, forSchool: boolean): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
-  requestEntry: (id: MongoId) => dispatch(getEntryRequest(id)),
-  signEntry: (id: MongoId) => dispatch(signEntryRequest(id)),
-  unsignEntry: (id: MongoId) => dispatch(unsignEntryRequest(id))
+  requestEntry: id => dispatch(getEntryRequest(id)),
+  signEntry: id => dispatch(signEntryRequest(id)),
+  unsignEntry: id => dispatch(unsignEntryRequest(id)),
+  patchForSchool: (id, forSchool) => dispatch(patchForSchoolRequest({ id, forSchool })),
 });
 
 type Props = WithStyles &
@@ -96,6 +98,7 @@ const SpecificEntry = withRouter(
             const { classes, loading } = this.props;
             const { entryId } = this.props.match.params;
             const entry = this.props.getEntry(entryId);
+            const { role, patchForSchool } = this.props;
 
             return (
               <Dialog open fullScreen={props.fullScreen} onClose={this.onClose}>
@@ -114,7 +117,16 @@ const SpecificEntry = withRouter(
                         <Typography variant="body1">
                           <i>Erstellt:</i> {entry.get('createdAt').toLocaleDateString()} <br />
                           <i>Begründung:</i> {entry.get('reason') || '-'} <br />
-                          <i>Schulisch:</i> {entry.get('forSchool') ? 'Ja' : 'Nein'} <br />
+                          <i>Schulisch:</i> {
+                            role === Roles.MANAGER
+                              ? (
+                                <Checkbox
+                                  checked={entry.get("forSchool")}
+                                  onChange={() => patchForSchool(entry.get("_id"), !entry.get("forSchool"))}
+                                />
+                              )
+                              : (entry.get('forSchool') ? 'Ja' : 'Nein')
+                            } <br />
                           <i>Schüler:</i> {props.getUser(entry.get('student')).get('displayname')}{' '}
                           <br />
                           <i>Datum:</i>{' '}

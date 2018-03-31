@@ -37,6 +37,9 @@ import {
   updateUserSuccess,
   unsignEntryError,
   unsignEntrySuccess,
+  PatchForSchoolPayload,
+  patchForSchoolSuccess,
+  patchForSchoolError,
 } from './actions';
 import {
   GET_ENTRY_REQUEST,
@@ -56,6 +59,7 @@ import {
   GET_CHILDREN_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
+  PATCH_FORSCHOOL_REQUEST,
 } from './constants';
 import * as api from './api';
 import { Action } from 'redux-actions';
@@ -226,6 +230,18 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
   }
 }
 
+function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
+  try {
+    const token = yield select(selectors.getToken);
+    const result = yield call(api.patchForSchool, action.payload!.id, action.payload!.forSchool, token);
+
+    yield put(patchForSchoolSuccess());
+    yield dispatchUpdates(result);
+  } catch (error) {
+    yield put(patchForSchoolError(error));
+  }
+}
+
 function* createUsersSaga(action: Action<IUserCreate[]>) {
   try {
     const first: IUserCreate[] = [];
@@ -328,6 +344,7 @@ function* saga() {
   yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
+  yield takeEvery(PATCH_FORSCHOOL_REQUEST, patchForSchoolSaga);
   yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);

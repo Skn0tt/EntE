@@ -1,7 +1,7 @@
-import { Router, Response, Request } from 'express';
+import { Router, Response, Request, RequestHandler } from 'express';
 import { body, validationResult, param } from 'express-validator/check';
 
-import { check as permissionsCheck, Permissions } from '../../routines/permissions';
+import rbac, { check as permissionsCheck, Permissions } from '../../routines/permissions';
 import { roles, MongoId, ROLES } from '../../constants';
 
 import Entry, { EntryModel } from '../../models/Entry';
@@ -37,6 +37,15 @@ const populate = async (request: EntriesRequest, response, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+const validate: RequestHandler = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.mapped() });
+  }
+
+  next();
 };
 
 /**
@@ -183,6 +192,38 @@ entriesRouter.post(
       });
 
       if (!entry.signedParent) mail.dispatchSignRequest(entry);
+
+      request.entries = [entry];
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+  populate,
+);
+
+/**
+ * # Edit Entry
+ */
+entriesRouter.patch(
+  '/:entryId',
+  rbac({
+    entries_write: true,
+  }),
+  [param('entryId').isMongoId(), body('forSchool').isBoolean()],
+  validate,
+  async (request: EntriesRequest, response: Response, next) => {
+    const entryId = request.params.entryId;
+    const { body } = request;
+
+    try {
+      const entry = await Entry.findById(entryId);
+
+      if (!entry) return response.status(404).end('Couldnt find Entry.');
+
+      entry.set('forSchool', body.forSchool);
+      entry.save();
 
       request.entries = [entry];
 
