@@ -1,0 +1,14 @@
+{
+  "name": "ente",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "precommit": "pretty-quick --staged"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lerna": "^2.9.0",
+    "prettier": "^1.11.1",
+    "pretty-quick": "^1.4.1"
+  }
+}

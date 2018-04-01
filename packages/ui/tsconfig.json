@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "es5", "es2015.promise", "es2015.iterable"],
+    "outDir": "./lib",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "jsx": "react"
+  },
+  "include": ["./src/**/*"]
+}
