@@ -1,0 +1,16 @@
+{
+  "name": "ente-types",
+  "version": "0.0.1",
+  "description": "Typings for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/types",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "yarn tsc"
+  },
+  "devDependencies": {
+    "typescript": "^2.8.1"
+  }
+}

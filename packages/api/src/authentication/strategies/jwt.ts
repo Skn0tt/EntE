@@ -1,18 +1,18 @@
-import * as redis from 'redis';
-import * as crypto from 'crypto';
-import * as JWT from 'jsonwebtoken';
-import { Strategy as BearerStrategy } from 'passport-http-bearer';
-import { promisify } from 'util';
-import { JWT_PAYLOAD } from '../../routes/token';
-import User from '../../models/User';
+import * as redis from "redis";
+import * as crypto from "crypto";
+import * as JWT from "jsonwebtoken";
+import { Strategy as BearerStrategy } from "passport-http-bearer";
+import { promisify } from "util";
+import { JWT_PAYLOAD } from "../../routes/token";
+import User from "../../models/User";
+import { redis as redisTypes } from "vplan-types";
 
-const JWT_SECRETS = 'jwt_secrets';
-
-const client = redis.createClient('redis://redis');
+const client = redis.createClient("redis://redis");
 
 const get = promisify(client.get).bind(client);
 
-export const getSecrets = async (): Promise<[string, string]> => JSON.parse(await get(JWT_SECRETS));
+export const getSecrets = async (): Promise<[string, string]> =>
+  JSON.parse(await get(redisTypes.JWT_SECRETS));
 
 const validate = async (token: string): Promise<JWT_PAYLOAD> => {
   try {
@@ -45,7 +45,10 @@ const jwtStrategy = new BearerStrategy(async (token, done) => {
       return done(null, false);
     }
 
-    const user = await User.findOne({ username: payload.username, role: payload.role });
+    const user = await User.findOne({
+      username: payload.username,
+      role: payload.role
+    });
     if (!user) {
       return done(null, false);
     }

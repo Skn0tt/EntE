@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.2",
+    "ente-types": "^0.0.1",
     "redis": "^2.8.0"
   },
   "devDependencies": {
