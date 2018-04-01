@@ -4,7 +4,7 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
 import * as select from "../../redux/selectors";
-import { AppState, MongoId, User } from "../../interfaces/index";
+import { AppState, User } from "../../interfaces/index";
 import { Action } from "redux";
 import ChildrenUpdate from "./components/ChildrenUpdate";
 import EmailUpdate from "./components/EmailUpdate";
@@ -22,6 +22,7 @@ import DisplaynameUpdate from "./components/DisplaynameUpdate";
 import IsAdultUpdate from "./components/IsAdultUpdate";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import lang from "../../res/lang";
+import { MongoId } from "ente-types";
 
 interface RouteMatch {
   userId: MongoId;

@@ -1,7 +1,7 @@
 import { createClient } from "redis";
 import chalk, { Chalk } from "chalk";
 import * as crypto from "crypto";
-import { redis } from "vplan-types";
+import { redis } from "ente-types";
 
 const client = createClient("redis://redis");
 

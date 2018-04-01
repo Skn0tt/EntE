@@ -1,26 +1,27 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { connect, Dispatch } from 'react-redux';
-import styles from './styles';
+import * as React from "react";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import { connect, Dispatch } from "react-redux";
+import styles from "./styles";
 
-import * as select from '../../../../redux/selectors';
-import { AppState, User, Roles, IUserCreate, MongoId } from '../../../../interfaces/index';
+import * as select from "../../../../redux/selectors";
+import { AppState, User } from "../../../../interfaces/index";
 
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Dialog, Button, Grid, TextField, IconButton } from 'material-ui';
-import DialogTitle from 'material-ui/Dialog/DialogTitle';
-import DialogContent from 'material-ui/Dialog/DialogContent';
-import DialogActions from 'material-ui/Dialog/DialogActions';
-import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
-import { Action } from 'redux';
-import { createUsersRequest } from '../../../../redux/actions';
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
-import ListItemText from 'material-ui/List/ListItemText';
-import ListItemSecondaryAction from 'material-ui/List/ListItemSecondaryAction';
-import { Delete as DeleteIcon, Add as AddIcon } from 'material-ui-icons';
-import validateEmail from '../../../../services/validateEmail';
-import ImportUsers from '../ImportUsers';
+import { withRouter, RouteComponentProps } from "react-router";
+import { Dialog, Button, Grid, TextField, IconButton } from "material-ui";
+import DialogTitle from "material-ui/Dialog/DialogTitle";
+import DialogContent from "material-ui/Dialog/DialogContent";
+import DialogActions from "material-ui/Dialog/DialogActions";
+import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import { Action } from "redux";
+import { createUsersRequest } from "../../../../redux/actions";
+import List from "material-ui/List/List";
+import ListItem from "material-ui/List/ListItem";
+import ListItemText from "material-ui/List/ListItemText";
+import ListItemSecondaryAction from "material-ui/List/ListItemSecondaryAction";
+import { Delete as DeleteIcon, Add as AddIcon } from "material-ui-icons";
+import validateEmail from "../../../../services/validateEmail";
+import ImportUsers from "../ImportUsers";
+import { IUserCreate, MongoId, Roles } from "ente-types";
 
 interface OwnProps {
   onClose(): void;
@@ -42,14 +43,14 @@ interface StateProps {
 }
 const mapStateToProps = (state: AppState) => ({
   getUser: (id: MongoId) => select.getUser(id)(state),
-  students: select.getStudents(state),
+  students: select.getStudents(state)
 });
 
 interface DispatchProps {
   createUser(user: IUserCreate): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUser: (user: IUserCreate) => dispatch(createUsersRequest(user)),
+  createUser: (user: IUserCreate) => dispatch(createUsersRequest(user))
 });
 
 type Props = OwnProps &
@@ -65,15 +66,18 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
       withStyles(styles)(
         class extends React.Component<Props, State> {
           state: State = {
-            selectedChild: this.props.students.length > 0 ? this.props.students[0].get('_id') : '',
+            selectedChild:
+              this.props.students.length > 0
+                ? this.props.students[0].get("_id")
+                : "",
             children: [],
-            displayname: '',
+            displayname: "",
             isAdult: false,
-            email: '',
-            password: '',
+            email: "",
+            password: "",
             role: Roles.STUDENT,
-            username: '',
-            showImportUsers: false,
+            username: "",
+            showImportUsers: false
           };
 
           /**
@@ -94,12 +98,12 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
               isAdult: this.state.isAdult,
               password: this.state.password,
               role: this.state.role,
-              username: this.state.username,
+              username: this.state.username
             });
           };
 
           handleKeyPress: React.KeyboardEventHandler<{}> = event => {
-            if (event.key === 'Enter' && this.inputValid()) {
+            if (event.key === "Enter" && this.inputValid()) {
               this.handleSubmit();
             }
           };
@@ -109,12 +113,15 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
            */
           handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ username: event.target.value });
-          handleChangeDisplayname = (event: React.ChangeEvent<HTMLInputElement>) =>
-            this.setState({ displayname: event.target.value });
+          handleChangeDisplayname = (
+            event: React.ChangeEvent<HTMLInputElement>
+          ) => this.setState({ displayname: event.target.value });
           handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ password: event.target.value });
-          handleChangeIsAdult = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) =>
-            this.setState({ isAdult: checked });
+          handleChangeIsAdult = (
+            event: React.ChangeEvent<HTMLInputElement>,
+            checked: boolean
+          ) => this.setState({ isAdult: checked });
           handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ email: event.target.value });
           handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -122,18 +129,28 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
           handleSelectChild = (event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ selectedChild: event.target.value });
           handleAddChild = () =>
-            this.setState({ children: [...this.state.children, this.state.selectedChild] });
+            this.setState({
+              children: [...this.state.children, this.state.selectedChild]
+            });
           handleRemoveChildren = (index: number) =>
-            this.setState({ children: this.state.children.slice(index, index) });
+            this.setState({
+              children: this.state.children.slice(index, index)
+            });
           hasChildren = (): boolean =>
-            this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
+            this.state.role === Roles.PARENT ||
+            this.state.role === Roles.MANAGER;
 
           /**
            * ## Misc
            */
           updateSelected = () => {
-            if (this.state.selectedChild === '' && this.props.students.length > 0) {
-              this.setState({ selectedChild: this.props.students[0].get('_id') });
+            if (
+              this.state.selectedChild === "" &&
+              this.props.students.length > 0
+            ) {
+              this.setState({
+                selectedChild: this.props.students[0].get("_id")
+              });
             }
           };
 
@@ -142,14 +159,16 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
            */
           usernameValid = (): boolean => !!this.state.username;
           displaynameValid = (): boolean => !!this.state.displayname;
-          emailValid = (): boolean => !!this.state.email && validateEmail(this.state.email);
-          childrenValid = (): boolean => !this.hasChildren() || this.state.children.length > 0;
+          emailValid = (): boolean =>
+            !!this.state.email && validateEmail(this.state.email);
+          childrenValid = (): boolean =>
+            !this.hasChildren() || this.state.children.length > 0;
           inputValid = (): boolean =>
             this.usernameValid() &&
             this.childrenValid() &&
             this.displaynameValid() &&
             this.emailValid();
-          selectedChildValid = (): boolean => !!this.state.selectedChild
+          selectedChildValid = (): boolean => !!this.state.selectedChild;
 
           render() {
             const { classes } = this.props;
@@ -165,7 +184,10 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
                 >
                   <DialogTitle>Neuer Nutzer</DialogTitle>
                   <DialogContent>
-                    <form className={classes.container} onKeyPress={this.handleKeyPress}>
+                    <form
+                      className={classes.container}
+                      onKeyPress={this.handleKeyPress}
+                    >
                       <Grid container direction="column">
                         <Grid container xs={12} direction="row">
                           <Grid item xs={12} lg={6}>
@@ -238,12 +260,16 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
                                 {this.state.children.map((child, index) => (
                                   <ListItem>
                                     <ListItemText
-                                      primary={this.props.getUser(child).get('displayname')}
+                                      primary={this.props
+                                        .getUser(child)
+                                        .get("displayname")}
                                     />
                                     <ListItemSecondaryAction>
                                       <IconButton
                                         aria-label="Delete"
-                                        onClick={() => this.handleRemoveChildren(index)}
+                                        onClick={() =>
+                                          this.handleRemoveChildren(index)
+                                        }
                                       >
                                         <DeleteIcon />
                                       </IconButton>
@@ -264,14 +290,20 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
                                   helperText="Fügen sie Kinder hinzu."
                                 >
                                   {this.props.students.map(student => (
-                                    <option key={student.get('_id')} value={student.get('_id')}>
-                                      {student.get('displayname')}
+                                    <option
+                                      key={student.get("_id")}
+                                      value={student.get("_id")}
+                                    >
+                                      {student.get("displayname")}
                                     </option>
                                   ))}
                                 </TextField>
                               </Grid>
                               <Grid item xs={2}>
-                                <IconButton onClick={() => this.handleAddChild()} disabled={!this.selectedChildValid()}>
+                                <IconButton
+                                  onClick={() => this.handleAddChild()}
+                                  disabled={!this.selectedChildValid()}
+                                >
                                   <AddIcon />
                                 </IconButton>
                               </Grid>
@@ -300,14 +332,17 @@ const CreateUser = connect(mapStateToProps, mapDispatchToProps)(
                     </Button>
                   </DialogActions>
                 </Dialog>
-                <ImportUsers onClose={this.handleCloseImport} show={this.state.showImportUsers} />
+                <ImportUsers
+                  onClose={this.handleCloseImport}
+                  show={this.state.showImportUsers}
+                />
               </React.Fragment>
             );
           }
-        },
-      ),
-    ),
-  ),
+        }
+      )
+    )
+  )
 );
 
 export default CreateUser;

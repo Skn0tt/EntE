@@ -1,7 +1,7 @@
-import { Record, Map, List } from 'immutable';
+import { Record, Map, List } from "immutable";
+import { IUser, Roles, IEntry, ISlot, IAuth, MongoId } from "ente-types";
 
 export type errorPayload = {};
-export type MongoId = string;
 
 /**
  * API
@@ -13,56 +13,22 @@ export interface APIResponse {
   entries: Entry[];
   slots: Slot[];
 }
-export interface IAPIResponse {
-  auth?: {
-    displayname: string;
-    role: Roles;
-    children: MongoId[];
-  };
-  users?: IUser[];
-  entries?: IEntry[];
-  slots?: ISlot[];
-}
 
 /**
  * User
  */
-export enum Roles {
-  PARENT = 'parent',
-  STUDENT = 'student',
-  TEACHER = 'teacher',
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-}
-
-export interface IUserBase {
-  username: string;
-  email: string;
-  children: MongoId[];
-  role: Roles;
-  isAdult: boolean;
-  displayname: string;
-}
-
-export interface IUserCreate extends IUserBase {
-  password: string;
-}
-
-export interface IUser extends IUserBase {
-  _id: MongoId;
-}
 
 export class User extends Record(
   {
-    _id: '',
-    username: '',
-    displayname: '',
-    email: '',
-    role: '',
+    _id: "",
+    username: "",
+    displayname: "",
+    email: "",
+    role: "",
     isAdult: false,
-    children: [],
+    children: []
   },
-  'User',
+  "User"
 ) {
   constructor(props: Partial<IUser>) {
     super(props);
@@ -71,11 +37,11 @@ export class User extends Record(
     return super.get(value);
   }
 
-  isManager = () => this.get('role') === Roles.MANAGER;
-  isParent = () => this.get('role') === Roles.PARENT;
-  isAdmin = () => this.get('role') === Roles.ADMIN;
-  isStudent = () => this.get('role') === Roles.STUDENT;
-  isTeacher = () => this.get('role') === Roles.TEACHER;
+  isManager = () => this.get("role") === Roles.MANAGER;
+  isParent = () => this.get("role") === Roles.PARENT;
+  isAdmin = () => this.get("role") === Roles.ADMIN;
+  isStudent = () => this.get("role") === Roles.STUDENT;
+  isTeacher = () => this.get("role") === Roles.TEACHER;
 
   hasChildren = () => this.isManager() || this.isParent();
 }
@@ -83,30 +49,18 @@ export class User extends Record(
 /**
  * Slot
  */
-export interface ISlot extends ISlotCreate {
-  _id: MongoId;
-  student: MongoId;
-  date: Date;
-  signed: boolean;
-}
-
-export interface ISlotCreate {
-  hour_from: number;
-  hour_to: number;
-  teacher: MongoId;
-}
 
 export class Slot extends Record(
   {
-    _id: '',
+    _id: "",
     date: new Date(0),
     hour_from: -1,
     hour_to: -1,
     signed: false,
-    student: '',
-    teacher: '',
+    student: "",
+    teacher: ""
   },
-  'Slot',
+  "Slot"
 ) {
   constructor(props: Partial<ISlot>) {
     super(props);
@@ -121,44 +75,22 @@ export const createSlot = (item: Partial<ISlot>) => new Slot(item);
 /**
  * Entry
  */
-export interface IEntry {
-  _id: MongoId;
-  date: Date;
-  dateEnd?: Date;
-  reason: string;
-  student: MongoId;
-  slots: MongoId[];
-  forSchool: boolean;
-  signedManager: boolean;
-  signedParent: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface IEntryCreate {
-  date: Date;
-  dateEnd?: Date;
-  reason?: string;
-  student?: MongoId;
-  slots: ISlotCreate[];
-  forSchool: boolean;
-}
 
 export class Entry extends Record(
   {
-    _id: '',
+    _id: "",
     date: new Date(),
     dateEnd: new Date(),
-    reason: '',
-    student: '',
+    reason: "",
+    student: "",
     slots: [],
     forSchool: false,
     signedManager: false,
     signedParent: false,
     createdAt: new Date(),
-    updatedAt: new Date(),
+    updatedAt: new Date()
   },
-  'Entry',
+  "Entry"
 ) {
   constructor(props: Partial<IEntry>) {
     super(props);
@@ -171,39 +103,16 @@ export class Entry extends Record(
 /**
  * Auth
  */
-export interface TokenInfo {
-  token: string;
-  displayname: string;
-  role: Roles;
-  exp: Date;
-  children: MongoId[];
-}
-export interface ICredentials {
-  username: string;
-  password: string;
-}
-export interface IAuth extends ICredentials {
-  token: string;
-  exp: Date;
-  role: Roles;
-  displayname: string;
-  children: MongoId[];
-}
-
-export interface INewPassword {
-  token: string;
-  password: string;
-}
 
 export class AuthState extends Record(
   {
-    token: '',
+    token: "",
     exp: new Date(),
-    displayname: '',
-    role: '',
-    children: [],
+    displayname: "",
+    role: "",
+    children: []
   },
-  'AuthState',
+  "AuthState"
 ) {
   constructor(props: Partial<IAuth>) {
     super(props);
@@ -237,9 +146,9 @@ export class AppState extends Record(
     slots: Map<MongoId, Slot>(),
     auth: new AuthState({}),
     messages: List<string>(),
-    loading: 0,
+    loading: 0
   },
-  'AppState',
+  "AppState"
 ) {
   constructor(props: Partial<IAppState>) {
     super(props);

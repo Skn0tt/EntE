@@ -4,14 +4,7 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
 import * as select from "../../redux/selectors";
-import {
-  AppState,
-  MongoId,
-  Entry,
-  User,
-  Slot,
-  Roles
-} from "../../interfaces/index";
+import { AppState, Entry, User, Slot } from "../../interfaces/index";
 import { Action } from "redux";
 
 import { withRouter, RouteComponentProps } from "react-router";
@@ -43,6 +36,7 @@ import {
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import lang from "../../res/lang";
+import { MongoId, Roles } from "ente-types";
 
 /**
  * # Component Types

@@ -5,7 +5,7 @@ import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { promisify } from "util";
 import { JWT_PAYLOAD } from "../../routes/token";
 import User from "../../models/User";
-import { redis as redisTypes } from "vplan-types";
+import { redis as redisTypes } from "ente-types";
 
 const client = redis.createClient("redis://redis");
 

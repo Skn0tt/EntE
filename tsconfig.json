@@ -5,7 +5,7 @@
     "baseUrl": "./packages",
     "skipLibCheck": true, // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16825,
     "paths": {
-      "vplan-*": ["./*/src"]
+      "ente-*": ["./*/src"]
     }
   }
 }
