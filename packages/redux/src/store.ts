@@ -2,7 +2,6 @@ import { createStore as reduxCreateStore, applyMiddleware } from "redux";
 import reducer from "./reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reduxSaga from "redux-saga";
-import * as Raven from "raven-js";
 
 import saga from "./saga";
 import * as select from "./selectors";
