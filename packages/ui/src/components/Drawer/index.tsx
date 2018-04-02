@@ -11,7 +11,6 @@ import {
   // LinearProgress,
 } from "material-ui";
 import { Menu as MenuIcon } from "material-ui-icons";
-import * as select from "../../redux/selectors";
 
 import styles from "./styles";
 import {
@@ -23,19 +22,18 @@ import {
 } from "./items";
 import RefreshButton from "../RefreshButton";
 import { connect } from "react-redux";
-import { AppState } from "../../interfaces/index";
 import { withRouter, RouteComponentProps } from "react-router";
 import LoginStatus from "../LoginStatus";
-import lang from "../../res/lang";
 import { Roles } from "ente-types";
+import { isLoading, getRole, AppState } from "ente-redux";
 
 interface StateProps {
   loading: boolean;
   role: Roles;
 }
 const mapStateToProps = (state: AppState) => ({
-  loading: select.isLoading(state),
-  role: select.getRole(state)
+  loading: isLoading(state),
+  role: getRole(state)
 });
 
 type Props = StateProps & RouteComponentProps<{}> & WithStyles;
@@ -83,7 +81,7 @@ const Drawer = withRouter(
                     </IconButton>
                     <img
                       className={classes.logo}
-                      src={lang().app.logo}
+                      src={require("../../res/img/Logo.svg")}
                       height={24}
                     />
                     <div className={classes.grow} />

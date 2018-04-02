@@ -1,9 +1,7 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
-import * as select from "../../redux/selectors";
 
 import styles from "./styles";
-import { AppState } from "../../interfaces/index";
 import { connect, Dispatch } from "react-redux";
 import { Action } from "redux";
 import { Redirect, RouteComponentProps } from "react-router";
@@ -17,8 +15,13 @@ import {
   TextField
 } from "material-ui";
 import { withMobileDialog } from "material-ui/Dialog";
-import { resetPasswordRequest, getTokenRequest } from "../../redux/actions";
 import { ICredentials } from "ente-types";
+import {
+  AppState,
+  isAuthValid,
+  getTokenRequest,
+  resetPasswordRequest
+} from "ente-redux";
 
 interface InjectedProps {
   fullScreen: boolean;
@@ -28,7 +31,7 @@ interface StateProps {
   authValid: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
-  authValid: select.isAuthValid(state)
+  authValid: isAuthValid(state)
 });
 
 interface DispatchProps {

@@ -3,8 +3,6 @@ import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
-import * as select from "../../../../redux/selectors";
-import { AppState, User } from "../../../../interfaces/index";
 import { Action } from "redux";
 import { DatePicker } from "material-ui-pickers";
 
@@ -21,23 +19,22 @@ import {
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
-import { createEntryRequest } from "../../../../redux/actions";
 import FormControlLabel from "material-ui/Form/FormControlLabel";
 import SlotListItem from "./elements/SlotListItem";
 import SlotEntry from "./components/SlotEntry";
-
-import * as moment from "moment";
-import "moment/locale/de";
 import MenuItem from "material-ui/Menu/MenuItem";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import Typography from "material-ui/Typography/Typography";
 import { MongoId, IEntryCreate, ISlotCreate } from "ente-types";
-
-/**
- * ## Moment Setup
- * Change Language to German
- */
-moment.locale("de");
+import {
+  createEntryRequest,
+  AppState,
+  User,
+  getChildren,
+  isParent,
+  getTeachers,
+  getUser
+} from "ente-redux";
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -63,10 +60,10 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  children: select.getChildren(state),
-  isParent: select.isParent(state),
-  teachers: select.getTeachers(state),
-  getUser: (id: MongoId) => select.getUser(id)(state)
+  children: getChildren(state),
+  isParent: isParent(state),
+  teachers: getTeachers(state),
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 interface DispatchProps {
@@ -258,14 +255,6 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                               rightArrowIcon={
                                 <Icon> keyboard_arrow_right </Icon>
                               }
-                              labelFunc={(
-                                date: moment.Moment,
-                                invalidLabel: string
-                              ) =>
-                                !!date
-                                  ? date.toDate().toLocaleDateString()
-                                  : invalidLabel
-                              }
                               error={!this.dateValid()}
                               value={this.state.date}
                               autoOk
@@ -280,14 +269,6 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                                 helperText="Bis"
                                 error={!this.dateValid()}
                                 value={this.state.dateEnd}
-                                labelFunc={(
-                                  date: moment.Moment,
-                                  invalidLabel: string
-                                ) =>
-                                  !!date
-                                    ? date.toDate().toLocaleDateString()
-                                    : invalidLabel
-                                }
                                 autoOk
                                 onChange={this.handleChangeDateEnd}
                                 minDate={this.state.date}

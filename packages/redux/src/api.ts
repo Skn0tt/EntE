@@ -1,4 +1,3 @@
-import { Entry, User, Slot, APIResponse } from "../interfaces/index";
 import axios from "axios";
 import {
   IAPIResponse,
@@ -10,7 +9,8 @@ import {
   MongoId
 } from "ente-types";
 
-const baseUrl = window && `${location.protocol}//${location.hostname}/api`;
+import { config } from "./";
+import { APIResponse, Entry, Slot, User } from "./types";
 
 const reviver = (key: string, value: any) =>
   ["date", "dateEnd", "createdAt", "updatedAt"].indexOf(key) !== -1
@@ -51,7 +51,7 @@ export const getTokenInfo = (token: string): TokenInfo => {
 };
 
 export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
-  const response = await axios.get(`${baseUrl}/token`, {
+  const response = await axios.get(`${config.baseUrl}/token`, {
     auth
   });
 
@@ -60,7 +60,7 @@ export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
 
 export const refreshToken = async (token: string): Promise<TokenInfo> => {
   try {
-    const result = await get(`${baseUrl}/token`, token);
+    const result = await get(`${config.baseUrl}/token`, token);
 
     return getTokenInfo(result);
   } catch (error) {
@@ -69,12 +69,12 @@ export const refreshToken = async (token: string): Promise<TokenInfo> => {
 };
 
 export const getChildren = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users?filter=children`, token);
+  const data = await get(`${config.baseUrl}/users?filter=children`, token);
   return transform(data);
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users?filter=needed`, token);
+  const data = await get(`${config.baseUrl}/users?filter=needed`, token);
   return transform(data);
 };
 
@@ -82,17 +82,17 @@ export const getEntry = async (
   id: MongoId,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/entries/${id}`, token);
+  const data = await get(`${config.baseUrl}/entries/${id}`, token);
   return transform(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/entries`, token);
+  const data = await get(`${config.baseUrl}/entries`, token);
   return transform(data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/slots`, token);
+  const data = await get(`${config.baseUrl}/slots`, token);
   return transform(data);
 };
 
@@ -100,17 +100,17 @@ export const getUser = async (
   id: MongoId,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users/${id}`, token);
+  const data = await get(`${config.baseUrl}/users/${id}`, token);
   return transform(data);
 };
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users`, token);
+  const data = await get(`${config.baseUrl}/users`, token);
   return transform(data);
 };
 
 export const getTeachers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${baseUrl}/users?filter=teachers`, token);
+  const data = await get(`${config.baseUrl}/users?filter=teachers`, token);
   return transform(data);
 };
 
@@ -128,7 +128,7 @@ export const createEntry = async (
   entry: IEntryCreate,
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/entries/`, token, entry);
+  const response = await post(`${config.baseUrl}/entries/`, token, entry);
   return transform(response);
 };
 
@@ -136,7 +136,7 @@ export const createUser = async (
   user: IUserCreate[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${baseUrl}/users/`, token, user);
+  const response = await post(`${config.baseUrl}/users/`, token, user);
   return transform(response);
 };
 
@@ -154,7 +154,11 @@ export const updateUser = async (
   user: Partial<IUser>,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch(`${baseUrl}/users/${user._id}`, token, user);
+  const response = await patch(
+    `${config.baseUrl}/users/${user._id}`,
+    token,
+    user
+  );
   return transform(response);
 };
 
@@ -172,7 +176,7 @@ export const signEntry = async (
   id: MongoId,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/entries/${id}/signed`, token, {
+  const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
     value: true
   });
   return transform(response);
@@ -182,7 +186,7 @@ export const unsignEntry = async (
   id: MongoId,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put(`${baseUrl}/entries/${id}/signed`, token, {
+  const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
     value: false
   });
   return transform(response);
@@ -193,19 +197,19 @@ export const patchForSchool = async (
   forSchool: boolean,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch(`${baseUrl}/entries/${id}`, token, {
+  const response = await patch(`${config.baseUrl}/entries/${id}`, token, {
     forSchool
   });
   return transform(response);
 };
 
 export const resetPassword = async (username: MongoId): Promise<string> => {
-  const result = await axios.post(`${baseUrl}/auth/forgot/${username}`);
+  const result = await axios.post(`${config.baseUrl}/auth/forgot/${username}`);
   return result.data;
 };
 
 export const setPassword = async (token: string, newPassword: string) => {
-  const result = await axios.put(`${baseUrl}/auth/forgot/${token}`, {
+  const result = await axios.put(`${config.baseUrl}/auth/forgot/${token}`, {
     newPassword
   });
   return result.data;

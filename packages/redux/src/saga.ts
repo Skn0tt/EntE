@@ -64,8 +64,8 @@ import {
 import * as api from "./api";
 import { Action } from "redux-actions";
 import * as selectors from "./selectors";
-import { APIResponse } from "../interfaces/index";
-import lang from "../res/lang";
+import { APIResponse } from "./types";
+import lang from "ente-lang";
 import {
   ICredentials,
   TokenInfo,

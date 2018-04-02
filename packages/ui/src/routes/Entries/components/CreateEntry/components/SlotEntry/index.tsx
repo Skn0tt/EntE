@@ -1,13 +1,12 @@
 import * as React from "react";
-import { AppState, User } from "../../../../../../interfaces/index";
 import { connect } from "react-redux";
 import { withStyles, Grid, TextField, Button } from "material-ui";
-import * as select from "../../../../../../redux/selectors";
 
 import styles from "./styles";
 import { WithStyles } from "material-ui/styles/withStyles";
 import Tooltip from "material-ui/Tooltip/Tooltip";
 import { MongoId, ISlotCreate } from "ente-types";
+import { User, getTeachers, getUser, AppState } from "ente-redux";
 
 interface OwnProps {
   onAdd(slot: ISlotCreate): void;
@@ -18,8 +17,8 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  teachers: select.getTeachers(state),
-  getUser: (id: MongoId) => select.getUser(id)(state)
+  teachers: getTeachers(state),
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 type Props = StateProps & OwnProps & WithStyles;

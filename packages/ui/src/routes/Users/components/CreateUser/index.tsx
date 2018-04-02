@@ -3,9 +3,6 @@ import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
-import * as select from "../../../../redux/selectors";
-import { AppState, User } from "../../../../interfaces/index";
-
 import { withRouter, RouteComponentProps } from "react-router";
 import { Dialog, Button, Grid, TextField, IconButton } from "material-ui";
 import DialogTitle from "material-ui/Dialog/DialogTitle";
@@ -13,7 +10,6 @@ import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import { Action } from "redux";
-import { createUsersRequest } from "../../../../redux/actions";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
 import ListItemText from "material-ui/List/ListItemText";
@@ -22,6 +18,13 @@ import { Delete as DeleteIcon, Add as AddIcon } from "material-ui-icons";
 import validateEmail from "../../../../services/validateEmail";
 import ImportUsers from "../ImportUsers";
 import { IUserCreate, MongoId, Roles } from "ente-types";
+import {
+  getStudents,
+  getUser,
+  User,
+  createUsersRequest,
+  AppState
+} from "ente-redux";
 
 interface OwnProps {
   onClose(): void;
@@ -42,8 +45,8 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state),
-  students: select.getStudents(state)
+  getUser: (id: MongoId) => getUser(id)(state),
+  students: getStudents(state)
 });
 
 interface DispatchProps {

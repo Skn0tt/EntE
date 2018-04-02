@@ -1,9 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { AppState, User } from "../../../../interfaces/index";
 import { Dispatch, Action } from "redux";
 import { Grid, Button, withStyles } from "material-ui";
-import * as select from "../../../../redux/selectors";
 import IconButton from "material-ui/IconButton/IconButton";
 import {
   Add as AddIcon,
@@ -15,13 +13,19 @@ import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
 import ListItemText from "material-ui/List/ListItemText";
 import ListItemSecondaryAction from "material-ui/List/ListItemSecondaryAction";
-import { updateUserRequest } from "../../../../redux/actions";
 import Typography from "material-ui/Typography/Typography";
 
 import styles from "./styles";
 import { WithStyles } from "material-ui/styles/withStyles";
-import lang from "../../../../res/lang";
 import { IUser, MongoId } from "ente-types";
+import {
+  User,
+  AppState,
+  getUser,
+  getStudents,
+  updateUserRequest
+} from "ente-redux";
+import lang from "ente-lang";
 
 interface OwnProps {
   userId: MongoId;
@@ -32,8 +36,8 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state),
-  students: select.getStudents(state)
+  getUser: (id: MongoId) => getUser(id)(state),
+  students: getStudents(state)
 });
 
 interface DispatchProps {

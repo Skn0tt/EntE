@@ -10,14 +10,12 @@ import {
   FormControlLabel,
   Switch
 } from "material-ui";
-import { User, AppState } from "../../../../interfaces/index";
 import { WithStyles } from "material-ui/styles/withStyles";
-import * as select from "../../../../redux/selectors";
-import { updateUserRequest } from "../../../../redux/actions";
 import { Action } from "redux";
 import { Update as UpdateIcon } from "material-ui-icons";
-import lang from "../../../../res/lang";
 import { MongoId, IUser } from "ente-types";
+import { getUser, AppState, User, updateUserRequest } from "ente-redux";
+import lang from "ente-lang";
 
 interface OwnProps {
   userId: MongoId;
@@ -27,7 +25,7 @@ interface StateProps {
   user(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  user: (id: MongoId) => select.getUser(id)(state)
+  user: (id: MongoId) => getUser(id)(state)
 });
 interface DispatchProps {
   updateUser(user: Partial<IUser>): Action;

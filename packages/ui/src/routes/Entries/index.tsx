@@ -4,13 +4,18 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Add as AddIcon } from "material-ui-icons";
 
-import * as select from "../../redux/selectors";
-import { Entry, AppState, User } from "../../interfaces/index";
+import {
+  Entry,
+  AppState,
+  User,
+  getEntries,
+  canCreateEntries,
+  getUser,
+  getEntriesRequest
+} from "ente-redux";
 import { Action } from "redux";
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
-
-import { getEntriesRequest } from "../../redux/actions";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 import Button from "material-ui/Button/Button";
 import CreateEntry from "./components/CreateEntry";
@@ -26,9 +31,9 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  entries: select.getEntries(state),
-  canCreateEntries: select.canCreateEntries(state),
-  getUser: (id: MongoId) => select.getUser(id)(state)
+  entries: getEntries(state),
+  canCreateEntries: canCreateEntries(state),
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 interface DispatchProps {

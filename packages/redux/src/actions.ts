@@ -60,7 +60,7 @@ import {
   PATCH_FORSCHOOL_SUCCESS,
   PATCH_FORSCHOOL_ERROR
 } from "./constants";
-import { APIResponse } from "../interfaces/index";
+import { APIResponse } from "./types";
 import {
   IUserCreate,
   IEntryCreate,

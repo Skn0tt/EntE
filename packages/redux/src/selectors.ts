@@ -1,4 +1,4 @@
-import { AppState, User, Slot, Entry } from "../interfaces/index";
+import { AppState, User, Slot, Entry } from "./types";
 import { createSelector } from "reselect";
 import { Roles, MongoId } from "ente-types";
 

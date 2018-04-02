@@ -1,12 +1,19 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import styles from './styles';
-import { Dispatch, Action } from 'redux';
-import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from 'material-ui';
-import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
-import { setPasswordRequest } from '../../redux/actions';
+import * as React from "react";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import styles from "./styles";
+import { Dispatch, Action } from "redux";
+import { connect } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Button
+} from "material-ui";
+import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import { setPasswordRequest } from "ente-redux";
 
 interface RouteProps {
   token: string;
@@ -20,7 +27,7 @@ interface DispatchProps {
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   setPassword: (token: string, password: string) =>
-    dispatch(setPasswordRequest({ token, password })),
+    dispatch(setPasswordRequest({ token, password }))
 });
 
 type Props = DispatchProps & RouteComponentProps<RouteProps> & WithStyles;
@@ -35,19 +42,25 @@ const Forgot = connect(undefined, mapDispatchToProps)(
     withMobileDialog<Props>()(
       class extends React.Component<Props & InjectedProps, State> {
         state: State = {
-          password: '',
-          verficication: '',
+          password: "",
+          verficication: ""
         };
 
-        inputValid = (): boolean => this.passwordValid() && this.verificationValid();
+        inputValid = (): boolean =>
+          this.passwordValid() && this.verificationValid();
         passwordValid = (): boolean => true;
-        verificationValid = (): boolean => this.state.password === this.state.verficication;
+        verificationValid = (): boolean =>
+          this.state.password === this.state.verficication;
         handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
           this.setState({ password: event.target.value });
-        handleChangeVerification = (event: React.ChangeEvent<HTMLInputElement>) =>
-          this.setState({ verficication: event.target.value });
+        handleChangeVerification = (
+          event: React.ChangeEvent<HTMLInputElement>
+        ) => this.setState({ verficication: event.target.value });
         handleSetPassword = () => {
-          this.props.setPassword(this.props.match.params.token, this.state.password);
+          this.props.setPassword(
+            this.props.match.params.token,
+            this.state.password
+          );
         };
 
         render() {
@@ -86,9 +99,9 @@ const Forgot = connect(undefined, mapDispatchToProps)(
             </div>
           );
         }
-      },
-    ),
-  ),
+      }
+    )
+  )
 );
 
 export default Forgot;

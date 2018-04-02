@@ -1,5 +1,5 @@
 import { handleActions, Action, BaseAction, ReducerMap } from "redux-actions";
-import { Entry, AppState, APIResponse, User, Slot } from "../interfaces/index";
+import { Entry, AppState, APIResponse, User, Slot } from "./types";
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,

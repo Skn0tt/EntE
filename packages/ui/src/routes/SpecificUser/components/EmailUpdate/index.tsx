@@ -1,18 +1,16 @@
 import * as React from "react";
 import { WithStyles } from "material-ui/styles/withStyles";
 import { Grid, withStyles, Button, TextField } from "material-ui";
-import { AppState, User } from "../../../../interfaces/index";
 import { Dispatch, Action } from "redux";
 import { connect } from "react-redux";
 import { Update as UpdateIcon } from "material-ui-icons";
 
-import * as select from "../../../../redux/selectors";
 import styles from "./styles";
-import { updateUserRequest } from "../../../../redux/actions";
 import Typography from "material-ui/Typography/Typography";
 import validateEmail from "../../../../services/validateEmail";
-import lang from "../../../../res/lang";
 import { IUser, MongoId } from "ente-types";
+import { getUser, AppState, User, updateUserRequest } from "ente-redux";
+import lang from "ente-lang";
 
 interface OwnProps {
   userId: MongoId;
@@ -22,7 +20,7 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state)
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 interface DispatchProps {

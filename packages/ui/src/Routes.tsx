@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Switch, Route, Redirect } from "react-router";
-import * as Loadable from "react-loadable";
+import Loadable from "react-loadable";
 import LoadingIndicator from "./elements/LoadingIndicator";
 import { Roles } from "ente-types";
 

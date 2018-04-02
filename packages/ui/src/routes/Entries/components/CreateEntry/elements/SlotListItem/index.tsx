@@ -1,7 +1,6 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import styles from "./styles";
-import { AppState, User } from "../../../../../../interfaces/index";
 import {
   ListItem,
   ListItemText,
@@ -10,8 +9,8 @@ import {
 } from "material-ui";
 import { Delete as DeleteIcon } from "material-ui-icons";
 import { connect } from "react-redux";
-import * as select from "../../../../../../redux/selectors";
 import { MongoId, ISlotCreate } from "ente-types";
+import { AppState, User, getUser } from "ente-redux";
 
 interface OwnProps {
   slot: ISlotCreate;
@@ -21,7 +20,7 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state)
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 type Props = OwnProps & StateProps & WithStyles;
