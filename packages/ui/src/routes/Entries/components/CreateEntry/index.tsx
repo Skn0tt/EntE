@@ -1,34 +1,40 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import { connect, Dispatch } from 'react-redux';
-import styles from './styles';
+import * as React from "react";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import { connect, Dispatch } from "react-redux";
+import styles from "./styles";
 
-import * as select from '../../../../redux/selectors';
-import { AppState, User, MongoId, ISlotCreate, IEntryCreate } from '../../../../interfaces/index';
-import { Action } from 'redux';
-import { DatePicker } from 'material-ui-pickers';
+import { Action } from "redux";
+import { DatePicker } from "material-ui-pickers";
 
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Dialog, Button, List as MUIList, TextField, Grid, Checkbox, Icon } from 'material-ui';
-import DialogTitle from 'material-ui/Dialog/DialogTitle';
-import DialogContent from 'material-ui/Dialog/DialogContent';
-import DialogActions from 'material-ui/Dialog/DialogActions';
-import { createEntryRequest } from '../../../../redux/actions';
-import FormControlLabel from 'material-ui/Form/FormControlLabel';
-import SlotListItem from './elements/SlotListItem';
-import SlotEntry from './components/SlotEntry';
-
-import * as moment from 'moment';
-import 'moment/locale/de';
-import MenuItem from 'material-ui/Menu/MenuItem';
-import withMobileDialog from 'material-ui/Dialog/withMobileDialog';
-import Typography from 'material-ui/Typography/Typography';
-
-/**
- * ## Moment Setup
- * Change Language to German
- */
-moment.locale('de');
+import { withRouter, RouteComponentProps } from "react-router";
+import {
+  Dialog,
+  Button,
+  List as MUIList,
+  TextField,
+  Grid,
+  Checkbox,
+  Icon
+} from "material-ui";
+import DialogTitle from "material-ui/Dialog/DialogTitle";
+import DialogContent from "material-ui/Dialog/DialogContent";
+import DialogActions from "material-ui/Dialog/DialogActions";
+import FormControlLabel from "material-ui/Form/FormControlLabel";
+import SlotListItem from "./elements/SlotListItem";
+import SlotEntry from "./components/SlotEntry";
+import MenuItem from "material-ui/Menu/MenuItem";
+import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import Typography from "material-ui/Typography/Typography";
+import { MongoId, IEntryCreate, ISlotCreate } from "ente-types";
+import {
+  createEntryRequest,
+  AppState,
+  User,
+  getChildren,
+  isParent,
+  getTeachers,
+  getUser
+} from "ente-redux";
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -54,17 +60,17 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  children: select.getChildren(state),
-  isParent: select.isParent(state),
-  teachers: select.getTeachers(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
+  children: getChildren(state),
+  isParent: isParent(state),
+  teachers: getTeachers(state),
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 interface DispatchProps {
   createEntry(entry: IEntryCreate): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry)),
+  createEntry: (entry: IEntryCreate) => dispatch(createEntryRequest(entry))
 });
 
 type Props = OwnProps &
@@ -90,13 +96,16 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
       withStyles(styles)(
         class extends React.Component<Props, State> {
           state: State = {
-            student: this.props.children.length > 0 ? this.props.children[0].get('_id') : undefined,
+            student:
+              this.props.children.length > 0
+                ? this.props.children[0].get("_id")
+                : undefined,
             isRange: false,
             date: new Date(),
             dateEnd: new Date(),
-            reason: '',
+            reason: "",
             slots: [],
-            forSchool: false,
+            forSchool: false
           };
 
           /**
@@ -109,11 +118,11 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
               slots: this.state.isRange ? [] : this.state.slots,
               reason: this.state.reason,
               forSchool: this.state.forSchool,
-              student: this.state.student,
+              student: this.state.student
             });
 
           handleKeyPress: React.KeyboardEventHandler<{}> = event => {
-            if (event.key === 'Enter' && this.inputValid()) {
+            if (event.key === "Enter" && this.inputValid()) {
               this.handleSubmit();
             }
           };
@@ -123,13 +132,16 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
            */
           handleChangeDate = (date: Date) => {
             const dateEnd =
-              this.state.dateEnd <= date ? new Date(+date + oneDay) : this.state.dateEnd;
+              this.state.dateEnd <= date
+                ? new Date(+date + oneDay)
+                : this.state.dateEnd;
 
             this.setState({ date, dateEnd });
           };
           handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
-          handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
-            this.setState({ forSchool: event.target.checked });
+          handleChangeForSchool = (
+            event: React.ChangeEvent<HTMLInputElement>
+          ) => this.setState({ forSchool: event.target.checked });
 
           handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
             this.setState({ isRange: event.target.checked });
@@ -157,9 +169,12 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
             +this.state.date > +this.minDate;
           dateEndValid = (): boolean =>
             !this.state.isRange || +this.state.dateEnd > +this.state.date;
-          studentValid = (): boolean => !this.props.isParent || !!this.state.student;
-          slotsValid = (): boolean => this.state.isRange || this.state.slots.length > 0;
-          reasonValid = (): boolean => !this.state.reason || this.state.reason.length < 300;
+          studentValid = (): boolean =>
+            !this.props.isParent || !!this.state.student;
+          slotsValid = (): boolean =>
+            this.state.isRange || this.state.slots.length > 0;
+          reasonValid = (): boolean =>
+            !this.state.reason || this.state.reason.length < 300;
 
           inputValid = () =>
             this.dateValid() &&
@@ -221,8 +236,11 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                             helperText="Wählen sie das betroffene Kind aus."
                           >
                             {this.props.children.map(child => (
-                              <MenuItem key={child.get('_id')} value={child.get('_id')}>
-                                {child.get('displayname')}
+                              <MenuItem
+                                key={child.get("_id")}
+                                value={child.get("_id")}
+                              >
+                                {child.get("displayname")}
                               </MenuItem>
                             ))}
                           </TextField>
@@ -234,9 +252,8 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                             <DatePicker
                               helperText="Von"
                               leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
-                              rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
-                              labelFunc={(date: moment.Moment, invalidLabel: string) =>
-                                !!date ? date.toDate().toLocaleDateString() : invalidLabel
+                              rightArrowIcon={
+                                <Icon> keyboard_arrow_right </Icon>
                               }
                               error={!this.dateValid()}
                               value={this.state.date}
@@ -252,9 +269,6 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                                 helperText="Bis"
                                 error={!this.dateValid()}
                                 value={this.state.dateEnd}
-                                labelFunc={(date: moment.Moment, invalidLabel: string) =>
-                                  !!date ? date.toDate().toLocaleDateString() : invalidLabel
-                                }
                                 autoOk
                                 onChange={this.handleChangeDateEnd}
                                 minDate={this.state.date}
@@ -279,12 +293,16 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                       <Grid item xs={12}>
                         <Typography variant="title">Stunden</Typography>
                         <Typography variant="caption">
-                          Fügen sie die Stunden hinzu, die sie entschuldigen möchten. Erstellen sie
-                          dafür für jede Stunde einen Eintrag.
+                          Fügen sie die Stunden hinzu, die sie entschuldigen
+                          möchten. Erstellen sie dafür für jede Stunde einen
+                          Eintrag.
                         </Typography>
                         <MUIList>
                           {this.state.slots.map((slot, index) => (
-                            <SlotListItem slot={slot} delete={() => this.handleRemoveSlot(index)} />
+                            <SlotListItem
+                              slot={slot}
+                              delete={() => this.handleRemoveSlot(index)}
+                            />
                           ))}
                         </MUIList>
                         <SlotEntry onAdd={slot => this.handleAddSlot(slot)} />
@@ -310,10 +328,10 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
               </Dialog>
             );
           }
-        },
-      ),
-    ),
-  ),
+        }
+      )
+    )
+  )
 );
 
 export default CreateEntry;

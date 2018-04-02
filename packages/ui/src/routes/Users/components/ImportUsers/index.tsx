@@ -4,15 +4,14 @@ import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { Dialog, Grid, Button } from "material-ui";
 import { withMobileDialog } from "material-ui/Dialog";
 import { connect } from "react-redux";
-import { AppState, IUserCreate } from "../../../../interfaces/index";
 import { Dispatch, Action } from "redux";
-// tslint:disable-next-line:import-name
 import Dropzone from "react-dropzone";
 import DialogActions from "material-ui/Dialog/DialogActions";
 import parseCSV from "./services/parseCSV";
-import { createUsersRequest, addMessage } from "../../../../redux/actions";
 import UnsignedAvatar from "../../../SpecificEntry/elements/UnsignedAvatar";
 import SignedAvatar from "../../../SpecificEntry/elements/SignedAvatar";
+import { IUserCreate } from "ente-types";
+import { AppState, createUsersRequest, addMessage } from "ente-redux";
 
 interface OwnProps {
   onClose(): void;

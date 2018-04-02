@@ -5,11 +5,11 @@ import rbac, {
   check as permissionsCheck,
   Permissions
 } from "../../routines/permissions";
-import { roles, MongoId, ROLES } from "../../constants";
 
 import Slot, { SlotModel } from "../../models/Slot";
 import { RequestHandler } from "express-serve-static-core";
 import User from "../../models/User";
+import { MongoId, Roles } from "ente-types";
 
 const slotsRouter = Router();
 
@@ -55,20 +55,20 @@ slotsRouter.get(
     try {
       let slots;
       switch (request.user.role) {
-        case ROLES.TEACHER:
+        case Roles.TEACHER:
           slots = await Slot.find({ teacher: request.user._id, ...yearParams });
           break;
-        case ROLES.MANAGER:
-        case ROLES.PARENT:
+        case Roles.MANAGER:
+        case Roles.PARENT:
           slots = await Slot.find({
             student: { $in: request.user.children },
             ...yearParams
           });
           break;
-        case ROLES.STUDENT:
+        case Roles.STUDENT:
           slots = await Slot.find({ student: request.user._id, ...yearParams });
           break;
-        case ROLES.ADMIN:
+        case Roles.ADMIN:
           slots = await Slot.find({ ...yearParams });
           break;
         default:

@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import { createAction } from "redux-actions";
 
 import {
   CREATE_ENTRY_REQUEST,
@@ -58,32 +58,34 @@ import {
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST,
   PATCH_FORSCHOOL_SUCCESS,
-  PATCH_FORSCHOOL_ERROR,
-} from './constants';
+  PATCH_FORSCHOOL_ERROR
+} from "./constants";
+import { APIResponse } from "./types";
 import {
-  MongoId,
-  IEntryCreate,
-  APIResponse,
   IUserCreate,
+  IEntryCreate,
   IUser,
-  INewPassword,
   ICredentials,
   TokenInfo,
-} from '../interfaces/index';
+  INewPassword,
+  MongoId
+} from "ente-types";
 
-export const createEntryRequest = createAction<IEntryCreate>(CREATE_ENTRY_REQUEST);
+export const createEntryRequest = createAction<IEntryCreate>(
+  CREATE_ENTRY_REQUEST
+);
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
-export const createUsersRequest = createAction<IUserCreate[], IUserCreate | IUserCreate[]>(
-  CREATE_USERS_REQUEST,
-  input => {
-    if (Array.isArray(input)) {
-      return input;
-    }
-    return [input];
-  },
-);
+export const createUsersRequest = createAction<
+  IUserCreate[],
+  IUserCreate | IUserCreate[]
+>(CREATE_USERS_REQUEST, input => {
+  if (Array.isArray(input)) {
+    return input;
+  }
+  return [input];
+});
 export const createUsersSuccess = createAction(CREATE_USERS_SUCCESS);
 export const createUsersError = createAction<Error>(CREATE_USERS_ERROR);
 
@@ -98,12 +100,16 @@ export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
 export type PatchForSchoolPayload = {
   id: MongoId;
   forSchool: boolean;
-}
-export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(PATCH_FORSCHOOL_REQUEST);
+};
+export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
+  PATCH_FORSCHOOL_REQUEST
+);
 export const patchForSchoolSuccess = createAction(PATCH_FORSCHOOL_SUCCESS);
 export const patchForSchoolError = createAction<Error>(PATCH_FORSCHOOL_ERROR);
 
-export const updateUserRequest = createAction<Partial<IUser>>(UPDATE_USER_REQUEST);
+export const updateUserRequest = createAction<Partial<IUser>>(
+  UPDATE_USER_REQUEST
+);
 export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);
 export const updateUserError = createAction<Error>(UPDATE_USER_ERROR);
 
@@ -144,17 +150,25 @@ export const getTokenSuccess = createAction<TokenInfo>(GET_TOKEN_SUCCESS);
 export const getTokenError = createAction<Error>(GET_TOKEN_ERROR);
 
 export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);
-export const refreshTokenSuccess = createAction<TokenInfo>(REFRESH_TOKEN_SUCCESS);
+export const refreshTokenSuccess = createAction<TokenInfo>(
+  REFRESH_TOKEN_SUCCESS
+);
 export const refreshTokenError = createAction<Error>(REFRESH_TOKEN_ERROR);
 
 export const removeMessage = createAction<number>(REMOVE_MESSAGE);
 export const addMessage = createAction<string>(ADD_MESSAGE);
 
-export const resetPasswordRequest = createAction<string>(RESET_PASSWORD_REQUEST);
-export const resetPasswordSuccess = createAction<string>(RESET_PASSWORD_SUCCESS);
+export const resetPasswordRequest = createAction<string>(
+  RESET_PASSWORD_REQUEST
+);
+export const resetPasswordSuccess = createAction<string>(
+  RESET_PASSWORD_SUCCESS
+);
 export const resetPasswordError = createAction<Error>(RESET_PASSWORD_ERROR);
 
-export const setPasswordRequest = createAction<INewPassword>(SET_PASSWORD_REQUEST);
+export const setPasswordRequest = createAction<INewPassword>(
+  SET_PASSWORD_REQUEST
+);
 export const setPasswordSuccess = createAction<string>(SET_PASSWORD_SUCCESS);
 export const setPasswordError = createAction<Error>(SET_PASSWORD_ERROR);
 

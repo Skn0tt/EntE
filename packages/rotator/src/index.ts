@@ -1,16 +1,15 @@
 import { createClient } from "redis";
 import chalk, { Chalk } from "chalk";
 import * as crypto from "crypto";
+import { redis } from "ente-types";
 
 const client = createClient("redis://redis");
-
-const JWT_SECRETS = "jwt_secrets";
 
 function generateSecret() {
   return crypto.randomBytes(48).toString("hex");
 }
 
-const oldSecret = client.get(JWT_SECRETS, (err, reply) => {
+const oldSecret = client.get(redis.JWT_SECRETS, (err, reply) => {
   if (err) {
     throw err;
   }
@@ -19,7 +18,7 @@ const oldSecret = client.get(JWT_SECRETS, (err, reply) => {
     ? [generateSecret(), arr[0]]
     : [generateSecret(), generateSecret()];
 
-  client.set(JWT_SECRETS, JSON.stringify(newArr), (err, reply) => {
+  client.set(redis.JWT_SECRETS, JSON.stringify(newArr), (err, reply) => {
     if (err) {
       throw err;
     }

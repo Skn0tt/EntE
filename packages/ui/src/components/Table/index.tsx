@@ -12,7 +12,7 @@ import {
   Table as MUITable
 } from "material-ui";
 import TableHeadCell from "./elements/TableHeadCell";
-import lang from "../../res/lang";
+import lang from "ente-lang";
 
 type AllowedValues = string | number | boolean;
 type Item = ReadonlyArray<AllowedValues>;

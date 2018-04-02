@@ -1,12 +1,10 @@
-import * as React from 'react';
-import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-import * as select from '../../redux/selectors';
+import * as React from "react";
+import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 
-import styles from './styles';
-import { AppState, ICredentials } from '../../interfaces/index';
-import { connect, Dispatch } from 'react-redux';
-import { Action } from 'redux';
-import { Redirect, RouteComponentProps } from 'react-router';
+import styles from "./styles";
+import { connect, Dispatch } from "react-redux";
+import { Action } from "redux";
+import { Redirect, RouteComponentProps } from "react-router";
 import {
   Dialog,
   DialogTitle,
@@ -14,10 +12,16 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  TextField,
-} from 'material-ui';
-import { withMobileDialog } from 'material-ui/Dialog';
-import { resetPasswordRequest, getTokenRequest } from '../../redux/actions';
+  TextField
+} from "material-ui";
+import { withMobileDialog } from "material-ui/Dialog";
+import { ICredentials } from "ente-types";
+import {
+  AppState,
+  isAuthValid,
+  getTokenRequest,
+  resetPasswordRequest
+} from "ente-redux";
 
 interface InjectedProps {
   fullScreen: boolean;
@@ -27,7 +31,7 @@ interface StateProps {
   authValid: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
-  authValid: select.isAuthValid(state),
+  authValid: isAuthValid(state)
 });
 
 interface DispatchProps {
@@ -36,10 +40,15 @@ interface DispatchProps {
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   checkAuth: (auth: ICredentials) => dispatch(getTokenRequest(auth)),
-  triggerPasswordReset: (username: string) => dispatch(resetPasswordRequest(username)),
+  triggerPasswordReset: (username: string) =>
+    dispatch(resetPasswordRequest(username))
 });
 
-type Props = StateProps & DispatchProps & InjectedProps & WithStyles & RouteComponentProps<{}>;
+type Props = StateProps &
+  DispatchProps &
+  InjectedProps &
+  WithStyles &
+  RouteComponentProps<{}>;
 
 interface State {
   username: string;
@@ -51,42 +60,53 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(
     withMobileDialog<Props>()(
       class extends React.Component<Props, State> {
         state: State = {
-          username: '',
-          password: '',
+          username: "",
+          password: ""
         };
 
-        handleResetPassword = () => this.props.triggerPasswordReset(this.state.username);
+        handleResetPassword = () =>
+          this.props.triggerPasswordReset(this.state.username);
 
         handleKeyPress: React.KeyboardEventHandler<{}> = event => {
-          if (event.key === 'Enter') {
+          if (event.key === "Enter") {
             this.handleSignIn();
           }
         };
 
-        handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = event =>
+        handleChangeUsername: React.ChangeEventHandler<
+          HTMLInputElement
+        > = event =>
           this.setState({
-            username: event.target.value,
+            username: event.target.value
           });
 
-        handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = event =>
+        handleChangePassword: React.ChangeEventHandler<
+          HTMLInputElement
+        > = event =>
           this.setState({
-            password: event.target.value,
+            password: event.target.value
           });
 
         handleSignIn = () =>
           this.props.checkAuth({
             username: this.state.username,
-            password: this.state.password,
+            password: this.state.password
           });
 
         render() {
           const { classes } = this.props;
-          const { from } = this.props.location.state || { from: { pathname: '/' } };
+          const { from } = this.props.location.state || {
+            from: { pathname: "/" }
+          };
 
           return (
             <div>
               {this.props.authValid && <Redirect to={from} />}
-              <Dialog fullScreen={this.props.fullScreen} open onKeyPress={this.handleKeyPress}>
+              <Dialog
+                fullScreen={this.props.fullScreen}
+                open
+                onKeyPress={this.handleKeyPress}
+              >
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
@@ -111,7 +131,9 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(
                   </div>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={() => this.handleResetPassword()}>Passwort Zurücksetzen</Button>
+                  <Button onClick={() => this.handleResetPassword()}>
+                    Passwort Zurücksetzen
+                  </Button>
                   <Button color="primary" onClick={() => this.handleSignIn()}>
                     Login
                   </Button>
@@ -120,9 +142,9 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(
             </div>
           );
         }
-      },
-    ),
-  ),
+      }
+    )
+  )
 );
 
 export default Login;

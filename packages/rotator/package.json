@@ -2,21 +2,22 @@
   "name": "ente-rotator",
   "version": "0.1.0",
   "description": "Rotates JWT secrets",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "repository": "https://gitlab.com/Skn0tt/EntE/tree/master/packages/rotator",
   "author": "Simon Knott",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "yarn ts-node src/index.ts"
   },
   "dependencies": {
     "chalk": "^2.3.2",
+    "ente-types": "^0.0.1",
     "redis": "^2.8.0"
   },
   "devDependencies": {
     "@types/redis": "^2.8.6",
+    "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.7.0",
     "tslint-config-prettier": "^1.9.0",

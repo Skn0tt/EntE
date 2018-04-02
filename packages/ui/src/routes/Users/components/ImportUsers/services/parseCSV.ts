@@ -1,5 +1,5 @@
-import { IUserCreate } from '../../../../../interfaces/index';
-import { parse as papaparse, ParseResult } from 'papaparse';
+import { parse as papaparse, ParseResult } from "papaparse";
+import { IUserCreate } from "ente-types";
 
 const parse = function(file: File) {
   return new Promise<ParseResult>((complete, error) => {
@@ -7,7 +7,7 @@ const parse = function(file: File) {
       complete,
       error,
       header: true,
-      dynamicTyping: true,
+      dynamicTyping: true
     });
   });
 };
@@ -24,7 +24,7 @@ const parseCSV = async (input: File): Promise<IUserCreate[]> => {
     email: row.email,
     role: row.role,
     isAdult: row.isAdult,
-    children: !!row.children ? row.children.split(';') : undefined,
+    children: !!row.children ? row.children.split(";") : undefined
   }));
 
   return result;

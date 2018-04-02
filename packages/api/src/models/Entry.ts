@@ -1,7 +1,7 @@
-import { Schema, model, Document, Model } from 'mongoose';
-import { MongoId } from '../constants';
-import * as idValidator from 'mongoose-id-validator';
-import * as timestamps from 'mongoose-timestamp';
+import { Schema, model, Document, Model } from "mongoose";
+import * as idValidator from "mongoose-id-validator";
+import * as timestamps from "mongoose-timestamp";
+import { MongoId } from "ente-types";
 
 export interface EntryModel extends Document, IEntry {
   signParent(): void;
@@ -34,16 +34,16 @@ const entrySchema: Schema = new Schema(
   {
     date: { type: Date, required: true, default: Date.now() },
     dateEnd: { type: Date, required: false, default: Date.now() },
-    student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-    slots: [{ type: Schema.Types.ObjectId, ref: 'slots' }],
+    student: { type: Schema.Types.ObjectId, required: true, ref: "users" },
+    slots: [{ type: Schema.Types.ObjectId, ref: "slots" }],
     forSchool: { type: Boolean, required: true },
     reason: { type: String, maxlength: 300 },
     signedManager: { type: Boolean, required: true, default: false },
-    signedParent: { type: Boolean, required: true, default: false },
+    signedParent: { type: Boolean, required: true, default: false }
   },
   {
-    versionKey: false,
-  },
+    versionKey: false
+  }
 );
 entrySchema.plugin(idValidator);
 entrySchema.plugin(timestamps);
@@ -66,6 +66,6 @@ entrySchema.methods.setSignatureManager = function(b: boolean, callback): void {
 /**
  * # Model
  */
-const entry: Model<EntryModel> = model('entries', entrySchema);
+const entry: Model<EntryModel> = model("entries", entrySchema);
 
 export default entry;

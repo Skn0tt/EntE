@@ -3,25 +3,10 @@ import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
-import * as select from "../../redux/selectors";
-import {
-  AppState,
-  MongoId,
-  Entry,
-  User,
-  Slot,
-  Roles
-} from "../../interfaces/index";
 import { Action } from "redux";
 
 import { withRouter, RouteComponentProps } from "react-router";
 import { Button, Table, List, Grid, Checkbox } from "material-ui";
-import {
-  getEntryRequest,
-  signEntryRequest,
-  unsignEntryRequest,
-  patchForSchoolRequest
-} from "../../redux/actions";
 import SignedAvatar from "./elements/SignedAvatar";
 import UnsignedAvatar from "./elements/UnsignedAvatar";
 import TableHead from "material-ui/Table/TableHead";
@@ -42,7 +27,23 @@ import {
 } from "material-ui-icons";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import LoadingIndicator from "../../elements/LoadingIndicator";
-import lang from "../../res/lang";
+import { MongoId, Roles } from "ente-types";
+import {
+  Entry,
+  User,
+  Slot,
+  AppState,
+  getEntry,
+  getUser,
+  getSlotsById,
+  isLoading,
+  getRole,
+  getEntryRequest,
+  unsignEntryRequest,
+  patchForSchoolRequest,
+  signEntryRequest
+} from "ente-redux";
+import lang from "ente-lang";
 
 /**
  * # Component Types
@@ -63,11 +64,11 @@ interface StateProps {
   role: Roles;
 }
 const mapStateToProps = (state: AppState): StateProps => ({
-  getEntry: (id: MongoId) => select.getEntry(id)(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
-  getSlots: (ids: MongoId[]) => select.getSlotsById(ids)(state),
-  loading: select.isLoading(state),
-  role: select.getRole(state)
+  getEntry: (id: MongoId) => getEntry(id)(state),
+  getUser: (id: MongoId) => getUser(id)(state),
+  getSlots: (ids: MongoId[]) => getSlotsById(ids)(state),
+  loading: isLoading(state),
+  role: getRole(state)
 });
 
 interface DispatchProps {

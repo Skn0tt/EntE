@@ -1,7 +1,7 @@
-import { Schema, model, Document, Model } from 'mongoose';
-import { MongoId } from '../constants';
-import * as validate from 'mongoose-validator';
-import * as idValidator from 'mongoose-id-validator';
+import { Schema, model, Document, Model } from "mongoose";
+import * as validate from "mongoose-validator";
+import * as idValidator from "mongoose-id-validator";
+import { MongoId } from "ente-types";
 
 export interface SlotModel extends Document, ISlot {
   sign(): void;
@@ -25,12 +25,12 @@ const slotSchema = new Schema(
     hour_from: { type: Number, required: true, min: 1, max: 12 },
     hour_to: { type: Number, required: true, min: 1, max: 12 },
     signed: { type: Boolean, required: true, default: false },
-    student: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
-    teacher: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
+    student: { type: Schema.Types.ObjectId, required: true, ref: "users" },
+    teacher: { type: Schema.Types.ObjectId, required: true, ref: "users" }
   },
   {
-    versionKey: false,
-  },
+    versionKey: false
+  }
 );
 slotSchema.plugin(idValidator);
 
@@ -45,6 +45,6 @@ slotSchema.methods.sign = function(callback): void {
 /**
  * # Model
  */
-const slot: Model<SlotModel> = model('slots', slotSchema);
+const slot: Model<SlotModel> = model("slots", slotSchema);
 
 export default slot;

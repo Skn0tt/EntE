@@ -1,5 +1,5 @@
-import { takeEvery, call, put, select } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { takeEvery, call, put, select } from "redux-saga/effects";
+import { delay } from "redux-saga";
 import {
   getEntryError,
   getEntriesError,
@@ -39,8 +39,8 @@ import {
   unsignEntrySuccess,
   PatchForSchoolPayload,
   patchForSchoolSuccess,
-  patchForSchoolError,
-} from './actions';
+  patchForSchoolError
+} from "./actions";
 import {
   GET_ENTRY_REQUEST,
   GET_ENTRIES_REQUEST,
@@ -59,23 +59,23 @@ import {
   GET_CHILDREN_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
-  PATCH_FORSCHOOL_REQUEST,
-} from './constants';
-import * as api from './api';
-import { Action } from 'redux-actions';
-import * as selectors from './selectors';
+  PATCH_FORSCHOOL_REQUEST
+} from "./constants";
+import * as api from "./api";
+import { Action } from "redux-actions";
+import * as selectors from "./selectors";
+import { APIResponse } from "./types";
+import lang from "ente-lang";
 import {
-  APIResponse,
+  ICredentials,
+  TokenInfo,
   MongoId,
   IEntryCreate,
   IUserCreate,
-  IUser,
-  INewPassword,
   Roles,
-  ICredentials,
-  TokenInfo,
-} from '../interfaces/index';
-import lang from '../res/lang';
+  IUser,
+  INewPassword
+} from "ente-types";
 
 const tokenRefreshDelay = 1000 * 60 * 5;
 
@@ -233,7 +233,12 @@ function* createEntrySaga(action: Action<IEntryCreate>) {
 function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.patchForSchool, action.payload!.id, action.payload!.forSchool, token);
+    const result = yield call(
+      api.patchForSchool,
+      action.payload!.id,
+      action.payload!.forSchool,
+      token
+    );
 
     yield put(patchForSchoolSuccess());
     yield dispatchUpdates(result);
@@ -325,7 +330,11 @@ function* resetPasswordSaga(action: Action<string>) {
 
 function* setPasswordSaga(action: Action<INewPassword>) {
   try {
-    const result = yield call(api.setPassword, action.payload!.token, action.payload!.password);
+    const result = yield call(
+      api.setPassword,
+      action.payload!.token,
+      action.payload!.password
+    );
 
     yield put(addMessage(lang().message.setPassword.success));
     yield put(resetPasswordSuccess(result));

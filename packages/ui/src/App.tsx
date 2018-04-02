@@ -1,34 +1,33 @@
-import * as React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { connect, Dispatch } from 'react-redux';
-import { AppState, Roles, ICredentials } from './interfaces/index';
-import { Action } from 'redux';
-
-import * as select from './redux/selectors';
-import Drawer from './components/Drawer';
-import MessageStream from './components/MessageStream';
+import * as React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { connect, Dispatch } from "react-redux";
+import { Action } from "redux";
+import Drawer from "./components/Drawer";
+import MessageStream from "./components/MessageStream";
 
 // Routes
-import AuthenticatedRoute from './components/AuthenticatedRoute';
-import Login from './routes/Login';
-import Routes from './Routes';
-import Forgot from './routes/Forgot';
-import { getTokenRequest } from './redux/actions';
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import Login from "./routes/Login";
+import Routes from "./Routes";
+import Forgot from "./routes/Forgot";
+import { Roles, ICredentials } from "ente-types";
+import { AppState, isAuthValid, getRole, getTokenRequest } from "ente-redux";
 
 interface StateProps {
   authValid: boolean;
   role: Roles;
 }
 const mapStateToProps = (state: AppState) => ({
-  authValid: select.isAuthValid(state),
-  role: select.getRole(state),
+  authValid: isAuthValid(state),
+  role: getRole(state)
 });
 
 interface DispatchProps {
   getToken(credentials: ICredentials): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getToken: (credentials: ICredentials) => dispatch(getTokenRequest(credentials)),
+  getToken: (credentials: ICredentials) =>
+    dispatch(getTokenRequest(credentials))
 });
 
 type Props = StateProps & DispatchProps;

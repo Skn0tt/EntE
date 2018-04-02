@@ -1,39 +1,39 @@
-import * as React from 'react';
-import { Roles } from './interfaces/index';
-import { Switch, Route, Redirect } from 'react-router';
-import * as Loadable from 'react-loadable';
-import LoadingIndicator from './elements/LoadingIndicator';
+import * as React from "react";
+import { Switch, Route, Redirect } from "react-router";
+import Loadable from "react-loadable";
+import LoadingIndicator from "./elements/LoadingIndicator";
+import { Roles } from "ente-types";
 
 const Loading = () => <LoadingIndicator />;
 
 const LoadableEntries = Loadable({
-  loader: () => import('./routes/Entries'),
-  loading: Loading,
+  loader: () => import("./routes/Entries"),
+  loading: Loading
 });
 
 const LoadableUsers = Loadable({
-  loader: () => import('./routes/Users'),
-  loading: Loading,
+  loader: () => import("./routes/Users"),
+  loading: Loading
 });
 
 const LoadableSlots = Loadable({
-  loader: () => import('./routes/Slots'),
-  loading: Loading,
+  loader: () => import("./routes/Slots"),
+  loading: Loading
 });
 
 const LoadableSpecificUser = Loadable({
-  loader: () => import('./routes/SpecificUser'),
-  loading: Loading,
+  loader: () => import("./routes/SpecificUser"),
+  loading: Loading
 });
 
 const LoadableSpecificEntry = Loadable({
-  loader: () => import('./routes/SpecificEntry'),
-  loading: Loading,
+  loader: () => import("./routes/SpecificEntry"),
+  loading: Loading
 });
 
 const LoadableNotFound = Loadable({
-  loader: () => import('./routes/NotFound'),
-  loading: Loading,
+  loader: () => import("./routes/NotFound"),
+  loading: Loading
 });
 
 const AdminRoutes = () => (

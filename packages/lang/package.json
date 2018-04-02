@@ -1,0 +1,10 @@
+{
+  "name": "ente-lang",
+  "version": "0.0.1",
+  "description": "Translations for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/lang",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true
+}

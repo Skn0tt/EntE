@@ -1,5 +1,5 @@
-import { ROLES } from '../constants';
-import { RequestHandler } from 'express';
+import { RequestHandler } from "express";
+import { Roles } from "ente-types";
 
 interface Permissions {
   slots_read?: boolean;
@@ -18,7 +18,7 @@ const adminPermissions: Permissions = {
   entries_write: false,
   teachers_read: true,
   users_read: true,
-  users_write: true,
+  users_write: true
 };
 
 const managerPermissions: Permissions = {
@@ -28,7 +28,7 @@ const managerPermissions: Permissions = {
   entries_write: true,
   teachers_read: true,
   users_read: true,
-  users_write: false,
+  users_write: false
 };
 
 const studentPermissions: Permissions = {
@@ -38,7 +38,7 @@ const studentPermissions: Permissions = {
   entries_write: false,
   teachers_read: true,
   users_read: false,
-  users_write: false,
+  users_write: false
 };
 
 const parentPermissions: Permissions = {
@@ -48,7 +48,7 @@ const parentPermissions: Permissions = {
   entries_write: true,
   teachers_read: true,
   users_read: false,
-  users_write: false,
+  users_write: false
 };
 
 const teacherPermissions: Permissions = {
@@ -58,7 +58,15 @@ const teacherPermissions: Permissions = {
   entries_write: false,
   teachers_read: true,
   users_read: false,
-  users_write: false,
+  users_write: false
+};
+
+const perms = {
+  [Roles.ADMIN]: adminPermissions,
+  [Roles.MANAGER]: managerPermissions,
+  [Roles.PARENT]: parentPermissions,
+  [Roles.STUDENT]: studentPermissions,
+  [Roles.TEACHER]: teacherPermissions
 };
 
 /**
@@ -81,18 +89,16 @@ const compare = (has: Permissions, needs: Permissions): boolean => {
  * @param neededPermissions that the api needs
  * @returns true when valid
  */
-const check = (role: ROLES, neededPermissions: Permissions): boolean => {
-  if (role === ROLES.ADMIN) return compare(adminPermissions, neededPermissions);
-  if (role === ROLES.TEACHER) return compare(teacherPermissions, neededPermissions);
-  if (role === ROLES.PARENT) return compare(parentPermissions, neededPermissions);
-  if (role === ROLES.STUDENT) return compare(studentPermissions, neededPermissions);
-  if (role === ROLES.MANAGER) return compare(managerPermissions, neededPermissions);
-  return false;
-};
+const check = (role: Roles, neededPermissions: Permissions): boolean =>
+  compare(perms[role], neededPermissions);
 
 export { check, Permissions };
 
-const rbac = (neededPermissions: Permissions): RequestHandler => (req, res, next) => {
+const rbac = (neededPermissions: Permissions): RequestHandler => (
+  req,
+  res,
+  next
+) => {
   if (!check(req.user.role, neededPermissions)) {
     return res.status(403).end();
   }

@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { AppState, User, MongoId, ISlotCreate } from '../../../../../../interfaces/index';
-import { connect } from 'react-redux';
-import { withStyles, Grid, TextField, Button } from 'material-ui';
-import * as select from '../../../../../../redux/selectors';
+import * as React from "react";
+import { connect } from "react-redux";
+import { withStyles, Grid, TextField, Button } from "material-ui";
 
-import styles from './styles';
-import { WithStyles } from 'material-ui/styles/withStyles';
-import Tooltip from 'material-ui/Tooltip/Tooltip';
+import styles from "./styles";
+import { WithStyles } from "material-ui/styles/withStyles";
+import Tooltip from "material-ui/Tooltip/Tooltip";
+import { MongoId, ISlotCreate } from "ente-types";
+import { User, getTeachers, getUser, AppState } from "ente-redux";
 
 interface OwnProps {
   onAdd(slot: ISlotCreate): void;
@@ -17,8 +17,8 @@ interface StateProps {
   getUser(id: MongoId): User;
 }
 const mapStateToProps = (state: AppState) => ({
-  teachers: select.getTeachers(state),
-  getUser: (id: MongoId) => select.getUser(id)(state),
+  teachers: getTeachers(state),
+  getUser: (id: MongoId) => getUser(id)(state)
 });
 
 type Props = StateProps & OwnProps & WithStyles;
@@ -33,9 +33,12 @@ const SlotEntry = connect(mapStateToProps)(
   withStyles(styles)(
     class extends React.Component<Props, State> {
       state: State = {
-        hour_from: '1',
-        hour_to: '2',
-        teacher: this.props.teachers.length > 0 ? this.props.teachers[0].get('_id') : '',
+        hour_from: "1",
+        hour_to: "2",
+        teacher:
+          this.props.teachers.length > 0
+            ? this.props.teachers[0].get("_id")
+            : ""
       };
 
       /**
@@ -43,21 +46,23 @@ const SlotEntry = connect(mapStateToProps)(
        */
 
       handleChangeFrom = (event: React.ChangeEvent<HTMLInputElement>) =>
-        (event.target.value === '' ||
-          (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
+        (event.target.value === "" ||
+          (Number(event.target.value) > 0 &&
+            Number(event.target.value) < 12)) &&
         this.setState({
-          hour_from: event.target.value,
+          hour_from: event.target.value
         });
 
       handleChangeTo = (event: React.ChangeEvent<HTMLInputElement>) =>
-        (event.target.value === '' ||
-          (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
+        (event.target.value === "" ||
+          (Number(event.target.value) > 0 &&
+            Number(event.target.value) < 12)) &&
         this.setState({
-          hour_to: event.target.value,
+          hour_to: event.target.value
         });
       handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement>) =>
         this.setState({
-          teacher: event.target.value,
+          teacher: event.target.value
         });
       /**
        * ## Form Validation Logic
@@ -85,13 +90,14 @@ const SlotEntry = connect(mapStateToProps)(
         return !!teacher;
       };
 
-      slotInputValid = () => this.fromValid() && this.toValid() && this.teacherValid();
+      slotInputValid = () =>
+        this.fromValid() && this.toValid() && this.teacherValid();
 
       handleAddSlot = () =>
         this.props.onAdd({
           hour_from: Number(this.state.hour_from),
           hour_to: Number(this.state.hour_to),
-          teacher: this.state.teacher,
+          teacher: this.state.teacher
         });
 
       render() {
@@ -102,7 +108,7 @@ const SlotEntry = connect(mapStateToProps)(
               <TextField
                 select
                 label="Lehrer"
-                value={this.state.teacher || ''}
+                value={this.state.teacher || ""}
                 onChange={this.handleChangeTeacher}
                 fullWidth
                 error={!this.teacherValid()}
@@ -110,8 +116,8 @@ const SlotEntry = connect(mapStateToProps)(
                 helperText="Wählen sie den Lehrer aus."
               >
                 {this.props.teachers.map(teacher => (
-                  <option key={teacher.get('_id')} value={teacher.get('_id')}>
-                    {teacher.get('displayname')}
+                  <option key={teacher.get("_id")} value={teacher.get("_id")}>
+                    {teacher.get("displayname")}
                   </option>
                 ))}
               </TextField>
@@ -127,7 +133,7 @@ const SlotEntry = connect(mapStateToProps)(
                 type="number"
                 error={!this.fromValid()}
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true
                 }}
               />
             </Grid>
@@ -142,7 +148,7 @@ const SlotEntry = connect(mapStateToProps)(
                 error={!this.toValid()}
                 type="number"
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true
                 }}
               />
             </Grid>
@@ -162,8 +168,8 @@ const SlotEntry = connect(mapStateToProps)(
           </Grid>
         );
       }
-    },
-  ),
+    }
+  )
 );
 
 export default SlotEntry;

@@ -5,13 +5,14 @@ import rbac, {
   check as permissionsCheck,
   Permissions
 } from "../../routines/permissions";
-import { roles, MongoId, ROLES } from "../../constants";
 
 import Entry, { EntryModel } from "../../models/Entry";
 import Slot, { ISlot } from "../../models/Slot";
 import * as mail from "../../routines/mail";
 import User from "../../models/User";
 import { ObjectID } from "bson";
+import { MongoId, Roles } from "ente-types";
+import validate from "../../routines/validate";
 
 const entriesRouter = Router();
 
@@ -42,15 +43,6 @@ const populate = async (request: EntriesRequest, response, next) => {
   }
 };
 
-const validate: RequestHandler = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.mapped() });
-  }
-
-  next();
-};
-
 /**
  * Get all entries for user
  */
@@ -68,8 +60,8 @@ entriesRouter.get(
   async (request: EntriesRequest, response, next) => {
     try {
       if (
-        request.user.role === ROLES.PARENT ||
-        request.user.role === ROLES.MANAGER
+        request.user.role === Roles.PARENT ||
+        request.user.role === Roles.MANAGER
       ) {
         request.entries = await Entry.find({
           student: { $in: request.user.children },
@@ -78,12 +70,12 @@ entriesRouter.get(
 
         return next();
       }
-      if (request.user.role === ROLES.ADMIN) {
+      if (request.user.role === Roles.ADMIN) {
         request.entries = await Entry.find({ ...yearParams });
 
         return next();
       }
-      if (request.user.role === ROLES.STUDENT) {
+      if (request.user.role === Roles.STUDENT) {
         request.entries = await Entry.find({
           student: request.user._id,
           ...yearParams
@@ -172,7 +164,7 @@ entriesRouter.post(
   validate,
   async (request: EntriesRequest, response: Response, next) => {
     const studentId =
-      request.user.role === ROLES.PARENT
+      request.user.role === Roles.PARENT
         ? request.body.student
         : request.user._id;
 
@@ -190,7 +182,7 @@ entriesRouter.post(
       );
 
       const signedParent: boolean =
-        request.user.role === ROLES.PARENT || request.user.isAdult;
+        request.user.role === Roles.PARENT || request.user.isAdult;
 
       // TODO: Reject Parents creating entries for children that are not theirs
 
@@ -275,10 +267,10 @@ entriesRouter.put(
         return response.status(404).end("Couldnt find Entry.");
       }
 
-      if ((request.user.children as ObjectID[]).indexOf(entry.student) !== -1) {
-        if (request.user.role === ROLES.MANAGER) {
+      if ((request.user.children as MongoId[]).indexOf(entry.student) !== -1) {
+        if (request.user.role === Roles.MANAGER) {
           entry.setSignatureManager(setValue);
-        } else if (request.user.role === ROLES.PARENT) {
+        } else if (request.user.role === Roles.PARENT) {
           if (setValue === true) {
             entry.signParent();
           }
@@ -291,7 +283,7 @@ entriesRouter.put(
         slots.forEach(slot => slot.sign());
       }
 
-      if (request.user.role === ROLES.PARENT) {
+      if (request.user.role === Roles.PARENT) {
         mail.dispatchSignedInformation(entry);
       }
 

@@ -1,5 +1,5 @@
-import { handleActions, Action, BaseAction, ReducerMap } from 'redux-actions';
-import { Entry, AppState, APIResponse, MongoId, User, Slot, TokenInfo } from '../interfaces/index';
+import { handleActions, Action, BaseAction, ReducerMap } from "redux-actions";
+import { Entry, AppState, APIResponse, User, Slot } from "./types";
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -58,18 +58,19 @@ import {
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST,
   PATCH_FORSCHOOL_ERROR,
-  PATCH_FORSCHOOL_SUCCESS,
-} from './constants';
-import { ActionType } from 'redux-saga/effects';
-import { Map, List } from 'immutable';
+  PATCH_FORSCHOOL_SUCCESS
+} from "./constants";
+import { ActionType } from "redux-saga/effects";
+import { Map, List } from "immutable";
+import { TokenInfo, MongoId } from "ente-types";
 
 const asyncReducers = (request: string, error: string, success: string) => ({
   [request]: (state: AppState, action: Action<void>) =>
-    state.update('loading', loading => loading + 1),
+    state.update("loading", loading => loading + 1),
   [error]: (state: AppState, action: Action<Error>) =>
-    state.update('loading', loading => loading - 1),
+    state.update("loading", loading => loading - 1),
   [success]: (state: AppState, action: Action<void>): AppState =>
-    state.update('loading', loading => loading - 1),
+    state.update("loading", loading => loading - 1)
 });
 
 const initialState = new AppState({});
@@ -80,37 +81,48 @@ const reducer = handleActions(
      * # Auth
      */
     // ## GET_TOKEN
-    [GET_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
+    [GET_TOKEN_REQUEST]: state =>
+      state.update("loading", loading => loading + 1),
     [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
+      state.update("loading", loading => loading - 1),
     [GET_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
       state
-        .update('loading', loading => loading - 1)
-        .setIn(['auth', 'token'], action.payload!.token)
-        .setIn(['auth', 'exp'], action.payload!.exp)
-        .setIn(['auth', 'role'], action.payload!.role)
-        .setIn(['auth', 'displayname'], action.payload!.displayname),
+        .update("loading", loading => loading - 1)
+        .setIn(["auth", "token"], action.payload!.token)
+        .setIn(["auth", "exp"], action.payload!.exp)
+        .setIn(["auth", "role"], action.payload!.role)
+        .setIn(["auth", "displayname"], action.payload!.displayname),
 
     // ## REFRESH_TOKEN
-    [REFRESH_TOKEN_REQUEST]: state => state.update('loading', loading => loading + 1),
+    [REFRESH_TOKEN_REQUEST]: state =>
+      state.update("loading", loading => loading + 1),
     [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
-      state.update('loading', loading => loading - 1),
+      state.update("loading", loading => loading - 1),
     [REFRESH_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
       state
-        .update('loading', loading => loading - 1)
-        .setIn(['auth', 'token'], action.payload!.token)
-        .setIn(['auth', 'exp'], action.payload!.exp)
-        .setIn(['auth', 'role'], action.payload!.role)
-        .setIn(['auth', 'displayname'], action.payload!.displayname),
+        .update("loading", loading => loading - 1)
+        .setIn(["auth", "token"], action.payload!.token)
+        .setIn(["auth", "exp"], action.payload!.exp)
+        .setIn(["auth", "role"], action.payload!.role)
+        .setIn(["auth", "displayname"], action.payload!.displayname),
 
     // ## LOGOUT
-    [LOGOUT]: (state: AppState, action: BaseAction): AppState => new AppState({}),
+    [LOGOUT]: (state: AppState, action: BaseAction): AppState =>
+      new AppState({}),
 
     // ## RESET_PASSWORD
-    ...asyncReducers(RESET_PASSWORD_REQUEST, RESET_PASSWORD_ERROR, RESET_PASSWORD_SUCCESS),
+    ...asyncReducers(
+      RESET_PASSWORD_REQUEST,
+      RESET_PASSWORD_ERROR,
+      RESET_PASSWORD_SUCCESS
+    ),
 
     // ## SET_PASSWORD
-    ...asyncReducers(SET_PASSWORD_REQUEST, SET_PASSWORD_ERROR, SET_PASSWORD_SUCCESS),
+    ...asyncReducers(
+      SET_PASSWORD_REQUEST,
+      SET_PASSWORD_ERROR,
+      SET_PASSWORD_SUCCESS
+    ),
 
     /**
      * # Interaction
@@ -119,16 +131,28 @@ const reducer = handleActions(
     ...asyncReducers(SIGN_ENTRY_REQUEST, SIGN_ENTRY_ERROR, SIGN_ENTRY_SUCCESS),
 
     // ## UNSIGN_ENTRY
-    ...asyncReducers(UNSIGN_ENTRY_REQUEST, UNSIGN_ENTRY_ERROR, UNSIGN_ENTRY_SUCCESS),
+    ...asyncReducers(
+      UNSIGN_ENTRY_REQUEST,
+      UNSIGN_ENTRY_ERROR,
+      UNSIGN_ENTRY_SUCCESS
+    ),
 
     // ## PATCH_FORSCHOOl
-    ...asyncReducers(PATCH_FORSCHOOL_REQUEST, PATCH_FORSCHOOL_ERROR, PATCH_FORSCHOOL_SUCCESS),
+    ...asyncReducers(
+      PATCH_FORSCHOOL_REQUEST,
+      PATCH_FORSCHOOL_ERROR,
+      PATCH_FORSCHOOL_SUCCESS
+    ),
 
     /**
      * # GET
      */
     // ## GET_ENTRIES
-    ...asyncReducers(GET_ENTRIES_REQUEST, GET_ENTRIES_ERROR, GET_ENTRIES_SUCCESS),
+    ...asyncReducers(
+      GET_ENTRIES_REQUEST,
+      GET_ENTRIES_ERROR,
+      GET_ENTRIES_SUCCESS
+    ),
 
     // ## GET_ENTRY
     ...asyncReducers(GET_ENTRY_REQUEST, GET_ENTRY_ERROR, GET_ENTRY_SUCCESS),
@@ -143,60 +167,92 @@ const reducer = handleActions(
     ...asyncReducers(GET_USERS_REQUEST, GET_USERS_ERROR, GET_USERS_SUCCESS),
 
     // ## GET_TEACHERS
-    ...asyncReducers(GET_TEACHERS_REQUEST, GET_TEACHERS_ERROR, GET_TEACHERS_SUCCESS),
+    ...asyncReducers(
+      GET_TEACHERS_REQUEST,
+      GET_TEACHERS_ERROR,
+      GET_TEACHERS_SUCCESS
+    ),
 
     // ## GET_CHILDREN
-    ...asyncReducers(GET_CHILDREN_REQUEST, GET_CHILDREN_ERROR, GET_CHILDREN_SUCCESS),
+    ...asyncReducers(
+      GET_CHILDREN_REQUEST,
+      GET_CHILDREN_ERROR,
+      GET_CHILDREN_SUCCESS
+    ),
 
     // ## GET_NEEDED_USERS
-    ...asyncReducers(GET_NEEDED_USERS_REQUEST, GET_NEEDED_USERS_ERROR, GET_NEEDED_USERS_SUCCESS),
+    ...asyncReducers(
+      GET_NEEDED_USERS_REQUEST,
+      GET_NEEDED_USERS_ERROR,
+      GET_NEEDED_USERS_SUCCESS
+    ),
 
     // ## ADD_RESPONSE
     [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
       state
-        .update('users', users =>
+        .update("users", users =>
           users.merge(
-            Map<MongoId, User>(action.payload!.users.map(user => [user.get('_id'), user])),
-          ),
+            Map<MongoId, User>(
+              action.payload!.users.map(user => [user.get("_id"), user])
+            )
+          )
         )
-        .update('slots', slots =>
+        .update("slots", slots =>
           slots.merge(
-            Map<MongoId, Slot>(action.payload!.slots.map(slot => [slot.get('_id'), slot])),
-          ),
+            Map<MongoId, Slot>(
+              action.payload!.slots.map(slot => [slot.get("_id"), slot])
+            )
+          )
         )
-        .update('entries', entries =>
+        .update("entries", entries =>
           entries.merge(
-            Map<MongoId, Entry>(action.payload!.entries.map(entry => [entry.get('_id'), entry])),
-          ),
+            Map<MongoId, Entry>(
+              action.payload!.entries.map(entry => [entry.get("_id"), entry])
+            )
+          )
         ),
 
     /**
      * # CREATE
      */
     // ## CREATE_ENTRY
-    ...asyncReducers(CREATE_ENTRY_REQUEST, CREATE_ENTRY_ERROR, CREATE_ENTRY_SUCCESS),
+    ...asyncReducers(
+      CREATE_ENTRY_REQUEST,
+      CREATE_ENTRY_ERROR,
+      CREATE_ENTRY_SUCCESS
+    ),
 
     // ## CREATE_USERS
-    ...asyncReducers(CREATE_USERS_REQUEST, CREATE_USERS_ERROR, CREATE_USERS_SUCCESS),
+    ...asyncReducers(
+      CREATE_USERS_REQUEST,
+      CREATE_USERS_ERROR,
+      CREATE_USERS_SUCCESS
+    ),
 
     /**
      * # UPDATE
      */
     // ## UPDATE_USERS
-    ...asyncReducers(UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR),
+    ...asyncReducers(
+      UPDATE_USER_REQUEST,
+      UPDATE_USER_SUCCESS,
+      UPDATE_USER_ERROR
+    ),
 
     /**
      * # UI
      */
     // ## ADD_MESSAGE
     [ADD_MESSAGE]: (state: AppState, action: Action<string>): AppState =>
-      state.update('messages', messages => messages.push(action.payload)),
+      state.update("messages", messages => messages.push(action.payload)),
 
     // ## REMOVE_MESSAGE
     [REMOVE_MESSAGE]: (state: AppState, action: Action<number>) =>
-      state.update('messages', (messages: List<Error>) => messages.remove(action.payload!)),
+      state.update("messages", (messages: List<Error>) =>
+        messages.remove(action.payload!)
+      )
   } as ReducerMap<AppState, ActionType>,
-  initialState,
+  initialState
 ); // tslint:disable-line:align
 
 export default reducer;

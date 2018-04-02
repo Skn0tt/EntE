@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,28 +7,33 @@ import {
   Divider,
   withStyles,
   Drawer as MUIDrawer,
-  WithStyles,
+  WithStyles
   // LinearProgress,
-} from 'material-ui';
-import { Menu as MenuIcon } from 'material-ui-icons';
-import * as select from '../../redux/selectors';
+} from "material-ui";
+import { Menu as MenuIcon } from "material-ui-icons";
 
-import styles from './styles';
-import { AdminItems, ManagerItems, TeacherItems, StudentItems, ParentItems } from './items';
-import RefreshButton from '../RefreshButton';
-import { connect } from 'react-redux';
-import { AppState, Roles } from '../../interfaces/index';
-import { withRouter, RouteComponentProps } from 'react-router';
-import LoginStatus from '../LoginStatus';
-import lang from '../../res/lang';
+import styles from "./styles";
+import {
+  AdminItems,
+  ManagerItems,
+  TeacherItems,
+  StudentItems,
+  ParentItems
+} from "./items";
+import RefreshButton from "../RefreshButton";
+import { connect } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router";
+import LoginStatus from "../LoginStatus";
+import { Roles } from "ente-types";
+import { isLoading, getRole, AppState } from "ente-redux";
 
 interface StateProps {
   loading: boolean;
   role: Roles;
 }
 const mapStateToProps = (state: AppState) => ({
-  loading: select.isLoading(state),
-  role: select.getRole(state),
+  loading: isLoading(state),
+  role: getRole(state)
 });
 
 type Props = StateProps & RouteComponentProps<{}> & WithStyles;
@@ -41,10 +46,11 @@ const Drawer = withRouter(
     withStyles(styles)(
       class extends React.Component<Props, State> {
         state = {
-          mobileOpen: false,
+          mobileOpen: false
         };
 
-        handleDrawerToggle = () => this.setState({ mobileOpen: !this.state.mobileOpen });
+        handleDrawerToggle = () =>
+          this.setState({ mobileOpen: !this.state.mobileOpen });
 
         render() {
           const { classes } = this.props;
@@ -73,7 +79,11 @@ const Drawer = withRouter(
                     >
                       <MenuIcon />
                     </IconButton>
-                    <img className={classes.logo} src={lang().app.logo} height={24} />
+                    <img
+                      className={classes.logo}
+                      src={require("../../res/img/Logo.svg")}
+                      height={24}
+                    />
                     <div className={classes.grow} />
                     <RefreshButton />
                   </Toolbar>
@@ -83,11 +93,11 @@ const Drawer = withRouter(
                     variant="temporary"
                     open={this.state.mobileOpen}
                     classes={{
-                      paper: classes.drawerPaper,
+                      paper: classes.drawerPaper
                     }}
                     onClose={this.handleDrawerToggle}
                     ModalProps={{
-                      keepMounted: true,
+                      keepMounted: true
                     }}
                   >
                     {drawer}
@@ -98,7 +108,7 @@ const Drawer = withRouter(
                     variant="permanent"
                     open
                     classes={{
-                      paper: classes.drawerPaper,
+                      paper: classes.drawerPaper
                     }}
                   >
                     {drawer}
@@ -109,9 +119,9 @@ const Drawer = withRouter(
             </div>
           );
         }
-      },
-    ),
-  ),
+      }
+    )
+  )
 );
 
 export default Drawer;

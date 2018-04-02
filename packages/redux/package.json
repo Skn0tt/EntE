@@ -1,0 +1,13 @@
+{
+  "name": "ente-redux",
+  "version": "0.0.1",
+  "description": "State Management for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/redux",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ente-lang": "^0.0.1"
+  }
+}

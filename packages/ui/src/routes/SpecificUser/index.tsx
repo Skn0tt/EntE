@@ -2,16 +2,12 @@ import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
-
-import * as select from "../../redux/selectors";
-import { AppState, MongoId, User } from "../../interfaces/index";
 import { Action } from "redux";
 import ChildrenUpdate from "./components/ChildrenUpdate";
 import EmailUpdate from "./components/EmailUpdate";
 
 import { withRouter, RouteComponentProps } from "react-router";
 import { Button, Dialog } from "material-ui";
-import { getUserRequest } from "../../redux/actions";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
@@ -21,7 +17,9 @@ import Divider from "material-ui/Divider/Divider";
 import DisplaynameUpdate from "./components/DisplaynameUpdate";
 import IsAdultUpdate from "./components/IsAdultUpdate";
 import LoadingIndicator from "../../elements/LoadingIndicator";
-import lang from "../../res/lang";
+import { MongoId } from "ente-types";
+import { User, AppState, getUser, isLoading, getUserRequest } from "ente-redux";
+import lang from "ente-lang";
 
 interface RouteMatch {
   userId: MongoId;
@@ -36,8 +34,8 @@ interface StateProps {
   loading: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => select.getUser(id)(state),
-  loading: select.isLoading(state)
+  getUser: (id: MongoId) => getUser(id)(state),
+  loading: isLoading(state)
 });
 
 interface DispatchProps {

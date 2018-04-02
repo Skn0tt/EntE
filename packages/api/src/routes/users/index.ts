@@ -1,21 +1,25 @@
-import { Router, Request, Response } from 'express';
-import { validationResult, body, param, oneOf } from 'express-validator/check';
+import { Router, Request, Response } from "express";
+import { validationResult, body, param, oneOf } from "express-validator/check";
 
-import { check as permissionsCheck, Permissions } from '../../routines/permissions';
-import { roles, ROLES, MongoId } from '../../constants';
+import rbac, {
+  check as permissionsCheck,
+  Permissions
+} from "../../routines/permissions";
 
-import User, { UserModel, IUser, IUserCreate } from '../../models/User';
-import { RequestHandler } from 'express-serve-static-core';
-import Entry from '../../models/Entry';
-import Slot from '../../models/Slot';
+import User, { UserModel, IUser, IUserCreate } from "../../models/User";
+import { RequestHandler } from "express-serve-static-core";
+import Entry from "../../models/Entry";
+import Slot from "../../models/Slot";
 import {
   isEmail,
   isAlphanumeric,
   isIn,
-  isAscii, 
+  isAscii,
   isEmpty,
-  isMongoId,
-} from 'validator';
+  isMongoId
+} from "validator";
+import { MongoId, Roles, rolesArr } from "ente-types";
+import validate from "../../routines/validate";
 
 const usersRouter = Router();
 
@@ -23,40 +27,39 @@ interface UserRequest extends Request {
   users: UserModel[];
 }
 
-const populate: RequestHandler = async (request: UserRequest, response, next) => {
+const populate: RequestHandler = async (
+  request: UserRequest,
+  response,
+  next
+) => {
   try {
     let users = request.users;
 
     const userIds: MongoId[] = users.map(user => user._id);
 
-    const entries = await Entry
-      .find({ _id: { $in: userIds } });
+    const entries = await Entry.find({ _id: { $in: userIds } });
 
     const slotIds: MongoId[] = [];
     entries.forEach(entry => slotIds.push(...entry.slots));
 
-    const slots = await Slot
-      .find({ _id: { $in: slotIds } });
+    const slots = await Slot.find({ _id: { $in: slotIds } });
 
     const relatedUsers: MongoId[] = [];
-    
+
     // Teachers
     slots.forEach(slot => relatedUsers.push(slot.teacher));
 
     // Children
     users.forEach(user => relatedUsers.push(...user.children));
-    
-    users = users.concat(...(
-      await User
-        .find({ _id: { $in: relatedUsers } })
-        .select('-password')
-      ),
+
+    users = users.concat(
+      ...(await User.find({ _id: { $in: relatedUsers } }).select("-password"))
     );
 
     return response.json({
       users,
       slots,
-      entries,
+      entries
     });
   } catch (error) {
     return next(error);
@@ -66,208 +69,240 @@ const populate: RequestHandler = async (request: UserRequest, response, next) =>
 /**
  * Get all users
  */
-const readPermissions : Permissions = {
-  users_read: true,
+const readPermissions: Permissions = {
+  users_read: true
 };
-const readTeacherPermissions : Permissions = {
-  teachers_read: true,
+const readTeacherPermissions: Permissions = {
+  teachers_read: true
 };
 enum FILTER {
-  TEACHER = 'teachers',
-  CHILDREN = 'children',
-  NEEDED = 'needed',
+  TEACHER = "teachers",
+  CHILDREN = "children",
+  NEEDED = "needed"
 }
-usersRouter.get('/', (request: UserRequest, response, next) => {
-  if (!permissionsCheck(
-    request.user.role,
-    (
-      request.query.filter === FILTER.TEACHER ||
-      request.query.filter === FILTER.CHILDREN ||
-      request.query.filter === FILTER.NEEDED
-    )
-      ? readTeacherPermissions
-      : readPermissions,
-  )) {
-    return response.status(403).end();
-  }
-  return next();
-}, async (request: UserRequest, response, next) => {
-  try {
-    let users;
-    switch (request.query.filter) {
-      case FILTER.TEACHER:
-        users = await User
-          .find({ role: ROLES.TEACHER })
-          .select('-password');
-        break;
-      case FILTER.CHILDREN:
-        users = await User
-          .find({ _id: { $in: request.user.children }})
-          .select('-password');
-        break;
-      case FILTER.NEEDED:
-        users = await User
-          .find({ $or: [
-            { _id: { $in: request.user.children }},
-            { role: ROLES.TEACHER }
-          ]})
-          .select('-password');
-        break;
-      default:
-        users = await User
-          .find({})
-          .select('-password');
+usersRouter.get(
+  "/",
+  (request: UserRequest, response, next) => {
+    if (
+      !permissionsCheck(
+        request.user.role,
+        request.query.filter === FILTER.TEACHER ||
+        request.query.filter === FILTER.CHILDREN ||
+        request.query.filter === FILTER.NEEDED
+          ? readTeacherPermissions
+          : readPermissions
+      )
+    ) {
+      return response.status(403).end();
     }
-    
-    request.users = users;
-    
     return next();
-  } catch (error) {
-    return next(error);
-  }
-}, populate);
+  },
+  async (request: UserRequest, response, next) => {
+    try {
+      let users;
+      switch (request.query.filter) {
+        case FILTER.TEACHER:
+          users = await User.find({ role: Roles.TEACHER }).select("-password");
+          break;
+        case FILTER.CHILDREN:
+          users = await User.find({
+            _id: { $in: request.user.children }
+          }).select("-password");
+          break;
+        case FILTER.NEEDED:
+          users = await User.find({
+            $or: [
+              { _id: { $in: request.user.children } },
+              { role: Roles.TEACHER }
+            ]
+          }).select("-password");
+          break;
+        default:
+          users = await User.find({}).select("-password");
+      }
+
+      request.users = users;
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+  populate
+);
 
 /**
  * Get specific user
  */
-const readSpecificPermissions : Permissions = {
-  users_read: true,
+const readSpecificPermissions: Permissions = {
+  users_read: true
 };
-usersRouter.get('/:userId', [
-  param('userId').isMongoId(),
-], async (request: UserRequest, response: Response, next) => {
-  if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
-    return response.status(403).end();
-  }
+usersRouter.get(
+  "/:userId",
+  [param("userId").isMongoId()],
+  async (request: UserRequest, response: Response, next) => {
+    if (!permissionsCheck(request.user.role, readSpecificPermissions)) {
+      return response.status(403).end();
+    }
 
-  const userId = request.params.userId;
+    const userId = request.params.userId;
 
-  try {
-    const user = await User.findById(userId).select('-password');
+    try {
+      const user = await User.findById(userId).select("-password");
 
-    if (!user) return response.status(404).end('Couldnt find requested user.');
+      if (!user) {
+        return response.status(404).end("Couldnt find requested user.");
+      }
 
-    request.users = [user];
-    
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-}, populate);
+      request.users = [user];
+
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+  populate
+);
 
 const userAlreadyExists = async (username: string): Promise<boolean> =>
-  !!(await User.findOne({ username }));
+  !!await User.findOne({ username });
 const userExistsById = async (id: string): Promise<boolean> =>
-  !!(await User.findById(id));
-const createPermissions : Permissions = {
-  users_write: true,
+  !!await User.findById(id);
+const createPermissions: Permissions = {
+  users_write: true
 };
 
 /**
  * Create new user
  */
-usersRouter.post('/', async (request: UserRequest, response, next) => {
-  const users = Array.isArray(request.body) ? request.body : [request.body];
-  try {
-    for (const user of users) {
-      if (!(
-        isEmail(user.email) &&
-        isAscii(user.displayname) &&
-        isAlphanumeric(user.username) &&
-        isIn(user.role, roles)
-      )) { return response.status(422).end('Validation errors'); }
+usersRouter.post(
+  "/",
+  async (request: UserRequest, response, next) => {
+    const users = Array.isArray(request.body) ? request.body : [request.body];
+    try {
+      for (const user of users) {
+        if (
+          !(
+            isEmail(user.email) &&
+            isAscii(user.displayname) &&
+            isAlphanumeric(user.username) &&
+            isIn(user.role, rolesArr)
+          )
+        ) {
+          return response.status(422).end("Validation errors");
+        }
 
-      if (await userAlreadyExists(user.username)) {
-        return response.status(409).end(`User ${user.username} already exists.`);
+        if (await userAlreadyExists(user.username)) {
+          return response
+            .status(409)
+            .end(`User ${user.username} already exists.`);
+        }
+
+        if (user.role === Roles.PARENT || user.role === Roles.MANAGER) {
+          user.children = await Promise.all(
+            user.children.map(async (child): Promise<string> => {
+              if (isMongoId(child)) {
+                return child;
+              }
+
+              const userInDB = await User.findOne({ username: child });
+              if (userInDB) return userInDB._id;
+
+              response.status(422).end(`Child ${child} doesn't exist`);
+            })
+          );
+        }
       }
 
-      if (user.role === ROLES.PARENT || user.role === ROLES.MANAGER) {
-        user.children = await Promise.all(user.children.map(async (child): Promise<string> => {
-          if (isMongoId(child)) { return child; }
-  
-          const userInDB = await User.findOne({ username: child });
-          if (userInDB) return userInDB._id;
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+  rbac(createPermissions),
+  async (request: UserRequest, response, next) => {
+    try {
+      const users = request.body;
 
-          response.status(422).end(`Child ${child} doesn't exist`);
-        }));
+      for (const user of users) {
+        const newUser = await User.create({
+          children: user.children,
+          email: user.email,
+          role: user.role,
+          displayname: user.displayname,
+          password: user.password,
+          isAdult: user.isAdult,
+          username: user.username
+        });
+
+        const oldUsers = request.users || [];
+
+        if (!newUser.password) {
+          newUser.forgotPassword();
+        }
+
+        request.users = [newUser, ...oldUsers];
       }
+
+      return next();
+    } catch (error) {
+      return next(error);
     }
-
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-}, async (request: UserRequest, response, next) => {
-  if (!permissionsCheck(request.user.role, createPermissions)) return response.status(403).end();
-
-  try {
-    const users = request.body;
-
-    for (const user of users) {
-      const newUser = await User.create({
-        children: user.children,
-        email: user.email,
-        role: user.role,
-        displayname: user.displayname,
-        password: user.password,
-        isAdult: user.isAdult,
-        username: user.username,
-      });
-
-      const oldUsers = request.users || [];
-
-      if (!newUser.password) { newUser.forgotPassword(); }
-  
-      request.users = [newUser, ...oldUsers];
-    }
-
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-}, populate);
+  },
+  populate
+);
 
 /**
  * Update specific user
  */
-const updatePermissions : Permissions = {
-  users_write: true,
+const updatePermissions: Permissions = {
+  users_write: true
 };
-usersRouter.patch('/:userId', [
-  body('role').isIn(roles).optional(),
-  body('email').isEmail().optional(),
-  body('username').isAlphanumeric().optional(),
-  body('displayname').isAscii().optional(),
-  param('userId').isMongoId(),
-], async (request: UserRequest, response: Response, next) => {
-  if (!permissionsCheck(request.user.role, updatePermissions)) return response.status(403).end();
-  
-  const errors = validationResult(request);
-  if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
+usersRouter.patch(
+  "/:userId",
+  [
+    body("role")
+      .isIn(rolesArr)
+      .optional(),
+    body("email")
+      .isEmail()
+      .optional(),
+    body("username")
+      .isAlphanumeric()
+      .optional(),
+    body("displayname")
+      .isAscii()
+      .optional(),
+    param("userId").isMongoId()
+  ],
+  validate,
+  rbac(updatePermissions),
+  async (request: UserRequest, response: Response, next) => {
+    const userId = request.params.userId;
+    const body = request.body;
 
-  const userId = request.params.userId;
-  const body = request.body;
-  
-  try {
-    const user = await User.findById(userId).select('-password');
+    try {
+      const user = await User.findById(userId).select("-password");
 
-    if (!user) return response.status(404).end('User not found');
+      if (!user) return response.status(404).end("User not found");
 
-    if (body.email) user.set('email', body.email);
-    if (body.role) user.set('role', body.role);
-    if (body.displayname) user.set('displayname', body.displayname);
-    if (body.children) user.set('children', body.children);
-    if ('isAdult' in body) user.set('isAdult', body.isAdult);
-    if (body.password) user.set('password', body.password);
+      if (body.email) user.set("email", body.email);
+      if (body.role) user.set("role", body.role);
+      if (body.displayname) user.set("displayname", body.displayname);
+      if (body.children) user.set("children", body.children);
+      if ("isAdult" in body) user.set("isAdult", body.isAdult);
+      if (body.password) user.set("password", body.password);
 
-    await user.save();
+      await user.save();
 
-    request.users = [user];
+      request.users = [user];
 
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-}, populate);
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+  populate
+);
 
 export default usersRouter;

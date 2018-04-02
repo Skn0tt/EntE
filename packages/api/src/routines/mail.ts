@@ -1,32 +1,33 @@
-import { EntryModel } from '../models/Entry';
-import * as mail from 'nodemailer';
-import * as sgTransport from 'nodemailer-sendgrid-transport';
-import * as Handlebars from 'handlebars';
-import User from '../models/User';
-import { ROLES } from '../constants';
-import Slot, { SlotModel } from '../models/Slot';
-import WeeklySummary, { IRowData } from '../templates/WeeklySummary';
-import PasswordResetLink from '../templates/PasswordResetLink';
-import PasswordResetSuccess from '../templates/PasswordResetSuccess';
-import SignedInformation from '../templates/SignedInformation';
-import SignRequest from '../templates/SignRequest';
+import { EntryModel } from "../models/Entry";
+import * as mail from "nodemailer";
+import * as sgTransport from "nodemailer-sendgrid-transport";
+import * as Handlebars from "handlebars";
+import User from "../models/User";
+import Slot, { SlotModel } from "../models/Slot";
+import WeeklySummary, { IRowData } from "../templates/WeeklySummary";
+import PasswordResetLink from "../templates/PasswordResetLink";
+import PasswordResetSuccess from "../templates/PasswordResetSuccess";
+import SignedInformation from "../templates/SignedInformation";
+import SignRequest from "../templates/SignRequest";
+import { Roles } from "ente-types";
 
 const baseUrl = `https://${process.env.HOST}`;
 
 const mailConfig =
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === "production"
     ? sgTransport({
         auth: {
-          api_key: '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',
-        },
+          api_key:
+            "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"
+        }
       })
     : {
-        host: 'smtp.ethereal.email',
+        host: "smtp.ethereal.email",
         port: 587,
         auth: {
-          user: 'louf4yh5lnkyg2h3@ethereal.email',
-          pass: 'mWgCFb9JcJxdeKa6RE',
-        },
+          user: "louf4yh5lnkyg2h3@ethereal.email",
+          pass: "mWgCFb9JcJxdeKa6RE"
+        }
       };
 
 const transporter = mail.createTransport(mailConfig);
@@ -38,7 +39,9 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   try {
     const { html, subject } = SignRequest(`${baseUrl}/entries/${entry._id}`);
 
-    const parents = await User.find({ children: entry.student }).select('email');
+    const parents = await User.find({ children: entry.student }).select(
+      "email"
+    );
 
     const recipients = parents.map(parent => parent.email);
 
@@ -46,10 +49,10 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
       html,
       subject,
       to: recipients,
-      from: 'EntE@simonknott.de',
+      from: "EntE@simonknott.de"
     });
 
-    console.log('Mail: Dispatched SignRequest to', info.accepted);
+    console.log("Mail: Dispatched SignRequest to", info.accepted);
   } catch (error) {
     throw error;
   }
@@ -57,9 +60,13 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
 
 export const dispatchSignedInformation = async (entry: EntryModel) => {
   try {
-    const { html, subject } = SignedInformation(`${baseUrl}/entries/${entry._id}`);
+    const { html, subject } = SignedInformation(
+      `${baseUrl}/entries/${entry._id}`
+    );
 
-    const parents = await User.find({ children: entry.student }).select('email');
+    const parents = await User.find({ children: entry.student }).select(
+      "email"
+    );
 
     const recipients = parents.map(parent => parent.email);
 
@@ -67,10 +74,10 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
       html,
       subject,
       to: recipients,
-      from: 'EntE@simonknott.de',
+      from: "EntE@simonknott.de"
     });
 
-    console.log('Mail: Dispatched SignedInformation to', info.accepted);
+    console.log("Mail: Dispatched SignedInformation to", info.accepted);
   } catch (error) {
     throw error;
   }
@@ -79,12 +86,12 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
 const twoWeeksBefore: Date = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 export const dispatchWeeklySummary = async (): Promise<void> => {
   try {
-    const teachers = await User.find({ role: ROLES.TEACHER });
+    const teachers = await User.find({ role: Roles.TEACHER });
     teachers.forEach(async teacher => {
       try {
         const slots: SlotModel[] = await Slot.find({
           teacher: teacher._id,
-          date: { $gte: twoWeeksBefore },
+          date: { $gte: twoWeeksBefore }
         });
 
         const items: IRowData[] = await Promise.all(
@@ -96,9 +103,9 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
               date: slot.date,
               signed: slot.signed,
               hour_from: slot.hour_from,
-              hour_to: slot.hour_to,
+              hour_to: slot.hour_to
             };
-          }),
+          })
         );
 
         const email = teacher.email;
@@ -109,9 +116,9 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
           html,
           subject,
           to: email,
-          from: 'EntE@simonknott.de',
+          from: "EntE@simonknott.de"
         });
-        console.log('Mail: Dispatched WeeklySummary to', info.accepted);
+        console.log("Mail: Dispatched WeeklySummary to", info.accepted);
       } catch (error) {
         throw error;
       }
@@ -121,23 +128,33 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
   }
 };
 
-export const dispatchPasswortResetLink = async (token: string, username: string, email: string) => {
+export const dispatchPasswortResetLink = async (
+  token: string,
+  username: string,
+  email: string
+) => {
   try {
-    const { html, subject } = PasswordResetLink(`${baseUrl}/forgot/${token}`, username);
+    const { html, subject } = PasswordResetLink(
+      `${baseUrl}/forgot/${token}`,
+      username
+    );
 
     const info = await transporter.sendMail({
       html,
       subject,
       to: email,
-      from: 'EntE@simonknott.de',
+      from: "EntE@simonknott.de"
     });
-    console.log('Mail: Dispatched PasswortResetLink to', info.accepted);
+    console.log("Mail: Dispatched PasswortResetLink to", info.accepted);
   } catch (error) {
     throw error;
   }
 };
 
-export const dispatchPasswortResetSuccess = async (username: string, email: string) => {
+export const dispatchPasswortResetSuccess = async (
+  username: string,
+  email: string
+) => {
   try {
     const { html, subject } = PasswordResetSuccess(username);
 
@@ -145,9 +162,9 @@ export const dispatchPasswortResetSuccess = async (username: string, email: stri
       html,
       subject,
       to: email,
-      from: 'EntE@simonknott.de',
+      from: "EntE@simonknott.de"
     });
-    console.log('Mail: Dispatched PasswortResetSuccess to', info.accepted);
+    console.log("Mail: Dispatched PasswortResetSuccess to", info.accepted);
   } catch (error) {
     console.error(error);
   }
@@ -156,7 +173,7 @@ export const dispatchPasswortResetSuccess = async (username: string, email: stri
 export const checkEmail = async (): Promise<void> => {
   try {
     const result = await transporter.verify();
-    console.log('SMTP Connection Works.');
+    console.log("SMTP Connection Works.");
   } catch (error) {
     console.log("Error: SMTP couldn't connect.");
   }

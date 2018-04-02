@@ -6,3 +6,6 @@ build: src
 		-t $(IMAGE_TAG) \
 		-f packages/rotator/Dockerfile \
 		.
+
+run: build
+	docker run $(IMAGE_TAG)

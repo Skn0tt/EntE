@@ -1,9 +1,8 @@
-import de from './de';
+import de from "./de";
 
 export interface Translation {
   app: {
     name: string;
-    logo: string;
   };
   message: {
     sign: {
