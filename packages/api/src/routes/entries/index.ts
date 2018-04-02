@@ -12,6 +12,7 @@ import * as mail from "../../routines/mail";
 import User from "../../models/User";
 import { ObjectID } from "bson";
 import { MongoId, Roles } from "ente-types";
+import validate from "../../routines/validate";
 
 const entriesRouter = Router();
 
@@ -40,15 +41,6 @@ const populate = async (request: EntriesRequest, response, next) => {
   } catch (error) {
     return next(error);
   }
-};
-
-const validate: RequestHandler = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.mapped() });
-  }
-
-  next();
 };
 
 /**

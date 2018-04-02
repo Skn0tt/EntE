@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { validationResult, body, param, oneOf } from "express-validator/check";
 
-import {
+import rbac, {
   check as permissionsCheck,
   Permissions
 } from "../../routines/permissions";
@@ -19,6 +19,7 @@ import {
   isMongoId
 } from "validator";
 import { MongoId, Roles, rolesArr } from "ente-types";
+import validate from "../../routines/validate";
 
 const usersRouter = Router();
 
@@ -149,8 +150,9 @@ usersRouter.get(
     try {
       const user = await User.findById(userId).select("-password");
 
-      if (!user)
+      if (!user) {
         return response.status(404).end("Couldnt find requested user.");
+      }
 
       request.users = [user];
 
@@ -217,10 +219,8 @@ usersRouter.post(
       return next(error);
     }
   },
+  rbac(createPermissions),
   async (request: UserRequest, response, next) => {
-    if (!permissionsCheck(request.user.role, createPermissions))
-      return response.status(403).end();
-
     try {
       const users = request.body;
 
@@ -275,14 +275,9 @@ usersRouter.patch(
       .optional(),
     param("userId").isMongoId()
   ],
+  validate,
+  rbac(updatePermissions),
   async (request: UserRequest, response: Response, next) => {
-    if (!permissionsCheck(request.user.role, updatePermissions))
-      return response.status(403).end();
-
-    const errors = validationResult(request);
-    if (!errors.isEmpty())
-      return response.status(422).json({ errors: errors.mapped() });
-
     const userId = request.params.userId;
     const body = request.body;
 
