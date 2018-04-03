@@ -1,0 +1,10 @@
+{
+  "name": "ente-validator",
+  "version": "0.0.1",
+  "description": "Validation Logic for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/validator",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true
+}

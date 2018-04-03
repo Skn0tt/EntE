@@ -10,5 +10,8 @@
     "lerna": "^2.9.0",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1"
+  },
+  "dependencies": {
+    "npm": "^5.8.0"
   }
 }

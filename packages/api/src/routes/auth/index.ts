@@ -1,43 +1,48 @@
 import { Router, Response, NextFunction, Request } from "express";
-import { param, validationResult } from "express-validator/check";
-import * as JWT from "jsonwebtoken";
+import { param, validationResult, body } from "express-validator/check";
 import User from "../../models/User";
 import { dispatchPasswortResetSuccess } from "../../helpers/mail";
+import validate from "../../helpers/validate";
+import wrapAsync from "../../helpers/wrapAsync";
+import { isValidPassword } from "ente-validator";
 
 const authRouter = Router();
 
 authRouter.post(
   "/forgot/:username",
   [param("username").isAlphanumeric()],
-  async (request: Request, response: Response, next: NextFunction) => {
-    const errors = validationResult(request);
-    if (!errors.isEmpty())
-      return response.status(422).json({ errors: errors.mapped() });
+  validate,
+  wrapAsync(async (request, response, next) => {
+    const username: string = request.params.username;
+    const user = await User.findOne({ username });
 
-    try {
-      const username: string = request.params.username;
-      const user = await User.findOne({ username });
-
-      if (user) {
-        await user.forgotPassword();
-      }
-
-      return response
-        .status(200)
-        .end("If the user exists, routine got triggered.");
-    } catch (error) {
-      return next(error);
+    if (user) {
+      await user.forgotPassword();
     }
-  }
+
+    return response
+      .status(200)
+      .end("If the user exists, routine got triggered.");
+  })
 );
 
-authRouter.put("/forgot/:token", async (request, response, next) => {
-  try {
+authRouter.put(
+  "/forgot/:token",
+  [
+    param("username").isHexadecimal(),
+    body("newPassword").custom(isValidPassword)
+  ],
+  validate,
+  wrapAsync(async (request, response, next) => {
     const token: string = request.params.token;
     const user = await User.findOne({ resetPasswordToken: token });
 
     if (!user) {
-      return response.status(404).end();
+      return response.status(404).end("Token was not found.");
+    }
+
+    if (+user.resetPasswordExpires < Date.now()) {
+      next();
     }
 
     if (+user.resetPasswordExpires >= Date.now()) {
@@ -53,9 +58,7 @@ authRouter.put("/forgot/:token", async (request, response, next) => {
     }
 
     return response.status(200).send("If token existed, it succeeded.");
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
 export default authRouter;

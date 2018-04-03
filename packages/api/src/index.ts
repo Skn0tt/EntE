@@ -25,9 +25,8 @@ import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
 
-const jwtSecret = process.env.JWT_SECRET || "supersecret";
+const jwtSecret = process.env.JWT_SECRET;
 const production = process.env.NODE_ENV === "production";
-const kubernetes = process.env.KUBERNETES === "true";
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
@@ -45,9 +44,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(validator());
 
-const mongoAddress = kubernetes
-  ? "mongodb://localhost/ente"
-  : "mongodb://mongodb/ente";
+const mongoAddress = "mongodb://mongodb/ente";
 
 // Mongoose
 require("mongoose").Promise = BBPromise;
