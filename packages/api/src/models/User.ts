@@ -5,7 +5,7 @@ import * as idValidator from "mongoose-id-validator";
 import * as uniqueValidator from "mongoose-unique-validator";
 import * as crypto from "crypto";
 
-import { dispatchPasswortResetLink } from "../routines/mail";
+import { dispatchPasswortResetLink } from "../helpers/mail";
 import { MongoId, Roles, rolesArr } from "ente-types";
 
 export interface UserModel extends Document, IUser {

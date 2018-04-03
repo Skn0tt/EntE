@@ -1,7 +1,7 @@
-import { mjml2html } from 'mjml';
-import * as Handlebars from 'handlebars';
+import { mjml2html } from "mjml";
+import * as Handlebars from "handlebars";
 
-const title = 'Ein Eintrag wurde signiert.';
+const title = "Ein Eintrag wurde erstellt.";
 
 const template = Handlebars.compile(`
 <mjml>
@@ -13,7 +13,7 @@ const template = Handlebars.compile(`
           <mj-divider border-color="black" />
 
           <mj-text font-size="20px" font-family="helvetica">
-            Ein Eintrag wurde signiert.
+            Ein Eintrag wurde erstellt.
           </mj-text>
 
           <mj-text>
@@ -31,6 +31,6 @@ const template = Handlebars.compile(`
 export default (linkAddress: string) => {
   const mjml = template({ linkAddress, linkDisplay: linkAddress });
   const { errors, html } = mjml2html(mjml);
-  if (errors.length > 0) throw new Error('MJML Error');
+  if (errors.length > 0) throw new Error("MJML Error");
   return { html, subject: title };
 };

@@ -6,5 +6,8 @@
   "repository": "gitlab.com/skn0tt/EntE/master/packages/lang",
   "author": "Simon Knott",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "ente-mail": "^0.0.1"
+  }
 }

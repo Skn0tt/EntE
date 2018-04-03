@@ -4,7 +4,7 @@ import { validationResult, body, param, oneOf } from "express-validator/check";
 import rbac, {
   check as permissionsCheck,
   Permissions
-} from "../../routines/permissions";
+} from "../../helpers/permissions";
 
 import User, { UserModel, IUser, IUserCreate } from "../../models/User";
 import { RequestHandler } from "express-serve-static-core";
@@ -19,7 +19,7 @@ import {
   isMongoId
 } from "validator";
 import { MongoId, Roles, rolesArr } from "ente-types";
-import validate from "../../routines/validate";
+import validate from "../../helpers/validate";
 
 const usersRouter = Router();
 

@@ -1,7 +1,7 @@
-import { mjml2html } from 'mjml';
-import * as Handlebars from 'handlebars';
+import { mjml2html } from "mjml";
+import * as Handlebars from "handlebars";
 
-const title = 'Passwort Erfolgreich Zurückgesetzt';
+const title = "Passwort Erfolgreich Zurückgesetzt";
 
 const template = Handlebars.compile(`
 <mjml>
@@ -29,6 +29,6 @@ const template = Handlebars.compile(`
 export default (username: string) => {
   const mjml = template({ username });
   const { errors, html } = mjml2html(mjml);
-  if (errors.length > 0) throw new Error('MJML Error');
+  if (errors.length > 0) throw new Error("MJML Error");
   return { html, subject: title };
 };

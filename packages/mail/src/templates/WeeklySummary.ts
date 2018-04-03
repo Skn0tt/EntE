@@ -1,20 +1,20 @@
-import { ISlot } from '../models/Slot';
-import { mjml2html } from 'mjml';
-import * as handlebars from 'handlebars';
-import * as moment from 'moment';
+import { ISlot } from "ente-types";
+import { mjml2html } from "mjml";
+import * as handlebars from "handlebars";
+import * as moment from "moment";
 
-export interface HEMLResults {
+interface HEMLResults {
   html: string;
   subject: string;
 }
 
-export interface WeeklySummaryOptions {
+interface WeeklySummaryOptions {
   subject: string;
   preview: string;
   items: string[];
 }
 
-export interface IRowData {
+interface IRowData {
   displayname: string;
   date: Date;
   hour_from: number;
@@ -28,11 +28,13 @@ const tableRow = (data: IRowData) => `
     <td>${data.date.toDateString()}</td>
     <td>${data.hour_from}</td>
     <td>${data.hour_to}</td>
-    <td>${data.signed ? 'Entschuldigt' : 'Ausstehend'}</td>
+    <td>${data.signed ? "Entschuldigt" : "Ausstehend"}</td>
   </tr>
 `;
 
-const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = handlebars.compile(`
+const template: HandlebarsTemplateDelegate<
+  WeeklySummaryOptions
+> = handlebars.compile(`
 <mjml>
   <mj-body>
     <mj-container>
@@ -79,10 +81,10 @@ export default (items: IRowData[]): HEMLResults => {
     const mjml = template({
       items: rows,
       preview: title,
-      subject: title,
+      subject: title
     });
     const { errors, html } = mjml2html(mjml);
-    if (errors.length > 0) throw new Error('MJML Error');
+    if (errors.length > 0) throw new Error("MJML Error");
     return { html, subject: title };
   } catch (error) {
     throw error;

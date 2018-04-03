@@ -4,7 +4,7 @@ import { validationResult, param } from "express-validator/check";
 import rbac, {
   check as permissionsCheck,
   Permissions
-} from "../../routines/permissions";
+} from "../../helpers/permissions";
 
 import Slot, { SlotModel } from "../../models/Slot";
 import { RequestHandler } from "express-serve-static-core";

@@ -1,0 +1,19 @@
+{
+  "name": "ente-mail",
+  "version": "0.0.1",
+  "description": "Mail for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/mail",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ente-types": "^0.0.1",
+    "handlebars": "^4.0.11",
+    "mjml": "^4.0.3",
+    "moment": "^2.22.0"
+  },
+  "devDependencies": {
+    "@types/handlebars": "^4.0.36"
+  }
+}

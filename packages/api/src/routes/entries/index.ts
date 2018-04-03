@@ -4,15 +4,15 @@ import { body, validationResult, param } from "express-validator/check";
 import rbac, {
   check as permissionsCheck,
   Permissions
-} from "../../routines/permissions";
+} from "../../helpers/permissions";
 
 import Entry, { EntryModel } from "../../models/Entry";
 import Slot, { ISlot } from "../../models/Slot";
-import * as mail from "../../routines/mail";
+import * as mail from "../../helpers/mail";
 import User from "../../models/User";
 import { ObjectID } from "bson";
 import { MongoId, Roles } from "ente-types";
-import validate from "../../routines/validate";
+import validate from "../../helpers/validate";
 
 const entriesRouter = Router();
 

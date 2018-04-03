@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import { Roles } from "ente-types";
 
 interface Permissions {
   slots_read?: boolean;
