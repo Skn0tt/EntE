@@ -119,7 +119,10 @@ userSchema.pre("save", async function(next) {
 userSchema.methods.comparePassword = async function(
   candidatePassword
 ): Promise<boolean> {
-  const password = this.password;
+  if (!this.password) {
+    return false;
+  }
+
   try {
     const isValid = await bcrypt.compare(candidatePassword, this.password);
     return isValid;
@@ -132,7 +135,7 @@ userSchema.methods.comparePassword = async function(
  * ## Forgot Password Routine
  */
 userSchema.methods.forgotPassword = async function(): Promise<void> {
-  const buffer = await crypto.randomBytes(20);
+  const buffer = await crypto.randomBytes(30);
   const token = buffer.toString("hex");
 
   this.resetPasswordToken = token;
