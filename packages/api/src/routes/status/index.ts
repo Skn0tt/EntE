@@ -1,16 +1,19 @@
-import { Router, Request, Response } from 'express';
+/**
+ * Express
+ */
+import { Router, Request, Response } from "express";
 
+/**
+ * Status Router
+ * '/status'
+ *
+ * Unauthenticated
+ */
 const statusRouter = Router();
 
 /**
- * Login
+ * Status
  */
-statusRouter.get('/', async (request: Request, response: Response, next) => {
-  try {
-    return response.status(200).send('OK');
-  } catch (error) {
-    return next(error);
-  }
-});
+statusRouter.get("/", (_, res) => res.status(200).send("OK"));
 
 export default statusRouter;

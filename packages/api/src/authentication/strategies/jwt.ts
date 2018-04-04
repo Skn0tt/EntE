@@ -3,9 +3,8 @@ import * as crypto from "crypto";
 import * as JWT from "jsonwebtoken";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { promisify } from "util";
-import { JWT_PAYLOAD } from "../../routes/token";
 import User from "../../models/User";
-import { redis as redisTypes } from "ente-types";
+import { redis as redisTypes, JWT_PAYLOAD } from "ente-types";
 
 const client = redis.createClient("redis://redis");
 
@@ -13,6 +12,8 @@ const get = promisify(client.get).bind(client);
 
 export const getSecrets = async (): Promise<[string, string]> =>
   JSON.parse(await get(redisTypes.JWT_SECRETS));
+
+export const getFirstSecret = async () => (await getSecrets())[0];
 
 const validate = async (token: string): Promise<JWT_PAYLOAD> => {
   try {

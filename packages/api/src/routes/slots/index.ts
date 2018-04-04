@@ -30,6 +30,8 @@ import validate from "../../helpers/validate";
 /**
  * Slots Router
  * '/slots'
+ *
+ * Authenticated
  */
 const slotsRouter = Router();
 

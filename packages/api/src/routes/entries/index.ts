@@ -41,6 +41,8 @@ import * as _ from "lodash";
 /**
  * Entries Router
  * '/entries'
+ *
+ * Authenticated
  */
 const entriesRouter = Router();
 
