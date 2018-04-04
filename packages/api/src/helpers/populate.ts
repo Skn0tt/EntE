@@ -37,9 +37,10 @@ const populate = async (
   users.forEach(u => userIds.push(...u.children));
 
   const slotIds = _.flatten(entries.map(e => e.slots));
+  console.log(slotIds);
 
   const newUsers = await User.find({ _id: { $in: missing(users, userIds) } });
-  const newSlots = await Entry.find({ _id: { $in: missing(slots, slotIds) } });
+  const newSlots = await Slot.find({ _id: { $in: missing(slots, slotIds) } });
 
   return res.status(200).json({
     entries,
