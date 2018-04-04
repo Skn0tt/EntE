@@ -159,7 +159,7 @@ entriesRouter.post(
         hour_from: slot.hour_from,
         hour_to: slot.hour_to,
         teacher: slot.teacher,
-        student: req.body.student
+        student: req.body.student || req.user._id
       });
 
       slots.push(newSlot._id);
