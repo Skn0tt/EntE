@@ -1,3 +1,6 @@
+/**
+ * Express
+ */
 import {
   Router,
   Response,
@@ -7,25 +10,38 @@ import {
 } from "express";
 import { body, validationResult, param } from "express-validator/check";
 
+/**
+ * EntE
+ */
+import { MongoId, Roles } from "ente-types";
+
+/**
+ * DB
+ */
+import Entry, { EntryModel } from "../../models/Entry";
+import Slot, { ISlot } from "../../models/Slot";
+import User from "../../models/User";
+
+/**
+ * Helpers
+ */
 import rbac, {
   check as permissionsCheck,
   Permissions
 } from "../../helpers/permissions";
-
-import Entry, { EntryModel } from "../../models/Entry";
-import Slot, { ISlot } from "../../models/Slot";
-import * as mail from "../../helpers/mail";
-import User from "../../models/User";
-import { ObjectID } from "bson";
-import { MongoId, Roles } from "ente-types";
-import validate from "../../helpers/validate";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import { thisYear } from "../../helpers/queryParams";
+import * as mail from "../../helpers/mail";
+import validate from "../../helpers/validate";
+import { usersExist } from "../../helpers/exist";
 import { isTwoWeeksBeforeNow } from "ente-validator";
 import * as _ from "lodash";
-import { usersExist } from "../../helpers/exist";
 
+/**
+ * Entries Router
+ * '/entries'
+ */
 const entriesRouter = Router();
 
 /**

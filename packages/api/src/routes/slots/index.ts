@@ -1,117 +1,152 @@
-import { Router, Request } from "express";
+/**
+ * Express
+ */
+import { Router, Request, RequestHandler } from "express";
 import { validationResult, param } from "express-validator/check";
 
+/**
+ * EntE
+ */
+import { MongoId, Roles } from "ente-types";
+
+/**
+ * DB
+ */
+import User from "../../models/User";
+import Slot, { SlotModel } from "../../models/Slot";
+
+/**
+ * Helpers
+ */
 import rbac, {
   check as permissionsCheck,
   Permissions
 } from "../../helpers/permissions";
-
-import Slot, { SlotModel } from "../../models/Slot";
-import { RequestHandler } from "express-serve-static-core";
-import User from "../../models/User";
-import { MongoId, Roles } from "ente-types";
-
-const slotsRouter = Router();
-
-interface SlotRequest extends Request {
-  slots: SlotModel[];
-}
-
-const populate: RequestHandler = async (
-  request: SlotRequest,
-  response,
-  next
-) => {
-  try {
-    const slots = request.slots;
-
-    const userIds: MongoId[] = [];
-    slots.forEach(slot => userIds.push(slot.student, slot.teacher));
-    const users = await User.find({ _id: { $in: userIds } }).select(
-      "-password"
-    );
-
-    return response.json({
-      slots,
-      users
-    });
-  } catch (error) {
-    return next(error);
-  }
-};
+import populate, { PopulateRequest } from "../../helpers/populate";
+import wrapAsync from "../../helpers/wrapAsync";
+import { thisYear } from "../../helpers/queryParams";
+import validate from "../../helpers/validate";
 
 /**
- * Get all slots for user
+ * Slots Router
+ * '/slots'
  */
-const readPermissions: Permissions = {
-  slots_read: true
-};
+const slotsRouter = Router();
+
+/**
+ * GET all slots for user
+ */
 const oneYearBefore = new Date(+new Date() - 365 * 24 * 60 * 60 * 1000);
 const yearParams = { date: { $gte: oneYearBefore } };
 slotsRouter.get(
   "/",
-  rbac(readPermissions),
-  async (request: SlotRequest, response, next) => {
-    try {
-      let slots;
-      switch (request.user.role) {
-        case Roles.TEACHER:
-          slots = await Slot.find({ teacher: request.user._id, ...yearParams });
-          break;
-        case Roles.MANAGER:
-        case Roles.PARENT:
-          slots = await Slot.find({
-            student: { $in: request.user.children },
-            ...yearParams
-          });
-          break;
-        case Roles.STUDENT:
-          slots = await Slot.find({ student: request.user._id, ...yearParams });
-          break;
-        case Roles.ADMIN:
-          slots = await Slot.find({ ...yearParams });
-          break;
-        default:
-          break;
-      }
+  rbac({ slots_read: true }),
+  wrapAsync(async (req: PopulateRequest, res, next) => {
+    switch (req.user.role) {
+      /**
+       * Teachers have access to all of their slots
+       */
+      case Roles.TEACHER:
+        req.slots = await Slot.find({
+          teacher: req.user._id,
+          ...thisYear
+        });
+        return next();
 
-      request.slots = slots;
+      /**
+       * Managers / Parents have access to all of their childrens slots
+       */
+      case Roles.MANAGER:
+      case Roles.PARENT:
+        req.slots = await Slot.find({
+          student: { $in: req.user.children },
+          ...thisYear
+        });
+        return next();
 
-      return next();
-    } catch (error) {
-      return next(error);
+      /**
+       * Students have access to all of their slots
+       */
+      case Roles.STUDENT:
+        req.slots = await Slot.find({
+          student: req.user._id,
+          ...thisYear
+        });
+        return next();
+
+      /**
+       * Admins have access to all slots
+       */
+      case Roles.ADMIN:
+        req.slots = await Slot.find({
+          ...thisYear
+        });
+        return next();
+
+      default:
+        return res.status(403).end();
     }
-  },
+  }),
   populate
 );
 
 /**
- * Get specific slot
+ * GET specific slot
  */
-const readSpecificPermissions: Permissions = {
-  slots_read: true
-};
 slotsRouter.get(
   "/:slotId",
+  rbac({ slots_read: true }),
   [param("slotId").isMongoId()],
-  rbac(readSpecificPermissions),
-  async (request: SlotRequest, response, next) => {
-    const slotId = request.params.slotId;
+  validate,
+  wrapAsync(async (req: PopulateRequest, res, next) => {
+    const { slotId } = req.params;
 
-    try {
-      const slot = await Slot.findById(slotId);
+    const slot = await Slot.findById(slotId);
 
-      if (!slot) {
-        return response.status(404).end();
-      }
-
-      request.slots = [slot];
-
-      return next();
-    } catch (error) {
-      return next(error);
+    if (!slot) {
+      return res.status(404).end("Slot not found.");
     }
-  },
+
+    /**
+     * Authorization
+     */
+    switch (req.user.role as Roles) {
+      /**
+       * Parent / Manger has acces to slots of their children
+       */
+      case Roles.PARENT:
+      case Roles.MANAGER:
+        if (!req.user.children.includes(slot.student)) {
+          return res.status(403);
+        }
+        break;
+
+      /**
+       * Teacher has access to their slots
+       */
+      case Roles.TEACHER:
+        if (req.user._id !== slot.teacher) {
+          return res.status(403);
+        }
+        break;
+
+      /**
+       * Student has access to their slots
+       */
+      case Roles.STUDENT:
+        if (req.user._id !== slot.student) {
+          return res.status(403);
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    req.slots = [slot];
+
+    return next();
+  }),
   populate
 );
 
