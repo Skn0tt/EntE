@@ -3,15 +3,33 @@
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "test": "yarn jest",
+    "test:watch": "yarn jest --watch",
+    "test:coverage": "yarn jest --coverage"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.2",
+    "@types/jest": "^22.2.2",
+    "chai": "^4.1.2",
     "husky": "^0.14.3",
+    "jest": "^22.4.3",
     "lerna": "^2.9.0",
     "prettier": "^1.11.1",
-    "pretty-quick": "^1.4.1"
+    "pretty-quick": "^1.4.1",
+    "ts-jest": "^22.4.2",
+    "typescript": "^2.8.1"
   },
   "dependencies": {
     "npm": "^5.8.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "collectCoverageFrom": ["packages/*/src/**/*.{ts,tsx,js,jsx}"],
+    "coveragePathIgnorePatterns": [".*\\.d\\.ts"],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }

@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as logger from "morgan";
+import * as morgan from "morgan";
 import * as passport from "passport";
 import * as mongoose from "mongoose";
 import basic from "./authentication/strategies/basic";
@@ -25,7 +25,6 @@ import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
 
-const jwtSecret = process.env.JWT_SECRET;
 const production = process.env.NODE_ENV === "production";
 const app = express();
 
@@ -40,9 +39,27 @@ Raven.config(DSN).install();
 
 // Express Setup
 app.use(Raven.requestHandler());
-app.use(logger("dev"));
 app.use(express.json());
 app.use(validator());
+
+// Logger
+if (production) {
+  app.use(morgan("common"));
+} else {
+  app.use(
+    morgan("dev", {
+      skip: (_, res) => res.statusCode < 400,
+      stream: process.stderr
+    })
+  );
+
+  app.use(
+    morgan("dev", {
+      skip: (_, res) => res.statusCode >= 400,
+      stream: process.stdout
+    })
+  );
+}
 
 const mongoAddress = "mongodb://mongodb/ente";
 

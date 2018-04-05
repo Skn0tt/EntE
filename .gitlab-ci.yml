@@ -85,6 +85,15 @@ Build rotator:
 # Test
 #
 
+# Coverage Report
+Coverage Report:
+  image: node
+  stage: test
+  before_script:
+    - yarn
+  script:
+    - yarn test:coverage
+
 # Test
 .Compose Startup Test:
   image: docker
