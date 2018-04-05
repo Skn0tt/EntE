@@ -4,7 +4,8 @@ import {
   isValidEmail,
   isValidDisplayname,
   isValidUsername,
-  isValidUser
+  isValidUser,
+  isValidMongoId
 } from "./user";
 import { rolesArr, Roles } from "ente-types";
 
@@ -92,6 +93,15 @@ describe("isValidUsername", () => {
   });
 });
 
+describe("isValidMongoId", () => {
+  it("returns true when passing valid id", () => {
+    expect(isValidMongoId("5ac54ae00000000000000000")).to.be.true;
+  });
+  it("returns false when passing invalid id", () => {
+    expect(isValidMongoId("5ac54ae0")).to.be.false;
+  });
+});
+
 describe("isValidUser", () => {
   describe("when giving valid infos", () => {
     it("returns true", () => {
@@ -136,7 +146,20 @@ describe("isValidUser", () => {
   });
 
   describe("when giving invalid infos", () => {
-    it("returns false", () => {
+    it("invalid mongoid", () => {
+      expect(
+        isValidUser({
+          children: ["54ae00000000000000000"],
+          role: Roles.PARENT,
+          password: "m!e1passwofrt",
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
+          isAdult: false
+        })
+      ).to.be.false;
+    });
+    it("student with children", () => {
       expect(
         isValidUser({
           children: ["5ac54ae00000000000000000"],
@@ -162,7 +185,7 @@ describe("isValidUser", () => {
         })
       ).to.be.false;
     });
-    it("returns false", () => {
+    it("invalid username", () => {
       expect(
         isValidUser({
           children: [],
@@ -175,7 +198,7 @@ describe("isValidUser", () => {
         })
       ).to.be.false;
     });
-    it("returns false", () => {
+    it("parent cannot be adult", () => {
       expect(
         isValidUser({
           children: [],

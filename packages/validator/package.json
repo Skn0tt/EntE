@@ -6,5 +6,8 @@
   "repository": "gitlab.com/skn0tt/EntE/master/packages/validator",
   "author": "Simon Knott",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "date-fns": "^1.29.0"
+  }
 }
