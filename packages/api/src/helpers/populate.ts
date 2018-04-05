@@ -6,6 +6,7 @@ import User, { UserModel } from "../models/User";
 import Slot, { SlotModel } from "../models/Slot";
 import { MongoId } from "ente-types";
 import * as _ from "lodash";
+import { omitPassword } from "./queryParams";
 
 export interface PopulateRequest extends Request {
   entries: EntryModel[];
@@ -37,9 +38,10 @@ const populate = async (
   users.forEach(u => userIds.push(...u.children));
 
   const slotIds = _.flatten(entries.map(e => e.slots));
-  console.log(slotIds);
 
-  const newUsers = await User.find({ _id: { $in: missing(users, userIds) } });
+  const newUsers = await User.find({
+    _id: { $in: missing(users, userIds) }
+  }).select(omitPassword);
   const newSlots = await Slot.find({ _id: { $in: missing(slots, slotIds) } });
 
   return res.status(200).json({

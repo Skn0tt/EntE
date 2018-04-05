@@ -1,4 +1,4 @@
-import { mjml2html } from "mjml";
+import mjml2html from "mjml";
 import * as Handlebars from "handlebars";
 
 const title = "Passwort Zurücksetzen";

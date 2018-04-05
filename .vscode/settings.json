@@ -1,5 +1,6 @@
 {
   "git.enableCommitSigning": true,
   "tslint.packageManager": "yarn",
-  "tslint.exclude": "node_modules"
+  "tslint.exclude": "node_modules",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -126,7 +126,7 @@ entriesRouter.post(
   [
     body("date").custom(d => isTwoWeeksBeforeNow(new Date(d))),
     body("reason").isLength({ max: 300 }),
-    body("teacher").custom(id => usersExist(id))
+    body("teacher").custom(id => usersExist(id, Roles.TEACHER))
   ],
   validate,
   wrapAsync(async (req: PopulateRequest, res, next) => {
@@ -146,7 +146,7 @@ entriesRouter.post(
     }
 
     /**
-     * Parent can only create Entry for his own children
+     * Parents can only create Entry for his own children
      */
     if (
       req.user.role === Roles.PARENT &&
@@ -162,10 +162,13 @@ entriesRouter.post(
      * - Exist
      * - are teachers
      */
-    const allTeachersExist = usersExist(
+    const allTeachersExist = await usersExist(
       _.flatten(req.body.slots.map(s => s.teacher)),
-      u => u.role === Roles.TEACHER
+      Roles.TEACHER
     );
+    if (!allTeachersExist) {
+      return res.status(422).end("One of the teachers does not exist.");
+    }
 
     /**
      * Create Slots
@@ -206,7 +209,7 @@ entriesRouter.post(
      * Dispatch Sign Request
      */
     if (!entry.signedParent) {
-      mail.dispatchSignRequest(entry);
+      await mail.dispatchSignRequest(entry);
     }
 
     req.entries = [entry];
