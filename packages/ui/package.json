@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "yarn parcel public/index.html",
-    "build": "yarn parcel build public/index.html --public-url ./ -o index",
+    "build": "yarn parcel build public/index.html --public-url / -o index",
     "snyk": "snyk test",
     "analyze": "source-map-explorer build/static/js/main.*",
     "lint": "tslint --project ."

@@ -41,6 +41,11 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
       "email"
     );
 
+    if (parents.length === 0) {
+      console.log("Mail: No Recipients defined");
+      return;
+    }
+
     const recipients = parents.map(parent => parent.email);
 
     const info = await transporter.sendMail({

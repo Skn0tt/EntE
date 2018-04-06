@@ -141,7 +141,7 @@ userSchema.methods.forgotPassword = async function(): Promise<void> {
   this.resetPasswordToken = token;
   this.resetPasswordExpires = Date.now() + 60 * 60 * 1000;
 
-  await dispatchPasswortResetLink(token, this.username, this.email);
+  dispatchPasswortResetLink(token, this.username, this.email);
 
   await this.save();
 };

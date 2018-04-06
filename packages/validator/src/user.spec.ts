@@ -104,12 +104,11 @@ describe("isValidMongoId", () => {
 
 describe("isValidUser", () => {
   describe("when giving valid infos", () => {
-    it("returns true", () => {
+    it("no password", () => {
       expect(
         isValidUser({
           children: [],
           role: Roles.STUDENT,
-          password: "m!e1passwort",
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
@@ -126,11 +125,24 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdult: false
+        })
+      ).to.be.true;
+    });
+    it("regular student", () => {
+      expect(
+        isValidUser({
+          children: [],
+          role: Roles.STUDENT,
+          password: "m!e1passwort",
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
           isAdult: true
         })
       ).to.be.true;
     });
-    it("returns true", () => {
+    it("with children", () => {
       expect(
         isValidUser({
           children: ["5ac54ae00000000000000000"],
@@ -146,6 +158,19 @@ describe("isValidUser", () => {
   });
 
   describe("when giving invalid infos", () => {
+    it("invalid password", () => {
+      expect(
+        isValidUser({
+          children: [],
+          role: Roles.STUDENT,
+          password: "zukurz",
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
+          isAdult: false
+        })
+      ).to.be.false;
+    });
     it("invalid mongoid", () => {
       expect(
         isValidUser({

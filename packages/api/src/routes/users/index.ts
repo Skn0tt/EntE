@@ -12,7 +12,6 @@ import {
   isValidEmail,
   isValidRole,
   isValidDisplayname,
-  isValidIsAdult,
   Validator,
   isValidUsername
 } from "ente-validator";
@@ -191,7 +190,7 @@ usersRouter.post(
         username: user.username
       });
 
-      if (!newUser.password) {
+      if (!user.password) {
         // TODO: SignUp Routine, Like invitation
         newUser.forgotPassword();
       }
@@ -270,7 +269,7 @@ usersRouter.patch(
      * `isAdult`
      */
 
-    if (_.isUndefined(isAdult) && isValidIsAdult(isAdult)) {
+    if (!_.isUndefined(isAdult)) {
       user.set("isAdult", isAdult);
     }
 

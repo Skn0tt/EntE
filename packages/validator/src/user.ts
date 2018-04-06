@@ -1,5 +1,5 @@
 import { IUserCreate, rolesArr, Roles } from "ente-types";
-import { SyncValidator } from "./";
+import { SyncValidator, isValidPassword } from "./";
 import * as _ from "lodash";
 import {
   isLength,
@@ -51,6 +51,8 @@ export const isValidUser: SyncValidator<IUserCreate> = matches([
   u => isValidUsername(u.username),
   u => isValidRole(u.role),
   u => isValidEmail(u.email),
+  // If password exists, must be valid
+  u => !u.password || isValidPassword(u.password),
   // If not STUDENT, must not be adult
   u => u.role === Roles.STUDENT || !u.isAdult,
   // if not MANAGER or PARENT, must not have children

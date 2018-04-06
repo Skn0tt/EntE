@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { isTwoWeeksBeforeNow, isValidEntry } from "./entry";
+import { isTwoWeeksBeforeNow, isValidEntry, areApart } from "./entry";
 
 const now = Date.now();
 
@@ -20,6 +20,28 @@ describe("isTwooWeeksBeforeNow", () => {
   });
 });
 
+describe("areApart", () => {
+  const test = areApart(1 * 24 * 60 * 60 * 1000);
+
+  describe("when given right way around", () => {
+    it("returns true on days one day apart", () => {
+      expect(test(new Date(now), new Date(now + 1 * 24 * 60 * 60 * 1000))).to.be
+        .true;
+    });
+    it("returns true on days half a day apart", () => {
+      expect(test(new Date(now), new Date(now + 0.5 * 24 * 60 * 60 * 1000))).to
+        .be.false;
+    });
+  });
+
+  describe("when given wrong way around", () => {
+    it("returns false", () => {
+      expect(test(new Date(now + 1 * 24 * 60 * 60 * 1000), new Date(now))).to.be
+        .false;
+    });
+  });
+});
+
 describe("isValidEntry", () => {
   describe("when passing valid entries", () => {
     it("returns true", () => {
@@ -35,6 +57,22 @@ describe("isValidEntry", () => {
               teacher: "5ac54ae00000000000000000"
             }
           ]
+        })
+      ).to.be.true;
+    });
+
+    it("when passing slots", () => {
+      expect(
+        isValidEntry({
+          date: new Date("2018-04-06T08:13:47.821Z"),
+          slots: [
+            {
+              hour_from: 3,
+              hour_to: 4,
+              teacher: "5ac7343c0655d208729aaf83"
+            }
+          ],
+          forSchool: false
         })
       ).to.be.true;
     });

@@ -13,7 +13,7 @@ import { body, validationResult, param } from "express-validator/check";
 /**
  * EntE
  */
-import { MongoId, Roles } from "ente-types";
+import { MongoId, Roles, IEntryCreate } from "ente-types";
 
 /**
  * DB
@@ -35,7 +35,7 @@ import { thisYear } from "../../helpers/queryParams";
 import * as mail from "../../helpers/mail";
 import validate from "../../helpers/validate";
 import { usersExist } from "../../helpers/exist";
-import { isTwoWeeksBeforeNow } from "ente-validator";
+import { isValidEntry } from "ente-validator";
 import * as _ from "lodash";
 
 /**
@@ -123,26 +123,21 @@ entriesRouter.get(
 entriesRouter.post(
   "/",
   rbac({ entries_create: true }),
-  [
-    body("date").custom(d => isTwoWeeksBeforeNow(new Date(d))),
-    body("reason").isLength({ max: 300 }),
-    body("teacher").custom(id => usersExist(id, Roles.TEACHER))
-  ],
-  validate,
   wrapAsync(async (req: PopulateRequest, res, next) => {
-    /**
-     * StudentId taken from body, fallback: User object
-     */
-    const studentId =
-      req.user.role === Roles.PARENT ? req.body.student : req.user._id;
+    const entry: IEntryCreate = {
+      ...req.body,
+      date: new Date(req.body.date),
+      dateEnd: req.body.dateEnd && new Date(req.body.dateEnd),
+      student: req.user.role === Roles.PARENT ? req.body.student : req.user._id
+    };
+
+    console.log(entry);
 
     /**
-     * Singleday Entries needn't have slots
+     * Check if entry is Valid
      */
-    if (!req.body.dateEnd && req.body.slots.length === 0) {
-      return res
-        .status(422)
-        .end("Entry that is no range needs to have one or more slots.");
+    if (!isValidEntry(entry)) {
+      return res.status(422).end("Entry invalid.");
     }
 
     /**
@@ -150,7 +145,7 @@ entriesRouter.post(
      */
     if (
       req.user.role === Roles.PARENT &&
-      !_.includes(req.user.children, req.body.student)
+      !_.includes(req.user.children, entry.student)
     ) {
       return res
         .status(403)
@@ -163,7 +158,7 @@ entriesRouter.post(
      * - are teachers
      */
     const allTeachersExist = await usersExist(
-      _.flatten(req.body.slots.map(s => s.teacher)),
+      _.flatten(entry.slots.map(s => s.teacher)),
       Roles.TEACHER
     );
     if (!allTeachersExist) {
@@ -195,24 +190,20 @@ entriesRouter.post(
     const signedParent: boolean =
       req.user.role === Roles.PARENT || req.user.isAdult;
 
-    const entry = await Entry.create({
+    const newEntry = await Entry.create({
+      ...entry,
       slots,
-      signedParent,
-      reason: req.body.reason,
-      date: req.body.date,
-      dateEnd: req.body.dateEnd,
-      student: studentId,
-      forSchool: req.body.forSchool
+      signedParent
     });
 
     /**
      * Dispatch Sign Request
      */
-    if (!entry.signedParent) {
-      await mail.dispatchSignRequest(entry);
+    if (!newEntry.signedParent) {
+      mail.dispatchSignRequest(newEntry);
     }
 
-    req.entries = [entry];
+    req.entries = [newEntry];
 
     return next();
   }),

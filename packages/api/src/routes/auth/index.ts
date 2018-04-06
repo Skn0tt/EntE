@@ -76,7 +76,7 @@ authRouter.put(
     user.resetPasswordExpires = undefined;
     await user.save();
 
-    await dispatchPasswortResetSuccess(user.username, user.email);
+    dispatchPasswortResetSuccess(user.username, user.email);
 
     return res.status(200).send("If token existed, it succeeded.");
   })

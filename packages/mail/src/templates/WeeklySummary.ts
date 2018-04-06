@@ -1,5 +1,5 @@
 import { ISlot } from "ente-types";
-import mjml2html from "mjml";
+import * as mjml2html from "mjml";
 import * as handlebars from "handlebars";
 import * as moment from "moment";
 
