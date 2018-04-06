@@ -29,7 +29,7 @@ export const check = <T>(
       const fulfills = await Promise.resolve(check(input));
 
       if (!fulfills) {
-        return res.status(status).end(msg);
+        return res.status(status || 422).end(msg);
       }
     });
 
