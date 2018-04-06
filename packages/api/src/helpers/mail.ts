@@ -5,7 +5,7 @@ import * as Handlebars from "handlebars";
 import User from "../models/User";
 import Slot, { SlotModel } from "../models/Slot";
 import * as templates from "ente-mail";
-import { Roles } from "ente-types";
+import { Roles, MongoId } from "ente-types";
 
 const baseUrl = `https://${process.env.HOST}`;
 
@@ -28,6 +28,11 @@ const mailConfig =
 
 const transporter = mail.createTransport(mailConfig);
 
+const findParentMail = async (student: MongoId): Promise<string[]> =>
+  (await User.find({ children: student, role: Roles.PARENT }).select(
+    "email"
+  )).map(u => u.email);
+
 /**
  * ## Handlebars Templates
  */
@@ -37,18 +42,11 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
       `${baseUrl}/entries/${entry._id}`
     );
 
-    // Find parents of student
-    const parents = await User.find({
-      children: entry.student,
-      role: Roles.PARENT
-    }).select("email");
-
-    if (parents.length === 0) {
+    const recipients = await findParentMail(entry.student);
+    if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;
     }
-
-    const recipients = parents.map(parent => parent.email);
 
     const info = await transporter.sendMail({
       html,
@@ -69,11 +67,11 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const parents = await User.find({ children: entry.student }).select(
-      "email"
-    );
-
-    const recipients = parents.map(parent => parent.email);
+    const recipients = await findParentMail(entry.student);
+    if (recipients.length === 0) {
+      console.log("Mail: No Recipients defined");
+      return;
+    }
 
     const info = await transporter.sendMail({
       html,
