@@ -1,54 +1,85 @@
-import { Router, Response, NextFunction, Request } from 'express';
-import { param, validationResult } from 'express-validator/check';
-import * as JWT from 'jsonwebtoken';
-import User from '../../models/User';
-import { dispatchPasswortResetSuccess } from '../../routines/mail';
+/**
+ * Express
+ */
+import { Router, Response, NextFunction, Request } from "express";
+import { param, validationResult, body } from "express-validator/check";
 
+/**
+ * EntE
+ */
+import { isValidPassword } from "ente-validator";
+
+/**
+ * DB
+ */
+import User from "../../models/User";
+
+/**
+ * Helpers
+ */
+import { dispatchPasswortResetSuccess } from "../../helpers/mail";
+import validate, { check } from "../../helpers/validate";
+import wrapAsync from "../../helpers/wrapAsync";
+
+/**
+ * Auth Router
+ * '/auth'
+ *
+ * Unauthenticated
+ */
 const authRouter = Router();
 
-authRouter.post('/forgot/:username', [
-  param('username').isAlphanumeric(),
-], async (request: Request, response: Response, next: NextFunction) => {
-  const errors = validationResult(request);
-  if (!errors.isEmpty()) return response.status(422).json({ errors: errors.mapped() });
-  
-  try {
-    const username: string = request.params.username;
+/**
+ * POST a new reset request
+ */
+authRouter.post(
+  "/forgot/:username",
+  [param("username").isAlphanumeric()],
+  validate,
+  wrapAsync(async (req, res, next) => {
+    const username: string = req.params.username;
     const user = await User.findOne({ username });
-    
-    if (user) { await user.forgotPassword(); }
 
-    return response.status(200).end('If the user exists, routine got triggered.');
-  } catch (error) {
-    return next(error);
-  }
-});
+    if (!user) {
+      return res.status(404).end("User not found");
+    }
 
-authRouter.put('/forgot/:token', async (request, response, next) => {
-  try {
-    const token: string = request.params.token;
+    await user.forgotPassword();
+
+    return res.status(200).end();
+  })
+);
+
+/**
+ * PUT a new password
+ */
+authRouter.put(
+  "/forgot/:token",
+  [param("token").isHexadecimal(), body("newPassword").custom(isValidPassword)],
+  validate,
+  wrapAsync(async (req, res, next) => {
+    const { token } = req.params;
     const user = await User.findOne({ resetPasswordToken: token });
 
     if (!user) {
-      return response.status(404).end();
+      return res.status(404).end("Token was not found.");
     }
 
-    if (+user.resetPasswordExpires >= Date.now()) {
-      const newPassword = request.body.newPassword;
-
-      user.password = newPassword;
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-
-      await user.save();
-
-      await dispatchPasswortResetSuccess(user.username, user.email);
+    if (+user.resetPasswordExpires < Date.now()) {
+      return res.status(403).end("Token expired.");
     }
 
-    return response.status(200).send('If token existed, it succeeded.');
-  } catch (error) {
-    return next(error);
-  }
-}); 
+    const { newPassword } = req.body;
+
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    dispatchPasswortResetSuccess(user.username, user.email);
+
+    return res.status(200).send("If token existed, it succeeded.");
+  })
+);
 
 export default authRouter;

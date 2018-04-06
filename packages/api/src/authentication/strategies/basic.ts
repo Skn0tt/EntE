@@ -1,5 +1,4 @@
 import User, { UserModel } from "../../models/User";
-import { JWT_PAYLOAD } from "../../routes/token";
 import { BasicStrategy } from "passport-http";
 
 const basicStrategy = new BasicStrategy(async (username, password, done) => {

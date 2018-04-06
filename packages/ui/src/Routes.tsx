@@ -67,13 +67,11 @@ const ParentRoutes = () => (
 const StudentRoutes = () => <ParentRoutes />;
 
 const TeacherRoutes = () => (
-  <React.Fragment>
-    <Switch>
-      <Redirect exact from="/" to="/slots" />
-      <Route path="/slots" component={LoadableSlots} />
-      <Route component={LoadableNotFound} />
-    </Switch>
-  </React.Fragment>
+  <Switch>
+    <Redirect exact from="/" to="/slots" />
+    <Route path="/slots" component={LoadableSlots} />
+    <Route component={LoadableNotFound} />
+  </Switch>
 );
 
 const ManagerRoutes = () => (

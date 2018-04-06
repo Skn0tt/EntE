@@ -1,39 +1,46 @@
+/**
+ * Express
+ */
 import { Router } from "express";
+
+/**
+ * EntE
+ */
+import { MongoId, Roles, JWT_PAYLOAD } from "ente-types";
+
+/**
+ * Helpers
+ */
 import * as JWT from "jsonwebtoken";
-import User from "../../models/User";
-import { getSecrets } from "../../authentication/strategies/jwt";
-import { MongoId, Roles } from "ente-types";
+import { getFirstSecret } from "../../authentication/strategies/jwt";
+import wrapAsync from "../../helpers/wrapAsync";
 
-export type JWT_PAYLOAD = {
-  username: string;
-  displayname: string;
-  role: Roles;
-  children: MongoId[];
-};
-
+/**
+ * Token Router
+ * '/token'
+ *
+ * Authenticated
+ */
 const tokenRouter = Router();
 
-tokenRouter.get("/", async (r, w, n) => {
-  try {
-    const secret = (await getSecrets())[0];
+tokenRouter.get(
+  "/",
+  wrapAsync(async (req, res) => {
+    const secret = await getFirstSecret();
+
     const payload: JWT_PAYLOAD = {
-      username: r.user.username,
-      displayname: r.user.displayname,
-      role: r.user.role,
-      children: r.user.children
+      username: req.user.username,
+      displayname: req.user.displayname,
+      role: req.user.role,
+      children: req.user.children
     };
 
     const token = JWT.sign(payload, secret, {
       expiresIn: 60 * 15
     });
 
-    return w
-      .status(200)
-      .json(token)
-      .end();
-  } catch (error) {
-    return n(error);
-  }
-});
+    return res.status(200).send(token);
+  })
+);
 
 export default tokenRouter;

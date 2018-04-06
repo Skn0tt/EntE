@@ -39,7 +39,7 @@ export interface IUserBase {
 }
 
 export interface IUserCreate extends IUserBase {
-  password: string;
+  password?: string;
 }
 
 export interface IUser extends IUserBase {

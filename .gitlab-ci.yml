@@ -85,6 +85,18 @@ Build rotator:
 # Test
 #
 
+# Coverage Report
+Coverage:
+  image: node
+  stage: test
+  before_script:
+    - yarn
+  script:
+    - yarn test:coverage
+  artifacts:
+    paths:
+      - coverage/lcov-report/
+
 # Test
 .Compose Startup Test:
   image: docker
@@ -159,3 +171,17 @@ release:staging:
     url: http://bull.simonknott.de
   script:
     - ansible-playbook -i staging.yml deploy-staging.yml
+
+# Coverage Pages
+pages:
+  stage: release
+  dependencies:
+    - Coverage
+  script:
+    - mv coverage/lcov-report/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master

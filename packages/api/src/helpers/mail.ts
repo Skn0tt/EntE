@@ -4,12 +4,8 @@ import * as sgTransport from "nodemailer-sendgrid-transport";
 import * as Handlebars from "handlebars";
 import User from "../models/User";
 import Slot, { SlotModel } from "../models/Slot";
-import WeeklySummary, { IRowData } from "../templates/WeeklySummary";
-import PasswordResetLink from "../templates/PasswordResetLink";
-import PasswordResetSuccess from "../templates/PasswordResetSuccess";
-import SignedInformation from "../templates/SignedInformation";
-import SignRequest from "../templates/SignRequest";
-import { Roles } from "ente-types";
+import * as templates from "ente-mail";
+import { Roles, MongoId } from "ente-types";
 
 const baseUrl = `https://${process.env.HOST}`;
 
@@ -32,18 +28,25 @@ const mailConfig =
 
 const transporter = mail.createTransport(mailConfig);
 
+const findParentMail = async (student: MongoId): Promise<string[]> =>
+  (await User.find({ children: student, role: Roles.PARENT }).select(
+    "email"
+  )).map(u => u.email);
+
 /**
  * ## Handlebars Templates
  */
 export const dispatchSignRequest = async (entry: EntryModel) => {
   try {
-    const { html, subject } = SignRequest(`${baseUrl}/entries/${entry._id}`);
-
-    const parents = await User.find({ children: entry.student }).select(
-      "email"
+    const { html, subject } = templates.SignRequest(
+      `${baseUrl}/entries/${entry._id}`
     );
 
-    const recipients = parents.map(parent => parent.email);
+    const recipients = await findParentMail(entry.student);
+    if (recipients.length === 0) {
+      console.log("Mail: No Recipients defined");
+      return;
+    }
 
     const info = await transporter.sendMail({
       html,
@@ -60,15 +63,15 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
 
 export const dispatchSignedInformation = async (entry: EntryModel) => {
   try {
-    const { html, subject } = SignedInformation(
+    const { html, subject } = templates.SignedInformation(
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const parents = await User.find({ children: entry.student }).select(
-      "email"
-    );
-
-    const recipients = parents.map(parent => parent.email);
+    const recipients = await findParentMail(entry.student);
+    if (recipients.length === 0) {
+      console.log("Mail: No Recipients defined");
+      return;
+    }
 
     const info = await transporter.sendMail({
       html,
@@ -94,7 +97,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
           date: { $gte: twoWeeksBefore }
         });
 
-        const items: IRowData[] = await Promise.all(
+        const items = await Promise.all(
           slots.map(async slot => {
             const student = await User.findById(slot.student);
 
@@ -110,7 +113,7 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
 
         const email = teacher.email;
 
-        const { html, subject } = WeeklySummary(items);
+        const { html, subject } = templates.WeeklySummary(items);
 
         const info = await transporter.sendMail({
           html,
@@ -134,7 +137,7 @@ export const dispatchPasswortResetLink = async (
   email: string
 ) => {
   try {
-    const { html, subject } = PasswordResetLink(
+    const { html, subject } = templates.PasswordResetLink(
       `${baseUrl}/forgot/${token}`,
       username
     );
@@ -156,7 +159,7 @@ export const dispatchPasswortResetSuccess = async (
   email: string
 ) => {
   try {
-    const { html, subject } = PasswordResetSuccess(username);
+    const { html, subject } = templates.PasswordResetSuccess(username);
 
     const info = await transporter.sendMail({
       html,

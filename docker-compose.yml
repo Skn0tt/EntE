@@ -15,6 +15,7 @@ services:
       - rotator
     environment:
       - HOST
+      - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
   

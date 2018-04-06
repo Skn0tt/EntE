@@ -5,7 +5,7 @@ import * as idValidator from "mongoose-id-validator";
 import * as uniqueValidator from "mongoose-unique-validator";
 import * as crypto from "crypto";
 
-import { dispatchPasswortResetLink } from "../routines/mail";
+import { dispatchPasswortResetLink } from "../helpers/mail";
 import { MongoId, Roles, rolesArr } from "ente-types";
 
 export interface UserModel extends Document, IUser {
@@ -119,7 +119,10 @@ userSchema.pre("save", async function(next) {
 userSchema.methods.comparePassword = async function(
   candidatePassword
 ): Promise<boolean> {
-  const password = this.password;
+  if (!this.password) {
+    return false;
+  }
+
   try {
     const isValid = await bcrypt.compare(candidatePassword, this.password);
     return isValid;
@@ -132,13 +135,13 @@ userSchema.methods.comparePassword = async function(
  * ## Forgot Password Routine
  */
 userSchema.methods.forgotPassword = async function(): Promise<void> {
-  const buffer = await crypto.randomBytes(20);
+  const buffer = await crypto.randomBytes(30);
   const token = buffer.toString("hex");
 
   this.resetPasswordToken = token;
   this.resetPasswordExpires = Date.now() + 60 * 60 * 1000;
 
-  await dispatchPasswortResetLink(token, this.username, this.email);
+  dispatchPasswortResetLink(token, this.username, this.email);
 
   await this.save();
 };

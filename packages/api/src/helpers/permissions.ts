@@ -6,7 +6,8 @@ interface Permissions {
   entries_read?: boolean;
   entries_create?: boolean;
   entries_write?: boolean;
-  teachers_read?: boolean;
+  entries_sign?: boolean;
+  entries_patch?: boolean;
   users_read?: boolean;
   users_write?: boolean;
 }
@@ -16,7 +17,8 @@ const adminPermissions: Permissions = {
   entries_read: true,
   entries_create: false,
   entries_write: false,
-  teachers_read: true,
+  entries_sign: false,
+  entries_patch: false,
   users_read: true,
   users_write: true
 };
@@ -25,8 +27,9 @@ const managerPermissions: Permissions = {
   slots_read: true,
   entries_read: true,
   entries_create: false,
+  entries_sign: true,
   entries_write: true,
-  teachers_read: true,
+  entries_patch: true,
   users_read: true,
   users_write: false
 };
@@ -36,8 +39,9 @@ const studentPermissions: Permissions = {
   entries_read: true,
   entries_create: true,
   entries_write: false,
-  teachers_read: true,
-  users_read: false,
+  entries_sign: false,
+  entries_patch: false,
+  users_read: true,
   users_write: false
 };
 
@@ -45,9 +49,10 @@ const parentPermissions: Permissions = {
   slots_read: true,
   entries_read: true,
   entries_create: true,
-  entries_write: true,
-  teachers_read: true,
-  users_read: false,
+  entries_write: false,
+  entries_sign: true,
+  entries_patch: false,
+  users_read: true,
   users_write: false
 };
 
@@ -56,7 +61,8 @@ const teacherPermissions: Permissions = {
   entries_read: false,
   entries_create: false,
   entries_write: false,
-  teachers_read: true,
+  entries_sign: false,
+  entries_patch: false,
   users_read: false,
   users_write: false
 };
