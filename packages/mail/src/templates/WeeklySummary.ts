@@ -3,11 +3,6 @@ import * as mjml2html from "mjml";
 import * as handlebars from "handlebars";
 import * as moment from "moment";
 
-interface HEMLResults {
-  html: string;
-  subject: string;
-}
-
 interface WeeklySummaryOptions {
   subject: string;
   preview: string;
@@ -37,56 +32,50 @@ const template: HandlebarsTemplateDelegate<
 > = handlebars.compile(`
 <mjml>
   <mj-body>
-    <mj-container>
-      <mj-section>
-        <mj-column>
+    <mj-section>
+      <mj-column>
 
-          <mj-divider border-color="black" />
+        <mj-divider border-color="black" />
 
-          <mj-text font-size="20px" font-family="helvetica">
-            Wöchentliche Zusammenfassung
+        <mj-text font-size="20px" font-family="helvetica">
+          Wöchentliche Zusammenfassung
+        </mj-text>
+        {{#if items.length}}    
+          <mj-table>
+            <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+              <th>Schüler</th>
+              <th>Datum</th>
+              <th>Von</th>
+              <th>Bis</th>
+              <th>Status</th>
+            </tr>
+            {{#each items}}
+              {{ this }}
+            {{/each}}
+          </mj-table>
+        {{else}}
+          <mj-text>
+            Diese Woche hatten hat es in ihren Stunden keine Entschuldigungsanträge gegeben.
           </mj-text>
-          {{#if items.length}}    
-            <mj-table>
-              <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
-                <th>Schüler</th>
-                <th>Datum</th>
-                <th>Von</th>
-                <th>Bis</th>
-                <th>Status</th>
-              </tr>
-              {{#each items}}
-                {{ this }}
-              {{/each}}
-            </mj-table>
-          {{else}}
-            <mj-text>
-              Diese Woche hatten hat es in ihren Stunden keine Entschuldigungsanträge gegeben.
-            </mj-text>
-          {{/if}}
-        </mj-column>
-      </mj-section>
-    </mj-container>
+        {{/if}}
+      </mj-column>
+    </mj-section>
   </mj-body>
 </mjml>
 `);
 
 const getTitle = () => `Wöchentliche Zusammenfassung KW${moment().week()}`;
 
-export default (items: IRowData[]): HEMLResults => {
-  try {
-    const rows = items.map(item => tableRow(item));
-    const title = getTitle();
+export default (items: IRowData[]) => {
+  const rows = items.map(item => tableRow(item));
+  const title = getTitle();
 
-    const mjml = template({
-      items: rows,
-      preview: title,
-      subject: title
-    });
-    const { errors, html } = mjml2html(mjml);
-    if (errors.length > 0) throw new Error("MJML Error");
-    return { html, subject: title };
-  } catch (error) {
-    throw error;
-  }
+  const mjml = template({
+    items: rows,
+    preview: title,
+    subject: title
+  });
+  const { errors, html } = mjml2html(mjml);
+  if (errors.length > 0) throw new Error("MJML Error");
+  return { html, subject: title };
 };
