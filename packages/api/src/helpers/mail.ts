@@ -37,9 +37,11 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const parents = await User.find({ children: entry.student }).select(
-      "email"
-    );
+    // Find parents of student
+    const parents = await User.find({
+      children: entry.student,
+      role: Roles.PARENT
+    }).select("email");
 
     if (parents.length === 0) {
       console.log("Mail: No Recipients defined");
