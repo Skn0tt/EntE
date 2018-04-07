@@ -42,6 +42,5 @@ describe("ImportUsers", () => {
       comp.find(".submit").simulate("click");
       expect(createUsers).not.toHaveBeenCalled();
     });
-  })
-  
+  });
 });
