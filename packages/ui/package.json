@@ -16,6 +16,7 @@
     "ente-lang": "^0.0.1",
     "ente-redux": "^0.0.1",
     "ente-types": "^0.0.1",
+    "ente-validator": "^0.0.1",
     "material-ui": "1.0.0-beta.33",
     "material-ui-icons": "^1.0.0-beta.17",
     "material-ui-pickers": "^1.0.0-beta.15.1",
