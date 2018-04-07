@@ -36,7 +36,10 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "collectCoverageFrom": ["packages/*/src/**/*.{ts,tsx,js,jsx}"],
+    "collectCoverageFrom": [
+      "packages/*/src/**/*.{ts,tsx,js,jsx}",
+      "!packages/*/src/**/styles.ts"
+    ],
     "coveragePathIgnorePatterns": [".*\\.d\\.ts"],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]

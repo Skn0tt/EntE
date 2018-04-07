@@ -1,16 +1,14 @@
 import * as React from "react";
 import Drawer, { toggleDrawer } from "./index";
-import { mount } from "enzyme";
+import { mount, shallow } from "enzyme";
 import { getMockRouterProps } from "../../../test_helpers/mockRouter";
 import * as ReactRouterEnzymeContext from "react-router-enzyme-context";
 
 describe("Drawer", () => {
-  const comp = mount(
-    <Drawer {...getMockRouterProps<{}>({})}>Hallo</Drawer>,
-    new ReactRouterEnzymeContext().get()
-  );
-
   it("renders correctly", () => {
+    const comp = shallow(
+      <Drawer {...getMockRouterProps<{}>({})}>Hallo</Drawer>
+    );
     expect(comp).toMatchSnapshot();
   });
 });

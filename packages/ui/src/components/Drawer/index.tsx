@@ -52,7 +52,7 @@ export const toggleDrawer = (s: State): State => ({
 /**
  * # Component
  */
-export class Drawer extends React.Component<Props, State> {
+class Drawer extends React.Component<Props, State> {
   state = {
     mobileOpen: false
   };
