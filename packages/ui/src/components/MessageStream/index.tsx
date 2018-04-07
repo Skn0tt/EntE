@@ -8,6 +8,9 @@ import { IconButton } from "material-ui";
 import { Close as CloseIcon } from "material-ui-icons";
 import { AppState, removeMessage, getMessages } from "ente-redux";
 
+/**
+ * # Component Types
+ */
 interface StateProps {
   messages: String[];
 }
@@ -24,29 +27,35 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = StateProps & DispatchProps & WithStyles;
 
-const MessageStream: React.SFC<Props> = props => (
-  <React.Fragment>
-    {props.messages.map((msg, index) => (
-      <Snackbar
-        key={index}
-        message={<span>{msg}</span>}
-        autoHideDuration={6000}
-        onClose={(event, reason) =>
-          reason !== "clickaway" && props.removeMessage(index)
-        }
-        open
-        action={
-          <IconButton
-            onClick={() => props.removeMessage(index)}
-            color="inherit"
-          >
-            <CloseIcon />
-          </IconButton>
-        }
-      />
-    ))}
-  </React.Fragment>
-);
+/**
+ * # Component
+ */
+export const MessageStream: React.SFC<Props> = props => {
+  const { messages, removeMessage } = props;
+
+  return (
+    <>
+      {messages.map((msg, i) => (
+        <Snackbar
+          key={i}
+          message={<span>{msg}</span>}
+          autoHideDuration={6000}
+          onClose={(_, reason) => reason !== "clickaway" && removeMessage(i)}
+          open
+          action={
+            <IconButton
+              onClick={() => removeMessage(i)}
+              color="inherit"
+              className={"remove" + i}
+            >
+              <CloseIcon />
+            </IconButton>
+          }
+        />
+      ))}
+    </>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   withStyles(styles)(MessageStream)
