@@ -1,7 +1,6 @@
 import * as React from "react";
 import { LoginStatus } from "./index";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../../test_helpers/mockRouter";
 import * as ReactRouterEnzymeContext from "react-router-enzyme-context";
 
 describe("LoginStatus", () => {

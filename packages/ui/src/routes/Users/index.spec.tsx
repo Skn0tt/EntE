@@ -2,7 +2,7 @@ import * as React from "react";
 import { Users } from "./index";
 import { shallow } from "enzyme";
 import { User } from "ente-redux";
-import { getMockRouterProps } from "../../../test_helpers/mockRouter";
+import { getMockRouterProps } from "../../../testHelpers/mockRouter";
 import { Roles } from "ente-types";
 
 describe("Users", () => {

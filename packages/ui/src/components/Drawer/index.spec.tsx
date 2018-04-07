@@ -1,7 +1,7 @@
 import * as React from "react";
 import Drawer, { toggleDrawer } from "./index";
 import { mount, shallow } from "enzyme";
-import { getMockRouterProps } from "../../../test_helpers/mockRouter";
+import { getMockRouterProps } from "../../../testHelpers/mockRouter";
 import * as ReactRouterEnzymeContext from "react-router-enzyme-context";
 
 describe("Drawer", () => {

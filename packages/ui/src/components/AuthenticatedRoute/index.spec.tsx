@@ -2,7 +2,7 @@ import * as React from "react";
 import { AuthenticatedRoute } from "./index";
 import { shallow } from "enzyme";
 import * as renderer from "react-test-renderer";
-import { getMockRouterProps } from "../../../test_helpers/mockRouter";
+import { getMockRouterProps } from "../../../testHelpers/mockRouter";
 
 describe("AuthenticatedRoute", () => {
   const text = "hallo";
