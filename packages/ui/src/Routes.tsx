@@ -4,36 +4,36 @@ import Loadable from "react-loadable";
 import LoadingIndicator from "./elements/LoadingIndicator";
 import { Roles } from "ente-types";
 
-const Loading = () => <LoadingIndicator />;
+const loading = <LoadingIndicator />;
 
 const LoadableEntries = Loadable({
-  loader: () => import("./routes/Entries"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/Entries")
 });
 
 const LoadableUsers = Loadable({
-  loader: () => import("./routes/Users"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/Users")
 });
 
 const LoadableSlots = Loadable({
-  loader: () => import("./routes/Slots"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/Slots")
 });
 
 const LoadableSpecificUser = Loadable({
-  loader: () => import("./routes/SpecificUser"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/SpecificUser")
 });
 
 const LoadableSpecificEntry = Loadable({
-  loader: () => import("./routes/SpecificEntry"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/SpecificEntry")
 });
 
 const LoadableNotFound = Loadable({
-  loader: () => import("./routes/NotFound"),
-  loading: Loading
+  loading,
+  loader: () => import("./routes/NotFound")
 });
 
 const AdminRoutes = () => (

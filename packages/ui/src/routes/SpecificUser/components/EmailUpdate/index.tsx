@@ -7,10 +7,10 @@ import { Update as UpdateIcon } from "material-ui-icons";
 
 import styles from "./styles";
 import Typography from "material-ui/Typography/Typography";
-import validateEmail from "../../../../services/validateEmail";
 import { IUser, MongoId } from "ente-types";
 import { getUser, AppState, User, updateUserRequest } from "ente-redux";
 import lang from "ente-lang";
+import { isValidEmail } from "ente-validator";
 
 interface OwnProps {
   userId: MongoId;
@@ -59,7 +59,7 @@ const DisplayNameUpdate = connect(mapStateToProps, mapDispatchToProps)(
       /**
        * Validation
        */
-      emailValid = (): boolean => validateEmail(this.state.email);
+      emailValid = (): boolean => isValidEmail(this.state.email);
 
       render() {
         return (

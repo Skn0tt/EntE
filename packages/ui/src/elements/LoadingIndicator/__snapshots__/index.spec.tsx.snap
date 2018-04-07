@@ -4,7 +4,7 @@ exports[`LoadingIndicator renders correctly 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <WithStyles(LoadingIndicator)
+  Symbol(enzyme.__unrendered__): <WithStyles(Component)
     classes={Object {}}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -20,7 +20,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "classes": Object {
-        "container": "LoadingIndicator-container-1",
+        "container": "Component-container-1",
       },
     },
     "ref": null,
@@ -34,7 +34,7 @@ ShallowWrapper {
       "nodeType": "function",
       "props": Object {
         "classes": Object {
-          "container": "LoadingIndicator-container-1",
+          "container": "Component-container-1",
         },
       },
       "ref": null,

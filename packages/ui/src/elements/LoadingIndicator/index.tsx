@@ -3,9 +3,14 @@ import styles from "./styles";
 import { withStyles, CircularProgress, WithStyles, Grid } from "material-ui";
 
 /**
+ * # Component Types
+ */
+interface OwnProps {}
+type Props = OwnProps & WithStyles;
+/**
  * # Component
  */
-const LoadingIndicator: React.SFC<WithStyles> = props => {
+export const LoadingIndicator: React.SFC<Props> = props => {
   const { classes } = props;
 
   return (
