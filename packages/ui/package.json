@@ -14,6 +14,7 @@
     "classnames": "^2.2.5",
     "date-fns": "^2.0.0-alpha.7",
     "ente-lang": "^0.0.1",
+    "ente-parser": "^0.0.1",
     "ente-redux": "^0.0.1",
     "ente-types": "^0.0.1",
     "ente-validator": "^0.0.1",

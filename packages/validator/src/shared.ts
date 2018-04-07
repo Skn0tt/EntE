@@ -22,8 +22,11 @@ export const isLength = (
 // https://stackoverflow.com/a/28813213/8714863
 export const containsNumbers: SyncValidator<string> = v => /\d/.test(v);
 
-// https://stackoverflow.com/a/42203701/8714863
 export const containsSpecialChars: SyncValidator<string> = v =>
+  /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]/g.test(v);
+
+// https://stackoverflow.com/a/42203701/8714863
+export const containsSpecialCharsAll: SyncValidator<string> = v =>
   /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g.test(v);
 
 export const containsSpaces: SyncValidator<string> = v => / /g.test(v);

@@ -3,7 +3,8 @@ import {
   containsNumbers,
   containsSpecialChars,
   not,
-  containsSpaces
+  containsSpaces,
+  containsSpecialCharsAll
 } from "./shared";
 import { expect } from "chai";
 
@@ -57,11 +58,11 @@ describe("containsNumbers", () => {
   });
 });
 
-describe("containsSpecialChars", () => {
+describe("containsSpecialCharsAll", () => {
   describe("when given a string containing special chars returns true", () => {
     ["!", "h!ll0", "t%st", "%&/"].forEach(v => {
       it(v, () => {
-        expect(containsSpecialChars(v)).to.be.true;
+        expect(containsSpecialCharsAll(v)).to.be.true;
       });
     });
   });
@@ -69,7 +70,7 @@ describe("containsSpecialChars", () => {
   describe("when given a string not containing special chars returns false", () => {
     ["fünf", "test", "hallo", "l  rzeichen"].forEach(v => {
       it(v, () => {
-        expect(containsSpecialChars(v)).to.be.false;
+        expect(containsSpecialCharsAll(v)).to.be.false;
       });
     });
   });

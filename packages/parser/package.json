@@ -1,0 +1,14 @@
+{
+  "name": "ente-parser",
+  "version": "0.0.1",
+  "description": "CSV Parser for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/parser",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ente-types": "^0.0.1",
+    "ente-validator": "^0.0.1"
+  }
+}
