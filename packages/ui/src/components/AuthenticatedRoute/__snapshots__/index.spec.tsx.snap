@@ -5,7 +5,46 @@ ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Unknown
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 2,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "key": "",
+          "pathname": "",
+          "search": "",
+          "state": Object {},
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
     isLoggedIn={true}
+    location={
+      Object {
+        "hash": "",
+        "key": "",
+        "pathname": "",
+        "search": "",
+        "state": Object {},
+      }
+    }
+    match={
+      Object {
+        "isExact": true,
+        "params": Object {},
+        "path": "",
+        "url": "",
+      }
+    }
+    staticContext={Object {}}
   >
     hallo
   </Unknown>,
