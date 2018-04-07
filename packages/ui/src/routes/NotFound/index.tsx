@@ -1,12 +1,21 @@
-import * as React from 'react';
-import { Grid, Typography, WithStyles, withStyles } from 'material-ui';
-import styles from './styles';
+import * as React from "react";
+import { Grid, Typography, WithStyles, withStyles } from "material-ui";
+import styles from "./styles";
 
-const Diggie = require('../../res/img/Diggie.png');
+/**
+ * # Assets
+ */
+const Diggie = require("../../res/img/Diggie.png");
 
+/**
+ * # Component Types
+ */
 type Props = WithStyles;
 
-const NotFound: React.SFC<Props> = props => (
+/**
+ * # Component
+ */
+export const NotFound: React.SFC<Props> = props => (
   <Grid container alignItems="center" justify="center">
     <Grid item>
       <img src={Diggie} height={400} />

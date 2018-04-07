@@ -32,7 +32,7 @@
     "npm": "^5.8.0"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "./jestSetup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jestSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -42,6 +42,11 @@
     ],
     "coveragePathIgnorePatterns": [".*\\.d\\.ts"],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "<rootDir>/scripts/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/scripts/assetsTransformer.js"
+    }
   }
 }
