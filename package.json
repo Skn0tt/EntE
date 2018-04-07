@@ -21,6 +21,7 @@
     "lerna": "^2.9.0",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
+    "react-router-enzyme-context": "^1.2.0",
     "react-test-renderer": "^16.3.1",
     "testdouble": "^3.7.0",
     "testdouble-jest": "^2.0.0",
