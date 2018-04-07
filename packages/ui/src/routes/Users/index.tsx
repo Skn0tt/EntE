@@ -1,9 +1,7 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
-
 import styles from "./styles";
-
 import { Action } from "redux";
 import CreateUser from "./components/CreateUser";
 import Table from "../../components/Table";
@@ -12,6 +10,9 @@ import { Button } from "material-ui";
 import { Add as AddIcon } from "material-ui-icons";
 import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
 
+/**
+ * # Component Types
+ */
 interface StateProps {
   users: User[];
 }
@@ -32,63 +33,60 @@ interface State {
   showCreateModal: boolean;
 }
 
-const Users = connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    withRouter(
-      class extends React.Component<Props, State> {
-        state: State = {
-          showCreateModal: false
-        };
+/**
+ * # Component
+ */
+export class Users extends React.PureComponent<Props, State> {
+  state: State = {
+    showCreateModal: false
+  };
 
-        componentDidMount() {
-          this.props.getUsers();
-        }
+  componentDidMount() {
+    this.props.getUsers();
+  }
 
-        showCreateModal = () => this.setState({ showCreateModal: true });
-        closeCreateModal = () => this.setState({ showCreateModal: false });
+  showCreateModal = () => this.setState({ showCreateModal: true });
+  closeCreateModal = () => this.setState({ showCreateModal: false });
 
-        render() {
-          const { users, history, classes } = this.props;
+  render() {
+    const { users, history, classes } = this.props;
 
-          return (
-            <React.Fragment>
-              {/* Modals */}
-              <CreateUser
-                onClose={() => this.closeCreateModal()}
-                show={this.state.showCreateModal}
-              />
+    return (
+      <React.Fragment>
+        {/* Modals */}
+        <CreateUser
+          onClose={() => this.closeCreateModal()}
+          show={this.state.showCreateModal}
+        />
 
-              {/* Main */}
-              <Table
-                headers={["Username", "Displayname", "Email", "Role"]}
-                items={users}
-                keyExtractor={(user: User) => user.get("_id")}
-                cellExtractor={(user: User) => [
-                  user.get("username"),
-                  user.get("displayname"),
-                  user.get("email"),
-                  user.get("role")
-                ]}
-                onClick={(user: User) =>
-                  history.push(`/users/${user.get("_id")}`)
-                }
-              />
+        {/* Main */}
+        <Table
+          headers={["Username", "Displayname", "Email", "Role"]}
+          items={users}
+          keyExtractor={(user: User) => user.get("_id")}
+          cellExtractor={(user: User) => [
+            user.get("username"),
+            user.get("displayname"),
+            user.get("email"),
+            user.get("role")
+          ]}
+          onClick={(user: User) => history.push(`/users/${user.get("_id")}`)}
+        />
 
-              {/* FAB */}
-              <Button
-                color="primary"
-                variant="fab"
-                onClick={this.showCreateModal}
-                className={classes.fab}
-              >
-                <AddIcon />
-              </Button>
-            </React.Fragment>
-          );
-        }
-      }
-    )
-  )
+        {/* FAB */}
+        <Button
+          color="primary"
+          variant="fab"
+          onClick={this.showCreateModal}
+          className={classes.fab}
+        >
+          <AddIcon />
+        </Button>
+      </React.Fragment>
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(withRouter(Users))
 );
-
-export default Users;
