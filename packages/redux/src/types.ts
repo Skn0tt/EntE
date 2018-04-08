@@ -36,15 +36,13 @@ export class User extends Record(
   get<T extends keyof IUser>(value: T): IUser[T] {
     return super.get(value);
   }
-
-  isManager = () => this.get("role") === Roles.MANAGER;
-  isParent = () => this.get("role") === Roles.PARENT;
-  isAdmin = () => this.get("role") === Roles.ADMIN;
-  isStudent = () => this.get("role") === Roles.STUDENT;
-  isTeacher = () => this.get("role") === Roles.TEACHER;
-
-  hasChildren = () => this.isManager() || this.isParent();
 }
+
+export const userIsManager = (u: User) => u.get("role") === Roles.MANAGER;
+export const userIsParent = (u: User) => u.get("role") === Roles.PARENT;
+export const userIsStudent = (u: User) => u.get("role") === Roles.STUDENT;
+export const userIsTeacher = (u: User) => u.get("role") === Roles.TEACHER;
+export const userHasChildren = (u: User) => userIsManager(u) || userIsParent(u);
 
 /**
  * Slot
