@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
 import Reboot from "material-ui/Reboot";
 import createRavenMiddleware from "raven-for-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
@@ -60,5 +59,4 @@ const Index = () => (
   </div>
 );
 
-ReactDOM.render(<Index />, document.getElementById("root") as HTMLElement);
-registerServiceWorker();
+ReactDOM.render(<Index />, document.getElementById("root"));

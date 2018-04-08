@@ -7,6 +7,8 @@ COPY packages/ui ./packages/ui
 COPY packages/types ./packages/types
 COPY packages/redux ./packages/redux
 COPY packages/lang ./packages/lang
+COPY packages/validator ./packages/validator
+COPY packages/parser ./packages/parser
 
 RUN yarn --frozen-lockfile
 RUN yarn lerna bootstrap
