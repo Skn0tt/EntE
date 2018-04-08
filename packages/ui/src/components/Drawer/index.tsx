@@ -1,32 +1,33 @@
-import * as React from "react";
+import { AppState, getRole, isLoading } from "ente-redux";
+import { Roles } from "ente-types";
 import {
   AppBar,
-  Toolbar,
-  IconButton,
-  Hidden,
   Divider,
+  Hidden,
+  IconButton,
+  Toolbar,
+  WithStyles,
   withStyles,
-  Drawer as MUIDrawer,
-  WithStyles
-  // LinearProgress,
+  Drawer as MUIDrawer
 } from "material-ui";
+import * as React from "react";
 import { Menu as MenuIcon } from "material-ui-icons";
-
-import styles from "./styles";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router";
+import LoginStatus from "../LoginStatus";
+import RefreshButton from "../RefreshButton";
 import {
   AdminItems,
   ManagerItems,
-  TeacherItems,
+  ParentItems,
   StudentItems,
-  ParentItems
+  TeacherItems
 } from "./items";
-import RefreshButton from "../RefreshButton";
-import { connect } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router";
-import LoginStatus from "../LoginStatus";
-import { Roles } from "ente-types";
-import { isLoading, getRole, AppState } from "ente-redux";
+import styles from "./styles";
 
+/**
+ * # Component Types
+ */
 interface StateProps {
   loading: boolean;
   role: Roles;
@@ -41,87 +42,95 @@ interface State {
   mobileOpen: boolean;
 }
 
-const Drawer = withRouter(
-  connect<StateProps>(mapStateToProps)(
-    withStyles(styles)(
-      class extends React.Component<Props, State> {
-        state = {
-          mobileOpen: false
-        };
+/**
+ * # Component Logic
+ */
+export const toggleDrawer = (s: State): State => ({
+  mobileOpen: !s.mobileOpen
+});
 
-        handleDrawerToggle = () =>
-          this.setState({ mobileOpen: !this.state.mobileOpen });
+/**
+ * # Component
+ */
+class Drawer extends React.Component<Props, State> {
+  state = {
+    mobileOpen: false
+  };
 
-        render() {
-          const { classes } = this.props;
+  handleDrawerToggle = () => this.setState(toggleDrawer);
 
-          const drawer = (
-            <div>
-              <LoginStatus />
-              <Divider />
-              {this.props.role === Roles.ADMIN && <AdminItems />}
-              {this.props.role === Roles.TEACHER && <TeacherItems />}
-              {this.props.role === Roles.PARENT && <ParentItems />}
-              {this.props.role === Roles.STUDENT && <StudentItems />}
-              {this.props.role === Roles.MANAGER && <ManagerItems />}
-            </div>
-          );
+  render() {
+    const { classes, role, children } = this.props;
+    const { mobileOpen } = this.state;
 
-          return (
-            <div className={classes.root}>
-              <div className={classes.appFrame}>
-                <AppBar className={classes.appBar}>
-                  <Toolbar>
-                    <IconButton
-                      aria-label="open drawer"
-                      onClick={this.handleDrawerToggle}
-                      className={classes.navIconHide}
-                    >
-                      <MenuIcon />
-                    </IconButton>
-                    <img
-                      className={classes.logo}
-                      src={require("../../res/img/Logo.svg")}
-                      height={24}
-                    />
-                    <div className={classes.grow} />
-                    <RefreshButton />
-                  </Toolbar>
-                </AppBar>
-                <Hidden mdUp>
-                  <MUIDrawer
-                    variant="temporary"
-                    open={this.state.mobileOpen}
-                    classes={{
-                      paper: classes.drawerPaper
-                    }}
-                    onClose={this.handleDrawerToggle}
-                    ModalProps={{
-                      keepMounted: true
-                    }}
-                  >
-                    {drawer}
-                  </MUIDrawer>
-                </Hidden>
-                <Hidden smDown implementation="css">
-                  <MUIDrawer
-                    variant="permanent"
-                    open
-                    classes={{
-                      paper: classes.drawerPaper
-                    }}
-                  >
-                    {drawer}
-                  </MUIDrawer>
-                </Hidden>
-                <main className={classes.content}>{this.props.children}</main>
-              </div>
-            </div>
-          );
+    const drawer = (
+      <>
+        <LoginStatus />
+        <Divider />
+        {
+          {
+            [Roles.ADMIN]: <AdminItems />,
+            [Roles.TEACHER]: <TeacherItems />,
+            [Roles.PARENT]: <ParentItems />,
+            [Roles.STUDENT]: <StudentItems />,
+            [Roles.MANAGER]: <ManagerItems />
+          }[role]
         }
-      }
-    )
-  )
-);
+      </>
+    );
 
-export default Drawer;
+    return (
+      <div className={classes.root}>
+        <div className={classes.appFrame}>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                aria-label="open drawer"
+                onClick={this.handleDrawerToggle}
+                className={classes.navIconHide}
+              >
+                <MenuIcon />
+              </IconButton>
+              <img
+                className={classes.logo}
+                src={require("../../res/img/Logo.svg")}
+                height={24}
+              />
+              <div className={classes.grow} />
+              <RefreshButton />
+            </Toolbar>
+          </AppBar>
+          <Hidden mdUp>
+            <MUIDrawer
+              variant="temporary"
+              open={mobileOpen}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              onClose={this.handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true
+              }}
+            >
+              {drawer}
+            </MUIDrawer>
+          </Hidden>
+          <Hidden smDown implementation="css">
+            <MUIDrawer
+              variant="permanent"
+              open
+              classes={{
+                paper: classes.drawerPaper
+              }}
+            >
+              {drawer}
+            </MUIDrawer>
+          </Hidden>
+          <main className={classes.content}>{children}</main>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(Drawer)));

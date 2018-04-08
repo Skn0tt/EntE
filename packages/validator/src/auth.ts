@@ -2,8 +2,8 @@ import { SyncValidator } from "./";
 import {
   isLength,
   containsNumbers,
-  containsSpecialChars,
-  matches
+  matches,
+  containsSpecialCharsAll
 } from "./shared";
 
 /**
@@ -17,5 +17,5 @@ import {
 export const isValidPassword: SyncValidator<string> = matches([
   isLength(8, 100),
   containsNumbers,
-  containsSpecialChars
+  containsSpecialCharsAll
 ]);

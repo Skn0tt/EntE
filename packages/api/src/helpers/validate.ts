@@ -25,15 +25,13 @@ export const check = <T>(
   wrapAsync(async (req, res, next) => {
     const input = extract(req);
 
-    const promises = validators.map(async ({ check, status, msg }) => {
-      const fulfills = await Promise.resolve(check(input));
+    for (const v of validators) {
+      const satisfies = await Promise.resolve(v.check(input));
 
-      if (!fulfills) {
-        return res.status(status || 422).end(msg);
+      if (!satisfies) {
+        return res.status(v.status || 422).end(v.msg);
       }
-    });
-
-    await Promise.all(promises);
+    }
 
     return next();
   });

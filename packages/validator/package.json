@@ -8,6 +8,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "date-fns": "^1.29.0"
+    "date-fns": "^2.0.0-alpha.7"
   }
 }

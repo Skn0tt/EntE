@@ -1,12 +1,15 @@
-import * as React from 'react';
-import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { WatchLater, InsertDriveFile, Person } from 'material-ui-icons';
-import { Route } from 'react-router-dom';
+import * as React from "react";
+import { List, ListItem, ListItemIcon, ListItemText } from "material-ui";
+import { WatchLater, InsertDriveFile, Person } from "material-ui-icons";
+import { Route } from "react-router-dom";
 
-const Slots = () => (
+/**
+ * # Items
+ */
+const Slots: React.SFC = () => (
   <Route
     render={({ history }) => (
-      <ListItem button onClick={() => history.push('/slots')}>
+      <ListItem button onClick={() => history.push("/slots")}>
         <ListItemIcon>
           <WatchLater />
         </ListItemIcon>
@@ -16,10 +19,10 @@ const Slots = () => (
   />
 );
 
-const Users = () => (
+const Users: React.SFC = () => (
   <Route
     render={({ history }) => (
-      <ListItem button onClick={() => history.push('/users')}>
+      <ListItem button onClick={() => history.push("/users")}>
         <ListItemIcon>
           <Person />
         </ListItemIcon>
@@ -29,10 +32,10 @@ const Users = () => (
   />
 );
 
-const Entries = () => (
+const Entries: React.SFC = () => (
   <Route
     render={({ history }) => (
-      <ListItem button onClick={() => history.push('/entries')}>
+      <ListItem button onClick={() => history.push("/entries")}>
         <ListItemIcon>
           <InsertDriveFile />
         </ListItemIcon>
@@ -42,7 +45,10 @@ const Entries = () => (
   />
 );
 
-export const AdminItems = () => (
+/**
+ * # Composed
+ */
+export const AdminItems: React.SFC = () => (
   <List>
     <Entries />
     <Slots />
@@ -50,25 +56,25 @@ export const AdminItems = () => (
   </List>
 );
 
-export const TeacherItems = () => (
+export const TeacherItems: React.SFC = () => (
   <List>
     <Slots />
   </List>
 );
 
-export const StudentItems = () => (
+export const StudentItems: React.SFC = () => (
   <List>
     <Entries />
   </List>
 );
 
-export const ParentItems = () => (
+export const ParentItems: React.SFC = () => (
   <List>
     <Entries />
   </List>
 );
 
-export const ManagerItems = () => (
+export const ManagerItems: React.SFC = () => (
   <List>
     <Entries />
     <Slots />

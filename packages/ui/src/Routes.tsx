@@ -1,104 +1,83 @@
 import * as React from "react";
 import { Switch, Route, Redirect } from "react-router";
-import Loadable from "react-loadable";
-import LoadingIndicator from "./elements/LoadingIndicator";
 import { Roles } from "ente-types";
+import Entries from "./routes/Entries";
+import Slots from "./routes/Slots";
+import Users from "./routes/Users";
+import SpecificUser from "./routes/SpecificUser";
+import SpecificEntry from "./routes/SpecificEntry";
+import NotFound from "./routes/NotFound";
 
-const Loading = () => <LoadingIndicator />;
-
-const LoadableEntries = Loadable({
-  loader: () => import("./routes/Entries"),
-  loading: Loading
-});
-
-const LoadableUsers = Loadable({
-  loader: () => import("./routes/Users"),
-  loading: Loading
-});
-
-const LoadableSlots = Loadable({
-  loader: () => import("./routes/Slots"),
-  loading: Loading
-});
-
-const LoadableSpecificUser = Loadable({
-  loader: () => import("./routes/SpecificUser"),
-  loading: Loading
-});
-
-const LoadableSpecificEntry = Loadable({
-  loader: () => import("./routes/SpecificEntry"),
-  loading: Loading
-});
-
-const LoadableNotFound = Loadable({
-  loader: () => import("./routes/NotFound"),
-  loading: Loading
-});
-
-const AdminRoutes = () => (
-  <React.Fragment>
+const AdminRoutes: React.SFC = () => (
+  <>
     <Switch>
       <Redirect exact from="/" to="/entries" />
-      <Route path="/entries" component={LoadableEntries} />
-      <Route path="/users" component={LoadableUsers} />
-      <Route path="/slots" component={LoadableSlots} />
-      <Route component={LoadableNotFound} />
+      <Route path="/entries" component={Entries} />
+      <Route path="/users" component={Users} />
+      <Route path="/slots" component={Slots} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/users/:userId" component={LoadableSpecificUser} />
-      <Route path="/entries/:entryId" component={LoadableSpecificEntry} />
+      <Route path="/users/:userId" component={SpecificUser} />
+      <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
-  </React.Fragment>
+  </>
 );
 
-const ParentRoutes = () => (
-  <React.Fragment>
+const ParentRoutes: React.SFC = () => (
+  <>
     <Switch>
       <Redirect exact from="/" to="/entries" />
-      <Route path="/entries" component={LoadableEntries} />
-      <Route component={LoadableNotFound} />
+      <Route path="/entries" component={Entries} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/entries/:entryId" component={LoadableSpecificEntry} />
+      <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
-  </React.Fragment>
+  </>
 );
-const StudentRoutes = () => <ParentRoutes />;
+const StudentRoutes: React.SFC = () => <ParentRoutes />;
 
-const TeacherRoutes = () => (
+const TeacherRoutes: React.SFC = () => (
   <Switch>
     <Redirect exact from="/" to="/slots" />
-    <Route path="/slots" component={LoadableSlots} />
-    <Route component={LoadableNotFound} />
+    <Route path="/slots" component={Slots} />
+    <Route component={NotFound} />
   </Switch>
 );
 
-const ManagerRoutes = () => (
-  <React.Fragment>
+const ManagerRoutes: React.SFC = () => (
+  <>
     <Switch>
       <Redirect exact from="/" to="/entries" />
-      <Route path="/entries" component={LoadableEntries} />
-      <Route path="/slots" component={LoadableSlots} />
-      <Route component={LoadableNotFound} />
+      <Route path="/entries" component={Entries} />
+      <Route path="/slots" component={Slots} />
+      <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/entries/:entryId" component={LoadableSpecificEntry} />
+      <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
-  </React.Fragment>
+  </>
 );
 
 interface Props {
   role: Roles;
 }
-
 const Routes: React.SFC<Props> = props => {
-  if (props.role === Roles.ADMIN) return <AdminRoutes />;
-  if (props.role === Roles.STUDENT) return <StudentRoutes />;
-  if (props.role === Roles.TEACHER) return <TeacherRoutes />;
-  if (props.role === Roles.PARENT) return <ParentRoutes />;
-  if (props.role === Roles.MANAGER) return <ManagerRoutes />;
-  return null;
+  switch (props.role) {
+    case Roles.ADMIN:
+      return <AdminRoutes />;
+    case Roles.STUDENT:
+      return <StudentRoutes />;
+    case Roles.TEACHER:
+      return <TeacherRoutes />;
+    case Roles.PARENT:
+      return <ParentRoutes />;
+    case Roles.MANAGER:
+      return <ManagerRoutes />;
+    default:
+      return null;
+  }
 };
 
 export default Routes;

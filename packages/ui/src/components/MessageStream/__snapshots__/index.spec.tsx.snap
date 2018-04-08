@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageStream renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Unknown
+    classes={Object {}}
+    messages={
+      Array [
+        "Hallo",
+        "Nachricht",
+      ]
+    }
+    removeMessage={[MockFunction]}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <WithStyles(Snackbar)
+          action={
+            <WithStyles(IconButton)
+              className="remove0"
+              color="inherit"
+              onClick={[Function]}
+            >
+              <pure(Close) />
+            </WithStyles(IconButton)>
+          }
+          autoHideDuration={6000}
+          message={
+            <span>
+              Hallo
+            </span>
+          }
+          onClose={[Function]}
+          open={true}
+        />,
+        <WithStyles(Snackbar)
+          action={
+            <WithStyles(IconButton)
+              className="remove1"
+              color="inherit"
+              onClick={[Function]}
+            >
+              <pure(Close) />
+            </WithStyles(IconButton)>
+          }
+          autoHideDuration={6000}
+          message={
+            <span>
+              Nachricht
+            </span>
+          }
+          onClose={[Function]}
+          open={true}
+        />,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": "0",
+        "nodeType": "class",
+        "props": Object {
+          "action": <WithStyles(IconButton)
+            className="remove0"
+            color="inherit"
+            onClick={[Function]}
+          >
+            <pure(Close) />
+          </WithStyles(IconButton)>,
+          "autoHideDuration": 6000,
+          "message": <span>
+            Hallo
+          </span>,
+          "onClose": [Function],
+          "open": true,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": "1",
+        "nodeType": "class",
+        "props": Object {
+          "action": <WithStyles(IconButton)
+            className="remove1"
+            color="inherit"
+            onClick={[Function]}
+          >
+            <pure(Close) />
+          </WithStyles(IconButton)>,
+          "autoHideDuration": 6000,
+          "message": <span>
+            Nachricht
+          </span>,
+          "onClose": [Function],
+          "open": true,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <WithStyles(Snackbar)
+            action={
+              <WithStyles(IconButton)
+                className="remove0"
+                color="inherit"
+                onClick={[Function]}
+              >
+                <pure(Close) />
+              </WithStyles(IconButton)>
+            }
+            autoHideDuration={6000}
+            message={
+              <span>
+                Hallo
+              </span>
+            }
+            onClose={[Function]}
+            open={true}
+          />,
+          <WithStyles(Snackbar)
+            action={
+              <WithStyles(IconButton)
+                className="remove1"
+                color="inherit"
+                onClick={[Function]}
+              >
+                <pure(Close) />
+              </WithStyles(IconButton)>
+            }
+            autoHideDuration={6000}
+            message={
+              <span>
+                Nachricht
+              </span>
+            }
+            onClose={[Function]}
+            open={true}
+          />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": "0",
+          "nodeType": "class",
+          "props": Object {
+            "action": <WithStyles(IconButton)
+              className="remove0"
+              color="inherit"
+              onClick={[Function]}
+            >
+              <pure(Close) />
+            </WithStyles(IconButton)>,
+            "autoHideDuration": 6000,
+            "message": <span>
+              Hallo
+            </span>,
+            "onClose": [Function],
+            "open": true,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": "1",
+          "nodeType": "class",
+          "props": Object {
+            "action": <WithStyles(IconButton)
+              className="remove1"
+              color="inherit"
+              onClick={[Function]}
+            >
+              <pure(Close) />
+            </WithStyles(IconButton)>,
+            "autoHideDuration": 6000,
+            "message": <span>
+              Nachricht
+            </span>,
+            "onClose": [Function],
+            "open": true,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

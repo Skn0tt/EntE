@@ -33,34 +33,32 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 
 type Props = StateProps & DispatchProps;
 
-const Slots = connect(mapStateToProps, mapDispatchToProps)(
-  class extends React.Component<Props> {
-    componentDidMount() {
-      this.props.requestSlots();
-    }
-
-    render() {
-      const { getUser, slots } = this.props;
-
-      return (
-        <Table
-          headers={["Name", "Datum", "Von", "Bis", "Signiert", "Lehrer"]}
-          items={slots}
-          keyExtractor={(slot: Slot) => slot.get("_id")}
-          trueElement={<SignedAvatar />}
-          falseElement={<UnsignedAvatar />}
-          cellExtractor={(slot: Slot) => [
-            getUser(slot.get("student")).get("displayname"),
-            slot.get("date").toLocaleDateString(),
-            slot.get("hour_from"),
-            slot.get("hour_to"),
-            slot.get("signed"),
-            getUser(slot.get("teacher")).get("displayname")
-          ]}
-        />
-      );
-    }
+export class Slots extends React.Component<Props> {
+  componentDidMount() {
+    this.props.requestSlots();
   }
-);
 
-export default Slots;
+  render() {
+    const { getUser, slots } = this.props;
+
+    return (
+      <Table
+        headers={["Name", "Datum", "Von", "Bis", "Signiert", "Lehrer"]}
+        items={slots}
+        keyExtractor={(slot: Slot) => slot.get("_id")}
+        trueElement={<SignedAvatar />}
+        falseElement={<UnsignedAvatar />}
+        cellExtractor={(slot: Slot) => [
+          getUser(slot.get("student")).get("displayname"),
+          slot.get("date").toLocaleDateString(),
+          slot.get("hour_from"),
+          slot.get("hour_to"),
+          slot.get("signed"),
+          getUser(slot.get("teacher")).get("displayname")
+        ]}
+      />
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Slots);

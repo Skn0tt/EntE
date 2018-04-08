@@ -76,6 +76,7 @@ import {
   IUser,
   INewPassword
 } from "ente-types";
+import { Map } from "immutable";
 
 const tokenRefreshDelay = 1000 * 60 * 5;
 
@@ -249,32 +250,62 @@ function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
 
 function* createUsersSaga(action: Action<IUserCreate[]>) {
   try {
-    const first: IUserCreate[] = [];
-    const second: IUserCreate[] = [];
-
-    action.payload!.forEach(value => {
-      if (value.role === Roles.MANAGER || value.role === Roles.PARENT) {
-        second.push(value);
-      } else {
-        first.push(value);
-      }
-    });
-
     const token = yield select(selectors.getToken);
 
-    if (first.length !== 0) {
-      const result = yield call(api.createUser, first, token);
-      yield dispatchUpdates(result);
-    }
+    /**
+     * Split into users
+     * - with children
+     * - without children
+     */
+    const withoutChildren: IUserCreate[] = [];
+    const withChildren: IUserCreate[] = [];
 
-    if (second.length !== 0) {
-      const result = yield call(api.createUser, second, token);
-      yield dispatchUpdates(result);
+    action.payload!.forEach(
+      user =>
+        [Roles.MANAGER, Roles.PARENT].indexOf(user.role) === -1
+          ? withoutChildren.push(user)
+          : withChildren.push(user)
+    );
+
+    const resultWithoutChildren: APIResponse = yield call(
+      api.createUser,
+      withoutChildren,
+      token
+    );
+    yield dispatchUpdates(resultWithoutChildren);
+
+    if (withChildren.length !== 0) {
+      /**
+       * Map created user's usernames to ids
+       */
+      const ids = Map<string, MongoId>(
+        resultWithoutChildren.users.map(u => [u.get("username"), u.get("_id")])
+      );
+
+      /**
+       * Replace usernames by created ids
+       */
+      const withChildrenAsIds = withChildren.map(u => ({
+        ...u,
+        children: u.children.map(c => ids.get(c))
+      }));
+
+      /**
+       * Create users
+       */
+      const resultWithChildren = yield call(
+        api.createUser,
+        withChildrenAsIds,
+        token
+      );
+      yield dispatchUpdates(resultWithChildren);
     }
 
     yield put(createUsersSuccess());
   } catch (error) {
-    yield put(createUsersError(error));
+    const ex: Error = error;
+    yield put(addMessage(ex.message));
+    yield put(createUsersError(ex));
   }
 }
 

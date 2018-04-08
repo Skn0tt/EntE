@@ -1,17 +1,30 @@
-import * as React from 'react';
-import styles from './styles';
-import { withStyles, CircularProgress, WithStyles, Grid } from 'material-ui';
+import * as React from "react";
+import styles from "./styles";
+import { withStyles, CircularProgress, WithStyles, Grid } from "material-ui";
 
+/**
+ * # Component Types
+ */
 interface OwnProps {}
-
 type Props = OwnProps & WithStyles;
+/**
+ * # Component
+ */
+export const LoadingIndicator: React.SFC<Props> = props => {
+  const { classes } = props;
 
-const LoadingIndicator: React.SFC<Props> = props => (
-  <Grid container alignItems="center" justify="center" className={props.classes.container}>
-    <Grid item>
-      <CircularProgress />
+  return (
+    <Grid
+      container
+      alignItems="center"
+      justify="center"
+      className={classes.container}
+    >
+      <Grid item>
+        <CircularProgress />
+      </Grid>
     </Grid>
-  </Grid>
-);
+  );
+};
 
 export default withStyles(styles)(LoadingIndicator);

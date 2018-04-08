@@ -1,5 +1,0 @@
-username,displayname,email,role,isAdult,children
-simonknott,Simon Knott,simoknott@gmail.com,student,FALSE,
-benjaminreichelt,Benjamin Reichelt,reichelt@ema-bonn.de,teacher,,
-peterknott,Peter Knott,peknott@arcor.de,parent,,simonknott
-jensliebreich,Liebreich,liebreich@ema-bonn.de,manager,,simonknott

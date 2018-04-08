@@ -6,7 +6,8 @@ import {
   matches,
   containsSpecialChars,
   not,
-  containsSpaces
+  containsSpaces,
+  containsSpecialCharsAll
 } from "./shared";
 
 /**
@@ -18,7 +19,7 @@ import {
  */
 export const isValidUsername: SyncValidator<string> = matches([
   isLength(4, 100),
-  not(containsSpecialChars),
+  not(containsSpecialCharsAll),
   not(containsSpaces)
 ]);
 
@@ -45,18 +46,24 @@ export const isValidEmail: SyncValidator<string> = email =>
     email
   );
 
+export const isValidUserExcludingChildren: SyncValidator<IUserCreate> = matches(
+  [
+    u => isValidDisplayname(u.displayname),
+    u => isValidUsername(u.username),
+    u => isValidRole(u.role),
+    u => isValidEmail(u.email),
+    // If password exists, must be valid
+    u => !u.password || isValidPassword(u.password),
+    // If not STUDENT, must not be adult
+    u => u.role === Roles.STUDENT || !u.isAdult,
+    // if not MANAGER or PARENT, must not have children
+    u =>
+      [Roles.MANAGER, Roles.PARENT].indexOf(u.role) !== -1 ||
+      u.children.length === 0
+  ]
+);
+
 export const isValidUser: SyncValidator<IUserCreate> = matches([
-  u => u.children.every(c => isValidMongoId(c)),
-  u => isValidDisplayname(u.displayname),
-  u => isValidUsername(u.username),
-  u => isValidRole(u.role),
-  u => isValidEmail(u.email),
-  // If password exists, must be valid
-  u => !u.password || isValidPassword(u.password),
-  // If not STUDENT, must not be adult
-  u => u.role === Roles.STUDENT || !u.isAdult,
-  // if not MANAGER or PARENT, must not have children
-  u =>
-    [Roles.MANAGER, Roles.PARENT].indexOf(u.role) !== -1 ||
-    u.children.length === 0
+  isValidUserExcludingChildren,
+  u => u.children.every(c => isValidMongoId(c))
 ]);

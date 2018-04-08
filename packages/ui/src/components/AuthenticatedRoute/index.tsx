@@ -1,16 +1,27 @@
-import * as React from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router';
+import * as React from "react";
+import { Redirect, RouteComponentProps, withRouter } from "react-router";
 
+/**
+ * # Component Types
+ */
 interface OwnProps {
   isLoggedIn: boolean;
 }
 
 type Props = OwnProps & RouteComponentProps<{}>;
 
-const AuthenticatedRoute: React.SFC<Props> = props => {
-  if (props.isLoggedIn) return <React.Fragment>{props.children}</React.Fragment>;
-
-  return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
-};
+/**
+ * # Component
+ */
+export const AuthenticatedRoute: React.SFC<Props> = ({
+  isLoggedIn,
+  children,
+  location
+}) =>
+  isLoggedIn ? (
+    <>{children}</>
+  ) : (
+    <Redirect to={{ pathname: "/login", state: { from: location } }} />
+  );
 
 export default withRouter(AuthenticatedRoute);

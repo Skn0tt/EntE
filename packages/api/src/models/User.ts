@@ -33,30 +33,6 @@ interface IUserBase {
 }
 
 /**
- * # Validators
- */
-const usernameValidator = [
-  validate({
-    validator: "isAlphanumeric",
-    message: "Username should contain alpha-numeric characters only"
-  })
-];
-
-const displaynameValidator = [
-  validate({
-    validator: "isAscii",
-    message: "Dislpayname should contain ASCII characters only"
-  })
-];
-
-const emailValidator = [
-  validate({
-    validator: "isEmail",
-    message: "email should be a valid Email Address."
-  })
-];
-
-/**
  * # Schema
  */
 const userSchema: Schema = new Schema(
@@ -65,18 +41,16 @@ const userSchema: Schema = new Schema(
       type: String,
       required: true,
       index: { unique: true },
-      validate: usernameValidator,
       minlength: 3,
       maxlength: 50
     },
     displayname: {
       type: String,
       required: true,
-      validate: displaynameValidator,
       minlength: 3,
       maxlength: 50
     },
-    email: { type: String, required: false, validate: emailValidator },
+    email: { type: String, required: false },
     password: String,
     role: { type: String, enum: rolesArr, required: true },
     isAdult: { type: Boolean, required: false, default: false },

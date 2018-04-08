@@ -5,9 +5,7 @@ import { redis } from "ente-types";
 
 const client = createClient("redis://redis");
 
-function generateSecret() {
-  return crypto.randomBytes(48).toString("hex");
-}
+const generateSecret = () => crypto.randomBytes(48).toString("hex");
 
 const oldSecret = client.get(redis.JWT_SECRETS, (err, reply) => {
   if (err) {

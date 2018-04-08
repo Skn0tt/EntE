@@ -246,9 +246,9 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                           </TextField>
                         </Grid>
                       )}
-                      <Grid item={true}>
-                        <Grid container={true} direction="row">
-                          <Grid item={true} xs={this.state.isRange ? 6 : 12}>
+                      <Grid item>
+                        <Grid container direction="row">
+                          <Grid item xs={this.state.isRange ? 6 : 12}>
                             <DatePicker
                               helperText="Von"
                               leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
@@ -264,7 +264,7 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                             />
                           </Grid>
                           {this.state.isRange && (
-                            <Grid item={true} xs={6}>
+                            <Grid item xs={6}>
                               <DatePicker
                                 helperText="Bis"
                                 error={!this.dateValid()}

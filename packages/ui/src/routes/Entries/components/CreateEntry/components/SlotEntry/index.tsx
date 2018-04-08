@@ -124,7 +124,7 @@ const SlotEntry = connect(mapStateToProps)(
             </Grid>
 
             {/* From */}
-            <Grid item={true} xs={3}>
+            <Grid item xs={3}>
               <TextField
                 label="Von"
                 fullWidth
@@ -139,7 +139,7 @@ const SlotEntry = connect(mapStateToProps)(
             </Grid>
 
             {/* To */}
-            <Grid item={true} xs={3}>
+            <Grid item xs={3}>
               <TextField
                 label="Bis"
                 fullWidth
@@ -154,7 +154,7 @@ const SlotEntry = connect(mapStateToProps)(
             </Grid>
 
             {/* Add */}
-            <Grid item={true} xs={3}>
+            <Grid item xs={3}>
               <Tooltip title="Hinzufügen">
                 <Button
                   variant="raised"
