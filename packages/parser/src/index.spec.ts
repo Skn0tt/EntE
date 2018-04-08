@@ -16,6 +16,14 @@ vater,PVater,pvaterarcor.de,parent,,schüler
 leiter,l.leiter,leiter@email.de,manager,,schüler
 `;
 
+const sampleDataError2 = `
+username,displayname,email,role,isAdult,children
+schüler,S. Schüler,sschüler@email.com,student,FALSE,
+lehrer,B. Lehrer,blehrer@email.de,teacher,,
+vater,PVater,pvaterarcor.de,parent,,schüler
+leiter,l.leiter,leiter@email.de,manager,,schüler2
+`;
+
 describe("parse", () => {
   it("returns the right data", async () => {
     const expectedResult: IUserCreate[] = [
@@ -53,13 +61,32 @@ describe("parse", () => {
       }
     ];
 
-    expect(await parse(sampleData)).toEqual(expectedResult);
+    expect(await parse(sampleData, [])).toEqual(expectedResult);
   });
 
   it("throws error on giving wrong data", async () => {
     expect.assertions(1);
     try {
-      await parse(sampleDataError);
+      await parse(sampleDataError, []);
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error);
+    }
+  });
+
+  it("throws error on giving data with a not existing user", async () => {
+    expect.assertions(1);
+    try {
+      await parse(sampleDataError, []);
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error);
+    }
+  });
+
+  it("doesn't throw error on giving data with user from usernames param", async () => {
+    expect.assertions(1);
+    try {
+      const result = await parse(sampleDataError, ["schüler2"]);
+      expect(result).toBeInstanceOf(Array);
     } catch (e) {
       expect(e).toBeInstanceOf(Error);
     }

@@ -51,88 +51,78 @@ type Props = StateProps & DispatchProps & WithStyles & RouteComponentProps<{}>;
 /**
  * # Component
  */
-const Entries = connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    withRouter(
-      class extends React.Component<Props, State> {
-        state: State = {
-          showCreateEntry: false
-        };
+export class Entries extends React.Component<Props, State> {
+  state: State = {
+    showCreateEntry: false
+  };
 
-        componentDidMount() {
-          this.props.requestEntries();
-        }
+  componentDidMount() {
+    this.props.requestEntries();
+  }
 
-        showCreateEntry = () => this.setState({ showCreateEntry: true });
-        closeCreateEntry = () => this.setState({ showCreateEntry: false });
+  showCreateEntry = () => this.setState({ showCreateEntry: true });
+  closeCreateEntry = () => this.setState({ showCreateEntry: false });
 
-        render() {
-          const {
-            classes,
-            canCreateEntries,
-            entries,
-            getUser,
-            history
-          } = this.props;
+  render() {
+    const { classes, canCreateEntries, entries, getUser, history } = this.props;
 
-          return (
-            <React.Fragment>
-              {/* Modals */}
-              <CreateEntry
-                onClose={this.closeCreateEntry}
-                show={this.state.showCreateEntry}
-              />
+    return (
+      <React.Fragment>
+        {/* Modals */}
+        <CreateEntry
+          onClose={this.closeCreateEntry}
+          show={this.state.showCreateEntry}
+        />
 
-              {/* Main */}
-              <Table
-                headers={[
-                  "Name",
-                  "Datum",
-                  "Erstellt",
-                  "Schulisch",
-                  "Begründung",
-                  "Stufenleiter",
-                  "Eltern"
-                ]}
-                items={entries}
-                keyExtractor={(entry: Entry) => entry.get("_id")}
-                trueElement={<SignedAvatar />}
-                falseElement={<UnsignedAvatar />}
-                cellExtractor={(entry: Entry) => [
-                  getUser(entry.get("student")).get("displayname"),
-                  entry.get("date").toLocaleDateString(),
-                  entry.get("createdAt").toLocaleString(),
-                  entry.get("forSchool") ? "Ja" : "Nein",
-                  entry.get("reason"),
-                  entry.get("signedManager"),
-                  entry.get("signedParent")
-                ]}
-                onClick={(entry: Entry) =>
-                  history.push(`/entries/${entry.get("_id")}`)
-                }
-              />
+        {/* Main */}
+        <Table
+          headers={[
+            "Name",
+            "Datum",
+            "Erstellt",
+            "Schulisch",
+            "Begründung",
+            "Stufenleiter",
+            "Eltern"
+          ]}
+          items={entries}
+          keyExtractor={(entry: Entry) => entry.get("_id")}
+          trueElement={<SignedAvatar />}
+          falseElement={<UnsignedAvatar />}
+          cellExtractor={(entry: Entry) => [
+            getUser(entry.get("student")).get("displayname"),
+            entry.get("date").toLocaleDateString(),
+            entry.get("createdAt").toLocaleString(),
+            entry.get("forSchool") ? "Ja" : "Nein",
+            entry.get("reason"),
+            entry.get("signedManager"),
+            entry.get("signedParent")
+          ]}
+          onClick={(entry: Entry) =>
+            history.push(`/entries/${entry.get("_id")}`)
+          }
+        />
 
-              {/* FAB */}
-              {canCreateEntries && (
-                <Route
-                  render={({ history }) => (
-                    <Button
-                      color="primary"
-                      variant="fab"
-                      onClick={this.showCreateEntry}
-                      className={classes.fab}
-                    >
-                      <AddIcon />
-                    </Button>
-                  )}
-                />
-              )}
-            </React.Fragment>
-          );
-        }
-      }
-    )
-  )
+        {/* FAB */}
+        {canCreateEntries && (
+          <Route
+            render={({ history }) => (
+              <Button
+                color="primary"
+                variant="fab"
+                onClick={this.showCreateEntry}
+                className={classes.fab}
+              >
+                <AddIcon />
+              </Button>
+            )}
+          />
+        )}
+      </React.Fragment>
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(withRouter(Entries))
 );
-
-export default Entries;

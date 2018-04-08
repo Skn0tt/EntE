@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ImportUsers } from "./index";
-import { shallow, mount } from "enzyme";
+import { ImportUsers } from "./";
+import { shallow } from "enzyme";
 
 describe("ImportUsers", () => {
   const addMessage = jest.fn();
@@ -14,6 +14,7 @@ describe("ImportUsers", () => {
       classes={{}}
       fullScreen
       createUsers={createUsers}
+      usernames={[]}
     />
   );
 
@@ -26,6 +27,7 @@ describe("ImportUsers", () => {
         classes={{}}
         fullScreen
         createUsers={createUsers}
+        usernames={[]}
       />
     );
 

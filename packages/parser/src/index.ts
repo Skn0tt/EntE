@@ -10,13 +10,16 @@ const readFile = async (f: File) =>
     var r = new FileReader();
     r.onload = _ => resolve(r.result);
     r.onerror = reject;
-    r.readAsDataURL(f);
+    r.readAsText(f);
   });
 
-export const parseCSVFromFile = async (f: File) =>
-  await parseCSV(await readFile(f));
+export const parseCSVFromFile = async (f: File, existingUsernames: string[]) =>
+  await parseCSV(await readFile(f), existingUsernames);
 
-const parseCSV = async (input: string): Promise<IUserCreate[]> => {
+const parseCSV = async (
+  input: string,
+  existingUsernames: string[]
+): Promise<IUserCreate[]> => {
   const parsed = await parse(input.trim());
 
   const result: IUserCreate[] = parsed.data.map(row => {
@@ -39,6 +42,14 @@ const parseCSV = async (input: string): Promise<IUserCreate[]> => {
   const allValid = result.every(isValidUserExcludingChildren);
   if (!allValid) {
     throw new Error("One of the users is invalid.");
+  }
+
+  const usernames = result.map(u => u.username).concat(existingUsernames);
+  const childrenValid = result.every(u =>
+    u.children.every(c => usernames.indexOf(c) !== -1)
+  );
+  if (!childrenValid) {
+    throw new Error("One of the children does not exist");
   }
 
   return result;

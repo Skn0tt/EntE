@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import {
   IAPIResponse,
   TokenInfo,
@@ -12,6 +12,14 @@ import {
 import { config } from "./";
 import { APIResponse, Entry, Slot, User } from "./types";
 
+const axiosStandardParams = (token: string): AxiosRequestConfig => ({
+  transformResponse: transformDates,
+  validateStatus: s => s >= 200 && s < 300,
+  headers: {
+    Authorization: "Bearer " + token
+  }
+});
+
 const reviver = (key: string, value: any) =>
   ["date", "dateEnd", "createdAt", "updatedAt"].indexOf(key) !== -1
     ? new Date(value)
@@ -23,12 +31,7 @@ const transformDates = (data: string) => {
 };
 
 const get = async (url: string, token: string) => {
-  const response = await axios.get(url, {
-    transformResponse: transformDates,
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  });
+  const response = await axios.get(url, axiosStandardParams(token));
   return response.data;
 };
 
@@ -115,12 +118,7 @@ export const getTeachers = async (token: string): Promise<APIResponse> => {
 };
 
 const post = async (url: string, token: string, body?: {}) => {
-  const response = await axios.post(url, body, {
-    transformResponse: transformDates,
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  });
+  const response = await axios.post(url, body, axiosStandardParams(token));
   return response.data;
 };
 
@@ -163,12 +161,7 @@ export const updateUser = async (
 };
 
 const put = async (url: string, token: string, body?: {}) => {
-  const response = await axios.put(url, body, {
-    transformResponse: transformDates,
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  });
+  const response = await axios.put(url, body, axiosStandardParams(token));
   return response.data;
 };
 

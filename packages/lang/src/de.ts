@@ -21,7 +21,8 @@ const de: Translation = {
   },
   ui: {
     common: {
-      close: "Schließen"
+      close: "Schließen",
+      submit: "OK"
     },
     table: {
       search: "Suchen",
@@ -47,6 +48,12 @@ const de: Translation = {
     specificEntry: {
       sign: "Unterschreiben",
       unsign: "Signatur Zurücknehmen"
+    },
+    createUser: {
+      import: "Importieren"
+    },
+    importUsers: {
+      dropzone: "Legen sie hier eine .csv-Datei ab."
     }
   }
 };

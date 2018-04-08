@@ -30,7 +30,11 @@ import {
   createUsersRequest,
   AppState
 } from "ente-redux";
+import lang from "ente-lang";
 
+/**
+ * # Component Types
+ */
 interface OwnProps {
   onClose(): void;
   show: boolean;
@@ -67,7 +71,13 @@ type Props = OwnProps &
   WithStyles<string> &
   InjectedProps;
 
+/**
+ * # Component
+ */
 export class CreateUser extends React.Component<Props, State> {
+  /**
+   * # Intialization
+   */
   state: State = {
     selectedChild:
       this.props.students.length > 0 ? this.props.students[0].get("_id") : "",
@@ -177,7 +187,7 @@ export class CreateUser extends React.Component<Props, State> {
     this.updateSelected();
 
     return (
-      <React.Fragment>
+      <>
         <Dialog fullScreen={fullScreen} onClose={this.handleGoBack} open={show}>
           <DialogTitle>Neuer Nutzer</DialogTitle>
           <DialogContent>
@@ -186,7 +196,7 @@ export class CreateUser extends React.Component<Props, State> {
               onKeyPress={this.handleKeyPress}
             >
               <Grid container direction="column">
-                <Grid container xs={12} direction="row">
+                <Grid container direction="row">
                   <Grid item xs={12} lg={6}>
                     <TextField
                       fullWidth
@@ -308,14 +318,14 @@ export class CreateUser extends React.Component<Props, State> {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleShowImport} color="secondary">
-              Import
+              {lang().ui.createUser.import}
             </Button>
             <Button
               onClick={this.handleClose}
               color="secondary"
               className="close"
             >
-              Cancel
+              {lang().ui.common.close}
             </Button>
             <Button
               onClick={() => {
@@ -325,12 +335,12 @@ export class CreateUser extends React.Component<Props, State> {
               disabled={!this.inputValid()}
               color="primary"
             >
-              Ok
+              {lang().ui.common.submit}
             </Button>
           </DialogActions>
         </Dialog>
         <ImportUsers onClose={this.handleCloseImport} show={showImportUsers} />
-      </React.Fragment>
+      </>
     );
   }
 }

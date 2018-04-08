@@ -58,7 +58,6 @@ ShallowWrapper {
                 <WithStyles(GridWrapper)
                   container={true}
                   direction="row"
-                  xs={12}
                 >
                   <WithStyles(GridWrapper)
                     item={true}
@@ -182,21 +181,21 @@ ShallowWrapper {
               color="secondary"
               onClick={[Function]}
             >
-              Import
+              Importieren
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Cancel
+              Schließen
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              Ok
+              OK
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -229,7 +228,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -353,21 +351,21 @@ ShallowWrapper {
                 color="secondary"
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Cancel
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Ok
+                OK
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -404,7 +402,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -536,7 +533,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -666,7 +662,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -866,7 +861,6 @@ ShallowWrapper {
                       ],
                       "container": true,
                       "direction": "row",
-                      "xs": 12,
                     },
                     "ref": null,
                     "rendered": Array [
@@ -1219,21 +1213,21 @@ ShallowWrapper {
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Cancel
+                  Schließen
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Ok
+                  OK
                 </WithStyles(Button)>,
               ],
             },
@@ -1244,12 +1238,12 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Import",
+                  "children": "Importieren",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Import",
+                "rendered": "Importieren",
                 "type": [Function],
               },
               Object {
@@ -1257,13 +1251,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Cancel",
+                  "children": "Schließen",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Cancel",
+                "rendered": "Schließen",
                 "type": [Function],
               },
               Object {
@@ -1271,13 +1265,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Ok",
+                  "children": "OK",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Ok",
+                "rendered": "OK",
                 "type": [Function],
               },
             ],
@@ -1328,7 +1322,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -1452,21 +1445,21 @@ ShallowWrapper {
                 color="secondary"
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Cancel
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Ok
+                OK
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -1499,7 +1492,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -1623,21 +1615,21 @@ ShallowWrapper {
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Cancel
+                  Schließen
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Ok
+                  OK
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -1674,7 +1666,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -1806,7 +1797,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -1936,7 +1926,6 @@ ShallowWrapper {
                       <WithStyles(GridWrapper)
                         container={true}
                         direction="row"
-                        xs={12}
                       >
                         <WithStyles(GridWrapper)
                           item={true}
@@ -2136,7 +2125,6 @@ ShallowWrapper {
                         ],
                         "container": true,
                         "direction": "row",
-                        "xs": 12,
                       },
                       "ref": null,
                       "rendered": Array [
@@ -2489,21 +2477,21 @@ ShallowWrapper {
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Import
+                    Importieren
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Cancel
+                    Schließen
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    Ok
+                    OK
                   </WithStyles(Button)>,
                 ],
               },
@@ -2514,12 +2502,12 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Import",
+                    "children": "Importieren",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Import",
+                  "rendered": "Importieren",
                   "type": [Function],
                 },
                 Object {
@@ -2527,13 +2515,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Cancel",
+                    "children": "Schließen",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Cancel",
+                  "rendered": "Schließen",
                   "type": [Function],
                 },
                 Object {
@@ -2541,13 +2529,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Ok",
+                    "children": "OK",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Ok",
+                  "rendered": "OK",
                   "type": [Function],
                 },
               ],
@@ -2640,7 +2628,6 @@ ShallowWrapper {
                 <WithStyles(GridWrapper)
                   container={true}
                   direction="row"
-                  xs={12}
                 >
                   <WithStyles(GridWrapper)
                     item={true}
@@ -2764,21 +2751,21 @@ ShallowWrapper {
               color="secondary"
               onClick={[Function]}
             >
-              Import
+              Importieren
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Cancel
+              Schließen
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              Ok
+              OK
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -2811,7 +2798,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -2935,21 +2921,21 @@ ShallowWrapper {
                 color="secondary"
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Cancel
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Ok
+                OK
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -2986,7 +2972,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -3118,7 +3103,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -3248,7 +3232,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -3448,7 +3431,6 @@ ShallowWrapper {
                       ],
                       "container": true,
                       "direction": "row",
-                      "xs": 12,
                     },
                     "ref": null,
                     "rendered": Array [
@@ -3801,21 +3783,21 @@ ShallowWrapper {
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Cancel
+                  Schließen
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Ok
+                  OK
                 </WithStyles(Button)>,
               ],
             },
@@ -3826,12 +3808,12 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Import",
+                  "children": "Importieren",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Import",
+                "rendered": "Importieren",
                 "type": [Function],
               },
               Object {
@@ -3839,13 +3821,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Cancel",
+                  "children": "Schließen",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Cancel",
+                "rendered": "Schließen",
                 "type": [Function],
               },
               Object {
@@ -3853,13 +3835,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Ok",
+                  "children": "OK",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Ok",
+                "rendered": "OK",
                 "type": [Function],
               },
             ],
@@ -3910,7 +3892,6 @@ ShallowWrapper {
                   <WithStyles(GridWrapper)
                     container={true}
                     direction="row"
-                    xs={12}
                   >
                     <WithStyles(GridWrapper)
                       item={true}
@@ -4034,21 +4015,21 @@ ShallowWrapper {
                 color="secondary"
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Cancel
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Ok
+                OK
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -4081,7 +4062,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -4205,21 +4185,21 @@ ShallowWrapper {
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Cancel
+                  Schließen
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Ok
+                  OK
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -4256,7 +4236,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -4388,7 +4367,6 @@ ShallowWrapper {
                     <WithStyles(GridWrapper)
                       container={true}
                       direction="row"
-                      xs={12}
                     >
                       <WithStyles(GridWrapper)
                         item={true}
@@ -4518,7 +4496,6 @@ ShallowWrapper {
                       <WithStyles(GridWrapper)
                         container={true}
                         direction="row"
-                        xs={12}
                       >
                         <WithStyles(GridWrapper)
                           item={true}
@@ -4718,7 +4695,6 @@ ShallowWrapper {
                         ],
                         "container": true,
                         "direction": "row",
-                        "xs": 12,
                       },
                       "ref": null,
                       "rendered": Array [
@@ -5071,21 +5047,21 @@ ShallowWrapper {
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Import
+                    Importieren
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Cancel
+                    Schließen
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    Ok
+                    OK
                   </WithStyles(Button)>,
                 ],
               },
@@ -5096,12 +5072,12 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Import",
+                    "children": "Importieren",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Import",
+                  "rendered": "Importieren",
                   "type": [Function],
                 },
                 Object {
@@ -5109,13 +5085,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Cancel",
+                    "children": "Schließen",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Cancel",
+                  "rendered": "Schließen",
                   "type": [Function],
                 },
                 Object {
@@ -5123,13 +5099,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Ok",
+                    "children": "OK",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Ok",
+                  "rendered": "OK",
                   "type": [Function],
                 },
               ],

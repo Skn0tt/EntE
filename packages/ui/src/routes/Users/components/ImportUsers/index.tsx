@@ -1,5 +1,11 @@
 import { parseCSVFromFile } from "ente-parser";
-import { AppState, addMessage, createUsersRequest } from "ente-redux";
+import {
+  AppState,
+  addMessage,
+  createUsersRequest,
+  getUsers,
+  getStudents
+} from "ente-redux";
 import { IUserCreate } from "ente-types";
 import { Button, Dialog, Grid } from "material-ui";
 import { withMobileDialog } from "material-ui/Dialog";
@@ -12,14 +18,22 @@ import { Action, Dispatch } from "redux";
 import SignedAvatar from "../../../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../../../SpecificEntry/elements/UnsignedAvatar";
 import styles from "./styles";
+import lang from "ente-lang";
 
+/**
+ * # Component Types
+ */
 interface OwnProps {
   onClose(): void;
   show: boolean;
 }
 
-interface StateProps {}
-const mapStateToProps = (state: AppState) => ({});
+interface StateProps {
+  usernames: string[];
+}
+const mapStateToProps = (state: AppState): StateProps => ({
+  usernames: getStudents(state).map(u => u.get("username"))
+});
 
 interface DispatchProps {
   createUsers(users: IUserCreate[]): void;
@@ -41,15 +55,33 @@ interface State {
 
 type Props = OwnProps & DispatchProps & StateProps & WithStyles & InjectedProps;
 
+/**
+ * # Component
+ */
 export class ImportUsers extends React.Component<Props, State> {
+  /**
+   * ## Intialization
+   */
   state: State = {
     users: [],
     error: true
   };
 
+  /**
+   * # Handlers
+   */
+  handleClose = () => this.props.onClose();
+
+  handleSubmit = () =>
+    this.state.users.length !== 0 && this.props.createUsers(this.state.users);
+
   onDrop = async (accepted: File[], rejected: File[]) => {
+    if (accepted.length === 0) {
+      return;
+    }
+
     try {
-      const users = await parseCSVFromFile(accepted[0]);
+      const users = await parseCSVFromFile(accepted[0], this.props.usernames);
       this.setState({ users, error: false });
     } catch (error) {
       this.setState({ error: true });
@@ -57,19 +89,19 @@ export class ImportUsers extends React.Component<Props, State> {
     }
   };
 
-  handleClose = () => this.props.onClose();
-  handleSubmit = () =>
-    this.state.users.length !== 0 && this.props.createUsers(this.state.users);
-
   /**
    * # Validation
    */
   inputValid = (): boolean =>
     !this.state.error && this.state.users.length !== 0;
 
+  /**
+   * # Render
+   */
   render() {
     const { show, fullScreen } = this.props;
     const { error } = this.state;
+
     return (
       <Dialog fullScreen={fullScreen} onClose={this.handleClose} open={show}>
         <Grid container direction="column">
@@ -79,7 +111,7 @@ export class ImportUsers extends React.Component<Props, State> {
               onDrop={this.onDrop}
               className="dropzone"
             >
-              Drop items here!
+              {lang().ui.importUsers.dropzone}
             </Dropzone>
           </Grid>
           <Grid item xs={12}>
@@ -92,7 +124,7 @@ export class ImportUsers extends React.Component<Props, State> {
             color="secondary"
             className="close"
           >
-            Cancel
+            {lang().ui.common.close}
           </Button>
           <Button
             onClick={() => {
@@ -103,7 +135,7 @@ export class ImportUsers extends React.Component<Props, State> {
             color="primary"
             className="submit"
           >
-            OK
+            {lang().ui.common.submit}
           </Button>
         </DialogActions>
       </Dialog>

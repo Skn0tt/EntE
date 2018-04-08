@@ -19,14 +19,16 @@ export const usersExist = async (
 };
 
 /**
- * Checks if there is one of these users that doesn't already exist
+ * Checks if one of the usernames is already taken.
+ * Returns true if none of given names are in DB
+ * Returns false if one or more of given names are in DB
  */
-export const usersExistByUsername = async (
-  names: string[]
-): Promise<boolean> => {
+export const usernamesAvailable = async (names: string[]): Promise<boolean> => {
   const uniqueNames = _.uniq(names);
 
   const numberOfUsers = await User.count({ username: { $in: uniqueNames } });
+
+  console.log(numberOfUsers);
 
   return numberOfUsers === 0;
 };

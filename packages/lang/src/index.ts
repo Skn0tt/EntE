@@ -22,6 +22,7 @@ export interface Translation {
   ui: {
     common: {
       close: string;
+      submit: string;
     };
     table: {
       search: string;
@@ -47,6 +48,12 @@ export interface Translation {
       refreshEmail: string;
       refreshChildren: string;
       refreshDisplayname: string;
+    };
+    createUser: {
+      import: string;
+    };
+    importUsers: {
+      dropzone: string;
     };
   };
 }

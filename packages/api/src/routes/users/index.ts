@@ -32,7 +32,7 @@ import validate, { check } from "../../helpers/validate";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import * as _ from "lodash";
-import { usersExistByUsername, usersExist } from "../../helpers/exist";
+import { usernamesAvailable, usersExist } from "../../helpers/exist";
 import { isEmail } from "validator";
 import { omitPassword } from "../../helpers/queryParams";
 
@@ -166,7 +166,7 @@ usersRouter.post(
       msg: "One of the users is not valid."
     },
     {
-      check: us => usersExistByUsername(us.map(u => u.username)),
+      check: us => usernamesAvailable(us.map(u => u.username)),
       msg: "One of the users already exists."
     },
     {
