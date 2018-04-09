@@ -262,7 +262,7 @@ usersRouter.patch(
      * `children`
      */
     if (!!children && (await usersExist(children, Roles.STUDENT))) {
-      user.set("role", role);
+      user.set("children", children);
     }
 
     /**
