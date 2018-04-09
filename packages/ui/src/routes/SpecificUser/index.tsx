@@ -24,9 +24,11 @@ import {
   isLoading,
   getUserRequest,
   getStudents,
-  userHasChildren
+  userHasChildren,
+  updateUserRequest
 } from "ente-redux";
 import lang from "ente-lang";
+import { updateUser } from "redux/src/api";
 
 /**
  * # Component Types
@@ -51,10 +53,12 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 interface DispatchProps {
-  requestUser(id: MongoId): Action;
+  requestUser(id: MongoId);
+  updateUser(u: IUser);
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
-  requestUser: (id: MongoId) => dispatch(getUserRequest(id))
+  requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
+  updateUser: (user: IUser) => dispatch(updateUserRequest(user))
 });
 
 type Props = StateProps &
@@ -102,6 +106,10 @@ export class SpecificUser extends React.PureComponent<Props, State> {
    */
   onClose = () => this.props.history.goBack();
   onGoBack = () => this.onClose();
+  onSubmit = () => {
+    this.props.updateUser(this.state.user.toJS());
+    this.onClose();
+  };
 
   /**
    * ## Render
@@ -152,8 +160,11 @@ export class SpecificUser extends React.PureComponent<Props, State> {
           loading && <LoadingIndicator />
         )}
         <DialogActions>
-          <Button size="small" color="primary" onClick={this.onClose}>
+          <Button size="small" color="secondary" onClick={this.onClose}>
             {lang().ui.common.close}
+          </Button>
+          <Button size="small" color="primary" onClick={this.onSubmit}>
+            {lang().ui.common.submit}
           </Button>
         </DialogActions>
       </Dialog>
