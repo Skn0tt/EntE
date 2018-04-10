@@ -39,6 +39,7 @@ ShallowWrapper {
             className="updateInput"
             error={false}
             fullWidth={true}
+            label={undefined}
             onChange={[Function]}
             required={false}
             select={false}
@@ -88,6 +89,7 @@ ShallowWrapper {
             className="updateInput"
             error={false}
             fullWidth={true}
+            label={undefined}
             onChange={[Function]}
             required={false}
             select={false}
@@ -105,6 +107,7 @@ ShallowWrapper {
             "className": "updateInput",
             "error": false,
             "fullWidth": true,
+            "label": undefined,
             "onChange": [Function],
             "required": false,
             "select": false,
@@ -143,6 +146,7 @@ ShallowWrapper {
               className="updateInput"
               error={false}
               fullWidth={true}
+              label={undefined}
               onChange={[Function]}
               required={false}
               select={false}
@@ -192,6 +196,7 @@ ShallowWrapper {
               className="updateInput"
               error={false}
               fullWidth={true}
+              label={undefined}
               onChange={[Function]}
               required={false}
               select={false}
@@ -209,6 +214,7 @@ ShallowWrapper {
               "className": "updateInput",
               "error": false,
               "fullWidth": true,
+              "label": undefined,
               "onChange": [Function],
               "required": false,
               "select": false,
