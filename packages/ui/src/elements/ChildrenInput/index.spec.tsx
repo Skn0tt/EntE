@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChildrenUpdate, includes } from "./index";
+import { ChildrenInput, includes } from "./index";
 import { shallow } from "enzyme";
 import { User } from "ente-redux";
 import { Roles } from "ente-types";
@@ -25,11 +25,11 @@ const user2 = new User({
   username: "hball"
 });
 
-describe("ChildrenUpdate", () => {
+describe("ChildrenInput", () => {
   const onChange = sinon.spy();
 
   const comp = shallow(
-    <ChildrenUpdate
+    <ChildrenInput
       children={[user]}
       onChange={onChange}
       classes={{}}
@@ -44,7 +44,7 @@ describe("ChildrenUpdate", () => {
   it("renders when no additional users are available", () => {
     const onChange = sinon.spy();
     const comp = shallow(
-      <ChildrenUpdate
+      <ChildrenInput
         children={[user]}
         onChange={onChange}
         classes={{}}

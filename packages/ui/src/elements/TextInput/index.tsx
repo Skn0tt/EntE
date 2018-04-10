@@ -17,7 +17,7 @@ type Props = OwnProps;
 /**
  * # Component
  */
-export const TextUpdate: React.SFC<Props> = props => {
+export const TextInput: React.SFC<Props> = props => {
   const { validator, onChange, title, value, type } = props;
 
   return (
@@ -39,4 +39,4 @@ export const TextUpdate: React.SFC<Props> = props => {
   );
 };
 
-export default TextUpdate;
+export default TextInput;

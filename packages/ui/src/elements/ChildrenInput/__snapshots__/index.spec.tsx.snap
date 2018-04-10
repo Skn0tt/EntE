@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChildrenUpdate renders correctly 1`] = `
+exports[`ChildrenInput renders correctly 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ChildrenUpdate
+  Symbol(enzyme.__unrendered__): <ChildrenInput
     classes={Object {}}
     onChange={[Function]}
     students={
@@ -39,7 +39,7 @@ ShallowWrapper {
       "isAdult": false,
       "children": Array [],
     }
-  </ChildrenUpdate>,
+  </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -857,11 +857,11 @@ ShallowWrapper {
 }
 `;
 
-exports[`ChildrenUpdate renders when no additional users are available 1`] = `
+exports[`ChildrenInput renders when no additional users are available 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ChildrenUpdate
+  Symbol(enzyme.__unrendered__): <ChildrenInput
     classes={Object {}}
     onChange={[Function]}
     students={
@@ -887,7 +887,7 @@ ShallowWrapper {
       "isAdult": false,
       "children": Array [],
     }
-  </ChildrenUpdate>,
+  </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],

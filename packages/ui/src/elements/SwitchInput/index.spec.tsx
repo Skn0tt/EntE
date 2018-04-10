@@ -1,12 +1,12 @@
 import * as React from "react";
 import { shallow } from "enzyme";
-import { SwitchUpdate } from "./";
+import { SwitchInput } from "./";
 import * as sinon from "sinon";
 
-describe("SwitchUpdate", () => {
+describe("SwitchInput", () => {
   const onChange = sinon.spy();
   const comp = shallow(
-    <SwitchUpdate title="Switch" onChange={onChange} value={false} />
+    <SwitchInput title="Switch" onChange={onChange} value={false} />
   );
 
   it("renders correctly", () => {

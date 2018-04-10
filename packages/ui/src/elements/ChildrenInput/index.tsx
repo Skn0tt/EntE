@@ -58,7 +58,7 @@ interface State {
 /**
  * # Component
  */
-export class ChildrenUpdate extends React.Component<Props, State> {
+export class ChildrenInput extends React.Component<Props, State> {
   state: State = {
     selected: this.props.students.filter(
       u => !includes(this.props.children)(u)
@@ -150,4 +150,4 @@ export class ChildrenUpdate extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(ChildrenUpdate);
+export default withStyles(styles)(ChildrenInput);

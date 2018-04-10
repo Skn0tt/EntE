@@ -15,7 +15,7 @@ type Props = OwnProps;
 /**
  * # Component
  */
-export const SwitchUpdate: React.SFC<Props> = props => {
+export const SwitchInput: React.SFC<Props> = props => {
   const { onChange, value, title } = props;
 
   return (
@@ -34,4 +34,4 @@ export const SwitchUpdate: React.SFC<Props> = props => {
   );
 };
 
-export default SwitchUpdate;
+export default SwitchInput;

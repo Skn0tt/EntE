@@ -3,8 +3,9 @@ import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
-import ChildrenUpdate from "./components/ChildrenUpdate";
-import SwitchUpdate from "./components/SwitchUpdate";
+import ChildrenInput from "../../elements/ChildrenInput";
+import SwitchInput from "../../elements/SwitchInput";
+import TextInput from "../../elements/TextInput";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Button, Dialog, Grid } from "material-ui";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
@@ -28,7 +29,6 @@ import {
 } from "ente-redux";
 import lang from "ente-lang";
 import { updateUser } from "redux/src/api";
-import TextUpdate from "./components/TextUpdate";
 import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
 
 /**
@@ -135,7 +135,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
 
                 {/* Displayname */}
                 <Grid item xs={12}>
-                  <TextUpdate
+                  <TextInput
                     title={lang().ui.specificUser.displaynameTitle}
                     value={user.get("displayname")}
                     onChange={n =>
@@ -147,7 +147,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
 
                 {/* Email */}
                 <Grid item xs={12}>
-                  <TextUpdate
+                  <TextInput
                     title={lang().ui.specificUser.emailTitle}
                     value={user.get("email")}
                     onChange={n =>
@@ -160,7 +160,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                 {/* IsAdult */}
                 {userIsStudent(user) && (
                   <Grid item xs={12}>
-                    <SwitchUpdate
+                    <SwitchInput
                       value={user.get("isAdult")}
                       title={lang().ui.specificUser.adultTitle}
                       onChange={b =>
@@ -173,7 +173,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                 {/* Children */}
                 {userHasChildren(user) && (
                   <Grid item xs={12}>
-                    <ChildrenUpdate
+                    <ChildrenInput
                       children={user.get("children").map(getUser)}
                       students={students}
                       onChange={c =>

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { shallow } from "enzyme";
 import * as sinon from "sinon";
-import { TextUpdate } from ".";
+import { TextInput } from ".";
 
-describe("TextUpdate", () => {
+describe("TextInput", () => {
   const onChange = sinon.spy();
   const comp = shallow(
-    <TextUpdate
+    <TextInput
       value="Hello world"
       onChange={onChange}
       validator={_ => true}
