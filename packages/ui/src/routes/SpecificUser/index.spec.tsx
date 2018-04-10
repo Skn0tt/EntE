@@ -29,6 +29,7 @@ describe("SpecificUser", () => {
       loading={false}
       requestUser={requestUser}
       students={[]}
+      updateUser={() => {}}
     />
   );
 
@@ -52,6 +53,7 @@ describe("SpecificUser", () => {
         loading={false}
         requestUser={requestUser}
         students={[]}
+        updateUser={() => {}}
       />
     );
 

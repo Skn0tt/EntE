@@ -115,7 +115,7 @@ ShallowWrapper {
           >
             <WithStyles(Button)
               className="add"
-              disabled={true}
+              disabled={false}
               mini={true}
               onClick={[Function]}
               variant="fab"
@@ -311,7 +311,7 @@ ShallowWrapper {
             >
               <WithStyles(Button)
                 className="add"
-                disabled={true}
+                disabled={false}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -403,7 +403,7 @@ ShallowWrapper {
             "props": Object {
               "children": <WithStyles(Button)
                 className="add"
-                disabled={true}
+                disabled={false}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -421,7 +421,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <pure(Add) />,
                 "className": "add",
-                "disabled": true,
+                "disabled": false,
                 "mini": true,
                 "onClick": [Function],
                 "variant": "fab",
@@ -515,7 +515,7 @@ ShallowWrapper {
             >
               <WithStyles(Button)
                 className="add"
-                disabled={true}
+                disabled={false}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -711,7 +711,7 @@ ShallowWrapper {
               >
                 <WithStyles(Button)
                   className="add"
-                  disabled={true}
+                  disabled={false}
                   mini={true}
                   onClick={[Function]}
                   variant="fab"
@@ -803,7 +803,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <WithStyles(Button)
                   className="add"
-                  disabled={true}
+                  disabled={false}
                   mini={true}
                   onClick={[Function]}
                   variant="fab"
@@ -821,7 +821,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": <pure(Add) />,
                   "className": "add",
-                  "disabled": true,
+                  "disabled": false,
                   "mini": true,
                   "onClick": [Function],
                   "variant": "fab",
@@ -957,7 +957,7 @@ ShallowWrapper {
           >
             <WithStyles(Button)
               className="add"
-              disabled={false}
+              disabled={true}
               mini={true}
               onClick={[Function]}
               variant="fab"
@@ -1147,7 +1147,7 @@ ShallowWrapper {
             >
               <WithStyles(Button)
                 className="add"
-                disabled={false}
+                disabled={true}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -1214,7 +1214,7 @@ ShallowWrapper {
             "props": Object {
               "children": <WithStyles(Button)
                 className="add"
-                disabled={false}
+                disabled={true}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -1232,7 +1232,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <pure(Add) />,
                 "className": "add",
-                "disabled": false,
+                "disabled": true,
                 "mini": true,
                 "onClick": [Function],
                 "variant": "fab",
@@ -1320,7 +1320,7 @@ ShallowWrapper {
             >
               <WithStyles(Button)
                 className="add"
-                disabled={false}
+                disabled={true}
                 mini={true}
                 onClick={[Function]}
                 variant="fab"
@@ -1510,7 +1510,7 @@ ShallowWrapper {
               >
                 <WithStyles(Button)
                   className="add"
-                  disabled={false}
+                  disabled={true}
                   mini={true}
                   onClick={[Function]}
                   variant="fab"
@@ -1577,7 +1577,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <WithStyles(Button)
                   className="add"
-                  disabled={false}
+                  disabled={true}
                   mini={true}
                   onClick={[Function]}
                   variant="fab"
@@ -1595,7 +1595,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": <pure(Add) />,
                   "className": "add",
-                  "disabled": false,
+                  "disabled": true,
                   "mini": true,
                   "onClick": [Function],
                   "variant": "fab",

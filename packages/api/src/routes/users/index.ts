@@ -211,21 +211,6 @@ usersRouter.post(
 usersRouter.patch(
   "/:userId",
   rbac({ users_write: true }),
-  [
-    body("role")
-      .isIn(rolesArr)
-      .optional(),
-    body("email")
-      .isEmail()
-      .optional(),
-    body("username")
-      .isAlphanumeric()
-      .optional(),
-    body("displayname")
-      .isAscii()
-      .optional(),
-    param("userId").isMongoId()
-  ],
   validate,
   wrapAsync(async (req: PopulateRequest, res, next) => {
     const { userId } = req.params;

@@ -4,17 +4,15 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
 import ChildrenUpdate from "./components/ChildrenUpdate";
-import EmailUpdate from "./components/EmailUpdate";
+import SwitchUpdate from "./components/SwitchUpdate";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Button, Dialog } from "material-ui";
+import { Button, Dialog, Grid } from "material-ui";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
 import DialogContentText from "material-ui/Dialog/DialogContentText";
 import Divider from "material-ui/Divider/Divider";
-import DisplaynameUpdate from "./components/DisplaynameUpdate";
-import IsAdultUpdate from "./components/IsAdultUpdate";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import { MongoId, IUser, Roles } from "ente-types";
 import {
@@ -25,10 +23,13 @@ import {
   getUserRequest,
   getStudents,
   userHasChildren,
-  updateUserRequest
+  updateUserRequest,
+  userIsStudent
 } from "ente-redux";
 import lang from "ente-lang";
 import { updateUser } from "redux/src/api";
+import TextUpdate from "./components/TextUpdate";
+import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
 
 /**
  * # Component Types
@@ -121,41 +122,74 @@ export class SpecificUser extends React.PureComponent<Props, State> {
     return (
       <Dialog open onClose={this.onGoBack} fullScreen={fullScreen}>
         {!!user ? (
-          <React.Fragment>
+          <>
             <DialogTitle>{user.get("displayname")}</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                {lang().ui.specificUser.id}: {user.get("_id")} <br />
-                {lang().ui.specificUser.email}: {user.get("email")} <br />
-                {lang().ui.specificUser.role}: {user.get("role")} <br />
-              </DialogContentText>
-              <Divider />
-              <EmailUpdate userId={user.get("_id")} />
-              <Divider />
-              {user.get("role") === Roles.STUDENT && (
-                <IsAdultUpdate userId={user.get("_id")} />
-              )}
-              <Divider />
-              <DisplaynameUpdate userId={user.get("_id")} />
-              {userHasChildren(user) && (
-                <React.Fragment>
-                  <Divider />
-                  <ChildrenUpdate
-                    children={user.get("children").map(getUser)}
-                    students={students}
-                    onChange={c =>
-                      this.setState({
-                        user: this.state.user.set(
-                          "children",
-                          c.map(c => c.get("_id"))
-                        )
-                      })
+              <Grid container spacing={24} alignItems="stretch">
+                <Grid item xs={12}>
+                  <DialogContentText>
+                    {lang().ui.specificUser.id}: {user.get("_id")} <br />
+                    {lang().ui.specificUser.role}: {user.get("role")} <br />
+                  </DialogContentText>
+                </Grid>
+
+                {/* Displayname */}
+                <Grid item xs={12}>
+                  <TextUpdate
+                    title={lang().ui.specificUser.displaynameTitle}
+                    value={user.get("displayname")}
+                    onChange={n =>
+                      this.setState({ user: user.set("displayname", n) })
                     }
+                    validator={isValidDisplayname}
                   />
-                </React.Fragment>
-              )}
+                </Grid>
+
+                {/* Email */}
+                <Grid item xs={12}>
+                  <TextUpdate
+                    title={lang().ui.specificUser.emailTitle}
+                    value={user.get("email")}
+                    onChange={n =>
+                      this.setState({ user: user.set("email", n) })
+                    }
+                    validator={isValidEmail}
+                  />
+                </Grid>
+
+                {/* IsAdult */}
+                {userIsStudent(user) && (
+                  <Grid item xs={12}>
+                    <SwitchUpdate
+                      value={user.get("isAdult")}
+                      title={lang().ui.specificUser.adultTitle}
+                      onChange={b =>
+                        this.setState({ user: user.set("isAdult", b) })
+                      }
+                    />
+                  </Grid>
+                )}
+
+                {/* Children */}
+                {userHasChildren(user) && (
+                  <Grid item xs={12}>
+                    <ChildrenUpdate
+                      children={user.get("children").map(getUser)}
+                      students={students}
+                      onChange={c =>
+                        this.setState({
+                          user: this.state.user.set(
+                            "children",
+                            c.map(c => c.get("_id"))
+                          )
+                        })
+                      }
+                    />
+                  </Grid>
+                )}
+              </Grid>
             </DialogContent>
-          </React.Fragment>
+          </>
         ) : (
           loading && <LoadingIndicator />
         )}
@@ -163,7 +197,12 @@ export class SpecificUser extends React.PureComponent<Props, State> {
           <Button size="small" color="secondary" onClick={this.onClose}>
             {lang().ui.common.close}
           </Button>
-          <Button size="small" color="primary" onClick={this.onSubmit}>
+          <Button
+            size="small"
+            color="primary"
+            onClick={this.onSubmit}
+            disabled={!this.state.user || !isValidUser(this.state.user.toJS())}
+          >
             {lang().ui.common.submit}
           </Button>
         </DialogActions>

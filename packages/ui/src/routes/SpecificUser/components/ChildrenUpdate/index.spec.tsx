@@ -42,6 +42,7 @@ describe("ChildrenUpdate", () => {
   });
 
   it("renders when no additional users are available", () => {
+    const onChange = sinon.spy();
     const comp = shallow(
       <ChildrenUpdate
         children={[user]}

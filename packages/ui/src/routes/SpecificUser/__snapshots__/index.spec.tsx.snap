@@ -52,6 +52,7 @@ ShallowWrapper {
     requestUser={[Function]}
     staticContext={Object {}}
     students={Array []}
+    updateUser={[Function]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -71,44 +72,78 @@ ShallowWrapper {
             Horst Hansen
           </WithStyles(DialogTitle)>
           <WithStyles(DialogContent)>
-            <WithStyles(DialogContentText)>
-              ID
-              : 
-              fdas90ß9sß0
-               
-              <br />
-              Email
-              : 
-              hort@hansen.de
-               
-              <br />
-              Rolle
-              : 
-              student
-               
-              <br />
-            </WithStyles(DialogContentText)>
-            <WithStyles(Divider) />
-            <Connect(WithStyles(Component))
-              userId="fdas90ß9sß0"
-            />
-            <WithStyles(Divider) />
-            <Connect(WithStyles(Component))
-              userId="fdas90ß9sß0"
-            />
-            <WithStyles(Divider) />
-            <Connect(WithStyles(Component))
-              userId="fdas90ß9sß0"
-            />
+            <WithStyles(GridWrapper)
+              alignItems="stretch"
+              container={true}
+              spacing={24}
+            >
+              <WithStyles(GridWrapper)
+                item={true}
+                xs={12}
+              >
+                <WithStyles(DialogContentText)>
+                  ID
+                  : 
+                  fdas90ß9sß0
+                   
+                  <br />
+                  Rolle
+                  : 
+                  student
+                   
+                  <br />
+                </WithStyles(DialogContentText)>
+              </WithStyles(GridWrapper)>
+              <WithStyles(GridWrapper)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  onChange={[Function]}
+                  title="Displayname"
+                  validator={[Function]}
+                  value="Horst Hansen"
+                />
+              </WithStyles(GridWrapper)>
+              <WithStyles(GridWrapper)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  onChange={[Function]}
+                  title="Email"
+                  validator={[Function]}
+                  value="hort@hansen.de"
+                />
+              </WithStyles(GridWrapper)>
+              <WithStyles(GridWrapper)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  onChange={[Function]}
+                  title="Erwachsen"
+                  value={false}
+                />
+              </WithStyles(GridWrapper)>
+            </WithStyles(GridWrapper)>
           </WithStyles(DialogContent)>
         </UNDEFINED>,
         <WithStyles(DialogActions)>
           <WithStyles(Button)
-            color="primary"
+            color="secondary"
             onClick={[Function]}
             size="small"
           >
             Schließen
+          </WithStyles(Button)>
+          <WithStyles(Button)
+            color="primary"
+            disabled={false}
+            onClick={[Function]}
+            size="small"
+          >
+            OK
           </WithStyles(Button)>
         </WithStyles(DialogActions)>,
       ],
@@ -128,35 +163,61 @@ ShallowWrapper {
               Horst Hansen
             </WithStyles(DialogTitle)>,
             <WithStyles(DialogContent)>
-              <WithStyles(DialogContentText)>
-                ID
-                : 
-                fdas90ß9sß0
-                 
-                <br />
-                Email
-                : 
-                hort@hansen.de
-                 
-                <br />
-                Rolle
-                : 
-                student
-                 
-                <br />
-              </WithStyles(DialogContentText)>
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
+              <WithStyles(GridWrapper)
+                alignItems="stretch"
+                container={true}
+                spacing={24}
+              >
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <WithStyles(DialogContentText)>
+                    ID
+                    : 
+                    fdas90ß9sß0
+                     
+                    <br />
+                    Rolle
+                    : 
+                    student
+                     
+                    <br />
+                  </WithStyles(DialogContentText)>
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Displayname"
+                    validator={[Function]}
+                    value="Horst Hansen"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Email"
+                    validator={[Function]}
+                    value="hort@hansen.de"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Erwachsen"
+                    value={false}
+                  />
+                </WithStyles(GridWrapper)>
+              </WithStyles(GridWrapper)>
             </WithStyles(DialogContent)>,
           ],
         },
@@ -178,170 +239,293 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": Array [
-                <WithStyles(DialogContentText)>
-                  ID
-                  : 
-                  fdas90ß9sß0
-                   
-                  <br />
-                  Email
-                  : 
-                  hort@hansen.de
-                   
-                  <br />
-                  Rolle
-                  : 
-                  student
-                   
-                  <br />
-                </WithStyles(DialogContentText)>,
-                <WithStyles(Divider) />,
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />,
-                <WithStyles(Divider) />,
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />,
-                <WithStyles(Divider) />,
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />,
-                false,
-              ],
+              "children": <WithStyles(GridWrapper)
+                alignItems="stretch"
+                container={true}
+                spacing={24}
+              >
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <WithStyles(DialogContentText)>
+                    ID
+                    : 
+                    fdas90ß9sß0
+                     
+                    <br />
+                    Rolle
+                    : 
+                    student
+                     
+                    <br />
+                  </WithStyles(DialogContentText)>
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Displayname"
+                    validator={[Function]}
+                    value="Horst Hansen"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Email"
+                    validator={[Function]}
+                    value="hort@hansen.de"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Erwachsen"
+                    value={false}
+                  />
+                </WithStyles(GridWrapper)>
+              </WithStyles(GridWrapper)>,
             },
             "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": Array [
-                    "ID",
-                    ": ",
-                    "fdas90ß9sß0",
-                    " ",
-                    <br />,
-                    "Email",
-                    ": ",
-                    "hort@hansen.de",
-                    " ",
-                    <br />,
-                    "Rolle",
-                    ": ",
-                    "student",
-                    " ",
-                    <br />,
-                  ],
-                },
-                "ref": null,
-                "rendered": Array [
-                  "ID",
-                  ": ",
-                  "fdas90ß9sß0",
-                  " ",
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {},
-                    "ref": null,
-                    "rendered": null,
-                    "type": "br",
-                  },
-                  "Email",
-                  ": ",
-                  "hort@hansen.de",
-                  " ",
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {},
-                    "ref": null,
-                    "rendered": null,
-                    "type": "br",
-                  },
-                  "Rolle",
-                  ": ",
-                  "student",
-                  " ",
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {},
-                    "ref": null,
-                    "rendered": null,
-                    "type": "br",
-                  },
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "alignItems": "stretch",
+                "children": Array [
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <WithStyles(DialogContentText)>
+                      ID
+                      : 
+                      fdas90ß9sß0
+                       
+                      <br />
+                      Rolle
+                      : 
+                      student
+                       
+                      <br />
+                    </WithStyles(DialogContentText)>
+                  </WithStyles(GridWrapper)>,
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Displayname"
+                      validator={[Function]}
+                      value="Horst Hansen"
+                    />
+                  </WithStyles(GridWrapper)>,
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Email"
+                      validator={[Function]}
+                      value="hort@hansen.de"
+                    />
+                  </WithStyles(GridWrapper)>,
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Erwachsen"
+                      value={false}
+                    />
+                  </WithStyles(GridWrapper)>,
+                  false,
                 ],
-                "type": [Function],
+                "container": true,
+                "spacing": 24,
               },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {},
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "userId": "fdas90ß9sß0",
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <WithStyles(DialogContentText)>
+                      ID
+                      : 
+                      fdas90ß9sß0
+                       
+                      <br />
+                      Rolle
+                      : 
+                      student
+                       
+                      <br />
+                    </WithStyles(DialogContentText)>,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": Array [
+                        "ID",
+                        ": ",
+                        "fdas90ß9sß0",
+                        " ",
+                        <br />,
+                        "Rolle",
+                        ": ",
+                        "student",
+                        " ",
+                        <br />,
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "ID",
+                      ": ",
+                      "fdas90ß9sß0",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {},
+                        "ref": null,
+                        "rendered": null,
+                        "type": "br",
+                      },
+                      "Rolle",
+                      ": ",
+                      "student",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {},
+                        "ref": null,
+                        "rendered": null,
+                        "type": "br",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {},
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "userId": "fdas90ß9sß0",
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      onChange={[Function]}
+                      title="Displayname"
+                      validator={[Function]}
+                      value="Horst Hansen"
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "onChange": [Function],
+                      "title": "Displayname",
+                      "validator": [Function],
+                      "value": "Horst Hansen",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {},
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "userId": "fdas90ß9sß0",
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      onChange={[Function]}
+                      title="Email"
+                      validator={[Function]}
+                      value="hort@hansen.de"
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "onChange": [Function],
+                      "title": "Email",
+                      "validator": [Function],
+                      "value": "hort@hansen.de",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              false,
-            ],
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      onChange={[Function]}
+                      title="Erwachsen"
+                      value={false}
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "onChange": [Function],
+                      "title": "Erwachsen",
+                      "value": false,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                false,
+              ],
+              "type": [Function],
+            },
             "type": [Function],
           },
         ],
@@ -352,29 +536,56 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <WithStyles(Button)
-            color="primary"
-            onClick={[Function]}
-            size="small"
-          >
-            Schließen
-          </WithStyles(Button)>,
+          "children": Array [
+            <WithStyles(Button)
+              color="secondary"
+              onClick={[Function]}
+              size="small"
+            >
+              Schließen
+            </WithStyles(Button)>,
+            <WithStyles(Button)
+              color="primary"
+              disabled={false}
+              onClick={[Function]}
+              size="small"
+            >
+              OK
+            </WithStyles(Button)>,
+          ],
         },
         "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": "Schließen",
-            "color": "primary",
-            "onClick": [Function],
-            "size": "small",
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": "Schließen",
+              "color": "secondary",
+              "onClick": [Function],
+              "size": "small",
+            },
+            "ref": null,
+            "rendered": "Schließen",
+            "type": [Function],
           },
-          "ref": null,
-          "rendered": "Schließen",
-          "type": [Function],
-        },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": "OK",
+              "color": "primary",
+              "disabled": false,
+              "onClick": [Function],
+              "size": "small",
+            },
+            "ref": null,
+            "rendered": "OK",
+            "type": [Function],
+          },
+        ],
         "type": [Function],
       },
     ],
@@ -392,44 +603,78 @@ ShallowWrapper {
               Horst Hansen
             </WithStyles(DialogTitle)>
             <WithStyles(DialogContent)>
-              <WithStyles(DialogContentText)>
-                ID
-                : 
-                fdas90ß9sß0
-                 
-                <br />
-                Email
-                : 
-                hort@hansen.de
-                 
-                <br />
-                Rolle
-                : 
-                student
-                 
-                <br />
-              </WithStyles(DialogContentText)>
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
-              <WithStyles(Divider) />
-              <Connect(WithStyles(Component))
-                userId="fdas90ß9sß0"
-              />
+              <WithStyles(GridWrapper)
+                alignItems="stretch"
+                container={true}
+                spacing={24}
+              >
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <WithStyles(DialogContentText)>
+                    ID
+                    : 
+                    fdas90ß9sß0
+                     
+                    <br />
+                    Rolle
+                    : 
+                    student
+                     
+                    <br />
+                  </WithStyles(DialogContentText)>
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Displayname"
+                    validator={[Function]}
+                    value="Horst Hansen"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Email"
+                    validator={[Function]}
+                    value="hort@hansen.de"
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    onChange={[Function]}
+                    title="Erwachsen"
+                    value={false}
+                  />
+                </WithStyles(GridWrapper)>
+              </WithStyles(GridWrapper)>
             </WithStyles(DialogContent)>
           </UNDEFINED>,
           <WithStyles(DialogActions)>
             <WithStyles(Button)
-              color="primary"
+              color="secondary"
               onClick={[Function]}
               size="small"
             >
               Schließen
+            </WithStyles(Button)>
+            <WithStyles(Button)
+              color="primary"
+              disabled={false}
+              onClick={[Function]}
+              size="small"
+            >
+              OK
             </WithStyles(Button)>
           </WithStyles(DialogActions)>,
         ],
@@ -449,35 +694,61 @@ ShallowWrapper {
                 Horst Hansen
               </WithStyles(DialogTitle)>,
               <WithStyles(DialogContent)>
-                <WithStyles(DialogContentText)>
-                  ID
-                  : 
-                  fdas90ß9sß0
-                   
-                  <br />
-                  Email
-                  : 
-                  hort@hansen.de
-                   
-                  <br />
-                  Rolle
-                  : 
-                  student
-                   
-                  <br />
-                </WithStyles(DialogContentText)>
-                <WithStyles(Divider) />
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />
-                <WithStyles(Divider) />
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />
-                <WithStyles(Divider) />
-                <Connect(WithStyles(Component))
-                  userId="fdas90ß9sß0"
-                />
+                <WithStyles(GridWrapper)
+                  alignItems="stretch"
+                  container={true}
+                  spacing={24}
+                >
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <WithStyles(DialogContentText)>
+                      ID
+                      : 
+                      fdas90ß9sß0
+                       
+                      <br />
+                      Rolle
+                      : 
+                      student
+                       
+                      <br />
+                    </WithStyles(DialogContentText)>
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Displayname"
+                      validator={[Function]}
+                      value="Horst Hansen"
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Email"
+                      validator={[Function]}
+                      value="hort@hansen.de"
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Erwachsen"
+                      value={false}
+                    />
+                  </WithStyles(GridWrapper)>
+                </WithStyles(GridWrapper)>
               </WithStyles(DialogContent)>,
             ],
           },
@@ -499,170 +770,293 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": Array [
-                  <WithStyles(DialogContentText)>
-                    ID
-                    : 
-                    fdas90ß9sß0
-                     
-                    <br />
-                    Email
-                    : 
-                    hort@hansen.de
-                     
-                    <br />
-                    Rolle
-                    : 
-                    student
-                     
-                    <br />
-                  </WithStyles(DialogContentText)>,
-                  <WithStyles(Divider) />,
-                  <Connect(WithStyles(Component))
-                    userId="fdas90ß9sß0"
-                  />,
-                  <WithStyles(Divider) />,
-                  <Connect(WithStyles(Component))
-                    userId="fdas90ß9sß0"
-                  />,
-                  <WithStyles(Divider) />,
-                  <Connect(WithStyles(Component))
-                    userId="fdas90ß9sß0"
-                  />,
-                  false,
-                ],
+                "children": <WithStyles(GridWrapper)
+                  alignItems="stretch"
+                  container={true}
+                  spacing={24}
+                >
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <WithStyles(DialogContentText)>
+                      ID
+                      : 
+                      fdas90ß9sß0
+                       
+                      <br />
+                      Rolle
+                      : 
+                      student
+                       
+                      <br />
+                    </WithStyles(DialogContentText)>
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Displayname"
+                      validator={[Function]}
+                      value="Horst Hansen"
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Email"
+                      validator={[Function]}
+                      value="hort@hansen.de"
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      onChange={[Function]}
+                      title="Erwachsen"
+                      value={false}
+                    />
+                  </WithStyles(GridWrapper)>
+                </WithStyles(GridWrapper)>,
               },
               "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": Array [
-                      "ID",
-                      ": ",
-                      "fdas90ß9sß0",
-                      " ",
-                      <br />,
-                      "Email",
-                      ": ",
-                      "hort@hansen.de",
-                      " ",
-                      <br />,
-                      "Rolle",
-                      ": ",
-                      "student",
-                      " ",
-                      <br />,
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    "ID",
-                    ": ",
-                    "fdas90ß9sß0",
-                    " ",
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {},
-                      "ref": null,
-                      "rendered": null,
-                      "type": "br",
-                    },
-                    "Email",
-                    ": ",
-                    "hort@hansen.de",
-                    " ",
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {},
-                      "ref": null,
-                      "rendered": null,
-                      "type": "br",
-                    },
-                    "Rolle",
-                    ": ",
-                    "student",
-                    " ",
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {},
-                      "ref": null,
-                      "rendered": null,
-                      "type": "br",
-                    },
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "alignItems": "stretch",
+                  "children": Array [
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <WithStyles(DialogContentText)>
+                        ID
+                        : 
+                        fdas90ß9sß0
+                         
+                        <br />
+                        Rolle
+                        : 
+                        student
+                         
+                        <br />
+                      </WithStyles(DialogContentText)>
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        onChange={[Function]}
+                        title="Displayname"
+                        validator={[Function]}
+                        value="Horst Hansen"
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        onChange={[Function]}
+                        title="Email"
+                        validator={[Function]}
+                        value="hort@hansen.de"
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        onChange={[Function]}
+                        title="Erwachsen"
+                        value={false}
+                      />
+                    </WithStyles(GridWrapper)>,
+                    false,
                   ],
-                  "type": [Function],
+                  "container": true,
+                  "spacing": 24,
                 },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {},
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "userId": "fdas90ß9sß0",
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <WithStyles(DialogContentText)>
+                        ID
+                        : 
+                        fdas90ß9sß0
+                         
+                        <br />
+                        Rolle
+                        : 
+                        student
+                         
+                        <br />
+                      </WithStyles(DialogContentText)>,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": Array [
+                          "ID",
+                          ": ",
+                          "fdas90ß9sß0",
+                          " ",
+                          <br />,
+                          "Rolle",
+                          ": ",
+                          "student",
+                          " ",
+                          <br />,
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "ID",
+                        ": ",
+                        "fdas90ß9sß0",
+                        " ",
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {},
+                          "ref": null,
+                          "rendered": null,
+                          "type": "br",
+                        },
+                        "Rolle",
+                        ": ",
+                        "student",
+                        " ",
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {},
+                          "ref": null,
+                          "rendered": null,
+                          "type": "br",
+                        },
+                      ],
+                      "type": [Function],
+                    },
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {},
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "userId": "fdas90ß9sß0",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        onChange={[Function]}
+                        title="Displayname"
+                        validator={[Function]}
+                        value="Horst Hansen"
+                      />,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "onChange": [Function],
+                        "title": "Displayname",
+                        "validator": [Function],
+                        "value": "Horst Hansen",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {},
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "userId": "fdas90ß9sß0",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        onChange={[Function]}
+                        title="Email"
+                        validator={[Function]}
+                        value="hort@hansen.de"
+                      />,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "onChange": [Function],
+                        "title": "Email",
+                        "validator": [Function],
+                        "value": "hort@hansen.de",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                false,
-              ],
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        onChange={[Function]}
+                        title="Erwachsen"
+                        value={false}
+                      />,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "onChange": [Function],
+                        "title": "Erwachsen",
+                        "value": false,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  false,
+                ],
+                "type": [Function],
+              },
               "type": [Function],
             },
           ],
@@ -673,29 +1067,56 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <WithStyles(Button)
-              color="primary"
-              onClick={[Function]}
-              size="small"
-            >
-              Schließen
-            </WithStyles(Button)>,
+            "children": Array [
+              <WithStyles(Button)
+                color="secondary"
+                onClick={[Function]}
+                size="small"
+              >
+                Schließen
+              </WithStyles(Button)>,
+              <WithStyles(Button)
+                color="primary"
+                disabled={false}
+                onClick={[Function]}
+                size="small"
+              >
+                OK
+              </WithStyles(Button)>,
+            ],
           },
           "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": "Schließen",
-              "color": "primary",
-              "onClick": [Function],
-              "size": "small",
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "Schließen",
+                "color": "secondary",
+                "onClick": [Function],
+                "size": "small",
+              },
+              "ref": null,
+              "rendered": "Schließen",
+              "type": [Function],
             },
-            "ref": null,
-            "rendered": "Schließen",
-            "type": [Function],
-          },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "OK",
+                "color": "primary",
+                "disabled": false,
+                "onClick": [Function],
+                "size": "small",
+              },
+              "ref": null,
+              "rendered": "OK",
+              "type": [Function],
+            },
+          ],
           "type": [Function],
         },
       ],
