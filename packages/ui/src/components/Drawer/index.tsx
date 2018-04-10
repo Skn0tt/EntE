@@ -61,6 +61,7 @@ class Drawer extends React.Component<Props, State> {
 
   render() {
     const { classes, role, children } = this.props;
+    const { mobileOpen } = this.state;
 
     const drawer = (
       <>

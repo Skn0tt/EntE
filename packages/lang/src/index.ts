@@ -51,6 +51,10 @@ export interface Translation {
     };
     createUser: {
       import: string;
+      usernameTitle: string;
+      displaynameTitle: string;
+      emailTitle: string;
+      passwordTitle: string;
     };
     importUsers: {
       dropzone: string;
