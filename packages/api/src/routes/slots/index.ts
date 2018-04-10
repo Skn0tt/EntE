@@ -24,7 +24,7 @@ import rbac, {
 } from "../../helpers/permissions";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
-import { thisYear } from "../../helpers/queryParams";
+import { thisTerm } from "../../helpers/queryParams";
 import validate from "../../helpers/validate";
 
 /**
@@ -51,7 +51,7 @@ slotsRouter.get(
       case Roles.TEACHER:
         req.slots = await Slot.find({
           teacher: req.user._id,
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
@@ -62,7 +62,7 @@ slotsRouter.get(
       case Roles.PARENT:
         req.slots = await Slot.find({
           student: { $in: req.user.children },
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
@@ -72,7 +72,7 @@ slotsRouter.get(
       case Roles.STUDENT:
         req.slots = await Slot.find({
           student: req.user._id,
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
@@ -81,7 +81,7 @@ slotsRouter.get(
        */
       case Roles.ADMIN:
         req.slots = await Slot.find({
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 

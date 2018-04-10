@@ -31,7 +31,7 @@ import rbac, {
 } from "../../helpers/permissions";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
-import { thisYear } from "../../helpers/queryParams";
+import { thisTerm } from "../../helpers/queryParams";
 import * as mail from "../../helpers/mail";
 import validate from "../../helpers/validate";
 import { usersExist } from "../../helpers/exist";
@@ -59,7 +59,7 @@ entriesRouter.get(
        */
       case Roles.ADMIN:
         req.entries = await Entry.find({
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
@@ -70,7 +70,7 @@ entriesRouter.get(
       case Roles.MANAGER:
         req.entries = await Entry.find({
           student: { $in: req.user.children },
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
@@ -80,7 +80,7 @@ entriesRouter.get(
       case Roles.STUDENT:
         req.entries = await Entry.find({
           student: req.user._id,
-          ...thisYear
+          ...thisTerm()
         });
         return next();
 
