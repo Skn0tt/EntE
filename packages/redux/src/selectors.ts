@@ -1,4 +1,11 @@
-import { AppState, User, Slot, Entry } from "./types";
+import {
+  AppState,
+  User,
+  Slot,
+  Entry,
+  userIsTeacher,
+  userIsStudent
+} from "./types";
 import { createSelector } from "reselect";
 import { Roles, MongoId } from "ente-types";
 
@@ -57,9 +64,9 @@ export const getSlotsById = (ids: MongoId[]): Selector<Slot[]> => state =>
   ids.map(id => state.getIn(["slots", id]));
 
 export const getTeachers = createSelector([getUsers], users =>
-  users.filter(user => user.isTeacher())
+  users.filter(userIsTeacher)
 );
 
 export const getStudents = createSelector([getUsers], users =>
-  users.filter(user => user.isStudent())
+  users.filter(userIsStudent)
 );

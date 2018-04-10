@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "es5", "es2015.promise", "es2015.iterable"],
+    "lib": ["dom", "es5", "es2015.promise", "es2015.iterable", "es6"],
     "outDir": "./dist",
     "jsx": "react",
     "noEmit": true

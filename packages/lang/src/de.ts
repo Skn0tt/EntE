@@ -50,7 +50,11 @@ const de: Translation = {
       unsign: "Signatur Zurücknehmen"
     },
     createUser: {
-      import: "Importieren"
+      import: "Importieren",
+      displaynameTitle: "Displayname",
+      emailTitle: "Email",
+      passwordTitle: "Passwort",
+      usernameTitle: "Nutzername"
     },
     importUsers: {
       dropzone: "Legen sie hier eine .csv-Datei ab."

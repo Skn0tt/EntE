@@ -53,80 +53,59 @@ ShallowWrapper {
             >
               <WithStyles(GridWrapper)
                 container={true}
-                direction="column"
+                direction="row"
               >
                 <WithStyles(GridWrapper)
-                  container={true}
-                  direction="row"
+                  item={true}
+                  lg={6}
+                  xs={12}
                 >
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="username"
-                      label="Username"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="displayname"
-                      label="Displayname"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="email"
-                      label="Email"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      type="email"
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    xs={12}
-                  >
-                    <TextField
-                      fullWidth={true}
-                      id="password"
-                      label="Passwort"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      type="password"
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
                 </WithStyles(GridWrapper)>
                 <WithStyles(GridWrapper)
                   item={true}
@@ -178,7 +157,6 @@ ShallowWrapper {
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
             <WithStyles(Button)
-              color="secondary"
               onClick={[Function]}
             >
               Importieren
@@ -223,80 +201,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -348,7 +305,6 @@ ShallowWrapper {
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
               <WithStyles(Button)
-                color="secondary"
                 onClick={[Function]}
               >
                 Importieren
@@ -397,80 +353,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -528,80 +463,59 @@ ShallowWrapper {
               "props": Object {
                 "children": <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -660,77 +574,56 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>,
                     <WithStyles(GridWrapper)
                       item={true}
@@ -780,7 +673,7 @@ ShallowWrapper {
                     false,
                   ],
                   "container": true,
-                  "direction": "column",
+                  "direction": "row",
                 },
                 "ref": null,
                 "rendered": Array [
@@ -789,251 +682,136 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": Array [
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          xs={12}
-                        >
-                          <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                      ],
-                      "container": true,
-                      "direction": "row",
+                      "children": <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
                     },
                     "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "username",
-                            "label": "Username",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Nutzername",
+                        "onChange": [Function],
+                        "required": true,
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "displayname",
-                            "label": "Displayname",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Displayname",
+                        "onChange": [Function],
+                        "required": true,
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "email",
-                            "label": "Email",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "type": "email",
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Email",
+                        "onChange": [Function],
+                        "required": true,
+                        "type": "email",
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />,
-                          "item": true,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "fullWidth": true,
-                            "id": "password",
-                            "label": "Passwort",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "type": "password",
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Passwort",
+                        "onChange": [Function],
+                        "type": "password",
+                        "validator": [Function],
+                        "value": "",
                       },
-                    ],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
                     "type": [Function],
                   },
                   Object {
@@ -1210,7 +988,6 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <WithStyles(Button)
-                  color="secondary"
                   onClick={[Function]}
                 >
                   Importieren
@@ -1239,7 +1016,6 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": "Importieren",
-                  "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
@@ -1317,80 +1093,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -1442,7 +1197,6 @@ ShallowWrapper {
             </WithStyles(DialogContent)>
             <WithStyles(DialogActions)>
               <WithStyles(Button)
-                color="secondary"
                 onClick={[Function]}
               >
                 Importieren
@@ -1487,80 +1241,59 @@ ShallowWrapper {
                 >
                   <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -1612,7 +1345,6 @@ ShallowWrapper {
               </WithStyles(DialogContent)>,
               <WithStyles(DialogActions)>
                 <WithStyles(Button)
-                  color="secondary"
                   onClick={[Function]}
                 >
                   Importieren
@@ -1661,80 +1393,59 @@ ShallowWrapper {
                 >
                   <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -1792,80 +1503,59 @@ ShallowWrapper {
                 "props": Object {
                   "children": <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -1924,77 +1614,56 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <WithStyles(GridWrapper)
-                        container={true}
-                        direction="row"
+                        item={true}
+                        lg={6}
+                        xs={12}
                       >
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          xs={12}
-                        >
-                          <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
+                        <Unknown
+                          label="Nutzername"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        lg={6}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Displayname"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        lg={6}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Email"
+                          onChange={[Function]}
+                          required={true}
+                          type="email"
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Passwort"
+                          onChange={[Function]}
+                          type="password"
+                          validator={[Function]}
+                          value=""
+                        />
                       </WithStyles(GridWrapper)>,
                       <WithStyles(GridWrapper)
                         item={true}
@@ -2044,7 +1713,7 @@ ShallowWrapper {
                       false,
                     ],
                     "container": true,
-                    "direction": "column",
+                    "direction": "row",
                   },
                   "ref": null,
                   "rendered": Array [
@@ -2053,251 +1722,136 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": Array [
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="username"
-                              label="Username"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="displayname"
-                              label="Displayname"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="email"
-                              label="Email"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="email"
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            xs={12}
-                          >
-                            <TextField
-                              fullWidth={true}
-                              id="password"
-                              label="Passwort"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="password"
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                        ],
-                        "container": true,
-                        "direction": "row",
+                        "children": <Unknown
+                          label="Nutzername"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="username"
-                              label="Username"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "username",
-                              "label": "Username",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Nutzername",
+                          "onChange": [Function],
+                          "required": true,
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="displayname"
-                              label="Displayname"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "displayname",
-                              "label": "Displayname",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Displayname"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Displayname",
+                          "onChange": [Function],
+                          "required": true,
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="email"
-                              label="Email"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="email"
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "email",
-                              "label": "Email",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "type": "email",
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Email"
+                          onChange={[Function]}
+                          required={true}
+                          type="email"
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Email",
+                          "onChange": [Function],
+                          "required": true,
+                          "type": "email",
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              fullWidth={true}
-                              id="password"
-                              label="Passwort"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="password"
-                              value=""
-                            />,
-                            "item": true,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "fullWidth": true,
-                              "id": "password",
-                              "label": "Passwort",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "type": "password",
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Passwort"
+                          onChange={[Function]}
+                          type="password"
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Passwort",
+                          "onChange": [Function],
+                          "type": "password",
+                          "validator": [Function],
+                          "value": "",
                         },
-                      ],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
                       "type": [Function],
                     },
                     Object {
@@ -2474,7 +2028,6 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   <WithStyles(Button)
-                    color="secondary"
                     onClick={[Function]}
                   >
                     Importieren
@@ -2503,7 +2056,6 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": "Importieren",
-                    "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
@@ -2623,80 +2175,59 @@ ShallowWrapper {
             >
               <WithStyles(GridWrapper)
                 container={true}
-                direction="column"
+                direction="row"
               >
                 <WithStyles(GridWrapper)
-                  container={true}
-                  direction="row"
+                  item={true}
+                  lg={6}
+                  xs={12}
                 >
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="username"
-                      label="Username"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="displayname"
-                      label="Displayname"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={true}
-                      fullWidth={true}
-                      id="email"
-                      label="Email"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      type="email"
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
-                    item={true}
-                    xs={12}
-                  >
-                    <TextField
-                      fullWidth={true}
-                      id="password"
-                      label="Passwort"
-                      margin="normal"
-                      onChange={[Function]}
-                      required={false}
-                      select={false}
-                      type="password"
-                      value=""
-                    />
-                  </WithStyles(GridWrapper)>
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(GridWrapper)>
+                <WithStyles(GridWrapper)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
                 </WithStyles(GridWrapper)>
                 <WithStyles(GridWrapper)
                   item={true}
@@ -2748,7 +2279,6 @@ ShallowWrapper {
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
             <WithStyles(Button)
-              color="secondary"
               onClick={[Function]}
             >
               Importieren
@@ -2793,80 +2323,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -2918,7 +2427,6 @@ ShallowWrapper {
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
               <WithStyles(Button)
-                color="secondary"
                 onClick={[Function]}
               >
                 Importieren
@@ -2967,80 +2475,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -3098,80 +2585,59 @@ ShallowWrapper {
               "props": Object {
                 "children": <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -3230,77 +2696,56 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>,
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>,
                     <WithStyles(GridWrapper)
                       item={true}
@@ -3350,7 +2795,7 @@ ShallowWrapper {
                     false,
                   ],
                   "container": true,
-                  "direction": "column",
+                  "direction": "row",
                 },
                 "ref": null,
                 "rendered": Array [
@@ -3359,251 +2804,136 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": Array [
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          xs={12}
-                        >
-                          <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>,
-                      ],
-                      "container": true,
-                      "direction": "row",
+                      "children": <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
                     },
                     "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "username",
-                            "label": "Username",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Nutzername",
+                        "onChange": [Function],
+                        "required": true,
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "displayname",
-                            "label": "Displayname",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Displayname",
+                        "onChange": [Function],
+                        "required": true,
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />,
-                          "item": true,
-                          "lg": 6,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "error": true,
-                            "fullWidth": true,
-                            "id": "email",
-                            "label": "Email",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "type": "email",
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "lg": 6,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Email",
+                        "onChange": [Function],
+                        "required": true,
+                        "type": "email",
+                        "validator": [Function],
+                        "value": "",
                       },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "children": <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />,
-                          "item": true,
-                          "xs": 12,
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "fullWidth": true,
-                            "id": "password",
-                            "label": "Passwort",
-                            "margin": "normal",
-                            "onChange": [Function],
-                            "required": false,
-                            "select": false,
-                            "type": "password",
-                            "value": "",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        "type": [Function],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />,
+                      "item": true,
+                      "xs": 12,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "label": "Passwort",
+                        "onChange": [Function],
+                        "type": "password",
+                        "validator": [Function],
+                        "value": "",
                       },
-                    ],
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
                     "type": [Function],
                   },
                   Object {
@@ -3780,7 +3110,6 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <WithStyles(Button)
-                  color="secondary"
                   onClick={[Function]}
                 >
                   Importieren
@@ -3809,7 +3138,6 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": "Importieren",
-                  "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
@@ -3887,80 +3215,59 @@ ShallowWrapper {
               >
                 <WithStyles(GridWrapper)
                   container={true}
-                  direction="column"
+                  direction="row"
                 >
                   <WithStyles(GridWrapper)
-                    container={true}
-                    direction="row"
+                    item={true}
+                    lg={6}
+                    xs={12}
                   >
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="username"
-                        label="Username"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="displayname"
-                        label="Displayname"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <TextField
-                        error={true}
-                        fullWidth={true}
-                        id="email"
-                        label="Email"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="email"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        fullWidth={true}
-                        id="password"
-                        label="Passwort"
-                        margin="normal"
-                        onChange={[Function]}
-                        required={false}
-                        select={false}
-                        type="password"
-                        value=""
-                      />
-                    </WithStyles(GridWrapper)>
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(GridWrapper)>
+                  <WithStyles(GridWrapper)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
                   </WithStyles(GridWrapper)>
                   <WithStyles(GridWrapper)
                     item={true}
@@ -4012,7 +3319,6 @@ ShallowWrapper {
             </WithStyles(DialogContent)>
             <WithStyles(DialogActions)>
               <WithStyles(Button)
-                color="secondary"
                 onClick={[Function]}
               >
                 Importieren
@@ -4057,80 +3363,59 @@ ShallowWrapper {
                 >
                   <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -4182,7 +3467,6 @@ ShallowWrapper {
               </WithStyles(DialogContent)>,
               <WithStyles(DialogActions)>
                 <WithStyles(Button)
-                  color="secondary"
                   onClick={[Function]}
                 >
                   Importieren
@@ -4231,80 +3515,59 @@ ShallowWrapper {
                 >
                   <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -4362,80 +3625,59 @@ ShallowWrapper {
                 "props": Object {
                   "children": <WithStyles(GridWrapper)
                     container={true}
-                    direction="column"
+                    direction="row"
                   >
                     <WithStyles(GridWrapper)
-                      container={true}
-                      direction="row"
+                      item={true}
+                      lg={6}
+                      xs={12}
                     >
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="username"
-                          label="Username"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="displayname"
-                          label="Displayname"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <TextField
-                          error={true}
-                          fullWidth={true}
-                          id="email"
-                          label="Email"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="email"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
-                      <WithStyles(GridWrapper)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          fullWidth={true}
-                          id="password"
-                          label="Passwort"
-                          margin="normal"
-                          onChange={[Function]}
-                          required={false}
-                          select={false}
-                          type="password"
-                          value=""
-                        />
-                      </WithStyles(GridWrapper)>
+                      <Unknown
+                        label="Nutzername"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Displayname"
+                        onChange={[Function]}
+                        required={true}
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      lg={6}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Email"
+                        onChange={[Function]}
+                        required={true}
+                        type="email"
+                        validator={[Function]}
+                        value=""
+                      />
+                    </WithStyles(GridWrapper)>
+                    <WithStyles(GridWrapper)
+                      item={true}
+                      xs={12}
+                    >
+                      <Unknown
+                        label="Passwort"
+                        onChange={[Function]}
+                        type="password"
+                        validator={[Function]}
+                        value=""
+                      />
                     </WithStyles(GridWrapper)>
                     <WithStyles(GridWrapper)
                       item={true}
@@ -4494,77 +3736,56 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       <WithStyles(GridWrapper)
-                        container={true}
-                        direction="row"
+                        item={true}
+                        lg={6}
+                        xs={12}
                       >
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="username"
-                            label="Username"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="displayname"
-                            label="Displayname"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          lg={6}
-                          xs={12}
-                        >
-                          <TextField
-                            error={true}
-                            fullWidth={true}
-                            id="email"
-                            label="Email"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="email"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
-                        <WithStyles(GridWrapper)
-                          item={true}
-                          xs={12}
-                        >
-                          <TextField
-                            fullWidth={true}
-                            id="password"
-                            label="Passwort"
-                            margin="normal"
-                            onChange={[Function]}
-                            required={false}
-                            select={false}
-                            type="password"
-                            value=""
-                          />
-                        </WithStyles(GridWrapper)>
+                        <Unknown
+                          label="Nutzername"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        lg={6}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Displayname"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        lg={6}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Email"
+                          onChange={[Function]}
+                          required={true}
+                          type="email"
+                          validator={[Function]}
+                          value=""
+                        />
+                      </WithStyles(GridWrapper)>,
+                      <WithStyles(GridWrapper)
+                        item={true}
+                        xs={12}
+                      >
+                        <Unknown
+                          label="Passwort"
+                          onChange={[Function]}
+                          type="password"
+                          validator={[Function]}
+                          value=""
+                        />
                       </WithStyles(GridWrapper)>,
                       <WithStyles(GridWrapper)
                         item={true}
@@ -4614,7 +3835,7 @@ ShallowWrapper {
                       false,
                     ],
                     "container": true,
-                    "direction": "column",
+                    "direction": "row",
                   },
                   "ref": null,
                   "rendered": Array [
@@ -4623,251 +3844,136 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": Array [
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="username"
-                              label="Username"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="displayname"
-                              label="Displayname"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            lg={6}
-                            xs={12}
-                          >
-                            <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="email"
-                              label="Email"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="email"
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                          <WithStyles(GridWrapper)
-                            item={true}
-                            xs={12}
-                          >
-                            <TextField
-                              fullWidth={true}
-                              id="password"
-                              label="Passwort"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="password"
-                              value=""
-                            />
-                          </WithStyles(GridWrapper)>,
-                        ],
-                        "container": true,
-                        "direction": "row",
+                        "children": <Unknown
+                          label="Nutzername"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="username"
-                              label="Username"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "username",
-                              "label": "Username",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Nutzername",
+                          "onChange": [Function],
+                          "required": true,
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="displayname"
-                              label="Displayname"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "displayname",
-                              "label": "Displayname",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Displayname"
+                          onChange={[Function]}
+                          required={true}
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Displayname",
+                          "onChange": [Function],
+                          "required": true,
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              error={true}
-                              fullWidth={true}
-                              id="email"
-                              label="Email"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="email"
-                              value=""
-                            />,
-                            "item": true,
-                            "lg": 6,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "error": true,
-                              "fullWidth": true,
-                              "id": "email",
-                              "label": "Email",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "type": "email",
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Email"
+                          onChange={[Function]}
+                          required={true}
+                          type="email"
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "lg": 6,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Email",
+                          "onChange": [Function],
+                          "required": true,
+                          "type": "email",
+                          "validator": [Function],
+                          "value": "",
                         },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "class",
-                          "props": Object {
-                            "children": <TextField
-                              fullWidth={true}
-                              id="password"
-                              label="Passwort"
-                              margin="normal"
-                              onChange={[Function]}
-                              required={false}
-                              select={false}
-                              type="password"
-                              value=""
-                            />,
-                            "item": true,
-                            "xs": 12,
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "function",
-                            "props": Object {
-                              "fullWidth": true,
-                              "id": "password",
-                              "label": "Passwort",
-                              "margin": "normal",
-                              "onChange": [Function],
-                              "required": false,
-                              "select": false,
-                              "type": "password",
-                              "value": "",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": [Function],
-                          },
-                          "type": [Function],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          label="Passwort"
+                          onChange={[Function]}
+                          type="password"
+                          validator={[Function]}
+                          value=""
+                        />,
+                        "item": true,
+                        "xs": 12,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "label": "Passwort",
+                          "onChange": [Function],
+                          "type": "password",
+                          "validator": [Function],
+                          "value": "",
                         },
-                      ],
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
                       "type": [Function],
                     },
                     Object {
@@ -5044,7 +4150,6 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   <WithStyles(Button)
-                    color="secondary"
                     onClick={[Function]}
                   >
                     Importieren
@@ -5073,7 +4178,6 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": "Importieren",
-                    "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,

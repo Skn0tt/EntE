@@ -4,7 +4,14 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 
 import { withRouter, RouteComponentProps } from "react-router";
-import { Dialog, Button, Grid, TextField, IconButton } from "material-ui";
+import {
+  Dialog,
+  Button,
+  Grid,
+  TextField,
+  IconButton,
+  Divider
+} from "material-ui";
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
@@ -21,7 +28,8 @@ import {
   isValidUsername,
   isValidDisplayname,
   isValidEmail,
-  isValidUser
+  isValidUser,
+  isValidPassword
 } from "ente-validator";
 import {
   getStudents,
@@ -31,6 +39,8 @@ import {
   AppState
 } from "ente-redux";
 import lang from "ente-lang";
+import TextInput from "../../../../elements/TextInput";
+import ChildrenInput from "../../../../elements/ChildrenInput";
 
 /**
  * # Component Types
@@ -45,7 +55,6 @@ interface InjectedProps {
 }
 
 interface State extends IUserCreate {
-  selectedChild: MongoId;
   showImportUsers: boolean;
 }
 
@@ -79,8 +88,6 @@ export class CreateUser extends React.Component<Props, State> {
    * # Intialization
    */
   state: State = {
-    selectedChild:
-      this.props.students.length > 0 ? this.props.students[0].get("_id") : "",
     children: [],
     displayname: "",
     isAdult: false,
@@ -122,43 +129,20 @@ export class CreateUser extends React.Component<Props, State> {
   /**
    * ## Input Handlers
    */
-  handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ username: event.target.value });
-  handleChangeDisplayname = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ displayname: event.target.value });
-  handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ password: event.target.value });
+  handleChangeUsername = (username: string) => this.setState({ username });
+  handleChangeDisplayname = (displayname: string) =>
+    this.setState({ displayname });
+  handleChangePassword = (password: string) => this.setState({ password });
   handleChangeIsAdult = (
     event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => this.setState({ isAdult: checked });
-  handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ email: event.target.value });
+  handleChangeEmail = (email: string) => this.setState({ email });
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ role: event.target.value as Roles });
-  handleSelectChild = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ selectedChild: event.target.value });
-  handleAddChild = () =>
-    this.setState({
-      children: [...this.state.children, this.state.selectedChild]
-    });
-  handleRemoveChildren = (index: number) =>
-    this.setState({
-      children: this.state.children.slice(index, index)
-    });
+  handleChangeChildren = (children: string[]) => this.setState({ children });
   hasChildren = (): boolean =>
     this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
-
-  /**
-   * ## Misc
-   */
-  updateSelected = () => {
-    if (this.state.selectedChild === "" && this.props.students.length > 0) {
-      this.setState({
-        selectedChild: this.props.students[0].get("_id")
-      });
-    }
-  };
 
   /**
    * ## Validation
@@ -166,10 +150,11 @@ export class CreateUser extends React.Component<Props, State> {
   usernameValid = (): boolean => isValidUsername(this.state.username);
   displaynameValid = (): boolean => isValidDisplayname(this.state.displayname);
   emailValid = (): boolean => isValidEmail(this.state.email);
+  passwordValid = (): boolean =>
+    !this.state.password || isValidPassword(this.state.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.children.length > 0;
   inputValid = (): boolean => isValidUser(this.state);
-  selectedChildValid = (): boolean => !!this.state.selectedChild;
 
   render() {
     const { classes, show, fullScreen, getUser, students } = this.props;
@@ -180,11 +165,8 @@ export class CreateUser extends React.Component<Props, State> {
       children,
       password,
       role,
-      showImportUsers,
-      selectedChild
+      showImportUsers
     } = this.state;
-
-    this.updateSelected();
 
     return (
       <>
@@ -195,53 +177,43 @@ export class CreateUser extends React.Component<Props, State> {
               className={classes.container}
               onKeyPress={this.handleKeyPress}
             >
-              <Grid container direction="column">
-                <Grid container direction="row">
-                  <Grid item xs={12} lg={6}>
-                    <TextField
-                      fullWidth
-                      error={!this.usernameValid()}
-                      id="username"
-                      label="Username"
-                      value={username}
-                      onChange={this.handleChangeUsername}
-                      margin="normal"
-                    />
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <TextField
-                      error={!this.displaynameValid()}
-                      fullWidth
-                      id="displayname"
-                      label="Displayname"
-                      value={displayname}
-                      onChange={this.handleChangeDisplayname}
-                      margin="normal"
-                    />
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <TextField
-                      fullWidth
-                      error={!this.emailValid()}
-                      id="email"
-                      label="Email"
-                      type="email"
-                      value={email}
-                      onChange={this.handleChangeEmail}
-                      margin="normal"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      id="password"
-                      label="Passwort"
-                      type="password"
-                      value={password}
-                      onChange={this.handleChangePassword}
-                      margin="normal"
-                    />
-                  </Grid>
+              <Grid container direction="row">
+                <Grid item xs={12} lg={6}>
+                  <TextInput
+                    value={username}
+                    label={lang().ui.createUser.usernameTitle}
+                    onChange={this.handleChangeUsername}
+                    validator={this.usernameValid}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <TextInput
+                    label={lang().ui.createUser.displaynameTitle}
+                    value={displayname}
+                    onChange={this.handleChangeDisplayname}
+                    validator={this.displaynameValid}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <TextInput
+                    label={lang().ui.createUser.emailTitle}
+                    value={email}
+                    onChange={this.handleChangeEmail}
+                    validator={this.emailValid}
+                    type="email"
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    label={lang().ui.createUser.passwordTitle}
+                    value={password}
+                    onChange={this.handleChangePassword}
+                    validator={this.passwordValid}
+                    type="password"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -261,63 +233,21 @@ export class CreateUser extends React.Component<Props, State> {
                   </TextField>
                 </Grid>
                 {this.hasChildren() && (
-                  <Grid item container direction="column">
-                    <Grid item>
-                      <List>
-                        {children.map((child, index) => (
-                          <ListItem>
-                            <ListItemText
-                              primary={getUser(child).get("displayname")}
-                            />
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                aria-label="Delete"
-                                onClick={() => this.handleRemoveChildren(index)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                        ))}
-                      </List>
-                    </Grid>
-                    <Grid container direction="row">
-                      <Grid item xs={10}>
-                        <TextField
-                          select
-                          label="Kind"
-                          value={selectedChild}
-                          onChange={this.handleSelectChild}
-                          fullWidth
-                          SelectProps={{ native: true }}
-                          helperText="Fügen sie Kinder hinzu."
-                        >
-                          {students.map(student => (
-                            <option
-                              key={student.get("_id")}
-                              value={student.get("_id")}
-                            >
-                              {student.get("displayname")}
-                            </option>
-                          ))}
-                        </TextField>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <IconButton
-                          onClick={() => this.handleAddChild()}
-                          disabled={!this.selectedChildValid()}
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
+                  <Grid item xs={12}>
+                    <ChildrenInput
+                      children={children.map(getUser)}
+                      students={students}
+                      onChange={u =>
+                        this.handleChangeChildren(u.map(u => u.get("_id")))
+                      }
+                    />
                   </Grid>
                 )}
               </Grid>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleShowImport} color="secondary">
+            <Button onClick={this.handleShowImport}>
               {lang().ui.createUser.import}
             </Button>
             <Button

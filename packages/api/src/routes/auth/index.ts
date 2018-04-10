@@ -7,7 +7,7 @@ import { param, validationResult, body } from "express-validator/check";
 /**
  * EntE
  */
-import { isValidPassword } from "ente-validator";
+import { isValidPassword, isValidUsername } from "ente-validator";
 
 /**
  * DB
@@ -34,7 +34,7 @@ const authRouter = Router();
  */
 authRouter.post(
   "/forgot/:username",
-  [param("username").isAlphanumeric()],
+  [param("username").custom(isValidUsername)],
   validate,
   wrapAsync(async (req, res, next) => {
     const username: string = req.params.username;
