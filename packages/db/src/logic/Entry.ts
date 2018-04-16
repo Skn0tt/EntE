@@ -55,28 +55,6 @@ const findById = async (id: EntryId) => {
   return !!entry ? entryToJson(entry) : null;
 };
 
-const toEntry = (base: Partial<Entry>) => (
-  e: IEntryCreate,
-  student: User
-): Partial<Entry> => ({
-  ...base,
-  student,
-  date: e.date,
-  dateEnd: e.dateEnd,
-  forSchool: e.forSchool,
-  reason: e.reason,
-  slots: [],
-  signedParent: false
-});
-const toSlot = (teachers: User[], entry: Entry) => (
-  s: ISlotCreate
-): Partial<Slot> => ({
-  entry,
-  hour_from: s.hour_from,
-  hour_to: s.hour_to,
-  teacher: teachers.find(t => t._id === s.teacher)
-});
-
 type CreateResult = { entry: IEntry; slots: ISlot[] };
 const create = async (
   entry: IEntryCreate,
@@ -84,21 +62,37 @@ const create = async (
 ): Promise<CreateResult> =>
   await getConnection().transaction(async (manager): Promise<CreateResult> => {
     const student = await manager.findOneById(User, entry.student);
-    const convertedEntry = toEntry({ signedParent })(entry, student);
-    const newEntry = await manager.create(Entry, convertedEntry);
+
+    const newEntry = await manager.create(Entry, {
+      student,
+      signedParent,
+      date: entry.date,
+      dateEnd: entry.dateEnd,
+      reason: entry.reason,
+      forSchool: entry.forSchool,
+      slots: await Promise.all(
+        entry.slots.map(async s => {
+          return await manager.create(Slot, {
+            ...s,
+            teacher: await manager.findOneById(User, s.teacher)
+          });
+        })
+      )
+    });
+
+    newEntry.slots.forEach((_, i) => {
+      newEntry.slots[i].entry = newEntry;
+    });
 
     await manager.save(Entry, newEntry);
+    await manager.save(Slot, newEntry.slots);
 
-    const teachers = await manager.findByIds(
-      User,
-      entry.slots.map(s => s.teacher)
-    );
-    const convertedSlots = entry.slots.map(toSlot(teachers, newEntry));
-    const newSlots = await manager.create(Slot, convertedSlots);
+    console.log(newEntry);
 
-    await manager.save(Slot, newSlots);
-
-    return { entry: entryToJson(newEntry), slots: newSlots.map(slotToJson) };
+    return {
+      entry: entryToJson(newEntry),
+      slots: newEntry.slots.map(slotToJson)
+    };
   });
 
 const update = (updater: (e: Entry) => Entry) => (
