@@ -6,6 +6,7 @@ import {
   ManyToOne,
   Column
 } from "typeorm";
+import { IsInt } from "class-validator";
 import User from "./User";
 import Entry from "./Entry";
 
@@ -17,11 +18,15 @@ class Slot {
   /**
    * ## Attributes
    */
-  @PrimaryGeneratedColumn("uuid") _id: SlotId;
+  @PrimaryGeneratedColumn("uuid") readonly _id: SlotId;
 
-  @Column("int") hour_from: number;
+  @Column("int", { nullable: false })
+  @IsInt()
+  readonly hour_from: number;
 
-  @Column("int") hour_to: number;
+  @Column("int", { nullable: false })
+  @IsInt()
+  readonly hour_to: number;
 
   /**
    * ## Relations

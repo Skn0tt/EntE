@@ -29,7 +29,7 @@ const create = async (users: IUserCreate[]): Promise<IUser[]> => {
     const usersWithHashedPassword = await Promise.all(
       users.map(async u => ({
         ...u,
-        password: await hashPassword(u.password)
+        password: u.password ? await hashPassword(u.password) : undefined
       }))
     );
     const newUsers = await manager.create(User, usersWithHashedPassword);

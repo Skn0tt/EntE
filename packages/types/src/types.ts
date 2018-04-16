@@ -72,7 +72,7 @@ export interface IEntry {
   _id: EntryId;
   date: Date;
   dateEnd?: Date;
-  reason: string;
+  reason?: string;
   student: UserId;
   slots: SlotId[];
   forSchool: boolean;

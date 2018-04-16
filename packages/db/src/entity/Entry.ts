@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany
 } from "typeorm";
+import { IsBoolean } from "class-validator";
 import User from "./User";
 import Slot from "./Slot";
 
@@ -21,39 +22,43 @@ class Entry {
   /**
    * ## Attributes
    */
-  @PrimaryGeneratedColumn("uuid") _id: EntryId;
+  @PrimaryGeneratedColumn("uuid") readonly _id: EntryId;
 
-  @Column("datetime") date: Date;
+  @Column("datetime") readonly date: Date;
 
   @Column("datetime", { nullable: true })
-  dateEnd?: Date;
+  readonly dateEnd?: Date;
 
   @Column("varchar", { length: 300, nullable: true })
-  reason?: string;
+  readonly reason?: string;
 
-  @Column("tinyint") forSchool: boolean = false;
+  @Column("tinyint")
+  @IsBoolean()
+  forSchool: boolean = false;
 
   @Column("tinyint", { nullable: false })
+  @IsBoolean()
   signedManager: boolean = false;
 
   @Column("tinyint", { nullable: false })
+  @IsBoolean()
   signedParent: boolean = false;
 
   /**
    * ## Relations
    */
   @ManyToOne(type => User, user => user._id, { nullable: false })
-  student: User;
+  readonly student: User;
 
   @OneToMany(type => Slot, slot => slot._id)
-  slots: Slot[] = [];
+  readonly slots: Slot[] = [];
 
   /**
    * ## Meta
    */
-  @CreateDateColumn() createdAt: Date;
+  @CreateDateColumn() readonly createdAt: Date;
 
-  @UpdateDateColumn() updatedAt: Date;
+  @UpdateDateColumn() readonly updatedAt: Date;
 }
 
 export default Entry;
