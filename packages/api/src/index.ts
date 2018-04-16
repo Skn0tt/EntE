@@ -1,7 +1,6 @@
 import * as express from "express";
 import * as morgan from "morgan";
 import * as passport from "passport";
-import * as mongoose from "mongoose";
 import basic from "./authentication/strategies/basic";
 import jwt from "./authentication/strategies/jwt";
 import * as validator from "express-validator";
@@ -12,6 +11,7 @@ import * as Raven from "raven";
 
 // Setup
 import { checkEmail } from "./helpers/mail";
+import setupDB from "ente-db";
 
 // Routines
 import cron from "./routines/cron";
@@ -35,10 +35,12 @@ app.disable("etag");
 const DSN =
   "https://056357657b5f4baf94ca072cda3ba9f8:5eb4639c0dda49f695bda81a23bfcbf0@sentry.io/264890";
 
-Raven.config(DSN).install();
+if (production) {
+  Raven.config(DSN).install();
+  app.use(Raven.requestHandler());
+}
 
 // Express Setup
-app.use(Raven.requestHandler());
 app.use(express.json());
 app.use(validator());
 
@@ -61,11 +63,10 @@ if (production) {
   );
 }
 
-const mongoAddress = "mongodb://mongodb/ente";
-
-// Mongoose
-require("mongoose").Promise = BBPromise;
-mongoose.connect(mongoAddress, { useMongoClient: true });
+// DB
+setupDB({ host: "mysql", password: "root", username: "ente", database: "ente" })
+  .then(() => console.log("Established connection to DB."))
+  .catch(error => console.error("Couldn't connect to DB!", error));
 
 // Security Measures
 if (production) {

@@ -10,12 +10,6 @@ import { validationResult, param } from "express-validator/check";
 import { MongoId, Roles } from "ente-types";
 
 /**
- * DB
- */
-import User from "../../models/User";
-import Slot, { SlotModel } from "../../models/Slot";
-
-/**
  * Helpers
  */
 import rbac, {
@@ -24,8 +18,8 @@ import rbac, {
 } from "../../helpers/permissions";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
-import { thisTerm } from "../../helpers/queryParams";
 import validate from "../../helpers/validate";
+import { Slot } from "ente-db";
 
 /**
  * Slots Router
@@ -49,10 +43,7 @@ slotsRouter.get(
        * Teachers have access to all of their slots
        */
       case Roles.TEACHER:
-        req.slots = await Slot.find({
-          teacher: req.user._id,
-          ...thisTerm()
-        });
+        req.slots = await Slot.allThisYearByTeacher(req.user._id);
         return next();
 
       /**
@@ -60,29 +51,21 @@ slotsRouter.get(
        */
       case Roles.MANAGER:
       case Roles.PARENT:
-        req.slots = await Slot.find({
-          student: { $in: req.user.children },
-          ...thisTerm()
-        });
+        req.slots = await Slot.allThisYearByStudents([req.user.children]);
         return next();
 
       /**
        * Students have access to all of their slots
        */
       case Roles.STUDENT:
-        req.slots = await Slot.find({
-          student: req.user._id,
-          ...thisTerm()
-        });
+        req.slots = await Slot.allThisYearByStudents([req.user._id]);
         return next();
 
       /**
        * Admins have access to all slots
        */
       case Roles.ADMIN:
-        req.slots = await Slot.find({
-          ...thisTerm()
-        });
+        req.slots = await Slot.allThisYear();
         return next();
 
       default:
@@ -98,7 +81,7 @@ slotsRouter.get(
 slotsRouter.get(
   "/:slotId",
   rbac({ slots_read: true }),
-  [param("slotId").isMongoId()],
+  [param("slotId").isUUID()],
   validate,
   wrapAsync(async (req: PopulateRequest, res, next) => {
     const { slotId } = req.params;

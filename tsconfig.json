@@ -6,6 +6,7 @@
     "skipLibCheck": true, // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16825,
     "paths": {
       "ente-*": ["./*/src"]
-    }
+    },
+    "experimentalDecorators": true
   }
 }

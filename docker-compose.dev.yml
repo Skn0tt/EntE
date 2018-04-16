@@ -1,9 +1,10 @@
 version: '2'
 
 services:
-  mongodb:
+  
+  mysql:
     ports:
-      - 3500:27017
+      - 3306:3306
     
   api:
     ports:
@@ -14,3 +15,4 @@ services:
       - ./packages/validator/src:/usr/src/app/packages/validator/src
       - ./packages/types/src:/usr/src/app/packages/types/src
       - ./packages/mail/src:/usr/src/app/packages/mail/src
+      - ./packages/db/src:/usr/src/app/packages/db/src

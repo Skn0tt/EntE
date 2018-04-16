@@ -5,7 +5,7 @@ import {
   isValidDisplayname,
   isValidUsername,
   isValidUser,
-  isValidMongoId
+  isValidUuid
 } from "./user";
 import { rolesArr, Roles } from "ente-types";
 
@@ -93,12 +93,12 @@ describe("isValidUsername", () => {
   });
 });
 
-describe("isValidMongoId", () => {
+describe("isValidUuid", () => {
   it("returns true when passing valid id", () => {
-    expect(isValidMongoId("5ac54ae00000000000000000")).to.be.true;
+    expect(isValidUuid("5ac54ae00000000000000000")).to.be.true;
   });
   it("returns false when passing invalid id", () => {
-    expect(isValidMongoId("5ac54ae0")).to.be.false;
+    expect(isValidUuid("5ac54ae0")).to.be.false;
   });
 });
 

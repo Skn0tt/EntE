@@ -34,8 +34,10 @@ export const isValidDisplayname: SyncValidator<string> = matches([
   not(containsSpecialChars)
 ]);
 
-export const isValidMongoId: SyncValidator<string> = v =>
-  /^[a-f\d]{24}$/i.test(v);
+export const isValidUuid: SyncValidator<string> = v =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    v
+  );
 
 export const isValidRole: SyncValidator<string> = role =>
   rolesArr.indexOf(role) !== -1;
@@ -65,5 +67,5 @@ export const isValidUserExcludingChildren: SyncValidator<IUserCreate> = matches(
 
 export const isValidUser: SyncValidator<IUserCreate> = matches([
   isValidUserExcludingChildren,
-  u => u.children.every(c => isValidMongoId(c))
+  u => u.children.every(c => isValidUuid(c))
 ]);

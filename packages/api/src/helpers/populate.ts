@@ -1,17 +1,15 @@
 import { RequestHandler, NextFunction, Response, Request } from "express";
 import wrapAsync from "./wrapAsync";
 import { requestHandler } from "raven";
-import Entry, { EntryModel } from "../models/Entry";
-import User, { UserModel } from "../models/User";
-import Slot, { SlotModel } from "../models/Slot";
-import { MongoId } from "ente-types";
+import { MongoId, IUser, ISlot, UserId, IEntry } from "ente-types";
 import * as _ from "lodash";
 import { omitPassword } from "./queryParams";
+import { User, Slot } from "ente-db";
 
 export interface PopulateRequest extends Request {
-  entries: EntryModel[];
-  users: UserModel[];
-  slots: SlotModel[];
+  entries: IEntry[];
+  users: IUser[];
+  slots: ISlot[];
 }
 
 const missing = (have: { _id: MongoId }[], want: MongoId[]): MongoId[] => {
@@ -29,7 +27,7 @@ const populate = async (
   const slots = req.slots || [];
   const entries = req.entries || [];
 
-  const userIds: MongoId[] = [];
+  const userIds: UserId[] = [];
   entries.forEach(e => userIds.push(e.student));
   slots.forEach(s => {
     userIds.push(s.student);
@@ -39,12 +37,10 @@ const populate = async (
 
   const slotIds = _.flatten(entries.map(e => e.slots));
 
-  const newSlots = await Slot.find({ _id: { $in: missing(slots, slotIds) } });
-  const teachers = newSlots.forEach(s => userIds.push(s.teacher));
+  const newSlots = await Slot.findByIds(missing(slots, slotIds));
+  newSlots.forEach(s => userIds.push(s.teacher));
 
-  const newUsers = await User.find({
-    _id: { $in: missing(users, userIds) }
-  }).select(omitPassword);
+  const newUsers = await User.findByIds(missing(users, userIds));
 
   return res.status(200).json({
     entries,

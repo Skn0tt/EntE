@@ -1,21 +1,13 @@
-import User, { UserModel } from "../../models/User";
+import { User } from "ente-db";
 import { BasicStrategy } from "passport-http";
 
 const basicStrategy = new BasicStrategy(async (username, password, done) => {
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return done(null, false);
-    }
+    const user = await User.checkPassword(username, password);
 
-    const valid = await user.comparePassword(password);
-    if (valid) {
-      return done(null, user);
-    }
-
-    return done(null, false);
-  } catch (err) {
-    return done(err);
+    return done(null, user || false);
+  } catch (error) {
+    return done(error, false);
   }
 });
 

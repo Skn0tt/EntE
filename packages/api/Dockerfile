@@ -9,6 +9,7 @@ COPY packages/api ./packages/api
 COPY packages/types ./packages/types
 COPY packages/mail ./packages/mail
 COPY packages/validator ./packages/validator
+COPY packages/db ./packages/db
 
 RUN yarn --frozen-lockfile
 RUN yarn lerna bootstrap
