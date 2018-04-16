@@ -46,7 +46,7 @@ const allThisYear = async () => {
 
 const allThisYearBy = async (students: UserId[]) => {
   const entries = await thisYearQuery()
-    .andWhere("entry.student IN (:students)", { students })
+    .andWhere("student._id IN (:students)", { students })
     .getMany();
 
   return entries.map(entryToJson);

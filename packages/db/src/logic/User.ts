@@ -29,6 +29,7 @@ const create = async (users: IUserCreate[]): Promise<IUser[]> => {
     const usersWithHashedPassword = await Promise.all(
       users.map(async u => ({
         ...u,
+        children: await manager.findByIds(User, u.children),
         password: u.password ? await hashPassword(u.password) : undefined
       }))
     );
@@ -88,6 +89,7 @@ const findByIds = async (ids: UserId[]) => {
 const roleQuery = (role: Roles) =>
   userRepo()
     .createQueryBuilder("user")
+    .leftJoinAndSelect("user.children", "child")
     .where("user.role = :role", { role });
 
 const findByRole = async (role: Roles) => {
@@ -124,7 +126,7 @@ const findParentMail = async (id: UserId): Promise<string[] | null> => {
 
 const findByRoleAndUsername = async (role: Roles, username: string) => {
   const user = await roleQuery(role)
-    .andWhere("username = :username", { username })
+    .andWhere("user.username = :username", { username })
     .getOne();
 
   return !!user ? userToJson(user) : null;

@@ -148,7 +148,11 @@ usersRouter.get(
 usersRouter.post(
   "/",
   rbac({ users_write: true }),
-  check(req => <IUserCreate[]>(_.isArray(req.body) ? req.body : [req.body]), [
+  (r, w, n) => {
+    r.body = _.isArray(r.body) ? r.body : [r.body];
+    n();
+  },
+  check(req => <IUserCreate[]>req.body, [
     {
       check: us => us.every(isValidUser),
       msg: "One of the users is not valid."

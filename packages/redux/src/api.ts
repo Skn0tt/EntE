@@ -131,10 +131,10 @@ export const createEntry = async (
 };
 
 export const createUser = async (
-  user: IUserCreate[],
+  users: IUserCreate[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${config.baseUrl}/users/`, token, user);
+  const response = await post(`${config.baseUrl}/users/`, token, users);
   return transform(response);
 };
 

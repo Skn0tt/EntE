@@ -11,7 +11,7 @@ export const slotToJson = (slot: Slot): ISlot => ({
   hour_from: slot.hour_from,
   hour_to: slot.hour_to,
   student: slot.entry.student._id,
-  signed: slot.entry.signedManager && slot.entry.signedParent,
+  signed: !!slot.entry.signedManager && !!slot.entry.signedParent,
   teacher: slot.teacher._id
 });
 
@@ -53,7 +53,7 @@ const allThisYearByTeacher = async (teacherId: UserId) => {
 
 const allThisYearByStudents = async (studentIds: UserId[]) => {
   const slots = await thisYearQuery()
-    .where("slot.entry.student._id IN (:studentIds)", { studentIds })
+    .andWhere("student._id IN (:studentIds)", { studentIds })
     .getMany();
 
   return slots.map(slotToJson);
