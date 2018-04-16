@@ -77,7 +77,7 @@ export const getChildren = async (token: string): Promise<APIResponse> => {
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users?filter=needed`, token);
+  const data = await get(`${config.baseUrl}/users`, token);
   return transform(data);
 };
 

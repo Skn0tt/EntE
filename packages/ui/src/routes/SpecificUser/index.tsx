@@ -16,6 +16,7 @@ import DialogContentText from "material-ui/Dialog/DialogContentText";
 import Divider from "material-ui/Divider/Divider";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import { MongoId, IUser, Roles } from "ente-types";
+import * as _ from "lodash";
 import {
   User,
   AppState,
@@ -30,6 +31,23 @@ import {
 import lang from "ente-lang";
 import { updateUser } from "redux/src/api";
 import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
+
+/**
+ * # Helpers
+ */
+const diffUsers = (oldUser: IUser, newUser: IUser): Partial<IUser> => {
+  const diff: Partial<IUser> = { _id: newUser._id };
+
+  _.entries(newUser).forEach(([key, value]) => {
+    const oldV = oldUser[key];
+    const newV = newUser[key];
+    if (oldV !== newV) {
+      diff[key] = newV;
+    }
+  });
+
+  return diff;
+};
 
 /**
  * # Component Types
@@ -55,11 +73,11 @@ const mapStateToProps = (state: AppState): StateProps => ({
 
 interface DispatchProps {
   requestUser(id: MongoId);
-  updateUser(u: IUser);
+  updateUser(u: Partial<IUser>);
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
-  requestUser: (id: MongoId) => dispatch(getUserRequest(id)),
-  updateUser: (user: IUser) => dispatch(updateUserRequest(user))
+  requestUser: id => dispatch(getUserRequest(id)),
+  updateUser: user => dispatch(updateUserRequest(user))
 });
 
 type Props = StateProps &
@@ -108,7 +126,14 @@ export class SpecificUser extends React.PureComponent<Props, State> {
   onClose = () => this.props.history.goBack();
   onGoBack = () => this.onClose();
   onSubmit = () => {
-    this.props.updateUser(this.state.user.toJS());
+    const oldUser: IUser = this.props
+      .getUser(this.props.match.params.userId)
+      .toJS();
+    const newUser: IUser = this.state.user.toJS();
+
+    const diff = diffUsers(oldUser, newUser);
+    this.props.updateUser(diff);
+
     this.onClose();
   };
 

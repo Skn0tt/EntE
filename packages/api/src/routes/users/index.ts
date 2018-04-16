@@ -247,7 +247,7 @@ usersRouter.patch(
      * `isAdult`
      */
 
-    if (!_.isUndefined(isAdult)) {
+    if (!_.isUndefined(isAdult) && _.isBoolean(isAdult)) {
       user = await User.updateIsAdult(isAdult)(userId);
       if (!user) {
         return res.status(404).end();
