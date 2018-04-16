@@ -300,6 +300,7 @@ const CreateEntry = connect(mapStateToProps, mapDispatchToProps)(
                         <MUIList>
                           {this.state.slots.map((slot, index) => (
                             <SlotListItem
+                              key={index}
                               slot={slot}
                               delete={() => this.handleRemoveSlot(index)}
                             />

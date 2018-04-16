@@ -152,7 +152,7 @@ entriesRouter.post(
      */
     const signedParent: boolean =
       req.user.role === Roles.PARENT || req.user.isAdult;
-    const { entry: newEntry } = await Entry.create(req.body, signedParent);
+    const { entry: newEntry } = await Entry.create(entry, signedParent);
 
     /**
      * Dispatch Sign Request

@@ -56,9 +56,11 @@ const findById = async (id: EntryId) => {
 };
 
 const toEntry = (base: Partial<Entry>) => (
-  e: IEntryCreate
+  e: IEntryCreate,
+  student: User
 ): Partial<Entry> => ({
   ...base,
+  student,
   date: e.date,
   dateEnd: e.dateEnd,
   forSchool: e.forSchool,
@@ -81,7 +83,8 @@ const create = async (
   signedParent: boolean
 ): Promise<CreateResult> =>
   await getConnection().transaction(async (manager): Promise<CreateResult> => {
-    const convertedEntry = toEntry({ signedParent })(entry);
+    const student = await manager.findOneById(User, entry.student);
+    const convertedEntry = toEntry({ signedParent })(entry, student);
     const newEntry = await manager.create(Entry, convertedEntry);
 
     await manager.save(Entry, newEntry);
