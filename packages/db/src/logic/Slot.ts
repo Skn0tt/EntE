@@ -15,8 +15,14 @@ export const slotToJson = (slot: Slot): ISlot => ({
   teacher: slot.teacher._id
 });
 
+/**
+ * # Read
+ */
+
 const findByIds = async (ids: SlotId[]) => {
-  const slots = await slotRepo().findByIds(ids);
+  const slots = await slotRepo().findByIds(ids, {
+    relations: ["teacher", "entry", "entry.student"]
+  });
 
   return slots.map(slotToJson);
 };
@@ -30,7 +36,9 @@ const findById = async (id: SlotId) => {
 const afterDateQuery = (date: Date) =>
   slotRepo()
     .createQueryBuilder("slot")
-    .leftJoin("slot.entry", "entry")
+    .leftJoinAndSelect("slot.entry", "entry")
+    .leftJoinAndSelect("entry.student", "student")
+    .leftJoinAndSelect("slot.teacher", "teacher")
     .where("entry.date > :date", { date });
 
 const thisYearQuery = () => afterDateQuery(lastAugustFirst());

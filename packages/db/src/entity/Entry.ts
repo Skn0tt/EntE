@@ -47,11 +47,14 @@ class Entry {
   /**
    * ## Relations
    */
-  @ManyToOne(type => User, user => user._id, { nullable: false })
+  @ManyToOne(type => User, user => user.entries, {
+    nullable: false,
+    eager: true
+  })
   readonly student: User;
 
-  @OneToMany(type => Slot, slot => slot._id)
-  readonly slots: Slot[] = [];
+  @OneToMany(type => Slot, slot => slot.entry, { eager: true })
+  readonly slots: Slot[];
 
   /**
    * ## Meta

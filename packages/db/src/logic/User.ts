@@ -111,6 +111,17 @@ const findByRoleAndId = async (role: Roles, ids: UserId[]) => {
   return users.map(userToJson);
 };
 
+const findParentMail = async (id: UserId): Promise<string[] | null> => {
+  const user = await userRepo().findOneById(id);
+  if (!user) {
+    return null;
+  }
+
+  const mails = user.parents.map(p => p.email);
+
+  return mails;
+};
+
 const findByRoleAndUsername = async (role: Roles, username: string) => {
   const user = await roleQuery(role)
     .andWhere("username = :username", { username })
@@ -243,6 +254,7 @@ export default {
   findByRoleOrId,
   findByRoleAndId,
   findByRoleAndUsername,
+  findParentMail,
   create,
   updateEmail,
   updateRole,

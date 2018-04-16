@@ -34,6 +34,8 @@ const entryToJson = (entry: Entry): IEntry => ({
 const thisYearQuery = () =>
   entryRepo()
     .createQueryBuilder("entry")
+    .leftJoinAndSelect("entry.student", "student")
+    .leftJoinAndSelect("entry.slots", "slot")
     .where("entry.date >= :date", { date: lastAugustFirst() });
 
 const allThisYear = async () => {

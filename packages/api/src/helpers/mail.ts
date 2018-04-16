@@ -39,7 +39,11 @@ export const dispatchSignRequest = async (entry: IEntry) => {
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const recipients = await findParentMail(entry.student);
+    const recipients = await User.findParentMail(entry.student);
+    if (recipients === null) {
+      console.log(`Mail: User ${entry.student} not found.`);
+      return;
+    }
     if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;

@@ -70,9 +70,12 @@ class User {
   /**
    * ## Relations
    */
-  @ManyToMany(type => User, user => user._id)
+  @ManyToMany(type => User, user => user.parents)
   @JoinTable()
   children: User[] = [];
+
+  @ManyToMany(type => User, user => user.children)
+  parents: User[] = [];
 
   @OneToMany(type => Entry, entry => entry.student)
   entries: Entry[] = [];

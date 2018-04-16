@@ -31,10 +31,10 @@ class Slot {
   /**
    * ## Relations
    */
-  @ManyToOne(type => User, user => user._id, { nullable: false })
+  @ManyToOne(type => User, user => user.slots, { nullable: false })
   teacher: User;
 
-  @ManyToOne(type => Entry, entry => entry._id)
+  @ManyToOne(type => Entry, entry => entry.slots)
   entry: Entry;
 }
 
