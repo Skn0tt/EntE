@@ -1,5 +1,4 @@
 import * as redis from "redis";
-import * as crypto from "crypto";
 import * as JWT from "jsonwebtoken";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { promisify } from "util";
@@ -8,10 +7,10 @@ import { User } from "ente-db";
 
 const client = redis.createClient("redis://redis");
 
-const get = promisify(client.get).bind(client);
+const redisGet = promisify(client.get).bind(client);
 
 export const getSecrets = async (): Promise<[string, string]> =>
-  JSON.parse(await get(redisTypes.JWT_SECRETS));
+  JSON.parse(await redisGet(redisTypes.JWT_SECRETS));
 
 export const getFirstSecret = async () => (await getSecrets())[0];
 
