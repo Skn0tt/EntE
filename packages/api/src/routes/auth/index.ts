@@ -62,12 +62,12 @@ authRouter.put(
     const { token } = req.params;
 
     const { newPassword } = req.body;
-    const user = await User.setPassword(token, newPassword);
-    if (!user) {
+    const result = await User.setPassword(token, newPassword);
+    if (!result) {
       return res.status(404).end("Token was not found.");
     }
 
-    dispatchPasswortResetSuccess(user.username, user.email);
+    dispatchPasswortResetSuccess(result.username, result.email);
 
     return res.status(200).end();
   })

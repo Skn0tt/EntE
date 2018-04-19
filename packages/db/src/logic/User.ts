@@ -8,6 +8,7 @@ import {
 import { UserId, IUser, Roles, IUserCreate } from "ente-types";
 import * as _ from "lodash";
 import { oneDayInFuture } from "../helpers/date";
+import { updateSuccess } from "../helpers/response";
 
 const userRepo = () => getRepository(User);
 
@@ -63,7 +64,7 @@ const createAdmin = async () => {
  */
 const checkPassword = async (username: string, attempt: string) => {
   const user = await userRepo().findOne({ where: { username } });
-  if (!user) {
+  if (!user || !user.password) {
     return null;
   }
 
@@ -159,49 +160,64 @@ const usernamesAvailable = async (usernames: string[]): Promise<boolean> => {
 const forgotPassword = async (
   username: string
 ): Promise<{ token: string; email: string } | null> => {
+  const result = await userRepo()
+    .createQueryBuilder("user")
+    .where("username = :username", { username })
+    .update()
+    .set({
+      passwordResetExpiry: oneDayInFuture(),
+      passwordResetToken: await randomToken(30)
+    })
+    .execute();
+
+  if (!updateSuccess(result)) {
+    return null;
+  }
+
   const user = await userRepo().findOne({ where: { username } });
   if (!user) {
     return null;
   }
 
-  user.passwordResetExpiry = oneDayInFuture();
-  user.passwordResetToken = await randomToken(30);
-
-  await userRepo().save(user);
-
-  return { token: user.passwordResetToken, email: user.email };
+  return { token: user.passwordResetToken!, email: user.email };
 };
 
 const setPassword = async (
   token: string,
   newPassword: string
-): Promise<IUser | null> => {
+): Promise<{ email: string; username: string } | null> => {
   const user = await userRepo().findOne({
-    where: { passwordResetToken: token }
+    where: { passwordResetToken: token },
+    relations: ["children", "entries", "slots", "parents"]
   });
-  // Exists
   if (!user) {
     return null;
   }
-  // Token Valid
-  if (!(user.passwordResetExpiry && +user.passwordResetExpiry < Date.now())) {
+
+  const valid =
+    user.passwordResetExpiry && +user.passwordResetExpiry > Date.now();
+  if (!valid) {
     return null;
   }
 
   user.password = await hashPassword(newPassword);
-  user.passwordResetExpiry = undefined;
-  user.passwordResetToken = undefined;
+  user.passwordResetToken = null;
+  user.passwordResetExpiry = null;
 
-  return userToJson(user);
+  await userRepo().save(user);
+
+  return { username: user.username, email: user.email };
 };
 
-const update = (updater: (u: User) => User) => async (id: UserId) => {
+const update = (updater: (u: User) => User | Promise<User>) => async (
+  id: UserId
+) => {
   const user = await userRepo().findOneById(id);
   if (!user) {
     return null;
   }
 
-  const newUser = updater(user);
+  const newUser = await Promise.resolve(updater(user));
 
   await userRepo().save(newUser);
 
@@ -229,19 +245,12 @@ const updateIsAdult = (isAdult: boolean) =>
     return u;
   });
 
-const updateChildren = (childrenIds: UserId[]) => async (id: UserId) => {
-  const children = await userRepo().findByIds(childrenIds);
-  const user = await userRepo().findOneById(id);
-  if (!user) {
-    return null;
-  }
-
-  user.children = children;
-
-  await userRepo().save(user);
-
-  return userToJson(user);
-};
+const updateChildren = (childrenIds: UserId[]) =>
+  update(async u => {
+    const children = await userRepo().findByIds(childrenIds);
+    u.children = children;
+    return u;
+  });
 
 export default {
   checkPassword,

@@ -27,10 +27,10 @@ class Entry {
   @Column("datetime") readonly date: Date;
 
   @Column("datetime", { nullable: true })
-  readonly dateEnd?: Date;
+  readonly dateEnd?: Date | null;
 
   @Column("varchar", { length: 300, nullable: true })
-  readonly reason?: string;
+  readonly reason?: string | null;
 
   @Column("tinyint")
   @IsBoolean()

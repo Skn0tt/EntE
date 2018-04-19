@@ -57,15 +57,15 @@ class User {
    * ## Password
    */
   @Column("varchar", { nullable: true })
-  password: string;
+  password: string | null;
 
   @Column("varchar", { nullable: true })
   @IsOptional()
   @IsHexadecimal()
-  passwordResetToken?: string;
+  passwordResetToken?: string | null;
 
   @Column("datetime", { nullable: true })
-  passwordResetExpiry?: Date;
+  passwordResetExpiry?: Date | null;
 
   /**
    * ## Relations
