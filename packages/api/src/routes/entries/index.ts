@@ -139,10 +139,10 @@ entriesRouter.post(
      * - Exist
      * - are teachers
      */
-    const allTeachersExist = await User.exist(
-      _.flatten(entry.slots.map(s => s.teacher)),
-      Roles.TEACHER
-    );
+    const teacherIds = entry.slots.map(s => s.teacher);
+
+    const allTeachersExist =
+      teacherIds.length === 0 || (await User.exist(teacherIds, Roles.TEACHER));
     if (!allTeachersExist) {
       return res.status(422).end("One of the teachers does not exist.");
     }
