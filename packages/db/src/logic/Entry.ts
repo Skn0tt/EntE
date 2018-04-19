@@ -101,7 +101,7 @@ const update = (updater: (e: Entry) => Entry) => (
   validator: Validator<IEntry>
 ) => async (id: EntryId) => {
   const entry = await entryRepo().findOneById(id);
-  if (!entry || validator(entryToJson(entry))) {
+  if (!entry || !validator(entryToJson(entry))) {
     return null;
   }
 
