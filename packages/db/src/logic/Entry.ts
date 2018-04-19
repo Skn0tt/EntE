@@ -21,9 +21,9 @@ const entryToJson = (entry: Entry): IEntry => ({
   _id: entry._id,
   date: entry.date,
   dateEnd: entry.dateEnd,
-  signedManager: entry.signedManager,
-  signedParent: entry.signedParent,
-  forSchool: entry.forSchool,
+  signedManager: !!entry.signedManager,
+  signedParent: !!entry.signedParent,
+  forSchool: !!entry.forSchool,
   slots: entry.slots.map(s => s._id),
   reason: entry.reason,
   student: entry.student._id,
@@ -31,38 +31,16 @@ const entryToJson = (entry: Entry): IEntry => ({
   createdAt: entry.createdAt
 });
 
-const thisYearQuery = () =>
-  entryRepo()
-    .createQueryBuilder("entry")
-    .leftJoinAndSelect("entry.student", "student")
-    .leftJoinAndSelect("entry.slots", "slot")
-    .where("entry.date >= :date", { date: lastAugustFirst() });
-
-const allThisYear = async () => {
-  const entries = await thisYearQuery().getMany();
-
-  return entries.map(entryToJson);
-};
-
-const allThisYearBy = async (students: UserId[]) => {
-  const entries = await thisYearQuery()
-    .andWhere("student._id IN (:students)", { students })
-    .getMany();
-
-  return entries.map(entryToJson);
-};
-
-const findById = async (id: EntryId) => {
-  const entry = await entryRepo().findOneById(id);
-  return !!entry ? entryToJson(entry) : null;
-};
-
+/**
+ * # Create
+ */
 type CreateResult = { entry: IEntry; slots: ISlot[] };
 const create = async (
   entry: IEntryCreate,
   signedParent: boolean
 ): Promise<CreateResult> =>
   await getConnection().transaction(async (manager): Promise<CreateResult> => {
+    console.log(entry);
     const student = await manager.findOneById(User, entry.student);
 
     const newEntry = await manager.create(Entry, {
@@ -96,6 +74,40 @@ const create = async (
       slots: newEntry.slots.map(slotToJson)
     };
   });
+
+/**
+ * # Read
+ */
+
+const thisYearQuery = () =>
+  entryRepo()
+    .createQueryBuilder("entry")
+    .leftJoinAndSelect("entry.student", "student")
+    .leftJoinAndSelect("entry.slots", "slot")
+    .where("entry.date >= :date", { date: lastAugustFirst() });
+
+const allThisYear = async () => {
+  const entries = await thisYearQuery().getMany();
+
+  return entries.map(entryToJson);
+};
+
+const allThisYearBy = async (students: UserId[]) => {
+  const entries = await thisYearQuery()
+    .andWhere("student._id IN (:students)", { students })
+    .getMany();
+
+  return entries.map(entryToJson);
+};
+
+const findById = async (id: EntryId) => {
+  const entry = await entryRepo().findOneById(id);
+  return !!entry ? entryToJson(entry) : null;
+};
+
+/**
+ * # Update
+ */
 
 const update = (updater: (e: Entry) => Entry) => (
   validator: Validator<IEntry>
