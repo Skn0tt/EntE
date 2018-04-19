@@ -27,9 +27,6 @@ const mailConfig =
 
 const transporter = mail.createTransport(mailConfig);
 
-const findParentMail = async (student: MongoId): Promise<string[]> =>
-  (await User.findByRoleAndId(Roles.PARENT, [student])).map(u => u.email);
-
 /**
  * ## Handlebars Templates
  */
@@ -68,7 +65,7 @@ export const dispatchSignedInformation = async (entry: IEntry) => {
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const recipients = await findParentMail(entry.student);
+    const recipients = await User.findParentMail(entry.student);
     if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;

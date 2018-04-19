@@ -114,7 +114,7 @@ const findByRoleAndId = async (role: Roles, ids: UserId[]) => {
 };
 
 const findParentMail = async (id: UserId): Promise<string[] | null> => {
-  const user = await userRepo().findOneById(id);
+  const user = await userRepo().findOneById(id, { relations: ["parents"] });
   if (!user) {
     return null;
   }
