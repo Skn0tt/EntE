@@ -1,0 +1,24 @@
+{
+  "name": "ente-db",
+  "version": "0.0.1",
+  "description": "DB actions for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/db",
+  "author": "Simon Knott",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^2.0.0",
+    "class-validator": "^0.8.5",
+    "ente-types": "^0.0.1",
+    "ente-validator": "^0.0.1",
+    "lodash": "^4.17.5",
+    "mysql": "^2.15.0",
+    "reflect-metadata": "^0.1.12",
+    "typeorm": "^0.1.20"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.107",
+    "@types/node": "^9.6.5"
+  }
+}

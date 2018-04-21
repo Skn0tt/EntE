@@ -1,17 +1,16 @@
 import * as redis from "redis";
-import * as crypto from "crypto";
 import * as JWT from "jsonwebtoken";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { promisify } from "util";
-import User from "../../models/User";
 import { redis as redisTypes, JWT_PAYLOAD } from "ente-types";
+import { User } from "ente-db";
 
 const client = redis.createClient("redis://redis");
 
-const get = promisify(client.get).bind(client);
+const redisGet = promisify(client.get).bind(client);
 
 export const getSecrets = async (): Promise<[string, string]> =>
-  JSON.parse(await get(redisTypes.JWT_SECRETS));
+  JSON.parse(await redisGet(redisTypes.JWT_SECRETS));
 
 export const getFirstSecret = async () => (await getSecrets())[0];
 
@@ -46,17 +45,12 @@ const jwtStrategy = new BearerStrategy(async (token, done) => {
       return done(null, false);
     }
 
-    const user = await User.findOne({
-      username: payload.username,
-      role: payload.role
-    });
-    if (!user) {
-      return done(null, false);
-    }
+    const { username, role } = payload;
+    const user = await User.findByRoleAndUsername(role, username);
 
-    return done(null, user);
+    return done(null, user || false);
   } catch (error) {
-    return done(error);
+    return done(error, false);
   }
 });
 

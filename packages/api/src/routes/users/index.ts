@@ -18,13 +18,6 @@ import {
 import { MongoId, Roles, rolesArr, IUserCreate, IUser } from "ente-types";
 
 /**
- * DB
- */
-import Entry from "../../models/Entry";
-import Slot from "../../models/Slot";
-import User, { UserModel } from "../../models/User";
-
-/**
  * Helpers
  */
 import rbac from "../../helpers/permissions";
@@ -32,9 +25,10 @@ import validate, { check } from "../../helpers/validate";
 import populate, { PopulateRequest } from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import * as _ from "lodash";
-import { usernamesAvailable, usersExist } from "../../helpers/exist";
 import { isEmail } from "validator";
 import { omitPassword } from "../../helpers/queryParams";
+import { User } from "ente-db";
+import { dispatchPasswortResetLink } from "../../helpers/mail";
 
 /**
  * Users Router
@@ -56,34 +50,28 @@ usersRouter.get(
        * Admin can see all users
        */
       case Roles.ADMIN:
-        req.users = await User.find().select(omitPassword);
+        req.users = await User.findAll();
         return next();
 
       /**
        * Student can see all Teachers
        */
       case Roles.STUDENT:
-        req.users = await User.find({ role: Roles.TEACHER }).select(
-          omitPassword
-        );
+        req.users = await User.findByRole(Roles.TEACHER);
         return next();
 
       /**
        * Manager can see all their children
        */
       case Roles.MANAGER:
-        req.users = await User.find({
-          _id: { $in: req.user.children }
-        }).select(omitPassword);
+        req.users = await User.findByIds(req.user.children);
         return next();
 
       /**
        * Parents can see all their children and teachers
        */
       case Roles.PARENT:
-        req.users = await User.find({
-          $or: [{ _id: { $in: req.user.children } }, { role: Roles.TEACHER }]
-        }).select(omitPassword);
+        req.users = await User.findByRoleOrId(Roles.TEACHER, req.user.children);
         return next();
 
       default:
@@ -99,12 +87,12 @@ usersRouter.get(
 usersRouter.get(
   "/:userId",
   rbac({ users_read: true }),
-  [param("userId").isMongoId()],
+  [param("userId").isUUID()],
   validate,
   wrapAsync(async (req: PopulateRequest, res, next) => {
     const { userId } = req.params;
 
-    const user = await User.findById(userId).select(omitPassword);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).end("Couldnt find requested user.");
     }
@@ -160,45 +148,45 @@ usersRouter.get(
 usersRouter.post(
   "/",
   rbac({ users_write: true }),
-  check(req => <IUserCreate[]>(_.isArray(req.body) ? req.body : [req.body]), [
+  (r, w, n) => {
+    r.body = _.isArray(r.body) ? r.body : [r.body];
+    n();
+  },
+  check(req => <IUserCreate[]>req.body, [
     {
       check: us => us.every(isValidUser),
       msg: "One of the users is not valid."
     },
     {
-      check: us => usernamesAvailable(us.map(u => u.username)),
+      check: us => User.usernamesAvailable(us.map(u => u.username)),
       msg: "One of the users already exists."
     },
     {
-      check: us =>
-        usersExist(_.flatten(us.map(u => u.children)), Roles.STUDENT),
+      check: us => {
+        const children = _.flatten(us.map(u => u.children));
+        return children.length === 0 || User.exist(children, Roles.STUDENT);
+      },
       msg: "One of the children doesn't exist."
     }
   ]),
   wrapAsync(async (req: PopulateRequest, res, next) => {
     const users: IUserCreate[] = req.body;
 
-    const createdUsers: UserModel[] = [];
-    for (const user of users) {
-      const newUser = await User.create({
-        children: user.children,
-        email: user.email,
-        role: user.role,
-        displayname: user.displayname,
-        password: user.password,
-        isAdult: user.isAdult,
-        username: user.username
-      });
+    const newUsers = await User.create(users);
 
-      if (!user.password) {
-        // TODO: SignUp Routine, Like invitation
-        newUser.forgotPassword();
+    users.forEach(async u => {
+      if (!u.password) {
+        const result = await User.forgotPassword(u.username);
+        if (!result) {
+          throw new Error("User created is not in DB?");
+        }
+
+        const { email, token } = result;
+        dispatchPasswortResetLink(token, u.username, email);
       }
+    });
 
-      createdUsers.push(newUser);
-    }
-
-    req.users = createdUsers;
+    req.users = newUsers;
 
     return next();
   }),
@@ -215,50 +203,60 @@ usersRouter.patch(
   wrapAsync(async (req: PopulateRequest, res, next) => {
     const { userId } = req.params;
 
-    const user = await User.findById(userId).select(omitPassword);
-    if (!user) {
-      return res.status(404).end("User not found");
-    }
-
     const { email, role, displayname, children, isAdult } = req.body;
+
+    let user: IUser;
 
     /**
      * `email`
      */
     if (!!email && isValidEmail(email)) {
-      user.set("email", email);
+      user = await User.updateEmail(email)(userId);
+      if (!user) {
+        return res.status(404).end();
+      }
     }
 
     /**
      * `role`
      */
     if (!!role && isValidRole(role)) {
-      user.set("role", role);
+      user = await User.updateRole(role)(userId);
+      if (!user) {
+        return res.status(404).end();
+      }
     }
 
     /**
      * `displayname`
      */
     if (!!displayname && isValidDisplayname(displayname)) {
-      user.set("displayname", displayname);
+      user = await User.updateDisplayname(displayname)(userId);
+      if (!user) {
+        return res.status(404).end();
+      }
     }
 
     /**
      * `children`
      */
-    if (!!children && (await usersExist(children, Roles.STUDENT))) {
-      user.set("children", children);
+    if (!!children && (await User.exist(children, Roles.STUDENT))) {
+      user = await User.updateChildren(children)(userId);
+      if (!user) {
+        return res.status(404).end();
+      }
     }
 
     /**
      * `isAdult`
      */
 
-    if (!_.isUndefined(isAdult)) {
-      user.set("isAdult", isAdult);
+    if (!_.isUndefined(isAdult) && _.isBoolean(isAdult)) {
+      user = await User.updateIsAdult(isAdult)(userId);
+      if (!user) {
+        return res.status(404).end();
+      }
     }
-
-    await user.save();
 
     req.users = [user];
 

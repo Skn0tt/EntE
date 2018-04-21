@@ -267,12 +267,19 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
           : withChildren.push(user)
     );
 
-    const resultWithoutChildren: APIResponse = yield call(
-      api.createUser,
-      withoutChildren,
-      token
-    );
-    yield dispatchUpdates(resultWithoutChildren);
+    let resultWithoutChildren: APIResponse = {
+      entries: [],
+      slots: [],
+      users: []
+    };
+    if (withoutChildren.length !== 0) {
+      resultWithoutChildren = yield call(
+        api.createUser,
+        withoutChildren,
+        token
+      );
+      yield dispatchUpdates(resultWithoutChildren);
+    }
 
     if (withChildren.length !== 0) {
       /**
@@ -287,7 +294,7 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
        */
       const withChildrenAsIds = withChildren.map(u => ({
         ...u,
-        children: u.children.map(c => ids.get(c))
+        children: u.children.map(c => ids.get(c) || c)
       }));
 
       /**

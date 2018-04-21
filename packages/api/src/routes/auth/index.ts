@@ -10,16 +10,15 @@ import { param, validationResult, body } from "express-validator/check";
 import { isValidPassword, isValidUsername } from "ente-validator";
 
 /**
- * DB
- */
-import User from "../../models/User";
-
-/**
  * Helpers
  */
-import { dispatchPasswortResetSuccess } from "../../helpers/mail";
+import {
+  dispatchPasswortResetSuccess,
+  dispatchPasswortResetLink
+} from "../../helpers/mail";
 import validate, { check } from "../../helpers/validate";
 import wrapAsync from "../../helpers/wrapAsync";
+import { User } from "ente-db";
 
 /**
  * Auth Router
@@ -38,13 +37,15 @@ authRouter.post(
   validate,
   wrapAsync(async (req, res, next) => {
     const username: string = req.params.username;
-    const user = await User.findOne({ username });
 
-    if (!user) {
+    const result = await User.forgotPassword(username);
+    if (!result) {
       return res.status(404).end("User not found");
     }
 
-    await user.forgotPassword();
+    const { token, email } = result;
+
+    dispatchPasswortResetLink(token, username, email);
 
     return res.status(200).end();
   })
@@ -59,26 +60,16 @@ authRouter.put(
   validate,
   wrapAsync(async (req, res, next) => {
     const { token } = req.params;
-    const user = await User.findOne({ resetPasswordToken: token });
 
-    if (!user) {
+    const { newPassword } = req.body;
+    const result = await User.setPassword(token, newPassword);
+    if (!result) {
       return res.status(404).end("Token was not found.");
     }
 
-    if (+user.resetPasswordExpires < Date.now()) {
-      return res.status(403).end("Token expired.");
-    }
+    dispatchPasswortResetSuccess(result.username, result.email);
 
-    const { newPassword } = req.body;
-
-    user.password = newPassword;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-    await user.save();
-
-    dispatchPasswortResetSuccess(user.username, user.email);
-
-    return res.status(200).send("If token existed, it succeeded.");
+    return res.status(200).end();
   })
 );
 

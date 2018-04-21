@@ -9,7 +9,7 @@ export interface IAPIResponse {
   auth?: {
     displayname: string;
     role: Roles;
-    children: MongoId[];
+    children: UserId[];
   };
   users?: IUser[];
   entries?: IEntry[];
@@ -32,7 +32,7 @@ export const rolesArr = Object.keys(Roles).map(key => Roles[key]);
 export interface IUserBase {
   username: string;
   email: string;
-  children: MongoId[];
+  children: UserId[];
   role: Roles;
   isAdult: boolean;
   displayname: string;
@@ -42,16 +42,18 @@ export interface IUserCreate extends IUserBase {
   password?: string;
 }
 
+export type UserId = string;
 export interface IUser extends IUserBase {
-  _id: MongoId;
+  _id: UserId;
 }
 
 /**
  * Slot
  */
+export type SlotId = string;
 export interface ISlot extends ISlotCreate {
-  _id: MongoId;
-  student: MongoId;
+  _id: SlotId;
+  student: UserId;
   date: Date;
   signed: boolean;
 }
@@ -59,19 +61,20 @@ export interface ISlot extends ISlotCreate {
 export interface ISlotCreate {
   hour_from: number;
   hour_to: number;
-  teacher: MongoId;
+  teacher: UserId;
 }
 
 /**
  * Entry
  */
+export type EntryId = string;
 export interface IEntry {
-  _id: MongoId;
+  _id: EntryId;
   date: Date;
   dateEnd?: Date;
-  reason: string;
-  student: MongoId;
-  slots: MongoId[];
+  reason?: string;
+  student: UserId;
+  slots: SlotId[];
   forSchool: boolean;
   signedManager: boolean;
   signedParent: boolean;
@@ -83,7 +86,7 @@ export interface IEntryCreate {
   date: Date;
   dateEnd?: Date;
   reason?: string;
-  student?: MongoId;
+  student?: UserId;
   slots: ISlotCreate[];
   forSchool: boolean;
 }
@@ -96,7 +99,7 @@ export interface TokenInfo {
   displayname: string;
   role: Roles;
   exp: Date;
-  children: MongoId[];
+  children: UserId[];
 }
 export interface ICredentials {
   username: string;
@@ -107,7 +110,7 @@ export interface IAuth extends ICredentials {
   exp: Date;
   role: Roles;
   displayname: string;
-  children: MongoId[];
+  children: UserId[];
 }
 
 export interface INewPassword {

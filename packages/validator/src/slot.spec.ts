@@ -7,7 +7,7 @@ describe("isValidSlot", () => {
       isValidSlot({
         hour_from: 1,
         hour_to: 2,
-        teacher: "5ac54ae00000000000000000"
+        teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
       })
     ).to.be.true;
   });
@@ -17,7 +17,7 @@ describe("isValidSlot", () => {
       isValidSlot({
         hour_from: 1,
         hour_to: 2,
-        teacher: "5ac54ae00000000000000"
+        teacher: "2e239ff6-9f40-48e6-9cec-cae9f98"
       })
     ).to.be.false;
   });
@@ -27,7 +27,7 @@ describe("isValidSlot", () => {
       isValidSlot({
         hour_from: 2,
         hour_to: 1,
-        teacher: "5ac54ae00000000000000000"
+        teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
       })
     ).to.be.false;
   });
@@ -37,7 +37,7 @@ describe("isValidSlot", () => {
       isValidSlot({
         hour_from: -1,
         hour_to: 10,
-        teacher: "5ac54ae00000000000000000"
+        teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
       })
     ).to.be.false;
   });
@@ -47,7 +47,7 @@ describe("isValidSlot", () => {
       isValidSlot({
         hour_from: 13,
         hour_to: 0,
-        teacher: "5ac54ae00000000000000000"
+        teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
       })
     ).to.be.false;
   });

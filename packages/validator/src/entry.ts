@@ -1,7 +1,7 @@
 import { SyncValidator } from "./";
 import { isBefore } from "date-fns";
 import { IEntryCreate } from "ente-types";
-import { matches, not } from "./shared";
+import { matches, not, isLength } from "./shared";
 import { isValidSlot } from "./slot";
 import * as _ from "lodash";
 
@@ -20,5 +20,8 @@ export const isValidEntry: SyncValidator<IEntryCreate> = matches([
   v => _.isUndefined(v.dateEnd) !== (v.slots.length === 0),
   // A: dateEnd doesn't exist
   // B: dates should be at least 1 day apart
-  v => _.isUndefined(v.dateEnd) || areApart(1 * DAY)(v.date, v.dateEnd)
+  v => _.isUndefined(v.dateEnd) || areApart(1 * DAY)(v.date, v.dateEnd),
+  // A: reason doesn't exist
+  // B: reason is fewer than 300 chars
+  v => _.isUndefined(v.reason) || isLength(0, 300)(v.reason)
 ]);

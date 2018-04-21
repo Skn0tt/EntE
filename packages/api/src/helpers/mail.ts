@@ -1,11 +1,10 @@
-import { EntryModel } from "../models/Entry";
 import * as mail from "nodemailer";
 import * as sgTransport from "nodemailer-sendgrid-transport";
 import * as Handlebars from "handlebars";
-import User from "../models/User";
-import Slot, { SlotModel } from "../models/Slot";
 import * as templates from "ente-mail";
-import { Roles, MongoId } from "ente-types";
+import { Roles, MongoId, IEntry, ISlot } from "ente-types";
+import { User, Slot } from "ente-db";
+import * as _ from "lodash";
 
 const baseUrl = `https://${process.env.HOST}`;
 
@@ -28,21 +27,20 @@ const mailConfig =
 
 const transporter = mail.createTransport(mailConfig);
 
-const findParentMail = async (student: MongoId): Promise<string[]> =>
-  (await User.find({ children: student, role: Roles.PARENT }).select(
-    "email"
-  )).map(u => u.email);
-
 /**
  * ## Handlebars Templates
  */
-export const dispatchSignRequest = async (entry: EntryModel) => {
+export const dispatchSignRequest = async (entry: IEntry) => {
   try {
     const { html, subject } = templates.SignRequest(
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const recipients = await findParentMail(entry.student);
+    const recipients = await User.findParentMail(entry.student);
+    if (recipients === null) {
+      console.log(`Mail: User ${entry.student} not found.`);
+      return;
+    }
     if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;
@@ -61,13 +59,13 @@ export const dispatchSignRequest = async (entry: EntryModel) => {
   }
 };
 
-export const dispatchSignedInformation = async (entry: EntryModel) => {
+export const dispatchSignedInformation = async (entry: IEntry) => {
   try {
     const { html, subject } = templates.SignedInformation(
       `${baseUrl}/entries/${entry._id}`
     );
 
-    const recipients = await findParentMail(entry.student);
+    const recipients = await User.findParentMail(entry.student);
     if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;
@@ -88,47 +86,35 @@ export const dispatchSignedInformation = async (entry: EntryModel) => {
 
 const twoWeeksBefore: Date = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 export const dispatchWeeklySummary = async (): Promise<void> => {
-  try {
-    const teachers = await User.find({ role: Roles.TEACHER });
-    teachers.forEach(async teacher => {
-      try {
-        const slots: SlotModel[] = await Slot.find({
-          teacher: teacher._id,
-          date: { $gte: twoWeeksBefore }
-        });
+  const slots: ISlot[] = await Slot.allTwoWeeksBefore();
+  const groups = _.groupBy(slots, s => s.teacher);
 
-        const items = await Promise.all(
-          slots.map(async slot => {
-            const student = await User.findById(slot.student);
+  _.entries(groups).forEach(async ([teacherId, slots]) => {
+    const items = await Promise.all(
+      slots.map(async s => {
+        const student = await User.findById(s.student);
 
-            return {
-              displayname: student.displayname,
-              date: slot.date,
-              signed: slot.signed,
-              hour_from: slot.hour_from,
-              hour_to: slot.hour_to
-            };
-          })
-        );
+        return {
+          displayname: student.displayname,
+          date: s.date,
+          signed: s.signed,
+          hour_from: s.hour_from,
+          hour_to: s.hour_to
+        };
+      })
+    );
 
-        const email = teacher.email;
+    const { html, subject } = templates.WeeklySummary(items);
+    const { email } = await User.findById(teacherId);
 
-        const { html, subject } = templates.WeeklySummary(items);
-
-        const info = await transporter.sendMail({
-          html,
-          subject,
-          to: email,
-          from: "EntE@simonknott.de"
-        });
-        console.log("Mail: Dispatched WeeklySummary to", info.accepted);
-      } catch (error) {
-        throw error;
-      }
+    const info = await transporter.sendMail({
+      html,
+      subject,
+      to: email,
+      from: "EntE@simonknott.de"
     });
-  } catch (error) {
-    throw error;
-  }
+    console.log("Mail: Dispatched WeeklySummary to", info.accepted);
+  });
 };
 
 export const dispatchPasswortResetLink = async (

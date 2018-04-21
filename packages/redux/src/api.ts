@@ -77,7 +77,7 @@ export const getChildren = async (token: string): Promise<APIResponse> => {
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users?filter=needed`, token);
+  const data = await get(`${config.baseUrl}/users`, token);
   return transform(data);
 };
 
@@ -131,10 +131,10 @@ export const createEntry = async (
 };
 
 export const createUser = async (
-  user: IUserCreate[],
+  users: IUserCreate[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${config.baseUrl}/users/`, token, user);
+  const response = await post(`${config.baseUrl}/users/`, token, users);
   return transform(response);
 };
 

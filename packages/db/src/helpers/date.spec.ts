@@ -1,5 +1,5 @@
 import * as mockdate from "mockdate";
-import { lastAugustFirst } from "./queryParams";
+import { lastAugustFirst } from "./date";
 
 describe("lastAugustFirst", () => {
   describe("when after August", () => {
