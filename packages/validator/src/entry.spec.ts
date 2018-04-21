@@ -54,7 +54,7 @@ describe("isValidEntry", () => {
             {
               hour_from: 1,
               hour_to: 2,
-              teacher: "5ac54ae00000000000000000"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ]
         })
@@ -64,12 +64,12 @@ describe("isValidEntry", () => {
     it("when passing slots", () => {
       expect(
         isValidEntry({
-          date: new Date("2018-04-06T08:13:47.821Z"),
+          date: new Date(now),
           slots: [
             {
               hour_from: 3,
               hour_to: 4,
-              teacher: "5ac7343c0655d208729aaf83"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ],
           forSchool: false
@@ -111,7 +111,7 @@ describe("isValidEntry", () => {
             {
               hour_from: 1,
               hour_to: 2,
-              teacher: "5ac54ae00000000000000000"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ]
         })
@@ -141,14 +141,14 @@ describe("isValidEntry", () => {
             {
               hour_from: 2,
               hour_to: 5,
-              teacher: "5ac54ae00000000000000000"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ]
         })
       ).to.be.false;
     });
 
-    it("Slot invalid mongoid", () => {
+    it("Slot invalid uuid", () => {
       expect(
         isValidEntry({
           date: new Date(now),
@@ -157,7 +157,7 @@ describe("isValidEntry", () => {
             {
               hour_from: 2,
               hour_to: 5,
-              teacher: "5ac54ae"
+              teacher: "2e239ff6-9f40-48e6-9cec"
             }
           ]
         })
@@ -173,7 +173,7 @@ describe("isValidEntry", () => {
             {
               hour_from: 5,
               hour_to: 2,
-              teacher: "5ac54ae"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ]
         })
@@ -190,7 +190,7 @@ describe("isValidEntry", () => {
             {
               hour_from: 5,
               hour_to: 2,
-              teacher: "5ac54ae"
+              teacher: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
           ]
         })

@@ -95,10 +95,10 @@ describe("isValidUsername", () => {
 
 describe("isValidUuid", () => {
   it("returns true when passing valid id", () => {
-    expect(isValidUuid("5ac54ae00000000000000000")).to.be.true;
+    expect(isValidUuid("2e239ff6-9f40-48e6-9cec-cae9f983ee50")).to.be.true;
   });
   it("returns false when passing invalid id", () => {
-    expect(isValidUuid("5ac54ae0")).to.be.false;
+    expect(isValidUuid("2e239ff6-9f40-48e6-9cec-cae9f983ee")).to.be.false;
   });
 });
 
@@ -145,7 +145,7 @@ describe("isValidUser", () => {
     it("with children", () => {
       expect(
         isValidUser({
-          children: ["5ac54ae00000000000000000"],
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
           displayname: "Herr Mann",
@@ -174,7 +174,7 @@ describe("isValidUser", () => {
     it("invalid mongoid", () => {
       expect(
         isValidUser({
-          children: ["54ae00000000000000000"],
+          children: ["2e239ff6-9f40-48e6-9cec"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
           displayname: "Herr Mann",
@@ -187,7 +187,7 @@ describe("isValidUser", () => {
     it("student with children", () => {
       expect(
         isValidUser({
-          children: ["5ac54ae00000000000000000"],
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
