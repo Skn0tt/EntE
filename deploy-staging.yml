@@ -11,56 +11,70 @@
         pull: yes
         definition:
           version: '2'
+
           services:
-            mongodb:
-              image: mongo:latest
-              volumes:
-                - "/data/db"
+
+            mysql:
+              image: mysql
+              environment:
+                - MYSQL_ROOT_PASSWORD=root
+                - MYSQL_DATABASE=ente
+                - MYSQL_USER=ente
+                - MYSQL_PASSWORD=root
+              
             api:
-              image: registry.gitlab.com/skn0tt/ente/api:master
+              image: registry.gitlab.com/skn0tt/ente/api
               restart: always
               depends_on:
-                - mongodb
+                - mysql
                 - redis
+                - rotator
               environment:
                 - HOST
+                - VIRTUAL_PORT=3000
                 - VIRTUAL_HOST=${HOST}
                 - VIRTUAL_PATH=/api/
-                - NODE_ENV=production
+                - NODE_ENV="production"
                 - LETSENCRYPT_HOST=${HOST}
-                - LETSENCRYPT_EMAIL
+                - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+            
+            redis:
+              image: redis
+
+            rotator:
+              image: registry.gitlab.com/skn0tt/ente/rotator
+              depends_on:
+                - redis
             ui:
-              image: registry.gitlab.com/skn0tt/ente/ui:master
+              image: registry.gitlab.com/skn0tt/ente/ui
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
                 - VIRTUAL_PATH=/
                 - LETSENCRYPT_HOST=${HOST}
-                - LETSENCRYPT_EMAIL
-            redis:
-              image: redis
-            rotator:
-              image: registry.gitlab.com/skn0tt/ente/rotator:master
-              depends_on:
-                - redis
-            proxy:
-              image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
+                - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+            nginx-proxy:
+              build: ./packages/nginx-proxy
+              image: registry.gitlab.com/skn0tt/ente/nginx-proxy
               ports:
                 - 80:80
                 - 443:443
                 - 8080:8080
               restart: always
+              depends_on:
+                - api
+                - ui
               volumes:
                 - "/var/run/docker.sock:/tmp/docker.sock:ro"
+              labels:
+                - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+              volumes:
                 - "/etc/nginx/certs"
                 - "/etc/nginx/vhost.d"
                 - "/usr/share/nginx/html"
-              labels:
-                - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-            letsencrypt:
+            letsencrypt-nginx-proxy-companion:
               image: jrcs/letsencrypt-nginx-proxy-companion
               volumes_from:
-                - proxy
+                - nginx-proxy
               volumes:
                 - "/var/run/docker.sock:/var/run/docker.sock:ro"
-              
