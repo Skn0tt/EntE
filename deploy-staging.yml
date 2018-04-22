@@ -45,6 +45,7 @@
               image: registry.gitlab.com/skn0tt/ente/rotator
               depends_on:
                 - redis
+              
             ui:
               image: registry.gitlab.com/skn0tt/ente/ui
               restart: always
@@ -53,8 +54,8 @@
                 - VIRTUAL_PATH=/
                 - LETSENCRYPT_HOST=${HOST}
                 - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+              
             nginx-proxy:
-              build: ./packages/nginx-proxy
               image: registry.gitlab.com/skn0tt/ente/nginx-proxy
               ports:
                 - 80:80
@@ -72,6 +73,7 @@
                 - "/etc/nginx/certs"
                 - "/etc/nginx/vhost.d"
                 - "/usr/share/nginx/html"
+              
             letsencrypt-nginx-proxy-companion:
               image: jrcs/letsencrypt-nginx-proxy-companion
               volumes_from:
