@@ -3,7 +3,7 @@ version: '2'
 services:
 
   mysql:
-    image: mysql
+    image: mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=ente
