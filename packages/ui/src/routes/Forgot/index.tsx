@@ -14,6 +14,7 @@ import {
 } from "material-ui";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import { setPasswordRequest } from "ente-redux";
+import { isValidPassword } from "ente-validator";
 
 interface RouteProps {
   token: string;
@@ -48,7 +49,7 @@ const Forgot = connect(undefined, mapDispatchToProps)(
 
         inputValid = (): boolean =>
           this.passwordValid() && this.verificationValid();
-        passwordValid = (): boolean => true;
+        passwordValid = (): boolean => isValidPassword(this.state.password);
         verificationValid = (): boolean =>
           this.state.password === this.state.verficication;
         handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
