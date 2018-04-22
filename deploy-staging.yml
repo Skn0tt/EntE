@@ -23,7 +23,7 @@
                 - MYSQL_PASSWORD=root
               
             api:
-              image: registry.gitlab.com/skn0tt/ente/api
+              image: registry.gitlab.com/skn0tt/ente/api:master
               restart: always
               depends_on:
                 - mysql
@@ -42,12 +42,12 @@
               image: redis
 
             rotator:
-              image: registry.gitlab.com/skn0tt/ente/rotator
+              image: registry.gitlab.com/skn0tt/ente/rotator:master
               depends_on:
                 - redis
               
             ui:
-              image: registry.gitlab.com/skn0tt/ente/ui
+              image: registry.gitlab.com/skn0tt/ente/ui:master
               restart: always
               environment:
                 - VIRTUAL_HOST=${HOST}
@@ -56,7 +56,7 @@
                 - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
               
             nginx-proxy:
-              image: registry.gitlab.com/skn0tt/ente/nginx-proxy
+              image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
               ports:
                 - 80:80
                 - 443:443
