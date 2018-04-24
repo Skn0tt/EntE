@@ -1,0 +1,10 @@
+*.pdf
+*.png
+*.jpg
+*.svg
+*.epub
+
+!ContainerVsVM.jpg
+!Entschuldigungszettel.png
+!Screenshot-entries.png
+!Logo.png

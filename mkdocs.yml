@@ -1,0 +1,6 @@
+site_name: EntE
+repo_url: https://gitlab.com/skn0tt/EntE/
+repo_name: Gitlab
+use_directory_urls: false
+theme:
+  name: 'material'
