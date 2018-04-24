@@ -13,7 +13,6 @@ stages:
   - test
   - build
   - release
-  - deploy
 
 #
 # Test
@@ -121,6 +120,8 @@ release:pages:
   dependencies:
     - test:unit
     - generate:docs
+  before_script:
+    - mkdir public/coverage public/docs
   script:
     - mv coverage/lcov-report/ public/coverage
     - mv site/ public/docs
@@ -131,11 +132,8 @@ release:pages:
   only:
     - master
 
-#
-# Deploy
-#
 deploy:staging:
-  stage: deploy
+  stage: release
   image: williamyeh/ansible:debian9
   only:
     - master
