@@ -121,6 +121,7 @@ release:pages:
     - test:unit
     - generate:docs
   before_script:
+    - mkdir public
     - mkdir public/coverage public/docs
   script:
     - mv coverage/lcov-report/ public/coverage
