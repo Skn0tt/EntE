@@ -115,7 +115,7 @@ generate:docs:
 # Release
 #
 # Upload to Pages
-release:pages:
+pages:
   stage: release
   dependencies:
     - test:unit
