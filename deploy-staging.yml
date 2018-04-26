@@ -4,6 +4,11 @@
   environment:
     HOST: bull.simonknott.de
     LETSENCRYPT_EMAIL: simoknott@gmail.com
+    SMTP_HOST: smtp.sendgrid.net
+    SMTP_USER: apikey
+    SMTP_PASSWORD: U0cuR1lsSzQ0UVVTdHFhVTBTam9JdnBUQS5ZMWJhdXdtUHdHc3pMV0FTLUU5b0tB
+MVJmYzFQTXhKeFF0MG9MbTkzTndBCg==
+    SMTP_PORT: 587
   tasks:
     - name: Deploy
       docker_service:
