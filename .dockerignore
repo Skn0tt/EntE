@@ -5,3 +5,7 @@ packages/**/build
 packages/**/.cache
 ./node_modules
 ./doc
+site
+assets
+paper
+coverage

@@ -126,6 +126,7 @@ pages:
   script:
     - mv coverage/lcov-report/ public/coverage
     - mv site/ public/docs
+    - mv docs/index.html public/index.html
   artifacts:
     paths:
       - public
