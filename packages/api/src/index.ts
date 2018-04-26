@@ -12,6 +12,7 @@ import * as Raven from "raven";
 // Setup
 import { checkEmail } from "./helpers/mail";
 import setupDB from "ente-db";
+import config from "./helpers/config";
 
 // Routines
 import cron from "./routines/cron";
@@ -25,17 +26,19 @@ import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
 
-const production = process.env.NODE_ENV === "production";
+config.createFromEnv();
+const conf = config.getConfig();
+
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", 3000);
 app.disable("etag");
 
 // Raven
 const DSN =
   "https://056357657b5f4baf94ca072cda3ba9f8:5eb4639c0dda49f695bda81a23bfcbf0@sentry.io/264890";
 
-if (production) {
+if (conf.production) {
   Raven.config(DSN).install();
   app.use(Raven.requestHandler());
 }
@@ -45,7 +48,7 @@ app.use(express.json());
 app.use(validator());
 
 // Logger
-if (production) {
+if (conf.production) {
   app.use(morgan("common"));
 } else {
   app.use(
@@ -69,7 +72,7 @@ setupDB({ host: "mysql", password: "root", username: "ente", database: "ente" })
   .catch(error => console.error("Couldn't connect to DB!", error));
 
 // Security Measures
-if (production) {
+if (conf.production) {
   // Helmet
   app.use(helmet());
 }
@@ -93,7 +96,7 @@ app.use("/token", token);
 app.use("/entries", entries);
 app.use("/slots", slots);
 app.use("/users", users);
-if (!production) {
+if (!conf.production) {
   app.use("/dev", dev);
 }
 
@@ -108,7 +111,7 @@ app.use((err, req, res, next) => {
 });
 
 // Cron Jobs
-if (production) {
+if (conf.production) {
   cron();
 }
 

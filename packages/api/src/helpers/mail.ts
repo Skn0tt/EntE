@@ -5,27 +5,20 @@ import * as templates from "ente-mail";
 import { Roles, MongoId, IEntry, ISlot } from "ente-types";
 import { User, Slot } from "ente-db";
 import * as _ from "lodash";
+import { getConfig } from "./config";
 
-const baseUrl = `https://${process.env.HOST}`;
+const config = getConfig();
 
-const mailConfig =
-  process.env.NODE_ENV === "production"
-    ? sgTransport({
-        auth: {
-          api_key:
-            "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"
-        }
-      })
-    : {
-        host: "smtp.ethereal.email",
-        port: 587,
-        auth: {
-          user: "louf4yh5lnkyg2h3@ethereal.email",
-          pass: "mWgCFb9JcJxdeKa6RE"
-        }
-      };
+const transporter = mail.createTransport({
+  host: config.smtp.host,
+  port: config.smtp.port,
+  auth: {
+    user: config.smtp.user,
+    pass: config.smtp.password
+  }
+});
 
-const transporter = mail.createTransport(mailConfig);
+const baseUrl = `https://${config.host}`;
 
 /**
  * ## Handlebars Templates

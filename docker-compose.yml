@@ -19,6 +19,10 @@ services:
       - rotator
     environment:
       - HOST
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
