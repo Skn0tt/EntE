@@ -7,6 +7,11 @@
     "paths": {
       "ente-*": ["./*/src"]
     },
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
   }
 }
