@@ -6,7 +6,7 @@
     LETSENCRYPT_EMAIL: simoknott@gmail.com
     SMTP_HOST: smtp.sendgrid.net
     SMTP_USER: apikey
-    SMTP_PASSWORD: U0cuR1lsSzQ0UVVTdHFhVTBTam9JdnBUQS5ZMWJhdXdtUHdHc3pMV0FTLUU5b0tBMVJmYzFQTXhKeFF0MG9MbTkzTndBCg==
+    SMTP_PASSWORD: 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
     SMTP_PORT: 587
   tasks:
     - name: Deploy
