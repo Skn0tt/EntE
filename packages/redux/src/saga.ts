@@ -86,7 +86,7 @@ function* dispatchUpdates(data: APIResponse) {
 
 function* getTokenSaga(action: Action<ICredentials>) {
   try {
-    const tokenInfo: TokenInfo = yield call(api.getToken, action.payload);
+    const tokenInfo: TokenInfo = yield call(api.getToken, action.payload!);
 
     yield put(getTokenSuccess(tokenInfo));
 
@@ -144,7 +144,7 @@ function* getNeededUsersSaga(action: Action<void>) {
 function* getEntrySaga(action: Action<MongoId>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.getEntry, action.payload, token);
+    const result = yield call(api.getEntry, action.payload!, token);
 
     yield put(getEntrySuccess());
     yield dispatchUpdates(result);
@@ -183,7 +183,7 @@ function* getSlotsSaga() {
 function* getUserSaga(action: Action<MongoId>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.getUser, action.payload, token);
+    const result = yield call(api.getUser, action.payload!, token);
 
     yield put(getUserSuccess());
     yield dispatchUpdates(result);
@@ -222,7 +222,7 @@ function* getTeachersSaga() {
 function* createEntrySaga(action: Action<IEntryCreate>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.createEntry, action.payload, token);
+    const result = yield call(api.createEntry, action.payload!, token);
 
     yield put(createEntrySuccess());
     yield dispatchUpdates(result);
@@ -319,7 +319,7 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
 function* updateUserSaga(action: Action<Partial<IUser>>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.updateUser, action.payload, token);
+    const result = yield call(api.updateUser, action.payload!, token);
 
     yield put(updateUserSuccess());
     yield dispatchUpdates(result);
@@ -331,7 +331,7 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
 function* signEntrySaga(action: Action<MongoId>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.signEntry, action.payload, token);
+    const result = yield call(api.signEntry, action.payload!, token);
 
     yield put(signEntrySuccess());
     yield dispatchUpdates(result);
@@ -344,7 +344,7 @@ function* signEntrySaga(action: Action<MongoId>) {
 function* unsignEntrySaga(action: Action<MongoId>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.unsignEntry, action.payload, token);
+    const result = yield call(api.unsignEntry, action.payload!, token);
 
     yield put(unsignEntrySuccess());
     yield dispatchUpdates(result);
@@ -356,7 +356,7 @@ function* unsignEntrySaga(action: Action<MongoId>) {
 
 function* resetPasswordSaga(action: Action<string>) {
   try {
-    const result = yield call(api.resetPassword, action.payload);
+    const result = yield call(api.resetPassword, action.payload!);
 
     yield put(addMessage(lang().message.resetPassword.success));
     yield put(resetPasswordSuccess(result));

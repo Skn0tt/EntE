@@ -1,5 +1,4 @@
 import * as mail from "nodemailer";
-import * as sgTransport from "nodemailer-sendgrid-transport";
 import * as Handlebars from "handlebars";
 import * as templates from "ente-mail";
 import { Roles, MongoId, IEntry, ISlot } from "ente-types";
@@ -59,6 +58,10 @@ export const dispatchSignedInformation = async (entry: IEntry) => {
     );
 
     const recipients = await User.findParentMail(entry.student);
+    if (!recipients) {
+      console.log("User not found");
+      return;
+    }
     if (recipients.length === 0) {
       console.log("Mail: No Recipients defined");
       return;
@@ -86,6 +89,9 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
     const items = await Promise.all(
       slots.map(async s => {
         const student = await User.findById(s.student);
+        if (!student) {
+          throw new Error("User not found");
+        }
 
         return {
           displayname: student.displayname,
@@ -98,12 +104,15 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
     );
 
     const { html, subject } = templates.WeeklySummary(items);
-    const { email } = await User.findById(teacherId);
+    const teacher = await User.findById(teacherId);
+    if (!teacher) {
+      throw new Error(`Teacher ${teacherId} not found`);
+    }
 
     const info = await transporter.sendMail({
       html,
       subject,
-      to: email,
+      to: teacher.email,
       from: "EntE@simonknott.de"
     });
     console.log("Mail: Dispatched WeeklySummary to", info.accepted);

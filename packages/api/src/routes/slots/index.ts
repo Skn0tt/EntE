@@ -37,7 +37,7 @@ const yearParams = { date: { $gte: oneYearBefore } };
 slotsRouter.get(
   "/",
   rbac({ slots_read: true }),
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     switch (req.user.role) {
       /**
        * Teachers have access to all of their slots
@@ -83,7 +83,7 @@ slotsRouter.get(
   rbac({ slots_read: true }),
   [param("slotId").isUUID()],
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const { slotId } = req.params;
 
     const slot = await Slot.findById(slotId);

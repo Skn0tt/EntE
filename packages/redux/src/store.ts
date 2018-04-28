@@ -20,7 +20,9 @@ export const createStore = () => {
 
   store = reduxCreateStore(
     reducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware, ...config.middlewares))
+    composeEnhancers(
+      applyMiddleware(sagaMiddleware, ...(config.middlewares || []))
+    )
   );
 
   sagaMiddleware.run(saga);

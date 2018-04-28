@@ -44,7 +44,7 @@ const entriesRouter = Router();
 entriesRouter.get(
   "/",
   rbac({ entries_read: true }),
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     switch (req.user.role as Roles) {
       /**
        * Admin: Return all Entries in this year
@@ -86,7 +86,7 @@ entriesRouter.get(
   rbac({ entries_read: true }),
   [param("entryId").isUUID()],
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const { entryId } = req.params;
     const entry = await Entry.findById(entryId);
 
@@ -107,7 +107,7 @@ entriesRouter.get(
 entriesRouter.post(
   "/",
   rbac({ entries_create: true }),
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const entry: IEntryCreate = {
       ...req.body,
       date: new Date(req.body.date),
@@ -180,7 +180,7 @@ entriesRouter.patch(
   }),
   [param("entryId").isUUID()],
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const entryId = req.params.entryId;
     const { forSchool } = req.body;
 
@@ -206,7 +206,7 @@ entriesRouter.put(
   rbac({ entries_sign: true }),
   [param("entryId").isUUID(), body("value").isBoolean()],
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const entryId: MongoId = req.params.entryId;
     const value: boolean = req.body.value;
 
@@ -218,7 +218,7 @@ entriesRouter.put(
     /**
      * Sign
      */
-    let entry: IEntry;
+    let entry: IEntry | null = null;
     switch (req.user.role) {
       case Roles.MANAGER:
         entry = await Entry.setSignedManager(value)(checkIsParent)(entryId);
@@ -243,7 +243,10 @@ entriesRouter.put(
       mail.dispatchSignedInformation(entry);
     }
 
-    req.entries = [entry];
+    if (!!entry) {
+      req.entries = [entry];
+    }
+
     return next();
   }),
   populate

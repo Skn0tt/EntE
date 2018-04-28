@@ -44,7 +44,7 @@ const usersRouter = Router();
 usersRouter.get(
   "/",
   rbac({ users_read: true }),
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     switch (req.user.role as Roles) {
       /**
        * Admin can see all users
@@ -89,7 +89,7 @@ usersRouter.get(
   rbac({ users_read: true }),
   [param("userId").isUUID()],
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const { userId } = req.params;
 
     const user = await User.findById(userId);
@@ -169,7 +169,7 @@ usersRouter.post(
       msg: "One of the children doesn't exist."
     }
   ]),
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const users: IUserCreate[] = req.body;
 
     const newUsers = await User.create(users);
@@ -200,12 +200,12 @@ usersRouter.patch(
   "/:userId",
   rbac({ users_write: true }),
   validate,
-  wrapAsync(async (req: PopulateRequest, res, next) => {
+  wrapAsync(async (req, res, next) => {
     const { userId } = req.params;
 
     const { email, role, displayname, children, isAdult } = req.body;
 
-    let user: IUser;
+    let user: IUser | null = null;
 
     /**
      * `email`
@@ -258,7 +258,9 @@ usersRouter.patch(
       }
     }
 
-    req.users = [user];
+    if (!!user) {
+      req.users = [user];
+    }
 
     return next();
   }),

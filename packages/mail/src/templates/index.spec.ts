@@ -5,7 +5,7 @@ describe("ente-mail", () => {
   it("exports", () => {
     expect(index).to.be.an("object");
     for (const key in index) {
-      expect(index[key]).to.be.a("function");
+      expect((index as any)[key]).to.be.a("function");
     }
   });
 });
