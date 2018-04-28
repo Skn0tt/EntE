@@ -16,7 +16,7 @@ export const createFromEnv = () => {
   const env: Config = {
     host: process.env.HOST,
     production: process.env.NODE_ENV === "production",
-    DSN: process.env.SENTRY_DSN,
+    DSN: process.env.SENTRY_DSN_API,
     smtp: {
       host: process.env.SMTP_HOST,
       port: +process.env.SMTP_PORT,

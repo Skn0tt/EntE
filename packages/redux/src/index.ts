@@ -6,18 +6,18 @@ export * from "./actions";
 export * from "./types";
 export * from "./constants";
 
-type Config = {
+export type ReduxConfig = {
   baseUrl: string;
   middlewares?: Middleware[];
   onSagaError?: (err: Error) => void;
 };
 
-export let config: Config = {
+export let config: ReduxConfig = {
   baseUrl: "",
   middlewares: []
 };
 
-const setup = (conf: Config) => {
+const setup = (conf: ReduxConfig) => {
   config = conf;
 
   return createStore();

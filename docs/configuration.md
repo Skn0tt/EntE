@@ -8,4 +8,5 @@ _EntE_ can is configured via environment variables.
 | `SMTP_PORT`         | email server port                               | 587                | true     |
 | `SMTP_USER`         | email server login username                     | ente@simonknott.de | true     |
 | `SMTP_PASSWORD`     | email server login password                     | myPassword         | true     |
-| `SENTRY_DSN`        | Sentry token for error logging                  | KLSJANM            | false    |
+| `SENTRY_API_DSN`    | Sentry token for error logging on backend       | KLSJANM            | false    |
+| `SENTRY_UI_DSN`     | Sentry token for error logging on UI            | KLSJANM            | false    |

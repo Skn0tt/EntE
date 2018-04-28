@@ -15,36 +15,39 @@ import setupRedux, {
   AppState,
   getUsername,
   AuthState,
-  GET_TOKEN_REQUEST
+  GET_TOKEN_REQUEST,
+  ReduxConfig
 } from "ente-redux";
 import { MuiThemeProvider } from "material-ui";
 import { Provider } from "react-redux";
 import Raven from "raven-js";
 import { Action } from "redux-actions";
 
-Raven.config(
-  "https://c0120dd885894ce6a7f3f31917afa3be@sentry.io/264876"
-).install();
+const config: ReduxConfig = {
+  baseUrl: `${location.protocol}//${location.hostname}/api`
+};
 
-const ravenMiddleWare = createRavenMiddleware(Raven, {
-  actionTransformer: (action: Action<AuthState | {}>) => {
-    if (action.type === GET_TOKEN_REQUEST) {
-      return {
-        payload: "deleted",
-        ...action
-      };
-    }
-    return action;
-  },
-  stateTransformer: (state: AppState) => state.get("auth").delete("password"),
-  getUserContext: (state: AppState) => ({ username: getUsername(state) })
-});
+if (!!window.__env && !!window.__env.SENTRY_DSN_API) {
+  Raven.config(window.__env.SENTRY_DSN_API).install();
 
-const store = setupRedux({
-  baseUrl: `${location.protocol}//${location.hostname}/api`,
-  middlewares: [ravenMiddleWare],
-  onSagaError: Raven.captureException
-});
+  const ravenMiddleWare = createRavenMiddleware(Raven, {
+    actionTransformer: (action: Action<AuthState | {}>) => {
+      if (action.type === GET_TOKEN_REQUEST) {
+        return {
+          ...action,
+          payload: "deleted"
+        };
+      }
+      return action;
+    },
+    getUserContext: (state: AppState) => ({ username: getUsername(state) })
+  });
+
+  (config.middlewares = [ravenMiddleWare]),
+    (config.onSagaError = Raven.captureException);
+}
+
+const store = setupRedux(config);
 
 const Index = () => (
   <div>
