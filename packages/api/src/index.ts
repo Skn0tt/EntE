@@ -26,7 +26,6 @@ import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
 
-config.createFromEnv();
 const conf = config.getConfig();
 
 const app = express();
@@ -34,11 +33,9 @@ const app = express();
 app.set("port", 3000);
 app.disable("etag");
 
-// Raven
-const DSN =
-  "https://056357657b5f4baf94ca072cda3ba9f8:5eb4639c0dda49f695bda81a23bfcbf0@sentry.io/264890";
+const DSN = conf.DSN;
 
-if (conf.production) {
+if (!!DSN) {
   Raven.config(DSN).install();
   app.use(Raven.requestHandler());
 }
@@ -101,7 +98,9 @@ if (!conf.production) {
 }
 
 // Error Handling
-app.use(Raven.errorHandler());
+if (!!DSN) {
+  app.use(Raven.errorHandler());
+}
 app.use((err, req, res, next) => {
   res.status(500).json({
     error: err.message,

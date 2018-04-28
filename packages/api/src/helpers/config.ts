@@ -1,6 +1,7 @@
 interface Config {
   production: boolean;
   host: string;
+  DSN?: string;
   smtp: {
     host: string;
     port: number;
@@ -15,6 +16,7 @@ export const createFromEnv = () => {
   const env: Config = {
     host: process.env.HOST,
     production: process.env.NODE_ENV === "production",
+    DSN: process.env.SENTRY_DSN,
     smtp: {
       host: process.env.SMTP_HOST,
       port: +process.env.SMTP_PORT,
@@ -33,7 +35,4 @@ export const getConfig = () => {
   return config;
 };
 
-export default {
-  createFromEnv,
-  getConfig
-};
+export default { getConfig };
