@@ -43,8 +43,8 @@ if (!!window.__env && !!window.__env.SENTRY_DSN_API) {
     getUserContext: (state: AppState) => ({ username: getUsername(state) })
   });
 
-  (config.middlewares = [ravenMiddleWare]),
-    (config.onSagaError = Raven.captureException);
+  config.middlewares = [ravenMiddleWare];
+  config.onSagaError = Raven.captureException;
 }
 
 const store = setupRedux(config);
