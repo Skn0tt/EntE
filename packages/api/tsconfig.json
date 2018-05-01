@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "lib": ["es2016.array.include"]
+    "outDir": "dist"
   }
 }

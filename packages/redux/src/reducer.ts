@@ -62,7 +62,7 @@ import {
 } from "./constants";
 import { ActionType } from "redux-saga/effects";
 import { Map, List } from "immutable";
-import { TokenInfo, MongoId } from "ente-types";
+import { TokenInfo, UserId, SlotId, EntryId } from "ente-types";
 
 const asyncReducers = (request: string, error: string, success: string) => ({
   [request]: (state: AppState, action: Action<void>) =>
@@ -192,21 +192,21 @@ const reducer = handleActions(
       state
         .update("users", users =>
           users.merge(
-            Map<MongoId, User>(
+            Map<UserId, User>(
               action.payload!.users.map(user => [user.get("_id"), user])
             )
           )
         )
         .update("slots", slots =>
           slots.merge(
-            Map<MongoId, Slot>(
+            Map<SlotId, Slot>(
               action.payload!.slots.map(slot => [slot.get("_id"), slot])
             )
           )
         )
         .update("entries", entries =>
           entries.merge(
-            Map<MongoId, Entry>(
+            Map<EntryId, Entry>(
               action.payload!.entries.map(entry => [entry.get("_id"), entry])
             )
           )

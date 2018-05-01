@@ -6,7 +6,7 @@ import { Router } from "express";
 /**
  * EntE
  */
-import { MongoId, Roles, JWT_PAYLOAD } from "ente-types";
+import { UserId, Roles, JWT_PAYLOAD } from "ente-types";
 
 /**
  * Helpers

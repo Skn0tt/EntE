@@ -19,7 +19,7 @@ describe("Users", () => {
   const getUsers = jest.fn();
   const comp = shallow(
     <Users
-      {...getMockRouterProps()}
+      {...getMockRouterProps({})}
       classes={{}}
       users={users}
       getUsers={getUsers}

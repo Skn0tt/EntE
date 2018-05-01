@@ -68,7 +68,8 @@ import {
   ICredentials,
   TokenInfo,
   INewPassword,
-  MongoId
+  EntryId,
+  UserId
 } from "ente-types";
 
 export const createEntryRequest = createAction<IEntryCreate>(
@@ -89,16 +90,16 @@ export const createUsersRequest = createAction<
 export const createUsersSuccess = createAction(CREATE_USERS_SUCCESS);
 export const createUsersError = createAction<Error>(CREATE_USERS_ERROR);
 
-export const signEntryRequest = createAction<MongoId>(SIGN_ENTRY_REQUEST);
+export const signEntryRequest = createAction<EntryId>(SIGN_ENTRY_REQUEST);
 export const signEntrySuccess = createAction(SIGN_ENTRY_SUCCESS);
 export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
 
-export const unsignEntryRequest = createAction<MongoId>(UNSIGN_ENTRY_REQUEST);
+export const unsignEntryRequest = createAction<EntryId>(UNSIGN_ENTRY_REQUEST);
 export const unsignEntrySuccess = createAction(UNSIGN_ENTRY_SUCCESS);
 export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
 
 export type PatchForSchoolPayload = {
-  id: MongoId;
+  id: EntryId;
   forSchool: boolean;
 };
 export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
@@ -117,11 +118,11 @@ export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
 export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
 export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
 
-export const getEntryRequest = createAction<MongoId>(GET_ENTRY_REQUEST);
+export const getEntryRequest = createAction<EntryId>(GET_ENTRY_REQUEST);
 export const getEntrySuccess = createAction(GET_ENTRY_SUCCESS);
 export const getEntryError = createAction<Error>(GET_ENTRY_ERROR);
 
-export const getUserRequest = createAction<MongoId>(GET_USER_REQUEST);
+export const getUserRequest = createAction<UserId>(GET_USER_REQUEST);
 export const getUserSuccess = createAction(GET_USER_SUCCESS);
 export const getUserError = createAction<Error>(GET_USER_ERROR);
 

@@ -1,7 +1,7 @@
 import * as mail from "nodemailer";
 import * as Handlebars from "handlebars";
 import * as templates from "ente-mail";
-import { Roles, MongoId, IEntry, ISlot } from "ente-types";
+import { Roles, IEntry, ISlot } from "ente-types";
 import { User, Slot } from "ente-db";
 import * as _ from "lodash";
 import { getConfig } from "./config";

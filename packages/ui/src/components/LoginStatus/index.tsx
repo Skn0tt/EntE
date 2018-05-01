@@ -22,7 +22,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 interface DispatchProps {
-  logout();
+  logout(): void;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
   logout: () => dispatch(logout())

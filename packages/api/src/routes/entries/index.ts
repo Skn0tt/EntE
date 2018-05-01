@@ -13,7 +13,7 @@ import { body, validationResult, param } from "express-validator/check";
 /**
  * EntE
  */
-import { MongoId, Roles, IEntryCreate, IEntry } from "ente-types";
+import { Roles, IEntryCreate, IEntry, EntryId } from "ente-types";
 
 /**
  * Helpers
@@ -207,7 +207,7 @@ entriesRouter.put(
   [param("entryId").isUUID(), body("value").isBoolean()],
   validate,
   wrapAsync(async (req, res, next) => {
-    const entryId: MongoId = req.params.entryId;
+    const entryId: EntryId = req.params.entryId;
     const value: boolean = req.body.value;
 
     /**

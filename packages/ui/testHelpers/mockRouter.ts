@@ -1,7 +1,7 @@
 import { RouteComponentProps } from "react-router";
 import { Location, UnregisterCallback } from "history";
 
-export function getMockRouterProps<P>(data?: P) {
+export function getMockRouterProps<P>(data: P) {
   const location: Location = {
     hash: "",
     key: "",
@@ -27,9 +27,9 @@ export function getMockRouterProps<P>(data?: P) {
       go: num => {},
       goBack: () => {},
       goForward: () => {},
-      block: t => null,
+      block: t => null as any,
       createHref: t => "",
-      listen: t => null
+      listen: t => null as any
     },
     staticContext: {}
   };

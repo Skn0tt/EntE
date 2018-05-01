@@ -8,8 +8,8 @@ import {
   IconButton
 } from "material-ui";
 import { Delete as DeleteIcon } from "material-ui-icons";
-import { connect } from "react-redux";
-import { MongoId, ISlotCreate } from "ente-types";
+import { connect, MapStateToPropsParam } from "react-redux";
+import { ISlotCreate, UserId } from "ente-types";
 import { AppState, User, getUser } from "ente-redux";
 
 interface OwnProps {
@@ -17,10 +17,14 @@ interface OwnProps {
   delete(): void;
 }
 interface StateProps {
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
 }
-const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => getUser(id)(state)
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
+  getUser: id => getUser(id)(state)
 });
 
 type Props = OwnProps & StateProps & WithStyles;

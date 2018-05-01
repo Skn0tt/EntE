@@ -177,7 +177,7 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -1217,7 +1217,7 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,
@@ -2299,7 +2299,7 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -3339,7 +3339,7 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,

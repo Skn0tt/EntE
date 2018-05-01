@@ -5,7 +5,7 @@ import { Grid, Typography, Switch } from "material-ui";
  * # Component Types
  */
 interface OwnProps {
-  onChange(b: boolean);
+  onChange(b: boolean): void;
   value: boolean;
   title: string;
 }

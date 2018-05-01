@@ -20,7 +20,7 @@ import { Route, RouteComponentProps, withRouter } from "react-router";
 import Button from "material-ui/Button/Button";
 import CreateEntry from "./components/CreateEntry";
 import Table from "../../components/Table";
-import { MongoId } from "ente-types";
+import { UserId } from "ente-types";
 
 /**
  * # Component Types
@@ -28,12 +28,12 @@ import { MongoId } from "ente-types";
 interface StateProps {
   entries: Entry[];
   canCreateEntries: boolean;
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
 }
 const mapStateToProps = (state: AppState) => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
-  getUser: (id: MongoId) => getUser(id)(state)
+  getUser: (id: UserId) => getUser(id)(state)
 });
 
 interface DispatchProps {

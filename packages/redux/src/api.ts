@@ -6,7 +6,8 @@ import {
   IEntryCreate,
   IUserCreate,
   IUser,
-  MongoId
+  UserId,
+  EntryId
 } from "ente-types";
 
 import { config } from "./";
@@ -82,7 +83,7 @@ export const getNeededUsers = async (token: string): Promise<APIResponse> => {
 };
 
 export const getEntry = async (
-  id: MongoId,
+  id: EntryId,
   token: string
 ): Promise<APIResponse> => {
   const data = await get(`${config.baseUrl}/entries/${id}`, token);
@@ -100,7 +101,7 @@ export const getSlots = async (token: string): Promise<APIResponse> => {
 };
 
 export const getUser = async (
-  id: MongoId,
+  id: UserId,
   token: string
 ): Promise<APIResponse> => {
   const data = await get(`${config.baseUrl}/users/${id}`, token);
@@ -166,7 +167,7 @@ const put = async (url: string, token: string, body?: {}) => {
 };
 
 export const signEntry = async (
-  id: MongoId,
+  id: EntryId,
   token: string
 ): Promise<APIResponse> => {
   const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
@@ -176,7 +177,7 @@ export const signEntry = async (
 };
 
 export const unsignEntry = async (
-  id: MongoId,
+  id: EntryId,
   token: string
 ): Promise<APIResponse> => {
   const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
@@ -186,7 +187,7 @@ export const unsignEntry = async (
 };
 
 export const patchForSchool = async (
-  id: MongoId,
+  id: EntryId,
   forSchool: boolean,
   token: string
 ): Promise<APIResponse> => {
@@ -196,7 +197,7 @@ export const patchForSchool = async (
   return transform(response);
 };
 
-export const resetPassword = async (username: MongoId): Promise<string> => {
+export const resetPassword = async (username: UserId): Promise<string> => {
   const result = await axios.post(`${config.baseUrl}/auth/forgot/${username}`);
   return result.data;
 };

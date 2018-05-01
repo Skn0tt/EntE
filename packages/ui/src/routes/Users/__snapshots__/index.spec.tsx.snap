@@ -46,7 +46,7 @@ ShallowWrapper {
     match={
       Object {
         "isExact": true,
-        "params": undefined,
+        "params": Object {},
         "path": "",
         "url": "",
       }
@@ -79,7 +79,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "children": Array [
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -196,7 +196,7 @@ ShallowWrapper {
       "nodeType": "function",
       "props": Object {
         "children": Array [
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,

@@ -19,7 +19,7 @@ import * as _ from "lodash";
  * # Component Types
  */
 type AllowedValues = string | number | boolean;
-type Item = ReadonlyArray<AllowedValues>;
+type Item = ReadonlyArray<any>;
 
 interface OwnProps<T> {
   defaultSortField?: number;

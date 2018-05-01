@@ -7,7 +7,7 @@ import { validationResult, param } from "express-validator/check";
 /**
  * EntE
  */
-import { MongoId, Roles } from "ente-types";
+import { Roles } from "ente-types";
 
 /**
  * Helpers

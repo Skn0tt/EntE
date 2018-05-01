@@ -1,5 +1,4 @@
 export type errorPayload = {};
-export type MongoId = string;
 
 /**
  * API

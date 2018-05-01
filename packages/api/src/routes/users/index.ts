@@ -15,7 +15,7 @@ import {
   Validator,
   isValidUsername
 } from "ente-validator";
-import { MongoId, Roles, rolesArr, IUserCreate, IUser } from "ente-types";
+import { Roles, rolesArr, IUserCreate, IUser } from "ente-types";
 
 /**
  * Helpers

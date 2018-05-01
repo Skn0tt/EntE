@@ -55,7 +55,7 @@ export class Users extends React.PureComponent<Props, State> {
       <React.Fragment>
         {/* Modals */}
         <CreateUser
-          onClose={() => this.closeCreateModal()}
+          onClose={this.closeCreateModal}
           show={this.state.showCreateModal}
         />
 
@@ -65,10 +65,10 @@ export class Users extends React.PureComponent<Props, State> {
           items={users}
           keyExtractor={(user: User) => user.get("_id")}
           cellExtractor={(user: User) => [
-            user.get("username"),
-            user.get("displayname"),
-            user.get("email"),
-            user.get("role")
+            user.get("username")!,
+            user.get("displayname")!,
+            user.get("email")!,
+            user.get("role")!
           ]}
           onClick={(user: User) => history.push(`/users/${user.get("_id")}`)}
         />

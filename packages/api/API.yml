@@ -142,7 +142,7 @@ paths:
         - in: path
           name: entryId
           required: true
-          description: MongoId of the entry to get
+          description: UUID of the entry to get
           schema:
             type: string
       responses:
@@ -169,7 +169,7 @@ paths:
         - in: path
           name: entryId
           required: true
-          description: MongoId of the entry to get
+          description: UUID of the entry to get
           schema:
             type: string
       requestBody:
@@ -206,7 +206,7 @@ paths:
         - in: path
           name: entryId
           required: true
-          description: MongoId of the entry to sign
+          description: UUID of the entry to sign
           schema:
             type: string
       requestBody:
@@ -266,7 +266,7 @@ paths:
         - in: path
           name: slotId
           required: true
-          description: MongoId of the slot to get
+          description: UUID of the slot to get
           schema:
             type: string
       responses:
@@ -357,7 +357,7 @@ paths:
         - in: path
           name: userId
           required: true
-          description: MongoId of the user to get
+          description: UUID of the user to get
           schema:
             type: string
       responses:
@@ -383,7 +383,7 @@ paths:
         - in: path
           name: userId
           required: true
-          description: MongoId of the user to update
+          description: UUID of the user to update
           schema:
             type: string
       requestBody:
@@ -468,13 +468,13 @@ components:
           description: "End Date"
         student:
           type: string
-          description: MongoId of student
+          description: UUID of student
         slots:
           type: array
           uniqueItems: true
           items:
             type: string
-            description: MongoId of slot
+            description: UUID of slot
         forSchool:
           type: boolean
           description: "*Beurlaubt* (`true`) oder *Entschuldigt*"
@@ -509,7 +509,7 @@ components:
           description: True if correlating Entry was signed by all parties
         teacher:
           type: string
-          description: MongoId of Teacher
+          description: UUID of Teacher
           
     User:
       type: object
@@ -541,7 +541,7 @@ components:
           type: array
           items:
             type: string
-            description: MongoId/username of child
+            description: UUID/username of child
         role:
           type: string
           enum:

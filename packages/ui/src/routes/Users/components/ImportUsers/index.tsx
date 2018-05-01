@@ -13,7 +13,7 @@ import DialogActions from "material-ui/Dialog/DialogActions";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { connect } from "react-redux";
+import { connect, MapStateToPropsParam } from "react-redux";
 import { Action, Dispatch } from "redux";
 import SignedAvatar from "../../../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../../../SpecificEntry/elements/UnsignedAvatar";
@@ -31,7 +31,11 @@ interface OwnProps {
 interface StateProps {
   usernames: string[];
 }
-const mapStateToProps = (state: AppState): StateProps => ({
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
   usernames: getStudents(state).map(u => u.get("username"))
 });
 
@@ -143,11 +147,7 @@ export class ImportUsers extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps>(
+export default connect<StateProps, DispatchProps, OwnProps, AppState>(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withMobileDialog<OwnProps & DispatchProps & StateProps>()(
-    withStyles(styles)(ImportUsers)
-  )
-);
+)(withStyles(styles)(withMobileDialog<Props>()(ImportUsers)));
