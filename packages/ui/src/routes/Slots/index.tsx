@@ -1,11 +1,10 @@
 import * as React from "react";
-import { connect, Dispatch } from "react-redux";
+import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Action } from "redux";
 import Table from "../../components/Table";
-import { MongoId } from "ente-types";
 import {
   getSlotsRequest,
   getUser,
@@ -14,14 +13,19 @@ import {
   User,
   Slot
 } from "ente-redux";
+import { UserId } from "ente-types";
 
 interface StateProps {
   slots: Slot[];
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
   slots: getSlots(state),
-  getUser: (id: MongoId) => getUser(id)(state)
+  getUser: id => getUser(id)(state)
 });
 
 interface DispatchProps {
@@ -30,6 +34,8 @@ interface DispatchProps {
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   requestSlots: () => dispatch(getSlotsRequest())
 });
+
+interface OwnProps {}
 
 type Props = StateProps & DispatchProps;
 

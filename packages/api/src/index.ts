@@ -4,7 +4,6 @@ import * as passport from "passport";
 import basic from "./authentication/strategies/basic";
 import jwt from "./authentication/strategies/jwt";
 import * as validator from "express-validator";
-import { Promise as BBPromise } from "bluebird";
 import * as cors from "cors";
 import * as helmet from "helmet";
 import * as Raven from "raven";
@@ -101,13 +100,20 @@ if (!conf.production) {
 if (!!DSN) {
   app.use(Raven.errorHandler());
 }
-app.use((err, req, res, next) => {
-  res.status(500).json({
-    error: err.message,
-    sentry: res.sentry
-  });
-  next();
-});
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    res.status(500).json({
+      error: err.message,
+      sentry: res.sentry
+    });
+    next();
+  }
+);
 
 // Cron Jobs
 if (conf.production) {

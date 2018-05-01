@@ -14,7 +14,7 @@ export const getSecrets = async (): Promise<[string, string]> =>
 
 export const getFirstSecret = async () => (await getSecrets())[0];
 
-const validate = async (token: string): Promise<JWT_PAYLOAD> => {
+const validate = async (token: string): Promise<JWT_PAYLOAD | null> => {
   try {
     // Get Secrets
     const [currentSecret, oldSecret] = await getSecrets();

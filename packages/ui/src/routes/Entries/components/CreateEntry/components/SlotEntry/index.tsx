@@ -1,11 +1,11 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToPropsParam } from "react-redux";
 import { withStyles, Grid, TextField, Button } from "material-ui";
 
 import styles from "./styles";
 import { WithStyles } from "material-ui/styles/withStyles";
 import Tooltip from "material-ui/Tooltip/Tooltip";
-import { MongoId, ISlotCreate } from "ente-types";
+import { ISlotCreate, UserId } from "ente-types";
 import { User, getTeachers, getUser, AppState } from "ente-redux";
 
 interface OwnProps {
@@ -14,11 +14,15 @@ interface OwnProps {
 
 interface StateProps {
   teachers: User[];
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
   teachers: getTeachers(state),
-  getUser: (id: MongoId) => getUser(id)(state)
+  getUser: id => getUser(id)(state)
 });
 
 type Props = StateProps & OwnProps & WithStyles;
@@ -26,7 +30,7 @@ type Props = StateProps & OwnProps & WithStyles;
 interface State {
   hour_from: string;
   hour_to: string;
-  teacher: MongoId;
+  teacher: UserId;
 }
 
 const SlotEntry = connect(mapStateToProps)(

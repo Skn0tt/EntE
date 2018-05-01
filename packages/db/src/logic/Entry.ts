@@ -20,12 +20,12 @@ const entryRepo = () => getRepository(Entry);
 const entryToJson = (entry: Entry): IEntry => ({
   _id: entry._id,
   date: entry.date,
-  dateEnd: entry.dateEnd,
+  dateEnd: entry.dateEnd || undefined,
   signedManager: !!entry.signedManager,
   signedParent: !!entry.signedParent,
   forSchool: !!entry.forSchool,
   slots: entry.slots.map(s => s._id),
-  reason: entry.reason,
+  reason: entry.reason || undefined,
   student: entry.student._id,
   updatedAt: entry.updatedAt,
   createdAt: entry.createdAt

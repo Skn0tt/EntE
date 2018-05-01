@@ -17,7 +17,7 @@ import Typography from "material-ui/Typography/Typography";
 
 import styles from "./styles";
 import { WithStyles } from "material-ui/styles/withStyles";
-import { IUser, MongoId } from "ente-types";
+import { IUser } from "ente-types";
 import {
   User,
   AppState,
@@ -80,10 +80,13 @@ export class ChildrenInput extends React.Component<Props, State> {
     this.setState({
       selected: this.props.students.find(
         s => s.get("_id") === event.target.value
-      )
+      )!
     });
   handleAdd = () =>
-    this.props.onChange([...this.props.children, this.state.selected]);
+    this.props.onChange([
+      ...(this.props.children as User[]),
+      this.state.selected
+    ]);
 
   handleDelete = (index: number) =>
     this.props.onChange(without(this.props.children, index));

@@ -1,6 +1,6 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 import styles from "./styles";
 
 import { withRouter, RouteComponentProps } from "react-router";
@@ -15,7 +15,9 @@ import {
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
-import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import withMobileDialog, {
+  InjectedProps
+} from "material-ui/Dialog/withMobileDialog";
 import { Action } from "redux";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
@@ -23,7 +25,7 @@ import ListItemText from "material-ui/List/ListItemText";
 import ListItemSecondaryAction from "material-ui/List/ListItemSecondaryAction";
 import { Delete as DeleteIcon, Add as AddIcon } from "material-ui-icons";
 import ImportUsers from "../ImportUsers";
-import { IUserCreate, MongoId, Roles } from "ente-types";
+import { IUserCreate, Roles, UserId } from "ente-types";
 import {
   isValidUsername,
   isValidDisplayname,
@@ -50,20 +52,20 @@ interface OwnProps {
   show: boolean;
 }
 
-interface InjectedProps {
-  fullScreen: boolean;
-}
-
 interface State extends IUserCreate {
   showImportUsers: boolean;
 }
 
 interface StateProps {
   students: User[];
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
 }
-const mapStateToProps = (state: AppState) => ({
-  getUser: (id: MongoId) => getUser(id)(state),
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
+  getUser: id => getUser(id)(state),
   students: getStudents(state)
 });
 
@@ -74,11 +76,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createUser: (user: IUserCreate) => dispatch(createUsersRequest(user))
 });
 
-type Props = OwnProps &
-  StateProps &
-  DispatchProps &
-  WithStyles<string> &
-  InjectedProps;
+type Props = OwnProps & StateProps & DispatchProps & WithStyles & InjectedProps;
 
 /**
  * # Component
@@ -209,7 +207,7 @@ export class CreateUser extends React.Component<Props, State> {
                 <Grid item xs={12}>
                   <TextInput
                     label={lang().ui.createUser.passwordTitle}
-                    value={password}
+                    value={password || ""}
                     onChange={this.handleChangePassword}
                     validator={this.passwordValid}
                     type="password"
@@ -226,8 +224,11 @@ export class CreateUser extends React.Component<Props, State> {
                     helperText="Wählen sie die Rolle des Nutzers aus."
                   >
                     {Object.keys(Roles).map(role => (
-                      <option key={Roles[role]} value={Roles[role]}>
-                        {Roles[role]}
+                      <option
+                        key={(Roles as any)[role]}
+                        value={(Roles as any)[role]}
+                      >
+                        {(Roles as any)[role]}
                       </option>
                     ))}
                   </TextField>
@@ -275,8 +276,7 @@ export class CreateUser extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<OwnProps & StateProps & DispatchProps>()(
-    withStyles(styles)(CreateUser)
-  )
-);
+export default connect<StateProps, DispatchProps, OwnProps, AppState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(withMobileDialog<Props>()(CreateUser)));

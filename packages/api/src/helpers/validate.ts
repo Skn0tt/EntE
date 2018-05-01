@@ -9,7 +9,7 @@ export const validate: RequestHandler = (req, res, next) => {
     return res.status(422).json({ errors: errors.mapped() });
   }
 
-  next();
+  return next();
 };
 
 type Validate<T> = {

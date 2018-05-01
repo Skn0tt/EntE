@@ -1,5 +1,14 @@
 import { Record, Map, List } from "immutable";
-import { IUser, Roles, IEntry, ISlot, IAuth, MongoId } from "ente-types";
+import {
+  IUser,
+  Roles,
+  IEntry,
+  ISlot,
+  IAuth,
+  EntryId,
+  UserId,
+  SlotId
+} from "ente-types";
 
 export type errorPayload = {};
 
@@ -129,9 +138,9 @@ type MessagesState = List<String>;
  * AppState
  */
 export interface IAppState {
-  entries: Map<MongoId, Entry>;
-  users: Map<MongoId, User>;
-  slots: Map<MongoId, Slot>;
+  entries: Map<EntryId, Entry>;
+  users: Map<UserId, User>;
+  slots: Map<SlotId, Slot>;
   auth: AuthState;
   messages: MessagesState;
   loading: number;
@@ -139,9 +148,9 @@ export interface IAppState {
 
 export class AppState extends Record(
   {
-    entries: Map<MongoId, Entry>(),
-    users: Map<MongoId, User>(),
-    slots: Map<MongoId, Slot>(),
+    entries: Map<EntryId, Entry>(),
+    users: Map<UserId, User>(),
+    slots: Map<SlotId, Slot>(),
     auth: new AuthState({}),
     messages: List<string>(),
     loading: 0

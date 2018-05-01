@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Roles } from "ente-types";
+import * as _ from "lodash";
 
 interface Permissions {
   slots_read?: boolean;
@@ -80,14 +81,8 @@ const perms = {
  * @param has
  * @param needs
  */
-const compare = (has: Permissions, needs: Permissions): boolean => {
-  let result = true;
-  Object.keys(needs).forEach(key => {
-    if (needs[key] && !has[key]) result = false;
-  });
-
-  return result;
-};
+export const compare = (has: Permissions, needs: Permissions): boolean =>
+  _.every(needs, (v, rule) => !v || (has as any)[rule]);
 
 /**
  * Checks wether user can access API endpoint
@@ -105,7 +100,7 @@ const rbac = (neededPermissions: Permissions): RequestHandler => (
   res,
   next
 ) => {
-  if (!check(req.user.role, neededPermissions)) {
+  if (!check(req.user!.role, neededPermissions)) {
     return res.status(403).end();
   }
 

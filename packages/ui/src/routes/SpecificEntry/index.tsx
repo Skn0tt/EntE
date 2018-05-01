@@ -1,6 +1,11 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import {
+  connect,
+  Dispatch,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 import styles from "./styles";
 
 import { Action } from "redux";
@@ -27,7 +32,7 @@ import {
 } from "material-ui-icons";
 import withMobileDialog from "material-ui/Dialog/withMobileDialog";
 import LoadingIndicator from "../../elements/LoadingIndicator";
-import { MongoId, Roles } from "ente-types";
+import { Roles, EntryId, UserId, SlotId } from "ente-types";
 import {
   Entry,
   User,
@@ -49,7 +54,7 @@ import lang from "ente-lang";
  * # Component Types
  */
 interface RouteMatch {
-  entryId: MongoId;
+  entryId: EntryId;
 }
 
 interface InjectedProps {
@@ -57,33 +62,43 @@ interface InjectedProps {
 }
 
 interface StateProps {
-  getEntry(id: MongoId): Entry;
-  getUser(id: MongoId): User;
-  getSlots(ids: MongoId[]): Slot[];
+  getEntry(id: EntryId): Entry;
+  getUser(id: UserId): User;
+  getSlots(ids: SlotId[]): Slot[];
   loading: boolean;
   role: Roles;
 }
-const mapStateToProps = (state: AppState): StateProps => ({
-  getEntry: (id: MongoId) => getEntry(id)(state),
-  getUser: (id: MongoId) => getUser(id)(state),
-  getSlots: (ids: MongoId[]) => getSlotsById(ids)(state),
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
+  getEntry: id => getEntry(id)(state),
+  getUser: id => getUser(id)(state),
+  getSlots: ids => getSlotsById(ids)(state),
   loading: isLoading(state),
   role: getRole(state)
 });
 
 interface DispatchProps {
-  requestEntry(id: MongoId): Action;
-  signEntry(id: MongoId): Action;
-  unsignEntry(id: MongoId): Action;
-  patchForSchool(id: MongoId, forSchool: boolean): Action;
+  requestEntry(id: EntryId): Action;
+  signEntry(id: EntryId): Action;
+  unsignEntry(id: EntryId): Action;
+  patchForSchool(id: EntryId, forSchool: boolean): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
+
+const mapDispatchToProps: MapDispatchToPropsParam<
+  DispatchProps,
+  OwnProps
+> = dispatch => ({
   requestEntry: id => dispatch(getEntryRequest(id)),
   signEntry: id => dispatch(signEntryRequest(id)),
   unsignEntry: id => dispatch(unsignEntryRequest(id)),
   patchForSchool: (id, forSchool) =>
     dispatch(patchForSchoolRequest({ id, forSchool }))
 });
+
+interface OwnProps {}
 
 type Props = WithStyles &
   RouteComponentProps<RouteMatch> &

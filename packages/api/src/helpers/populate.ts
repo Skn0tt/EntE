@@ -1,28 +1,25 @@
 import { RequestHandler, NextFunction, Response, Request } from "express";
 import wrapAsync from "./wrapAsync";
 import { requestHandler } from "raven";
-import { MongoId, IUser, ISlot, UserId, IEntry } from "ente-types";
+import { IUser, ISlot, UserId, IEntry } from "ente-types";
 import * as _ from "lodash";
 import { omitPassword } from "./queryParams";
 import { User, Slot } from "ente-db";
 
 export interface PopulateRequest extends Request {
-  entries: IEntry[];
-  users: IUser[];
-  slots: ISlot[];
+  entries?: IEntry[];
+  users?: IUser[];
+  slots?: ISlot[];
+  user: IUser;
 }
 
-const missing = (have: { _id: MongoId }[], want: MongoId[]): MongoId[] => {
+const missing = (have: { _id: string }[], want: string[]): string[] => {
   const haveIds = have.map(h => h._id);
 
   return _.difference(want, haveIds);
 };
 
-const populate = async (
-  req: PopulateRequest,
-  res: Response,
-  next: NextFunction
-) => {
+const populate: RequestHandler = async (req, res, next) => {
   const users = req.users || [];
   const slots = req.slots || [];
   const entries = req.entries || [];

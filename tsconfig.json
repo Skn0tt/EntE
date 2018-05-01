@@ -8,5 +8,14 @@
       "ente-*": ["./*/src"]
     },
     "experimentalDecorators": true
+
+    // Enable later!
+    /*
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+    */
   }
 }

@@ -1,6 +1,11 @@
 import * as React from "react";
 import withStyles, { WithStyles } from "material-ui/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import {
+  connect,
+  Dispatch,
+  MapDispatchToPropsParam,
+  MapStateToPropsParam
+} from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
 import ChildrenInput from "../../elements/ChildrenInput";
@@ -8,14 +13,16 @@ import SwitchInput from "../../elements/SwitchInput";
 import TextInput from "../../elements/TextInput";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Button, Dialog, Grid } from "material-ui";
-import withMobileDialog from "material-ui/Dialog/withMobileDialog";
+import withMobileDialog, {
+  InjectedProps
+} from "material-ui/Dialog/withMobileDialog";
 import DialogTitle from "material-ui/Dialog/DialogTitle";
 import DialogContent from "material-ui/Dialog/DialogContent";
 import DialogActions from "material-ui/Dialog/DialogActions";
 import DialogContentText from "material-ui/Dialog/DialogContentText";
 import Divider from "material-ui/Divider/Divider";
 import LoadingIndicator from "../../elements/LoadingIndicator";
-import { MongoId, IUser, Roles } from "ente-types";
+import { IUser, Roles, UserId } from "ente-types";
 import * as _ from "lodash";
 import {
   User,
@@ -31,6 +38,7 @@ import {
 import lang from "ente-lang";
 import { updateUser } from "redux/src/api";
 import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
+import { WithWidthProps } from "material-ui/utils/withWidth";
 
 /**
  * # Helpers
@@ -39,10 +47,10 @@ const diffUsers = (oldUser: IUser, newUser: IUser): Partial<IUser> => {
   const diff: Partial<IUser> = { _id: newUser._id };
 
   _.entries(newUser).forEach(([key, value]) => {
-    const oldV = oldUser[key];
-    const newV = newUser[key];
+    const oldV = (oldUser as any)[key];
+    const newV = (newUser as any)[key];
     if (oldV !== newV) {
-      diff[key] = newV;
+      (diff as any)[key] = newV;
     }
   });
 
@@ -53,34 +61,39 @@ const diffUsers = (oldUser: IUser, newUser: IUser): Partial<IUser> => {
  * # Component Types
  */
 interface RouteMatch {
-  userId: MongoId;
+  userId: UserId;
 }
-
-interface InjectedProps {
-  fullScreen: boolean;
-}
-
 interface StateProps {
-  getUser(id: MongoId): User;
+  getUser(id: UserId): User;
   loading: boolean;
   students: User[];
 }
-const mapStateToProps = (state: AppState): StateProps => ({
-  getUser: (id: MongoId) => getUser(id)(state),
+const mapStateToProps: MapStateToPropsParam<
+  StateProps,
+  OwnProps,
+  AppState
+> = state => ({
+  getUser: id => getUser(id)(state),
   loading: isLoading(state),
   students: getStudents(state)
 });
 
 interface DispatchProps {
-  requestUser(id: MongoId);
-  updateUser(u: Partial<IUser>);
+  requestUser(id: UserId): void;
+  updateUser(u: Partial<IUser>): void;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  DispatchProps,
+  OwnProps
+> = dispatch => ({
   requestUser: id => dispatch(getUserRequest(id)),
   updateUser: user => dispatch(updateUserRequest(user))
 });
 
+interface OwnProps {}
+
 type Props = StateProps &
+  OwnProps &
   DispatchProps &
   InjectedProps &
   WithStyles &
@@ -236,11 +249,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
   }
 }
 
-export default withRouter(
-  withMobileDialog<Props>()(
-    connect<StateProps, DispatchProps, Props>(
-      mapStateToProps,
-      mapDispatchToProps
-    )(withStyles(styles)(SpecificUser))
-  )
-);
+export default connect<StateProps, DispatchProps, OwnProps, AppState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withStyles(styles)(withMobileDialog<Props>()(SpecificUser))));

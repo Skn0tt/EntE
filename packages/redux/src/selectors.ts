@@ -7,7 +7,7 @@ import {
   userIsStudent
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, MongoId } from "ente-types";
+import { Roles, EntryId, UserId, SlotId } from "ente-types";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -40,7 +40,7 @@ export const canCreateEntries = createSelector(
 export const getToken: Selector<string> = state =>
   state.getIn(["auth", "token"]);
 export const getChildren: Selector<User[]> = state =>
-  state.getIn(["auth", "children"]).map((id: MongoId) => getUser(id)(state));
+  state.getIn(["auth", "children"]).map((id: UserId) => getUser(id)(state));
 
 export const getUsername: Selector<string> = state =>
   state.getIn(["auth", "username"]);
@@ -50,17 +50,17 @@ export const getDisplayname: Selector<string> = state =>
 /**
  * Data
  */
-export const getEntry = (id: MongoId): Selector<Entry> => state =>
+export const getEntry = (id: EntryId): Selector<Entry> => state =>
   state.getIn(["entries", id]);
 export const getEntries: Selector<Entry[]> = state =>
   state.get("entries").toArray();
 
-export const getUser = (id: MongoId): Selector<User> => state =>
+export const getUser = (id: UserId): Selector<User> => state =>
   state.getIn(["users", id]);
 export const getUsers: Selector<User[]> = state => state.get("users").toArray();
 
 export const getSlots: Selector<Slot[]> = state => state.get("slots").toArray();
-export const getSlotsById = (ids: MongoId[]): Selector<Slot[]> => state =>
+export const getSlotsById = (ids: SlotId[]): Selector<Slot[]> => state =>
   ids.map(id => state.getIn(["slots", id]));
 
 export const getTeachers = createSelector([getUsers], users =>

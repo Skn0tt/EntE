@@ -1,5 +1,4 @@
 export type errorPayload = {};
-export type MongoId = string;
 
 /**
  * API
@@ -27,7 +26,7 @@ export enum Roles {
   MANAGER = "manager"
 }
 
-export const rolesArr = Object.keys(Roles).map(key => Roles[key]);
+export const rolesArr = Object.keys(Roles).map(key => (Roles as any)[key]);
 
 export interface IUserBase {
   username: string;
