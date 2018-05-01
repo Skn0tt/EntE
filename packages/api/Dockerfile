@@ -1,4 +1,4 @@
-FROM node
+FROM node:9
 WORKDIR /usr/src/app
 
 RUN yarn global add nodemon
