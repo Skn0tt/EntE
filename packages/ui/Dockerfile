@@ -1,4 +1,4 @@
-FROM node as build
+FROM node:9 as build
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock tsconfig.json lerna.json ./
