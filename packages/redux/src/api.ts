@@ -14,8 +14,12 @@ import { config } from "./";
 import { APIResponse, Entry, Slot, User } from "./types";
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
+  ...axiosTokenParams(token),
   transformResponse: transformDates,
-  validateStatus: s => s >= 200 && s < 300,
+  validateStatus: s => s >= 200 && s < 300
+});
+
+const axiosTokenParams = (token: string): AxiosRequestConfig => ({
   headers: {
     Authorization: "Bearer " + token
   }
@@ -64,9 +68,12 @@ export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
 
 export const refreshToken = async (token: string): Promise<TokenInfo> => {
   try {
-    const result = await get(`${config.baseUrl}/token`, token);
+    const result = await axios.get(
+      `${config.baseUrl}/token`,
+      axiosTokenParams(token)
+    );
 
-    return getTokenInfo(result);
+    return getTokenInfo(result.data);
   } catch (error) {
     throw error;
   }

@@ -5,6 +5,10 @@ services:
   mysql:
     ports:
       - 3306:3306
+
+  ui:
+    volumes:
+      - ./packages/ui/dist/:/app/
     
   api:
     ports:
