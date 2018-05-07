@@ -15,11 +15,7 @@ RUN yarn lerna bootstrap
 
 RUN yarn --cwd packages/ui build
 
-FROM socialengine/nginx-spa
-
-# Replace Script
-COPY packages/ui/replace.sh /usr/local/bin/replace
-RUN sed -e "3i/bin/sh /usr/local/bin/replace" -i /usr/local/bin/start-container
+FROM skn0tt/nginx-spa
 
 # Install Curl (for Healthcheck)
 RUN apt-get update; apt-get -y install curl;
