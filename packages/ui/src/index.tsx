@@ -6,6 +6,7 @@ import createRavenMiddleware from "raven-for-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
 import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
 import * as deLocale from "date-fns/locale/de";
+import { get as getConfig } from "./config";
 
 // Fonts
 import "typeface-roboto";
@@ -27,8 +28,10 @@ const config: ReduxConfig = {
   baseUrl: `${location.protocol}//${location.hostname}/api`
 };
 
-if (!!window.__env && !!window.__env.SENTRY_DSN_API) {
-  Raven.config(window.__env.SENTRY_DSN_API).install();
+const { SENTRY_DSN_UI } = getConfig();
+
+if (SENTRY_DSN_UI) {
+  Raven.config(SENTRY_DSN_UI).install();
 
   const ravenMiddleWare = createRavenMiddleware(Raven, {
     actionTransformer: (action: Action<AuthState | {}>) => {
