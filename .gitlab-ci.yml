@@ -134,15 +134,11 @@ pages:
   only:
     - master
 
-deploy:staging:
+# Deploy
+trigger_deploy:
+  image: byrnedo/alpine-curl
   stage: release
-  image: williamyeh/ansible:debian9
   only:
     - master
-  tags:
-    - ansible
-  environment:
-    name: staging
-    url: http://bull.simonknott.de
   script:
-    - ansible-playbook -i staging.yml deploy-staging.yml
+    - curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=master https://gitlab.com/api/v4/projects/Skn0tt%2FEntE-deployments/trigger/pipeline
