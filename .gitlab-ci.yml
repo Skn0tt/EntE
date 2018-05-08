@@ -136,7 +136,7 @@ pages:
 
 # Deploy
 trigger_deploy:
-  image: byrnedo/alpine-curl
+  image: tutum/curl
   stage: release
   only:
     - master
