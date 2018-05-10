@@ -117,10 +117,10 @@ test:e2e:
     COMPOSE_PROJECT_NAME: ente
     CI_COMMIT_REF_NAME: master
   before_script:
-    - docker-compose -f tests/docker-compose.yml up
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
+    - docker-compose -f tests/docker-compose.yml up
     - yarn test:e2e:ci
-
 
 #
 # Release
