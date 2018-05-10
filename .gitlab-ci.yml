@@ -122,7 +122,7 @@ test:e2e:
     - curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it.sh
     - chmod +x wait-for-it.sh
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - yarn global add testcafe@^0.19.2 @types/node
+    - yarn global add testcafe@^0.19.2 @types/node testcafe-reporter-xunit
   script:
     - docker-compose -f tests/docker-compose.yml up -d
     - yarn test:e2e:ci

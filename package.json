@@ -9,7 +9,7 @@
     "test:unit:coverage": "yarn jest --coverage",
     "test:e2e": "BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e",
     "test:e2e:ci":
-      "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xUnit:e2e.xml"
+      "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
