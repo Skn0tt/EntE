@@ -3,7 +3,7 @@ site
 
 # Tests
 e2e.xml
-unit.xml
+junit.xml
 
 # Created by https://www.gitignore.io/api/node
 

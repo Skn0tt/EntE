@@ -95,7 +95,7 @@ services:
   before_script:
     - yarn
   script:
-    - yarn test:unit:coverage
+    - yarn test:unit:ci
   artifacts:
     paths:
       - coverage/lcov-report/

@@ -6,7 +6,8 @@
     "precommit": "pretty-quick --staged",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
-    "test:unit:coverage": "yarn jest --coverage",
+    "test:unit:ci":
+      "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
     "test:e2e": "BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e",
     "test:e2e:ci":
       "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
@@ -23,6 +24,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
+    "jest-junit": "^3.7.0",
     "lerna": "^2.9.0",
     "mockdate": "^2.0.2",
     "prettier": "^1.11.1",
