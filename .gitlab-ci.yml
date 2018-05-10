@@ -106,8 +106,6 @@ test:e2e:
     COMPOSE_PROJECT_NAME: ente
     BASE_URL: http://dind:80
   before_script:
-    - curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it.sh
-    - chmod +x wait-for-it.sh
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - yarn
   script:
