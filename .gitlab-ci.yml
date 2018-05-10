@@ -131,6 +131,8 @@ test:e2e:
 .generate:allure-report:
   image: debian
   stage: docs
+  variables:
+    GIT_STRATEGY: none
   only:
     - master
   dependencies:
@@ -152,6 +154,8 @@ test:e2e:
 # Upload to Pages
 .pages:
   stage: release
+  variables:
+    GIT_STRATEGY: none
   dependencies:
     - test:unit
     - generate:docs
@@ -174,6 +178,8 @@ test:e2e:
 trigger_deploy:
   image: tutum/curl
   stage: release
+  variables:
+    GIT_STRATEGY: none
   only:
     - master
   script:
