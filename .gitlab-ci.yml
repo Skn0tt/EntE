@@ -69,6 +69,20 @@ services:
     - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
     - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
+# Docs
+.generate:docs:
+  image: python
+  stage: build
+  only:
+    - master
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - mkdocs build
+  artifacts:
+    paths:
+      - site/
+
 #
 # Test
 #
@@ -106,25 +120,12 @@ test:e2e:
   script:
     - yarn test:e2e:ci
 
-# Docs
-generate:docs:
-  image: python
-  stage: build
-  only:
-    - master
-  before_script:
-    - pip install -r requirements.txt
-  script:
-    - mkdocs build
-  artifacts:
-    paths:
-      - site/
 
 #
 # Release
 #
 # Upload to Pages
-pages:
+.pages:
   stage: release
   dependencies:
     - test:unit
