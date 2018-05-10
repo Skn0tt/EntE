@@ -119,7 +119,9 @@ test:e2e:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - docker-compose -f tests/docker-compose.yml up
+    - docker-compose -f tests/docker-compose.yml up -d
+    - curl localhost:80
+    - curl dind:80
     - yarn test:e2e:ci
 
 #
