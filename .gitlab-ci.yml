@@ -116,7 +116,6 @@ test:e2e:
     SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
     LETSENCRYPT_EMAIL: simoknott@gmail.com
     COMPOSE_PROJECT_NAME: ente
-    CI_COMMIT_REF_NAME: master
     BASE_URL: http://dind:80
   before_script:
     - curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > wait-for-it.sh
@@ -125,7 +124,7 @@ test:e2e:
     - yarn
   script:
     - docker-compose -f tests/docker-compose.yml up -d
-    - yarn test:e2e:ci
+    - test/e2e.sh
 
 #
 # Release
