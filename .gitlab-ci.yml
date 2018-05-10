@@ -8,6 +8,7 @@ variables:
   CONTAINER_ROTATOR_RELEASE_IMAGE: $CONTAINER_BASE/rotator:latest
   CONTAINER_PROXY_TEST_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_REF_NAME
   CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:latest
+  DOCKER_HOST: dind
 
 stages:
   - build
@@ -16,7 +17,7 @@ stages:
 
 services:
 - name: docker:stable-dind
-  alias: localhost
+  alias: dind
 
 #
 # Build
