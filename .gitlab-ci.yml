@@ -124,7 +124,6 @@ test:e2e:
     - yarn global add testcafe@^0.19.2
   script:
     - docker-compose -f tests/docker-compose.yml up -d
-    - ./wait-for-it.sh -t 60 $BASE_URL
     - yarn test:e2e:ci
 
 #
