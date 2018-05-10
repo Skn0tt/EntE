@@ -10,9 +10,68 @@ variables:
   CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:latest
 
 stages:
-  - test
   - build
+  - test
   - release
+
+#
+# Build
+#
+build:API:
+  image: skn0tt/dind-make
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd packages/api
+    - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
+    - docker push $CONTAINER_API_TEST_IMAGE
+
+build:UI:
+  image: skn0tt/dind-make
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd packages/ui
+    - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
+    - docker push $CONTAINER_UI_TEST_IMAGE
+
+build:nginx-proxy:
+  image: skn0tt/dind-make
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd packages/nginx-proxy
+    - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
+    - docker push $CONTAINER_PROXY_TEST_IMAGE
+
+build:rotator:
+  image: skn0tt/dind-make
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - docker
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - cd packages/rotator
+    - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
+    - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
 #
 # Test
@@ -30,72 +89,27 @@ test:unit:
     paths:
       - coverage/lcov-report/
 
-#
-# Build
-#
-build:API:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
+# e2e Tests
+test:e2e:
+  image: testcafe/testcafe
+  stage: test
   services:
     - docker:dind
-  tags:
-    - docker
+  artifacts:
+    paths:
+      - screenshots/
+  variables:
+    HOST: localhost
+    SMTP_HOST: smtp.ethereal.email
+    SMTP_PORT: "587"
+    SMTP_USER: louf4yh5lnkyg2h3@ethereal.email
+    SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
+    LETSENCRYPT_EMAIL: simoknott@gmail.com
+    COMPOSE_PROJECT_NAME: ente
   before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - docker-compose -f docker-compose.yml up
   script:
-    - cd packages/api
-    - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
-    - docker push $CONTAINER_API_TEST_IMAGE
-
-build:UI:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-  services:
-    - docker:dind
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/ui
-    - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
-    - docker push $CONTAINER_UI_TEST_IMAGE
-
-build:nginx-proxy:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-  services:
-    - docker:dind
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/nginx-proxy
-    - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
-    - docker push $CONTAINER_PROXY_TEST_IMAGE
-
-build:rotator:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-  services:
-    - docker:dind
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/rotator
-    - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
-    - docker push $CONTAINER_ROTATOR_TEST_IMAGE
+    - yarn test:e2e:ci
 
 # Docs
 generate:docs:

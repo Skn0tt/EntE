@@ -7,7 +7,8 @@
     "test": "yarn jest",
     "test:watch": "yarn jest --watch",
     "test:coverage": "yarn jest --coverage",
-    "test:e2e": "yarn testcafe chrome tests/e2e"
+    "test:e2e": "yarn testcafe chrome tests/e2e",
+    "test:e2e:ci": "yarn testcafe all tests/e2e -S screenshots"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
