@@ -1,0 +1,59 @@
+version: '2'
+
+services:
+
+  mysql:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ente
+      - MYSQL_USER=ente
+      - MYSQL_PASSWORD=root
+    
+  api:
+    image: "registry.gitlab.com/skn0tt/ente/api:${CI_COMMIT_REF_NAME}"
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - rotator
+    environment:
+      - HOST
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - SENTRY_DSN_API
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/api/
+  
+  redis:
+    image: redis
+
+  rotator:
+    image: "registry.gitlab.com/skn0tt/ente/rotator:${CI_COMMIT_REF_NAME}"
+    depends_on:
+      - redis
+  ui:
+    image: "registry.gitlab.com/skn0tt/ente/ui:${CI_COMMIT_REF_NAME}"
+    restart: always
+    environment:
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PATH=/
+      - SENTRY_DSN_UI
+      - CONFIG_VARS=SENTRY_DSN_UI
+    
+  nginx-proxy:
+    build: ./packages/nginx-proxy
+    image: "registry.gitlab.com/skn0tt/ente/nginx-proxy:${CI_COMMIT_REF_NAME}"
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    restart: always
+    depends_on:
+      - api
+      - ui
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"

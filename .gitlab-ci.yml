@@ -91,7 +91,7 @@ test:unit:
 
 # e2e Tests
 test:e2e:
-  image: testcafe/testcafe
+  image: circleci/node:9-browsers
   stage: test
   services:
     - docker:dind
@@ -107,7 +107,7 @@ test:e2e:
     LETSENCRYPT_EMAIL: simoknott@gmail.com
     COMPOSE_PROJECT_NAME: ente
   before_script:
-    - docker-compose -f docker-compose.yml up
+    - docker-compose -f tests/docker-compose.yml up
   script:
     - yarn test:e2e:ci
 
