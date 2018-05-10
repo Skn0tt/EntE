@@ -21,7 +21,7 @@ services:
 #
 # Build
 #
-build:API:
+.build:API:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -33,7 +33,7 @@ build:API:
     - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
     - docker push $CONTAINER_API_TEST_IMAGE
 
-build:UI:
+.build:UI:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -45,7 +45,7 @@ build:UI:
     - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
     - docker push $CONTAINER_UI_TEST_IMAGE
 
-build:nginx-proxy:
+.build:nginx-proxy:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -57,7 +57,7 @@ build:nginx-proxy:
     - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
     - docker push $CONTAINER_PROXY_TEST_IMAGE
 
-build:rotator:
+.build:rotator:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -74,7 +74,7 @@ build:rotator:
 #
 
 # Unit Tests
-test:unit:
+.test:unit:
   image: node:9
   stage: test
   before_script:
@@ -100,6 +100,7 @@ test:e2e:
     SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
     LETSENCRYPT_EMAIL: simoknott@gmail.com
     COMPOSE_PROJECT_NAME: ente
+    CI_COMMIT_REF_NAME: master
   before_script:
     - docker-compose -f tests/docker-compose.yml up
   script:
