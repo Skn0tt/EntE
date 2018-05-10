@@ -15,9 +15,8 @@ stages:
   - release
 
 services:
-  - docker:dind:
-    name: docker:stable-dind
-    alias: localhost
+- name: docker:stable-dind
+  alias: localhost
 
 #
 # Build
