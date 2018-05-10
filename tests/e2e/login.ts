@@ -1,6 +1,9 @@
 import { ClientFunction } from "testcafe";
+import * as config from "../e2eConfig";
 
-fixture("Login Form").page("http://localhost:80");
+const { baseUrl } = config.get();
+
+fixture("Login Form").page(baseUrl);
 
 const USERNAME = "admin";
 const PASSWORD = "root";

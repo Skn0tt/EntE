@@ -7,7 +7,7 @@
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:coverage": "yarn jest --coverage",
-    "test:e2e": "yarn testcafe chrome tests/e2e",
+    "test:e2e": "BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e",
     "test:e2e:ci": "yarn testcafe chrome:headless tests/e2e/**/* -S screenshots"
   },
   "devDependencies": {
