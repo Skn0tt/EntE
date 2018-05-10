@@ -1,20 +1,7 @@
-dev: build-docker
+dev:
 	docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.dev.yml \
-		up -d
-
-staging: build-docker
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.prod.yml \
-  	-f docker-compose.staging.yml \
-		up -d
-
-prod: build-docker
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.prod.yml \
 		up -d
 
 build-docker: ente-api ente-ui nginx-proxy ente-rotator

@@ -11,7 +11,7 @@ services:
       - MYSQL_PASSWORD=root
     
   api:
-    image: registry.gitlab.com/skn0tt/ente/api
+    image: "registry.gitlab.com/skn0tt/ente/api:${CI_COMMIT_REF_NAME}"
     restart: always
     depends_on:
       - mysql
@@ -32,11 +32,11 @@ services:
     image: redis
 
   rotator:
-    image: registry.gitlab.com/skn0tt/ente/rotator
+    image: "registry.gitlab.com/skn0tt/ente/rotator:${CI_COMMIT_REF_NAME}"
     depends_on:
       - redis
   ui:
-    image: registry.gitlab.com/skn0tt/ente/ui
+    image: "registry.gitlab.com/skn0tt/ente/ui:${CI_COMMIT_REF_NAME}"
     restart: always
     environment:
       - VIRTUAL_HOST=${HOST}
@@ -45,7 +45,7 @@ services:
       - CONFIG_VARS=SENTRY_DSN_UI
     
   nginx-proxy:
-    image: registry.gitlab.com/skn0tt/ente/nginx-proxy
+    image: "registry.gitlab.com/skn0tt/ente/nginx-proxy:${CI_COMMIT_REF_NAME}"
     ports:
       - 80:80
       - 443:443

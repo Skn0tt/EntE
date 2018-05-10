@@ -4,9 +4,13 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "test": "yarn jest",
-    "test:watch": "yarn jest --watch",
-    "test:coverage": "yarn jest --coverage"
+    "test:unit": "yarn jest",
+    "test:unit:watch": "yarn jest --watch",
+    "test:unit:ci":
+      "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
+    "test:e2e": "BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e",
+    "test:e2e:ci":
+      "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
@@ -20,6 +24,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
+    "jest-junit": "^3.7.0",
     "lerna": "^2.9.0",
     "mockdate": "^2.0.2",
     "prettier": "^1.11.1",
@@ -27,6 +32,7 @@
     "react-router-enzyme-context": "^1.2.0",
     "react-test-renderer": "^16.3.1",
     "sinon": "^4.5.0",
+    "testcafe": "^0.19.2",
     "testdouble": "^3.7.0",
     "testdouble-jest": "^2.0.0",
     "ts-jest": "^22.4.2",
@@ -36,7 +42,7 @@
     "npm": "^5.8.0"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jestSetup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/jestSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -49,8 +55,8 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/scripts/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/scripts/assetsTransformer.js"
+        "<rootDir>/tests/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/tests/assetsTransformer.js"
     }
   }
 }

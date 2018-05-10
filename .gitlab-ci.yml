@@ -8,27 +8,17 @@ variables:
   CONTAINER_ROTATOR_RELEASE_IMAGE: $CONTAINER_BASE/rotator:latest
   CONTAINER_PROXY_TEST_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_REF_NAME
   CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:latest
+  DOCKER_HOST: dind:2375
 
 stages:
-  - test
   - build
+  - test
+  - docs
   - release
 
-#
-# Test
-#
-
-# Unit Tests
-test:unit:
-  image: node:9
-  stage: test
-  before_script:
-    - yarn
-  script:
-    - yarn test:coverage
-  artifacts:
-    paths:
-      - coverage/lcov-report/
+services:
+- name: docker:stable-dind
+  alias: dind
 
 #
 # Build
@@ -36,10 +26,6 @@ test:unit:
 build:API:
   image: skn0tt/dind-make
   stage: build
-  only:
-    - master
-  services:
-    - docker:dind
   tags:
     - docker
   before_script:
@@ -52,10 +38,6 @@ build:API:
 build:UI:
   image: skn0tt/dind-make
   stage: build
-  only:
-    - master
-  services:
-    - docker:dind
   tags:
     - docker
   before_script:
@@ -68,10 +50,6 @@ build:UI:
 build:nginx-proxy:
   image: skn0tt/dind-make
   stage: build
-  only:
-    - master
-  services:
-    - docker:dind
   tags:
     - docker
   before_script:
@@ -84,10 +62,6 @@ build:nginx-proxy:
 build:rotator:
   image: skn0tt/dind-make
   stage: build
-  only:
-    - master
-  services:
-    - docker:dind
   tags:
     - docker
   before_script:
@@ -97,10 +71,51 @@ build:rotator:
     - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
     - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
+#
+# Test
+#
+
+# Unit Tests
+test:unit:
+  image: node:9
+  stage: test
+  before_script:
+    - yarn
+  script:
+    - yarn test:unit:ci
+  artifacts:
+    paths:
+      - coverage/lcov-report/
+      - junit.xml
+
+# e2e Tests
+test:e2e:
+  image: circleci/node:9-browsers
+  stage: test
+  artifacts:
+    paths:
+      - screenshots/
+      - e2e.xml
+  variables:
+    HOST: dind
+    SMTP_HOST: smtp.ethereal.email
+    SMTP_PORT: "587"
+    SMTP_USER: louf4yh5lnkyg2h3@ethereal.email
+    SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
+    LETSENCRYPT_EMAIL: simoknott@gmail.com
+    COMPOSE_PROJECT_NAME: ente
+    BASE_URL: http://dind:80
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - yarn
+  script:
+    - docker-compose -f tests/docker-compose.yml up -d
+    - tests/e2e.sh
+
 # Docs
 generate:docs:
   image: python
-  stage: build
+  stage: docs
   only:
     - master
   before_script:
@@ -111,12 +126,35 @@ generate:docs:
     paths:
       - site/
 
+# Docs
+generate:allure-report:
+  image: debian
+  stage: docs
+  variables:
+    GIT_STRATEGY: none
+  only:
+    - master
+  dependencies:
+    - test:unit
+    - test:e2e
+  before_script:
+    - sudo apt-add-repository ppa:qameta/allure
+    - sudo apt-get update 
+    - sudo apt-get install allure
+  script:
+    - allure generate ./
+  artifacts:
+    paths:
+      - allure-report/
+
 #
 # Release
 #
 # Upload to Pages
 pages:
   stage: release
+  variables:
+    GIT_STRATEGY: none
   dependencies:
     - test:unit
     - generate:docs
@@ -134,10 +172,13 @@ pages:
   only:
     - master
 
+
 # Deploy
 trigger_deploy:
   image: tutum/curl
   stage: release
+  variables:
+    GIT_STRATEGY: none
   only:
     - master
   script:

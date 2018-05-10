@@ -1,5 +1,11 @@
 lib
 site
+
+# Tests
+e2e.xml
+junit.xml
+allure-report/
+
 # Created by https://www.gitignore.io/api/node
 
 ### Node ###
@@ -61,6 +67,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.envrc
 
 
 
