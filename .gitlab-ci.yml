@@ -108,7 +108,7 @@ test:e2e:
     paths:
       - screenshots/
   variables:
-    HOST: localhost
+    HOST: dind
     SMTP_HOST: smtp.ethereal.email
     SMTP_PORT: "587"
     SMTP_USER: louf4yh5lnkyg2h3@ethereal.email
