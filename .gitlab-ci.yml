@@ -13,6 +13,7 @@ variables:
 stages:
   - build
   - test
+  - docs
   - release
 
 services:
@@ -70,20 +71,6 @@ services:
     - make build IMAGE_TAG=$CONTAINER_ROTATOR_TEST_IMAGE
     - docker push $CONTAINER_ROTATOR_TEST_IMAGE
 
-# Docs
-.generate:docs:
-  image: python
-  stage: build
-  only:
-    - master
-  before_script:
-    - pip install -r requirements.txt
-  script:
-    - mkdocs build
-  artifacts:
-    paths:
-      - site/
-
 #
 # Test
 #
@@ -126,6 +113,39 @@ test:e2e:
     - docker-compose -f tests/docker-compose.yml up -d
     - test/e2e.sh
 
+# Docs
+.generate:docs:
+  image: python
+  stage: docs
+  only:
+    - master
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - mkdocs build
+  artifacts:
+    paths:
+      - site/
+
+# Docs
+.generate:allure-report:
+  image: debian
+  stage: docs
+  only:
+    - master
+  dependencies:
+    - test:unit
+    - test:e2e
+  before_script:
+    - sudo apt-add-repository ppa:qameta/allure
+    - sudo apt-get update 
+    - sudo apt-get install allure
+  script:
+    - allure generate ./
+  artifacts:
+    paths:
+      - allure-report/
+
 #
 # Release
 #
@@ -148,6 +168,7 @@ test:e2e:
     expire_in: 30 days
   only:
     - master
+
 
 # Deploy
 trigger_deploy:
