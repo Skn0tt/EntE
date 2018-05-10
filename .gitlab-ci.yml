@@ -110,7 +110,7 @@ test:e2e:
     - yarn
   script:
     - docker-compose -f tests/docker-compose.yml up -d
-    - test/e2e.sh
+    - tests/e2e.sh
 
 # Docs
 generate:docs:
