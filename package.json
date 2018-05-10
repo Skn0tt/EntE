@@ -4,9 +4,9 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "test": "yarn jest",
-    "test:watch": "yarn jest --watch",
-    "test:coverage": "yarn jest --coverage",
+    "test:unit": "yarn jest",
+    "test:unit:watch": "yarn jest --watch",
+    "test:unit:coverage": "yarn jest --coverage",
     "test:e2e": "yarn testcafe chrome tests/e2e",
     "test:e2e:ci": "yarn testcafe chrome:headless tests/e2e/**/* -S screenshots"
   },
@@ -52,7 +52,7 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/scripts/assetsTransformer.js",
+        "<rootDir>/tests/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/tests/assetsTransformer.js"
     }
   }

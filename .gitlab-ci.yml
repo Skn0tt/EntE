@@ -84,7 +84,7 @@ test:unit:
   before_script:
     - yarn
   script:
-    - yarn test:coverage
+    - yarn test:unit:coverage
   artifacts:
     paths:
       - coverage/lcov-report/
