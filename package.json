@@ -6,7 +6,8 @@
     "precommit": "pretty-quick --staged",
     "test": "yarn jest",
     "test:watch": "yarn jest --watch",
-    "test:coverage": "yarn jest --coverage"
+    "test:coverage": "yarn jest --coverage",
+    "test:e2e": "yarn testcafe chrome tests/e2e"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
@@ -27,6 +28,7 @@
     "react-router-enzyme-context": "^1.2.0",
     "react-test-renderer": "^16.3.1",
     "sinon": "^4.5.0",
+    "testcafe": "^0.19.2",
     "testdouble": "^3.7.0",
     "testdouble-jest": "^2.0.0",
     "ts-jest": "^22.4.2",
@@ -36,7 +38,7 @@
     "npm": "^5.8.0"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/scripts/jestSetup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/jestSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -50,7 +52,7 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
         "<rootDir>/scripts/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/scripts/assetsTransformer.js"
+      "\\.(css|less)$": "<rootDir>/tests/assetsTransformer.js"
     }
   }
 }
