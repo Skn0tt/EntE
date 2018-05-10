@@ -107,6 +107,7 @@ test:e2e:
   artifacts:
     paths:
       - screenshots/
+      - e2e.xml
   variables:
     HOST: dind
     SMTP_HOST: smtp.ethereal.email

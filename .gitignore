@@ -1,5 +1,10 @@
 lib
 site
+
+# Tests
+e2e.xml
+unit.xml
+
 # Created by https://www.gitignore.io/api/node
 
 ### Node ###
