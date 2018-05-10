@@ -45,7 +45,6 @@ services:
       - CONFIG_VARS=SENTRY_DSN_UI
     
   nginx-proxy:
-    build: ./packages/nginx-proxy
     image: "registry.gitlab.com/skn0tt/ente/nginx-proxy:${CI_COMMIT_REF_NAME}"
     ports:
       - 80:80
