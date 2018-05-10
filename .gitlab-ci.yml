@@ -23,7 +23,7 @@ services:
 #
 # Build
 #
-.build:API:
+build:API:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -35,7 +35,7 @@ services:
     - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
     - docker push $CONTAINER_API_TEST_IMAGE
 
-.build:UI:
+build:UI:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -47,7 +47,7 @@ services:
     - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
     - docker push $CONTAINER_UI_TEST_IMAGE
 
-.build:nginx-proxy:
+build:nginx-proxy:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -59,7 +59,7 @@ services:
     - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
     - docker push $CONTAINER_PROXY_TEST_IMAGE
 
-.build:rotator:
+build:rotator:
   image: skn0tt/dind-make
   stage: build
   tags:
@@ -76,7 +76,7 @@ services:
 #
 
 # Unit Tests
-.test:unit:
+test:unit:
   image: node:9
   stage: test
   before_script:
@@ -114,7 +114,7 @@ test:e2e:
     - test/e2e.sh
 
 # Docs
-.generate:docs:
+generate:docs:
   image: python
   stage: docs
   only:
@@ -128,7 +128,7 @@ test:e2e:
       - site/
 
 # Docs
-.generate:allure-report:
+generate:allure-report:
   image: debian
   stage: docs
   variables:
@@ -152,7 +152,7 @@ test:e2e:
 # Release
 #
 # Upload to Pages
-.pages:
+pages:
   stage: release
   variables:
     GIT_STRATEGY: none
