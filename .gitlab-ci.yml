@@ -166,13 +166,14 @@ pages:
     - generate:allure-report
     - generate:docs
   before_script:
-    - mkdir public
-    - mkdir public/coverage public/allure-report public/docs
+    - mkdir .public
+    - mkdir .public/coverage .public/allure-report .public/docs
   script:
-    - cp -R coverage/lcov-report/ public/coverage/
-    - cp -R site/ public/docs/
-    - cp -R allure-report/ public/allure-report/
-    - cp docs/index.html public/index.html
+    - cp -R coverage/lcov-report/ .public/coverage/
+    - cp -R site/ .public/docs/
+    - cp -R allure-report/ .public/allure-report/
+    - cp docs/index.html .public/index.html
+    - mv .public public
   artifacts:
     paths:
       - public
