@@ -5,6 +5,7 @@ site
 e2e.xml
 junit.xml
 allure-report/
+public/
 
 # Created by https://www.gitignore.io/api/node
 

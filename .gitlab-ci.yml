@@ -159,24 +159,24 @@ generate:allure-report:
 # Upload to Pages
 pages:
   stage: release
-  variables:
-    GIT_STRATEGY: none
+  only:
+    - master
   dependencies:
     - test:unit
+    - generate:allure-report
     - generate:docs
   before_script:
     - mkdir public
-    - mkdir public/coverage public/docs
+    - mkdir public/coverage public/allure-report public/docs
   script:
-    - mv coverage/lcov-report/ public/coverage
-    - mv site/ public/docs
-    - mv docs/index.html public/index.html
+    - cp -R coverage/lcov-report/ public/coverage/
+    - cp -R site/ public/docs/
+    - cp -R allure-report/ public/allure-report/
+    - cp docs/index.html public/index.html
   artifacts:
     paths:
       - public
     expire_in: 30 days
-  only:
-    - master
 
 
 # Deploy
