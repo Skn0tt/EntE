@@ -171,7 +171,7 @@ pages:
   script:
     - cp -R coverage/lcov-report/ .public/coverage/
     - cp -R site/ .public/docs/
-    - cp -R allure-report/ .public/allure-report/
+    - cp -R allure-report/allure-report/ .public/allure-report/
     - cp docs/index.html .public/index.html
     - mv .public public
   artifacts:
