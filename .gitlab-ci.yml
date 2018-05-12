@@ -26,6 +26,8 @@ services:
 build:API:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -38,6 +40,8 @@ build:API:
 build:UI:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -50,6 +54,8 @@ build:UI:
 build:nginx-proxy:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -62,6 +68,8 @@ build:nginx-proxy:
 build:rotator:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -92,6 +100,8 @@ test:unit:
 test:e2e:
   image: circleci/node:9-browsers
   stage: test
+  only:
+    - master
   artifacts:
     paths:
       - screenshots/
@@ -128,7 +138,7 @@ generate:docs:
 
 # Docs
 generate:allure-report:
-  image: debian
+  image: skn0tt/allure
   stage: docs
   variables:
     GIT_STRATEGY: none
@@ -137,10 +147,6 @@ generate:allure-report:
   dependencies:
     - test:unit
     - test:e2e
-  before_script:
-    - sudo apt-add-repository ppa:qameta/allure
-    - sudo apt-get update 
-    - sudo apt-get install allure
   script:
     - allure generate ./
   artifacts:
