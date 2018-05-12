@@ -26,6 +26,8 @@ services:
 build:API:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -38,6 +40,8 @@ build:API:
 build:UI:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -50,6 +54,8 @@ build:UI:
 build:nginx-proxy:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -62,6 +68,8 @@ build:nginx-proxy:
 build:rotator:
   image: skn0tt/dind-make
   stage: build
+  only:
+    - master
   tags:
     - docker
   before_script:
@@ -92,6 +100,8 @@ test:unit:
 test:e2e:
   image: circleci/node:9-browsers
   stage: test
+  only:
+    - master
   artifacts:
     paths:
       - screenshots/
