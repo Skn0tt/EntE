@@ -128,7 +128,7 @@ generate:docs:
 
 # Docs
 generate:allure-report:
-  image: debian
+  image: skn0tt/allure
   stage: docs
   variables:
     GIT_STRATEGY: none
@@ -137,10 +137,6 @@ generate:allure-report:
   dependencies:
     - test:unit
     - test:e2e
-  before_script:
-    - sudo apt-add-repository ppa:qameta/allure
-    - sudo apt-get update 
-    - sudo apt-get install allure
   script:
     - allure generate ./
   artifacts:
