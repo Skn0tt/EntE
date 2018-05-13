@@ -20,7 +20,8 @@ titlepage-rule-color: "F5A623"
 numbersections: true
 ---
 
-\section\*{Danksagung}
+<!-- prettier-ignore -->
+\section*{Danksagung}
 Viele der in dieser Facharbeit angewandten Methoden und Konzepte habe ich über das Internet gelernt.
 Dort findet sich zu fast jedem Thema ein gut verständlicher Blog-Eintrag, Vortrag oder Tutorial.
 Ich möchte mich deshalb bei allen Blog-Autoren und Tutorial-Websites bedanken, ohne die ich diese Facharbeit nur mit sehr viel Mühe hätte schreiben können.
