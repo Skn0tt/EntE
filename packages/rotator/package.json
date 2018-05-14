@@ -4,8 +4,12 @@
   "description": "Rotates JWT secrets",
   "main": "src/index.ts",
   "repository": "https://gitlab.com/Skn0tt/EntE/tree/master/packages/rotator",
-  "author": "Simon Knott",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "email": "info@simonknott.de",
+    "name": "Simon Knott",
+    "url": "https://simonknott.de"
+  },
   "private": true,
   "scripts": {
     "start": "yarn ts-node src/index.ts"

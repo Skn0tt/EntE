@@ -4,8 +4,12 @@
   "description": "DB actions for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/db",
-  "author": "Simon Knott",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "email": "info@simonknott.de",
+    "name": "Simon Knott",
+    "url": "https://simonknott.de"
+  },
   "private": true,
   "dependencies": {
     "bcrypt": "^2.0.0",

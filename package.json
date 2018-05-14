@@ -1,5 +1,12 @@
 {
   "name": "ente",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "email": "info@simonknott.de",
+    "name": "Simon Knott",
+    "url": "https://simonknott.de"
+  },
+  "repository": "https://gitlab.com/Skn0tt/EntE",
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {

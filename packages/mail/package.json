@@ -5,8 +5,12 @@
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/mail",
   "author": "Simon Knott",
-  "license": "MIT",
-  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "email": "info@simonknott.de",
+    "name": "Simon Knott",
+    "url": "https://simonknott.de"
+  },
   "dependencies": {
     "ente-types": "^0.0.1",
     "handlebars": "^4.0.11",
