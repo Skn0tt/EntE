@@ -2,5 +2,22 @@
   "git.enableCommitSigning": true,
   "tslint.packageManager": "yarn",
   "tslint.exclude": "node_modules",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "fileHeaderCommentHelper.projectSettings": {
+    "projectName": "EntE"
+  },
+  "fileHeaderCommentHelper.languageConfigs": {
+    "language_typescript": {
+      "template": [
+        "/**",
+        " * $(projectName)",
+        " * (c) 2017-present, Simon Knott <info@simonknott.de>",
+        " *",
+        " * This source code is licensed under the GNU Affero General Public License",
+        " * found in the LICENSE file in the root directory of this source tree.",
+        " */",
+        ""
+      ]
+    }
+  }
 }
