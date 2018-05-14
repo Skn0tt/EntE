@@ -1,3 +1,11 @@
+/**
+ * EntE
+ * (c) 2017-present, Simon Knott <info@simonknott.de>
+ * 
+ * This source code is licensed under the GNU Affero General Public License
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import { createStore as reduxCreateStore, applyMiddleware } from "redux";
 import reducer from "./reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
