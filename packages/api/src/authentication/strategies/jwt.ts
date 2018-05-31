@@ -6,26 +6,28 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import * as redis from "redis";
 import * as JWT from "jsonwebtoken";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { promisify } from "util";
-import { redis as redisTypes, JWT_PAYLOAD } from "ente-types";
+import { JWT_PAYLOAD } from "ente-types";
 import { User } from "ente-db";
+import axios from "axios";
 
-const client = redis.createClient("redis://redis");
+type Secrets = {
+  old: string;
+  current: string;
+};
+export const getSecrets = async (): Promise<Secrets> => {
+  const response = await axios.get<Secrets>("http://rotator/secrets");
+  return response.data;
+};
 
-const redisGet = promisify(client.get).bind(client);
-
-export const getSecrets = async (): Promise<[string, string]> =>
-  JSON.parse(await redisGet(redisTypes.JWT_SECRETS));
-
-export const getFirstSecret = async () => (await getSecrets())[0];
+export const getFirstSecret = async () => (await getSecrets()).current;
 
 const validate = async (token: string): Promise<JWT_PAYLOAD | null> => {
   try {
     // Get Secrets
-    const [currentSecret, oldSecret] = await getSecrets();
+    const { old: oldSecret, current: currentSecret } = await getSecrets();
 
     try {
       // current secret

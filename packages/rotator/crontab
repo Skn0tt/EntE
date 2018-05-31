@@ -1,1 +1,0 @@
-0,15,30,25 * * * * yarn --cwd /usr/src/app/packages/rotator start
