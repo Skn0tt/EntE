@@ -30,6 +30,7 @@ import {
   getTokenRequest,
   resetPasswordRequest
 } from "ente-redux";
+import { withErrorBoundary } from "../../components/withErrorBoundary";
 
 interface InjectedProps {
   fullScreen: boolean;
@@ -155,4 +156,4 @@ const Login = connect(mapStateToProps, mapDispatchToProps)(
   )
 );
 
-export default Login;
+export default withErrorBoundary()(Login);

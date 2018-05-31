@@ -9,6 +9,7 @@
 import * as React from "react";
 import { Grid, Typography, WithStyles, withStyles } from "material-ui";
 import styles from "./styles";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
  * # Assets
@@ -34,4 +35,4 @@ export const NotFound: React.SFC<Props> = props => (
   </Grid>
 );
 
-export default withStyles(styles)(NotFound);
+export default withStyles(styles)(withErrorBoundary()(NotFound));

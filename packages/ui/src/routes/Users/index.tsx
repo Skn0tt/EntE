@@ -17,6 +17,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import { Button } from "material-ui";
 import { Add as AddIcon } from "material-ui-icons";
 import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
  * # Component Types
@@ -96,5 +97,5 @@ export class Users extends React.PureComponent<Props, State> {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(withRouter(Users))
+  withStyles(styles)(withRouter(withErrorBoundary()(Users)))
 );

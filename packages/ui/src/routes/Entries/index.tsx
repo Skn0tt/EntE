@@ -29,6 +29,7 @@ import Button from "material-ui/Button/Button";
 import CreateEntry from "./components/CreateEntry";
 import Table from "../../components/Table";
 import { UserId } from "ente-types";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
  * # Component Types
@@ -132,5 +133,5 @@ export class Entries extends React.Component<Props, State> {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(withRouter(Entries))
+  withStyles(styles)(withRouter(withErrorBoundary()(Entries)))
 );
