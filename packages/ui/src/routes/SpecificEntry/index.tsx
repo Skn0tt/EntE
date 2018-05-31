@@ -57,6 +57,7 @@ import {
   signEntryRequest
 } from "ente-redux";
 import lang from "ente-lang";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
  * # Component Types
@@ -301,4 +302,4 @@ const SpecificEntry = withRouter(
   )
 );
 
-export default SpecificEntry;
+export default withErrorBoundary()(SpecificEntry);

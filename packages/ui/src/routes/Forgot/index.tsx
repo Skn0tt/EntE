@@ -25,6 +25,7 @@ import withMobileDialog, {
 } from "material-ui/Dialog/withMobileDialog";
 import { setPasswordRequest } from "ente-redux";
 import { isValidPassword } from "ente-validator";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 interface RouteProps {
   token: string;
@@ -105,5 +106,5 @@ class Forgot extends React.Component<Props, State> {
 }
 
 export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(withMobileDialog<Props>()(Forgot))
+  withStyles(styles)(withMobileDialog<Props>()(withErrorBoundary()(Forgot)))
 );

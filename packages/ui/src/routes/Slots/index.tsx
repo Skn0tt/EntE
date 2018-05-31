@@ -22,6 +22,7 @@ import {
   Slot
 } from "ente-redux";
 import { UserId } from "ente-types";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 interface StateProps {
   slots: Slot[];
@@ -75,4 +76,6 @@ export class Slots extends React.Component<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Slots);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withErrorBoundary()(Slots)
+);

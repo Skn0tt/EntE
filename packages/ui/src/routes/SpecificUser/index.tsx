@@ -47,6 +47,7 @@ import lang from "ente-lang";
 import { updateUser } from "redux/src/api";
 import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
 import { WithWidthProps } from "material-ui/utils/withWidth";
+import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
  * # Helpers
@@ -260,4 +261,10 @@ export class SpecificUser extends React.PureComponent<Props, State> {
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(withStyles(styles)(withMobileDialog<Props>()(SpecificUser))));
+)(
+  withRouter(
+    withStyles(styles)(
+      withMobileDialog<Props>()(withErrorBoundary()(SpecificUser))
+    )
+  )
+);
