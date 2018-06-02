@@ -11,11 +11,13 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "precommit": "pretty-quick --staged",
+    "prepublish": "yarn test:unit && yarn test:e2e",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:ci":
       "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
-    "test:e2e": "BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e",
+    "test:e2e":
+      "docker-compose up -d && BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e && docker-compose down",
     "test:e2e:ci":
       "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
   },
