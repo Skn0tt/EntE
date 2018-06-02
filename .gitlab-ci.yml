@@ -13,6 +13,7 @@ stages:
   - test
   - docs
   - release
+  - deploy
 
 services:
 - name: docker:stable-dind
@@ -186,7 +187,7 @@ deploy_tagged:
 # Deploy
 trigger_deploy:
   image: tutum/curl
-  stage: release
+  stage: deploy
   variables:
     GIT_STRATEGY: none
   environment:
