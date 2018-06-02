@@ -1,6 +1,6 @@
 {
   "name": "ente-validator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Validation Logic for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/validator",
