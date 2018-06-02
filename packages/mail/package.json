@@ -4,7 +4,7 @@
   "description": "Mail for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/mail",
-  "author": "Simon Knott",
+  "private": true,
   "license": "AGPL-3.0-or-later",
   "author": {
     "email": "info@simonknott.de",
