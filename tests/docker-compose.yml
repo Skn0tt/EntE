@@ -27,14 +27,16 @@ services:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
-  
+
   redis:
     image: redis
 
   rotator:
-    image: "registry.gitlab.com/skn0tt/ente/rotator:${CI_COMMIT_REF_NAME}"
-    depends_on:
-      - redis
+    image: skn0tt/secret-rotator:v0.2.0
+    environment:
+      REDIS_HOSTNAME: redis
+      ROTATION_PERIOD: 900
+  
   ui:
     image: "registry.gitlab.com/skn0tt/ente/ui:${CI_COMMIT_REF_NAME}"
     restart: always
