@@ -1,6 +1,6 @@
 {
   "name": "ente-mail",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Mail for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/mail",
@@ -12,7 +12,7 @@
     "url": "https://simonknott.de"
   },
   "dependencies": {
-    "ente-types": "^0.1.1",
+    "ente-types": "^0.1.2",
     "handlebars": "^4.0.11",
     "mjml": "^4.0.3",
     "moment": "^2.22.0"

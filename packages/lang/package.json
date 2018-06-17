@@ -1,6 +1,6 @@
 {
   "name": "ente-lang",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Translations for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/lang",
