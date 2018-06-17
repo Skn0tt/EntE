@@ -11,7 +11,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "preversion": "yarn test:unit && yarn test:e2e",
+    "prepublish": "yarn test:unit && yarn test:e2e",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:ci":
