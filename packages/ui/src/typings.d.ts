@@ -6,7 +6,6 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-declare module "material-ui-pickers";
 declare module "raven-for-redux";
 declare module "react-loadable";
 declare module "raven-js";

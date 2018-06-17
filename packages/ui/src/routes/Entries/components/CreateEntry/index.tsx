@@ -17,7 +17,8 @@ import {
 import styles from "./styles";
 
 import { Action } from "redux";
-import { DatePicker } from "material-ui-pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
 
 import { withRouter, RouteComponentProps } from "react-router";
 import {
@@ -257,29 +258,33 @@ class CreateEntry extends React.Component<Props, State> {
               <Grid item>
                 <Grid container direction="row">
                   <Grid item xs={this.state.isRange ? 6 : 12}>
-                    <DatePicker
-                      helperText="Von"
-                      leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
-                      rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
-                      error={!this.dateValid()}
-                      value={this.state.date}
-                      autoOk
-                      onChange={this.handleChangeDate}
-                      minDate={this.minDate}
-                      fullWidth
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        helperText="Von"
+                        leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
+                        rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
+                        error={!this.dateValid()}
+                        value={this.state.date}
+                        autoOk
+                        onChange={this.handleChangeDate}
+                        minDate={this.minDate}
+                        fullWidth
+                      />
+                    </MuiPickersUtilsProvider>
                   </Grid>
                   {this.state.isRange && (
                     <Grid item xs={6}>
-                      <DatePicker
-                        helperText="Bis"
-                        error={!this.dateValid()}
-                        value={this.state.dateEnd}
-                        autoOk
-                        onChange={this.handleChangeDateEnd}
-                        minDate={this.state.date}
-                        fullWidth
-                      />
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          helperText="Bis"
+                          error={!this.dateValid()}
+                          value={this.state.dateEnd}
+                          autoOk
+                          onChange={this.handleChangeDateEnd}
+                          minDate={this.state.date}
+                          fullWidth
+                        />
+                      </MuiPickersUtilsProvider>
                     </Grid>
                   )}
                 </Grid>
