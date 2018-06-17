@@ -2,12 +2,12 @@ FROM node:9 as build
 WORKDIR /usr/src/app
 
 ADD package.json yarn.lock tsconfig.json lerna.json ./
-ADD packages/ui/package.json ./packages/ui/
-ADD packages/types/package.json ./packages/types/
-ADD packages/redux/package.json ./packages/redux/
-ADD packages/lang/package.json ./packages/lang/
-ADD packages/validator/package.json ./packages/validator/
-ADD packages/parser/package.json ./packages/parser/
+ADD packages/ui/package.json ./packages/ui/package.json
+ADD packages/types/package.json ./packages/types/package.json
+ADD packages/redux/package.json ./packages/redux/package.json
+ADD packages/lang/package.json ./packages/lang/package.json
+ADD packages/validator/package.json ./packages/validator/package.json
+ADD packages/parser/package.json ./packages/parser/package.json
 
 RUN yarn --frozen-lockfile
 RUN yarn lerna bootstrap

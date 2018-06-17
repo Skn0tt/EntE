@@ -1,23 +1,22 @@
 FROM node:9
 WORKDIR /usr/src/app
 
-RUN yarn global add nodemon
-
 ADD package.json yarn.lock tsconfig.json lerna.json ./
-ADD packages/api/package.json ./packages/api/
-ADD packages/types/package.json ./packages/types/
-ADD packages/mail/package.json ./packages/mail/
-ADD packages/validator/package.json ./packages/validator/
-ADD packages/db/package.json ./packages/db/
+ADD packages/api/package.json ./packages/api/package.json
+ADD packages/types/package.json ./packages/types/package.json
+ADD packages/mail/package.json ./packages/mail/package.json
+ADD packages/validator/package.json ./packages/validator/package.json
+ADD packages/db/package.json ./packages/db/package.json
 
 RUN yarn --frozen-lockfile
 RUN yarn lerna bootstrap
+RUN yarn global add nodemon
 
-COPY packages/api ./packages/api
-COPY packages/types ./packages/types
-COPY packages/mail ./packages/mail
-COPY packages/validator ./packages/validator
-COPY packages/db ./packages/db
+ADD packages/api ./packages/api
+ADD packages/types ./packages/types
+ADD packages/mail ./packages/mail
+ADD packages/validator ./packages/validator
+ADD packages/db ./packages/db
 
 HEALTHCHECK CMD curl --fail http://localhost:3000/status || exit 1
 
