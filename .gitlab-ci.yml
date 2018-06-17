@@ -180,6 +180,8 @@ deploy_tagged:
     - /^v\d\.\d\.\d/
   variables:
     GIT_STRATEGY: none
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
     - docker pull $CONTAINER_UI_TEST_IMAGE
     - docker pull $CONTAINER_API_TEST_IMAGE
