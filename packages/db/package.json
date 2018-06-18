@@ -1,6 +1,6 @@
 {
   "name": "ente-db",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "DB actions for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/db",
@@ -14,8 +14,8 @@
   "dependencies": {
     "bcrypt": "^2.0.0",
     "class-validator": "^0.8.5",
-    "ente-types": "^0.1.3",
-    "ente-validator": "^0.1.3",
+    "ente-types": "^0.1.5",
+    "ente-validator": "^0.1.5",
     "lodash": "^4.17.5",
     "mysql": "^2.15.0",
     "reflect-metadata": "^0.1.12",
