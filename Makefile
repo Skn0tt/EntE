@@ -7,10 +7,10 @@ dev:
 build-docker: ente-api ente-ui nginx-proxy
 
 ente-api:
-	$(MAKE) -C packages/api build
+	$(MAKE) -C packages/ente-api build
 
 ente-ui:
-	$(MAKE) -C packages/ui build
+	$(MAKE) -C packages/ente-ui build
 
 nginx-proxy:
 	$(MAKE) -C packages/nginx-proxy build

@@ -8,7 +8,17 @@
   },
   "repository": "https://gitlab.com/Skn0tt/EntE",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/ente-api",
+    "packages/ente-db",
+    "packages/ente-lang",
+    "packages/ente-mail",
+    "packages/ente-parser",
+    "packages/ente-redux",
+    "packages/ente-types",
+    "packages/ente-ui",
+    "packages/ente-validator"
+  ],
   "scripts": {
     "precommit": "pretty-quick --staged",
     "preversion": "yarn test:unit && yarn test:e2e",
