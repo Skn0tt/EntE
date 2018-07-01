@@ -27,9 +27,11 @@ import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 import Button from "material-ui/Button/Button";
 import CreateEntry from "./components/CreateEntry";
-import Table from "../../components/Table";
+import createTable from "../../components/Table";
 import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
+
+const EntriesTable = createTable<Entry>();
 
 /**
  * # Component Types
@@ -84,7 +86,7 @@ export class Entries extends React.Component<Props, State> {
         />
 
         {/* Main */}
-        <Table
+        <EntriesTable
           headers={[
             "Name",
             "Datum",
@@ -95,10 +97,10 @@ export class Entries extends React.Component<Props, State> {
             "Eltern"
           ]}
           items={entries}
-          keyExtractor={(entry: Entry) => entry.get("_id")}
+          keyExtractor={entry => entry.get("_id")}
           trueElement={<SignedAvatar />}
           falseElement={<UnsignedAvatar />}
-          cellExtractor={(entry: Entry) => [
+          cellExtractor={entry => [
             getUser(entry.get("student")).get("displayname"),
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
@@ -107,9 +109,7 @@ export class Entries extends React.Component<Props, State> {
             entry.get("signedManager"),
             entry.get("signedParent")
           ]}
-          onClick={(entry: Entry) =>
-            history.push(`/entries/${entry.get("_id")}`)
-          }
+          onClick={entry => history.push(`/entries/${entry.get("_id")}`)}
         />
 
         {/* FAB */}

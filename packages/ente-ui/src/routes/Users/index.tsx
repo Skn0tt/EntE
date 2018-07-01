@@ -12,12 +12,14 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
 import CreateUser from "./components/CreateUser";
-import Table from "../../components/Table";
+import createTable from "../../components/Table";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Button } from "material-ui";
 import { Add as AddIcon } from "material-ui-icons";
 import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
 import withErrorBoundary from "../../components/withErrorBoundary";
+
+const UserTable = createTable<User>();
 
 /**
  * # Component Types
@@ -69,17 +71,17 @@ export class Users extends React.PureComponent<Props, State> {
         />
 
         {/* Main */}
-        <Table
+        <UserTable
           headers={["Username", "Displayname", "Email", "Role"]}
           items={users}
-          keyExtractor={(user: User) => user.get("_id")}
-          cellExtractor={(user: User) => [
+          keyExtractor={user => user.get("_id")}
+          cellExtractor={user => [
             user.get("username")!,
             user.get("displayname")!,
             user.get("email")!,
             user.get("role")!
           ]}
-          onClick={(user: User) => history.push(`/users/${user.get("_id")}`)}
+          onClick={user => history.push(`/users/${user.get("_id")}`)}
         />
 
         {/* FAB */}
