@@ -5,7 +5,15 @@
     "baseUrl": "./packages",
     "skipLibCheck": true, // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16825,
     "paths": {
-      "ente-*": ["./*/src"]
+      "ente-api": ["./ente-api/src"],
+      "ente-db": ["./ente-db/src"],
+      "ente-lang": ["./ente-lang/src"],
+      "ente-mail": ["./ente-mail/src"],
+      "ente-parser": ["./ente-parser/src"],
+      "ente-redux": ["./ente-redux/src"],
+      "ente-types": ["./ente-types/src"],
+      "ente-ui": ["./ente-ui/src"],
+      "ente-validator": ["./ente-validator/src"]
     },
     "experimentalDecorators": true
 

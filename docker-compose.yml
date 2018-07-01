@@ -9,7 +9,7 @@ services:
       - MYSQL_DATABASE=ente
       - MYSQL_USER=ente
       - MYSQL_PASSWORD=root
-    
+
   api:
     image: registry.gitlab.com/skn0tt/ente/api
     restart: always
@@ -27,7 +27,7 @@ services:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
-  
+
   redis:
     image: redis
 
@@ -45,7 +45,7 @@ services:
       - VIRTUAL_PATH=/
       - SENTRY_DSN_UI
       - CONFIG_VARS=SENTRY_DSN_UI
-    
+
   nginx-proxy:
     image: registry.gitlab.com/skn0tt/ente/nginx-proxy
     ports:

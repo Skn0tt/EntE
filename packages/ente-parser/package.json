@@ -1,0 +1,18 @@
+{
+  "name": "ente-parser",
+  "version": "0.1.5",
+  "description": "CSV Parser for EntE",
+  "main": "src/index.ts",
+  "repository": "gitlab.com/skn0tt/EntE/master/packages/ente-parser",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "email": "info@simonknott.de",
+    "name": "Simon Knott",
+    "url": "https://simonknott.de"
+  },
+  "private": true,
+  "dependencies": {
+    "ente-types": "^0.1.5",
+    "ente-validator": "^0.1.5"
+  }
+}

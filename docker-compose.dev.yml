@@ -8,15 +8,15 @@ services:
 
   ui:
     volumes:
-      - ./packages/ui/dist/:/app/
+      - ./packages/ente-ui/dist/:/app/
     
   api:
     ports:
       - 5555:5555
-    command: nodemon --watch 'packages/**/src/**/*.ts' --exec 'ts-node' packages/api/src/index.ts
+    command: nodemon --watch 'packages/**/src/**/*.ts' --exec 'ts-node' packages/ente-api/src/index.ts
     volumes:
-      - ./packages/api/src:/usr/src/app/packages/api/src
-      - ./packages/validator/src:/usr/src/app/packages/validator/src
-      - ./packages/types/src:/usr/src/app/packages/types/src
-      - ./packages/mail/src:/usr/src/app/packages/mail/src
-      - ./packages/db/src:/usr/src/app/packages/db/src
+      - ./packages/ente-api/src:/usr/src/app/packages/ente-api/src
+      - ./packages/ente-validator/src:/usr/src/app/packages/ente-validator/src
+      - ./packages/ente-types/src:/usr/src/app/packages/ente-types/src
+      - ./packages/ente-mail/src:/usr/src/app/packages/ente-mail/src
+      - ./packages/ente-db/src:/usr/src/app/packages/ente-db/src

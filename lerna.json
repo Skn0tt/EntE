@@ -2,7 +2,15 @@
   "lerna": "2.9.0",
   "useWorkspaces": true,
   "packages": [
-    "packages/*"
+    "packages/ente-api",
+    "packages/ente-db",
+    "packages/ente-lang",
+    "packages/ente-mail",
+    "packages/ente-parser",
+    "packages/ente-redux",
+    "packages/ente-types",
+    "packages/ente-ui",
+    "packages/ente-validator"
   ],
   "version": "0.1.5",
   "npmClient": "yarn"

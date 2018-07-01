@@ -16,4 +16,4 @@ doc/out/Logo[[:space:]]Mit[[:space:]]Schrift@0.5x.png filter=lfs diff=lfs merge=
 doc/out/Square[[:space:]]Logo.png filter=lfs diff=lfs merge=lfs -text
 doc/Paper/Screenshot-entries.png filter=lfs diff=lfs merge=lfs -text
 doc/out/Logo[[:space:]]mit[[:space:]]Schrift[[:space:]]Artboard.png filter=lfs diff=lfs merge=lfs -text
-packages/ui/src/res/img/Diggie.png filter=lfs diff=lfs merge=lfs -text
+packages/ente-ui/src/res/img/Diggie.png filter=lfs diff=lfs merge=lfs -text

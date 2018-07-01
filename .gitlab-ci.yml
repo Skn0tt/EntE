@@ -33,7 +33,7 @@ build:API:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd packages/api
+    - cd packages/ente-api
     - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
     - docker push $CONTAINER_API_TEST_IMAGE
 
@@ -48,7 +48,7 @@ build:UI:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - cd packages/ui
+    - cd packages/ente-ui
     - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
     - docker push $CONTAINER_UI_TEST_IMAGE
 
