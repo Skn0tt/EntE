@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import styles from "./styles";
+import styles from "./Table.styles";
 import withStyles from "material-ui/styles/withStyles";
 import {
   TableCell,
@@ -190,4 +190,7 @@ export class Table<T> extends React.PureComponent<Props<T>, State> {
   }
 }
 
-export default withStyles(styles)(Table);
+const createTable = <T extends object>() =>
+  withStyles(styles)(class extends Table<T> {});
+
+export default createTable;
