@@ -7,18 +7,18 @@
  */
 
 import * as React from "react";
-import { Table, changeSearch, changeSortField } from "./index";
+import createTable, { changeSearch, changeSortField } from "./Table";
 import { shallow } from "enzyme";
 
 describe("Table", () => {
   const onClick = jest.fn();
 
-  type T = {
+  type Person = {
     name: string;
     alter: number;
   };
 
-  const items: T[] = [
+  const items: Person[] = [
     {
       name: "Bernd",
       alter: 16
@@ -29,13 +29,15 @@ describe("Table", () => {
     }
   ];
 
+  const PersonTable = createTable<Person>();
+
   const comp = shallow(
-    <Table
-      cellExtractor={(i: T) => [i.name, i.alter]}
+    <PersonTable
+      cellExtractor={i => [i.name, i.alter]}
       headers={["Name", "Alter"]}
       items={items}
       classes={{}}
-      keyExtractor={(i: T) => i.name}
+      keyExtractor={i => i.name}
     />
   );
 

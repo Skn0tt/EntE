@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <WithStyles(Table)
+    cellExtractor={[Function]}
+    classes={Object {}}
+    headers={
+      Array [
+        "Name",
+        "Alter",
+      ]
+    }
+    items={
+      Array [
+        Object {
+          "alter": 16,
+          "name": "Bernd",
+        },
+        Object {
+          "alter": 17,
+          "name": "Volker",
+        },
+      ]
+    }
+    keyExtractor={[Function]}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "cellExtractor": [Function],
+      "classes": Object {
+        "fab": "Table-fab-2",
+        "searchBar": "Table-searchBar-1",
+        "table": "Table-table-3",
+      },
+      "headers": Array [
+        "Name",
+        "Alter",
+      ],
+      "items": Array [
+        Object {
+          "alter": 16,
+          "name": "Bernd",
+        },
+        Object {
+          "alter": 17,
+          "name": "Volker",
+        },
+      ],
+      "keyExtractor": [Function],
+    },
+    "ref": null,
+    "rendered": null,
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "cellExtractor": [Function],
+        "classes": Object {
+          "fab": "Table-fab-2",
+          "searchBar": "Table-searchBar-1",
+          "table": "Table-table-3",
+        },
+        "headers": Array [
+          "Name",
+          "Alter",
+        ],
+        "items": Array [
+          Object {
+            "alter": 16,
+            "name": "Bernd",
+          },
+          Object {
+            "alter": 17,
+            "name": "Volker",
+          },
+        ],
+        "keyExtractor": [Function],
+      },
+      "ref": null,
+      "rendered": null,
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

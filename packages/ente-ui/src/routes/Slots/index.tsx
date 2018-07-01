@@ -12,7 +12,7 @@ import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Action } from "redux";
-import Table from "../../components/Table";
+import createTable from "../../components/Table";
 import {
   getSlotsRequest,
   getUser,
@@ -23,6 +23,8 @@ import {
 } from "ente-redux";
 import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
+
+const SlotsTable = createTable<Slot>();
 
 interface StateProps {
   slots: Slot[];
@@ -57,13 +59,13 @@ export class Slots extends React.Component<Props> {
     const { getUser, slots } = this.props;
 
     return (
-      <Table
+      <SlotsTable
         headers={["Name", "Datum", "Von", "Bis", "Signiert", "Lehrer"]}
         items={slots}
-        keyExtractor={(slot: Slot) => slot.get("_id")}
+        keyExtractor={slot => slot.get("_id")}
         trueElement={<SignedAvatar />}
         falseElement={<UnsignedAvatar />}
-        cellExtractor={(slot: Slot) => [
+        cellExtractor={slot => [
           getUser(slot.get("student")).get("displayname"),
           slot.get("date").toLocaleDateString(),
           slot.get("hour_from"),
