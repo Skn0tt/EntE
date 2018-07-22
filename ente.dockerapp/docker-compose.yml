@@ -1,17 +1,8 @@
-version: '2'
+version: '3.6'
 
 services:
-
-  mysql:
-    image: mariadb
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=ente
-      - MYSQL_USER=ente
-      - MYSQL_PASSWORD=root
-    
   api:
-    image: "registry.gitlab.com/skn0tt/ente/api:${CI_COMMIT_SHA}"
+    image: registry.gitlab.com/skn0tt/ente/api:${API_VERSION}
     restart: on-failure
     depends_on:
       - mysql
@@ -32,6 +23,14 @@ services:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
 
+  mysql:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ente
+      - MYSQL_USER=ente
+      - MYSQL_PASSWORD=root
+
   railmail:
     image: skn0tt/railmail:v0.3.0
     restart: on-failure
@@ -42,28 +41,29 @@ services:
       - SMTP_PASSWORD
       - SMTP_SENDER
 
-  redis:
-    image: redis
-
   rotator:
     image: skn0tt/secret-rotator:v0.2.0
     depends_on:
       - redis
+    restart: on-failure
     environment:
       REDIS_HOSTNAME: redis
       ROTATION_PERIOD: 900
-  
+
+  redis:
+    image: redis:4.0.10
+
   ui:
-    image: "registry.gitlab.com/skn0tt/ente/ui:${CI_COMMIT_SHA}"
-    restart: always
+    image: registry.gitlab.com/skn0tt/ente/ui:${UI_VERSION}
+    restart: on-failure
     environment:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
       - SENTRY_DSN_UI
       - CONFIG_VARS=SENTRY_DSN_UI
-    
+
   nginx-proxy:
-    image: "registry.gitlab.com/skn0tt/ente/nginx-proxy:${CI_COMMIT_SHA}"
+    image: registry.gitlab.com/skn0tt/ente/nginx-proxy:${NGINX_PROXY_VERSION}
     ports:
       - 80:80
       - 443:443
