@@ -85,7 +85,7 @@ test:unit:
 
 # e2e Tests
 test:e2e:
-  image: circleci/node:9-browsers
+  image: skn0tt/node-browsers-docker-app
   stage: test
   only:
     - master
@@ -94,21 +94,13 @@ test:e2e:
     paths:
       - screenshots/
       - e2e.xml
-  variables:
-    HOST: dind
-    SMTP_HOST: smtp.ethereal.email
-    SMTP_PORT: "587"
-    SMTP_USER: louf4yh5lnkyg2h3@ethereal.email
-    SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
-    LETSENCRYPT_EMAIL: simoknott@gmail.com
-    COMPOSE_PROJECT_NAME: ente
-    BASE_URL: http://dind:80
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - yarn
   script:
-    - docker-compose -f tests/docker-compose.yml up -d
+    - docker-app render -f tests/e2eConfig.yml | docker-compose up -d
     - tests/e2e.sh
+    - docker-app render -f tests/e2eConfig.yml | docker-compose down
 
 # SAST
 sast:
@@ -189,6 +181,17 @@ pages:
     paths:
       - public
     expire_in: 30 days
+
+deploy_docker-app:
+  image: skn0tt/docker-app
+  stage: release
+  only:
+    - master
+  only:
+    - /^v\d\.\d\.\d/
+  script:
+    - echo $DOCKER_HUB_PASSWORD | docker login ---username skn0tt --password-stdin
+    - docker-app push --tag $CI_COMMIT_TAG
 
 deploy_tagged:
   image: docker

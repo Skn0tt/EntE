@@ -1,0 +1,8 @@
+HOST: dind
+SMTP_HOST: smtp.ethereal.email
+SMTP_PORT: "587"
+SMTP_USERNAME: louf4yh5lnkyg2h3@ethereal.email
+SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
+LETSENCRYPT_EMAIL: simoknott@gmail.com
+COMPOSE_PROJECT_NAME: ente
+BASE_URL: http://dind:80

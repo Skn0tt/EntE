@@ -1,0 +1,10 @@
+version: 0.2.1
+name: EntE
+description: "EntE: Digital Excuse Workflow for Schools."
+namespace: skn0tt
+maintainers:
+  - name: skn0tt
+    email: info@simonknott.de
+targets:
+  swarm: true
+  kubernetes: true

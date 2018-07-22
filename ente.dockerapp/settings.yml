@@ -1,0 +1,11 @@
+COMPOSE_PROJECT_NAME: ente
+HOST: localhost
+LETSENCRYPT_EMAIL: simoknott@gmail.com
+SMTP_HOST: smtp.ethereal.email
+SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
+SMTP_PORT: "587"
+SMTP_SENDER: EntE@simonknott.de
+SMTP_USERNAME: louf4yh5lnkyg2h3@ethereal.email
+API_VERSION: latest
+UI_VERSION: latest
+NGINX_PROXY_VERSION: latest
