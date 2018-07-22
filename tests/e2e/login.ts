@@ -7,9 +7,9 @@
  */
 
 import { ClientFunction } from "testcafe";
-import * as config from "../e2eConfig";
+import config from "../e2eConfig";
 
-const { baseUrl } = config.get();
+const { baseUrl } = config;
 
 fixture("Login Form").page(baseUrl);
 
