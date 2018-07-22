@@ -98,9 +98,10 @@ test:e2e:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
     - yarn
   script:
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose up -d
+    - export COMPOSE_FILE=$(docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA)
+    - echo COMPOSE_FILE | docker-compose -f - up -d
     - tests/e2e.sh
-    - docker-app render -f tests/e2eConfig.yml | docker-compose down
+    - echo COMPOSE_FILE | docker-compose -f - down
 
 # SAST
 sast:
