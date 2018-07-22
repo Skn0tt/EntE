@@ -17,7 +17,6 @@ import * as helmet from "helmet";
 import * as Raven from "raven";
 
 // Setup
-import { checkEmail } from "./helpers/mail";
 import setupDB from "ente-db";
 import config from "./helpers/config";
 
@@ -127,8 +126,6 @@ app.use(
 if (conf.production) {
   cron();
 }
-
-checkEmail();
 
 app.listen(app.get("port"), () => {
   console.log(
