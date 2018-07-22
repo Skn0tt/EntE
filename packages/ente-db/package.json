@@ -1,6 +1,6 @@
 {
   "name": "ente-db",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "DB actions for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/ente-db",
