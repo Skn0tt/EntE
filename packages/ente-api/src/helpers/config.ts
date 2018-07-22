@@ -10,12 +10,8 @@ interface Config {
   production: boolean;
   host: string;
   DSN?: string;
-  smtp: {
-    host: string;
-    port: number;
-    user: string;
-    password: string;
-  };
+  rotatorHost: string;
+  railmailHost: string;
 }
 
 let config: Config | null = null;
@@ -25,12 +21,8 @@ export const createFromEnv = () => {
     host: process.env.HOST!,
     production: process.env.NODE_ENV === "production",
     DSN: process.env.SENTRY_DSN_API,
-    smtp: {
-      host: process.env.SMTP_HOST!,
-      port: +process.env.SMTP_PORT!,
-      user: process.env.SMTP_USER!,
-      password: process.env.SMTP_PASSWORD!
-    }
+    rotatorHost: process.env.ROTATOR_HOST,
+    railmailHost: process.env.RAILMAIL_HOST
   };
 
   config = env;

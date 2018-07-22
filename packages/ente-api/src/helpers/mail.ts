@@ -6,26 +6,33 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import * as mail from "nodemailer";
-import * as Handlebars from "handlebars";
 import * as templates from "ente-mail";
-import { Roles, IEntry, ISlot } from "ente-types";
+import { IEntry, ISlot } from "ente-types";
 import { User, Slot } from "ente-db";
 import * as _ from "lodash";
 import { getConfig } from "./config";
+import Axios from "axios";
 
 const config = getConfig();
 
-const transporter = mail.createTransport({
-  host: config.smtp.host,
-  port: config.smtp.port,
-  auth: {
-    user: config.smtp.user,
-    pass: config.smtp.password
-  }
+const baseUrl = `https://${config.host}`;
+
+type Envelope = {
+  subject: string;
+  recipients: string[];
+  body: {
+    text?: string;
+    html?: string;
+  };
+};
+
+const railmailClient = Axios.create({
+  baseURL: "http://" + config.railmailHost
 });
 
-const baseUrl = `https://${config.host}`;
+const sendMail = async (e: Envelope) => {
+  await railmailClient.post("/mail", e);
+};
 
 /**
  * ## Handlebars Templates
@@ -46,14 +53,15 @@ export const dispatchSignRequest = async (entry: IEntry) => {
       return;
     }
 
-    const info = await transporter.sendMail({
-      html,
+    await sendMail({
       subject,
-      to: recipients,
-      from: "EntE@simonknott.de"
+      recipients,
+      body: {
+        html
+      }
     });
 
-    console.log("Mail: Dispatched SignRequest to", info.accepted);
+    console.log("Mail: Dispatched SignRequest to", recipients);
   } catch (error) {
     throw error;
   }
@@ -75,20 +83,20 @@ export const dispatchSignedInformation = async (entry: IEntry) => {
       return;
     }
 
-    const info = await transporter.sendMail({
-      html,
+    await sendMail({
       subject,
-      to: recipients,
-      from: "EntE@simonknott.de"
+      recipients,
+      body: {
+        html
+      }
     });
 
-    console.log("Mail: Dispatched SignedInformation to", info.accepted);
+    console.log("Mail: Dispatched SignedInformation to", recipients);
   } catch (error) {
     throw error;
   }
 };
 
-const twoWeeksBefore: Date = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 export const dispatchWeeklySummary = async (): Promise<void> => {
   const slots: ISlot[] = await Slot.allTwoWeeksBefore();
   const groups = _.groupBy(slots, s => s.teacher);
@@ -117,13 +125,15 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
       throw new Error(`Teacher ${teacherId} not found`);
     }
 
-    const info = await transporter.sendMail({
-      html,
+    await sendMail({
       subject,
-      to: teacher.email,
-      from: "EntE@simonknott.de"
+      recipients: [teacher.email],
+      body: {
+        html
+      }
     });
-    console.log("Mail: Dispatched WeeklySummary to", info.accepted);
+
+    console.log("Mail: Dispatched WeeklySummary to", teacher.email);
   });
 };
 
@@ -138,13 +148,15 @@ export const dispatchPasswortResetLink = async (
       username
     );
 
-    const info = await transporter.sendMail({
-      html,
+    await sendMail({
       subject,
-      to: email,
-      from: "EntE@simonknott.de"
+      recipients: [email],
+      body: {
+        html
+      }
     });
-    console.log("Mail: Dispatched PasswortResetLink to", info.accepted);
+
+    console.log("Mail: Dispatched PasswortResetLink to", email);
   } catch (error) {
     throw error;
   }
@@ -157,23 +169,16 @@ export const dispatchPasswortResetSuccess = async (
   try {
     const { html, subject } = templates.PasswordResetSuccess(username);
 
-    const info = await transporter.sendMail({
-      html,
+    await sendMail({
       subject,
-      to: email,
-      from: "EntE@simonknott.de"
+      recipients: [email],
+      body: {
+        html
+      }
     });
-    console.log("Mail: Dispatched PasswortResetSuccess to", info.accepted);
+
+    console.log("Mail: Dispatched PasswortResetSuccess to", email);
   } catch (error) {
     console.error(error);
-  }
-};
-
-export const checkEmail = async (): Promise<void> => {
-  try {
-    const result = await transporter.verify();
-    console.log("SMTP Connection Works.");
-  } catch (error) {
-    console.log("Error: SMTP couldn't connect.");
   }
 };

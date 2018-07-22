@@ -12,34 +12,46 @@ services:
 
   api:
     image: registry.gitlab.com/skn0tt/ente/api
-    restart: always
+    restart: on-failure
     depends_on:
       - mysql
       - redis
+      - railmail
       - rotator
     environment:
       - HOST
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USER
-      - SMTP_PASSWORD
+      - RAILMAIL_HOST=railmail
+      - ROTATOR_HOST=rotator
       - SENTRY_DSN_API
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/
+
+  railmail:
+    image: skn0tt/railmail:v0.3.0
+    restart: on-failure
+    environment:
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_SENDER
 
   redis:
     image: redis
 
   rotator:
     image: skn0tt/secret-rotator:v0.2.0
+    depends_on:
+      - redis
+    restart: on-failure
     environment:
       REDIS_HOSTNAME: redis
       ROTATION_PERIOD: 900
 
   ui:
     image: registry.gitlab.com/skn0tt/ente/ui
-    restart: always
+    restart: on-failure
     environment:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
