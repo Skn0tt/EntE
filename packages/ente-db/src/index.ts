@@ -30,7 +30,9 @@ interface Config {
 }
 
 const setup = async (config: Partial<Config>) => {
-  await createConnection({ ...defaultConfig, ...config });
+  const connection = await createConnection({ ...defaultConfig, ...config });
+
+  await connection.synchronize();
 
   await User.createAdmin();
 };
