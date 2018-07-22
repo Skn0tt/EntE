@@ -12,6 +12,13 @@ interface Config {
   DSN?: string;
   rotatorHost: string;
   railmailHost: string;
+  db: {
+    host: string;
+    port: number;
+    username: string;
+    password: string;
+    database: string;
+  };
 }
 
 let config: Config | null = null;
@@ -22,7 +29,14 @@ export const createFromEnv = () => {
     production: process.env.NODE_ENV === "production",
     DSN: process.env.SENTRY_DSN_API,
     rotatorHost: process.env.ROTATOR_HOST,
-    railmailHost: process.env.RAILMAIL_HOST
+    railmailHost: process.env.RAILMAIL_HOST,
+    db: {
+      host: process.env.MYSQL_HOST,
+      port: +process.env.MYSQL_PORT,
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE
+    }
   };
 
   config = env;
