@@ -23,6 +23,11 @@ services:
       - RAILMAIL_HOST=railmail
       - ROTATOR_HOST=rotator
       - SENTRY_DSN_API
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=ente
+      - MYSQL_USERNAME=ente
+      - MYSQL_PASSWORD=root
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/api/

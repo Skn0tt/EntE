@@ -70,7 +70,7 @@ if (conf.production) {
 }
 
 // DB
-setupDB({ host: "mysql", password: "root", username: "ente", database: "ente" })
+setupDB(conf.db)
   .then(() => console.log("Established connection to DB."))
   .catch(error => console.error("Couldn't connect to DB!", error));
 
