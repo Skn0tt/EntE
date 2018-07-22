@@ -23,7 +23,8 @@ A small overview:
 | ente-db        | Database Access Code                               |
 | ente-lang      | Translations for the Frontend                      |
 | ente-mail      | Email-Templates                                    |
-| ente-parse     | Parser for CSV user imports to JSON representation |
+| ente-parser    | Parser for CSV user imports to JSON representation |
+| ente-redux     | state management for frontend                      |
 | ente-ui        | React SPA that you see in the browser              |
 | ente-validator | Validates various data inputs                      |
 
