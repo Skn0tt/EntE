@@ -72,7 +72,10 @@ if (conf.production) {
 // DB
 setupDB(conf.db)
   .then(() => console.log("Established connection to DB."))
-  .catch(error => console.error("Couldn't connect to DB!", error));
+  .catch(error => {
+    console.error("Couldn't connect to DB!", error);
+    process.exit(1);
+  });
 
 // Security Measures
 if (conf.production) {
