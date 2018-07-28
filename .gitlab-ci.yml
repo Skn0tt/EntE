@@ -183,7 +183,16 @@ pages:
       - public
     expire_in: 30 days
 
-deploy_docker-app:
+deploy_docker-app_master:
+  image: skn0tt/docker-app
+  stage: release
+  only:
+    - master
+  script:
+    - echo $DOCKER_HUB_PASSWORD | docker login ---username skn0tt --password-stdin
+    - docker-app push --tag $CI_COMMIT_REF_SLUG
+
+deploy_docker-app_tag:
   image: skn0tt/docker-app
   stage: release
   only:
