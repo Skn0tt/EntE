@@ -7,5 +7,5 @@
  */
 
 export default {
-  baseUrl: "http://dind:80"
+  baseUrl: process.env.BASE_URL
 };
