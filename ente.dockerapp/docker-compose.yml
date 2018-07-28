@@ -10,6 +10,9 @@ services:
       - railmail
       - rotator
     environment:
+      - NODE_ENV="production"
+      - LETSENCRYPT_HOST=${HOST}
+      - LETSENCRYPT_EMAIL
       - HOST
       - RAILMAIL_HOST=railmail
       - ROTATOR_HOST=rotator
@@ -57,6 +60,8 @@ services:
     image: registry.gitlab.com/skn0tt/ente/ui:${UI_VERSION}
     restart: on-failure
     environment:
+      - LETSENCRYPT_HOST=${HOST}
+      - LETSENCRYPT_EMAIL
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PATH=/
       - SENTRY_DSN_UI
@@ -72,5 +77,23 @@ services:
     depends_on:
       - api
       - ui
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "le_certs:/etc/nginx/certs"
+      - "le_vhost:/etc/nginx/vhost.d"
+      - "le_html:/usr/share/nginx/html"
+
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - "le_certs:/etc/nginx/certs"
+      - "le_vhost:/etc/nginx/vhost.d"
+      - "le_html:/usr/share/nginx/html"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+volumes:
+  le_certs:
+  le_vhost:
+  le_html:
