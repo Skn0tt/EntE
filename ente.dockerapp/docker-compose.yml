@@ -93,7 +93,7 @@ services:
       - nginx-proxy
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "le_certs:/etc/nginx/certs:ro"
+      - "le_certs:/etc/nginx/certs"
       - "le_vhost:/etc/nginx/vhost.d"
       - "le_html:/usr/share/nginx/html"
 
