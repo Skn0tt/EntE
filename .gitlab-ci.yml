@@ -2,10 +2,13 @@ variables:
   CONTAINER_BASE: registry.gitlab.com/skn0tt/ente
   CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_SHA
   CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_TAG
+  CONTAINER_UI_REF_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_SLUG
   CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_SHA
   CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_TAG
+  CONTAINER_API_REF_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_SLUG
   CONTAINER_PROXY_TEST_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_SHA
   CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_TAG
+  CONTAINER_PROXY_REF_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_REF_SLUG
   DOCKER_HOST: dind:2375
 
 stages:
@@ -190,6 +193,26 @@ deploy_docker-app:
   script:
     - echo $DOCKER_HUB_PASSWORD | docker login ---username skn0tt --password-stdin
     - docker-app push --tag $CI_COMMIT_TAG
+
+deploy_master:
+  image: docker
+  stage: release
+  only:
+    - master
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - docker pull $CONTAINER_UI_TEST_IMAGE
+    - docker pull $CONTAINER_API_TEST_IMAGE
+    - docker pull $CONTAINER_PROXY_TEST_IMAGE
+    - docker tag $CONTAINER_UI_TEST_IMAGE $CONTAINER_UI_REF_IMAGE
+    - docker tag $CONTAINER_API_TEST_IMAGE $CONTAINER_API_REF_IMAGE
+    - docker tag $CONTAINER_PROXY_TEST_IMAGE $CONTAINER_PROXY_REF_IMAGE
+    - docker push $CONTAINER_UI_REF_IMAGE
+    - docker push $CONTAINER_API_REF_IMAGE
+    - docker push $CONTAINER_PROXY_REF_IMAGE
 
 deploy_tagged:
   image: docker
