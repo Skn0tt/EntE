@@ -20,9 +20,8 @@
     "packages/ente-validator"
   ],
   "scripts": {
-    "version": "./scripts/dockerapp-version.js update",
     "precommit": "pretty-quick --staged",
-    "preversion": "yarn test:unit",
+    "preversion": "yarn test:unit && ./scripts/dockerapp-version.js update",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:ci":
