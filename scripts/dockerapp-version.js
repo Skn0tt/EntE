@@ -36,7 +36,7 @@ const update = () => {
 
   updateFile(SETTINGS_FILE, s => {
     let result = s;
-    const replace = regex => (result = result.replace(regex, version));
+    const replace = regex => (result = result.replace(regex, "v" + version));
     replace(apiVersionRegex);
     replace(uiVersionRegex);
     replace(nginxProxyVersionRegex);
@@ -51,7 +51,7 @@ const check = () => {
   });
 
   checkFile(SETTINGS_FILE, f => {
-    const check = regex => f.match(regex)[0] === version;
+    const check = regex => f.match(regex)[0] === "v" + version;
     return (
       check(uiVersionRegex) &&
       check(apiVersionRegex) &&
