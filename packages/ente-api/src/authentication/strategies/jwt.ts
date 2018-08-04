@@ -6,46 +6,29 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import * as JWT from "jsonwebtoken";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
-import { promisify } from "util";
 import { JWT_PAYLOAD } from "ente-types";
+import * as config from "../../helpers/config";
 import { User } from "ente-db";
 import axios from "axios";
 
-type Secrets = {
-  old: string;
-  current: string;
-};
-export const getSecrets = async (): Promise<Secrets> => {
-  const response = await axios.get<Secrets>("http://rotator/secrets");
-  return response.data;
-};
+const { signerHost } = config.getConfig();
 
-export const getFirstSecret = async () => (await getSecrets()).current;
+const signer = axios.create({ baseURL: `http://${signerHost}` });
 
 const validate = async (token: string): Promise<JWT_PAYLOAD | null> => {
   try {
-    // Get Secrets
-    const { old: oldSecret, current: currentSecret } = await getSecrets();
-
-    try {
-      // current secret
-      const payload = JWT.verify(token, currentSecret) as JWT_PAYLOAD;
-      return payload;
-    } catch (error) {
-      try {
-        // old secret
-        const oldPayload = JWT.verify(token, oldSecret) as JWT_PAYLOAD;
-        return oldPayload;
-      } catch (error) {
-        // both are wrong
-        return null;
-      }
-    }
+    const res = await signer.get<JWT_PAYLOAD>(`/tokens/${token}`);
+    const payload = res.data;
+    return payload;
   } catch (error) {
-    throw error;
+    return null;
   }
+};
+
+export const sign = async (payload: JWT_PAYLOAD): Promise<string> => {
+  const res = await signer.post<string>(`/tokens`, payload);
+  return res.data;
 };
 
 const jwtStrategy = new BearerStrategy(async (token, done) => {

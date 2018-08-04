@@ -19,7 +19,7 @@ services:
       - mysql
       - redis
       - railmail
-      - rotator
+      - signer
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /api/"
@@ -27,7 +27,7 @@ services:
       - NODE_ENV="production"
       - HOST
       - RAILMAIL_HOST=railmail
-      - ROTATOR_HOST=rotator
+      - SIGNER_HOST=signer:3000
       - SENTRY_DSN_API
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
@@ -36,7 +36,7 @@ services:
       - MYSQL_PASSWORD=root
 
   mysql:
-    image: mariadb
+    image: mariadb:10.3.8
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=ente
@@ -53,14 +53,16 @@ services:
       - SMTP_PASSWORD
       - SMTP_SENDER
 
-  rotator:
-    image: skn0tt/secret-rotator:v0.2.0
+  signer:
+    image: skn0tt/signer:v0.4.0
     depends_on:
       - redis
     restart: on-failure
     environment:
-      REDIS_HOSTNAME: redis
-      ROTATION_PERIOD: 900
+      - REDIS_HOSTNAME=redis
+      - TOKEN_EXPIRY=900
+      - ROTATION_INTERVAL=900
+      - ASYMMETRIC_SIGNING=true
 
   redis:
     image: redis:4.0.10
