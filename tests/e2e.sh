@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 
 yarn test:e2e:ci
 

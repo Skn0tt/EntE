@@ -1,117 +1,90 @@
-variables:
-  CONTAINER_BASE: registry.gitlab.com/skn0tt/ente
-  CONTAINER_UI_TEST_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_SHA
-  CONTAINER_UI_RELEASE_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_TAG
-  CONTAINER_UI_REF_IMAGE: $CONTAINER_BASE/ui:$CI_COMMIT_REF_SLUG
-  CONTAINER_API_TEST_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_SHA
-  CONTAINER_API_RELEASE_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_TAG
-  CONTAINER_API_REF_IMAGE: $CONTAINER_BASE/api:$CI_COMMIT_REF_SLUG
-  CONTAINER_PROXY_TEST_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_SHA
-  CONTAINER_PROXY_RELEASE_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_TAG
-  CONTAINER_PROXY_REF_IMAGE: $CONTAINER_BASE/nginx-proxy:$CI_COMMIT_REF_SLUG
-  DOCKER_HOST: dind:2375
-
 stages:
+  - test:unit
   - build
   - test
-  - docs
-  - release
+  - generate
   - deploy
+  - release
 
-services:
-- name: docker:stable-dind
-  alias: dind
-
-#
-# Build
-#
-build:API:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-    - /^v\d\.\d\.\d/
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/ente-api
-    - make build IMAGE_TAG=$CONTAINER_API_TEST_IMAGE
-    - docker push $CONTAINER_API_TEST_IMAGE
-
-build:UI:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-    - /^v\d\.\d\.\d/
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/ente-ui
-    - make build IMAGE_TAG=$CONTAINER_UI_TEST_IMAGE
-    - docker push $CONTAINER_UI_TEST_IMAGE
-
-build:nginx-proxy:
-  image: skn0tt/dind-make
-  stage: build
-  only:
-    - master
-    - /^v\d\.\d\.\d/
-  tags:
-    - docker
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - cd packages/nginx-proxy
-    - make build IMAGE_TAG=$CONTAINER_PROXY_TEST_IMAGE
-    - docker push $CONTAINER_PROXY_TEST_IMAGE
-
-#
-# Test
-#
-
-# Unit Tests
 test:unit:
   image: node:9
-  stage: test
-  script:
-    - yarn
-    - yarn test:unit:ci
+  stage: test:unit
+  script: "./ci/test_unit.sh"
+  dependencies: []
   artifacts:
     paths:
       - coverage/lcov-report/
       - junit.xml
 
-# e2e Tests
+build:api:
+  image: skn0tt/dind-make
+  stage: build
+  dependencies: []
+  services:
+    - docker:stable-dind
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script: "./ci/build_docker.sh api"
+  
+build:ui:
+  image: skn0tt/dind-make
+  stage: build
+  dependencies: []
+  services:
+    - docker:stable-dind
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script: "./ci/build_docker.sh ui"
+
+build:nginx-proxy:
+  image: skn0tt/dind-make
+  stage: build
+  dependencies: []
+  services:
+    - docker:stable-dind
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script: "./ci/build_docker.sh nginx-proxy"
+  
+
+build:docker-app:
+  image: docker:stable
+  stage: build
+  dependencies: []
+  services:
+    - docker:stable-dind
+  script: "./ci/build_dockerapp.sh"
+
 test:e2e:
   image: skn0tt/node-browsers-docker-app
   stage: test
-  only:
-    - master
-    - /^v\d\.\d\.\d/
+  dependencies: []
+  services:
+    - name: docker:stable-dind
+      alias: dind
+  variables:
+    BASE_URL: "http://dind:80"
+    DOCKER_HOST: dind:2375
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+  script:
+    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - up -d
+    - BASE_URL=http://dind:80 ./ci/test_e2e.sh
+    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - down
   artifacts:
     paths:
       - screenshots/
       - e2e.xml
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - yarn
-  script:
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - up -d
-    - BASE_URL=http://dind:80 tests/e2e.sh
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - down
 
-# SAST
 sast:
   image: docker:stable
   stage: test
+  dependencies: []
   variables:
     DOCKER_DRIVER: overlay2
   allow_failure: true
+  services:
+    - docker:stable-dind
   script:
     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
@@ -120,59 +93,41 @@ sast:
         --volume /var/run/docker.sock:/var/run/docker.sock
         "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
   artifacts:
-    paths: [gl-sast-report.json]
+    paths:
+      - gl-sast-report.json
 
-# Docs
 generate:docs:
   image: python
-  stage: docs
-  only:
-    - master
-    - /^v\d\.\d\.\d/
-  before_script:
-    - pip install -r requirements.txt
-  script:
-    - mkdocs build
+  stage: generate
+  dependencies: []
+  script: "./ci/generate_docs.sh"
   artifacts:
     paths:
       - site/
 
-# Docs
-generate:allure-report:
+generate:allure:
   image: skn0tt/allure
-  stage: docs
-  variables:
-    GIT_STRATEGY: none
-  only:
-    - master
-    - /^v\d\.\d\.\d/
+  stage: generate
   dependencies:
     - test:unit
     - test:e2e
-  script:
-    - allure generate ./
+  script: "./ci/generate_allure.sh"
   artifacts:
     paths:
       - allure-report/
 
-#
-# Release
-#
-# Upload to Pages
-pages:
+deploy:pages:
   image: debian
-  stage: release
+  stage: deploy
   only:
     - master
-    - /^v\d\.\d\.\d/
   dependencies:
     - test:unit
-    - generate:allure-report
+    - generate:allure
     - generate:docs
-  before_script:
+  script:
     - mkdir .public
     - mkdir .public/coverage .public/allure-report .public/docs
-  script:
     - cp -R coverage/lcov-report/* .public/coverage/
     - cp -R site/* .public/docs/
     - cp -R allure-report/* .public/allure-report/
@@ -181,82 +136,28 @@ pages:
   artifacts:
     paths:
       - public
-    expire_in: 30 days
 
-deploy_docker-app_master:
-  image: skn0tt/docker-app
-  stage: release
-  only:
-    - master
-  script:
-    - echo $DOCKER_HUB_PASSWORD | docker login ---username skn0tt --password-stdin
-    - docker-app push --tag $CI_COMMIT_REF_SLUG
-
-deploy_docker-app_tag:
-  image: skn0tt/docker-app
-  stage: release
-  only:
-    - master
-  only:
-    - /^v\d\.\d\.\d/
-  script:
-    - echo $DOCKER_HUB_PASSWORD | docker login ---username skn0tt --password-stdin
-    - docker-app push --tag $CI_COMMIT_TAG
-
-deploy_master:
+deploy:images:
   image: docker
-  stage: release
-  only:
-    - master
-  variables:
-    GIT_STRATEGY: none
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - docker pull $CONTAINER_UI_TEST_IMAGE
-    - docker pull $CONTAINER_API_TEST_IMAGE
-    - docker pull $CONTAINER_PROXY_TEST_IMAGE
-    - docker tag $CONTAINER_UI_TEST_IMAGE $CONTAINER_UI_REF_IMAGE
-    - docker tag $CONTAINER_API_TEST_IMAGE $CONTAINER_API_REF_IMAGE
-    - docker tag $CONTAINER_PROXY_TEST_IMAGE $CONTAINER_PROXY_REF_IMAGE
-    - docker push $CONTAINER_UI_REF_IMAGE
-    - docker push $CONTAINER_API_REF_IMAGE
-    - docker push $CONTAINER_PROXY_REF_IMAGE
-
-deploy_tagged:
-  image: docker
-  stage: release
-  only:
-    - master
-  only:
-    - /^v\d\.\d\.\d/
-  variables:
-    GIT_STRATEGY: none
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - docker pull $CONTAINER_UI_TEST_IMAGE
-    - docker pull $CONTAINER_API_TEST_IMAGE
-    - docker pull $CONTAINER_PROXY_TEST_IMAGE
-    - docker tag $CONTAINER_UI_TEST_IMAGE $CONTAINER_UI_RELEASE_IMAGE
-    - docker tag $CONTAINER_API_TEST_IMAGE $CONTAINER_API_RELEASE_IMAGE
-    - docker tag $CONTAINER_PROXY_TEST_IMAGE $CONTAINER_PROXY_RELEASE_IMAGE
-    - docker push $CONTAINER_UI_RELEASE_IMAGE
-    - docker push $CONTAINER_API_RELEASE_IMAGE
-    - docker push $CONTAINER_PROXY_RELEASE_IMAGE
-
-# Deploy
-trigger_deploy:
-  image: tutum/curl
   stage: deploy
+  dependencies: []
+  services:
+    - docker:stable-dind
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
+    - echo $DOCKER_HUB_PASSWORD | docker login -u skn0tt --password-stdin
+  script: "./ci/publish_images.sh"
+
+release:trigger_deployment:
+  image: tutum/curl
+  stage: release
+  dependencies: []
   variables:
     GIT_STRATEGY: none
   environment:
     name: staging
     url: https://bull.simonknott.de
   only:
-    - master
-  only:
-    - /^v\d\.\d\.\d/
+    - /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$/
   script:
-    - curl --request POST --form "token=$CI_JOB_TOKEN" --form "variables[IMAGE_TAG]=$CI_COMMIT_TAG" --form ref=master https://gitlab.com/api/v4/projects/Skn0tt%2FEntE-deployments/trigger/pipeline
+    - curl --request POST --form "token=$CI_JOB_TOKEN" --form "variables[NEW_VERSION]=$CI_COMMIT_TAG" --form ref=master https://gitlab.com/api/v4/projects/Skn0tt%2FEntE-deployments/trigger/pipeline
