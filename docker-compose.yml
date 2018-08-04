@@ -11,17 +11,17 @@ services:
       - MYSQL_PASSWORD=root
 
   api:
-    image: registry.gitlab.com/skn0tt/ente/api
+    image: registry.gitlab.com/skn0tt/ente/api:master
     restart: on-failure
     depends_on:
       - mysql
       - redis
       - railmail
-      - rotator
+      - signer
     environment:
       - HOST
       - RAILMAIL_HOST=railmail
-      - ROTATOR_HOST=rotator
+      - SIGNER_HOST=signer:3000
       - SENTRY_DSN_API
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
@@ -45,17 +45,19 @@ services:
   redis:
     image: redis
 
-  rotator:
-    image: skn0tt/secret-rotator:v0.2.0
+  signer:
+    image: skn0tt/signer:v0.4.0
     depends_on:
       - redis
     restart: on-failure
     environment:
-      REDIS_HOSTNAME: redis
-      ROTATION_PERIOD: 900
+      - REDIS_HOSTNAME=redis
+      - TOKEN_EXPIRY=900
+      - ROTATION_INTERVAL=900
+      - ASYMMETRIC_SIGNING=true
 
   ui:
-    image: registry.gitlab.com/skn0tt/ente/ui
+    image: registry.gitlab.com/skn0tt/ente/ui:master
     restart: on-failure
     environment:
       - VIRTUAL_HOST=${HOST}
@@ -64,7 +66,7 @@ services:
       - CONFIG_VARS=SENTRY_DSN_UI
 
   nginx-proxy:
-    image: registry.gitlab.com/skn0tt/ente/nginx-proxy
+    image: registry.gitlab.com/skn0tt/ente/nginx-proxy:master
     ports:
       - 80:80
       - 443:443

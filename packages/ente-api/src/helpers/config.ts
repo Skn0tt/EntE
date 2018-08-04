@@ -10,7 +10,7 @@ interface Config {
   production: boolean;
   host: string;
   DSN?: string;
-  rotatorHost: string;
+  signerHost: string;
   railmailHost: string;
   db: {
     host: string;
@@ -28,7 +28,7 @@ export const createFromEnv = () => {
     host: process.env.HOST!,
     production: process.env.NODE_ENV === "production",
     DSN: process.env.SENTRY_DSN_API,
-    rotatorHost: process.env.ROTATOR_HOST,
+    signerHost: process.env.SIGNER_HOST,
     railmailHost: process.env.RAILMAIL_HOST,
     db: {
       host: process.env.MYSQL_HOST,
