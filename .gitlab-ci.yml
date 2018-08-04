@@ -17,9 +17,10 @@ test:unit:
       - junit.xml
 
 test:version:
-  image: frapsoft/ts-node
+  image:
+    name: frapsoft/ts-node
+    entrypoint: [""]
   stage: test:unit
-  entrypoint: [""]
   dependencies: []
   script: "./ci/test_version.sh"
 
