@@ -54,7 +54,7 @@ services:
       - SMTP_SENDER
 
   signer:
-    image: skn0tt/signer:v0.4.0
+    image: skn0tt/signer:v0.4.1
     depends_on:
       - redis
     restart: on-failure
@@ -62,6 +62,7 @@ services:
       - REDIS_HOSTNAME=redis
       - TOKEN_EXPIRY=900
       - ROTATION_INTERVAL=900
+      - ROTATE_ON_STARTUP=true
       - ASYMMETRIC_SIGNING=true
 
   redis:
