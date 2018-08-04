@@ -1,21 +1,21 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
-import * as fs from "fs";
+const fs = require("fs");
 const pack = require("../lerna.json");
 
 const { version } = pack;
 
-const fullPath = (p: string) => __dirname + "/" + p;
+const fullPath = p => __dirname + "/" + p;
 
-const readFile = (path: string) => fs.readFileSync(fullPath(path)).toString();
+const readFile = path => fs.readFileSync(fullPath(path)).toString();
 
-const updateFile = (path: string, updater: (file: string) => string) => {
+const updateFile = (path, updater) => {
   const file = readFile(path);
   const result = updater(file);
   fs.writeFileSync(fullPath(path), result);
 };
 
-const checkFile = (path: string, validator: (file: string) => boolean) => {
+const checkFile = (path, validator) => {
   const file = readFile(path);
   const valid = validator(file);
   if (!valid) {
@@ -51,7 +51,7 @@ const check = () => {
   });
 
   checkFile(SETTINGS_FILE, f => {
-    const check = (regex: RegExp) => f.match(regex)[0] === version;
+    const check = regex => f.match(regex)[0] === version;
     return (
       check(uiVersionRegex) &&
       check(apiVersionRegex) &&

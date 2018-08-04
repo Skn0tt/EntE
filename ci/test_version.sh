@@ -7,6 +7,6 @@ cd $(dirname "$(readlink -f "$0")")
 
 cd ..
 
-ts-node ./scripts/dockerapp-version.ts check
+node ./scripts/dockerapp-version.js check
 
 cd $cwd
