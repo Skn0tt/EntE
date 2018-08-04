@@ -12,6 +12,6 @@
     "packages/ente-ui",
     "packages/ente-validator"
   ],
-  "version": "0.2.5",
+  "version": "0.2.6",
   "npmClient": "yarn"
 }
