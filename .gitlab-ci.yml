@@ -19,6 +19,7 @@ test:unit:
 test:version:
   image: frapsoft/ts-node
   stage: test:unit
+  entrypoint: [""]
   dependencies: []
   script: "./ci/test_version.sh"
 
