@@ -20,6 +20,7 @@
     "packages/ente-validator"
   ],
   "scripts": {
+    "version": "./scripts/dockerapp-version.js update",
     "precommit": "pretty-quick --staged",
     "preversion": "yarn test:unit && yarn test:e2e",
     "test:unit": "yarn jest",
