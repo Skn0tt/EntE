@@ -22,7 +22,7 @@
   "scripts": {
     "version": "./scripts/dockerapp-version.js update",
     "precommit": "pretty-quick --staged",
-    "preversion": "yarn test:unit && yarn test:e2e",
+    "preversion": "yarn test:unit",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:ci":
