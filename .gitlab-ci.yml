@@ -166,6 +166,6 @@ release:trigger_deployment:
     name: staging
     url: https://bull.simonknott.de
   only:
-    - /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$/
+    - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$/
   script:
     - curl --request POST --form "token=$CI_JOB_TOKEN" --form "variables[NEW_VERSION]=$CI_COMMIT_TAG" --form ref=master https://gitlab.com/api/v4/projects/Skn0tt%2FEntE-deployments/trigger/pipeline
