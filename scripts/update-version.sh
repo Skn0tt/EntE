@@ -4,8 +4,9 @@ version=$1
 
 lerna publish --yes --cd-version $version --skip-git
 
-lernaVersion=$(cat lerna.json | jq -r '.version')
+lernaVersion="v$(cat lerna.json | jq -r '.version')"
 
 git commit -am "$lernaVersion"
 git tag "$lernaVersion"
 git push
+git push --tags
