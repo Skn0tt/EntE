@@ -2,7 +2,7 @@
 
 version=$1
 
-lerna publish --yes --cd-version $version --skip-git
+lerna publish --force-publish --yes --cd-version $version --skip-git
 
 lernaVersion="v$(cat lerna.json | jq -r '.version')"
 
