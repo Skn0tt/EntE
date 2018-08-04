@@ -16,6 +16,12 @@ test:unit:
       - coverage/lcov-report/
       - junit.xml
 
+test:version:
+  image: frapsoft/ts-node
+  stage: test:unit
+  dependencies: []
+  script: "./ci/test_version.sh"
+
 build:api:
   image: skn0tt/dind-make
   stage: build
