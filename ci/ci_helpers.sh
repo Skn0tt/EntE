@@ -3,11 +3,12 @@
 cwd=$(pwd)
 cd $(dirname "$(readlink -f "$0")")
 
-. "./helpers.sh"
-
 is_tagged_build () {
-  result=$(env_variable_exists CI_COMMIT_TAG)
-  echo $result
+  if [ -n "${CI_COMMIT_TAG+set}" ]; then
+    echo "true"
+  else
+    echo "false"
+  fi
 }
 
 get_commit_sha () {

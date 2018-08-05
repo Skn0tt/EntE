@@ -61,7 +61,6 @@ if [ $ref = "master" ]; then
 fi
 
 # publish by tag
-is_tagged=$(is_tagged_build)
-if [ "$is_tagged" = "true" ]; then
+if [ "$(is_tagged_build)" = "true" ]; then
   publish $tag
 fi
