@@ -78,7 +78,8 @@ services:
       - api
       - ui
     ports:
-      - "80:80"
-      - "8080:8080"
+      - "80:${PORT_HTTP}"
+      - "443:${PORT_HTTPS}"
+      - "8080:${PORT_TRAEFIK_DASHBOARD}"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
