@@ -23,11 +23,6 @@ ui_img_sha=$(construct_image_name ui $sha)
 nginx_proxy_img_sha=$(construct_image_name nginx-proxy $sha)
 dockerapp_image_sha="skn0tt/ente.dockerapp:$sha"
 
-docker pull $api_img_sha
-docker pull $ui_img_sha
-docker pull $nginx_proxy_img_sha
-docker pull $dockerapp_image_sha
-
 upload () {
   img=$1
   as=$2
@@ -38,29 +33,46 @@ upload () {
 
 # tag to use (version, ref, etc)
 publish () {
-  tag=$1
+  l_tag=$1
 
-  api_img_ref=$(construct_image_name api $tag)
+  api_img_ref=$(construct_image_name api $l_tag)
   upload $api_img_sha $api_img_ref
 
-  ui_img_ref=$(construct_image_name ui $tag)
+  ui_img_ref=$(construct_image_name ui $l_tag)
   upload $ui_img_sha $ui_img_ref
 
-  nginx_proxy_img_ref=$(construct_image_name nginx-proxy $tag)
+  nginx_proxy_img_ref=$(construct_image_name nginx-proxy $l_tag)
   upload $nginx_proxy_img_sha $nginx_proxy_img_ref
 
-  dockerapp_image_ref="skn0tt/ente.dockerapp:$tag"
+  dockerapp_image_ref="skn0tt/ente.dockerapp:$l_tag"
   upload $dockerapp_image_sha $dockerapp_image_ref
 }
 
+echo "### Pulling commit images ###"
+
+docker pull $api_img_sha
+docker pull $ui_img_sha
+docker pull $nginx_proxy_img_sha
+docker pull $dockerapp_image_sha
+
+echo $CI_COMMIT_TAG
+
+
 # publish by branch
+echo "### Pushing images to '$ref' ###"
 publish $ref
 
 if [ $ref = "master" ]; then
+  echo "### Pushing images to 'latest' ###"
   publish latest
+else
+  echo "### NOT Pushing images to latest ###"
 fi
 
 # publish by tag
 if [ "$(is_tagged_build)" = "true" ]; then
+  echo "### Pushing images to '$tag' ###"
   publish $tag
+else
+  echo "### NOT Pushing images to tag ###"
 fi
