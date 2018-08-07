@@ -7,7 +7,6 @@
  */
 
 import { takeEvery, call, put, select } from "redux-saga/effects";
-import { delay } from "redux-saga";
 import {
   getEntryError,
   getEntriesError,
@@ -36,7 +35,6 @@ import {
   getTokenError,
   refreshTokenError,
   logout,
-  refreshTokenRequest,
   getChildrenSuccess,
   getChildrenError,
   getNeededUsersSuccess,
@@ -87,8 +85,6 @@ import {
 } from "ente-types";
 import { Map } from "immutable";
 
-const tokenRefreshDelay = 1000 * 60 * 5;
-
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
@@ -100,9 +96,6 @@ function* getTokenSaga(action: Action<ICredentials>) {
     yield put(getTokenSuccess(tokenInfo));
 
     yield put(getNeededUsersRequest());
-
-    yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(getTokenError(error));
@@ -116,9 +109,6 @@ function* refreshTokenSaga(action: Action<void>) {
     const tokenInfo: TokenInfo = yield call(api.refreshToken, token);
 
     yield put(refreshTokenSuccess(tokenInfo));
-
-    yield delay(tokenRefreshDelay);
-    yield put(refreshTokenRequest());
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(refreshTokenError(error));
