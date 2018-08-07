@@ -10,7 +10,8 @@ services:
       - "traefik.frontend.rule=PathPrefixStrip: /"
     environment:
       - SENTRY_DSN_UI
-      - CONFIG_VARS=SENTRY_DSN_UI
+      - ROTATION_PERIOD=${ROTATION_PERIOD_UI}
+      - CONFIG_VARS=SENTRY_DSN_UI,ROTATION_PERIOD
 
   api:
     image: registry.gitlab.com/skn0tt/ente/api:${API_VERSION}
@@ -60,8 +61,8 @@ services:
     restart: on-failure
     environment:
       - REDIS_HOSTNAME=redis
-      - TOKEN_EXPIRY=900
-      - ROTATION_INTERVAL=900
+      - TOKEN_EXPIRY=${ROTATION_PERIOD}
+      - ROTATION_INTERVAL=${ROTATION_PERIOD}
       - ROTATE_ON_STARTUP=true
       - ASYMMETRIC_SIGNING=true
 

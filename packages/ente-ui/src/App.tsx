@@ -8,8 +8,7 @@
 
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { connect, Dispatch } from "react-redux";
-import { Action } from "redux";
+import { connect } from "react-redux";
 import Drawer from "./components/Drawer";
 import MessageStream from "./components/MessageStream";
 
@@ -18,8 +17,12 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Login from "./routes/Login";
 import Routes from "./Routes";
 import Forgot from "./routes/Forgot";
-import { Roles, ICredentials } from "ente-types";
-import { AppState, isAuthValid, getRole, getTokenRequest } from "ente-redux";
+import { Roles } from "ente-types";
+import { AppState, isAuthValid, getRole } from "ente-redux";
+import AuthService from "./AuthService";
+import * as config from "./config";
+
+const { ROTATION_PERIOD } = config.get();
 
 interface StateProps {
   authValid: boolean;
@@ -30,20 +33,13 @@ const mapStateToProps = (state: AppState) => ({
   role: getRole(state)
 });
 
-interface DispatchProps {
-  getToken(credentials: ICredentials): Action;
-}
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getToken: (credentials: ICredentials) =>
-    dispatch(getTokenRequest(credentials))
-});
-
-type Props = StateProps & DispatchProps;
+type Props = StateProps;
 
 const App: React.SFC<Props> = props => (
   <BrowserRouter>
     <React.Fragment>
       <MessageStream />
+      <AuthService period={ROTATION_PERIOD} />
       <Switch>
         <Route path="/forgot/:token" component={Forgot} />
         <Route path="/login" component={Login} />
@@ -57,4 +53,4 @@ const App: React.SFC<Props> = props => (
   </BrowserRouter>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

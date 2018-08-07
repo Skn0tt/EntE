@@ -1,6 +1,0 @@
-version: '2'
-
-services:
-  letsencrypt-nginx-proxy-companion:
-      environment:
-        - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
