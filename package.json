@@ -27,7 +27,7 @@
     "test:unit:ci":
       "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
     "test:e2e":
-      "docker-app render --set API_VERSION=latest --set UI_VERSION=latest --set NGINX_PROXY_VERSION=latest | docker-compose -f - up -d && sleep 5 && BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e && docker-app render | docker-compose -f - down",
+      "docker-app render --set API_VERSION=latest --set UI_VERSION=latest | docker-compose -f - up -d && sleep 5 && BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e && docker-app render | docker-compose -f - down",
     "test:e2e:ci":
       "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
   },

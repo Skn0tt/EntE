@@ -31,6 +31,7 @@ import users from "./routes/users";
 import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
+import { IUser } from "ente-types";
 
 const conf = config.getConfig();
 
@@ -95,7 +96,25 @@ app.use("/status", status);
 app.use(passport.initialize());
 passport.use("jwt", jwt);
 passport.use("basic", basic);
-app.use(passport.authenticate(["jwt", "basic"], { session: false }));
+app.use((req, res, next) => {
+  passport.authenticate(
+    ["jwt", "basic"],
+    { session: false },
+    (err: Error, user?: IUser) => {
+      if (!!err) {
+        return next(err);
+      }
+
+      if (!user) {
+        return res.send(401);
+      }
+
+      req.user = user;
+
+      next();
+    }
+  )(req, res, next);
+});
 
 // Authenticated Routes
 app.use("/token", token);
