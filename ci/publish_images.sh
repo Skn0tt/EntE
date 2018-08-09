@@ -20,7 +20,6 @@ tag=$(get_commit_tag)
 
 api_img_sha=$(construct_image_name api $sha)
 ui_img_sha=$(construct_image_name ui $sha)
-nginx_proxy_img_sha=$(construct_image_name nginx-proxy $sha)
 dockerapp_image_sha="skn0tt/ente.dockerapp:$sha"
 
 upload () {
@@ -41,9 +40,6 @@ publish () {
   ui_img_ref=$(construct_image_name ui $l_tag)
   upload $ui_img_sha $ui_img_ref
 
-  nginx_proxy_img_ref=$(construct_image_name nginx-proxy $l_tag)
-  upload $nginx_proxy_img_sha $nginx_proxy_img_ref
-
   dockerapp_image_ref="skn0tt/ente.dockerapp:$l_tag"
   upload $dockerapp_image_sha $dockerapp_image_ref
 }
@@ -52,7 +48,6 @@ echo "### Pulling commit images ###"
 
 docker pull $api_img_sha
 docker pull $ui_img_sha
-docker pull $nginx_proxy_img_sha
 docker pull $dockerapp_image_sha
 
 echo $CI_COMMIT_TAG

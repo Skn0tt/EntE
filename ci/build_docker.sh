@@ -33,8 +33,6 @@ if [ $img = "api" ]; then
   build packages/ente-api api
 elif [ $img = "ui" ]; then
   build packages/ente-ui ui
-elif [ $img = "nginx-proxy" ]; then
-  build packages/nginx-proxy nginx-proxy
 else
   echo "Please specify valid img"
 fi

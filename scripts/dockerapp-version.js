@@ -26,7 +26,6 @@ const checkFile = (path, validator) => {
 const metadataVersionRegex = /(?<=version: ).*$/gm;
 const apiVersionRegex = /(?<=API_VERSION: ).*$/gm;
 const uiVersionRegex = /(?<=UI_VERSION: ).*$/gm;
-const nginxProxyVersionRegex = /(?<=NGINX_PROXY_VERSION: ).*$/gm;
 
 const METADATA_FILE = "../ente.dockerapp/metadata.yml";
 const SETTINGS_FILE = "../ente.dockerapp/settings.yml";
@@ -39,7 +38,6 @@ const update = () => {
     const replace = regex => (result = result.replace(regex, "v" + version));
     replace(apiVersionRegex);
     replace(uiVersionRegex);
-    replace(nginxProxyVersionRegex);
     return result;
   });
 };
@@ -52,11 +50,7 @@ const check = () => {
 
   checkFile(SETTINGS_FILE, f => {
     const check = regex => f.match(regex)[0] === "v" + version;
-    return (
-      check(uiVersionRegex) &&
-      check(apiVersionRegex) &&
-      check(nginxProxyVersionRegex)
-    );
+    return check(uiVersionRegex) && check(apiVersionRegex);
   });
 };
 

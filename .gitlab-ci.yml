@@ -44,17 +44,6 @@ build:ui:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./ci/build_docker.sh ui"
 
-build:nginx-proxy:
-  image: skn0tt/dind-make
-  stage: build
-  dependencies: []
-  services:
-    - docker:stable-dind
-  before_script:
-    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script: "./ci/build_docker.sh nginx-proxy"
-  
-
 build:docker-app:
   image: docker:stable
   stage: build
@@ -76,9 +65,9 @@ test:e2e:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script:
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - up -d
+    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA | docker-compose -f - up -d
     - BASE_URL=http://dind:80 ./ci/test_e2e.sh
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA --set NGINX_PROXY_VERSION=$CI_COMMIT_SHA | docker-compose -f - down
+    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA | docker-compose -f - down
   artifacts:
     paths:
       - screenshots/

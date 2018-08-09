@@ -4,13 +4,10 @@ dev:
 		-f docker-compose.dev.yml \
 		up -d
 
-build-docker: ente-api ente-ui nginx-proxy
+build-docker: ente-api ente-ui
 
 ente-api:
 	$(MAKE) -C packages/ente-api build
 
 ente-ui:
 	$(MAKE) -C packages/ente-ui build
-
-nginx-proxy:
-	$(MAKE) -C packages/nginx-proxy build
