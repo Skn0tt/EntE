@@ -31,12 +31,13 @@ import { MuiThemeProvider } from "material-ui";
 import { Provider } from "react-redux";
 import Raven from "raven-js";
 import { Action } from "redux-actions";
+import HttpsGate from "./components/HttpsGate";
 
 const config: ReduxConfig = {
   baseUrl: `${location.protocol}//${location.hostname}/api`
 };
 
-const { SENTRY_DSN_UI } = getConfig();
+const { SENTRY_DSN_UI, ALLOW_INSECURE } = getConfig();
 
 if (SENTRY_DSN_UI) {
   Raven.config(SENTRY_DSN_UI).install();
@@ -65,9 +66,11 @@ const Index = () => (
     <Reboot />
     <MuiThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
-        <Provider store={store}>
-          <App />
-        </Provider>
+        <HttpsGate disable={ALLOW_INSECURE}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </HttpsGate>
       </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   </div>

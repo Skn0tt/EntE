@@ -11,7 +11,8 @@ services:
     environment:
       - SENTRY_DSN_UI
       - ROTATION_PERIOD=${ROTATION_PERIOD_UI}
-      - CONFIG_VARS=SENTRY_DSN_UI,ROTATION_PERIOD
+      - ALLOW_INSECURE=${ALLOW_HTTP}
+      - CONFIG_VARS=SENTRY_DSN_UI,ROTATION_PERIOD,ALLOW_INSECURE
 
   api:
     image: registry.gitlab.com/skn0tt/ente/api:${API_VERSION}
