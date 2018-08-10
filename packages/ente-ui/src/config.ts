@@ -14,6 +14,7 @@ const MINUTE = 60 * SECOND;
 type Config = {
   SENTRY_DSN_UI?: string;
   ROTATION_PERIOD: number;
+  ALLOW_INSECURE: boolean;
 };
 
 let config: Config | null = null;
@@ -27,7 +28,8 @@ const readConfig = () => {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
-    SENTRY_DSN_UI: c.SENTRY_DSN_UI
+    SENTRY_DSN_UI: c.SENTRY_DSN_UI,
+    ALLOW_INSECURE: c.ALLOW_INSECURE === "true"
   };
 };
 
