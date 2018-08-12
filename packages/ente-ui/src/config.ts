@@ -5,8 +5,9 @@
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
-
-import * as cookie from "js-cookie";
+import * as cookie from "./cookie";
+import * as localStorage from "./localStorage";
+import { Some } from "monet";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -20,9 +21,21 @@ type Config = {
 let config: Config | null = null;
 
 const CONFIG_COOKIE = "_config";
+const LOCAL_STORAGE_CONFIG_KEY = "CONFIG";
+
+const getConfig = (): any => {
+  const c = cookie
+    .get(CONFIG_COOKIE)
+    .orElse(localStorage.get(LOCAL_STORAGE_CONFIG_KEY))
+    .orElse(Some("{}"))
+    .some();
+
+  localStorage.set(LOCAL_STORAGE_CONFIG_KEY, c);
+  return JSON.parse(c);
+};
 
 const readConfig = () => {
-  const c = cookie.getJSON(CONFIG_COOKIE) as any;
+  const c = getConfig();
 
   config = {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
