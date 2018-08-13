@@ -7,6 +7,8 @@ services:
       - 3306:3306
 
   ui:
+    environment:
+      - ALLOW_INSECURE=true
     volumes:
       - ${PWD}/packages/ente-ui/dist/:/app/
     
