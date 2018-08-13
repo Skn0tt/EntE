@@ -87,13 +87,21 @@ export class Table<T> extends React.PureComponent<Props<T>, State> {
    * Logic
    */
   filter = (item: T): boolean => {
-    const value = this.props.cellExtractor(item)[this.state.sortField];
+    const { cellExtractor } = this.props;
+    const { sortField, searchTerm } = this.state;
 
-    if (typeof value === "boolean") {
-      return true;
-    }
+    const extracted = cellExtractor(item);
 
-    return ("" + value).indexOf(this.state.searchTerm) !== -1;
+    return extracted.some(v => {
+      if (typeof v === "boolean") {
+        return true;
+      }
+
+      return (
+        ("" + v).toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) !==
+        -1
+      );
+    });
   };
 
   sortMulti = () => (this.state.sortUp ? 1 : -1);
