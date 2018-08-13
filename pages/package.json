@@ -11,7 +11,7 @@
     "email": "feedback@startbootstrap.com"
   },
   "scripts": {
-    "build": "npx parcel build index.html"
+    "build:prod": "npx parcel build index.html --public-url /EntE/"
   },
   "license": "MIT",
   "author": "Start Bootstrap",

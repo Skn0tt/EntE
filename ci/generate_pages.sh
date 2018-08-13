@@ -11,6 +11,6 @@ cd $(dirname "$(readlink -f "$0")")
 cd ../pages
 
 npm install
-npm run build
+npm run build:prod
 
 cd $cwd
