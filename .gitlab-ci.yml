@@ -125,7 +125,7 @@ generate:pages:
 deploy:pages:
   image: debian
   stage: deplo
-  only
+  only:
     - master
   dependencies:
     - test:unit
