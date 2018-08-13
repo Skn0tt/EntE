@@ -7,16 +7,9 @@
  */
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch, Action } from "redux";
 import { Grid, Button, withStyles } from "material-ui";
 import IconButton from "material-ui/IconButton/IconButton";
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Update as UpdateIcon
-} from "material-ui-icons";
-import TextField from "material-ui/TextField/TextField";
+import { Add as AddIcon, Delete as DeleteIcon } from "material-ui-icons";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
 import ListItemText from "material-ui/List/ListItemText";
@@ -25,16 +18,10 @@ import Typography from "material-ui/Typography/Typography";
 
 import styles from "./styles";
 import { WithStyles } from "material-ui/styles/withStyles";
-import { IUser } from "ente-types";
-import {
-  User,
-  AppState,
-  getUser,
-  getStudents,
-  updateUserRequest
-} from "ente-redux";
+import { User } from "ente-redux";
 import lang from "ente-lang";
 import * as _ from "lodash";
+import { SearchableDropdown } from "../../components/SearchableDropdown";
 
 /**
  * # Helpers
@@ -63,6 +50,8 @@ interface State {
   selected: User;
 }
 
+class SearchableDropdownUser extends SearchableDropdown<User> {}
+
 /**
  * # Component
  */
@@ -84,11 +73,9 @@ export class ChildrenInput extends React.Component<Props, State> {
     }
   }
 
-  handleSelectChild = (event: React.ChangeEvent<HTMLInputElement>) =>
+  handleSelectChild = (u: User) =>
     this.setState({
-      selected: this.props.students.find(
-        s => s.get("_id") === event.target.value
-      )!
+      selected: u
     });
   handleAdd = () =>
     this.props.onChange([
@@ -128,21 +115,19 @@ export class ChildrenInput extends React.Component<Props, State> {
         {/* Add Children */}
         <Grid item container>
           <Grid item xs={11}>
-            <TextField
-              select
-              label={lang().ui.specificUser.child}
-              value={selected && selected.get("_id")}
+            <SearchableDropdownUser
+              items={students.filter(u => !includes(children)(u))}
               onChange={this.handleSelectChild}
-              fullWidth
-              SelectProps={{ native: true }}
+              itemToString={i => i.get("displayname")}
+              includeItem={(u, searchTerm) =>
+                u
+                  .get("displayname")
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              }
               helperText={lang().ui.specificUser.addChildren}
-            >
-              {students.filter(u => !includes(children)(u)).map(student => (
-                <option key={student.get("_id")} value={student.get("_id")}>
-                  {student.get("displayname")}
-                </option>
-              ))}
-            </TextField>
+              label={lang().ui.specificUser.child}
+            />
           </Grid>
           <Grid item xs={1}>
             <Button

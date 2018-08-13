@@ -55,7 +55,7 @@
     "testdouble": "^3.7.0",
     "testdouble-jest": "^2.0.0",
     "ts-jest": "^22.4.2",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "npm": "^5.8.0"

@@ -88,26 +88,26 @@ ShallowWrapper {
             item={true}
             xs={11}
           >
-            <TextField
-              SelectProps={
-                Object {
-                  "native": true,
-                }
-              }
-              fullWidth={true}
+            <SearchableDropdownUser
               helperText="Kinder Hinzufügen"
+              includeItem={[Function]}
+              itemToString={[Function]}
+              items={
+                Array [
+                  Immutable.User {
+                    "_id": "jkldsfjlk",
+                    "username": "hball",
+                    "displayname": "Hanni Ball",
+                    "email": "hanni@ball.de",
+                    "role": "student",
+                    "isAdult": false,
+                    "children": Array [],
+                  },
+                ]
+              }
               label="Kind"
               onChange={[Function]}
-              required={false}
-              select={true}
-              value="jkldsfjlk"
-            >
-              <option
-                value="jkldsfjlk"
-              >
-                Hanni Ball
-              </option>
-            </TextField>
+            />
           </WithStyles(GridWrapper)>
           <WithStyles(GridWrapper)
             item={true}
@@ -284,26 +284,26 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={
+                  Array [
+                    Immutable.User {
+                      "_id": "jkldsfjlk",
+                      "username": "hball",
+                      "displayname": "Hanni Ball",
+                      "email": "hanni@ball.de",
+                      "role": "student",
+                      "isAdult": false,
+                      "children": Array [],
+                    },
+                  ]
+                }
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value="jkldsfjlk"
-              >
-                <option
-                  value="jkldsfjlk"
-                >
-                  Hanni Ball
-                </option>
-              </TextField>
+              />
             </WithStyles(GridWrapper)>,
             <WithStyles(GridWrapper)
               item={true}
@@ -330,26 +330,26 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              "children": <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={
+                  Array [
+                    Immutable.User {
+                      "_id": "jkldsfjlk",
+                      "username": "hball",
+                      "displayname": "Hanni Ball",
+                      "email": "hanni@ball.de",
+                      "role": "student",
+                      "isAdult": false,
+                      "children": Array [],
+                    },
+                  ]
+                }
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value="jkldsfjlk"
-              >
-                <option
-                  value="jkldsfjlk"
-                >
-                  Hanni Ball
-                </option>
-              </TextField>,
+              />,
               "item": true,
               "xs": 11,
             },
@@ -357,41 +357,27 @@ ShallowWrapper {
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "function",
+              "nodeType": "class",
               "props": Object {
-                "SelectProps": Object {
-                  "native": true,
-                },
-                "children": Array [
-                  <option
-                    value="jkldsfjlk"
-                  >
-                    Hanni Ball
-                  </option>,
-                ],
-                "fullWidth": true,
                 "helperText": "Kinder Hinzufügen",
+                "includeItem": [Function],
+                "itemToString": [Function],
+                "items": Array [
+                  Immutable.User {
+                    "_id": "jkldsfjlk",
+                    "username": "hball",
+                    "displayname": "Hanni Ball",
+                    "email": "hanni@ball.de",
+                    "role": "student",
+                    "isAdult": false,
+                    "children": Array [],
+                  },
+                ],
                 "label": "Kind",
                 "onChange": [Function],
-                "required": false,
-                "select": true,
-                "value": "jkldsfjlk",
               },
               "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": "jkldsfjlk",
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "Hanni Ball",
-                    "value": "jkldsfjlk",
-                  },
-                  "ref": null,
-                  "rendered": "Hanni Ball",
-                  "type": "option",
-                },
-              ],
+              "rendered": null,
               "type": [Function],
             },
             "type": [Function],
@@ -488,26 +474,26 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={
+                  Array [
+                    Immutable.User {
+                      "_id": "jkldsfjlk",
+                      "username": "hball",
+                      "displayname": "Hanni Ball",
+                      "email": "hanni@ball.de",
+                      "role": "student",
+                      "isAdult": false,
+                      "children": Array [],
+                    },
+                  ]
+                }
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value="jkldsfjlk"
-              >
-                <option
-                  value="jkldsfjlk"
-                >
-                  Hanni Ball
-                </option>
-              </TextField>
+              />
             </WithStyles(GridWrapper)>
             <WithStyles(GridWrapper)
               item={true}
@@ -684,26 +670,26 @@ ShallowWrapper {
                 item={true}
                 xs={11}
               >
-                <TextField
-                  SelectProps={
-                    Object {
-                      "native": true,
-                    }
-                  }
-                  fullWidth={true}
+                <SearchableDropdownUser
                   helperText="Kinder Hinzufügen"
+                  includeItem={[Function]}
+                  itemToString={[Function]}
+                  items={
+                    Array [
+                      Immutable.User {
+                        "_id": "jkldsfjlk",
+                        "username": "hball",
+                        "displayname": "Hanni Ball",
+                        "email": "hanni@ball.de",
+                        "role": "student",
+                        "isAdult": false,
+                        "children": Array [],
+                      },
+                    ]
+                  }
                   label="Kind"
                   onChange={[Function]}
-                  required={false}
-                  select={true}
-                  value="jkldsfjlk"
-                >
-                  <option
-                    value="jkldsfjlk"
-                  >
-                    Hanni Ball
-                  </option>
-                </TextField>
+                />
               </WithStyles(GridWrapper)>,
               <WithStyles(GridWrapper)
                 item={true}
@@ -730,26 +716,26 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <TextField
-                  SelectProps={
-                    Object {
-                      "native": true,
-                    }
-                  }
-                  fullWidth={true}
+                "children": <SearchableDropdownUser
                   helperText="Kinder Hinzufügen"
+                  includeItem={[Function]}
+                  itemToString={[Function]}
+                  items={
+                    Array [
+                      Immutable.User {
+                        "_id": "jkldsfjlk",
+                        "username": "hball",
+                        "displayname": "Hanni Ball",
+                        "email": "hanni@ball.de",
+                        "role": "student",
+                        "isAdult": false,
+                        "children": Array [],
+                      },
+                    ]
+                  }
                   label="Kind"
                   onChange={[Function]}
-                  required={false}
-                  select={true}
-                  value="jkldsfjlk"
-                >
-                  <option
-                    value="jkldsfjlk"
-                  >
-                    Hanni Ball
-                  </option>
-                </TextField>,
+                />,
                 "item": true,
                 "xs": 11,
               },
@@ -757,41 +743,27 @@ ShallowWrapper {
               "rendered": Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "function",
+                "nodeType": "class",
                 "props": Object {
-                  "SelectProps": Object {
-                    "native": true,
-                  },
-                  "children": Array [
-                    <option
-                      value="jkldsfjlk"
-                    >
-                      Hanni Ball
-                    </option>,
-                  ],
-                  "fullWidth": true,
                   "helperText": "Kinder Hinzufügen",
+                  "includeItem": [Function],
+                  "itemToString": [Function],
+                  "items": Array [
+                    Immutable.User {
+                      "_id": "jkldsfjlk",
+                      "username": "hball",
+                      "displayname": "Hanni Ball",
+                      "email": "hanni@ball.de",
+                      "role": "student",
+                      "isAdult": false,
+                      "children": Array [],
+                    },
+                  ],
                   "label": "Kind",
                   "onChange": [Function],
-                  "required": false,
-                  "select": true,
-                  "value": "jkldsfjlk",
                 },
                 "ref": null,
-                "rendered": Array [
-                  Object {
-                    "instance": null,
-                    "key": "jkldsfjlk",
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "Hanni Ball",
-                      "value": "jkldsfjlk",
-                    },
-                    "ref": null,
-                    "rendered": "Hanni Ball",
-                    "type": "option",
-                  },
-                ],
+                "rendered": null,
                 "type": [Function],
               },
               "type": [Function],
@@ -936,19 +908,13 @@ ShallowWrapper {
             item={true}
             xs={11}
           >
-            <TextField
-              SelectProps={
-                Object {
-                  "native": true,
-                }
-              }
-              fullWidth={true}
+            <SearchableDropdownUser
               helperText="Kinder Hinzufügen"
+              includeItem={[Function]}
+              itemToString={[Function]}
+              items={Array []}
               label="Kind"
               onChange={[Function]}
-              required={false}
-              select={true}
-              value={undefined}
             />
           </WithStyles(GridWrapper)>
           <WithStyles(GridWrapper)
@@ -1126,19 +1092,13 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={Array []}
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value={undefined}
               />
             </WithStyles(GridWrapper)>,
             <WithStyles(GridWrapper)
@@ -1166,19 +1126,13 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              "children": <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={Array []}
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value={undefined}
               />,
               "item": true,
               "xs": 11,
@@ -1187,22 +1141,17 @@ ShallowWrapper {
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "function",
+              "nodeType": "class",
               "props": Object {
-                "SelectProps": Object {
-                  "native": true,
-                },
-                "children": Array [],
-                "fullWidth": true,
                 "helperText": "Kinder Hinzufügen",
+                "includeItem": [Function],
+                "itemToString": [Function],
+                "items": Array [],
                 "label": "Kind",
                 "onChange": [Function],
-                "required": false,
-                "select": true,
-                "value": undefined,
               },
               "ref": null,
-              "rendered": Array [],
+              "rendered": null,
               "type": [Function],
             },
             "type": [Function],
@@ -1299,19 +1248,13 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <TextField
-                SelectProps={
-                  Object {
-                    "native": true,
-                  }
-                }
-                fullWidth={true}
+              <SearchableDropdownUser
                 helperText="Kinder Hinzufügen"
+                includeItem={[Function]}
+                itemToString={[Function]}
+                items={Array []}
                 label="Kind"
                 onChange={[Function]}
-                required={false}
-                select={true}
-                value={undefined}
               />
             </WithStyles(GridWrapper)>
             <WithStyles(GridWrapper)
@@ -1489,19 +1432,13 @@ ShallowWrapper {
                 item={true}
                 xs={11}
               >
-                <TextField
-                  SelectProps={
-                    Object {
-                      "native": true,
-                    }
-                  }
-                  fullWidth={true}
+                <SearchableDropdownUser
                   helperText="Kinder Hinzufügen"
+                  includeItem={[Function]}
+                  itemToString={[Function]}
+                  items={Array []}
                   label="Kind"
                   onChange={[Function]}
-                  required={false}
-                  select={true}
-                  value={undefined}
                 />
               </WithStyles(GridWrapper)>,
               <WithStyles(GridWrapper)
@@ -1529,19 +1466,13 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <TextField
-                  SelectProps={
-                    Object {
-                      "native": true,
-                    }
-                  }
-                  fullWidth={true}
+                "children": <SearchableDropdownUser
                   helperText="Kinder Hinzufügen"
+                  includeItem={[Function]}
+                  itemToString={[Function]}
+                  items={Array []}
                   label="Kind"
                   onChange={[Function]}
-                  required={false}
-                  select={true}
-                  value={undefined}
                 />,
                 "item": true,
                 "xs": 11,
@@ -1550,22 +1481,17 @@ ShallowWrapper {
               "rendered": Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "function",
+                "nodeType": "class",
                 "props": Object {
-                  "SelectProps": Object {
-                    "native": true,
-                  },
-                  "children": Array [],
-                  "fullWidth": true,
                   "helperText": "Kinder Hinzufügen",
+                  "includeItem": [Function],
+                  "itemToString": [Function],
+                  "items": Array [],
                   "label": "Kind",
                   "onChange": [Function],
-                  "required": false,
-                  "select": true,
-                  "value": undefined,
                 },
                 "ref": null,
-                "rendered": Array [],
+                "rendered": null,
                 "type": [Function],
               },
               "type": [Function],
