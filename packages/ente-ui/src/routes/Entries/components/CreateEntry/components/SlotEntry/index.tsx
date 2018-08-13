@@ -15,6 +15,7 @@ import { WithStyles } from "material-ui/styles/withStyles";
 import Tooltip from "material-ui/Tooltip/Tooltip";
 import { ISlotCreate, UserId } from "ente-types";
 import { User, getTeachers, getUser, AppState } from "ente-redux";
+import { SearchableDropdown } from "../../../../../../components/SearchableDropdown";
 
 interface OwnProps {
   onAdd(slot: ISlotCreate): void;
@@ -38,19 +39,17 @@ type Props = StateProps & OwnProps & WithStyles;
 interface State {
   hour_from: string;
   hour_to: string;
-  teacher: UserId;
+  teacher?: UserId;
 }
+
+class SearchableDropdownUser extends SearchableDropdown<User> {}
 
 const SlotEntry = connect(mapStateToProps)(
   withStyles(styles)(
     class extends React.Component<Props, State> {
       state: State = {
         hour_from: "1",
-        hour_to: "2",
-        teacher:
-          this.props.teachers.length > 0
-            ? this.props.teachers[0].get("_id")
-            : ""
+        hour_to: "2"
       };
 
       /**
@@ -72,10 +71,10 @@ const SlotEntry = connect(mapStateToProps)(
         this.setState({
           hour_to: event.target.value
         });
-      handleChangeTeacher = (event: React.ChangeEvent<HTMLInputElement>) =>
-        this.setState({
-          teacher: event.target.value
-        });
+
+      handleChangeTeacher = (teacher: User) =>
+        this.setState({ teacher: teacher.get("_id") });
+
       /**
        * ## Form Validation Logic
        */
@@ -113,26 +112,24 @@ const SlotEntry = connect(mapStateToProps)(
         });
 
       render() {
+        const { teachers } = this.props;
         return (
           <Grid container direction="row">
             {/* Teacher */}
             <Grid item xs={12} md={3}>
-              <TextField
-                select
+              <SearchableDropdownUser
                 label="Lehrer"
-                value={this.state.teacher || ""}
-                onChange={this.handleChangeTeacher}
-                fullWidth
-                error={!this.teacherValid()}
-                SelectProps={{ native: true }}
                 helperText="Wählen sie den Lehrer aus."
-              >
-                {this.props.teachers.map(teacher => (
-                  <option key={teacher.get("_id")} value={teacher.get("_id")}>
-                    {teacher.get("displayname")}
-                  </option>
-                ))}
-              </TextField>
+                items={teachers}
+                onChange={this.handleChangeTeacher}
+                includeItem={(item, searchTerm) =>
+                  item
+                    .get("displayname")
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
+                }
+                itemToString={i => i.get("displayname")}
+              />
             </Grid>
 
             {/* From */}
