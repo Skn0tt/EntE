@@ -4,10 +4,10 @@
   "version": "0.4.0",
   "private": true,
   "scripts": {
-    "start": "yarn parcel public/index.html",
+    "start": "yarn parcel src/index.html",
     "build":
-      "yarn parcel build public/index.html --public-url / -o index && yarn serviceworker",
-    "watch": "yarn parcel watch public/index.html --public-url / -o index",
+      "yarn parcel build src/index.html --public-url / -o index && yarn serviceworker",
+    "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
     "serviceworker": "yarn workbox generateSW",
     "snyk": "snyk test",
