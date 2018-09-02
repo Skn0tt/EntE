@@ -11,7 +11,8 @@
     "email": "feedback@startbootstrap.com"
   },
   "scripts": {
-    "build:prod": "npx parcel build index.html --public-url /EntE/"
+    "build:prod":
+      "./generate.ts && npx parcel build index.html de/index.html en/index.html --public-url /EntE/"
   },
   "license": "MIT",
   "author": "Start Bootstrap",
@@ -28,13 +29,19 @@
     "sweetalert": "^2.1.0"
   },
   "devDependencies": {
+    "@types/mkdirp": "^0.5.2",
     "browser-sync": "2.24.5",
     "gulp": "^3.9.1",
     "gulp-clean-css": "3.9.4",
     "gulp-header": "2.0.5",
     "gulp-rename": "1.3.0",
     "gulp-sass": "4.0.1",
+    "handlebars": "^4.0.11",
+    "mkdirp": "^0.5.1",
     "node-sass": "^4.9.3",
-    "parcel-bundler": "^1.9.7"
+    "parcel-bundler": "^1.9.7",
+    "replaceall": "^0.1.6",
+    "ts-node": "^5.0.1",
+    "typescript": "^3.0.3"
   }
 }
