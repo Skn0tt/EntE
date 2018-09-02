@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <PersonTable
+    extract={[Function]}
+    extractId={[Function]}
+    headers={
+      Array [
+        Object {
+          "name": "Name",
+        },
+        Object {
+          "name": "Alter",
+        },
+      ]
+    }
+    items={
+      Array [
+        Object {
+          "alter": 16,
+          "name": "Bernd",
+        },
+        Object {
+          "alter": 17,
+          "name": "Volker",
+        },
+      ]
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "columns": Array [
+        Object {
+          "name": "ID",
+          "options": Object {
+            "display": false,
+            "filter": false,
+          },
+        },
+        Object {
+          "name": "Name",
+        },
+        Object {
+          "name": "Alter",
+        },
+      ],
+      "data": Array [
+        Array [
+          "Bernd",
+          "Bernd",
+          "16",
+        ],
+        Array [
+          "Volker",
+          "Volker",
+          "17",
+        ],
+      ],
+      "options": Object {
+        "onRowClick": [Function],
+        "responsive": "scroll",
+        "rowsPerPage": 50,
+        "rowsPerPageOptions": Array [
+          20,
+          50,
+          100,
+        ],
+        "selectableRows": false,
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": undefined,
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "columns": Array [
+          Object {
+            "name": "ID",
+            "options": Object {
+              "display": false,
+              "filter": false,
+            },
+          },
+          Object {
+            "name": "Name",
+          },
+          Object {
+            "name": "Alter",
+          },
+        ],
+        "data": Array [
+          Array [
+            "Bernd",
+            "Bernd",
+            "16",
+          ],
+          Array [
+            "Volker",
+            "Volker",
+            "17",
+          ],
+        ],
+        "options": Object {
+          "onRowClick": [Function],
+          "responsive": "scroll",
+          "rowsPerPage": 50,
+          "rowsPerPageOptions": Array [
+            20,
+            50,
+            100,
+          ],
+          "selectableRows": false,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": undefined,
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

@@ -1,204 +1,49 @@
-/**
- * EntE
- * (c) 2017-present, Simon Knott <info@simonknott.de>
- *
- * This source code is licensed under the GNU Affero General Public License
- * found in the LICENSE file in the root directory of this source tree.
- */
-
 import * as React from "react";
-import styles from "./Table.styles";
-import withStyles from "material-ui/styles/withStyles";
-import {
-  TableCell,
-  Grid,
-  TextField,
-  TableHead,
-  TableRow,
-  TableBody,
-  WithStyles,
-  Table as MUITable
-} from "material-ui";
-import TableHeadCell from "./elements/TableHeadCell";
-import lang from "ente-lang";
+import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
 
-/**
- * # Component Types
- */
-type AllowedValues = string | number | boolean;
-type Item = ReadonlyArray<any>;
+interface ColumnConfig {
+  name: string;
+  options?: {
+    display?: boolean;
+    filter?: boolean;
+    sort?: boolean;
+    customBodyRender?: (v: string) => string | JSX.Element;
+  };
+}
 
-interface OwnProps<T> {
-  defaultSortField?: number;
+type ConfigItem = ColumnConfig | string;
+
+interface TableProps<T> {
   items: ReadonlyArray<T>;
-  cellExtractor: (item: T) => Item;
-  headers: ReadonlyArray<string>;
-  onClick?: (item: T) => void;
-  keyExtractor: (item: T) => string | number;
-  trueElement?: JSX.Element;
-  falseElement?: JSX.Element;
-  sort?: (a: T, b: T) => number;
-  filter?: (item: T) => boolean;
+  extract: (item: T) => string[];
+  headers: ReadonlyArray<ConfigItem>;
+  extractId: (item: T) => string;
+  onClick?: (id: string) => void;
 }
 
-type Props<T> = OwnProps<T> & WithStyles;
-
-interface State {
-  searchTerm: string;
-  sortField: number;
-  sortUp: boolean;
-}
-
-/**
- * # Logic
- */
-export const changeSearch = (v: string) => (s: State): State => ({
-  ...s,
-  searchTerm: v
-});
-
-export const changeSortField = (i: number) => (s: State): State =>
-  s.sortField === i
-    ? { ...s, sortUp: !s.sortUp }
-    : { ...s, sortField: i, sortUp: true };
-
-/**
- * # Component
- */
-export class Table<T> extends React.PureComponent<Props<T>, State> {
-  /**
-   * ## Intialization
-   */
-  state: State = {
-    searchTerm: "",
-    sortField: this.props.defaultSortField || 0,
-    sortUp: false
-  };
-
-  /**
-   * ## Handlers
-   */
-  handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState(changeSearch(event.target.value));
-  handleChangeSort = (i: number) => this.setState(changeSortField(i));
-
-  /**
-   * Logic
-   */
-  filter = (item: T): boolean => {
-    const { cellExtractor } = this.props;
-    const { sortField, searchTerm } = this.state;
-
-    const extracted = cellExtractor(item);
-
-    return extracted.some(v => {
-      if (typeof v === "boolean") {
-        return true;
-      }
-
-      return (
-        ("" + v).toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) !==
-        -1
-      );
-    });
-  };
-
-  sortMulti = () => (this.state.sortUp ? 1 : -1);
-  sort = (a: T, b: T): number => {
-    const valueA = this.props.cellExtractor(a)[this.state.sortField];
-    const valueB = this.props.cellExtractor(b)[this.state.sortField];
-    if (typeof valueA === "boolean") {
-      return valueA === valueB ? 0 : valueA ? -1 : 1;
-    }
-
-    if (typeof valueA === "number") {
-      return (valueA - (valueB as number)) * this.sortMulti();
-    }
-
-    return valueA.localeCompare(valueB as string) * this.sortMulti();
-  };
-  truncate = (str: string, length: number, ending: string) =>
-    str.length > length
-      ? str.substring(0, length - ending.length) + ending
-      : str;
-  show = (v: AllowedValues) => {
-    switch (typeof v) {
-      case "string":
-        return _.truncate(v as string, { length: 20 });
-      case "boolean":
-        return v ? this.props.trueElement : this.props.falseElement;
-      default:
-        return v;
-    }
-  };
-
-  render(): JSX.Element {
-    const {
-      classes,
-      keyExtractor,
-      onClick,
-      items,
-      headers,
-      sort,
-      filter,
-      cellExtractor
-    } = this.props;
-    const { sortField, sortUp } = this.state;
-
+export class Table<T> extends React.PureComponent<TableProps<T>> {
+  render() {
+    const { headers, items, extract, extractId, onClick } = this.props;
+    const data = items.map(i => [extractId(i), ...extract(i)]);
+    const columns = headers.map(
+      h => (typeof h === "string" ? { name: h, options: { filter: false } } : h)
+    );
+    const idColumn = { name: "ID", options: { display: false, filter: false } };
     return (
-      <Grid container direction="column">
-        <Grid item container direction="row">
-          <Grid item xs={12}>
-            <TextField
-              placeholder={lang().ui.table.search}
-              fullWidth
-              className={classes.searchBar}
-              onChange={this.handleChangeSearch}
-            />
-          </Grid>
-        </Grid>
-        <Grid item className={classes.table}>
-          <MUITable>
-            <TableHead>
-              <TableRow>
-                {headers.map((header, i) => (
-                  <TableHeadCell
-                    key={header}
-                    tooltip={lang().ui.table.sortTooltip(header)}
-                    active={sortField === i}
-                    sortUp={sortUp}
-                    onClick={() => this.handleChangeSort(i)}
-                  >
-                    {header}
-                  </TableHeadCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items
-                .filter(filter || this.filter)
-                .sort(sort || this.sort)
-                .map(item => (
-                  <TableRow
-                    key={keyExtractor(item)}
-                    onClick={() => onClick && onClick(item)}
-                    hover={!!onClick}
-                  >
-                    {cellExtractor(item).map((v, i) => (
-                      <TableCell key={i}>{this.show(v)}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-            </TableBody>
-          </MUITable>
-        </Grid>
-      </Grid>
+      <MUIDataTable
+        columns={[idColumn, ...columns]}
+        data={data}
+        options={{
+          rowsPerPage: 50,
+          rowsPerPageOptions: [20, 50, 100],
+          selectableRows: false,
+          responsive: "scroll",
+          onRowClick: d => onClick(d[0])
+        }}
+      />
     );
   }
 }
 
-const createTable = <T extends object>() =>
-  withStyles(styles)(class extends Table<T> {});
-
-export default createTable;
+export default Table;

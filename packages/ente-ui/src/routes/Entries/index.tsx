@@ -27,11 +27,14 @@ import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 import Button from "material-ui/Button/Button";
 import CreateEntry from "./components/CreateEntry";
-import createTable from "../../components/Table";
+import { Table } from "../../components/Table";
 import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
 
-const EntriesTable = createTable<Entry>();
+class EntriesTable extends Table<Entry> {}
+
+const customBodyRender = v =>
+  v === "true" ? <SignedAvatar /> : <UnsignedAvatar />;
 
 /**
  * # Component Types
@@ -91,25 +94,26 @@ export class Entries extends React.Component<Props, State> {
             "Name",
             "Datum",
             "Erstellt",
-            "Schulisch",
+            { name: "Schulisch", options: { filter: true } },
             "Begründung",
-            "Stufenleiter",
-            "Eltern"
+            {
+              name: "Stufenleiter",
+              options: { customBodyRender, filter: true }
+            },
+            { name: "Eltern", options: { customBodyRender, filter: true } }
           ]}
           items={entries}
-          keyExtractor={entry => entry.get("_id")}
-          trueElement={<SignedAvatar />}
-          falseElement={<UnsignedAvatar />}
-          cellExtractor={entry => [
+          extract={entry => [
             getUser(entry.get("student")).get("displayname"),
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
             entry.get("forSchool") ? "Ja" : "Nein",
             entry.get("reason"),
-            entry.get("signedManager"),
-            entry.get("signedParent")
+            "" + entry.get("signedManager"),
+            "" + entry.get("signedParent")
           ]}
-          onClick={entry => history.push(`/entries/${entry.get("_id")}`)}
+          extractId={entry => entry.get("_id")}
+          onClick={id => history.push(`/entries/${id}`)}
         />
 
         {/* FAB */}

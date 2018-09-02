@@ -83,14 +83,32 @@ ShallowWrapper {
           onClose={[Function]}
           show={false}
         />,
-        <WithStyles(Table)
-          cellExtractor={[Function]}
+        <UserTable
+          extract={[Function]}
+          extractId={[Function]}
           headers={
             Array [
-              "Username",
-              "Displayname",
-              "Email",
-              "Role",
+              Object {
+                "name": "Username",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Displayname",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Email",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Role",
+              },
             ]
           }
           items={
@@ -106,7 +124,6 @@ ShallowWrapper {
               },
             ]
           }
-          keyExtractor={[Function]}
           onClick={[Function]}
         />,
         <WithStyles(Button)
@@ -138,12 +155,30 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "cellExtractor": [Function],
+          "extract": [Function],
+          "extractId": [Function],
           "headers": Array [
-            "Username",
-            "Displayname",
-            "Email",
-            "Role",
+            Object {
+              "name": "Username",
+              "options": Object {
+                "filter": false,
+              },
+            },
+            Object {
+              "name": "Displayname",
+              "options": Object {
+                "filter": false,
+              },
+            },
+            Object {
+              "name": "Email",
+              "options": Object {
+                "filter": false,
+              },
+            },
+            Object {
+              "name": "Role",
+            },
           ],
           "items": Array [
             Immutable.User {
@@ -156,7 +191,6 @@ ShallowWrapper {
               "children": Array [],
             },
           ],
-          "keyExtractor": [Function],
           "onClick": [Function],
         },
         "ref": null,
@@ -200,14 +234,32 @@ ShallowWrapper {
             onClose={[Function]}
             show={false}
           />,
-          <WithStyles(Table)
-            cellExtractor={[Function]}
+          <UserTable
+            extract={[Function]}
+            extractId={[Function]}
             headers={
               Array [
-                "Username",
-                "Displayname",
-                "Email",
-                "Role",
+                Object {
+                  "name": "Username",
+                  "options": Object {
+                    "filter": false,
+                  },
+                },
+                Object {
+                  "name": "Displayname",
+                  "options": Object {
+                    "filter": false,
+                  },
+                },
+                Object {
+                  "name": "Email",
+                  "options": Object {
+                    "filter": false,
+                  },
+                },
+                Object {
+                  "name": "Role",
+                },
               ]
             }
             items={
@@ -223,7 +275,6 @@ ShallowWrapper {
                 },
               ]
             }
-            keyExtractor={[Function]}
             onClick={[Function]}
           />,
           <WithStyles(Button)
@@ -255,12 +306,30 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "cellExtractor": [Function],
+            "extract": [Function],
+            "extractId": [Function],
             "headers": Array [
-              "Username",
-              "Displayname",
-              "Email",
-              "Role",
+              Object {
+                "name": "Username",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Displayname",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Email",
+                "options": Object {
+                  "filter": false,
+                },
+              },
+              Object {
+                "name": "Role",
+              },
             ],
             "items": Array [
               Immutable.User {
@@ -273,7 +342,6 @@ ShallowWrapper {
                 "children": Array [],
               },
             ],
-            "keyExtractor": [Function],
             "onClick": [Function],
           },
           "ref": null,
