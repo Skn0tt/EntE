@@ -12,7 +12,7 @@ import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Action } from "redux";
-import createTable from "../../components/Table";
+import { Table } from "../../components/Table";
 import {
   getSlotsRequest,
   getUser,
@@ -24,7 +24,7 @@ import {
 import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
 
-const SlotsTable = createTable<Slot>();
+class SlotsTable extends Table<Slot> {}
 
 interface StateProps {
   slots: Slot[];
@@ -60,17 +60,28 @@ export class Slots extends React.Component<Props> {
 
     return (
       <SlotsTable
-        headers={["Name", "Datum", "Von", "Bis", "Signiert", "Lehrer"]}
+        headers={[
+          "Name",
+          "Datum",
+          "Von",
+          "Bis",
+          {
+            name: "Signiert",
+            options: {
+              customBodyRender: v =>
+                v === "true" ? <SignedAvatar /> : <UnsignedAvatar />
+            }
+          },
+          "Lehrer"
+        ]}
         items={slots}
-        keyExtractor={slot => slot.get("_id")}
-        trueElement={<SignedAvatar />}
-        falseElement={<UnsignedAvatar />}
-        cellExtractor={slot => [
+        extractId={user => user.get("_id")}
+        extract={slot => [
           getUser(slot.get("student")).get("displayname"),
           slot.get("date").toLocaleDateString(),
-          slot.get("hour_from"),
-          slot.get("hour_to"),
-          slot.get("signed"),
+          "" + slot.get("hour_from"),
+          "" + slot.get("hour_to"),
+          "" + slot.get("signed"),
           getUser(slot.get("teacher")).get("displayname")
         ]}
       />

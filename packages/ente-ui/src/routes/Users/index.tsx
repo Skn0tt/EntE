@@ -12,14 +12,14 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
 import CreateUser from "./components/CreateUser";
-import createTable from "../../components/Table";
-import { withRouter, RouteComponentProps } from "react-router";
 import { Button } from "material-ui";
 import { Add as AddIcon } from "material-ui-icons";
 import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
 import withErrorBoundary from "../../components/withErrorBoundary";
+import Table from "../../components/Table";
+import { withRouter, RouteComponentProps } from "react-router";
 
-const UserTable = createTable<User>();
+class UserTable extends Table<User> {}
 
 /**
  * # Component Types
@@ -72,16 +72,38 @@ export class Users extends React.PureComponent<Props, State> {
 
         {/* Main */}
         <UserTable
-          headers={["Username", "Displayname", "Email", "Role"]}
+          headers={[
+            {
+              name: "Username",
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: "Displayname",
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: "Email",
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: "Role"
+            }
+          ]}
           items={users}
-          keyExtractor={user => user.get("_id")}
-          cellExtractor={user => [
+          extract={user => [
             user.get("username")!,
             user.get("displayname")!,
             user.get("email")!,
             user.get("role")!
           ]}
-          onClick={user => history.push(`/users/${user.get("_id")}`)}
+          extractId={user => user.get("_id")}
+          onClick={id => history.push(`/users/${id}`)}
         />
 
         {/* FAB */}

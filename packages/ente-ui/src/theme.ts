@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import createMuiTheme from "material-ui/styles/createMuiTheme";
+import { createMuiTheme } from "@material-ui/core/styles";
 import blue from "material-ui/colors/blue";
 
 const theme = createMuiTheme({
