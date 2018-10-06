@@ -21,7 +21,7 @@ ShallowWrapper {
     "props": Object {
       "alignItems": "center",
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           item={true}
         >
           <img
@@ -32,8 +32,8 @@ ShallowWrapper {
               }
             }
           />
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Typography)
@@ -41,7 +41,7 @@ ShallowWrapper {
           >
             Die Seite wurde nicht gefunden.
           </WithStyles(Typography)>
-        </WithStyles(GridWrapper)>,
+        </WithStyles(Grid)>,
       ],
       "container": true,
       "justify": "center",
@@ -118,7 +118,7 @@ ShallowWrapper {
       "props": Object {
         "alignItems": "center",
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
           >
             <img
@@ -129,8 +129,8 @@ ShallowWrapper {
                 }
               }
             />
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Typography)
@@ -138,7 +138,7 @@ ShallowWrapper {
             >
               Die Seite wurde nicht gefunden.
             </WithStyles(Typography)>
-          </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>,
         ],
         "container": true,
         "justify": "center",

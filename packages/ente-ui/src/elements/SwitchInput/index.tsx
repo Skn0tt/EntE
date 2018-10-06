@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Grid, Typography, Switch } from "material-ui";
+import { Grid, Typography, Switch } from "@material-ui/core";
 
 /**
  * # Component Types

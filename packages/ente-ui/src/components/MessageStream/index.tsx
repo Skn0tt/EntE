@@ -8,12 +8,12 @@
 
 import * as React from "react";
 import styles from "./styles";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { Dispatch, Action } from "redux";
 import { connect } from "react-redux";
-import Snackbar from "material-ui/Snackbar/Snackbar";
-import { IconButton } from "material-ui";
-import { Close as CloseIcon } from "material-ui-icons";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import { IconButton } from "@material-ui/core";
+import { Close as CloseIcon } from "@material-ui/icons";
 import { AppState, removeMessage, getMessages } from "ente-redux";
 
 /**
@@ -65,6 +65,6 @@ export const MessageStream: React.SFC<Props> = props => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(MessageStream)
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(MessageStream)
 );

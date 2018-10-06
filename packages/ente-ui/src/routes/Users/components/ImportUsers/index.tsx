@@ -15,10 +15,10 @@ import {
   getStudents
 } from "ente-redux";
 import { IUserCreate } from "ente-types";
-import { Button, Dialog, Grid } from "material-ui";
-import { withMobileDialog } from "material-ui/Dialog";
-import DialogActions from "material-ui/Dialog/DialogActions";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import { Button, Dialog, Grid } from "@material-ui/core";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { connect, MapStateToPropsParam } from "react-redux";
@@ -155,7 +155,9 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withMobileDialog<Props>()(ImportUsers)));
+export default withStyles(styles)(
+  connect<StateProps, DispatchProps, OwnProps, AppState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withMobileDialog<Props>()(ImportUsers))
+);

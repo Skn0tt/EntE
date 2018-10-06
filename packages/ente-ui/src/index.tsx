@@ -9,7 +9,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
-import Reboot from "material-ui/Reboot";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import createRavenMiddleware from "raven-for-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
 import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
@@ -27,7 +27,7 @@ import setupRedux, {
   GET_TOKEN_REQUEST,
   ReduxConfig
 } from "ente-redux";
-import { MuiThemeProvider } from "material-ui";
+import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
 import Raven from "raven-js";
 import { Action } from "redux-actions";
@@ -63,7 +63,7 @@ const store = setupRedux(config);
 
 const Index = () => (
   <div>
-    <Reboot />
+    <CssBaseline />
     <MuiThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
         <HttpsGate disable={ALLOW_INSECURE}>

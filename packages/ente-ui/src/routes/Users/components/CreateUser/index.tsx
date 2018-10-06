@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 import styles from "./styles";
 
@@ -19,19 +19,19 @@ import {
   TextField,
   IconButton,
   Divider
-} from "material-ui";
-import DialogTitle from "material-ui/Dialog/DialogTitle";
-import DialogContent from "material-ui/Dialog/DialogContent";
-import DialogActions from "material-ui/Dialog/DialogActions";
+} from "@material-ui/core";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 import withMobileDialog, {
   InjectedProps
-} from "material-ui/Dialog/withMobileDialog";
+} from "@material-ui/core/withMobileDialog";
 import { Action } from "redux";
-import List from "material-ui/List/List";
-import ListItem from "material-ui/List/ListItem";
-import ListItemText from "material-ui/List/ListItemText";
-import ListItemSecondaryAction from "material-ui/List/ListItemSecondaryAction";
-import { Delete as DeleteIcon, Add as AddIcon } from "material-ui-icons";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import { Delete as DeleteIcon, Add as AddIcon } from "@material-ui/icons";
 import ImportUsers from "../ImportUsers";
 import { IUserCreate, Roles, UserId } from "ente-types";
 import {
@@ -284,7 +284,9 @@ export class CreateUser extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withMobileDialog<Props>()(CreateUser)));
+export default withStyles(styles)(
+  connect<StateProps, DispatchProps, OwnProps, AppState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withMobileDialog<Props>()(CreateUser))
+);

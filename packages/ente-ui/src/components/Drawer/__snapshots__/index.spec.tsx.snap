@@ -4,7 +4,7 @@ exports[`Drawer renders correctly 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <withRouter(Connect(WithStyles(Drawer)))
+  Symbol(enzyme.__unrendered__): <WithStyles(withRouter(Connect(Drawer)))
     history={
       Object {
         "action": "POP",
@@ -46,7 +46,7 @@ ShallowWrapper {
     staticContext={Object {}}
   >
     Hallo
-  </withRouter(Connect(WithStyles(Drawer)))>,
+  </WithStyles(withRouter(Connect(Drawer)))>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -57,24 +57,112 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "class",
+    "nodeType": "function",
     "props": Object {
-      "render": [Function],
+      "children": "Hallo",
+      "classes": Object {
+        "appBar": "withRouter-Connect-Drawer---appBar-3",
+        "appFrame": "withRouter-Connect-Drawer---appFrame-2",
+        "content": "withRouter-Connect-Drawer---content-8",
+        "drawerPaper": "withRouter-Connect-Drawer---drawerPaper-7",
+        "grow": "withRouter-Connect-Drawer---grow-4",
+        "loadingIndicator": "withRouter-Connect-Drawer---loadingIndicator-9",
+        "logo": "withRouter-Connect-Drawer---logo-5",
+        "navIconHide": "withRouter-Connect-Drawer---navIconHide-6",
+        "root": "withRouter-Connect-Drawer---root-1",
+      },
+      "history": Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 2,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "key": "",
+          "pathname": "",
+          "search": "",
+          "state": Object {},
+        },
+        "push": [Function],
+        "replace": [Function],
+      },
+      "location": Object {
+        "hash": "",
+        "key": "",
+        "pathname": "",
+        "search": "",
+        "state": Object {},
+      },
+      "match": Object {
+        "isExact": true,
+        "params": Object {},
+        "path": "",
+        "url": "",
+      },
+      "staticContext": Object {},
     },
     "ref": null,
-    "rendered": null,
+    "rendered": "Hallo",
     "type": [Function],
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "class",
+      "nodeType": "function",
       "props": Object {
-        "render": [Function],
+        "children": "Hallo",
+        "classes": Object {
+          "appBar": "withRouter-Connect-Drawer---appBar-3",
+          "appFrame": "withRouter-Connect-Drawer---appFrame-2",
+          "content": "withRouter-Connect-Drawer---content-8",
+          "drawerPaper": "withRouter-Connect-Drawer---drawerPaper-7",
+          "grow": "withRouter-Connect-Drawer---grow-4",
+          "loadingIndicator": "withRouter-Connect-Drawer---loadingIndicator-9",
+          "logo": "withRouter-Connect-Drawer---logo-5",
+          "navIconHide": "withRouter-Connect-Drawer---navIconHide-6",
+          "root": "withRouter-Connect-Drawer---root-1",
+        },
+        "history": Object {
+          "action": "POP",
+          "block": [Function],
+          "createHref": [Function],
+          "go": [Function],
+          "goBack": [Function],
+          "goForward": [Function],
+          "length": 2,
+          "listen": [Function],
+          "location": Object {
+            "hash": "",
+            "key": "",
+            "pathname": "",
+            "search": "",
+            "state": Object {},
+          },
+          "push": [Function],
+          "replace": [Function],
+        },
+        "location": Object {
+          "hash": "",
+          "key": "",
+          "pathname": "",
+          "search": "",
+          "state": Object {},
+        },
+        "match": Object {
+          "isExact": true,
+          "params": Object {},
+          "path": "",
+          "url": "",
+        },
+        "staticContext": Object {},
       },
       "ref": null,
-      "rendered": null,
+      "rendered": "Hallo",
       "type": [Function],
     },
   ],

@@ -29,7 +29,7 @@ ShallowWrapper {
               className="logout"
               onClick={[MockFunction]}
             >
-              <pure(PowerSettingsNew) />
+              <pure(PowerSettingsNewIcon) />
             </WithStyles(IconButton)>
           </WithStyles(ListItemIcon)>
           <WithStyles(ListItemText)
@@ -52,7 +52,7 @@ ShallowWrapper {
               className="logout"
               onClick={[MockFunction]}
             >
-              <pure(PowerSettingsNew) />
+              <pure(PowerSettingsNewIcon) />
             </WithStyles(IconButton)>
           </WithStyles(ListItemIcon)>
           <WithStyles(ListItemText)
@@ -73,7 +73,7 @@ ShallowWrapper {
                 className="logout"
                 onClick={[MockFunction]}
               >
-                <pure(PowerSettingsNew) />
+                <pure(PowerSettingsNewIcon) />
               </WithStyles(IconButton)>
             </WithStyles(ListItemIcon)>,
             <WithStyles(ListItemText)
@@ -93,7 +93,7 @@ ShallowWrapper {
                 className="logout"
                 onClick={[MockFunction]}
               >
-                <pure(PowerSettingsNew) />
+                <pure(PowerSettingsNewIcon) />
               </WithStyles(IconButton)>,
             },
             "ref": null,
@@ -103,7 +103,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "aria-label": "logout",
-                "children": <pure(PowerSettingsNew) />,
+                "children": <pure(PowerSettingsNewIcon) />,
                 "className": "logout",
                 "onClick": [MockFunction],
               },
@@ -153,7 +153,7 @@ ShallowWrapper {
                 className="logout"
                 onClick={[MockFunction]}
               >
-                <pure(PowerSettingsNew) />
+                <pure(PowerSettingsNewIcon) />
               </WithStyles(IconButton)>
             </WithStyles(ListItemIcon)>
             <WithStyles(ListItemText)
@@ -176,7 +176,7 @@ ShallowWrapper {
                 className="logout"
                 onClick={[MockFunction]}
               >
-                <pure(PowerSettingsNew) />
+                <pure(PowerSettingsNewIcon) />
               </WithStyles(IconButton)>
             </WithStyles(ListItemIcon)>
             <WithStyles(ListItemText)
@@ -197,7 +197,7 @@ ShallowWrapper {
                   className="logout"
                   onClick={[MockFunction]}
                 >
-                  <pure(PowerSettingsNew) />
+                  <pure(PowerSettingsNewIcon) />
                 </WithStyles(IconButton)>
               </WithStyles(ListItemIcon)>,
               <WithStyles(ListItemText)
@@ -217,7 +217,7 @@ ShallowWrapper {
                   className="logout"
                   onClick={[MockFunction]}
                 >
-                  <pure(PowerSettingsNew) />
+                  <pure(PowerSettingsNewIcon) />
                 </WithStyles(IconButton)>,
               },
               "ref": null,
@@ -227,7 +227,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "aria-label": "logout",
-                  "children": <pure(PowerSettingsNew) />,
+                  "children": <pure(PowerSettingsNewIcon) />,
                   "className": "logout",
                   "onClick": [MockFunction],
                 },

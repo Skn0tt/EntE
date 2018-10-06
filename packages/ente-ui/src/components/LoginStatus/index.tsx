@@ -9,13 +9,13 @@
 import * as React from "react";
 
 import styles from "./styles";
-import { WithStyles } from "material-ui/styles/withStyles";
-import { withStyles, IconButton, List } from "material-ui";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
+import { withStyles, IconButton, List } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
-import ListItem from "material-ui/List/ListItem";
-import ListItemText from "material-ui/List/ListItemText";
-import { PowerSettingsNew as PowerSettingsNewIcon } from "material-ui-icons";
-import ListItemIcon from "material-ui/List/ListItemIcon";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { PowerSettingsNew as PowerSettingsNewIcon } from "@material-ui/icons";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { logout, AppState, getDisplayname } from "ente-redux";
 import { Action } from "redux";
 
@@ -60,6 +60,6 @@ export const LoginStatus: React.SFC<Props> = props => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(LoginStatus)
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(LoginStatus)
 );

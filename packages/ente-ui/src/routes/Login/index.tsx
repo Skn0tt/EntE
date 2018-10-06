@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 
 import styles from "./styles";
 import { connect, Dispatch } from "react-redux";
@@ -21,8 +21,8 @@ import {
   DialogActions,
   Button,
   TextField
-} from "material-ui";
-import { withMobileDialog } from "material-ui/Dialog";
+} from "@material-ui/core";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
 import { ICredentials } from "ente-types";
 import {
   AppState,
@@ -64,96 +64,90 @@ interface State {
   password: string;
 }
 
-const Login = connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(
-    withMobileDialog<Props>()(
-      class extends React.Component<Props, State> {
-        state: State = {
-          username: "",
-          password: ""
-        };
+class Login extends React.Component<Props, State> {
+  state: State = {
+    username: "",
+    password: ""
+  };
 
-        handleResetPassword = () =>
-          this.props.triggerPasswordReset(this.state.username);
+  handleResetPassword = () =>
+    this.props.triggerPasswordReset(this.state.username);
 
-        handleKeyPress: React.KeyboardEventHandler<{}> = event => {
-          if (event.key === "Enter") {
-            this.handleSignIn();
-          }
-        };
+  handleKeyPress: React.KeyboardEventHandler<{}> = event => {
+    if (event.key === "Enter") {
+      this.handleSignIn();
+    }
+  };
 
-        handleChangeUsername: React.ChangeEventHandler<
-          HTMLInputElement
-        > = event =>
-          this.setState({
-            username: event.target.value
-          });
+  handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = event =>
+    this.setState({
+      username: event.target.value
+    });
 
-        handleChangePassword: React.ChangeEventHandler<
-          HTMLInputElement
-        > = event =>
-          this.setState({
-            password: event.target.value
-          });
+  handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = event =>
+    this.setState({
+      password: event.target.value
+    });
 
-        handleSignIn = () =>
-          this.props.checkAuth({
-            username: this.state.username,
-            password: this.state.password
-          });
+  handleSignIn = () =>
+    this.props.checkAuth({
+      username: this.state.username,
+      password: this.state.password
+    });
 
-        render() {
-          const { classes } = this.props;
-          const { from } = this.props.location.state || {
-            from: { pathname: "/" }
-          };
+  render() {
+    const { classes } = this.props;
+    const { from } = this.props.location.state || {
+      from: { pathname: "/" }
+    };
 
-          return (
-            <div>
-              {this.props.authValid && <Redirect to={from} />}
-              <Dialog
-                fullScreen={this.props.fullScreen}
-                open
-                onKeyPress={this.handleKeyPress}
-              >
-                <DialogTitle>Login</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Bitte melden sie sich an, um EntE zu nutzen.
-                  </DialogContentText>
-                  <div className={classes.contentContainer}>
-                    <TextField
-                      fullWidth
-                      id="name"
-                      label="Name"
-                      autoComplete="username"
-                      onChange={this.handleChangeUsername}
-                    />
-                    <TextField
-                      fullWidth
-                      id="password"
-                      label="Password"
-                      type="password"
-                      autoComplete="current-password"
-                      onChange={this.handleChangePassword}
-                    />
-                  </div>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={() => this.handleResetPassword()}>
-                    Passwort Zurücksetzen
-                  </Button>
-                  <Button color="primary" onClick={() => this.handleSignIn()}>
-                    Login
-                  </Button>
-                </DialogActions>
-              </Dialog>
+    return (
+      <div>
+        {this.props.authValid && <Redirect to={from} />}
+        <Dialog
+          fullScreen={this.props.fullScreen}
+          open
+          onKeyPress={this.handleKeyPress}
+        >
+          <DialogTitle>Login</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Bitte melden sie sich an, um EntE zu nutzen.
+            </DialogContentText>
+            <div className={classes.contentContainer}>
+              <TextField
+                fullWidth
+                id="name"
+                label="Name"
+                autoComplete="username"
+                onChange={this.handleChangeUsername}
+              />
+              <TextField
+                fullWidth
+                id="password"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                onChange={this.handleChangePassword}
+              />
             </div>
-          );
-        }
-      }
-    )
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleResetPassword()}>
+              Passwort Zurücksetzen
+            </Button>
+            <Button color="primary" onClick={() => this.handleSignIn()}>
+              Login
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withMobileDialog<Props>()(withErrorBoundary()(Login))
   )
 );
-
-export default withErrorBoundary()(Login);

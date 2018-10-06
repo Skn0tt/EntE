@@ -53,7 +53,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Typography)
@@ -61,8 +61,8 @@ ShallowWrapper {
           >
             Kinder
           </WithStyles(Typography)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(List)>
@@ -74,17 +74,17 @@ ShallowWrapper {
                 <WithStyles(IconButton)
                   onClick={[Function]}
                 >
-                  <pure(Delete) />
+                  <pure(DeleteIcon) />
                 </WithStyles(IconButton)>
               </WithStyles(ListItemSecondaryAction)>
             </WithStyles(ListItem)>
           </WithStyles(List)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           container={true}
           item={true}
         >
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
             xs={11}
           >
@@ -108,8 +108,8 @@ ShallowWrapper {
               label="Kind"
               onChange={[Function]}
             />
-          </WithStyles(GridWrapper)>
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>
+          <WithStyles(Grid)
             item={true}
             xs={1}
           >
@@ -120,10 +120,10 @@ ShallowWrapper {
               onClick={[Function]}
               variant="fab"
             >
-              <pure(Add) />
+              <pure(AddIcon) />
             </WithStyles(Button)>
-          </WithStyles(GridWrapper)>
-        </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>
+        </WithStyles(Grid)>,
       ],
       "container": true,
       "direction": "column",
@@ -171,7 +171,7 @@ ShallowWrapper {
                 <WithStyles(IconButton)
                   onClick={[Function]}
                 >
-                  <pure(Delete) />
+                  <pure(DeleteIcon) />
                 </WithStyles(IconButton)>
               </WithStyles(ListItemSecondaryAction)>
             </WithStyles(ListItem)>
@@ -193,7 +193,7 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>,
@@ -214,7 +214,7 @@ ShallowWrapper {
                     <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>
                   </WithStyles(ListItemSecondaryAction)>,
                 ],
@@ -240,7 +240,7 @@ ShallowWrapper {
                     "children": <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>,
                   },
                   "ref": null,
@@ -249,7 +249,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <pure(Delete) />,
+                      "children": <pure(DeleteIcon) />,
                       "onClick": [Function],
                     },
                     "ref": null,
@@ -280,7 +280,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={11}
             >
@@ -304,8 +304,8 @@ ShallowWrapper {
                 label="Kind"
                 onChange={[Function]}
               />
-            </WithStyles(GridWrapper)>,
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>,
+            <WithStyles(Grid)
               item={true}
               xs={1}
             >
@@ -316,9 +316,9 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>
-            </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>,
           ],
           "container": true,
           "item": true,
@@ -394,7 +394,7 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>,
               "item": true,
               "xs": 1,
@@ -405,7 +405,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <pure(Add) />,
+                "children": <pure(AddIcon) />,
                 "className": "add",
                 "disabled": false,
                 "mini": true,
@@ -439,7 +439,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Typography)
@@ -447,8 +447,8 @@ ShallowWrapper {
             >
               Kinder
             </WithStyles(Typography)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(List)>
@@ -460,17 +460,17 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>
             </WithStyles(List)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             container={true}
             item={true}
           >
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={11}
             >
@@ -494,8 +494,8 @@ ShallowWrapper {
                 label="Kind"
                 onChange={[Function]}
               />
-            </WithStyles(GridWrapper)>
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>
+            <WithStyles(Grid)
               item={true}
               xs={1}
             >
@@ -506,10 +506,10 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>
-            </WithStyles(GridWrapper)>
-          </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>
+          </WithStyles(Grid)>,
         ],
         "container": true,
         "direction": "column",
@@ -557,7 +557,7 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>
@@ -579,7 +579,7 @@ ShallowWrapper {
                     <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>
                   </WithStyles(ListItemSecondaryAction)>
                 </WithStyles(ListItem)>,
@@ -600,7 +600,7 @@ ShallowWrapper {
                       <WithStyles(IconButton)
                         onClick={[Function]}
                       >
-                        <pure(Delete) />
+                        <pure(DeleteIcon) />
                       </WithStyles(IconButton)>
                     </WithStyles(ListItemSecondaryAction)>,
                   ],
@@ -626,7 +626,7 @@ ShallowWrapper {
                       "children": <WithStyles(IconButton)
                         onClick={[Function]}
                       >
-                        <pure(Delete) />
+                        <pure(DeleteIcon) />
                       </WithStyles(IconButton)>,
                     },
                     "ref": null,
@@ -635,7 +635,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <pure(Delete) />,
+                        "children": <pure(DeleteIcon) />,
                         "onClick": [Function],
                       },
                       "ref": null,
@@ -666,7 +666,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <WithStyles(GridWrapper)
+              <WithStyles(Grid)
                 item={true}
                 xs={11}
               >
@@ -690,8 +690,8 @@ ShallowWrapper {
                   label="Kind"
                   onChange={[Function]}
                 />
-              </WithStyles(GridWrapper)>,
-              <WithStyles(GridWrapper)
+              </WithStyles(Grid)>,
+              <WithStyles(Grid)
                 item={true}
                 xs={1}
               >
@@ -702,9 +702,9 @@ ShallowWrapper {
                   onClick={[Function]}
                   variant="fab"
                 >
-                  <pure(Add) />
+                  <pure(AddIcon) />
                 </WithStyles(Button)>
-              </WithStyles(GridWrapper)>,
+              </WithStyles(Grid)>,
             ],
             "container": true,
             "item": true,
@@ -780,7 +780,7 @@ ShallowWrapper {
                   onClick={[Function]}
                   variant="fab"
                 >
-                  <pure(Add) />
+                  <pure(AddIcon) />
                 </WithStyles(Button)>,
                 "item": true,
                 "xs": 1,
@@ -791,7 +791,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <pure(Add) />,
+                  "children": <pure(AddIcon) />,
                   "className": "add",
                   "disabled": false,
                   "mini": true,
@@ -873,7 +873,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Typography)
@@ -881,8 +881,8 @@ ShallowWrapper {
           >
             Kinder
           </WithStyles(Typography)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(List)>
@@ -894,17 +894,17 @@ ShallowWrapper {
                 <WithStyles(IconButton)
                   onClick={[Function]}
                 >
-                  <pure(Delete) />
+                  <pure(DeleteIcon) />
                 </WithStyles(IconButton)>
               </WithStyles(ListItemSecondaryAction)>
             </WithStyles(ListItem)>
           </WithStyles(List)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           container={true}
           item={true}
         >
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
             xs={11}
           >
@@ -916,8 +916,8 @@ ShallowWrapper {
               label="Kind"
               onChange={[Function]}
             />
-          </WithStyles(GridWrapper)>
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>
+          <WithStyles(Grid)
             item={true}
             xs={1}
           >
@@ -928,10 +928,10 @@ ShallowWrapper {
               onClick={[Function]}
               variant="fab"
             >
-              <pure(Add) />
+              <pure(AddIcon) />
             </WithStyles(Button)>
-          </WithStyles(GridWrapper)>
-        </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>
+        </WithStyles(Grid)>,
       ],
       "container": true,
       "direction": "column",
@@ -979,7 +979,7 @@ ShallowWrapper {
                 <WithStyles(IconButton)
                   onClick={[Function]}
                 >
-                  <pure(Delete) />
+                  <pure(DeleteIcon) />
                 </WithStyles(IconButton)>
               </WithStyles(ListItemSecondaryAction)>
             </WithStyles(ListItem)>
@@ -1001,7 +1001,7 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>,
@@ -1022,7 +1022,7 @@ ShallowWrapper {
                     <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>
                   </WithStyles(ListItemSecondaryAction)>,
                 ],
@@ -1048,7 +1048,7 @@ ShallowWrapper {
                     "children": <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>,
                   },
                   "ref": null,
@@ -1057,7 +1057,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <pure(Delete) />,
+                      "children": <pure(DeleteIcon) />,
                       "onClick": [Function],
                     },
                     "ref": null,
@@ -1088,7 +1088,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={11}
             >
@@ -1100,8 +1100,8 @@ ShallowWrapper {
                 label="Kind"
                 onChange={[Function]}
               />
-            </WithStyles(GridWrapper)>,
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>,
+            <WithStyles(Grid)
               item={true}
               xs={1}
             >
@@ -1112,9 +1112,9 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>
-            </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>,
           ],
           "container": true,
           "item": true,
@@ -1168,7 +1168,7 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>,
               "item": true,
               "xs": 1,
@@ -1179,7 +1179,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <pure(Add) />,
+                "children": <pure(AddIcon) />,
                 "className": "add",
                 "disabled": true,
                 "mini": true,
@@ -1213,7 +1213,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Typography)
@@ -1221,8 +1221,8 @@ ShallowWrapper {
             >
               Kinder
             </WithStyles(Typography)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(List)>
@@ -1234,17 +1234,17 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>
             </WithStyles(List)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             container={true}
             item={true}
           >
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={11}
             >
@@ -1256,8 +1256,8 @@ ShallowWrapper {
                 label="Kind"
                 onChange={[Function]}
               />
-            </WithStyles(GridWrapper)>
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>
+            <WithStyles(Grid)
               item={true}
               xs={1}
             >
@@ -1268,10 +1268,10 @@ ShallowWrapper {
                 onClick={[Function]}
                 variant="fab"
               >
-                <pure(Add) />
+                <pure(AddIcon) />
               </WithStyles(Button)>
-            </WithStyles(GridWrapper)>
-          </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>
+          </WithStyles(Grid)>,
         ],
         "container": true,
         "direction": "column",
@@ -1319,7 +1319,7 @@ ShallowWrapper {
                   <WithStyles(IconButton)
                     onClick={[Function]}
                   >
-                    <pure(Delete) />
+                    <pure(DeleteIcon) />
                   </WithStyles(IconButton)>
                 </WithStyles(ListItemSecondaryAction)>
               </WithStyles(ListItem)>
@@ -1341,7 +1341,7 @@ ShallowWrapper {
                     <WithStyles(IconButton)
                       onClick={[Function]}
                     >
-                      <pure(Delete) />
+                      <pure(DeleteIcon) />
                     </WithStyles(IconButton)>
                   </WithStyles(ListItemSecondaryAction)>
                 </WithStyles(ListItem)>,
@@ -1362,7 +1362,7 @@ ShallowWrapper {
                       <WithStyles(IconButton)
                         onClick={[Function]}
                       >
-                        <pure(Delete) />
+                        <pure(DeleteIcon) />
                       </WithStyles(IconButton)>
                     </WithStyles(ListItemSecondaryAction)>,
                   ],
@@ -1388,7 +1388,7 @@ ShallowWrapper {
                       "children": <WithStyles(IconButton)
                         onClick={[Function]}
                       >
-                        <pure(Delete) />
+                        <pure(DeleteIcon) />
                       </WithStyles(IconButton)>,
                     },
                     "ref": null,
@@ -1397,7 +1397,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <pure(Delete) />,
+                        "children": <pure(DeleteIcon) />,
                         "onClick": [Function],
                       },
                       "ref": null,
@@ -1428,7 +1428,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <WithStyles(GridWrapper)
+              <WithStyles(Grid)
                 item={true}
                 xs={11}
               >
@@ -1440,8 +1440,8 @@ ShallowWrapper {
                   label="Kind"
                   onChange={[Function]}
                 />
-              </WithStyles(GridWrapper)>,
-              <WithStyles(GridWrapper)
+              </WithStyles(Grid)>,
+              <WithStyles(Grid)
                 item={true}
                 xs={1}
               >
@@ -1452,9 +1452,9 @@ ShallowWrapper {
                   onClick={[Function]}
                   variant="fab"
                 >
-                  <pure(Add) />
+                  <pure(AddIcon) />
                 </WithStyles(Button)>
-              </WithStyles(GridWrapper)>,
+              </WithStyles(Grid)>,
             ],
             "container": true,
             "item": true,
@@ -1508,7 +1508,7 @@ ShallowWrapper {
                   onClick={[Function]}
                   variant="fab"
                 >
-                  <pure(Add) />
+                  <pure(AddIcon) />
                 </WithStyles(Button)>,
                 "item": true,
                 "xs": 1,
@@ -1519,7 +1519,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <pure(Add) />,
+                  "children": <pure(AddIcon) />,
                   "className": "add",
                   "disabled": true,
                   "mini": true,

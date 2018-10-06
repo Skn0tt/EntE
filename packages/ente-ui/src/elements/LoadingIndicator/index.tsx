@@ -8,7 +8,12 @@
 
 import * as React from "react";
 import styles from "./styles";
-import { withStyles, CircularProgress, WithStyles, Grid } from "material-ui";
+import {
+  withStyles,
+  CircularProgress,
+  WithStyles,
+  Grid
+} from "@material-ui/core";
 
 /**
  * # Component Types

@@ -7,13 +7,13 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
 import { Action } from "redux";
 import CreateUser from "./components/CreateUser";
-import { Button } from "material-ui";
-import { Add as AddIcon } from "material-ui-icons";
+import { Button } from "@material-ui/core";
+import { Add as AddIcon } from "@material-ui/icons";
 import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
 import withErrorBoundary from "../../components/withErrorBoundary";
 import Table from "../../components/Table";
@@ -120,6 +120,8 @@ export class Users extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(withRouter(withErrorBoundary()(Users)))
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withRouter(withErrorBoundary()(Users))
+  )
 );

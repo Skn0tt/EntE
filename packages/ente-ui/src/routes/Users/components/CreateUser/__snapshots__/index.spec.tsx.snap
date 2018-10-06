@@ -51,11 +51,11 @@ ShallowWrapper {
               className={undefined}
               onKeyPress={[Function]}
             >
-              <WithStyles(GridWrapper)
+              <WithStyles(Grid)
                 container={true}
                 direction="row"
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -67,8 +67,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -80,8 +80,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -94,8 +94,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   xs={12}
                 >
@@ -106,8 +106,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   xs={12}
                 >
@@ -124,6 +124,7 @@ ShallowWrapper {
                     required={false}
                     select={true}
                     value="student"
+                    variant="standard"
                   >
                     <option
                       value="parent"
@@ -151,8 +152,8 @@ ShallowWrapper {
                       manager
                     </option>
                   </TextField>
-                </WithStyles(GridWrapper)>
-              </WithStyles(GridWrapper)>
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
             </form>
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
@@ -177,7 +178,7 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+        <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -199,11 +200,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -215,8 +216,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -228,8 +229,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -242,8 +243,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -254,8 +255,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -272,6 +273,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -299,8 +301,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
@@ -351,11 +353,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -367,8 +369,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -380,8 +382,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -394,8 +396,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -406,8 +408,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -424,6 +426,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -451,8 +454,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>,
             },
             "ref": null,
@@ -461,11 +464,11 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": <WithStyles(GridWrapper)
+                "children": <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -477,8 +480,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -490,8 +493,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -504,8 +507,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -516,8 +519,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -534,6 +537,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -561,8 +565,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>,
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>,
                 "className": undefined,
                 "onKeyPress": [Function],
               },
@@ -573,7 +577,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": Array [
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -585,8 +589,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -598,8 +602,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -612,8 +616,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -624,8 +628,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -642,6 +646,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -669,7 +674,7 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>,
+                    </WithStyles(Grid)>,
                     false,
                   ],
                   "container": true,
@@ -832,6 +837,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -866,7 +872,7 @@ ShallowWrapper {
                     "rendered": Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "function",
+                      "nodeType": "class",
                       "props": Object {
                         "SelectProps": Object {
                           "native": true,
@@ -905,6 +911,7 @@ ShallowWrapper {
                         "required": false,
                         "select": true,
                         "value": "student",
+                        "variant": "standard",
                       },
                       "ref": null,
                       "rendered": Array [
@@ -1091,11 +1098,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -1107,8 +1114,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -1120,8 +1127,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -1134,8 +1141,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -1146,8 +1153,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -1164,6 +1171,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -1191,8 +1199,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>
             </WithStyles(DialogContent)>
             <WithStyles(DialogActions)>
@@ -1217,7 +1225,7 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+          <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,
@@ -1239,11 +1247,11 @@ ShallowWrapper {
                   className={undefined}
                   onKeyPress={[Function]}
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1255,8 +1263,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1268,8 +1276,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1282,8 +1290,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1294,8 +1302,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1312,6 +1320,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -1339,8 +1348,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>
                 </form>
               </WithStyles(DialogContent)>,
               <WithStyles(DialogActions)>
@@ -1391,11 +1400,11 @@ ShallowWrapper {
                   className={undefined}
                   onKeyPress={[Function]}
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1407,8 +1416,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1420,8 +1429,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1434,8 +1443,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1446,8 +1455,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1464,6 +1473,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -1491,8 +1501,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>
                 </form>,
               },
               "ref": null,
@@ -1501,11 +1511,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": <WithStyles(GridWrapper)
+                  "children": <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1517,8 +1527,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1530,8 +1540,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -1544,8 +1554,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1556,8 +1566,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -1574,6 +1584,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -1601,8 +1612,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>,
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>,
                   "className": undefined,
                   "onKeyPress": [Function],
                 },
@@ -1613,7 +1624,7 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": Array [
-                      <WithStyles(GridWrapper)
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -1625,8 +1636,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -1638,8 +1649,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -1652,8 +1663,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         xs={12}
                       >
@@ -1664,8 +1675,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         xs={12}
                       >
@@ -1682,6 +1693,7 @@ ShallowWrapper {
                           required={false}
                           select={true}
                           value="student"
+                          variant="standard"
                         >
                           <option
                             value="parent"
@@ -1709,7 +1721,7 @@ ShallowWrapper {
                             manager
                           </option>
                         </TextField>
-                      </WithStyles(GridWrapper)>,
+                      </WithStyles(Grid)>,
                       false,
                     ],
                     "container": true,
@@ -1872,6 +1884,7 @@ ShallowWrapper {
                           required={false}
                           select={true}
                           value="student"
+                          variant="standard"
                         >
                           <option
                             value="parent"
@@ -1906,7 +1919,7 @@ ShallowWrapper {
                       "rendered": Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "function",
+                        "nodeType": "class",
                         "props": Object {
                           "SelectProps": Object {
                             "native": true,
@@ -1945,6 +1958,7 @@ ShallowWrapper {
                           "required": false,
                           "select": true,
                           "value": "student",
+                          "variant": "standard",
                         },
                         "ref": null,
                         "rendered": Array [
@@ -2173,11 +2187,11 @@ ShallowWrapper {
               className={undefined}
               onKeyPress={[Function]}
             >
-              <WithStyles(GridWrapper)
+              <WithStyles(Grid)
                 container={true}
                 direction="row"
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -2189,8 +2203,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -2202,8 +2216,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   lg={6}
                   xs={12}
@@ -2216,8 +2230,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   xs={12}
                 >
@@ -2228,8 +2242,8 @@ ShallowWrapper {
                     validator={[Function]}
                     value=""
                   />
-                </WithStyles(GridWrapper)>
-                <WithStyles(GridWrapper)
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
                   item={true}
                   xs={12}
                 >
@@ -2246,6 +2260,7 @@ ShallowWrapper {
                     required={false}
                     select={true}
                     value="student"
+                    variant="standard"
                   >
                     <option
                       value="parent"
@@ -2273,8 +2288,8 @@ ShallowWrapper {
                       manager
                     </option>
                   </TextField>
-                </WithStyles(GridWrapper)>
-              </WithStyles(GridWrapper)>
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
             </form>
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
@@ -2299,7 +2314,7 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+        <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -2321,11 +2336,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2337,8 +2352,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2350,8 +2365,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2364,8 +2379,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2376,8 +2391,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2394,6 +2409,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -2421,8 +2437,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
@@ -2473,11 +2489,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2489,8 +2505,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2502,8 +2518,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2516,8 +2532,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2528,8 +2544,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2546,6 +2562,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -2573,8 +2590,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>,
             },
             "ref": null,
@@ -2583,11 +2600,11 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": <WithStyles(GridWrapper)
+                "children": <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2599,8 +2616,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2612,8 +2629,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -2626,8 +2643,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2638,8 +2655,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -2656,6 +2673,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -2683,8 +2701,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>,
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>,
                 "className": undefined,
                 "onKeyPress": [Function],
               },
@@ -2695,7 +2713,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": Array [
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -2707,8 +2725,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -2720,8 +2738,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -2734,8 +2752,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -2746,8 +2764,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>,
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>,
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -2764,6 +2782,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -2791,7 +2810,7 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>,
+                    </WithStyles(Grid)>,
                     false,
                   ],
                   "container": true,
@@ -2954,6 +2973,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -2988,7 +3008,7 @@ ShallowWrapper {
                     "rendered": Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "function",
+                      "nodeType": "class",
                       "props": Object {
                         "SelectProps": Object {
                           "native": true,
@@ -3027,6 +3047,7 @@ ShallowWrapper {
                         "required": false,
                         "select": true,
                         "value": "student",
+                        "variant": "standard",
                       },
                       "ref": null,
                       "rendered": Array [
@@ -3213,11 +3234,11 @@ ShallowWrapper {
                 className={undefined}
                 onKeyPress={[Function]}
               >
-                <WithStyles(GridWrapper)
+                <WithStyles(Grid)
                   container={true}
                   direction="row"
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -3229,8 +3250,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -3242,8 +3263,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     lg={6}
                     xs={12}
@@ -3256,8 +3277,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -3268,8 +3289,8 @@ ShallowWrapper {
                       validator={[Function]}
                       value=""
                     />
-                  </WithStyles(GridWrapper)>
-                  <WithStyles(GridWrapper)
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
                     item={true}
                     xs={12}
                   >
@@ -3286,6 +3307,7 @@ ShallowWrapper {
                       required={false}
                       select={true}
                       value="student"
+                      variant="standard"
                     >
                       <option
                         value="parent"
@@ -3313,8 +3335,8 @@ ShallowWrapper {
                         manager
                       </option>
                     </TextField>
-                  </WithStyles(GridWrapper)>
-                </WithStyles(GridWrapper)>
+                  </WithStyles(Grid)>
+                </WithStyles(Grid)>
               </form>
             </WithStyles(DialogContent)>
             <WithStyles(DialogActions)>
@@ -3339,7 +3361,7 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+          <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,
@@ -3361,11 +3383,11 @@ ShallowWrapper {
                   className={undefined}
                   onKeyPress={[Function]}
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3377,8 +3399,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3390,8 +3412,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3404,8 +3426,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3416,8 +3438,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3434,6 +3456,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -3461,8 +3484,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>
                 </form>
               </WithStyles(DialogContent)>,
               <WithStyles(DialogActions)>
@@ -3513,11 +3536,11 @@ ShallowWrapper {
                   className={undefined}
                   onKeyPress={[Function]}
                 >
-                  <WithStyles(GridWrapper)
+                  <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3529,8 +3552,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3542,8 +3565,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3556,8 +3579,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3568,8 +3591,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3586,6 +3609,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -3613,8 +3637,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>
                 </form>,
               },
               "ref": null,
@@ -3623,11 +3647,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": <WithStyles(GridWrapper)
+                  "children": <WithStyles(Grid)
                     container={true}
                     direction="row"
                   >
-                    <WithStyles(GridWrapper)
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3639,8 +3663,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3652,8 +3676,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       lg={6}
                       xs={12}
@@ -3666,8 +3690,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3678,8 +3702,8 @@ ShallowWrapper {
                         validator={[Function]}
                         value=""
                       />
-                    </WithStyles(GridWrapper)>
-                    <WithStyles(GridWrapper)
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
                       item={true}
                       xs={12}
                     >
@@ -3696,6 +3720,7 @@ ShallowWrapper {
                         required={false}
                         select={true}
                         value="student"
+                        variant="standard"
                       >
                         <option
                           value="parent"
@@ -3723,8 +3748,8 @@ ShallowWrapper {
                           manager
                         </option>
                       </TextField>
-                    </WithStyles(GridWrapper)>
-                  </WithStyles(GridWrapper)>,
+                    </WithStyles(Grid)>
+                  </WithStyles(Grid)>,
                   "className": undefined,
                   "onKeyPress": [Function],
                 },
@@ -3735,7 +3760,7 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": Array [
-                      <WithStyles(GridWrapper)
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -3747,8 +3772,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -3760,8 +3785,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         lg={6}
                         xs={12}
@@ -3774,8 +3799,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         xs={12}
                       >
@@ -3786,8 +3811,8 @@ ShallowWrapper {
                           validator={[Function]}
                           value=""
                         />
-                      </WithStyles(GridWrapper)>,
-                      <WithStyles(GridWrapper)
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
                         item={true}
                         xs={12}
                       >
@@ -3804,6 +3829,7 @@ ShallowWrapper {
                           required={false}
                           select={true}
                           value="student"
+                          variant="standard"
                         >
                           <option
                             value="parent"
@@ -3831,7 +3857,7 @@ ShallowWrapper {
                             manager
                           </option>
                         </TextField>
-                      </WithStyles(GridWrapper)>,
+                      </WithStyles(Grid)>,
                       false,
                     ],
                     "container": true,
@@ -3994,6 +4020,7 @@ ShallowWrapper {
                           required={false}
                           select={true}
                           value="student"
+                          variant="standard"
                         >
                           <option
                             value="parent"
@@ -4028,7 +4055,7 @@ ShallowWrapper {
                       "rendered": Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "function",
+                        "nodeType": "class",
                         "props": Object {
                           "SelectProps": Object {
                             "native": true,
@@ -4067,6 +4094,7 @@ ShallowWrapper {
                           "required": false,
                           "select": true,
                           "value": "student",
+                          "variant": "standard",
                         },
                         "ref": null,
                         "rendered": Array [

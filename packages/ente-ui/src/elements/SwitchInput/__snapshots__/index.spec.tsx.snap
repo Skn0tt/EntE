@@ -22,7 +22,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Typography)
@@ -30,8 +30,8 @@ ShallowWrapper {
           >
             Switch
           </WithStyles(Typography)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Switch)
@@ -39,7 +39,7 @@ ShallowWrapper {
             className="updateSwitch"
             onChange={[Function]}
           />
-        </WithStyles(GridWrapper)>,
+        </WithStyles(Grid)>,
       ],
       "container": true,
       "direction": "column",
@@ -111,7 +111,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Typography)
@@ -119,8 +119,8 @@ ShallowWrapper {
             >
               Switch
             </WithStyles(Typography)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Switch)
@@ -128,7 +128,7 @@ ShallowWrapper {
               className="updateSwitch"
               onChange={[Function]}
             />
-          </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>,
         ],
         "container": true,
         "direction": "column",

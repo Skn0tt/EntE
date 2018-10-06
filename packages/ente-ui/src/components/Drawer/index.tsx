@@ -17,9 +17,9 @@ import {
   WithStyles,
   withStyles,
   Drawer as MUIDrawer
-} from "material-ui";
+} from "@material-ui/core";
 import * as React from "react";
-import { Menu as MenuIcon } from "material-ui-icons";
+import { Menu as MenuIcon } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import LoginStatus from "../LoginStatus";
@@ -32,6 +32,7 @@ import {
   TeacherItems
 } from "./items";
 import styles from "./styles";
+import { Dispatch } from "redux";
 
 /**
  * # Component Types
@@ -141,4 +142,6 @@ class Drawer extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(Drawer)));
+export default withStyles(styles)(
+  withRouter(connect<StateProps, {}, Props, AppState>(mapStateToProps)(Drawer))
+);

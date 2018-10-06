@@ -6,9 +6,9 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { green, red, common } from "material-ui/colors";
-import { StyleRules } from "material-ui/styles/withStyles";
-import { Theme } from "material-ui/styles/createMuiTheme";
+import { green, red, common } from "@material-ui/core/colors";
+import { StyleRules } from "@material-ui/core/styles/withStyles";
+import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
 const styles = (theme: Theme): StyleRules => ({
   list: {

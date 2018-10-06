@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Grid, Typography, TextField } from "material-ui";
+import { Grid, Typography, TextField } from "@material-ui/core";
 
 /**
  * # Component Types

@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import styles from "./styles";
 import { Dispatch, Action } from "redux";
 import { connect } from "react-redux";
@@ -19,10 +19,10 @@ import {
   TextField,
   DialogActions,
   Button
-} from "material-ui";
+} from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
-} from "material-ui/Dialog/withMobileDialog";
+} from "@material-ui/core/withMobileDialog";
 import { setPasswordRequest } from "ente-redux";
 import { isValidPassword } from "ente-validator";
 import withErrorBoundary from "../../components/withErrorBoundary";
@@ -105,6 +105,8 @@ class Forgot extends React.Component<Props, State> {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(withMobileDialog<Props>()(withErrorBoundary()(Forgot)))
+export default withStyles(styles)(
+  connect(undefined, mapDispatchToProps)(
+    withMobileDialog<Props>()(withErrorBoundary()(Forgot))
+  )
 );

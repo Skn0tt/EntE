@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import {
   connect,
   Dispatch,
@@ -29,18 +29,18 @@ import {
   Grid,
   Checkbox,
   Icon
-} from "material-ui";
-import DialogTitle from "material-ui/Dialog/DialogTitle";
-import DialogContent from "material-ui/Dialog/DialogContent";
-import DialogActions from "material-ui/Dialog/DialogActions";
-import FormControlLabel from "material-ui/Form/FormControlLabel";
+} from "@material-ui/core";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import SlotListItem from "./elements/SlotListItem";
 import SlotEntry from "./components/SlotEntry";
-import MenuItem from "material-ui/Menu/MenuItem";
+import MenuItem from "@material-ui/core/MenuItem";
 import withMobileDialog, {
   InjectedProps
-} from "material-ui/Dialog/withMobileDialog";
-import Typography from "material-ui/Typography/Typography";
+} from "@material-ui/core/withMobileDialog";
+import Typography from "@material-ui/core/Typography/Typography";
 import { IEntryCreate, ISlotCreate, UserId } from "ente-types";
 import {
   createEntryRequest,
@@ -341,7 +341,9 @@ class CreateEntry extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withStyles(styles)(withMobileDialog<Props>()(CreateEntry))));
+export default withStyles(styles)(
+  connect<StateProps, DispatchProps, OwnProps, AppState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withRouter(withMobileDialog<Props>()(CreateEntry)))
+);
