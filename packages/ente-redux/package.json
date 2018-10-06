@@ -1,6 +1,6 @@
 {
   "name": "ente-redux",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "State Management for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/packages/ente-redux",
@@ -13,8 +13,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "ente-lang": "^0.4.0",
-    "ente-types": "^0.4.0",
+    "ente-lang": "^0.5.0",
+    "ente-types": "^0.5.0",
     "immutable": "^3.8.2",
     "redux": "^3.7.2",
     "redux-actions": "^2.3.0",
