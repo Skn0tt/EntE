@@ -7,17 +7,17 @@
  */
 
 import * as React from "react";
-import { Grid, Button, withStyles } from "material-ui";
-import IconButton from "material-ui/IconButton/IconButton";
-import { Add as AddIcon, Delete as DeleteIcon } from "material-ui-icons";
-import List from "material-ui/List/List";
-import ListItem from "material-ui/List/ListItem";
-import ListItemText from "material-ui/List/ListItemText";
-import ListItemSecondaryAction from "material-ui/List/ListItemSecondaryAction";
-import Typography from "material-ui/Typography/Typography";
+import { Grid, Button, withStyles } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import { Add as AddIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Typography from "@material-ui/core/Typography/Typography";
 
 import styles from "./styles";
-import { WithStyles } from "material-ui/styles/withStyles";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
 import { User } from "ente-redux";
 import lang from "ente-lang";
 import * as _ from "lodash";

@@ -23,7 +23,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           item={true}
         >
           <WithStyles(Typography)
@@ -31,8 +31,8 @@ ShallowWrapper {
           >
             TextUpdate
           </WithStyles(Typography)>
-        </WithStyles(GridWrapper)>,
-        <WithStyles(GridWrapper)
+        </WithStyles(Grid)>,
+        <WithStyles(Grid)
           item={true}
         >
           <TextField
@@ -45,8 +45,9 @@ ShallowWrapper {
             select={false}
             type={undefined}
             value="Hello world"
+            variant="standard"
           />
-        </WithStyles(GridWrapper)>,
+        </WithStyles(Grid)>,
       ],
       "container": true,
       "direction": "column",
@@ -95,6 +96,7 @@ ShallowWrapper {
             select={false}
             type={undefined}
             value="Hello world"
+            variant="standard"
           />,
           "item": true,
         },
@@ -102,7 +104,7 @@ ShallowWrapper {
         "rendered": Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "function",
+          "nodeType": "class",
           "props": Object {
             "className": "updateInput",
             "error": false,
@@ -113,6 +115,7 @@ ShallowWrapper {
             "select": false,
             "type": undefined,
             "value": "Hello world",
+            "variant": "standard",
           },
           "ref": null,
           "rendered": null,
@@ -130,7 +133,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
           >
             <WithStyles(Typography)
@@ -138,8 +141,8 @@ ShallowWrapper {
             >
               TextUpdate
             </WithStyles(Typography)>
-          </WithStyles(GridWrapper)>,
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>,
+          <WithStyles(Grid)
             item={true}
           >
             <TextField
@@ -152,8 +155,9 @@ ShallowWrapper {
               select={false}
               type={undefined}
               value="Hello world"
+              variant="standard"
             />
-          </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>,
         ],
         "container": true,
         "direction": "column",
@@ -202,6 +206,7 @@ ShallowWrapper {
               select={false}
               type={undefined}
               value="Hello world"
+              variant="standard"
             />,
             "item": true,
           },
@@ -209,7 +214,7 @@ ShallowWrapper {
           "rendered": Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "function",
+            "nodeType": "class",
             "props": Object {
               "className": "updateInput",
               "error": false,
@@ -220,6 +225,7 @@ ShallowWrapper {
               "select": false,
               "type": undefined,
               "value": "Hello world",
+              "variant": "standard",
             },
             "ref": null,
             "rendered": null,

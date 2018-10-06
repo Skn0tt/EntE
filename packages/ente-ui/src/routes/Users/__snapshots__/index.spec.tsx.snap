@@ -79,7 +79,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "children": Array [
-        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+        <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
           show={false}
         />,
@@ -132,7 +132,7 @@ ShallowWrapper {
           onClick={[Function]}
           variant="fab"
         >
-          <pure(Add) />
+          <pure(AddIcon) />
         </WithStyles(Button)>,
       ],
     },
@@ -202,7 +202,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <pure(Add) />,
+          "children": <pure(AddIcon) />,
           "className": undefined,
           "color": "primary",
           "onClick": [Function],
@@ -230,7 +230,7 @@ ShallowWrapper {
       "nodeType": "function",
       "props": Object {
         "children": Array [
-          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
+          <WithStyles(Connect(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
             show={false}
           />,
@@ -283,7 +283,7 @@ ShallowWrapper {
             onClick={[Function]}
             variant="fab"
           >
-            <pure(Add) />
+            <pure(AddIcon) />
           </WithStyles(Button)>,
         ],
       },
@@ -353,7 +353,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <pure(Add) />,
+            "children": <pure(AddIcon) />,
             "className": undefined,
             "color": "primary",
             "onClick": [Function],

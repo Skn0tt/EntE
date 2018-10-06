@@ -7,8 +7,8 @@
  */
 
 import * as React from "react";
-import { List, ListItem, ListItemIcon, ListItemText } from "material-ui";
-import { WatchLater, InsertDriveFile, Person } from "material-ui-icons";
+import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { WatchLater, InsertDriveFile, Person } from "@material-ui/icons";
 import { Route } from "react-router-dom";
 
 /**

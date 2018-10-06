@@ -7,15 +7,15 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import styles from "./styles";
 import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
   IconButton
-} from "material-ui";
-import { Delete as DeleteIcon } from "material-ui-icons";
+} from "@material-ui/core";
+import { Delete as DeleteIcon } from "@material-ui/icons";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { ISlotCreate, UserId } from "ente-types";
 import { AppState, User, getUser } from "ente-redux";
@@ -51,4 +51,4 @@ const SlotListItem: React.SFC<Props> = props => (
   </ListItem>
 );
 
-export default connect(mapStateToProps)(withStyles(styles)(SlotListItem));
+export default withStyles(styles)(connect(mapStateToProps)(SlotListItem));

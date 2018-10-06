@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Grid, Typography, WithStyles, withStyles } from "material-ui";
+import { Grid, Typography, WithStyles, withStyles } from "@material-ui/core";
 import styles from "./styles";
 import withErrorBoundary from "../../components/withErrorBoundary";
 

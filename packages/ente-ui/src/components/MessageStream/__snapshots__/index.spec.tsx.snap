@@ -34,7 +34,7 @@ ShallowWrapper {
               color="inherit"
               onClick={[Function]}
             >
-              <pure(Close) />
+              <pure(CloseIcon) />
             </WithStyles(IconButton)>
           }
           autoHideDuration={6000}
@@ -53,7 +53,7 @@ ShallowWrapper {
               color="inherit"
               onClick={[Function]}
             >
-              <pure(Close) />
+              <pure(CloseIcon) />
             </WithStyles(IconButton)>
           }
           autoHideDuration={6000}
@@ -79,7 +79,7 @@ ShallowWrapper {
             color="inherit"
             onClick={[Function]}
           >
-            <pure(Close) />
+            <pure(CloseIcon) />
           </WithStyles(IconButton)>,
           "autoHideDuration": 6000,
           "message": <span>
@@ -102,7 +102,7 @@ ShallowWrapper {
             color="inherit"
             onClick={[Function]}
           >
-            <pure(Close) />
+            <pure(CloseIcon) />
           </WithStyles(IconButton)>,
           "autoHideDuration": 6000,
           "message": <span>
@@ -132,7 +132,7 @@ ShallowWrapper {
                 color="inherit"
                 onClick={[Function]}
               >
-                <pure(Close) />
+                <pure(CloseIcon) />
               </WithStyles(IconButton)>
             }
             autoHideDuration={6000}
@@ -151,7 +151,7 @@ ShallowWrapper {
                 color="inherit"
                 onClick={[Function]}
               >
-                <pure(Close) />
+                <pure(CloseIcon) />
               </WithStyles(IconButton)>
             }
             autoHideDuration={6000}
@@ -177,7 +177,7 @@ ShallowWrapper {
               color="inherit"
               onClick={[Function]}
             >
-              <pure(Close) />
+              <pure(CloseIcon) />
             </WithStyles(IconButton)>,
             "autoHideDuration": 6000,
             "message": <span>
@@ -200,7 +200,7 @@ ShallowWrapper {
               color="inherit"
               onClick={[Function]}
             >
-              <pure(Close) />
+              <pure(CloseIcon) />
             </WithStyles(IconButton)>,
             "autoHideDuration": 6000,
             "message": <span>

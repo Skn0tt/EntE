@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import {
   connect,
   Dispatch,
@@ -20,15 +20,15 @@ import ChildrenInput from "../../elements/ChildrenInput";
 import SwitchInput from "../../elements/SwitchInput";
 import TextInput from "../../elements/TextInput";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Button, Dialog, Grid } from "material-ui";
+import { Button, Dialog, Grid } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
-} from "material-ui/Dialog/withMobileDialog";
-import DialogTitle from "material-ui/Dialog/DialogTitle";
-import DialogContent from "material-ui/Dialog/DialogContent";
-import DialogActions from "material-ui/Dialog/DialogActions";
-import DialogContentText from "material-ui/Dialog/DialogContentText";
-import Divider from "material-ui/Divider/Divider";
+} from "@material-ui/core/withMobileDialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Divider from "@material-ui/core/Divider/Divider";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import { IUser, Roles, UserId } from "ente-types";
 import * as _ from "lodash";
@@ -45,7 +45,6 @@ import {
 } from "ente-redux";
 import lang from "ente-lang";
 import { isValidEmail, isValidDisplayname, isValidUser } from "ente-validator";
-import { WithWidthProps } from "material-ui/utils/withWidth";
 import withErrorBoundary from "../../components/withErrorBoundary";
 
 /**
@@ -257,13 +256,9 @@ export class SpecificUser extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  withRouter(
-    withStyles(styles)(
-      withMobileDialog<Props>()(withErrorBoundary()(SpecificUser))
-    )
-  )
+export default withStyles(styles)(
+  connect<StateProps, DispatchProps, OwnProps, AppState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withRouter(withMobileDialog<Props>()(withErrorBoundary()(SpecificUser))))
 );

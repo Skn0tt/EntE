@@ -7,10 +7,10 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "material-ui/styles/withStyles";
+import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./styles";
-import { Add as AddIcon } from "material-ui-icons";
+import { Add as AddIcon } from "@material-ui/icons";
 
 import {
   Entry,
@@ -25,7 +25,7 @@ import { Action } from "redux";
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../SpecificEntry/elements/UnsignedAvatar";
 import { Route, RouteComponentProps, withRouter } from "react-router";
-import Button from "material-ui/Button/Button";
+import Button from "@material-ui/core/Button/Button";
 import CreateEntry from "./components/CreateEntry";
 import { Table } from "../../components/Table";
 import { UserId } from "ente-types";
@@ -136,6 +136,8 @@ export class Entries extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(withRouter(withErrorBoundary()(Entries)))
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withRouter(withErrorBoundary()(Entries))
+  )
 );

@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { Theme, StyleRules } from "material-ui/styles";
+import { Theme, StyleRules } from "@material-ui/core/styles";
 
 const styles = (theme: Theme): StyleRules => ({
   container: {

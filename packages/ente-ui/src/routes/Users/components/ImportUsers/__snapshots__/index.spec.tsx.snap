@@ -26,11 +26,11 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <WithStyles(GridWrapper)
+        <WithStyles(Grid)
           container={true}
           direction="column"
         >
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             item={true}
             xs={12}
           >
@@ -41,14 +41,14 @@ ShallowWrapper {
             >
               Legen sie hier eine .csv-Datei ab.
             </UNDEFINED>
-          </WithStyles(GridWrapper)>
-          <WithStyles(GridWrapper)
+          </WithStyles(Grid)>
+          <WithStyles(Grid)
             item={true}
             xs={12}
           >
             <WithStyles(UnsignedAvatar) />
-          </WithStyles(GridWrapper)>
-        </WithStyles(GridWrapper)>,
+          </WithStyles(Grid)>
+        </WithStyles(Grid)>,
         <WithStyles(DialogActions)>
           <WithStyles(Button)
             className="close"
@@ -79,7 +79,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={12}
             >
@@ -90,13 +90,13 @@ ShallowWrapper {
               >
                 Legen sie hier eine .csv-Datei ab.
               </UNDEFINED>
-            </WithStyles(GridWrapper)>,
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>,
+            <WithStyles(Grid)
               item={true}
               xs={12}
             >
               <WithStyles(UnsignedAvatar) />
-            </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>,
           ],
           "container": true,
           "direction": "column",
@@ -226,11 +226,11 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <WithStyles(GridWrapper)
+          <WithStyles(Grid)
             container={true}
             direction="column"
           >
-            <WithStyles(GridWrapper)
+            <WithStyles(Grid)
               item={true}
               xs={12}
             >
@@ -241,14 +241,14 @@ ShallowWrapper {
               >
                 Legen sie hier eine .csv-Datei ab.
               </UNDEFINED>
-            </WithStyles(GridWrapper)>
-            <WithStyles(GridWrapper)
+            </WithStyles(Grid)>
+            <WithStyles(Grid)
               item={true}
               xs={12}
             >
               <WithStyles(UnsignedAvatar) />
-            </WithStyles(GridWrapper)>
-          </WithStyles(GridWrapper)>,
+            </WithStyles(Grid)>
+          </WithStyles(Grid)>,
           <WithStyles(DialogActions)>
             <WithStyles(Button)
               className="close"
@@ -279,7 +279,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <WithStyles(GridWrapper)
+              <WithStyles(Grid)
                 item={true}
                 xs={12}
               >
@@ -290,13 +290,13 @@ ShallowWrapper {
                 >
                   Legen sie hier eine .csv-Datei ab.
                 </UNDEFINED>
-              </WithStyles(GridWrapper)>,
-              <WithStyles(GridWrapper)
+              </WithStyles(Grid)>,
+              <WithStyles(Grid)
                 item={true}
                 xs={12}
               >
                 <WithStyles(UnsignedAvatar) />
-              </WithStyles(GridWrapper)>,
+              </WithStyles(Grid)>,
             ],
             "container": true,
             "direction": "column",

@@ -7,12 +7,12 @@
  */
 
 import * as React from "react";
-import { withStyles } from "material-ui";
-import { WithStyles } from "material-ui/styles/withStyles";
-import Avatar from "material-ui/Avatar/Avatar";
+import { withStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core/styles/withStyles";
+import Avatar from "@material-ui/core/Avatar/Avatar";
 
 import styles from "./styles";
-import { Done } from "material-ui-icons";
+import { Done } from "@material-ui/icons";
 
 interface Props {
   onClick?(): void;

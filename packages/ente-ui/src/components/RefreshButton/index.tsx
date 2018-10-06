@@ -7,11 +7,11 @@
  */
 
 import * as React from "react";
-import { IconButton, CircularProgress } from "material-ui";
+import { IconButton, CircularProgress } from "@material-ui/core";
 import { Dispatch, connect } from "react-redux";
 import { Action } from "redux";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Refresh as RefreshIcon } from "material-ui-icons";
+import { Refresh as RefreshIcon } from "@material-ui/icons";
 import {
   AppState,
   isLoading,
