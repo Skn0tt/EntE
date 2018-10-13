@@ -29,5 +29,5 @@ debug:
   traefik_dashboard_port: 8080
   allow_http: false
 
-UI_TAG: v0.5.0
-API_TAG: v0.5.0
+UI_TAG: v0.6.0
+API_TAG: v0.6.0
