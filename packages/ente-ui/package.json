@@ -6,7 +6,7 @@
   "scripts": {
     "start": "yarn parcel src/index.html",
     "build":
-      "yarn serviceworker && yarn parcel build src/index.html --public-url / -o index",
+      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && yarn serviceworker",
     "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
     "serviceworker": "yarn workbox generateSW",

@@ -1,7 +1,7 @@
 module.exports = {
   globDirectory: "dist/",
   globPatterns: ["*.{html,js,css}"],
-  swDest: "src/sw.js",
+  swDest: "dist/sw.js",
   globIgnores: ["../workbox-cli-config.js"],
-  maximumFileSizeToCacheInBytes: 2.5e6
+  maximumFileSizeToCacheInBytes: 32 * 1024 * 1024
 };
