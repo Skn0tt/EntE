@@ -24,8 +24,8 @@ const checkFile = (path, validator) => {
 };
 
 const metadataVersionRegex = /(?<=version: ).*$/gm;
-const apiVersionRegex = /(?<=API_VERSION: ).*$/gm;
-const uiVersionRegex = /(?<=UI_VERSION: ).*$/gm;
+const apiVersionRegex = /(?<=API_TAG: ).*$/gm;
+const uiVersionRegex = /(?<=UI_TAG: ).*$/gm;
 
 const METADATA_FILE = "../ente.dockerapp/metadata.yml";
 const SETTINGS_FILE = "../ente.dockerapp/settings.yml";
@@ -45,7 +45,7 @@ const update = () => {
 const check = () => {
   checkFile(METADATA_FILE, f => {
     const [match] = f.match(metadataVersionRegex);
-    return match === version;
+    return match === "v" + version;
   });
 
   checkFile(SETTINGS_FILE, f => {

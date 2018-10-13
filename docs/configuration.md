@@ -1,13 +1,29 @@
-_EntE_ is configured via environment variables.
+_EntE_ is configured through a docker-app config file.
 
-| Variable            | Meaning                                         | Example            | Required |
-| ------------------- | ----------------------------------------------- | ------------------ | -------- |
-| `HOST`              | Hostname to serve on                            | ente.simonknott.de | true     |
-| `LETSENCRYPT_EMAIL` | email address used to obtain HTTPS certificates | ente@simonknott.de | true     |
-| `SMTP_HOST`         | email server host                               | smtp.simonknott.de | true     |
-| `SMTP_PORT`         | email server port                               | 587                | true     |
-| `SMTP_USERNAME`     | email server login username                     | ente@simonknott.de | true     |
-| `SMTP_PASSWORD`     | email server login password                     | myPassword         | true     |
-| `SMTP_SENDER`       | email server send address                       | ente@simonknott.de | true     |
-| `SENTRY_API_DSN`    | Sentry token for error logging on backend       | KLSJANM            | false    |
-| `SENTRY_UI_DSN`     | Sentry token for error logging on UI            | KLSJANM            | false    |
+# Example Config File
+
+```yml
+config:
+  port: 80
+  rotation_period:
+    keys: 900
+    ui: 300
+
+sentry: # sentry DSNs, optional
+  api: my_random_key:api
+  ui: my_random_key:ui
+
+mysql: # mysql config
+  host:
+  port:
+  username:
+  password:
+  database:
+
+smtp: # smtp config
+  host:
+  port:
+  username:
+  password:
+  sender:
+```

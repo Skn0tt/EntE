@@ -1,15 +1,33 @@
 COMPOSE_PROJECT_NAME: ente
-HOST: localhost
-SMTP_HOST: smtp.ethereal.email
-SMTP_PASSWORD: mWgCFb9JcJxdeKa6RE
-SMTP_PORT: "587"
-SMTP_SENDER: EntE@simonknott.de
-SMTP_USERNAME: louf4yh5lnkyg2h3@ethereal.email
-ALLOW_HTTP: false
-API_VERSION: v0.5.0
-UI_VERSION: v0.5.0
-ROTATION_PERIOD: 900
-ROTATION_PERIOD_UI: 300
-PORT_HTTP: 80
-PORT_HTTPS: 443
-PORT_TRAEFIK_DASHBOARD: 8080
+
+config:
+  # host:
+  port: 80
+  rotation_period:
+    keys: 900
+    ui: 300
+
+sentry: # Override when using Sentry
+  api: undefined
+  ui: undefined
+
+# mysql:
+  # host:
+  # port:
+  # username:
+  # password:
+  # database:
+
+# smtp:
+  # host:
+  # port:
+  # username:
+  # password:
+  # sender:
+
+debug:
+  traefik_dashboard_port: 8080
+  allow_http: false
+
+UI_TAG: v0.5.0
+API_TAG: v0.5.0

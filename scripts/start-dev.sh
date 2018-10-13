@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
 tempfile=$(mktemp)
-docker-app render --set API_VERSION=latest --set UI_VERSION=latest > $tempfile
 
-docker-compose -f "$tempfile" -f docker-compose.dev.yml up
+docker run -d \
+  -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=ente \
+  -e MYSQL_PASSWORD=root \
+  -e MYSQL_USER=ente \
+  --name ente_mariadb \
+  mariadb
+
+docker-app render -f ./scripts/dev.config.yml > $tempfile
+
+docker-compose -f "$tempfile" -f ./scripts/docker-compose.dev.yml up
 
 rm "$tempfile"

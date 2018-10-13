@@ -3,22 +3,21 @@ version: '3.6'
 services:
 
   ui:
-    image: registry.gitlab.com/skn0tt/ente/ui:${UI_VERSION}
+    image: registry.gitlab.com/skn0tt/ente/ui:${UI_TAG}
     restart: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /"
     environment:
-      - SENTRY_DSN_UI
-      - ROTATION_PERIOD=${ROTATION_PERIOD_UI}
-      - ALLOW_INSECURE=${ALLOW_HTTP}
-      - CONFIG_VARS=SENTRY_DSN_UI,ROTATION_PERIOD,ALLOW_INSECURE
+      SENTRY_DSN_UI: ${sentry.ui}
+      ROTATION_PERIOD: ${config.rotation_period.ui}
+      ALLOW_INSECURE: ${debug.allow_http}
+      CONFIG_VARS: SENTRY_DSN_UI,ROTATION_PERIOD,ALLOW_INSECURE
 
   api:
-    image: registry.gitlab.com/skn0tt/ente/api:${API_VERSION}
+    image: registry.gitlab.com/skn0tt/ente/api:${API_TAG}
     restart: on-failure
     depends_on:
-      - mysql
       - redis
       - railmail
       - signer
@@ -26,34 +25,26 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /api/"
     environment:
-      - NODE_ENV="production"
-      - HOST
-      - RAILMAIL_HOST=railmail
-      - SIGNER_HOST=signer:3000
-      - SENTRY_DSN_API
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=ente
-      - MYSQL_USERNAME=ente
-      - MYSQL_PASSWORD=root
-
-  mysql:
-    image: mariadb:10.3.8
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=ente
-      - MYSQL_USER=ente
-      - MYSQL_PASSWORD=root
+      NODE_ENV: "production"
+      HOST: ${config.host}
+      RAILMAIL_HOST: railmail
+      SIGNER_HOST: signer:3000
+      SENTRY_DSN_API: ${sentry.api}
+      MYSQL_HOST: ${mysql.host}
+      MYSQL_PORT: ${mysql.port}
+      MYSQL_DATABASE: ${mysql.database}
+      MYSQL_USERNAME: ${mysql.username}
+      MYSQL_PASSWORD: ${mysql.password}
 
   railmail:
     image: skn0tt/railmail:v0.3.0
     restart: on-failure
     environment:
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USERNAME
-      - SMTP_PASSWORD
-      - SMTP_SENDER
+      SMTP_HOST: ${smtp.host}
+      SMTP_PORT: ${smtp.port}
+      SMTP_USERNAME: ${smtp.username}
+      SMTP_PASSWORD: ${smtp.password}
+      SMTP_SENDER: ${smtp.sender}
 
   signer:
     image: skn0tt/signer:v0.4.1
@@ -61,11 +52,11 @@ services:
       - redis
     restart: on-failure
     environment:
-      - REDIS_HOSTNAME=redis
-      - TOKEN_EXPIRY=${ROTATION_PERIOD}
-      - ROTATION_INTERVAL=${ROTATION_PERIOD}
-      - ROTATE_ON_STARTUP=true
-      - ASYMMETRIC_SIGNING=true
+      REDIS_HOSTNAME: redis
+      TOKEN_EXPIRY: ${config.rotation_period.keys}
+      ROTATION_INTERVAL: ${config.rotation_period.keys}
+      ROTATE_ON_STARTUP: "true"
+      ASYMMETRIC_SIGNING: "true"
 
   redis:
     image: redis:4.0.10
@@ -80,8 +71,7 @@ services:
       - api
       - ui
     ports:
-      - "${PORT_HTTP}:80"
-      - "${PORT_HTTPS}:443"
-      - "${PORT_TRAEFIK_DASHBOARD}:8080"
+      - "${config.port}:80"
+      - "${debug.traefik_dashboard_port}:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
