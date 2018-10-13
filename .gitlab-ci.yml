@@ -64,14 +64,13 @@ test:e2e:
     DOCKER_HOST: dind:2375
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script:
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA | docker-compose -f - up -d
-    - BASE_URL=http://dind:80 ./ci/test_e2e.sh
-    - docker-app render -f tests/e2eConfig.yml --set API_VERSION=$CI_COMMIT_SHA --set UI_VERSION=$CI_COMMIT_SHA | docker-compose -f - down
+  script: ./ci/test_e2e.sh
   artifacts:
+    when: always
     paths:
       - screenshots/
       - e2e.xml
+      - compose-logs.txt
 
 sast:
   image: docker:stable

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+tempfile=$(mktemp)
+
+docker stop ente_mariadb
+
+docker-app render -f ./scripts/dev.config.yml > $tempfile
+
+docker-compose -f "$tempfile" -f ./scripts/docker-compose.dev.yml down
+
+rm "$tempfile"

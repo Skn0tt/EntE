@@ -37,11 +37,13 @@ const getConfig = (): any => {
 const readConfig = () => {
   const c = getConfig();
 
+  const { SENTRY_DSN_UI } = c;
+
   config = {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
-    SENTRY_DSN_UI: c.SENTRY_DSN_UI,
+    SENTRY_DSN_UI: SENTRY_DSN_UI !== "undefined" ? SENTRY_DSN_UI : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true"
   };
 };

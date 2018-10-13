@@ -24,10 +24,11 @@ interface Config {
 let config: Config | null = null;
 
 export const createFromEnv = () => {
+  const dsn = process.env.SENTRY_DSN_API;
   const env: Config = {
     host: process.env.HOST!,
     production: process.env.NODE_ENV === "production",
-    DSN: process.env.SENTRY_DSN_API,
+    DSN: dsn !== "undefined" ? dsn : undefined,
     signerHost: process.env.SIGNER_HOST,
     railmailHost: process.env.RAILMAIL_HOST,
     db: {

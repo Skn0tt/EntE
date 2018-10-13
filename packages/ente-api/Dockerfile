@@ -1,6 +1,8 @@
 FROM node:9
 WORKDIR /usr/src/app
 
+ADD packages/ente-api/entrypoint.sh ./
+
 ADD package.json yarn.lock tsconfig.json lerna.json ./
 ADD packages/ente-api/package.json ./packages/ente-api/package.json
 ADD packages/ente-types/package.json ./packages/ente-types/package.json
@@ -21,4 +23,5 @@ ADD packages/ente-db ./packages/ente-db
 HEALTHCHECK CMD curl --fail http://localhost:3000/status || exit 1
 
 EXPOSE 3000
+ENTRYPOINT [ "/usr/src/app/entrypoint.sh" ]
 CMD [ "yarn", "--cwd", "packages/ente-api", "start" ]
