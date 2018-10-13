@@ -15,6 +15,7 @@ const updateFile = (path, updater) => {
   const file = readFile(path);
   const result = updater(file);
   fs.writeFileSync(fullPath(path), result);
+  console.log(`updated ${path}.`);
 };
 
 const checkFile = (path, validator) => {
@@ -22,6 +23,8 @@ const checkFile = (path, validator) => {
   const valid = validator(file);
   if (!valid) {
     process.exit(1);
+  } else {
+    console.log(`${path} is valid.`);
   }
 };
 
