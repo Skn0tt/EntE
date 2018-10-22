@@ -31,13 +31,15 @@
     "express-validator": "5.0.0",
     "helmet": "^3.9.0",
     "lodash": "^4.17.5",
+    "monet": "^0.8.10",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "raven": "^2.3.0",
     "react": "^15.6.2",
-    "validator": "^9.2.0"
+    "validator": "^9.2.0",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.8",

@@ -3,9 +3,15 @@ packages/**/dist
 packages/**/lib
 packages/**/build
 packages/**/.cache
-./node_modules
-./doc
+node_modules
+doc
 site
 assets
 paper
 coverage
+ci
+.vscode
+ente.dockerapp
+pages
+scripts
+tests

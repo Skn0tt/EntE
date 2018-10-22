@@ -2,6 +2,16 @@ version: '3.6'
 
 services:
 
+  mariadb:
+    image: mariadb
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ente
+      MYSQL_PASSWORD: root
+      MYSQL_USER: ente
+
   ui:
     volumes:
       - ${PWD}/packages/ente-ui/dist/:/app/

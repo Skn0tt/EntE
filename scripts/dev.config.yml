@@ -1,6 +1,6 @@
 mysql:
   host: host.docker.internal
-  port: 3306
+  port: 3307
   database: ente
   username: ente
   password: root
@@ -17,6 +17,7 @@ config:
 
 debug:
   allow_http: true
+  environment: "debug"
 
 API_TAG: latest
 UI_TAG: latest

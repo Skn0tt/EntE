@@ -11,6 +11,7 @@ import { JWT_PAYLOAD } from "ente-types";
 import * as config from "../../helpers/config";
 import { User } from "ente-db";
 import axios from "axios";
+import logger from "../../helpers/logger";
 
 const { signerHost } = config.getConfig();
 
@@ -22,13 +23,21 @@ const validate = async (token: string): Promise<JWT_PAYLOAD | null> => {
     const payload = res.data;
     return payload;
   } catch (error) {
+    logger.error(`JwtAuth: Error reaching downstream service "signer"`, error);
     return null;
   }
 };
 
 export const sign = async (payload: JWT_PAYLOAD): Promise<string> => {
-  const res = await signer.post<string>(`/tokens`, payload);
-  return res.data;
+  try {
+    const res = await signer.post<string>(`/tokens`, payload);
+    logger.info(
+      `JwtAuth: Created a new JWT Token with paylaod ${JSON.stringify(payload)}`
+    );
+    return res.data;
+  } catch (error) {
+    logger.error(`Error posting to signer: ${error}`);
+  }
 };
 
 const jwtStrategy = new BearerStrategy(async (token, done) => {
@@ -39,9 +48,17 @@ const jwtStrategy = new BearerStrategy(async (token, done) => {
     }
 
     const { username, role } = payload;
+    logger.debug(`JwtAuth: Successfully validated token for ${username}`, role);
     const user = await User.findByRoleAndUsername(role, username);
 
-    return done(null, user || false);
+    const foundUser = !!user;
+    if (foundUser) {
+      logger.debug(`JwtAuth: Successfully authenticated ${username}`);
+      done(null, user);
+    } else {
+      logger.debug(`JwtAuth: User "${username}" not found`);
+      done(null, false);
+    }
   } catch (error) {
     return done(error, false);
   }

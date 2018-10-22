@@ -17,6 +17,7 @@ import { UserId, IUser, Roles, IUserCreate } from "ente-types";
 import * as _ from "lodash";
 import { oneDayInFuture } from "../helpers/date";
 import { updateSuccess } from "../helpers/response";
+import { Maybe, None, Some, Validation, Fail, Success } from "monet";
 
 const userRepo = () => getRepository(User);
 
@@ -85,9 +86,9 @@ const findAll = async () => {
   return users.map(userToJson);
 };
 
-const findById = async (id: UserId) => {
+const findById = async (id: UserId): Promise<Maybe<IUser>> => {
   const user = await userRepo().findOneById(id);
-  return !!user ? userToJson(user) : null;
+  return !!user ? Some(userToJson(user)) : None();
 };
 
 const findByIds = async (ids: UserId[]) => {
@@ -122,15 +123,15 @@ const findByRoleAndId = async (role: Roles, ids: UserId[]) => {
   return users.map(userToJson);
 };
 
-const findParentMail = async (id: UserId): Promise<string[] | null> => {
+const findParentMail = async (id: UserId): Promise<Maybe<string[]>> => {
   const user = await userRepo().findOneById(id, { relations: ["parents"] });
   if (!user) {
-    return null;
+    return None();
   }
 
   const mails = user.parents.map(p => p.email);
 
-  return mails;
+  return Some(mails);
 };
 
 const findByRoleAndUsername = async (role: Roles, username: string) => {
@@ -167,7 +168,7 @@ const usernamesAvailable = async (usernames: string[]): Promise<boolean> => {
  */
 const forgotPassword = async (
   username: string
-): Promise<{ token: string; email: string } | null> => {
+): Promise<Maybe<{ token: string; email: string }>> => {
   const result = await userRepo()
     .createQueryBuilder("user")
     .where("username = :username", { username })
@@ -179,33 +180,33 @@ const forgotPassword = async (
     .execute();
 
   if (!updateSuccess(result)) {
-    return null;
+    return None();
   }
 
   const user = await userRepo().findOne({ where: { username } });
   if (!user) {
-    return null;
+    return None();
   }
 
-  return { token: user.passwordResetToken!, email: user.email };
+  return Some({ token: user.passwordResetToken!, email: user.email });
 };
 
 const setPassword = async (
   token: string,
   newPassword: string
-): Promise<{ email: string; username: string } | null> => {
+): Promise<Validation<string, { email: string; username: string }>> => {
   const user = await userRepo().findOne({
     where: { passwordResetToken: token },
     relations: ["children", "entries", "slots", "parents"]
   });
   if (!user) {
-    return null;
+    return Fail("User not found.");
   }
 
   const valid =
     user.passwordResetExpiry && +user.passwordResetExpiry > Date.now();
   if (!valid) {
-    return null;
+    return Fail("Token invalid.");
   }
 
   user.password = await hashPassword(newPassword);
@@ -214,7 +215,7 @@ const setPassword = async (
 
   await userRepo().save(user);
 
-  return { username: user.username, email: user.email };
+  return Success({ username: user.username, email: user.email });
 };
 
 const update = (updater: (u: User) => User | Promise<User>) => async (

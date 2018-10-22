@@ -9,25 +9,23 @@
 /**
  * Express
  */
-import { Router, Request, RequestHandler } from "express";
-import { validationResult, param } from "express-validator/check";
+import { Router } from "express";
+import { param } from "express-validator/check";
 
 /**
  * EntE
  */
-import { Roles } from "ente-types";
+import { Roles, IUser } from "ente-types";
 
 /**
  * Helpers
  */
-import rbac, {
-  check as permissionsCheck,
-  Permissions
-} from "../../helpers/permissions";
-import populate, { PopulateRequest } from "../../helpers/populate";
+import rbac from "../../helpers/permissions";
+import populate from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import validate from "../../helpers/validate";
 import { Slot } from "ente-db";
+import logger from "../../helpers/logger";
 
 /**
  * Slots Router
@@ -40,12 +38,12 @@ const slotsRouter = Router();
 /**
  * GET all slots for user
  */
-const oneYearBefore = new Date(+new Date() - 365 * 24 * 60 * 60 * 1000);
-const yearParams = { date: { $gte: oneYearBefore } };
 slotsRouter.get(
   "/",
   rbac({ slots_read: true }),
   wrapAsync(async (req, res, next) => {
+    const { username, role } = req.user as IUser;
+    logger.info(`User ${username} (${role}) requested all of his slots.`);
     switch (req.user.role) {
       /**
        * Teachers have access to all of their slots
@@ -96,49 +94,53 @@ slotsRouter.get(
 
     const slot = await Slot.findById(slotId);
 
-    if (!slot) {
-      return res.status(404).end("Slot not found.");
-    }
+    return slot.cata(
+      () => res.status(404).end("Slot not found."),
+      slot => {
+        const { username, role } = req.user as IUser;
+        logger.info(`User ${username} (${role}) requested all of his slots.`);
 
-    /**
-     * Authorization
-     */
-    switch (req.user.role as Roles) {
-      /**
-       * Parent / Manger has acces to slots of their children
-       */
-      case Roles.PARENT:
-      case Roles.MANAGER:
-        if (!req.user.children.includes(slot.student)) {
-          return res.status(403);
+        /**
+         * Authorization
+         */
+        switch (req.user.role as Roles) {
+          /**
+           * Parent / Manger has acces to slots of their children
+           */
+          case Roles.PARENT:
+          case Roles.MANAGER:
+            if (!req.user.children.includes(slot.student)) {
+              return res.status(403);
+            }
+            break;
+
+          /**
+           * Teacher has access to their slots
+           */
+          case Roles.TEACHER:
+            if (req.user._id !== slot.teacher) {
+              return res.status(403);
+            }
+            break;
+
+          /**
+           * Student has access to their slots
+           */
+          case Roles.STUDENT:
+            if (req.user._id !== slot.student) {
+              return res.status(403);
+            }
+            break;
+
+          default:
+            break;
         }
-        break;
 
-      /**
-       * Teacher has access to their slots
-       */
-      case Roles.TEACHER:
-        if (req.user._id !== slot.teacher) {
-          return res.status(403);
-        }
-        break;
+        req.slots = [slot];
 
-      /**
-       * Student has access to their slots
-       */
-      case Roles.STUDENT:
-        if (req.user._id !== slot.student) {
-          return res.status(403);
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    req.slots = [slot];
-
-    return next();
+        return next();
+      }
+    );
   }),
   populate
 );

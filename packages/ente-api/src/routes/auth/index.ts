@@ -9,8 +9,8 @@
 /**
  * Express
  */
-import { Router, Response, NextFunction, Request } from "express";
-import { param, validationResult, body } from "express-validator/check";
+import { Router } from "express";
+import { param, body } from "express-validator/check";
 
 /**
  * EntE
@@ -24,9 +24,10 @@ import {
   dispatchPasswortResetSuccess,
   dispatchPasswortResetLink
 } from "../../helpers/mail";
-import validate, { check } from "../../helpers/validate";
+import validate from "../../helpers/validate";
 import wrapAsync from "../../helpers/wrapAsync";
 import { User } from "ente-db";
+import logger from "ente-api/src/helpers/logger";
 
 /**
  * Auth Router
@@ -43,19 +44,18 @@ authRouter.post(
   "/forgot/:username",
   [param("username").custom(isValidUsername)],
   validate,
-  wrapAsync(async (req, res, next) => {
+  wrapAsync(async (req, res) => {
     const username: string = req.params.username;
 
     const result = await User.forgotPassword(username);
-    if (!result) {
-      return res.status(404).end("User not found");
-    }
+    return result.cata(
+      () => res.status(404).end("User not found"),
+      ({ token, email }) => {
+        dispatchPasswortResetLink(token, username, email);
 
-    const { token, email } = result;
-
-    dispatchPasswortResetLink(token, username, email);
-
-    return res.status(200).end();
+        return res.status(200).end();
+      }
+    );
   })
 );
 
@@ -66,18 +66,21 @@ authRouter.put(
   "/forgot/:token",
   [param("token").isHexadecimal(), body("newPassword").custom(isValidPassword)],
   validate,
-  wrapAsync(async (req, res, next) => {
+  wrapAsync(async (req, res) => {
     const { token } = req.params;
 
     const { newPassword } = req.body;
     const result = await User.setPassword(token, newPassword);
-    if (!result) {
-      return res.status(404).end("Token was not found.");
-    }
+    return result.cata(
+      () => res.status(404).end("Token was not found."),
+      ({ username, email }) => {
+        logger.info(`Set new password for ${username}.`);
 
-    dispatchPasswortResetSuccess(result.username, result.email);
+        dispatchPasswortResetSuccess(username, email);
 
-    return res.status(200).end();
+        return res.status(200).end();
+      }
+    );
   })
 );
 

@@ -32,6 +32,7 @@ import status from "./routes/status";
 import dev from "./routes/dev";
 import token from "./routes/token";
 import { IUser } from "ente-types";
+import logger from "./helpers/logger";
 
 const conf = config.getConfig();
 
@@ -52,37 +53,22 @@ app.use(express.json());
 app.use(validator());
 
 // Logger
-if (conf.production) {
-  app.use(morgan("common"));
-} else {
-  app.use(
-    morgan("dev", {
-      skip: (_, res) => res.statusCode < 400,
-      stream: process.stderr
-    })
-  );
-
-  app.use(
-    morgan("dev", {
-      skip: (_, res) => res.statusCode >= 400,
-      stream: process.stdout
-    })
-  );
-}
+app.use(
+  morgan("combined", {
+    stream: {
+      write: logger.info
+    }
+  })
+);
 
 // DB
 setupDB(conf.db)
-  .then(() => console.log("Established connection to DB."))
+  .then(() => logger.info("Established connection to DB."))
   .catch(error => {
-    console.error("Couldn't connect to DB!", error);
+    logger.error("Couldn't connect to DB!", error);
     process.exit(1);
   });
-
-// Security Measures
-if (conf.production) {
-  // Helmet
-  app.use(helmet());
-}
+app.use(helmet());
 
 // Cors
 app.use(cors({ origin: true }));
@@ -150,10 +136,9 @@ if (conf.production) {
 }
 
 app.listen(app.get("port"), () => {
-  console.log(
-    "  App is running at http://localhost:%d in %s mode",
-    app.get("port"),
-    app.get("env")
+  logger.info(
+    `App is running at http://localhost:${app.get("port")} in ${app.get(
+      "env"
+    )} mode`
   );
-  console.log("  Press CTRL-C to stop\n");
 });

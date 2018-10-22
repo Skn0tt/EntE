@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { getRepository, Repository, getConnection } from "typeorm";
+import { getRepository, getConnection } from "typeorm";
 import Entry from "../entity/Entry";
 import { lastAugustFirst } from "../helpers/date";
 import {
@@ -14,14 +14,15 @@ import {
   UserId,
   EntryId,
   IEntryCreate,
-  ISlotCreate,
-  ISlot
+  ISlot,
+  IUser
 } from "ente-types";
 import User from "../entity/User";
 import * as _ from "lodash";
 import Slot from "../entity/Slot";
 import { slotToJson } from "./Slot";
 import { Validator } from "./types";
+import { Maybe, None, Some } from "monet";
 
 const entryRepo = () => getRepository(Entry);
 
@@ -48,7 +49,6 @@ const create = async (
   signedParent: boolean
 ): Promise<CreateResult> =>
   await getConnection().transaction(async (manager): Promise<CreateResult> => {
-    console.log(entry);
     const student = await manager.findOneById(User, entry.student);
 
     const newEntry = await manager.create(Entry, {
@@ -74,8 +74,6 @@ const create = async (
 
     await manager.save(Entry, newEntry);
     await manager.save(Slot, newEntry.slots);
-
-    console.log(newEntry);
 
     return {
       entry: entryToJson(newEntry),
@@ -108,9 +106,9 @@ const allThisYearBy = async (students: UserId[]) => {
   return entries.map(entryToJson);
 };
 
-const findById = async (id: EntryId) => {
+const findById = async (id: EntryId): Promise<Maybe<IEntry>> => {
   const entry = await entryRepo().findOneById(id);
-  return !!entry ? entryToJson(entry) : null;
+  return !!entry ? Some(entryToJson(entry)) : None();
 };
 
 /**

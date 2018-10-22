@@ -25,7 +25,7 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /api/"
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: ${debug.environment}
       HOST: ${config.host}
       RAILMAIL_HOST: railmail
       SIGNER_HOST: signer:3000

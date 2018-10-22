@@ -17,6 +17,7 @@
     "ente-types": "^0.6.0",
     "ente-validator": "^0.6.0",
     "lodash": "^4.17.5",
+    "monet": "^0.8.10",
     "mysql": "^2.15.0",
     "reflect-metadata": "^0.1.12",
     "typeorm": "^0.1.20"

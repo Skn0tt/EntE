@@ -10,6 +10,7 @@ import { getRepository } from "typeorm";
 import Slot from "../entity/Slot";
 import { SlotId, ISlot, ISlotCreate, UserId } from "ente-types";
 import { lastAugustFirst, twoWeeksInPast } from "../helpers/date";
+import { Maybe, None, Some } from "monet";
 
 const slotRepo = () => getRepository(Slot);
 
@@ -35,10 +36,10 @@ const findByIds = async (ids: SlotId[]) => {
   return slots.map(slotToJson);
 };
 
-const findById = async (id: SlotId) => {
+const findById = async (id: SlotId): Promise<Maybe<ISlot>> => {
   const slot = await slotRepo().findOneById(id);
 
-  return !!slot ? slotToJson(slot) : null;
+  return !!slot ? Some(slotToJson(slot)) : None();
 };
 
 const afterDateQuery = (date: Date) =>

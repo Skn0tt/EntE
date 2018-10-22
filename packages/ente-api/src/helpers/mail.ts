@@ -12,6 +12,7 @@ import { User, Slot } from "ente-db";
 import * as _ from "lodash";
 import { getConfig } from "./config";
 import Axios from "axios";
+import logger from "./logger";
 
 const config = getConfig();
 
@@ -44,24 +45,25 @@ export const dispatchSignRequest = async (entry: IEntry) => {
     );
 
     const recipients = await User.findParentMail(entry.student);
-    if (recipients === null) {
-      console.log(`Mail: User ${entry.student} not found.`);
-      return;
-    }
-    if (recipients.length === 0) {
-      console.log("Mail: No Recipients defined");
-      return;
-    }
+    recipients.cata(
+      () => logger.warn(`Mail: User ${entry.student} not found.`),
+      async recipients => {
+        if (recipients.length === 0) {
+          logger.info("Mail: No Recipients defined");
+          return;
+        }
 
-    await sendMail({
-      subject,
-      recipients,
-      body: {
-        html
+        await sendMail({
+          subject,
+          recipients,
+          body: {
+            html
+          }
+        });
+
+        logger.info(`Mail: Dispatched SignRequest to ${recipients}`);
       }
-    });
-
-    console.log("Mail: Dispatched SignRequest to", recipients);
+    );
   } catch (error) {
     throw error;
   }
@@ -74,24 +76,25 @@ export const dispatchSignedInformation = async (entry: IEntry) => {
     );
 
     const recipients = await User.findParentMail(entry.student);
-    if (!recipients) {
-      console.log("User not found");
-      return;
-    }
-    if (recipients.length === 0) {
-      console.log("Mail: No Recipients defined");
-      return;
-    }
+    recipients.cata(
+      () => logger.warn(`Mail: User ${entry.student} not found`),
+      async recipients => {
+        if (recipients.length === 0) {
+          logger.info("Mail: No Recipients defined");
+          return;
+        }
 
-    await sendMail({
-      subject,
-      recipients,
-      body: {
-        html
+        await sendMail({
+          subject,
+          recipients,
+          body: {
+            html
+          }
+        });
+
+        logger.info(`Mail: Dispatched SignedInformation to ${recipients}`);
       }
-    });
-
-    console.log("Mail: Dispatched SignedInformation to", recipients);
+    );
   } catch (error) {
     throw error;
   }
@@ -105,35 +108,39 @@ export const dispatchWeeklySummary = async (): Promise<void> => {
     const items = await Promise.all(
       slots.map(async s => {
         const student = await User.findById(s.student);
-        if (!student) {
-          throw new Error("User not found");
-        }
-
-        return {
-          displayname: student.displayname,
-          date: s.date,
-          signed: s.signed,
-          hour_from: s.hour_from,
-          hour_to: s.hour_to
-        };
+        return student.cata(
+          () => {
+            throw new Error("User not found");
+          },
+          student => ({
+            displayname: student.displayname,
+            date: s.date,
+            signed: s.signed,
+            hour_from: s.hour_from,
+            hour_to: s.hour_to
+          })
+        );
       })
     );
 
     const { html, subject } = templates.WeeklySummary(items);
     const teacher = await User.findById(teacherId);
-    if (!teacher) {
-      throw new Error(`Teacher ${teacherId} not found`);
-    }
+    teacher.cata(
+      () => {
+        throw new Error(`Teacher ${teacherId} not found`);
+      },
+      async teacher => {
+        await sendMail({
+          subject,
+          recipients: [teacher.email],
+          body: {
+            html
+          }
+        });
 
-    await sendMail({
-      subject,
-      recipients: [teacher.email],
-      body: {
-        html
+        logger.info("Mail: Dispatched WeeklySummary to", teacher.email);
       }
-    });
-
-    console.log("Mail: Dispatched WeeklySummary to", teacher.email);
+    );
   });
 };
 
@@ -156,7 +163,9 @@ export const dispatchPasswortResetLink = async (
       }
     });
 
-    console.log("Mail: Dispatched PasswortResetLink to", email);
+    logger.info(
+      `Mail: Dispatched PasswortResetLink for ${username} to ${email}`
+    );
   } catch (error) {
     throw error;
   }
@@ -177,8 +186,13 @@ export const dispatchPasswortResetSuccess = async (
       }
     });
 
-    console.log("Mail: Dispatched PasswortResetSuccess to", email);
+    logger.info(
+      `Mail: Dispatched PasswortResetSuccess for ${username} to ${email}`
+    );
   } catch (error) {
-    console.error(error);
+    logger.error(
+      `Error occured dispatching PasswordResetSuccess to ${username}: ${error}`,
+      error
+    );
   }
 };

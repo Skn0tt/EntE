@@ -6,12 +6,10 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { RequestHandler, NextFunction, Response, Request } from "express";
+import { RequestHandler, Request } from "express";
 import wrapAsync from "./wrapAsync";
-import { requestHandler } from "raven";
 import { IUser, ISlot, UserId, IEntry } from "ente-types";
 import * as _ from "lodash";
-import { omitPassword } from "./queryParams";
 import { User, Slot } from "ente-db";
 
 export interface PopulateRequest extends Request {

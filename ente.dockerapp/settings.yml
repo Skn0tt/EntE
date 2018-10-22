@@ -28,6 +28,7 @@ sentry: # Override when using Sentry
 debug:
   traefik_dashboard_port: 8080
   allow_http: false
+  environment: "production"
 
 UI_TAG: v0.6.0
 API_TAG: v0.6.0
