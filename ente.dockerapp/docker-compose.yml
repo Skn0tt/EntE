@@ -47,7 +47,7 @@ services:
       SMTP_SENDER: ${smtp.sender}
 
   signer:
-    image: skn0tt/signer:v0.4.1
+    image: skn0tt/signer:v0.5.0
     depends_on:
       - redis
     restart: on-failure
