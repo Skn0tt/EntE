@@ -20,7 +20,7 @@ const devRouter = Router();
 
 devRouter.put(
   "/dispatchWeeklySummary",
-  wrapAsync(async (request, response, next) => {
+  wrapAsync(async (_, response) => {
     await dispatchWeeklySummary();
     response.status(200).end("Done");
   })

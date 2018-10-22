@@ -9,34 +9,26 @@
 /**
  * Express
  */
-import {
-  Router,
-  Response,
-  Request,
-  RequestHandler,
-  NextFunction
-} from "express";
-import { body, validationResult, param } from "express-validator/check";
+import { Router } from "express";
+import { body, param } from "express-validator/check";
 
 /**
  * EntE
  */
-import { Roles, IEntryCreate, IEntry, EntryId } from "ente-types";
+import { Roles, IEntryCreate, IEntry, EntryId, IUser } from "ente-types";
 
 /**
  * Helpers
  */
-import rbac, {
-  check as permissionsCheck,
-  Permissions
-} from "../../helpers/permissions";
-import populate, { PopulateRequest } from "../../helpers/populate";
+import rbac from "../../helpers/permissions";
+import populate from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import * as mail from "../../helpers/mail";
 import validate from "../../helpers/validate";
 import { isValidEntry } from "ente-validator";
 import * as _ from "lodash";
-import { Entry, User, Slot } from "ente-db";
+import { Entry, User } from "ente-db";
+import logger from "../../helpers/logger";
 
 /**
  * Entries Router
@@ -53,7 +45,9 @@ entriesRouter.get(
   "/",
   rbac({ entries_read: true }),
   wrapAsync(async (req, res, next) => {
-    switch (req.user.role as Roles) {
+    const { username, role } = req.user as IUser;
+    logger.info(`User ${username} (${role}) requested all of its entries.`);
+    switch (role) {
       /**
        * Admin: Return all Entries in this year
        */
@@ -96,15 +90,16 @@ entriesRouter.get(
   validate,
   wrapAsync(async (req, res, next) => {
     const { entryId } = req.params;
+    const { username, role, _id } = req.user as IUser;
     const entry = await Entry.findById(entryId);
-
-    if (entry === null) {
-      return res.status(404).end("Couldnt find Entry.");
-    }
-
-    req.entries = [entry];
-
-    return next();
+    return entry.cata(
+      () => res.status(404).end("Couldnt find Entry."),
+      entry => {
+        logger.info(`User ${username} (${role}) requested entry ${entryId}.`);
+        req.entries = [entry];
+        next();
+      }
+    );
   }),
   populate
 );
@@ -116,6 +111,7 @@ entriesRouter.post(
   "/",
   rbac({ entries_create: true }),
   wrapAsync(async (req, res, next) => {
+    const { username, role } = req.user as IUser;
     const entry: IEntryCreate = {
       ...req.body,
       date: new Date(req.body.date),
@@ -171,6 +167,10 @@ entriesRouter.post(
 
     req.entries = [newEntry];
 
+    logger.info(
+      `User ${username} (${role}) created entry ${JSON.stringify(newEntry)}.`
+    );
+
     return next();
   }),
   populate
@@ -189,6 +189,7 @@ entriesRouter.patch(
   [param("entryId").isUUID()],
   validate,
   wrapAsync(async (req, res, next) => {
+    const { username, role } = req.user as IUser;
     const entryId = req.params.entryId;
     const { forSchool } = req.body;
 
@@ -200,6 +201,10 @@ entriesRouter.patch(
     }
 
     req.entries = [entry];
+
+    logger.info(
+      `User ${username} (${role}) patched entry ${JSON.stringify(entry)}.`
+    );
 
     return next();
   }),
@@ -217,6 +222,8 @@ entriesRouter.put(
   wrapAsync(async (req, res, next) => {
     const entryId: EntryId = req.params.entryId;
     const value: boolean = req.body.value;
+
+    const { username, role } = req.user as IUser;
 
     /**
      * User cannot sign entry that doesnt belong to child
@@ -254,6 +261,10 @@ entriesRouter.put(
     if (!!entry) {
       req.entries = [entry];
     }
+
+    logger.info(
+      `User ${username} (${role}) signed entry ${entry._id}: ${value}.`
+    );
 
     return next();
   }),

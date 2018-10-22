@@ -13,7 +13,7 @@ cd $(dirname "$(readlink -f "$0")")
 cd ..
 
 docker run -d \
-  -p 3306:3306 \
+  -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=root \
   -e MYSQL_DATABASE=ente \
   -e MYSQL_PASSWORD=root \

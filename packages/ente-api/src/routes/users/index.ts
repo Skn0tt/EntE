@@ -9,8 +9,8 @@
 /**
  * Express
  */
-import { Router, Request, Response } from "express";
-import { validationResult, body, param, oneOf } from "express-validator/check";
+import { Router } from "express";
+import { param } from "express-validator/check";
 
 /**
  * EntE
@@ -19,24 +19,21 @@ import {
   isValidUser,
   isValidEmail,
   isValidRole,
-  isValidDisplayname,
-  Validator,
-  isValidUsername
+  isValidDisplayname
 } from "ente-validator";
-import { Roles, rolesArr, IUserCreate, IUser } from "ente-types";
+import { Roles, IUserCreate, IUser } from "ente-types";
 
 /**
  * Helpers
  */
 import rbac from "../../helpers/permissions";
 import validate, { check } from "../../helpers/validate";
-import populate, { PopulateRequest } from "../../helpers/populate";
+import populate from "../../helpers/populate";
 import wrapAsync from "../../helpers/wrapAsync";
 import * as _ from "lodash";
-import { isEmail } from "validator";
-import { omitPassword } from "../../helpers/queryParams";
 import { User } from "ente-db";
 import { dispatchPasswortResetLink } from "../../helpers/mail";
+import logger from "../../helpers/logger";
 
 /**
  * Users Router
@@ -53,6 +50,9 @@ usersRouter.get(
   "/",
   rbac({ users_read: true }),
   wrapAsync(async (req, res, next) => {
+    const { username, role } = req.user as IUser;
+    logger.info(`User ${username} (${role}) requested all users.`);
+
     switch (req.user.role as Roles) {
       /**
        * Admin can see all users
@@ -100,52 +100,56 @@ usersRouter.get(
   wrapAsync(async (req, res, next) => {
     const { userId } = req.params;
 
+    const { username, role } = req.user as IUser;
+    logger.info(`User ${username} (${role}) requested user ${userId}.`);
+
     const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).end("Couldnt find requested user.");
-    }
+    return user.cata(
+      () => res.status(404).end("Couldnt find requested user."),
+      user => {
+        /**
+         * Authorization
+         */
+        switch (req.user.role as Roles) {
+          /**
+           * Students have read access to teachers
+           */
+          case Roles.STUDENT:
+            if (user.role !== Roles.TEACHER) {
+              return res.status(403).end();
+            }
+            break;
 
-    /**
-     * Authorization
-     */
-    switch (req.user.role as Roles) {
-      /**
-       * Students have read access to teachers
-       */
-      case Roles.STUDENT:
-        if (user.role !== Roles.TEACHER) {
-          return res.status(403).end();
+          /**
+           * Managers have read access to their children
+           */
+          case Roles.MANAGER:
+            if (!req.user.children.includes(user._id)) {
+              return res.status(403).end();
+            }
+            break;
+
+          /**
+           * Parents have read access to their children and teachers
+           */
+          case Roles.PARENT:
+            if (
+              user.role !== Roles.TEACHER &&
+              !req.user.children.includes(user._id)
+            ) {
+              return res.status(403).end();
+            }
+            break;
+
+          default:
+            break;
         }
-        break;
 
-      /**
-       * Managers have read access to their children
-       */
-      case Roles.MANAGER:
-        if (!req.user.children.includes(user._id)) {
-          return res.status(403).end();
-        }
-        break;
+        req.users = [user];
 
-      /**
-       * Parents have read access to their children and teachers
-       */
-      case Roles.PARENT:
-        if (
-          user.role !== Roles.TEACHER &&
-          !req.user.children.includes(user._id)
-        ) {
-          return res.status(403).end();
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    req.users = [user];
-
-    return next();
+        return next();
+      }
+    );
   }),
   populate
 );
@@ -156,9 +160,9 @@ usersRouter.get(
 usersRouter.post(
   "/",
   rbac({ users_write: true }),
-  (r, w, n) => {
-    r.body = _.isArray(r.body) ? r.body : [r.body];
-    n();
+  (req, ignored, next) => {
+    req.body = _.isArray(req.body) ? req.body : [req.body];
+    next();
   },
   check(req => <IUserCreate[]>req.body, [
     {
@@ -177,22 +181,31 @@ usersRouter.post(
       msg: "One of the children doesn't exist."
     }
   ]),
-  wrapAsync(async (req, res, next) => {
+  wrapAsync(async (req, ignored, next) => {
     const users: IUserCreate[] = req.body;
+
+    const { username, role } = req.user as IUser;
 
     const newUsers = await User.create(users);
 
     users.forEach(async u => {
       if (!u.password) {
         const result = await User.forgotPassword(u.username);
-        if (!result) {
-          throw new Error("User created is not in DB?");
-        }
-
-        const { email, token } = result;
-        dispatchPasswortResetLink(token, u.username, email);
+        result.cata(
+          () => {
+            throw new Error("User created is not in DB?");
+          },
+          result => {
+            const { email, token } = result;
+            dispatchPasswortResetLink(token, u.username, email);
+          }
+        );
       }
     });
+
+    logger.info(
+      `User ${username} (${role}) created new users: ${JSON.stringify(users)}.`
+    );
 
     req.users = newUsers;
 
@@ -269,6 +282,14 @@ usersRouter.patch(
     if (!!user) {
       req.users = [user];
     }
+
+    const { username, role: userRole } = req.user as IUser;
+
+    logger.info(
+      `User ${username} (${userRole}) patched user ${userId}: ${JSON.stringify(
+        req.body
+      )}.`
+    );
 
     return next();
   }),
