@@ -37,7 +37,7 @@ const parseCSV = async (
       email: row.email,
       role: row.role,
       isAdult: !row.isAdult ? false : true,
-      children: !!row.children ? row.children.split(";") : []
+      children: !!row.children ? row.children.split(":") : []
     };
 
     if (!isBlank(row.password)) {

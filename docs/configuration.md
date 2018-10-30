@@ -4,14 +4,15 @@ _EntE_ is configured through a docker-app config file.
 
 ```yml
 config:
+  host: ente.simonknott.de
   port: 80
   rotation_period:
     keys: 900
     ui: 300
 
 sentry: # sentry DSNs, optional
-  api: my_random_key:api
-  ui: my_random_key:ui
+  api: my_sentry_dsn_api
+  ui: my_sentry_dsn_ui
 
 mysql: # mysql config
   host:
