@@ -87,8 +87,7 @@ export default {
         "Voller Zugriff auf den Quellcode ermöglicht die Anpassung an die eigenen Bedürfnisse."
     },
     digitize: {
-      title:
-        "Digitalisieren sie ihre Verwaltung - Haben sie mehr Zeit zum Unterrichten",
+      title: "Digitalisieren sie ihre Verwaltung - Mehr Zeit zum Unterrichten",
       caption: `
         Herkömmliche Entschuldigungsformulare kosten wertvolle Unterrichtszeit.
         EntE ermöglicht, ihre Unterrichtszeit von Verwaltung freizuhalten.`
@@ -103,12 +102,12 @@ export default {
       title: "Helfen sie mit!",
       caption: `
         Hilfe ist immer willkommen.
-        Haben sie Feature-Vorschlag, einen Fehler gefunden oder möchten etwas anderes erwähnen, zögern Sie nicht, ein Ticket auf <a target"_blank" href="https://gitlab.com/skn0tt/EntE/issues">GitLab</a> zu erstellen!`
+        Haben sie einen Feature-Vorschlag, einen Fehler gefunden oder möchten etwas anderes erwähnen? Zögern Sie nicht, ein Ticket auf <a target"_blank" href="https://gitlab.com/skn0tt/EntE/issues">GitLab</a> zu erstellen oder eine <a href="mailto:incoming+Skn0tt/EntE@incoming.gitlab.com">Email</a> zu schreiben!`
     },
     callToAction: {
       title: "Interessiert?",
       emailHint: "Geben sie ihre Email-Addresse ein...",
-      scheduleDemo: "Eine Demonstration vereinbaren!"
+      scheduleDemo: "Demo vereinbaren!"
     },
     footer: {
       contact: "Kontakt"
