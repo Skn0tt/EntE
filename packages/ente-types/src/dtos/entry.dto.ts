@@ -5,8 +5,7 @@ import {
   IsBoolean,
   ValidateNested
 } from "class-validator";
-import { DateIsAfter, CustomStringValidator } from "../helpers";
-import { isValidReason } from "../validators";
+import { DateIsAfter } from "../helpers";
 import { SlotDto } from "./slot.dto";
 import { UserDto } from "./user.dto";
 import { Type } from "class-transformer";
@@ -20,10 +19,6 @@ export class EntryDto {
   @IsDate()
   @DateIsAfter("date")
   dateEnd?: Date;
-
-  @IsOptional()
-  @CustomStringValidator(isValidReason)
-  reason?: string;
 
   @IsBoolean() forSchool: boolean;
 

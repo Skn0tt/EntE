@@ -57,7 +57,6 @@ export class EntryRepo {
         signedParent: config.signedByParent,
         date: dto.date,
         dateEnd: dto.dateEnd,
-        reason: dto.reason,
         forSchool: dto.forSchool,
         slots: await Promise.all(
           dto.slots.map(async s => {
@@ -130,7 +129,6 @@ export class EntryRepo {
     result.forSchool = !!entry.forSchool;
     result.signedManager = !!entry.signedManager;
     result.signedParent = !!entry.signedParent;
-    result.reason = entry.reason;
 
     return result;
   }

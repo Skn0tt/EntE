@@ -94,7 +94,6 @@ export class Entries extends React.Component<Props, State> {
             "Datum",
             "Erstellt",
             { name: "Schulisch", options: { filter: true } },
-            "Begründung",
             {
               name: "Stufenleiter",
               options: { customBodyRender, filter: true }
@@ -107,7 +106,6 @@ export class Entries extends React.Component<Props, State> {
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
             entry.get("forSchool") ? "Ja" : "Nein",
-            entry.get("reason") || "",
             "" + entry.get("signedManager"),
             "" + entry.get("signedParent")
           ]}

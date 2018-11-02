@@ -210,7 +210,6 @@ class SpecificEntry extends React.Component<
                   <Typography variant="body1">
                     <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
                     <br />
-                    <i>Begründung:</i> {entry.get("reason") || "-"} <br />
                     <i>Schulisch:</i>{" "}
                     {role === Roles.MANAGER ? (
                       <Checkbox

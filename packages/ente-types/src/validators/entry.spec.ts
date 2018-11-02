@@ -60,7 +60,6 @@ describe("isValidEntry", () => {
         isValidEntry({
           date: new Date(now),
           forSchool: true,
-          reason: "Schülerrat",
           slots: [
             {
               from: 1,
@@ -94,7 +93,6 @@ describe("isValidEntry", () => {
           date: new Date(now),
           dateEnd: new Date(now + 2 * 24 * 60 * 60 * 1000),
           forSchool: true,
-          reason: "Berlinreise",
           slots: []
         })
       ).to.be.true;
@@ -106,7 +104,6 @@ describe("isValidEntry", () => {
           date: new Date(now),
           dateEnd: new Date(now + 2 * 24 * 60 * 60 * 1000),
           forSchool: false,
-          reason: "Krankheit",
           slots: []
         })
       ).to.be.true;
@@ -117,7 +114,6 @@ describe("isValidEntry", () => {
         isValidEntry({
           date: new Date(now),
           forSchool: true,
-          reason: "Zahnarzt",
           slots: [
             {
               from: 1,
@@ -136,8 +132,7 @@ describe("isValidEntry", () => {
         isValidEntry({
           date: new Date(now),
           forSchool: false,
-          slots: [],
-          reason: "Hallo"
+          slots: []
         })
       ).to.be.false;
     });
