@@ -67,7 +67,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <UNDEFINED>
+        <React.Fragment>
           <WithStyles(DialogTitle)>
             Horst Hansen
           </WithStyles(DialogTitle)>
@@ -128,7 +128,7 @@ ShallowWrapper {
               </WithStyles(Grid)>
             </WithStyles(Grid)>
           </WithStyles(DialogContent)>
-        </UNDEFINED>,
+        </React.Fragment>,
         <WithStyles(DialogActions)>
           <WithStyles(Button)
             color="secondary"
@@ -598,7 +598,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <UNDEFINED>
+          <React.Fragment>
             <WithStyles(DialogTitle)>
               Horst Hansen
             </WithStyles(DialogTitle)>
@@ -659,7 +659,7 @@ ShallowWrapper {
                 </WithStyles(Grid)>
               </WithStyles(Grid)>
             </WithStyles(DialogContent)>
-          </UNDEFINED>,
+          </React.Fragment>,
           <WithStyles(DialogActions)>
             <WithStyles(Button)
               color="secondary"

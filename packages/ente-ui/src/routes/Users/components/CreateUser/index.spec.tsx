@@ -9,18 +9,18 @@
 import * as React from "react";
 import { CreateUser } from "./index";
 import { shallow } from "enzyme";
-import { User } from "ente-redux";
 import { Roles } from "ente-types";
+import { UserN } from "ente-redux";
 
 describe("Users", () => {
-  const students: User[] = [
-    new User({
+  const students: UserN[] = [
+    new UserN({
       username: "simon",
       displayname: "Simon",
       email: "email@emai.com",
       isAdult: false,
       role: Roles.STUDENT,
-      _id: "mystupidid"
+      id: "mystupidid"
     })
   ];
   const getUser = jest.fn();

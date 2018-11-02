@@ -17,16 +17,13 @@ After cloning the repository, use `lerna bootstrap` to install all dependencies 
 The packages are located in the folder `/packages` and are divided by domain.
 A small overview:
 
-| Package        | Purpose                                            |
-| -------------- | -------------------------------------------------- |
-| ente-api       | REST-API, deals with Auth and RBAC                 |
-| ente-db        | Database Access Code                               |
-| ente-lang      | Translations for the Frontend                      |
-| ente-mail      | Email-Templates                                    |
-| ente-parser    | Parser for CSV user imports to JSON representation |
-| ente-redux     | state management for frontend                      |
-| ente-ui        | React SPA that you see in the browser              |
-| ente-validator | Validates various data inputs                      |
+| Package     | Purpose                                            |
+| ----------- | -------------------------------------------------- |
+| ente-api    | REST-API, deals with Auth and RBAC                 |
+| ente-lang   | Translations for the Frontend                      |
+| ente-parser | Parser for CSV user imports to JSON representation |
+| ente-redux  | state management for frontend                      |
+| ente-ui     | React SPA that you see in the browser              |
 
 The most important packages are `ente-api` and `ente-ui`, most of the logic is in there.
 

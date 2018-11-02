@@ -9,35 +9,38 @@ ShallowWrapper {
     onChange={[Function]}
     students={
       Array [
-        Immutable.User {
-          "_id": "fdas90ß9sß0",
+        Immutable.Record {
+          "id": "fdas90ß9sß0",
           "username": "hhansen",
+          "children": Array [],
           "displayname": "Horst Hansen",
           "email": "hort@hansen.de",
-          "role": "student",
           "isAdult": false,
-          "children": Array [],
+          "role": "student",
+          "childrenIds": Array [],
         },
-        Immutable.User {
-          "_id": "jkldsfjlk",
+        Immutable.Record {
+          "id": "jkldsfjlk",
           "username": "hball",
+          "children": Array [],
           "displayname": "Hanni Ball",
           "email": "hanni@ball.de",
-          "role": "student",
           "isAdult": false,
-          "children": Array [],
+          "role": "student",
+          "childrenIds": Array [],
         },
       ]
     }
   >
-    Immutable.User {
-      "_id": "fdas90ß9sß0",
+    Immutable.Record {
+      "id": "fdas90ß9sß0",
       "username": "hhansen",
+      "children": Array [],
       "displayname": "Horst Hansen",
       "email": "hort@hansen.de",
-      "role": "student",
       "isAdult": false,
-      "children": Array [],
+      "role": "student",
+      "childrenIds": Array [],
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {
@@ -94,14 +97,15 @@ ShallowWrapper {
               itemToString={[Function]}
               items={
                 Array [
-                  Immutable.User {
-                    "_id": "jkldsfjlk",
+                  Immutable.Record {
+                    "id": "jkldsfjlk",
                     "username": "hball",
+                    "children": Array [],
                     "displayname": "Hanni Ball",
                     "email": "hanni@ball.de",
-                    "role": "student",
                     "isAdult": false,
-                    "children": Array [],
+                    "role": "student",
+                    "childrenIds": Array [],
                   },
                 ]
               }
@@ -290,14 +294,15 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={
                   Array [
-                    Immutable.User {
-                      "_id": "jkldsfjlk",
+                    Immutable.Record {
+                      "id": "jkldsfjlk",
                       "username": "hball",
+                      "children": Array [],
                       "displayname": "Hanni Ball",
                       "email": "hanni@ball.de",
-                      "role": "student",
                       "isAdult": false,
-                      "children": Array [],
+                      "role": "student",
+                      "childrenIds": Array [],
                     },
                   ]
                 }
@@ -336,14 +341,15 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={
                   Array [
-                    Immutable.User {
-                      "_id": "jkldsfjlk",
+                    Immutable.Record {
+                      "id": "jkldsfjlk",
                       "username": "hball",
+                      "children": Array [],
                       "displayname": "Hanni Ball",
                       "email": "hanni@ball.de",
-                      "role": "student",
                       "isAdult": false,
-                      "children": Array [],
+                      "role": "student",
+                      "childrenIds": Array [],
                     },
                   ]
                 }
@@ -363,14 +369,15 @@ ShallowWrapper {
                 "includeItem": [Function],
                 "itemToString": [Function],
                 "items": Array [
-                  Immutable.User {
-                    "_id": "jkldsfjlk",
+                  Immutable.Record {
+                    "id": "jkldsfjlk",
                     "username": "hball",
+                    "children": Array [],
                     "displayname": "Hanni Ball",
                     "email": "hanni@ball.de",
-                    "role": "student",
                     "isAdult": false,
-                    "children": Array [],
+                    "role": "student",
+                    "childrenIds": Array [],
                   },
                 ],
                 "label": "Kind",
@@ -480,14 +487,15 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={
                   Array [
-                    Immutable.User {
-                      "_id": "jkldsfjlk",
+                    Immutable.Record {
+                      "id": "jkldsfjlk",
                       "username": "hball",
+                      "children": Array [],
                       "displayname": "Hanni Ball",
                       "email": "hanni@ball.de",
-                      "role": "student",
                       "isAdult": false,
-                      "children": Array [],
+                      "role": "student",
+                      "childrenIds": Array [],
                     },
                   ]
                 }
@@ -676,14 +684,15 @@ ShallowWrapper {
                   itemToString={[Function]}
                   items={
                     Array [
-                      Immutable.User {
-                        "_id": "jkldsfjlk",
+                      Immutable.Record {
+                        "id": "jkldsfjlk",
                         "username": "hball",
+                        "children": Array [],
                         "displayname": "Hanni Ball",
                         "email": "hanni@ball.de",
-                        "role": "student",
                         "isAdult": false,
-                        "children": Array [],
+                        "role": "student",
+                        "childrenIds": Array [],
                       },
                     ]
                   }
@@ -722,14 +731,15 @@ ShallowWrapper {
                   itemToString={[Function]}
                   items={
                     Array [
-                      Immutable.User {
-                        "_id": "jkldsfjlk",
+                      Immutable.Record {
+                        "id": "jkldsfjlk",
                         "username": "hball",
+                        "children": Array [],
                         "displayname": "Hanni Ball",
                         "email": "hanni@ball.de",
-                        "role": "student",
                         "isAdult": false,
-                        "children": Array [],
+                        "role": "student",
+                        "childrenIds": Array [],
                       },
                     ]
                   }
@@ -749,14 +759,15 @@ ShallowWrapper {
                   "includeItem": [Function],
                   "itemToString": [Function],
                   "items": Array [
-                    Immutable.User {
-                      "_id": "jkldsfjlk",
+                    Immutable.Record {
+                      "id": "jkldsfjlk",
                       "username": "hball",
+                      "children": Array [],
                       "displayname": "Hanni Ball",
                       "email": "hanni@ball.de",
-                      "role": "student",
                       "isAdult": false,
-                      "children": Array [],
+                      "role": "student",
+                      "childrenIds": Array [],
                     },
                   ],
                   "label": "Kind",
@@ -838,26 +849,28 @@ ShallowWrapper {
     onChange={[Function]}
     students={
       Array [
-        Immutable.User {
-          "_id": "fdas90ß9sß0",
+        Immutable.Record {
+          "id": "fdas90ß9sß0",
           "username": "hhansen",
+          "children": Array [],
           "displayname": "Horst Hansen",
           "email": "hort@hansen.de",
-          "role": "student",
           "isAdult": false,
-          "children": Array [],
+          "role": "student",
+          "childrenIds": Array [],
         },
       ]
     }
   >
-    Immutable.User {
-      "_id": "fdas90ß9sß0",
+    Immutable.Record {
+      "id": "fdas90ß9sß0",
       "username": "hhansen",
+      "children": Array [],
       "displayname": "Horst Hansen",
       "email": "hort@hansen.de",
-      "role": "student",
       "isAdult": false,
-      "children": Array [],
+      "role": "student",
+      "childrenIds": Array [],
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {

@@ -41,16 +41,16 @@ import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
 import Typography from "@material-ui/core/Typography/Typography";
-import { IEntryCreate, ISlotCreate, UserId } from "ente-types";
 import {
   createEntryRequest,
   AppState,
-  User,
   getChildren,
   isParent,
   getTeachers,
-  getUser
+  getUser,
+  UserN
 } from "ente-redux";
+import { CreateEntryDto, CreateSlotDto } from "ente-types";
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -67,9 +67,9 @@ interface OwnProps {
 
 interface StateProps {
   isParent: boolean;
-  children: User[];
-  teachers: User[];
-  getUser(id: UserId): User;
+  children: UserN[];
+  teachers: UserN[];
+  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -83,7 +83,7 @@ const mapStateToProps: MapStateToPropsParam<
 });
 
 interface DispatchProps {
-  createEntry(entry: IEntryCreate): Action;
+  createEntry(entry: CreateEntryDto): Action;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   DispatchProps,
@@ -104,8 +104,8 @@ interface State {
   date: Date;
   dateEnd: Date;
   reason?: string;
-  student?: UserId;
-  slots: ISlotCreate[];
+  student?: string;
+  slots: CreateSlotDto[];
   forSchool: boolean;
 }
 
@@ -113,7 +113,7 @@ class CreateEntry extends React.Component<Props, State> {
   state: State = {
     student:
       this.props.children.length > 0
-        ? this.props.children[0].get("_id")
+        ? this.props.children[0].get("id")
         : undefined,
     isRange: false,
     date: new Date(),
@@ -133,7 +133,7 @@ class CreateEntry extends React.Component<Props, State> {
       slots: this.state.isRange ? [] : this.state.slots,
       reason: this.state.reason,
       forSchool: this.state.forSchool,
-      student: this.state.student
+      studentId: this.state.student
     });
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
@@ -160,7 +160,7 @@ class CreateEntry extends React.Component<Props, State> {
   handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ isRange: event.target.checked });
 
-  handleAddSlot = (slot: ISlotCreate) => {
+  handleAddSlot = (slot: CreateSlotDto) => {
     if (this.state.slots.indexOf(slot) !== -1) return;
 
     this.setState({ slots: [...this.state.slots, slot] });
@@ -248,7 +248,7 @@ class CreateEntry extends React.Component<Props, State> {
                     helperText="Wählen sie das betroffene Kind aus."
                   >
                     {this.props.children.map(child => (
-                      <MenuItem key={child.get("_id")} value={child.get("_id")}>
+                      <MenuItem key={child.get("id")} value={child.get("id")}>
                         {child.get("displayname")}
                       </MenuItem>
                     ))}

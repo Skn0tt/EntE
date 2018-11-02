@@ -11,15 +11,7 @@ import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 import styles from "./styles";
 
-import { withRouter, RouteComponentProps } from "react-router";
-import {
-  Dialog,
-  Button,
-  Grid,
-  TextField,
-  IconButton,
-  Divider
-} from "@material-ui/core";
+import { Dialog, Button, Grid, TextField } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -27,30 +19,28 @@ import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
 import { Action } from "redux";
-import List from "@material-ui/core/List/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import { Delete as DeleteIcon, Add as AddIcon } from "@material-ui/icons";
 import ImportUsers from "../ImportUsers";
-import { IUserCreate, Roles, UserId } from "ente-types";
 import {
-  isValidUsername,
+  Roles,
+  CreateUserDto,
   isValidDisplayname,
+  isValidUsername,
   isValidEmail,
+  isValidPassword,
   isValidUser,
-  isValidPassword
-} from "ente-validator";
+  createDefaultCreateUserDto
+} from "ente-types";
 import {
   getStudents,
   getUser,
-  User,
   createUsersRequest,
-  AppState
+  AppState,
+  UserN
 } from "ente-redux";
 import lang from "ente-lang";
 import TextInput from "../../../../elements/TextInput";
 import ChildrenInput from "../../../../elements/ChildrenInput";
+import withErrorBoundary from "ente-ui/src/components/withErrorBoundary";
 
 /**
  * # Component Types
@@ -60,13 +50,14 @@ interface OwnProps {
   show: boolean;
 }
 
-interface State extends IUserCreate {
+interface State {
+  create: CreateUserDto;
   showImportUsers: boolean;
 }
 
 interface StateProps {
-  students: User[];
-  getUser(id: UserId): User;
+  students: UserN[];
+  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -78,10 +69,10 @@ const mapStateToProps: MapStateToPropsParam<
 });
 
 interface DispatchProps {
-  createUser(user: IUserCreate): Action;
+  createUser(user: CreateUserDto): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUser: (user: IUserCreate) => dispatch(createUsersRequest(user))
+  createUser: (user: CreateUserDto) => dispatch(createUsersRequest(user))
 });
 
 type Props = OwnProps & StateProps & DispatchProps & WithStyles & InjectedProps;
@@ -94,13 +85,7 @@ export class CreateUser extends React.Component<Props, State> {
    * # Intialization
    */
   state: State = {
-    children: [],
-    displayname: "",
-    isAdult: false,
-    email: "",
-    password: "",
-    role: Roles.STUDENT,
-    username: "",
+    create: createDefaultCreateUserDto(),
     showImportUsers: false
   };
 
@@ -115,15 +100,7 @@ export class CreateUser extends React.Component<Props, State> {
   handleCloseImport = () => this.setState({ showImportUsers: false });
 
   handleSubmit = () => {
-    return this.props.createUser({
-      children: this.hasChildren() ? this.state.children : [],
-      displayname: this.state.displayname,
-      email: this.state.email,
-      isAdult: this.state.isAdult,
-      password: this.state.password,
-      role: this.state.role,
-      username: this.state.username
-    });
+    return this.props.createUser(this.state.create);
   };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
@@ -135,44 +112,44 @@ export class CreateUser extends React.Component<Props, State> {
   /**
    * ## Input Handlers
    */
-  handleChangeUsername = (username: string) => this.setState({ username });
-  handleChangeDisplayname = (displayname: string) =>
-    this.setState({ displayname });
-  handleChangePassword = (password: string) => this.setState({ password });
+  update = (key: keyof CreateUserDto) => (value: any) => {
+    const clone = Object.assign({}, this.state.create);
+    clone[key] = value;
+    this.setState({ create: clone });
+  };
+  handleChangeUsername = this.update("username");
+  handleChangeDisplayname = this.update("displayname");
+  handleChangePassword = this.update("password");
   handleChangeIsAdult = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    ignored: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
-  ) => this.setState({ isAdult: checked });
-  handleChangeEmail = (email: string) => this.setState({ email });
+  ) => this.update("isAdult")(checked);
+  handleChangeEmail = this.update("email");
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ role: event.target.value as Roles });
-  handleChangeChildren = (children: string[]) => this.setState({ children });
-  hasChildren = (): boolean =>
-    this.state.role === Roles.PARENT || this.state.role === Roles.MANAGER;
+    this.update("role")(event.target.value as Roles);
+  handleChangeChildren = this.update("children");
+
+  hasChildren = (): boolean => {
+    const { create: { role } } = this.state;
+    return role === Roles.PARENT || role === Roles.MANAGER;
+  };
 
   /**
    * ## Validation
    */
-  usernameValid = (): boolean => isValidUsername(this.state.username);
-  displaynameValid = (): boolean => isValidDisplayname(this.state.displayname);
-  emailValid = (): boolean => isValidEmail(this.state.email);
+  usernameValid = (): boolean => isValidUsername(this.state.create.username);
+  displaynameValid = (): boolean =>
+    isValidDisplayname(this.state.create.displayname);
+  emailValid = (): boolean => isValidEmail(this.state.create.email);
   passwordValid = (): boolean =>
-    !this.state.password || isValidPassword(this.state.password);
+    !this.state.create.password || isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
-    !this.hasChildren() || this.state.children.length > 0;
-  inputValid = (): boolean => isValidUser(this.state);
+    !this.hasChildren() || this.state.create.children.length > 0;
+  inputValid = (): boolean => isValidUser(this.state.create);
 
   render() {
     const { classes, show, fullScreen, getUser, students } = this.props;
-    const {
-      username,
-      displayname,
-      email,
-      children,
-      password,
-      role,
-      showImportUsers
-    } = this.state;
+    const { create, showImportUsers } = this.state;
 
     return (
       <>
@@ -186,7 +163,7 @@ export class CreateUser extends React.Component<Props, State> {
               <Grid container direction="row">
                 <Grid item xs={12} lg={6}>
                   <TextInput
-                    value={username}
+                    value={create.username || ""}
                     label={lang().ui.createUser.usernameTitle}
                     onChange={this.handleChangeUsername}
                     validator={this.usernameValid}
@@ -196,7 +173,7 @@ export class CreateUser extends React.Component<Props, State> {
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     label={lang().ui.createUser.displaynameTitle}
-                    value={displayname}
+                    value={create.displayname || ""}
                     onChange={this.handleChangeDisplayname}
                     validator={this.displaynameValid}
                     required
@@ -205,7 +182,7 @@ export class CreateUser extends React.Component<Props, State> {
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     label={lang().ui.createUser.emailTitle}
-                    value={email}
+                    value={create.email || ""}
                     onChange={this.handleChangeEmail}
                     validator={this.emailValid}
                     type="email"
@@ -215,7 +192,7 @@ export class CreateUser extends React.Component<Props, State> {
                 <Grid item xs={12}>
                   <TextInput
                     label={lang().ui.createUser.passwordTitle}
-                    value={password || ""}
+                    value={create.password || ""}
                     onChange={this.handleChangePassword}
                     validator={this.passwordValid}
                     type="password"
@@ -225,7 +202,7 @@ export class CreateUser extends React.Component<Props, State> {
                   <TextField
                     select
                     label="Rolle"
-                    value={role}
+                    value={create.role || Roles.STUDENT}
                     onChange={this.handleChangeRole}
                     fullWidth
                     SelectProps={{ native: true }}
@@ -244,10 +221,10 @@ export class CreateUser extends React.Component<Props, State> {
                 {this.hasChildren() && (
                   <Grid item xs={12}>
                     <ChildrenInput
-                      children={children.map(getUser)}
+                      children={create.children.map(getUser)}
                       students={students}
-                      onChange={u =>
-                        this.handleChangeChildren(u.map(u => u.get("_id")))
+                      onChange={(u: UserN[]) =>
+                        this.handleChangeChildren(u.map(u => u.get("id")))
                       }
                     />
                   </Grid>
@@ -288,5 +265,5 @@ export default withStyles(styles)(
   connect<StateProps, DispatchProps, OwnProps, AppState>(
     mapStateToProps,
     mapDispatchToProps
-  )(withMobileDialog<Props>()(CreateUser))
+  )(withMobileDialog<Props>()(withErrorBoundary()(CreateUser)))
 );

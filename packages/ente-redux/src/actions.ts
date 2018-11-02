@@ -25,9 +25,6 @@ import {
   GET_USERS_SUCCESS,
   GET_USERS_ERROR,
   LOGOUT,
-  GET_TEACHERS_SUCCESS,
-  GET_TEACHERS_REQUEST,
-  GET_TEACHERS_ERROR,
   GET_SLOTS_REQUEST,
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
@@ -55,9 +52,6 @@ import {
   CREATE_USERS_REQUEST,
   CREATE_USERS_SUCCESS,
   CREATE_USERS_ERROR,
-  GET_CHILDREN_REQUEST,
-  GET_CHILDREN_SUCCESS,
-  GET_CHILDREN_ERROR,
   GET_NEEDED_USERS_ERROR,
   GET_NEEDED_USERS_SUCCESS,
   GET_NEEDED_USERS_REQUEST,
@@ -68,27 +62,18 @@ import {
   PATCH_FORSCHOOL_SUCCESS,
   PATCH_FORSCHOOL_ERROR
 } from "./constants";
-import { APIResponse } from "./types";
-import {
-  IUserCreate,
-  IEntryCreate,
-  IUser,
-  ICredentials,
-  TokenInfo,
-  INewPassword,
-  EntryId,
-  UserId
-} from "ente-types";
+import { APIResponse, AuthState, BasicCredentials } from "./types";
+import { CreateUserDto, CreateEntryDto, PatchUserDto } from "ente-types";
 
-export const createEntryRequest = createAction<IEntryCreate>(
+export const createEntryRequest = createAction<CreateEntryDto>(
   CREATE_ENTRY_REQUEST
 );
 export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
 
 export const createUsersRequest = createAction<
-  IUserCreate[],
-  IUserCreate | IUserCreate[]
+  CreateUserDto[],
+  CreateUserDto | CreateUserDto[]
 >(CREATE_USERS_REQUEST, input => {
   if (Array.isArray(input)) {
     return input;
@@ -98,16 +83,16 @@ export const createUsersRequest = createAction<
 export const createUsersSuccess = createAction(CREATE_USERS_SUCCESS);
 export const createUsersError = createAction<Error>(CREATE_USERS_ERROR);
 
-export const signEntryRequest = createAction<EntryId>(SIGN_ENTRY_REQUEST);
+export const signEntryRequest = createAction<string>(SIGN_ENTRY_REQUEST);
 export const signEntrySuccess = createAction(SIGN_ENTRY_SUCCESS);
 export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
 
-export const unsignEntryRequest = createAction<EntryId>(UNSIGN_ENTRY_REQUEST);
+export const unsignEntryRequest = createAction<string>(UNSIGN_ENTRY_REQUEST);
 export const unsignEntrySuccess = createAction(UNSIGN_ENTRY_SUCCESS);
 export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
 
 export type PatchForSchoolPayload = {
-  id: EntryId;
+  id: string;
   forSchool: boolean;
 };
 export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
@@ -116,7 +101,7 @@ export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
 export const patchForSchoolSuccess = createAction(PATCH_FORSCHOOL_SUCCESS);
 export const patchForSchoolError = createAction<Error>(PATCH_FORSCHOOL_ERROR);
 
-export const updateUserRequest = createAction<Partial<IUser>>(
+export const updateUserRequest = createAction<[string, PatchUserDto]>(
   UPDATE_USER_REQUEST
 );
 export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);
@@ -126,25 +111,17 @@ export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
 export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
 export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
 
-export const getEntryRequest = createAction<EntryId>(GET_ENTRY_REQUEST);
+export const getEntryRequest = createAction<string>(GET_ENTRY_REQUEST);
 export const getEntrySuccess = createAction(GET_ENTRY_SUCCESS);
 export const getEntryError = createAction<Error>(GET_ENTRY_ERROR);
 
-export const getUserRequest = createAction<UserId>(GET_USER_REQUEST);
+export const getUserRequest = createAction<string>(GET_USER_REQUEST);
 export const getUserSuccess = createAction(GET_USER_SUCCESS);
 export const getUserError = createAction<Error>(GET_USER_ERROR);
 
 export const getUsersRequest = createAction(GET_USERS_REQUEST);
 export const getUsersSuccess = createAction(GET_USERS_SUCCESS);
 export const getUsersError = createAction<Error>(GET_USERS_ERROR);
-
-export const getTeachersRequest = createAction(GET_TEACHERS_REQUEST);
-export const getTeachersSuccess = createAction(GET_TEACHERS_SUCCESS);
-export const getTeachersError = createAction<Error>(GET_TEACHERS_ERROR);
-
-export const getChildrenRequest = createAction(GET_CHILDREN_REQUEST);
-export const getChildrenSuccess = createAction(GET_CHILDREN_SUCCESS);
-export const getChildrenError = createAction<Error>(GET_CHILDREN_ERROR);
 
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
 export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
@@ -154,12 +131,14 @@ export const getNeededUsersRequest = createAction(GET_NEEDED_USERS_REQUEST);
 export const getNeededUsersSuccess = createAction(GET_NEEDED_USERS_SUCCESS);
 export const getNeededUsersError = createAction<Error>(GET_NEEDED_USERS_ERROR);
 
-export const getTokenRequest = createAction<ICredentials>(GET_TOKEN_REQUEST);
-export const getTokenSuccess = createAction<TokenInfo>(GET_TOKEN_SUCCESS);
+export const getTokenRequest = createAction<BasicCredentials>(
+  GET_TOKEN_REQUEST
+);
+export const getTokenSuccess = createAction<AuthState>(GET_TOKEN_SUCCESS);
 export const getTokenError = createAction<Error>(GET_TOKEN_ERROR);
 
 export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);
-export const refreshTokenSuccess = createAction<TokenInfo>(
+export const refreshTokenSuccess = createAction<AuthState>(
   REFRESH_TOKEN_SUCCESS
 );
 export const refreshTokenError = createAction<Error>(REFRESH_TOKEN_ERROR);
@@ -174,6 +153,11 @@ export const resetPasswordSuccess = createAction<string>(
   RESET_PASSWORD_SUCCESS
 );
 export const resetPasswordError = createAction<Error>(RESET_PASSWORD_ERROR);
+
+export interface INewPassword {
+  token: string;
+  newPassword: string;
+}
 
 export const setPasswordRequest = createAction<INewPassword>(
   SET_PASSWORD_REQUEST

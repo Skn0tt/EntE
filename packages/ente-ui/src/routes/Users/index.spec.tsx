@@ -9,19 +9,19 @@
 import * as React from "react";
 import { Users } from "./index";
 import { shallow } from "enzyme";
-import { User } from "ente-redux";
 import { getMockRouterProps } from "../../../testHelpers/mockRouter";
 import { Roles } from "ente-types";
+import { UserN } from "ente-redux";
 
 describe("Users", () => {
-  const users: User[] = [
-    new User({
+  const users: UserN[] = [
+    new UserN({
       username: "simon",
       displayname: "Simon",
       email: "email@emai.com",
       isAdult: false,
       role: Roles.STUDENT,
-      _id: "mystupidid"
+      id: "mystupidid"
     })
   ];
   const getUsers = jest.fn();

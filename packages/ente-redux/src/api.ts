@@ -7,19 +7,27 @@
  */
 
 import axios, { AxiosRequestConfig } from "axios";
-import {
-  IAPIResponse,
-  TokenInfo,
-  ICredentials,
-  IEntryCreate,
-  IUserCreate,
-  IUser,
-  UserId,
-  EntryId
-} from "ente-types";
 
 import { config } from "./";
-import { APIResponse, Entry, Slot, User } from "./types";
+import {
+  APIResponse,
+  UserN,
+  EntryN,
+  SlotN,
+  AuthState,
+  BasicCredentials
+} from "./types";
+import {
+  CreateEntryDto,
+  CreateUserDto,
+  PatchUserDto,
+  UserDto,
+  EntryDto,
+  SlotDto,
+  JwtTokenPayload
+} from "ente-types";
+
+import * as _ from "lodash";
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
@@ -43,119 +51,214 @@ const transformDates = (data: string) => {
   return input;
 };
 
-const get = async (url: string, token: string) => {
-  const response = await axios.get(url, axiosStandardParams(token));
+const get = async <T>(url: string, token: string) => {
+  const response = await axios.get<T>(url, axiosStandardParams(token));
   return response.data;
 };
 
-const transform = (data: IAPIResponse): APIResponse => ({
-  entries: data.entries ? data.entries.map(entry => new Entry(entry)) : [],
-  slots: data.slots ? data.slots.map(slot => new Slot(slot)) : [],
-  users: data.users ? data.users.map(user => new User(user)) : []
-});
-
-export const getTokenInfo = (token: string): TokenInfo => {
-  const payload = JSON.parse(atob(token.split(".")[1]));
+const mergeAPIResponses = (...values: APIResponse[]): APIResponse => {
+  const entries = _.concat([], ...values.map(v => v.entries));
+  const users = _.concat([], ...values.map(v => v.users));
+  const slots = _.concat([], ...values.map(v => v.slots));
 
   return {
-    token,
-    exp: new Date(payload.exp),
-    displayname: payload.displayname,
-    role: payload.role,
-    children: payload.children
+    entries: _.uniqBy(entries, e => e.get("id")),
+    slots: _.uniqBy(slots, e => e.get("id")),
+    users: _.uniqBy(users, e => e.get("id"))
   };
 };
 
-export const getToken = async (auth: ICredentials): Promise<TokenInfo> => {
-  const response = await axios.get(`${config.baseUrl}/token`, {
+const emptyAPIResponse = (): APIResponse => ({
+  entries: [],
+  slots: [],
+  users: []
+});
+
+export const transformUsers = (...users: UserDto[]): APIResponse => {
+  let result = emptyAPIResponse();
+
+  users.forEach(user => {
+    const { children } = user;
+    const childrenIds = children.map(c => c.id);
+
+    const normalised = new UserN({
+      ...user,
+      children: [],
+      childrenIds
+    });
+    result.users.push(normalised);
+
+    const childrenResponse = transformUsers(...children);
+    result = mergeAPIResponses(result, childrenResponse);
+  });
+
+  return result;
+};
+
+export const transformEntries = (...entries: EntryDto[]): APIResponse => {
+  let result = emptyAPIResponse();
+
+  entries.forEach(entry => {
+    const { student, slots } = entry;
+    const normalised = new EntryN({
+      ...entry,
+      student: null,
+      slots: [],
+      studentId: student.id,
+      slotIds: slots.map(s => s.id)
+    });
+
+    result.entries.push(normalised);
+
+    const slotResponse = transformSlots(...slots);
+    const studentResponse = transformUsers(student);
+
+    result = mergeAPIResponses(result, slotResponse, studentResponse);
+  });
+
+  return result;
+};
+
+export const transformSlots = (...slots: SlotDto[]): APIResponse => {
+  let result = emptyAPIResponse();
+
+  slots.forEach(slot => {
+    const { student, teacher } = slot;
+    const normalised = new SlotN({
+      ...slot,
+      student: null,
+      teacher: null,
+      studentId: student.id,
+      teacherId: teacher.id
+    });
+
+    result.slots.push(normalised);
+
+    const userResponse = transformUsers(student, teacher);
+    result = mergeAPIResponses(result, userResponse);
+  });
+
+  return result;
+};
+
+const fromBase64 = (b64: string) =>
+  Buffer.from(b64, "base64").toString("ascii");
+
+export const getTokenPayload = (token: string): JwtTokenPayload => {
+  const payload = JSON.parse(fromBase64(token.split(".")[1]));
+
+  return payload;
+};
+
+const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
+  return new AuthState({
+    role: payload.role,
+    displayname: payload.displayname,
+    token,
+    exp: new Date((payload as any).exp * 1000)
+  });
+};
+
+export const getToken = async (auth: BasicCredentials): Promise<AuthState> => {
+  const response = await axios.get<string>(`${config.baseUrl}/token`, {
     auth
   });
 
-  return getTokenInfo(response.data);
+  const tokenPayload = getTokenPayload(response.data);
+
+  return getAuthState(response.data, tokenPayload);
 };
 
-export const refreshToken = async (token: string): Promise<TokenInfo> => {
+export const refreshToken = async (token: string): Promise<AuthState> => {
   try {
-    const result = await axios.get(
+    const result = await axios.get<string>(
       `${config.baseUrl}/token`,
       axiosTokenParams(token)
     );
 
-    return getTokenInfo(result.data);
+    const tokenPayload = getTokenPayload(result.data);
+
+    return getAuthState(result.data, tokenPayload);
   } catch (error) {
     throw error;
   }
 };
 
 export const getChildren = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users?filter=children`, token);
-  return transform(data);
+  const data = await get<UserDto[]>(
+    `${config.baseUrl}/users?filter=children`,
+    token
+  );
+  return transformUsers(...data);
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users`, token);
-  return transform(data);
+  const data = await get<UserDto[]>(`${config.baseUrl}/users`, token);
+  return transformUsers(...data);
 };
 
 export const getEntry = async (
-  id: EntryId,
+  id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/entries/${id}`, token);
-  return transform(data);
+  const data = await get<EntryDto>(`${config.baseUrl}/entries/${id}`, token);
+  return transformEntries(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/entries`, token);
-  return transform(data);
+  const data = await get<EntryDto[]>(`${config.baseUrl}/entries`, token);
+  return transformEntries(...data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/slots`, token);
-  return transform(data);
+  const data = await get<SlotDto[]>(`${config.baseUrl}/slots`, token);
+  return transformSlots(...data);
 };
 
 export const getUser = async (
-  id: UserId,
+  id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users/${id}`, token);
-  return transform(data);
+  const data = await get<UserDto>(`${config.baseUrl}/users/${id}`, token);
+  return transformUsers(data);
 };
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users`, token);
-  return transform(data);
+  const data = await get<UserDto[]>(`${config.baseUrl}/users`, token);
+  return transformUsers(...data);
 };
 
-export const getTeachers = async (token: string): Promise<APIResponse> => {
-  const data = await get(`${config.baseUrl}/users?filter=teachers`, token);
-  return transform(data);
-};
-
-const post = async (url: string, token: string, body?: {}) => {
-  const response = await axios.post(url, body, axiosStandardParams(token));
+const post = async <T>(url: string, token: string, body?: {}) => {
+  const response = await axios.post<T>(url, body, axiosStandardParams(token));
   return response.data;
 };
 
 export const createEntry = async (
-  entry: IEntryCreate,
+  entry: CreateEntryDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${config.baseUrl}/entries/`, token, entry);
-  return transform(response);
+  const response = await post<EntryDto>(
+    `${config.baseUrl}/entries/`,
+    token,
+    entry
+  );
+  return transformEntries(response);
 };
 
-export const createUser = async (
-  users: IUserCreate[],
+export const createUsers = async (
+  users: CreateUserDto[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post(`${config.baseUrl}/users/`, token, users);
-  return transform(response);
+  const response = await post<UserDto[]>(
+    `${config.baseUrl}/users/`,
+    token,
+    users
+  );
+  return transformUsers(...response);
 };
 
-const patch = async (url: string, token: string, body?: {}) => {
-  const response = await axios.patch(url, body, {
+const patch = async <T>(url: string, token: string, body?: {}) => {
+  const response = await axios.patch<T>(url, body, {
     transformResponse: transformDates,
     headers: {
       Authorization: "Bearer " + token
@@ -165,61 +268,76 @@ const patch = async (url: string, token: string, body?: {}) => {
 };
 
 export const updateUser = async (
-  user: Partial<IUser>,
+  userId: string,
+  user: PatchUserDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch(
-    `${config.baseUrl}/users/${user._id}`,
+  const response = await patch<UserDto>(
+    `${config.baseUrl}/users/${userId}`,
     token,
     user
   );
-  return transform(response);
+  return transformUsers(response);
 };
 
-const put = async (url: string, token: string, body?: {}) => {
-  const response = await axios.put(url, body, axiosStandardParams(token));
+const put = async <T>(url: string, token: string, body?: {}) => {
+  const response = await axios.put<T>(url, body, axiosStandardParams(token));
   return response.data;
 };
 
 export const signEntry = async (
-  id: EntryId,
+  id: string,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
-    value: true
-  });
-  return transform(response);
+  const response = await put<EntryDto>(
+    `${config.baseUrl}/entries/${id}`,
+    token,
+    true
+  );
+  return transformEntries(response);
 };
 
 export const unsignEntry = async (
-  id: EntryId,
+  id: string,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put(`${config.baseUrl}/entries/${id}/signed`, token, {
-    value: false
-  });
-  return transform(response);
+  const response = await put<EntryDto>(
+    `${config.baseUrl}/entries/${id}`,
+    token,
+    false
+  );
+  return transformEntries(response);
 };
 
 export const patchForSchool = async (
-  id: EntryId,
+  id: string,
   forSchool: boolean,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch(`${config.baseUrl}/entries/${id}`, token, {
+  const response = await patch<EntryDto>(
+    `${config.baseUrl}/entries/${id}`,
+    token,
     forSchool
-  });
-  return transform(response);
+  );
+  return transformEntries(response);
 };
 
-export const resetPassword = async (username: UserId): Promise<string> => {
-  const result = await axios.post(`${config.baseUrl}/auth/forgot/${username}`);
+export const resetPassword = async (username: string): Promise<string> => {
+  const result = await axios.post(
+    `${config.baseUrl}/passwordReset/${username}`
+  );
   return result.data;
 };
 
 export const setPassword = async (token: string, newPassword: string) => {
-  const result = await axios.put(`${config.baseUrl}/auth/forgot/${token}`, {
-    newPassword
-  });
+  const result = await axios.put(
+    `${config.baseUrl}/passwordReset/${token}`,
+    newPassword,
+    {
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
   return result.data;
 };

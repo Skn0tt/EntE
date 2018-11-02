@@ -12,12 +12,10 @@
     "packages/ente-api",
     "packages/ente-db",
     "packages/ente-lang",
-    "packages/ente-mail",
     "packages/ente-parser",
     "packages/ente-redux",
     "packages/ente-types",
-    "packages/ente-ui",
-    "packages/ente-validator"
+    "packages/ente-ui"
   ],
   "scripts": {
     "precommit": "pretty-quick --staged",
@@ -42,7 +40,7 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",
-    "jest": "^22.4.3",
+    "jest": "^23.6.0",
     "jest-junit": "^3.7.0",
     "lerna": "^2.9.0",
     "mockdate": "^2.0.2",
@@ -50,17 +48,23 @@
     "pretty-quick": "^1.4.1",
     "react-router-enzyme-context": "^1.2.0",
     "react-test-renderer": "^16.3.1",
+    "reflect-metadata": "^0.1.12",
     "sinon": "^4.5.0",
     "testcafe": "^0.20.5",
     "testdouble": "^3.7.0",
     "testdouble-jest": "^2.0.0",
-    "ts-jest": "^22.4.2",
+    "ts-jest": "^23.10.4",
     "typescript": "^3.0.1"
   },
   "dependencies": {
     "npm": "^5.8.0"
   },
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    },
     "setupTestFrameworkScriptFile": "<rootDir>/tests/jestSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

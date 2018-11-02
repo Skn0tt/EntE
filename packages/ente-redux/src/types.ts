@@ -7,18 +7,26 @@
  */
 
 import { Record, Map, List } from "immutable";
-import {
-  IUser,
-  Roles,
-  IEntry,
-  ISlot,
-  IAuth,
-  EntryId,
-  UserId,
-  SlotId
-} from "ente-types";
+import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
+import { Maybe, None } from "monet";
 
-export type errorPayload = {};
+export interface BasicCredentials {
+  username: string;
+  password: string;
+}
+
+const createRecord = <T>(defaultVal: T) =>
+  class extends Record(defaultVal) {
+    constructor(props: Partial<T>) {
+      super(props);
+    }
+    get<V extends keyof T>(key: V, notSetValue?: V): T[V] {
+      return super.get(key as string, notSetValue);
+    }
+    set<V extends keyof T & string>(key: V, value: T[V]): any {
+      return super.set(key as string, value);
+    }
+  };
 
 /**
  * API
@@ -26,116 +34,90 @@ export type errorPayload = {};
 
 export interface APIResponse {
   auth?: AuthState;
-  users: User[];
-  entries: Entry[];
-  slots: Slot[];
+  users: UserN[];
+  entries: EntryN[];
+  slots: SlotN[];
 }
 
 /**
  * User
  */
-
-export class User extends Record(
-  {
-    _id: "",
-    username: "",
-    displayname: "",
-    email: "",
-    role: "",
-    isAdult: false,
-    children: []
-  },
-  "User"
-) {
-  constructor(props: Partial<IUser>) {
-    super(props);
-  }
-  get<T extends keyof IUser>(value: T): IUser[T] {
-    return super.get(value);
-  }
+class UserDtoNormalised extends UserDto {
+  childrenIds: string[];
 }
 
-export const userIsManager = (u: User) => u.get("role") === Roles.MANAGER;
-export const userIsParent = (u: User) => u.get("role") === Roles.PARENT;
-export const userIsStudent = (u: User) => u.get("role") === Roles.STUDENT;
-export const userIsTeacher = (u: User) => u.get("role") === Roles.TEACHER;
-export const userHasChildren = (u: User) => userIsManager(u) || userIsParent(u);
-
-/**
- * Slot
- */
-
-export class Slot extends Record(
-  {
-    _id: "",
-    date: new Date(0),
-    hour_from: -1,
-    hour_to: -1,
-    signed: false,
-    student: "",
-    teacher: ""
-  },
-  "Slot"
-) {
-  constructor(props: Partial<ISlot>) {
-    super(props);
-  }
-  get<T extends keyof ISlot>(value: T): ISlot[T] {
-    return super.get(value);
-  }
+class EntryDtoNormalised extends EntryDto {
+  studentId: string;
+  slotIds: string[];
 }
 
-export const createSlot = (item: Partial<ISlot>) => new Slot(item);
-
-/**
- * Entry
- */
-
-export class Entry extends Record(
-  {
-    _id: "",
-    date: new Date(),
-    dateEnd: new Date(),
-    reason: "",
-    student: "",
-    slots: [],
-    forSchool: false,
-    signedManager: false,
-    signedParent: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  "Entry"
-) {
-  constructor(props: Partial<IEntry>) {
-    super(props);
-  }
-  get<T extends keyof IEntry>(value: T): IEntry[T] {
-    return super.get(value);
-  }
+class SlotDtoNormalised extends SlotDto {
+  studentId: string;
+  teacherId: string;
 }
+
+export class UserN extends createRecord<UserDtoNormalised>({
+  id: "",
+  username: "",
+  children: [],
+  displayname: "",
+  email: "",
+  isAdult: false,
+  role: Roles.STUDENT,
+  childrenIds: []
+}) {}
+
+export const userIsManager = (u: UserN) => u.get("role") === Roles.MANAGER;
+export const userIsParent = (u: UserN) => u.get("role") === Roles.PARENT;
+export const userIsStudent = (u: UserN) => u.get("role") === Roles.STUDENT;
+export const userIsTeacher = (u: UserN) => u.get("role") === Roles.TEACHER;
+export const userHasChildren = (u: UserN) =>
+  userIsManager(u) || userIsParent(u);
+
+export class EntryN extends createRecord<EntryDtoNormalised>({
+  createdAt: new Date(),
+  date: new Date(),
+  forSchool: false,
+  id: "",
+  signedManager: false,
+  signedParent: false,
+  slots: [],
+  slotIds: [],
+  student: null,
+  studentId: "",
+  updatedAt: new Date()
+}) {}
+
+export class SlotN extends createRecord<SlotDtoNormalised>({
+  date: new Date(),
+  from: 0,
+  id: "",
+  signed: false,
+  student: null,
+  teacher: null,
+  studentId: "",
+  teacherId: "",
+  to: 0
+}) {}
 
 /**
  * Auth
  */
-
-export class AuthState extends Record(
-  {
-    token: "",
-    exp: new Date(),
-    displayname: "",
-    role: "",
-    children: []
-  },
-  "AuthState"
-) {
-  constructor(props: Partial<IAuth>) {
-    super(props);
-  }
-  get<T extends keyof IAuth>(value: T): IAuth[T] {
-    return super.get(value);
-  }
+interface IAuthState {
+  token: string;
+  exp: Date;
+  displayname: string;
+  role: Roles;
+  children: string[];
 }
+
+export class AuthState extends createRecord<IAuthState>({
+  children: [],
+  displayname: "",
+  exp: new Date(),
+  role: Roles.STUDENT,
+  token: ""
+}) {}
 
 /**
  * Messages
@@ -146,29 +128,19 @@ type MessagesState = List<String>;
  * AppState
  */
 export interface IAppState {
-  entries: Map<EntryId, Entry>;
-  users: Map<UserId, User>;
-  slots: Map<SlotId, Slot>;
-  auth: AuthState;
+  entries: Map<string, EntryN>;
+  users: Map<string, UserN>;
+  slots: Map<string, SlotN>;
+  auth: Maybe<AuthState>;
   messages: MessagesState;
   loading: number;
 }
 
-export class AppState extends Record(
-  {
-    entries: Map<EntryId, Entry>(),
-    users: Map<UserId, User>(),
-    slots: Map<SlotId, Slot>(),
-    auth: new AuthState({}),
-    messages: List<string>(),
-    loading: 0
-  },
-  "AppState"
-) {
-  constructor(props: Partial<IAppState>) {
-    super(props);
-  }
-  get<T extends keyof IAppState>(value: T): IAppState[T] {
-    return super.get(value);
-  }
-}
+export class AppState extends createRecord<IAppState>({
+  entries: Map<string, EntryN>(),
+  users: Map<string, UserN>(),
+  slots: Map<string, SlotN>(),
+  auth: None(),
+  messages: List<string>(),
+  loading: 0
+}) {}

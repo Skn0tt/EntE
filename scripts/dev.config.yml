@@ -1,19 +1,19 @@
 mysql:
   host: host.docker.internal
-  port: 3307
+  port: 3306
   database: ente
   username: ente
   password: root
 
 smtp:
   host: smtp.ethereal.email
-  password: mWgCFb9JcJxdeKa6RE
+  password: rfaCPVfc1S448n9cy2
   port: "587"
   sender: EntE@simonknott.de
-  username: louf4yh5lnkyg2h3@ethereal.email
+  username: njydvmi4sh5xmrdg@ethereal.email
 
 config:
-  host: localhost
+  baseUrl: http://localhost
 
 debug:
   allow_http: true

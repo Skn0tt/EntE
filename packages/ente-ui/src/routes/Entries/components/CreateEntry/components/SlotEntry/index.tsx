@@ -13,17 +13,17 @@ import { withStyles, Grid, TextField, Button } from "@material-ui/core";
 import styles from "./styles";
 import { WithStyles } from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
-import { ISlotCreate, UserId } from "ente-types";
-import { User, getTeachers, getUser, AppState } from "ente-redux";
+import { getTeachers, getUser, AppState, UserN } from "ente-redux";
 import { SearchableDropdown } from "../../../../../../components/SearchableDropdown";
+import { CreateSlotDto } from "ente-types";
 
 interface OwnProps {
-  onAdd(slot: ISlotCreate): void;
+  onAdd(slot: CreateSlotDto): void;
 }
 
 interface StateProps {
-  teachers: User[];
-  getUser(id: UserId): User;
+  teachers: UserN[];
+  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -37,17 +37,17 @@ const mapStateToProps: MapStateToPropsParam<
 type Props = StateProps & OwnProps & WithStyles;
 
 interface State {
-  hour_from: string;
-  hour_to: string;
-  teacher?: UserId;
+  from: string;
+  to: string;
+  teacher?: string;
 }
 
-class SearchableDropdownUser extends SearchableDropdown<User> {}
+class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
 class SlotEntry extends React.Component<Props, State> {
   state: State = {
-    hour_from: "1",
-    hour_to: "2"
+    from: "1",
+    to: "2"
   };
 
   /**
@@ -58,18 +58,18 @@ class SlotEntry extends React.Component<Props, State> {
     (event.target.value === "" ||
       (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
     this.setState({
-      hour_from: event.target.value
+      from: event.target.value
     });
 
   handleChangeTo = (event: React.ChangeEvent<HTMLInputElement>) =>
     (event.target.value === "" ||
       (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
     this.setState({
-      hour_to: event.target.value
+      to: event.target.value
     });
 
-  handleChangeTeacher = (teacher: User) =>
-    this.setState({ teacher: teacher.get("_id") });
+  handleChangeTeacher = (teacher: UserN) =>
+    this.setState({ teacher: teacher.get("id") });
 
   /**
    * ## Form Validation Logic
@@ -78,16 +78,16 @@ class SlotEntry extends React.Component<Props, State> {
    * ### Slot
    */
   fromValid = (): boolean => {
-    const { hour_from } = this.state;
-    const nmbFrom = parseInt(hour_from, 10);
+    const { from } = this.state;
+    const nmbFrom = parseInt(from, 10);
 
     return !isNaN(nmbFrom) && nmbFrom > 0 && nmbFrom < 12;
   };
 
   toValid = (): boolean => {
-    const { hour_from, hour_to } = this.state;
-    const nmbTo = parseInt(hour_to, 10);
-    const nmbFrom = parseInt(hour_from, 10);
+    const { from, to } = this.state;
+    const nmbTo = parseInt(to, 10);
+    const nmbFrom = parseInt(from, 10);
 
     return !isNaN(nmbTo) && nmbTo >= nmbFrom && nmbTo > 0 && nmbTo < 12;
   };
@@ -102,9 +102,9 @@ class SlotEntry extends React.Component<Props, State> {
 
   handleAddSlot = () =>
     this.props.onAdd({
-      hour_from: Number(this.state.hour_from),
-      hour_to: Number(this.state.hour_to),
-      teacher: this.state.teacher
+      from: Number(this.state.from),
+      to: Number(this.state.to),
+      teacherId: this.state.teacher
     });
 
   render() {
@@ -133,7 +133,7 @@ class SlotEntry extends React.Component<Props, State> {
           <TextField
             label="Von"
             fullWidth
-            value={this.state.hour_from}
+            value={this.state.from}
             onChange={this.handleChangeFrom}
             type="number"
             error={!this.fromValid()}
@@ -148,7 +148,7 @@ class SlotEntry extends React.Component<Props, State> {
           <TextField
             label="Bis"
             fullWidth
-            value={this.state.hour_to}
+            value={this.state.to}
             onChange={this.handleChangeTo}
             error={!this.toValid()}
             type="number"

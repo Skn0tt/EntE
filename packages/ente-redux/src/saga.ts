@@ -16,8 +16,6 @@ import {
   getUsersSuccess,
   getUserSuccess,
   getUsersError,
-  getTeachersError,
-  getTeachersSuccess,
   getSlotsSuccess,
   getSlotsError,
   addResponse,
@@ -35,8 +33,6 @@ import {
   getTokenError,
   refreshTokenError,
   logout,
-  getChildrenSuccess,
-  getChildrenError,
   getNeededUsersSuccess,
   getNeededUsersError,
   getNeededUsersRequest,
@@ -45,14 +41,14 @@ import {
   unsignEntrySuccess,
   PatchForSchoolPayload,
   patchForSchoolSuccess,
-  patchForSchoolError
+  patchForSchoolError,
+  INewPassword
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
   GET_ENTRIES_REQUEST,
   GET_USER_REQUEST,
   GET_USERS_REQUEST,
-  GET_TEACHERS_REQUEST,
   GET_SLOTS_REQUEST,
   CREATE_ENTRY_REQUEST,
   UPDATE_USER_REQUEST,
@@ -62,7 +58,6 @@ import {
   REFRESH_TOKEN_REQUEST,
   GET_TOKEN_REQUEST,
   CREATE_USERS_REQUEST,
-  GET_CHILDREN_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST
@@ -70,30 +65,20 @@ import {
 import * as api from "./api";
 import { Action } from "redux-actions";
 import * as selectors from "./selectors";
-import { APIResponse } from "./types";
+import { APIResponse, AuthState, BasicCredentials } from "./types";
 import lang from "ente-lang";
-import {
-  ICredentials,
-  TokenInfo,
-  IEntryCreate,
-  IUserCreate,
-  Roles,
-  IUser,
-  INewPassword,
-  EntryId,
-  UserId
-} from "ente-types";
 import { Map } from "immutable";
+import { CreateEntryDto, CreateUserDto, Roles, PatchUserDto } from "ente-types";
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
 
-function* getTokenSaga(action: Action<ICredentials>) {
+function* getTokenSaga(action: Action<BasicCredentials>) {
   try {
-    const tokenInfo: TokenInfo = yield call(api.getToken, action.payload!);
+    const authState: AuthState = yield call(api.getToken, action.payload!);
 
-    yield put(getTokenSuccess(tokenInfo));
+    yield put(getTokenSuccess(authState));
 
     yield put(getNeededUsersRequest());
   } catch (error) {
@@ -106,9 +91,9 @@ function* getTokenSaga(action: Action<ICredentials>) {
 function* refreshTokenSaga(action: Action<void>) {
   try {
     const token = yield select(selectors.getToken);
-    const tokenInfo: TokenInfo = yield call(api.refreshToken, token);
+    const authState: AuthState = yield call(api.refreshToken, token);
 
-    yield put(refreshTokenSuccess(tokenInfo));
+    yield put(refreshTokenSuccess(authState));
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(refreshTokenError(error));
@@ -116,19 +101,7 @@ function* refreshTokenSaga(action: Action<void>) {
   }
 }
 
-function* getChildrenSaga(action: Action<void>) {
-  try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getChildren, token);
-
-    yield put(getChildrenSuccess());
-    yield dispatchUpdates(result);
-  } catch (error) {
-    yield put(getChildrenError(error));
-  }
-}
-
-function* getNeededUsersSaga(action: Action<void>) {
+function* getNeededUsersSaga() {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getNeededUsers, token);
@@ -140,7 +113,7 @@ function* getNeededUsersSaga(action: Action<void>) {
   }
 }
 
-function* getEntrySaga(action: Action<EntryId>) {
+function* getEntrySaga(action: Action<string>) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getEntry, action.payload!, token);
@@ -179,7 +152,7 @@ function* getSlotsSaga() {
   }
 }
 
-function* getUserSaga(action: Action<UserId>) {
+function* getUserSaga(action: Action<string>) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getUser, action.payload!, token);
@@ -205,20 +178,7 @@ function* getUsersSaga() {
   }
 }
 
-function* getTeachersSaga() {
-  try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getTeachers, token);
-
-    yield put(getTeachersSuccess());
-    yield dispatchUpdates(result);
-  } catch (error) {
-    yield put(addMessage(lang().message.request.error));
-    yield put(getTeachersError(error));
-  }
-}
-
-function* createEntrySaga(action: Action<IEntryCreate>) {
+function* createEntrySaga(action: Action<CreateEntryDto>) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.createEntry, action.payload!, token);
@@ -247,7 +207,7 @@ function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
   }
 }
 
-function* createUsersSaga(action: Action<IUserCreate[]>) {
+function* createUsersSaga(action: Action<CreateUserDto[]>) {
   try {
     const token = yield select(selectors.getToken);
 
@@ -256,8 +216,8 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
      * - with children
      * - without children
      */
-    const withoutChildren: IUserCreate[] = [];
-    const withChildren: IUserCreate[] = [];
+    const withoutChildren: CreateUserDto[] = [];
+    const withChildren: CreateUserDto[] = [];
 
     action.payload!.forEach(
       user =>
@@ -273,7 +233,7 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
     };
     if (withoutChildren.length !== 0) {
       resultWithoutChildren = yield call(
-        api.createUser,
+        api.createUsers,
         withoutChildren,
         token
       );
@@ -284,8 +244,8 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
       /**
        * Map created user's usernames to ids
        */
-      const ids = Map<string, UserId>(
-        resultWithoutChildren.users.map(u => [u.get("username"), u.get("_id")])
+      const ids = Map<string, string>(
+        resultWithoutChildren.users.map(u => [u.get("username"), u.get("id")])
       );
 
       /**
@@ -300,7 +260,7 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
        * Create users
        */
       const resultWithChildren = yield call(
-        api.createUser,
+        api.createUsers,
         withChildrenAsIds,
         token
       );
@@ -315,10 +275,15 @@ function* createUsersSaga(action: Action<IUserCreate[]>) {
   }
 }
 
-function* updateUserSaga(action: Action<Partial<IUser>>) {
+function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
   try {
     const token = yield select(selectors.getToken);
-    const result = yield call(api.updateUser, action.payload!, token);
+    const result = yield call(
+      api.updateUser,
+      action.payload[0],
+      action.payload[1],
+      token
+    );
 
     yield put(updateUserSuccess());
     yield dispatchUpdates(result);
@@ -327,7 +292,7 @@ function* updateUserSaga(action: Action<Partial<IUser>>) {
   }
 }
 
-function* signEntrySaga(action: Action<EntryId>) {
+function* signEntrySaga(action: Action<string>) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.signEntry, action.payload!, token);
@@ -340,7 +305,7 @@ function* signEntrySaga(action: Action<EntryId>) {
   }
 }
 
-function* unsignEntrySaga(action: Action<EntryId>) {
+function* unsignEntrySaga(action: Action<string>) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.unsignEntry, action.payload!, token);
@@ -370,7 +335,7 @@ function* setPasswordSaga(action: Action<INewPassword>) {
     const result = yield call(
       api.setPassword,
       action.payload!.token,
-      action.payload!.password
+      action.payload!.newPassword
     );
 
     yield put(addMessage(lang().message.setPassword.success));
@@ -382,12 +347,11 @@ function* setPasswordSaga(action: Action<INewPassword>) {
 }
 
 function* saga() {
-  yield takeEvery<Action<EntryId>>(GET_ENTRY_REQUEST, getEntrySaga);
+  yield takeEvery<Action<string>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
-  yield takeEvery<Action<UserId>>(GET_USER_REQUEST, getUserSaga);
+  yield takeEvery<Action<string>>(GET_USER_REQUEST, getUserSaga);
   yield takeEvery(GET_USERS_REQUEST, getUsersSaga);
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
-  yield takeEvery(GET_TEACHERS_REQUEST, getTeachersSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
   yield takeEvery(PATCH_FORSCHOOL_REQUEST, patchForSchoolSaga);
@@ -395,11 +359,19 @@ function* saga() {
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
-  yield takeEvery(GET_CHILDREN_REQUEST, getChildrenSaga);
   yield takeEvery(GET_NEEDED_USERS_REQUEST, getNeededUsersSaga);
-  yield takeEvery<Action<IEntryCreate>>(CREATE_ENTRY_REQUEST, createEntrySaga);
-  yield takeEvery<Action<IUserCreate[]>>(CREATE_USERS_REQUEST, createUsersSaga);
-  yield takeEvery<Action<Partial<IUser>>>(UPDATE_USER_REQUEST, updateUserSaga);
+  yield takeEvery<Action<CreateEntryDto>>(
+    CREATE_ENTRY_REQUEST,
+    createEntrySaga
+  );
+  yield takeEvery<Action<CreateUserDto[]>>(
+    CREATE_USERS_REQUEST,
+    createUsersSaga
+  );
+  yield takeEvery<Action<[string, PatchUserDto]>>(
+    UPDATE_USER_REQUEST,
+    updateUserSaga
+  );
 }
 
 export default saga;

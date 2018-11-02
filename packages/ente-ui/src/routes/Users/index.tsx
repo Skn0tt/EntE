@@ -14,18 +14,18 @@ import { Action } from "redux";
 import CreateUser from "./components/CreateUser";
 import { Button } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
-import { User, AppState, getUsers, getUsersRequest } from "ente-redux";
+import { AppState, getUsers, getUsersRequest, UserN } from "ente-redux";
 import withErrorBoundary from "../../components/withErrorBoundary";
 import Table from "../../components/Table";
 import { withRouter, RouteComponentProps } from "react-router";
 
-class UserTable extends Table<User> {}
+class UserTable extends Table<UserN> {}
 
 /**
  * # Component Types
  */
 interface StateProps {
-  users: User[];
+  users: UserN[];
 }
 const mapStateToProps = (state: AppState) => ({
   users: getUsers(state)
@@ -38,17 +38,20 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   getUsers: () => dispatch(getUsersRequest())
 });
 
-type Props = StateProps & DispatchProps & WithStyles & RouteComponentProps<{}>;
+type UsersProps = StateProps &
+  DispatchProps &
+  WithStyles &
+  RouteComponentProps<{}>;
 
-interface State {
+interface UsersState {
   showCreateModal: boolean;
 }
 
 /**
  * # Component
  */
-export class Users extends React.PureComponent<Props, State> {
-  state: State = {
+export class Users extends React.PureComponent<UsersProps, UsersState> {
+  state: UsersState = {
     showCreateModal: false
   };
 
@@ -102,7 +105,7 @@ export class Users extends React.PureComponent<Props, State> {
             user.get("email")!,
             user.get("role")!
           ]}
-          extractId={user => user.get("_id")}
+          extractId={user => user.get("id")}
           onClick={id => history.push(`/users/${id}`)}
         />
 

@@ -9,13 +9,13 @@
 import * as React from "react";
 import { ChildrenInput, includes } from "./index";
 import { shallow } from "enzyme";
-import { User } from "ente-redux";
 import { Roles } from "ente-types";
 import * as sinon from "sinon";
+import { UserN } from "ente-redux";
 
 const userId = "fdas90ß9sß0";
-const user = new User({
-  _id: userId,
+const user = new UserN({
+  id: userId,
   children: [],
   displayname: "Horst Hansen",
   email: "hort@hansen.de",
@@ -23,8 +23,8 @@ const user = new User({
   role: Roles.STUDENT,
   username: "hhansen"
 });
-const user2 = new User({
-  _id: "jkldsfjlk",
+const user2 = new UserN({
+  id: "jkldsfjlk",
   children: [],
   displayname: "Hanni Ball",
   email: "hanni@ball.de",

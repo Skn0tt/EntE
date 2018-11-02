@@ -11,10 +11,8 @@ import {
   AppState,
   addMessage,
   createUsersRequest,
-  getUsers,
   getStudents
 } from "ente-redux";
-import { IUserCreate } from "ente-types";
 import { Button, Dialog, Grid } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -27,6 +25,15 @@ import SignedAvatar from "../../../SpecificEntry/elements/SignedAvatar";
 import UnsignedAvatar from "../../../SpecificEntry/elements/UnsignedAvatar";
 import styles from "./styles";
 import lang from "ente-lang";
+import { CreateUserDto } from "ente-types";
+
+const readFile = async (f: File) =>
+  new Promise<string>((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = _ => resolve(r.result as string);
+    r.onerror = reject;
+    r.readAsText(f);
+  });
 
 /**
  * # Component Types
@@ -48,11 +55,11 @@ const mapStateToProps: MapStateToPropsParam<
 });
 
 interface DispatchProps {
-  createUsers(users: IUserCreate[]): void;
+  createUsers(users: CreateUserDto[]): void;
   addMessage(msg: string): void;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUsers: (users: IUserCreate[]) => dispatch(createUsersRequest(users)),
+  createUsers: (users: CreateUserDto[]) => dispatch(createUsersRequest(users)),
   addMessage: (msg: string) => dispatch(addMessage(msg))
 });
 
@@ -61,7 +68,7 @@ interface InjectedProps {
 }
 
 interface State {
-  users: IUserCreate[];
+  users: CreateUserDto[];
   error: boolean;
 }
 
@@ -93,7 +100,8 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
     }
 
     try {
-      const users = await parseCSVFromFile(accepted[0], this.props.usernames);
+      const input = await readFile(accepted[0]);
+      const users = await parseCSVFromFile(input, this.props.usernames);
       this.setState({ users, error: false });
     } catch (error) {
       this.setState({ error: true });

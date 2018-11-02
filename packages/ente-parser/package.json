@@ -12,7 +12,6 @@
   },
   "private": true,
   "dependencies": {
-    "ente-types": "^0.6.0",
-    "ente-validator": "^0.6.0"
+    "ente-types": "^0.6.0"
   }
 }

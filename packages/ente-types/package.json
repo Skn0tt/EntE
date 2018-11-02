@@ -16,5 +16,9 @@
   },
   "devDependencies": {
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "class-transformer": "^0.1.10",
+    "class-validator": "^0.9.1"
   }
 }
