@@ -37,6 +37,11 @@ export enum FindOneUserFailure {
   ForbiddenForUser
 }
 
+export enum DeleteUserFailure {
+  UserNotFound,
+  ForbiddenForRole
+}
+
 @Injectable()
 export class UsersService implements OnModuleInit {
   constructor(
@@ -277,5 +282,28 @@ export class UsersService implements OnModuleInit {
     );
 
     return Success(user.some());
+  }
+
+  async delete(
+    id: string,
+    requestingUser: UserDto
+  ): Promise<Validation<DeleteUserFailure, UserDto>> {
+    if (requestingUser.role !== Roles.ADMIN) {
+      return Fail(DeleteUserFailure.ForbiddenForRole);
+    }
+
+    const userV = await this.findOne(id, requestingUser);
+    if (userV.isFail()) {
+      switch (userV.fail()) {
+        case FindOneUserFailure.ForbiddenForUser:
+          return Fail(DeleteUserFailure.ForbiddenForRole);
+        case FindOneUserFailure.UserNotFound:
+          return Fail(DeleteUserFailure.UserNotFound);
+      }
+    }
+
+    await this.userRepo.delete(id);
+
+    return Success(userV.success());
   }
 }

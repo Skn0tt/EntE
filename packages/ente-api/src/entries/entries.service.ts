@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, Delete } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { EntryRepo } from "../db/entry.repo";
 import { Roles, EntryDto, UserDto, CreateEntryDto } from "ente-types";
@@ -34,6 +34,12 @@ export enum SignEntryFailure {
 
 export enum FindAllEntriesFailure {
   ForbiddenForRole
+}
+
+export enum DeleteEntryFailure {
+  ForbiddenForRole,
+  ForbiddenForUser,
+  NotFound
 }
 
 @Injectable()
@@ -240,6 +246,33 @@ export class EntriesService {
       default:
         return Fail(SignEntryFailure.ForbiddenForUser);
     }
+  }
+
+  async delete(
+    id: string,
+    requestingUser: UserDto
+  ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
+    if (
+      [Roles.PARENT, Roles.STUDENT, Roles.TEACHER, Roles.ADMIN].includes(
+        requestingUser.role
+      )
+    ) {
+      return Fail(DeleteEntryFailure.ForbiddenForRole);
+    }
+
+    const entryV = await this.findOne(id, requestingUser);
+    if (entryV.isFail()) {
+      switch (entryV.fail()) {
+        case FindEntryFailure.EntryNotFound:
+          return Fail(DeleteEntryFailure.NotFound);
+        default:
+          return Fail(DeleteEntryFailure.ForbiddenForUser);
+      }
+    }
+
+    await this.entryRepo.delete(id);
+
+    return Success(entryV.success());
   }
 
   getSigningLinkForEntry(entry: EntryDto) {

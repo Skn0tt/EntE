@@ -60,7 +60,13 @@ import {
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST,
   PATCH_FORSCHOOL_SUCCESS,
-  PATCH_FORSCHOOL_ERROR
+  PATCH_FORSCHOOL_ERROR,
+  DELETE_ENTRY_REQUEST,
+  DELETE_ENTRY_ERROR,
+  DELETE_ENTRY_SUCCESS,
+  DELETE_USER_ERROR,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_REQUEST
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import { CreateUserDto, CreateEntryDto, PatchUserDto } from "ente-types";
@@ -130,6 +136,14 @@ export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
 export const getNeededUsersRequest = createAction(GET_NEEDED_USERS_REQUEST);
 export const getNeededUsersSuccess = createAction(GET_NEEDED_USERS_SUCCESS);
 export const getNeededUsersError = createAction<Error>(GET_NEEDED_USERS_ERROR);
+
+export const deleteUserRequest = createAction<string>(DELETE_USER_REQUEST);
+export const deleteUserSuccess = createAction<string>(DELETE_USER_SUCCESS);
+export const deleteUserError = createAction<Error>(DELETE_USER_ERROR);
+
+export const deleteEntryRequest = createAction<string>(DELETE_ENTRY_REQUEST);
+export const deleteEntrySuccess = createAction<string>(DELETE_ENTRY_SUCCESS);
+export const deleteEntryError = createAction<Error>(DELETE_ENTRY_ERROR);
 
 export const getTokenRequest = createAction<BasicCredentials>(
   GET_TOKEN_REQUEST

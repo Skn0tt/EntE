@@ -12,7 +12,8 @@ import {
   BadRequestException,
   Patch,
   Inject,
-  UseGuards
+  UseGuards,
+  Delete
 } from "@nestjs/common";
 import {
   UsersService,
@@ -108,5 +109,10 @@ export class UsersController {
           throw new ForbiddenException();
       }
     }, u => u);
+  }
+
+  @Delete(":id")
+  async delete(@Param("id") id: string, @Ctx() ctx: RequestContext) {
+    const result = await this.usersService.delete(id, ctx.user);
   }
 }

@@ -38,6 +38,7 @@ describe("SpecificUser", () => {
       requestUser={requestUser}
       students={[]}
       updateUser={() => {}}
+      deleteUser={() => {}}
     />
   );
 
@@ -62,6 +63,7 @@ describe("SpecificUser", () => {
         requestUser={requestUser}
         students={[]}
         updateUser={() => {}}
+        deleteUser={() => {}}
       />
     );
 

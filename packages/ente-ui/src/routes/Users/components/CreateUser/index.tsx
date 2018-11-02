@@ -40,7 +40,7 @@ import {
 import lang from "ente-lang";
 import TextInput from "../../../../elements/TextInput";
 import ChildrenInput from "../../../../elements/ChildrenInput";
-import withErrorBoundary from "ente-ui/src/components/withErrorBoundary";
+import withErrorBoundary from "../../../../components/withErrorBoundary";
 
 /**
  * # Component Types

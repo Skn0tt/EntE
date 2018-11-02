@@ -42,7 +42,11 @@ import {
   PatchForSchoolPayload,
   patchForSchoolSuccess,
   patchForSchoolError,
-  INewPassword
+  INewPassword,
+  deleteUserSuccess,
+  deleteEntrySuccess,
+  deleteUserError,
+  deleteEntryError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -60,7 +64,9 @@ import {
   CREATE_USERS_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
-  PATCH_FORSCHOOL_REQUEST
+  PATCH_FORSCHOOL_REQUEST,
+  DELETE_USER_REQUEST,
+  DELETE_ENTRY_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -123,6 +129,30 @@ function* getEntrySaga(action: Action<string>) {
   } catch (error) {
     yield put(addMessage(lang().message.request.error));
     yield put(getEntryError(error));
+  }
+}
+
+function* deleteUserSaga(action: Action<string>) {
+  try {
+    const token = yield select(selectors.getToken);
+    yield call(api.deleteUser, action.payload!, token);
+
+    yield put(deleteUserSuccess(action.payload));
+  } catch (error) {
+    yield put(addMessage(lang().message.request.error));
+    yield put(deleteUserError(error));
+  }
+}
+
+function* deleteEntrySaga(action: Action<string>) {
+  try {
+    const token = yield select(selectors.getToken);
+    yield call(api.deleteEntry, action.payload!, token);
+
+    yield put(deleteEntrySuccess(action.payload));
+  } catch (error) {
+    yield put(addMessage(lang().message.request.error));
+    yield put(deleteEntryError(error));
   }
 }
 
@@ -360,6 +390,8 @@ function* saga() {
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery(GET_NEEDED_USERS_REQUEST, getNeededUsersSaga);
+  yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
+  yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);
   yield takeEvery<Action<CreateEntryDto>>(
     CREATE_ENTRY_REQUEST,
     createEntrySaga
