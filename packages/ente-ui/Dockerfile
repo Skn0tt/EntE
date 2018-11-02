@@ -6,7 +6,6 @@ ADD packages/ente-ui/package.json ./packages/ente-ui/package.json
 ADD packages/ente-types/package.json ./packages/ente-types/package.json
 ADD packages/ente-redux/package.json ./packages/ente-redux/package.json
 ADD packages/ente-lang/package.json ./packages/ente-lang/package.json
-ADD packages/ente-validator/package.json ./packages/ente-validator/package.json
 ADD packages/ente-parser/package.json ./packages/ente-parser/package.json
 
 RUN yarn --frozen-lockfile
@@ -16,7 +15,6 @@ COPY packages/ente-ui ./packages/ente-ui
 COPY packages/ente-types ./packages/ente-types
 COPY packages/ente-redux ./packages/ente-redux
 COPY packages/ente-lang ./packages/ente-lang
-COPY packages/ente-validator ./packages/ente-validator
 COPY packages/ente-parser ./packages/ente-parser
 
 RUN yarn --cwd packages/ente-ui build

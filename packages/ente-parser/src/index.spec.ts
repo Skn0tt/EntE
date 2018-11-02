@@ -7,7 +7,7 @@
  */
 
 import parse from "./";
-import { IUserCreate, Roles } from "ente-types";
+import { Roles, CreateUserDto } from "ente-types";
 
 const sampleData = `
 username,displayname,email,role,isAdult,children
@@ -34,7 +34,7 @@ leiter,l.leiter,leiter@email.de,manager,,schüler2
 
 describe("parse", () => {
   it("returns the right data", async () => {
-    const expectedResult: IUserCreate[] = [
+    const expectedResult: CreateUserDto[] = [
       {
         username: "schüler",
         displayname: "S. Schüler",

@@ -7,42 +7,32 @@
  */
 
 import { parse as papaparse, ParseResult } from "papaparse";
-import { IUserCreate } from "ente-types";
-import { isValidUserExcludingChildren } from "ente-validator";
 import * as _ from "lodash";
+import { CreateUserDto, isValidUserExcludingChildren } from "ente-types";
 
 const isBlank = (str: string) => !str || /^\s*$/.test(str);
 
-const readFile = async (f: File) =>
-  new Promise<string>((resolve, reject) => {
-    var r = new FileReader();
-    r.onload = _ => resolve(r.result);
-    r.onerror = reject;
-    r.readAsText(f);
-  });
-
-export const parseCSVFromFile = async (f: File, existingUsernames: string[]) =>
-  await parseCSV(await readFile(f), existingUsernames);
+export const parseCSVFromFile = async (
+  s: string,
+  existingUsernames: string[]
+) => await parseCSV(s, existingUsernames);
 
 const parseCSV = async (
   input: string,
   existingUsernames: string[]
-): Promise<IUserCreate[]> => {
+): Promise<CreateUserDto[]> => {
   const parsed = await parse(input.trim());
 
-  const result: IUserCreate[] = parsed.data.map(row => {
-    const res: IUserCreate = {
+  const result: CreateUserDto[] = parsed.data.map(row => {
+    const res: CreateUserDto = {
       username: row.username,
       displayname: row.displayname,
       email: row.email,
       role: row.role,
       isAdult: !row.isAdult ? false : true,
-      children: !!row.children ? row.children.split(":") : []
+      children: !!row.children ? row.children.split(":") : [],
+      password: !isBlank(row.password) ? row.password : undefined
     };
-
-    if (!isBlank(row.password)) {
-      res.password = row.password;
-    }
 
     return res;
   });

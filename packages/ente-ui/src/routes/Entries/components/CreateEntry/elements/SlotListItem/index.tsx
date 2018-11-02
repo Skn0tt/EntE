@@ -17,15 +17,15 @@ import {
 } from "@material-ui/core";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 import { connect, MapStateToPropsParam } from "react-redux";
-import { ISlotCreate, UserId } from "ente-types";
-import { AppState, User, getUser } from "ente-redux";
+import { AppState, getUser, UserN } from "ente-redux";
+import { CreateSlotDto } from "ente-types";
 
 interface OwnProps {
-  slot: ISlotCreate;
+  slot: CreateSlotDto;
   delete(): void;
 }
 interface StateProps {
-  getUser(id: UserId): User;
+  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -37,18 +37,22 @@ const mapStateToProps: MapStateToPropsParam<
 
 type Props = OwnProps & StateProps & WithStyles;
 
-const SlotListItem: React.SFC<Props> = props => (
-  <ListItem>
-    <ListItemText
-      primary={props.getUser(props.slot.teacher).get("displayname")}
-      secondary={`${props.slot.hour_from} - ${props.slot.hour_to}`}
-    />
-    <ListItemSecondaryAction>
-      <IconButton aria-label="Delete" onClick={props.delete}>
-        <DeleteIcon />
-      </IconButton>
-    </ListItemSecondaryAction>
-  </ListItem>
-);
+const SlotListItem: React.SFC<Props> = props => {
+  const { slot, getUser } = props;
+
+  return (
+    <ListItem>
+      <ListItemText
+        primary={getUser(slot.teacherId).get("displayname")}
+        secondary={`${slot.from} - ${slot.to}`}
+      />
+      <ListItemSecondaryAction>
+        <IconButton aria-label="Delete" onClick={props.delete}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
+};
 
 export default withStyles(styles)(connect(mapStateToProps)(SlotListItem));

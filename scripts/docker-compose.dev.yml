@@ -5,7 +5,7 @@ services:
   mariadb:
     image: mariadb
     ports:
-      - 3307:3306
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ente
@@ -19,10 +19,7 @@ services:
   api:
     ports:
       - 5555:5555
-    command: nodemon --watch 'packages/**/src/**/*.ts' --exec 'ts-node' packages/ente-api/src/index.ts
+    command: nodemon --watch 'packages/**/src/**/*.ts' --exec 'ts-node' packages/ente-api/src/main.ts
     volumes:
       - ${PWD}/packages/ente-api/src:/usr/src/app/packages/ente-api/src
-      - ${PWD}/packages/ente-validator/src:/usr/src/app/packages/ente-validator/src
       - ${PWD}/packages/ente-types/src:/usr/src/app/packages/ente-types/src
-      - ${PWD}/packages/ente-mail/src:/usr/src/app/packages/ente-mail/src
-      - ${PWD}/packages/ente-db/src:/usr/src/app/packages/ente-db/src

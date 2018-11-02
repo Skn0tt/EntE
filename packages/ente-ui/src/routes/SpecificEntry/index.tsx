@@ -10,7 +10,6 @@ import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import {
   connect,
-  Dispatch,
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
@@ -40,11 +39,8 @@ import {
 } from "@material-ui/icons";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import LoadingIndicator from "../../elements/LoadingIndicator";
-import { Roles, EntryId, UserId, SlotId } from "ente-types";
+import { Roles } from "ente-types";
 import {
-  Entry,
-  User,
-  Slot,
   AppState,
   getEntry,
   getUser,
@@ -54,7 +50,10 @@ import {
   getEntryRequest,
   unsignEntryRequest,
   patchForSchoolRequest,
-  signEntryRequest
+  signEntryRequest,
+  UserN,
+  EntryN,
+  SlotN
 } from "ente-redux";
 import lang from "ente-lang";
 import withErrorBoundary from "../../components/withErrorBoundary";
@@ -63,7 +62,7 @@ import withErrorBoundary from "../../components/withErrorBoundary";
  * # Component Types
  */
 interface RouteMatch {
-  entryId: EntryId;
+  entryId: string;
 }
 
 interface InjectedProps {
@@ -71,9 +70,9 @@ interface InjectedProps {
 }
 
 interface StateProps {
-  getEntry(id: EntryId): Entry;
-  getUser(id: UserId): User;
-  getSlots(ids: SlotId[]): Slot[];
+  getEntry(id: string): EntryN;
+  getUser(id: string): UserN;
+  getSlots(ids: string[]): SlotN[];
   loading: boolean;
   role: Roles;
 }
@@ -90,10 +89,10 @@ const mapStateToProps: MapStateToPropsParam<
 });
 
 interface DispatchProps {
-  requestEntry(id: EntryId): Action;
-  signEntry(id: EntryId): Action;
-  unsignEntry(id: EntryId): Action;
-  patchForSchool(id: EntryId, forSchool: boolean): Action;
+  requestEntry(id: string): Action;
+  signEntry(id: string): Action;
+  unsignEntry(id: string): Action;
+  patchForSchool(id: string, forSchool: boolean): Action;
 }
 
 const mapDispatchToProps: MapDispatchToPropsParam<
@@ -152,7 +151,7 @@ class SpecificEntry extends React.Component<Props> {
               {/* ID */}
               <Grid item>
                 <DialogContentText>
-                  ID: {entry.get("_id")} <br />
+                  ID: {entry.get("id")} <br />
                 </DialogContentText>
               </Grid>
 
@@ -167,10 +166,7 @@ class SpecificEntry extends React.Component<Props> {
                     <Checkbox
                       checked={entry.get("forSchool")}
                       onChange={() =>
-                        patchForSchool(
-                          entry.get("_id"),
-                          !entry.get("forSchool")
-                        )
+                        patchForSchool(entry.get("id"), !entry.get("forSchool"))
                       }
                     />
                   ) : entry.get("forSchool") ? (
@@ -180,7 +176,7 @@ class SpecificEntry extends React.Component<Props> {
                   )}{" "}
                   <br />
                   <i>Schüler:</i>{" "}
-                  {getUser(entry.get("student")).get("displayname")} <br />
+                  {getUser(entry.get("studentId")).get("displayname")} <br />
                   <i>Datum:</i>{" "}
                   {entry.get("dateEnd")
                     ? `Von ${entry.get("date").toLocaleDateString()}
@@ -202,12 +198,12 @@ class SpecificEntry extends React.Component<Props> {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {getSlots(entry.get("slots")).map(slot => (
-                      <TableRow key={slot.get("_id")}>
-                        <TableCell>{slot.get("hour_from")}</TableCell>
-                        <TableCell>{slot.get("hour_to")}</TableCell>
+                    {getSlots(entry.get("slotIds")).map(slot => (
+                      <TableRow key={slot.get("id")}>
+                        <TableCell>{slot.get("from")}</TableCell>
+                        <TableCell>{slot.get("to")}</TableCell>
                         <TableCell>
-                          {getUser(slot.get("teacher")).get("displayname")}
+                          {getUser(slot.get("teacherId")).get("displayname")}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -232,7 +228,7 @@ class SpecificEntry extends React.Component<Props> {
                         <ListItemSecondaryAction>
                           <Button
                             className={classes.unsignEntryButton}
-                            onClick={() => unsignEntry(entry.get("_id"))}
+                            onClick={() => unsignEntry(entry.get("id"))}
                           >
                             <AssignmentReturnedIcon />
                           </Button>
@@ -241,7 +237,7 @@ class SpecificEntry extends React.Component<Props> {
                         <ListItemSecondaryAction>
                           <Button
                             className={classes.signEntryButton}
-                            onClick={() => signEntry(entry.get("_id"))}
+                            onClick={() => signEntry(entry.get("id"))}
                             variant="raised"
                           >
                             <AssignmentTurnedInIcon />
@@ -263,7 +259,7 @@ class SpecificEntry extends React.Component<Props> {
                         <ListItemSecondaryAction>
                           <Button
                             className={classes.signEntryButton}
-                            onClick={() => signEntry(entry.get("_id"))}
+                            onClick={() => signEntry(entry.get("id"))}
                           >
                             {lang().ui.specificEntry.sign}
                             <AssignmentTurnedInIcon />

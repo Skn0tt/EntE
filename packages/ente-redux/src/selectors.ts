@@ -8,14 +8,14 @@
 
 import {
   AppState,
-  User,
-  Slot,
-  Entry,
   userIsTeacher,
-  userIsStudent
+  userIsStudent,
+  UserN,
+  EntryN,
+  SlotN
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, EntryId, UserId, SlotId } from "ente-types";
+import { Roles } from "ente-types";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -29,13 +29,25 @@ export const getMessages: Selector<String[]> = state =>
 /**
  * Auth
  */
-export const isAuthValid: Selector<boolean> = state =>
-  state.getIn(["auth", "token"]) !== "" &&
-  +(state.getIn(["auth", "exp"]) as Date) < Date.now();
-export const isParent: Selector<boolean> = state =>
-  state.getIn(["auth", "role"]) === Roles.PARENT;
+export const isAuthValid: Selector<boolean> = state => {
+  const authState = state.get("auth");
+  return authState.cata(
+    () => false,
+    a => {
+      const exp = a.get("exp");
+      return Date.now() < +exp;
+    }
+  );
+};
+export const isParent: Selector<boolean> = state => {
+  const role = getRole(state);
+  return role === Roles.PARENT;
+};
 
-export const getRole: Selector<Roles> = state => state.getIn(["auth", "role"]);
+export const getRole: Selector<Roles> = state => {
+  const authState = state.get("auth");
+  return authState.cata(() => undefined, s => s.get("role"));
+};
 
 export const hasChildren = createSelector(
   [getRole],
@@ -45,30 +57,43 @@ export const canCreateEntries = createSelector(
   [getRole],
   role => role === Roles.STUDENT || role === Roles.PARENT
 );
-export const getToken: Selector<string> = state =>
-  state.getIn(["auth", "token"]);
-export const getChildren: Selector<User[]> = state =>
-  state.getIn(["auth", "children"]).map((id: UserId) => getUser(id)(state));
+export const getToken: Selector<string> = state => {
+  const authState = state.get("auth");
+  return authState.cata(() => undefined, s => s.get("token"));
+};
 
-export const getUsername: Selector<string> = state =>
-  state.getIn(["auth", "username"]);
-export const getDisplayname: Selector<string> = state =>
-  state.getIn(["auth", "displayname"]);
+export const getChildren: Selector<UserN[]> = state => {
+  const authState = state.get("auth");
+  return authState.cata(
+    () => [],
+    s => {
+      const children = s.get("children");
+      return children.map(id => getUser(id)(state));
+    }
+  );
+};
+
+export const getDisplayname: Selector<string> = state => {
+  const authState = state.get("auth");
+  return authState.cata(() => undefined, s => s.get("displayname"));
+};
 
 /**
  * Data
  */
-export const getEntry = (id: EntryId): Selector<Entry> => state =>
+export const getEntry = (id: string): Selector<EntryN> => state =>
   state.getIn(["entries", id]);
-export const getEntries: Selector<Entry[]> = state =>
+export const getEntries: Selector<EntryN[]> = state =>
   state.get("entries").toArray();
 
-export const getUser = (id: UserId): Selector<User> => state =>
+export const getUser = (id: string): Selector<UserN> => state =>
   state.getIn(["users", id]);
-export const getUsers: Selector<User[]> = state => state.get("users").toArray();
+export const getUsers: Selector<UserN[]> = state =>
+  state.get("users").toArray();
 
-export const getSlots: Selector<Slot[]> = state => state.get("slots").toArray();
-export const getSlotsById = (ids: SlotId[]): Selector<Slot[]> => state =>
+export const getSlots: Selector<SlotN[]> = state =>
+  state.get("slots").toArray();
+export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
   ids.map(id => state.getIn(["slots", id]));
 
 export const getTeachers = createSelector([getUsers], users =>

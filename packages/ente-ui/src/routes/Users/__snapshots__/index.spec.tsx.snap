@@ -11,6 +11,12 @@ ShallowWrapper {
         "calls": Array [
           Array [],
         ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
       }
     }
     history={
@@ -54,14 +60,15 @@ ShallowWrapper {
     staticContext={Object {}}
     users={
       Array [
-        Immutable.User {
-          "_id": "mystupidid",
+        Immutable.Record {
+          "id": "mystupidid",
           "username": "simon",
+          "children": Array [],
           "displayname": "Simon",
           "email": "email@emai.com",
-          "role": "student",
           "isAdult": false,
-          "children": Array [],
+          "role": "student",
+          "childrenIds": Array [],
         },
       ]
     }
@@ -113,21 +120,21 @@ ShallowWrapper {
           }
           items={
             Array [
-              Immutable.User {
-                "_id": "mystupidid",
+              Immutable.Record {
+                "id": "mystupidid",
                 "username": "simon",
+                "children": Array [],
                 "displayname": "Simon",
                 "email": "email@emai.com",
-                "role": "student",
                 "isAdult": false,
-                "children": Array [],
+                "role": "student",
+                "childrenIds": Array [],
               },
             ]
           }
           onClick={[Function]}
         />,
         <WithStyles(Button)
-          className={undefined}
           color="primary"
           onClick={[Function]}
           variant="fab"
@@ -181,14 +188,15 @@ ShallowWrapper {
             },
           ],
           "items": Array [
-            Immutable.User {
-              "_id": "mystupidid",
+            Immutable.Record {
+              "id": "mystupidid",
               "username": "simon",
+              "children": Array [],
               "displayname": "Simon",
               "email": "email@emai.com",
-              "role": "student",
               "isAdult": false,
-              "children": Array [],
+              "role": "student",
+              "childrenIds": Array [],
             },
           ],
           "onClick": [Function],
@@ -264,21 +272,21 @@ ShallowWrapper {
             }
             items={
               Array [
-                Immutable.User {
-                  "_id": "mystupidid",
+                Immutable.Record {
+                  "id": "mystupidid",
                   "username": "simon",
+                  "children": Array [],
                   "displayname": "Simon",
                   "email": "email@emai.com",
-                  "role": "student",
                   "isAdult": false,
-                  "children": Array [],
+                  "role": "student",
+                  "childrenIds": Array [],
                 },
               ]
             }
             onClick={[Function]}
           />,
           <WithStyles(Button)
-            className={undefined}
             color="primary"
             onClick={[Function]}
             variant="fab"
@@ -332,14 +340,15 @@ ShallowWrapper {
               },
             ],
             "items": Array [
-              Immutable.User {
-                "_id": "mystupidid",
+              Immutable.Record {
+                "id": "mystupidid",
                 "username": "simon",
+                "children": Array [],
                 "displayname": "Simon",
                 "email": "email@emai.com",
-                "role": "student",
                 "isAdult": false,
-                "children": Array [],
+                "role": "student",
+                "childrenIds": Array [],
               },
             ],
             "onClick": [Function],

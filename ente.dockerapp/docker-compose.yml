@@ -26,15 +26,19 @@ services:
       - "traefik.frontend.rule=PathPrefixStrip: /api/"
     environment:
       NODE_ENV: ${debug.environment}
-      HOST: ${config.host}
-      RAILMAIL_HOST: railmail
-      SIGNER_HOST: signer:3000
+      BASE_URL: ${config.baseUrl}
+      RAILMAIL_HOST: http://railmail
+      SIGNER_BASEURL: http://signer:3000
+      ENABLE_CRON_JOBS: "true"
+      CRON_WEEKLY_SUMMARY: "0 16 * * 5"
       SENTRY_DSN_API: ${sentry.api}
       MYSQL_HOST: ${mysql.host}
       MYSQL_PORT: ${mysql.port}
       MYSQL_DATABASE: ${mysql.database}
       MYSQL_USERNAME: ${mysql.username}
       MYSQL_PASSWORD: ${mysql.password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   railmail:
     image: skn0tt/railmail:v0.3.0

@@ -13,13 +13,13 @@ import styles from "./styles";
 import { Add as AddIcon } from "@material-ui/icons";
 
 import {
-  Entry,
   AppState,
-  User,
   getEntries,
   canCreateEntries,
   getUser,
-  getEntriesRequest
+  getEntriesRequest,
+  EntryN,
+  UserN
 } from "ente-redux";
 import { Action } from "redux";
 import SignedAvatar from "../SpecificEntry/elements/SignedAvatar";
@@ -28,10 +28,9 @@ import { Route, RouteComponentProps, withRouter } from "react-router";
 import Button from "@material-ui/core/Button/Button";
 import CreateEntry from "./components/CreateEntry";
 import { Table } from "../../components/Table";
-import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
 
-class EntriesTable extends Table<Entry> {}
+class EntriesTable extends Table<EntryN> {}
 
 const customBodyRender = v =>
   v === "true" ? <SignedAvatar /> : <UnsignedAvatar />;
@@ -40,14 +39,14 @@ const customBodyRender = v =>
  * # Component Types
  */
 interface StateProps {
-  entries: Entry[];
+  entries: EntryN[];
   canCreateEntries: boolean;
-  getUser(id: UserId): User;
+  getUser(id: string): UserN;
 }
 const mapStateToProps = (state: AppState) => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
-  getUser: (id: UserId) => getUser(id)(state)
+  getUser: (id: string) => getUser(id)(state)
 });
 
 interface DispatchProps {
@@ -104,15 +103,15 @@ export class Entries extends React.Component<Props, State> {
           ]}
           items={entries}
           extract={entry => [
-            getUser(entry.get("student")).get("displayname"),
+            getUser(entry.get("studentId")).get("displayname"),
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
             entry.get("forSchool") ? "Ja" : "Nein",
-            entry.get("reason"),
+            entry.get("reason") || "",
             "" + entry.get("signedManager"),
             "" + entry.get("signedParent")
           ]}
-          extractId={entry => entry.get("_id")}
+          extractId={entry => entry.get("id")}
           onClick={id => history.push(`/entries/${id}`)}
         />
 

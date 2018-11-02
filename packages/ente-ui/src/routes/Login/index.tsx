@@ -23,12 +23,12 @@ import {
   TextField
 } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
-import { ICredentials } from "ente-types";
 import {
   AppState,
   isAuthValid,
   getTokenRequest,
-  resetPasswordRequest
+  resetPasswordRequest,
+  BasicCredentials
 } from "ente-redux";
 import { withErrorBoundary } from "../../components/withErrorBoundary";
 
@@ -44,11 +44,11 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 interface DispatchProps {
-  checkAuth(credentials: ICredentials): Action;
+  checkAuth(credentials: BasicCredentials): Action;
   triggerPasswordReset(username: string): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  checkAuth: (auth: ICredentials) => dispatch(getTokenRequest(auth)),
+  checkAuth: (auth: BasicCredentials) => dispatch(getTokenRequest(auth)),
   triggerPasswordReset: (username: string) =>
     dispatch(resetPasswordRequest(username))
 });

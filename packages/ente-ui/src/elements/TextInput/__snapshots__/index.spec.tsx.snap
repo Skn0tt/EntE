@@ -39,11 +39,9 @@ ShallowWrapper {
             className="updateInput"
             error={false}
             fullWidth={true}
-            label={undefined}
             onChange={[Function]}
             required={false}
             select={false}
-            type={undefined}
             value="Hello world"
             variant="standard"
           />
@@ -90,11 +88,9 @@ ShallowWrapper {
             className="updateInput"
             error={false}
             fullWidth={true}
-            label={undefined}
             onChange={[Function]}
             required={false}
             select={false}
-            type={undefined}
             value="Hello world"
             variant="standard"
           />,
@@ -149,11 +145,9 @@ ShallowWrapper {
               className="updateInput"
               error={false}
               fullWidth={true}
-              label={undefined}
               onChange={[Function]}
               required={false}
               select={false}
-              type={undefined}
               value="Hello world"
               variant="standard"
             />
@@ -200,11 +194,9 @@ ShallowWrapper {
               className="updateInput"
               error={false}
               fullWidth={true}
-              label={undefined}
               onChange={[Function]}
               required={false}
               select={false}
-              type={undefined}
               value="Hello world"
               variant="standard"
             />,

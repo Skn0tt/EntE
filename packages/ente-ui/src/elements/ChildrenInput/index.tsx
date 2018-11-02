@@ -18,10 +18,10 @@ import Typography from "@material-ui/core/Typography/Typography";
 
 import styles from "./styles";
 import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { User } from "ente-redux";
 import lang from "ente-lang";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
+import { UserN } from "ente-redux";
 
 /**
  * # Helpers
@@ -30,32 +30,32 @@ const without = (arr: any[], ind: number) => {
   arr.splice(ind, 1);
   return arr;
 };
-export const includes = (exclude: User[]) => {
-  const excludedIds = exclude.map(u => u.get("_id"));
-  return (u: User) => _.includes(excludedIds, u.get("_id"));
+export const includes = (exclude: UserN[]) => {
+  const excludedIds = exclude.map(u => u.get("id"));
+  return (u: UserN) => _.includes(excludedIds, u.get("id"));
 };
 
 /**
  * # Component Types
  */
 interface OwnProps {
-  children: User[];
-  students: User[];
-  onChange: (children: User[]) => void;
+  children: UserN[];
+  students: UserN[];
+  onChange: (children: UserN[]) => void;
 }
 
-type Props = OwnProps & WithStyles;
+type Props = OwnProps;
 
 interface State {
-  selected: User;
+  selected: UserN;
 }
 
-class SearchableDropdownUser extends SearchableDropdown<User> {}
+class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
 /**
  * # Component
  */
-export class ChildrenInput extends React.Component<Props, State> {
+export class ChildrenInput extends React.Component<Props & WithStyles, State> {
   state: State = {
     selected: this.props.students.filter(
       u => !includes(this.props.children)(u)
@@ -73,13 +73,13 @@ export class ChildrenInput extends React.Component<Props, State> {
     }
   }
 
-  handleSelectChild = (u: User) =>
+  handleSelectChild = (u: UserN) =>
     this.setState({
       selected: u
     });
   handleAdd = () =>
     this.props.onChange([
-      ...(this.props.children as User[]),
+      ...(this.props.children as UserN[]),
       this.state.selected
     ]);
 

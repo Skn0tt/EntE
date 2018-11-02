@@ -18,17 +18,16 @@ import {
   getUser,
   getSlots,
   AppState,
-  User,
-  Slot
+  SlotN,
+  UserN
 } from "ente-redux";
-import { UserId } from "ente-types";
 import withErrorBoundary from "../../components/withErrorBoundary";
 
-class SlotsTable extends Table<Slot> {}
+class SlotsTable extends Table<SlotN> {}
 
 interface StateProps {
-  slots: Slot[];
-  getUser(id: UserId): User;
+  slots: SlotN[];
+  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -75,14 +74,14 @@ export class Slots extends React.Component<Props> {
           "Lehrer"
         ]}
         items={slots}
-        extractId={user => user.get("_id")}
+        extractId={user => user.get("id")}
         extract={slot => [
-          getUser(slot.get("student")).get("displayname"),
+          getUser(slot.get("studentId")).get("displayname"),
           slot.get("date").toLocaleDateString(),
-          "" + slot.get("hour_from"),
-          "" + slot.get("hour_to"),
+          "" + slot.get("from"),
+          "" + slot.get("to"),
           "" + slot.get("signed"),
-          getUser(slot.get("teacher")).get("displayname")
+          getUser(slot.get("teacherId")).get("displayname")
         ]}
       />
     );

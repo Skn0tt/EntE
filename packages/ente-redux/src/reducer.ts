@@ -6,8 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { handleActions, Action, BaseAction, ReducerMap } from "redux-actions";
-import { Entry, AppState, APIResponse, User, Slot } from "./types";
+import { handleActions, Action, ReducerMap } from "redux-actions";
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -22,9 +21,6 @@ import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   LOGOUT,
-  GET_TEACHERS_REQUEST,
-  GET_TEACHERS_ERROR,
-  GET_TEACHERS_SUCCESS,
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
@@ -52,9 +48,6 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_ERROR,
   UPDATE_USER_SUCCESS,
-  GET_CHILDREN_REQUEST,
-  GET_CHILDREN_ERROR,
-  GET_CHILDREN_SUCCESS,
   GET_NEEDED_USERS_ERROR,
   GET_NEEDED_USERS_REQUEST,
   GET_NEEDED_USERS_SUCCESS,
@@ -70,7 +63,15 @@ import {
 } from "./constants";
 import { ActionType } from "redux-saga/effects";
 import { Map, List } from "immutable";
-import { TokenInfo, UserId, SlotId, EntryId } from "ente-types";
+import {
+  AppState,
+  AuthState,
+  APIResponse,
+  UserN,
+  SlotN,
+  EntryN
+} from "./types";
+import { Some } from "monet";
 
 const asyncReducers = (request: string, error: string, success: string) => ({
   [request]: (state: AppState, action: Action<void>) =>
@@ -93,30 +94,23 @@ const reducer = handleActions(
       state.update("loading", loading => loading + 1),
     [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update("loading", loading => loading - 1),
-    [GET_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
+    [GET_TOKEN_SUCCESS]: (state, action: Action<AuthState>) =>
       state
-        .update("loading", loading => loading - 1)
-        .setIn(["auth", "token"], action.payload!.token)
-        .setIn(["auth", "exp"], action.payload!.exp)
-        .setIn(["auth", "role"], action.payload!.role)
-        .setIn(["auth", "displayname"], action.payload!.displayname),
+        .set("auth", Some(action.payload))
+        .update("loading", loading => loading - 1),
 
     // ## REFRESH_TOKEN
     [REFRESH_TOKEN_REQUEST]: state =>
       state.update("loading", loading => loading + 1),
     [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
       state.update("loading", loading => loading - 1),
-    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<TokenInfo>) =>
+    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<AuthState>) =>
       state
-        .update("loading", loading => loading - 1)
-        .setIn(["auth", "token"], action.payload!.token)
-        .setIn(["auth", "exp"], action.payload!.exp)
-        .setIn(["auth", "role"], action.payload!.role)
-        .setIn(["auth", "displayname"], action.payload!.displayname),
+        .set("auth", Some(action.payload))
+        .update("loading", loading => loading - 1),
 
     // ## LOGOUT
-    [LOGOUT]: (state: AppState, action: BaseAction): AppState =>
-      new AppState({}),
+    [LOGOUT]: (): AppState => new AppState({}),
 
     // ## RESET_PASSWORD
     ...asyncReducers(
@@ -174,20 +168,6 @@ const reducer = handleActions(
     // ## GET_USERS
     ...asyncReducers(GET_USERS_REQUEST, GET_USERS_ERROR, GET_USERS_SUCCESS),
 
-    // ## GET_TEACHERS
-    ...asyncReducers(
-      GET_TEACHERS_REQUEST,
-      GET_TEACHERS_ERROR,
-      GET_TEACHERS_SUCCESS
-    ),
-
-    // ## GET_CHILDREN
-    ...asyncReducers(
-      GET_CHILDREN_REQUEST,
-      GET_CHILDREN_ERROR,
-      GET_CHILDREN_SUCCESS
-    ),
-
     // ## GET_NEEDED_USERS
     ...asyncReducers(
       GET_NEEDED_USERS_REQUEST,
@@ -200,22 +180,22 @@ const reducer = handleActions(
       state
         .update("users", users =>
           users.merge(
-            Map<UserId, User>(
-              action.payload!.users.map(user => [user.get("_id"), user])
+            Map<string, UserN>(
+              action.payload!.users.map(user => [user.get("id"), user])
             )
           )
         )
         .update("slots", slots =>
           slots.merge(
-            Map<SlotId, Slot>(
-              action.payload!.slots.map(slot => [slot.get("_id"), slot])
+            Map<string, SlotN>(
+              action.payload!.slots.map(slot => [slot.get("id"), slot])
             )
           )
         )
         .update("entries", entries =>
           entries.merge(
-            Map<EntryId, Entry>(
-              action.payload!.entries.map(entry => [entry.get("_id"), entry])
+            Map<string, EntryN>(
+              action.payload!.entries.map(entry => [entry.get("id"), entry])
             )
           )
         ),

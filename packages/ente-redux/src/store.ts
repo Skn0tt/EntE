@@ -12,10 +12,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import reduxSaga from "redux-saga";
 
 import saga from "./saga";
-import * as select from "./selectors";
-import { GET_TOKEN_REQUEST } from "./constants";
-import { Action } from "redux-actions";
-import { AuthState, AppState } from "./types";
 import { config } from "./";
 
 let store;

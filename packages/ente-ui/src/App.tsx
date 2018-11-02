@@ -16,7 +16,7 @@ import MessageStream from "./components/MessageStream";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Login from "./routes/Login";
 import Routes from "./Routes";
-import Forgot from "./routes/Forgot";
+import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
 import { AppState, isAuthValid, getRole } from "ente-redux";
 import AuthService from "./AuthService";
@@ -41,7 +41,7 @@ const App: React.SFC<Props> = props => (
       <MessageStream />
       <AuthService period={ROTATION_PERIOD} />
       <Switch>
-        <Route path="/forgot/:token" component={Forgot} />
+        <Route path="/passwordReset/:token" component={PasswordReset} />
         <Route path="/login" component={Login} />
         <AuthenticatedRoute isLoggedIn={props.authValid}>
           <Drawer>

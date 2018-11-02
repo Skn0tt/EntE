@@ -23,7 +23,6 @@
     "ente-parser": "^0.6.0",
     "ente-redux": "^0.6.0",
     "ente-types": "^0.6.0",
-    "ente-validator": "^0.6.0",
     "js-cookie": "^2.2.0",
     "material-ui-pickers": "^1.0.0-rc.17",
     "monet": "^0.8.10",

@@ -9,15 +9,15 @@
 import * as React from "react";
 import { SpecificUser } from "./index";
 import { shallow } from "enzyme";
-import { User } from "ente-redux";
 import { getMockRouterProps } from "../../../testHelpers/mockRouter";
 import { Roles } from "ente-types";
 import * as sinon from "sinon";
+import { UserN } from "ente-redux";
 
 describe("SpecificUser", () => {
   const userId = "fdas90ß9sß0";
-  const user = new User({
-    _id: userId,
+  const user = new UserN({
+    id: userId,
     children: [],
     displayname: "Horst Hansen",
     email: "hort@hansen.de",
