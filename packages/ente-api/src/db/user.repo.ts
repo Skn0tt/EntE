@@ -216,6 +216,10 @@ export class UserRepo {
     return Some(user.parents.map(p => UserRepo.toDto(p)));
   }
 
+  async delete(id: string) {
+    await this.repo.delete({ _id: id });
+  }
+
   static toDto(
     user: User,
     config: ToUserDtoConfig = { canHaveChildren: true }

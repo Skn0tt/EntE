@@ -223,6 +223,19 @@ export const getUser = async (
   return transformUsers(data);
 };
 
+const _delete = async <T>(url: string, token: string) => {
+  const response = await axios.delete(url, axiosTokenParams(token));
+  return response.data as T;
+};
+
+export const deleteUser = async (id: string, token: string) => {
+  await _delete(`${config.baseUrl}/users/${id}`, token);
+};
+
+export const deleteEntry = async (id: string, token: string) => {
+  await _delete(`${config.baseUrl}/entries/${id}`, token);
+};
+
 export const getUsers = async (token: string): Promise<APIResponse> => {
   const data = await get<UserDto[]>(`${config.baseUrl}/users`, token);
   return transformUsers(...data);

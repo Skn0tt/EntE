@@ -18,7 +18,14 @@ import styles from "./styles";
 import { Action } from "redux";
 
 import { withRouter, RouteComponentProps } from "react-router";
-import { Button, Table, List, Grid, Checkbox } from "@material-ui/core";
+import {
+  Button,
+  Table,
+  List,
+  Grid,
+  Checkbox,
+  IconButton
+} from "@material-ui/core";
 import SignedAvatar from "./elements/SignedAvatar";
 import UnsignedAvatar from "./elements/UnsignedAvatar";
 import TableHead from "@material-ui/core/TableHead";
@@ -35,7 +42,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import {
   AssignmentTurnedIn as AssignmentTurnedInIcon,
-  AssignmentReturned as AssignmentReturnedIcon
+  AssignmentReturned as AssignmentReturnedIcon,
+  Delete as DeleteIcon
 } from "@material-ui/icons";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import LoadingIndicator from "../../elements/LoadingIndicator";
@@ -53,10 +61,12 @@ import {
   signEntryRequest,
   UserN,
   EntryN,
-  SlotN
+  SlotN,
+  deleteEntryRequest
 } from "ente-redux";
 import lang from "ente-lang";
 import withErrorBoundary from "../../components/withErrorBoundary";
+import { DeleteModal } from "../../components/DeleteModal";
 
 /**
  * # Component Types
@@ -93,6 +103,7 @@ interface DispatchProps {
   signEntry(id: string): Action;
   unsignEntry(id: string): Action;
   patchForSchool(id: string, forSchool: boolean): Action;
+  deleteEntry: (id: string) => void;
 }
 
 const mapDispatchToProps: MapDispatchToPropsParam<
@@ -103,21 +114,33 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   signEntry: id => dispatch(signEntryRequest(id)),
   unsignEntry: id => dispatch(unsignEntryRequest(id)),
   patchForSchool: (id, forSchool) =>
-    dispatch(patchForSchoolRequest({ id, forSchool }))
+    dispatch(patchForSchoolRequest({ id, forSchool })),
+  deleteEntry: id => dispatch(deleteEntryRequest(id))
 });
 
 interface OwnProps {}
 
-type Props = WithStyles &
+type SpecificEntryProps = WithStyles &
   RouteComponentProps<RouteMatch> &
   InjectedProps &
   StateProps &
   DispatchProps;
 
+interface SpecificEntryState {
+  showDelete: boolean;
+}
+
 /**
  * # Component
  */
-class SpecificEntry extends React.Component<Props> {
+class SpecificEntry extends React.Component<
+  SpecificEntryProps,
+  SpecificEntryState
+> {
+  state: Readonly<SpecificEntryState> = {
+    showDelete: false
+  };
+
   componentDidMount() {
     const { entryId } = this.props.match.params;
     const user = this.props.getUser(entryId);
@@ -140,147 +163,178 @@ class SpecificEntry extends React.Component<Props> {
       getUser,
       getSlots,
       signEntry,
-      unsignEntry
+      unsignEntry,
+      deleteEntry
     } = this.props;
+    const { showDelete } = this.state;
 
     return (
-      <Dialog open fullScreen={fullScreen} onClose={this.onClose}>
-        <DialogContent>
-          {!!entry ? (
-            <Grid container direction="column">
-              {/* ID */}
-              <Grid item>
-                <DialogContentText>
-                  ID: {entry.get("id")} <br />
-                </DialogContentText>
-              </Grid>
+      <>
+        <DeleteModal
+          onClose={() => this.setState({ showDelete: false })}
+          onDelete={() => {
+            deleteEntry(entryId);
+            this.onClose();
+          }}
+          show={showDelete}
+          text="Sind sie sicher, dass sie diesen Eintrag löschen möchten?"
+        />
+        <Dialog open fullScreen={fullScreen} onClose={this.onClose} fullWidth>
+          <DialogContent>
+            {!!entry ? (
+              <Grid container direction="column" spacing={24}>
+                {/* ID */}
+                <Grid item>
+                  <Grid container>
+                    <Grid item>
+                      <DialogContentText>
+                        ID: {entry.get("id")} <br />
+                      </DialogContentText>
+                    </Grid>
+                    {role === Roles.MANAGER && (
+                      <Grid item>
+                        <IconButton
+                          aria-label="Löschen"
+                          onClick={() => this.setState({ showDelete: true })}
+                          className={classes.deleteButton}
+                        >
+                          <DeleteIcon fontSize="large" />
+                        </IconButton>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
 
-              <Grid item>
-                <Typography variant="title">Info</Typography>
-                <Typography variant="body1">
-                  <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
-                  <br />
-                  <i>Begründung:</i> {entry.get("reason") || "-"} <br />
-                  <i>Schulisch:</i>{" "}
-                  {role === Roles.MANAGER ? (
-                    <Checkbox
-                      checked={entry.get("forSchool")}
-                      onChange={() =>
-                        patchForSchool(entry.get("id"), !entry.get("forSchool"))
-                      }
-                    />
-                  ) : entry.get("forSchool") ? (
-                    "Ja"
-                  ) : (
-                    "Nein"
-                  )}{" "}
-                  <br />
-                  <i>Schüler:</i>{" "}
-                  {getUser(entry.get("studentId")).get("displayname")} <br />
-                  <i>Datum:</i>{" "}
-                  {entry.get("dateEnd")
-                    ? `Von ${entry.get("date").toLocaleDateString()}
-              bis ${entry.get("dateEnd")!.toLocaleDateString()}`
-                    : entry.get("date").toLocaleDateString()}{" "}
-                  <br />
-                </Typography>
-              </Grid>
+                <Grid item>
+                  <Typography variant="title">Info</Typography>
+                  <Typography variant="body1">
+                    <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
+                    <br />
+                    <i>Begründung:</i> {entry.get("reason") || "-"} <br />
+                    <i>Schulisch:</i>{" "}
+                    {role === Roles.MANAGER ? (
+                      <Checkbox
+                        checked={entry.get("forSchool")}
+                        onChange={() =>
+                          patchForSchool(
+                            entry.get("id"),
+                            !entry.get("forSchool")
+                          )
+                        }
+                      />
+                    ) : entry.get("forSchool") ? (
+                      "Ja"
+                    ) : (
+                      "Nein"
+                    )}{" "}
+                    <br />
+                    <i>Schüler:</i>{" "}
+                    {getUser(entry.get("studentId")).get("displayname")} <br />
+                    <i>Datum:</i>{" "}
+                    {!!entry.get("dateEnd")
+                      ? `Von ${entry.get("date").toLocaleDateString()}
+                bis ${entry.get("dateEnd")!.toLocaleDateString()}`
+                      : entry.get("date").toLocaleDateString()}{" "}
+                    <br />
+                  </Typography>
+                </Grid>
 
-              {/* Slots */}
-              <Grid item>
-                <Typography variant="title">Stunden</Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Von</TableCell>
-                      <TableCell>Bis</TableCell>
-                      <TableCell>Lehrer</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {getSlots(entry.get("slotIds")).map(slot => (
-                      <TableRow key={slot.get("id")}>
-                        <TableCell>{slot.get("from")}</TableCell>
-                        <TableCell>{slot.get("to")}</TableCell>
-                        <TableCell>
-                          {getUser(slot.get("teacherId")).get("displayname")}
-                        </TableCell>
+                {/* Slots */}
+                <Grid item>
+                  <Typography variant="title">Stunden</Typography>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Von</TableCell>
+                        <TableCell>Bis</TableCell>
+                        <TableCell>Lehrer</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Grid>
-
-              {/* Signed */}
-              <Grid item>
-                <Typography variant="title">Signiert</Typography>
-                <List>
-                  {/* Admin */}
-                  <ListItem>
-                    {entry.get("signedManager") ? (
-                      <SignedAvatar />
-                    ) : (
-                      <UnsignedAvatar />
-                    )}
-                    <ListItemText primary="Stufenleiter" />
-                    {role === Roles.MANAGER &&
-                      (entry.get("signedManager") ? (
-                        <ListItemSecondaryAction>
-                          <Button
-                            className={classes.unsignEntryButton}
-                            onClick={() => unsignEntry(entry.get("id"))}
-                          >
-                            <AssignmentReturnedIcon />
-                          </Button>
-                        </ListItemSecondaryAction>
-                      ) : (
-                        <ListItemSecondaryAction>
-                          <Button
-                            className={classes.signEntryButton}
-                            onClick={() => signEntry(entry.get("id"))}
-                            variant="raised"
-                          >
-                            <AssignmentTurnedInIcon />
-                          </Button>
-                        </ListItemSecondaryAction>
+                    </TableHead>
+                    <TableBody>
+                      {getSlots(entry.get("slotIds")).map(slot => (
+                        <TableRow key={slot.get("id")}>
+                          <TableCell>{slot.get("from")}</TableCell>
+                          <TableCell>{slot.get("to")}</TableCell>
+                          <TableCell>
+                            {getUser(slot.get("teacherId")).get("displayname")}
+                          </TableCell>
+                        </TableRow>
                       ))}
-                  </ListItem>
+                    </TableBody>
+                  </Table>
+                </Grid>
 
-                  {/* Parents */}
-                  <ListItem>
-                    {entry.get("signedParent") ? (
-                      <SignedAvatar />
-                    ) : (
-                      <UnsignedAvatar />
-                    )}
-                    <ListItemText primary="Eltern" />
-                    {!entry.get("signedParent") &&
-                      role === Roles.PARENT && (
-                        <ListItemSecondaryAction>
-                          <Button
-                            className={classes.signEntryButton}
-                            onClick={() => signEntry(entry.get("id"))}
-                          >
-                            {lang().ui.specificEntry.sign}
-                            <AssignmentTurnedInIcon />
-                          </Button>
-                        </ListItemSecondaryAction>
+                {/* Signed */}
+                <Grid item>
+                  <Typography variant="title">Signiert</Typography>
+                  <List>
+                    {/* Admin */}
+                    <ListItem>
+                      {entry.get("signedManager") ? (
+                        <SignedAvatar />
+                      ) : (
+                        <UnsignedAvatar />
                       )}
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-          ) : (
-            loading && <LoadingIndicator />
-          )}
-        </DialogContent>
+                      <ListItemText primary="Stufenleiter" />
+                      {role === Roles.MANAGER &&
+                        (entry.get("signedManager") ? (
+                          <ListItemSecondaryAction>
+                            <Button
+                              className={classes.unsignEntryButton}
+                              onClick={() => unsignEntry(entry.get("id"))}
+                            >
+                              <AssignmentReturnedIcon />
+                            </Button>
+                          </ListItemSecondaryAction>
+                        ) : (
+                          <ListItemSecondaryAction>
+                            <Button
+                              className={classes.signEntryButton}
+                              onClick={() => signEntry(entry.get("id"))}
+                              variant="raised"
+                            >
+                              <AssignmentTurnedInIcon />
+                            </Button>
+                          </ListItemSecondaryAction>
+                        ))}
+                    </ListItem>
 
-        <DialogActions>
-          <Button size="small" color="primary" onClick={this.onClose}>
-            {lang().ui.common.close}
-          </Button>
-        </DialogActions>
-      </Dialog>
+                    {/* Parents */}
+                    <ListItem>
+                      {entry.get("signedParent") ? (
+                        <SignedAvatar />
+                      ) : (
+                        <UnsignedAvatar />
+                      )}
+                      <ListItemText primary="Eltern" />
+                      {!entry.get("signedParent") &&
+                        role === Roles.PARENT && (
+                          <ListItemSecondaryAction>
+                            <Button
+                              className={classes.signEntryButton}
+                              onClick={() => signEntry(entry.get("id"))}
+                            >
+                              {lang().ui.specificEntry.sign}
+                              <AssignmentTurnedInIcon />
+                            </Button>
+                          </ListItemSecondaryAction>
+                        )}
+                    </ListItem>
+                  </List>
+                </Grid>
+              </Grid>
+            ) : (
+              loading && <LoadingIndicator />
+            )}
+          </DialogContent>
+
+          <DialogActions>
+            <Button size="small" color="primary" onClick={this.onClose}>
+              {lang().ui.common.close}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
     );
   }
 }
@@ -288,7 +342,7 @@ class SpecificEntry extends React.Component<Props> {
 export default withStyles(styles)(
   withRouter(
     connect(mapStateToProps, mapDispatchToProps)(
-      withMobileDialog<Props>()(withErrorBoundary()(SpecificEntry))
+      withMobileDialog<SpecificEntryProps>()(withErrorBoundary()(SpecificEntry))
     )
   )
 );

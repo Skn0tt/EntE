@@ -23,6 +23,11 @@ const styles = (theme: Theme): StyleRules => ({
   },
   unsignEntryButton: {
     color: red[500]
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0
   }
 });
 

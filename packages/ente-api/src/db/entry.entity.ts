@@ -58,7 +58,10 @@ export class Entry {
   })
   readonly student: User;
 
-  @OneToMany(type => Slot, slot => slot.entry, { eager: true })
+  @OneToMany(type => Slot, slot => slot.entry, {
+    eager: true,
+    onDelete: "CASCADE"
+  })
   readonly slots: Slot[];
 
   /**

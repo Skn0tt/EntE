@@ -9,6 +9,12 @@
 import { StyleRules } from "@material-ui/core/styles/withStyles";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
-const styles = (theme: Theme): StyleRules => ({});
+const styles = (theme: Theme): StyleRules => ({
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0
+  }
+});
 
 export default styles;

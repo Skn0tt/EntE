@@ -59,7 +59,12 @@ import {
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST,
   PATCH_FORSCHOOL_ERROR,
-  PATCH_FORSCHOOL_SUCCESS
+  PATCH_FORSCHOOL_SUCCESS,
+  DELETE_USER_ERROR,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_ENTRY_ERROR,
+  DELETE_ENTRY_SUCCESS
 } from "./constants";
 import { ActionType } from "redux-saga/effects";
 import { Map, List } from "immutable";
@@ -73,11 +78,45 @@ import {
 } from "./types";
 import { Some } from "monet";
 
-const asyncReducers = (request: string, error: string, success: string) => ({
+const withoutEntries = (...ids: string[]) => (state: AppState) => {
+  const entries = state.get("entries").filter(e => ids.includes(e.get("id")));
+  const woEntries = state.update("entries", e =>
+    e.withMutations(m => {
+      entries.forEach(e => {
+        m.delete(e.get("id"));
+      });
+    })
+  );
+
+  const slotIds: string[] = entries
+    .map(e => e.get("slotIds"))
+    .flatten(1)
+    .toArray();
+
+  const withoutSlots = woEntries.update("slots", s =>
+    s.withMutations(m => {
+      slotIds.forEach(s => {
+        m.delete(s);
+      });
+    })
+  );
+
+  return withoutSlots;
+};
+
+const asyncReducers = (request: string, error: string) => ({
   [request]: (state: AppState, action: Action<void>) =>
     state.update("loading", loading => loading + 1),
   [error]: (state: AppState, action: Action<Error>) =>
-    state.update("loading", loading => loading - 1),
+    state.update("loading", loading => loading - 1)
+});
+
+const asyncReducersFull = (
+  request: string,
+  error: string,
+  success: string
+) => ({
+  ...asyncReducers(request, error),
   [success]: (state: AppState, action: Action<void>): AppState =>
     state.update("loading", loading => loading - 1)
 });
@@ -113,14 +152,14 @@ const reducer = handleActions(
     [LOGOUT]: (): AppState => new AppState({}),
 
     // ## RESET_PASSWORD
-    ...asyncReducers(
+    ...asyncReducersFull(
       RESET_PASSWORD_REQUEST,
       RESET_PASSWORD_ERROR,
       RESET_PASSWORD_SUCCESS
     ),
 
     // ## SET_PASSWORD
-    ...asyncReducers(
+    ...asyncReducersFull(
       SET_PASSWORD_REQUEST,
       SET_PASSWORD_ERROR,
       SET_PASSWORD_SUCCESS
@@ -130,46 +169,76 @@ const reducer = handleActions(
      * # Interaction
      */
     // ## SIGN_ENTRY
-    ...asyncReducers(SIGN_ENTRY_REQUEST, SIGN_ENTRY_ERROR, SIGN_ENTRY_SUCCESS),
+    ...asyncReducersFull(
+      SIGN_ENTRY_REQUEST,
+      SIGN_ENTRY_ERROR,
+      SIGN_ENTRY_SUCCESS
+    ),
 
     // ## UNSIGN_ENTRY
-    ...asyncReducers(
+    ...asyncReducersFull(
       UNSIGN_ENTRY_REQUEST,
       UNSIGN_ENTRY_ERROR,
       UNSIGN_ENTRY_SUCCESS
     ),
 
     // ## PATCH_FORSCHOOl
-    ...asyncReducers(
+    ...asyncReducersFull(
       PATCH_FORSCHOOL_REQUEST,
       PATCH_FORSCHOOL_ERROR,
       PATCH_FORSCHOOL_SUCCESS
     ),
 
+    // ## DELETE_USER
+    ...asyncReducers(DELETE_USER_REQUEST, DELETE_USER_ERROR),
+    [DELETE_USER_SUCCESS]: (state: AppState, action: Action<string>) => {
+      const userId = action.payload;
+
+      const minusLoading = state.update("loading", l => l - 1);
+
+      const withoutUser = minusLoading.deleteIn(["users", userId]);
+
+      const entriesOfUser = state
+        .get("entries")
+        .filter(e => e.get("studentId") === userId);
+
+      return withoutEntries(...entriesOfUser.map(m => m.get("id")).toArray())(
+        withoutUser
+      );
+    },
+
+    // ## DELETE_ENTRY
+    ...asyncReducers(DELETE_ENTRY_ERROR, DELETE_ENTRY_ERROR),
+    [DELETE_ENTRY_SUCCESS]: (state: AppState, action: Action<string>) => {
+      const entryId = action.payload;
+      const minusLoading = state.update("loading", l => l - 1);
+      return withoutEntries(entryId)(minusLoading);
+    },
+
     /**
      * # GET
      */
     // ## GET_ENTRIES
-    ...asyncReducers(
+    ...asyncReducersFull(
       GET_ENTRIES_REQUEST,
       GET_ENTRIES_ERROR,
       GET_ENTRIES_SUCCESS
     ),
 
     // ## GET_ENTRY
-    ...asyncReducers(GET_ENTRY_REQUEST, GET_ENTRY_ERROR, GET_ENTRY_SUCCESS),
+    ...asyncReducersFull(GET_ENTRY_REQUEST, GET_ENTRY_ERROR, GET_ENTRY_SUCCESS),
 
     // ## GET_SLOTS
-    ...asyncReducers(GET_SLOTS_REQUEST, GET_SLOTS_ERROR, GET_SLOTS_SUCCESS),
+    ...asyncReducersFull(GET_SLOTS_REQUEST, GET_SLOTS_ERROR, GET_SLOTS_SUCCESS),
 
     // ## GET_USER
-    ...asyncReducers(GET_USER_REQUEST, GET_USER_ERROR, GET_USER_SUCCESS),
+    ...asyncReducersFull(GET_USER_REQUEST, GET_USER_ERROR, GET_USER_SUCCESS),
 
     // ## GET_USERS
-    ...asyncReducers(GET_USERS_REQUEST, GET_USERS_ERROR, GET_USERS_SUCCESS),
+    ...asyncReducersFull(GET_USERS_REQUEST, GET_USERS_ERROR, GET_USERS_SUCCESS),
 
     // ## GET_NEEDED_USERS
-    ...asyncReducers(
+    ...asyncReducersFull(
       GET_NEEDED_USERS_REQUEST,
       GET_NEEDED_USERS_ERROR,
       GET_NEEDED_USERS_SUCCESS
@@ -204,14 +273,14 @@ const reducer = handleActions(
      * # CREATE
      */
     // ## CREATE_ENTRY
-    ...asyncReducers(
+    ...asyncReducersFull(
       CREATE_ENTRY_REQUEST,
       CREATE_ENTRY_ERROR,
       CREATE_ENTRY_SUCCESS
     ),
 
     // ## CREATE_USERS
-    ...asyncReducers(
+    ...asyncReducersFull(
       CREATE_USERS_REQUEST,
       CREATE_USERS_ERROR,
       CREATE_USERS_SUCCESS
@@ -221,7 +290,7 @@ const reducer = handleActions(
      * # UPDATE
      */
     // ## UPDATE_USERS
-    ...asyncReducers(
+    ...asyncReducersFull(
       UPDATE_USER_REQUEST,
       UPDATE_USER_SUCCESS,
       UPDATE_USER_ERROR

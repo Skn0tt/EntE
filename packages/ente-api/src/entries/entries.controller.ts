@@ -10,7 +10,8 @@ import {
   ForbiddenException,
   Inject,
   UseGuards,
-  BadRequestException
+  BadRequestException,
+  Delete
 } from "@nestjs/common";
 import { RequestContext, Ctx } from "../helpers/request-context";
 import {
@@ -19,7 +20,8 @@ import {
   CreateEntryFailure,
   SetForSchoolEntryFailure,
   SignEntryFailure,
-  FindAllEntriesFailure
+  FindAllEntriesFailure,
+  DeleteEntryFailure
 } from "./entries.service";
 import { AuthGuard } from "@nestjs/passport";
 import { CreateEntryDto, EntryDto } from "ente-types";
@@ -115,6 +117,22 @@ export class EntriesController {
           throw new ForbiddenException();
         default:
           throw new ForbiddenException();
+      }
+    }, entry => entry);
+  }
+
+  @Delete(":id")
+  async delete(@Param("id") id: string, @Ctx() ctx: RequestContext) {
+    const result = await this.entriesService.delete(id, ctx.user);
+    return result.cata(fail => {
+      switch (fail) {
+        case DeleteEntryFailure.NotFound:
+          throw new NotFoundException();
+        case DeleteEntryFailure.ForbiddenForRole:
+        case DeleteEntryFailure.ForbiddenForUser:
+          throw new ForbiddenException();
+        default:
+          throw new BadRequestException();
       }
     }, entry => entry);
   }
