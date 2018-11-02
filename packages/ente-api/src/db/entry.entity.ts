@@ -34,9 +34,6 @@ export class Entry {
   @Column("datetime", { nullable: true })
   readonly dateEnd?: Date | null;
 
-  @Column("varchar", { length: 300, nullable: true })
-  readonly reason?: string | null;
-
   @Column("tinyint")
   @IsBoolean()
   forSchool: boolean = false;

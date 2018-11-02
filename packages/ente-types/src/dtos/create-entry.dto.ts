@@ -6,8 +6,8 @@ import {
   IsUUID,
   IsNumber
 } from "class-validator";
-import { DateIsAfter, CustomStringValidator } from "../helpers";
-import { twoWeeksBeforeNow, isValidReason } from "../validators";
+import { DateIsAfter } from "../helpers";
+import { twoWeeksBeforeNow } from "../validators";
 import { Type } from "class-transformer";
 
 export class CreateEntryDto {
@@ -17,10 +17,6 @@ export class CreateEntryDto {
   @IsOptional()
   @DateIsAfter("date")
   dateEnd?: Date;
-
-  @IsOptional()
-  @CustomStringValidator(isValidReason)
-  reason?: string;
 
   @IsArray()
   @ValidateNested()

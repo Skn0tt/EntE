@@ -103,7 +103,6 @@ interface State {
   isRange: boolean;
   date: Date;
   dateEnd: Date;
-  reason?: string;
   student?: string;
   slots: CreateSlotDto[];
   forSchool: boolean;
@@ -118,7 +117,6 @@ class CreateEntry extends React.Component<Props, State> {
     isRange: false,
     date: new Date(),
     dateEnd: new Date(),
-    reason: "",
     slots: [],
     forSchool: false
   };
@@ -131,7 +129,6 @@ class CreateEntry extends React.Component<Props, State> {
       date: this.state.date,
       dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
       slots: this.state.isRange ? [] : this.state.slots,
-      reason: this.state.reason,
       forSchool: this.state.forSchool,
       studentId: this.state.student
     });
@@ -166,9 +163,6 @@ class CreateEntry extends React.Component<Props, State> {
     this.setState({ slots: [...this.state.slots, slot] });
   };
 
-  handleChangeReason = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ reason: event.target.value });
-
   handleRemoveSlot = (index: number) =>
     this.setState({ slots: immutableDelete(this.state.slots, index) });
 
@@ -185,13 +179,10 @@ class CreateEntry extends React.Component<Props, State> {
     !this.state.isRange || +this.state.dateEnd > +this.state.date;
   studentValid = (): boolean => !this.props.isParent || !!this.state.student;
   slotsValid = (): boolean => this.state.isRange || this.state.slots.length > 0;
-  reasonValid = (): boolean =>
-    !this.state.reason || this.state.reason.length < 300;
 
   inputValid = () =>
     this.dateValid() &&
     this.dateEndValid() &&
-    this.reasonValid() &&
     this.studentValid() &&
     this.slotsValid();
 
@@ -289,16 +280,6 @@ class CreateEntry extends React.Component<Props, State> {
                   )}
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <TextField
-                helperText="Wieso haben sie gefehlt? Maximal 300 Zeichen"
-                placeholder="Bemerkung (Optional, z.B. Grund)"
-                onChange={this.handleChangeReason}
-                error={!this.reasonValid()}
-                multiline
-                fullWidth
-              />
             </Grid>
             {!this.state.isRange && (
               <Grid item xs={12}>
