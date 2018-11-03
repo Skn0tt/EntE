@@ -10,15 +10,12 @@ import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import {
   connect,
-  Dispatch,
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
 import styles from "./styles";
 
 import { Action } from "redux";
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
-import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
 
 import { withRouter, RouteComponentProps } from "react-router";
 import {
@@ -27,8 +24,7 @@ import {
   List as MUIList,
   TextField,
   Grid,
-  Checkbox,
-  Icon
+  Checkbox
 } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -51,6 +47,7 @@ import {
   UserN
 } from "ente-redux";
 import { CreateEntryDto, CreateSlotDto } from "ente-types";
+import { DateInput } from "ente-ui/src/elements/DateInput";
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -249,33 +246,23 @@ class CreateEntry extends React.Component<Props, State> {
               <Grid item>
                 <Grid container direction="row">
                   <Grid item xs={this.state.isRange ? 6 : 12}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DatePicker
-                        helperText="Von"
-                        leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
-                        rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
-                        error={!this.dateValid()}
-                        value={this.state.date}
-                        autoOk
-                        onChange={this.handleChangeDate}
-                        minDate={this.minDate}
-                        fullWidth
-                      />
-                    </MuiPickersUtilsProvider>
+                    <DateInput
+                      label="Von"
+                      isValid={() => this.dateValid()}
+                      onChange={this.handleChangeDate}
+                      minDate={this.minDate}
+                      value={this.state.date}
+                    />
                   </Grid>
                   {this.state.isRange && (
                     <Grid item xs={6}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker
-                          helperText="Bis"
-                          error={!this.dateValid()}
-                          value={this.state.dateEnd}
-                          autoOk
-                          onChange={this.handleChangeDateEnd}
-                          minDate={this.state.date}
-                          fullWidth
-                        />
-                      </MuiPickersUtilsProvider>
+                      <DateInput
+                        label="Bis"
+                        isValid={() => this.dateEndValid()}
+                        onChange={this.handleChangeDate}
+                        minDate={this.state.date}
+                        value={this.state.dateEnd}
+                      />
                     </Grid>
                   )}
                 </Grid>

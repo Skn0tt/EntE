@@ -154,7 +154,9 @@ const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
   return new AuthState({
     role: payload.role,
     displayname: payload.displayname,
+    username: payload.username,
     token,
+    children: payload.childrenIds,
     exp: new Date((payload as any).exp * 1000)
   });
 };

@@ -78,6 +78,11 @@ export const getDisplayname: Selector<string> = state => {
   return authState.cata(() => undefined, s => s.get("displayname"));
 };
 
+export const getUsername: Selector<string> = state => {
+  const authState = state.get("auth");
+  return authState.cata(() => undefined, s => s.get("username"));
+};
+
 /**
  * Data
  */

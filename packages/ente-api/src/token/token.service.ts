@@ -13,7 +13,8 @@ export class TokenService {
       displayname: user.displayname,
       id: user.id,
       role: user.role,
-      username: user.username
+      username: user.username,
+      childrenIds: user.children.map(c => c.id)
     };
     return await this.signerService.createToken(payload);
   }

@@ -12,9 +12,8 @@ import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import createRavenMiddleware from "raven-for-redux";
-import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
-import DateFnsUtils from "material-ui-pickers/utils/date-fns-utils";
-import * as deLocale from "date-fns/locale/de";
+import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
 import { get as getConfig } from "./config";
 
 // Fonts
@@ -66,7 +65,7 @@ const Index = () => (
   <div>
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+      <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
         <HttpsGate disable={ALLOW_INSECURE}>
           <Provider store={store}>
             <App />
