@@ -69,6 +69,7 @@ ShallowWrapper {
           "isAdult": false,
           "role": "student",
           "childrenIds": Array [],
+          "graduationYear": null,
         },
       ]
     }
@@ -129,6 +130,7 @@ ShallowWrapper {
                 "isAdult": false,
                 "role": "student",
                 "childrenIds": Array [],
+                "graduationYear": null,
               },
             ]
           }
@@ -197,6 +199,7 @@ ShallowWrapper {
               "isAdult": false,
               "role": "student",
               "childrenIds": Array [],
+              "graduationYear": null,
             },
           ],
           "onClick": [Function],
@@ -281,6 +284,7 @@ ShallowWrapper {
                   "isAdult": false,
                   "role": "student",
                   "childrenIds": Array [],
+                  "graduationYear": null,
                 },
               ]
             }
@@ -349,6 +353,7 @@ ShallowWrapper {
                 "isAdult": false,
                 "role": "student",
                 "childrenIds": Array [],
+                "graduationYear": null,
               },
             ],
             "onClick": [Function],

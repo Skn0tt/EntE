@@ -22,7 +22,7 @@ import {
   JoinTable,
   OneToMany
 } from "typeorm";
-import { IsBoolean, IsIn } from "class-validator";
+import { IsBoolean, IsIn, IsInt } from "class-validator";
 import Entry from "./entry.entity";
 import Slot from "./slot.entity";
 
@@ -55,6 +55,10 @@ export class User {
   @Column("varchar", { length: 80 })
   @IsIn(rolesArr)
   role: Roles;
+
+  @Column("smallint", { nullable: true })
+  @IsInt()
+  graduationYear?: number;
 
   /**
    * ## Password

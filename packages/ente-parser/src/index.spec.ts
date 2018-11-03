@@ -10,26 +10,18 @@ import parse from "./";
 import { Roles, CreateUserDto } from "ente-types";
 
 const sampleData = `
-username,displayname,email,role,isAdult,children
-schüler,S. Schüler,sschüler@email.com,student,FALSE,
-lehrer,B. Lehrer,blehrer@email.de,teacher,,
-vater,Piet Vater,pvater@arcor.de,parent,,schüler
-leiter,l.leiter,leiter@email.de,manager,,schüler
+username,displayname,email,password,role,isAdult,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
+vater,Piet Vater,pvater@arcor.de,,parent,,,schüler
+leiter,l.leiter,leiter@email.de,,manager,,2019,schüler
 `;
 const sampleDataError = `
-username,displayname,email,role,isAdult,children
-schüler,S. Schüler,sschüler@email.com,student,FALSE,
-lehrer,B. Lehrer,blehrer@email.de,teacher,,
-vater,PVater,pvaterarcor.de,parent,,schüler
-leiter,l.leiter,leiter@email.de,manager,,schüler
-`;
-
-const sampleDataError2 = `
-username,displayname,email,role,isAdult,children
-schüler,S. Schüler,sschüler@email.com,student,FALSE,
-lehrer,B. Lehrer,blehrer@email.de,teacher,,
-vater,PVater,pvaterarcor.de,parent,,schüler
-leiter,l.leiter,leiter@email.de,manager,,schüler2
+username,displayname,email,password,role,isAdult,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
+vater,PVater,pvaterarcor.de,parent,,,,schüler
+leiter,l.leiter,leiter@email.de,,manager,,2019,schüler
 `;
 
 describe("parse", () => {
@@ -41,7 +33,9 @@ describe("parse", () => {
         email: "sschüler@email.com",
         children: [],
         role: Roles.STUDENT,
-        isAdult: false
+        isAdult: false,
+        graduationYear: 2019,
+        password: undefined
       },
       {
         username: "lehrer",
@@ -49,7 +43,8 @@ describe("parse", () => {
         email: "blehrer@email.de",
         children: [],
         role: Roles.TEACHER,
-        isAdult: false
+        isAdult: false,
+        password: undefined
       },
       {
         username: "vater",
@@ -57,7 +52,8 @@ describe("parse", () => {
         email: "pvater@arcor.de",
         children: ["schüler"],
         role: Roles.PARENT,
-        isAdult: false
+        isAdult: false,
+        password: undefined
       },
       {
         username: "leiter",
@@ -65,7 +61,9 @@ describe("parse", () => {
         email: "leiter@email.de",
         isAdult: false,
         role: Roles.MANAGER,
-        children: ["schüler"]
+        children: ["schüler"],
+        graduationYear: 2019,
+        password: undefined
       }
     ];
 

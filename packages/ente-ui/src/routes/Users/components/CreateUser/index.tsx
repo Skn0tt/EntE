@@ -27,20 +27,23 @@ import {
   isValidUsername,
   isValidEmail,
   isValidPassword,
-  isValidUser,
-  createDefaultCreateUserDto
+  createDefaultCreateUserDto,
+  isValidCreateUser
 } from "ente-types";
 import {
   getStudents,
   getUser,
   createUsersRequest,
   AppState,
-  UserN
+  UserN,
+  roleHasChildren,
+  roleHasGradYear
 } from "ente-redux";
 import lang from "ente-lang";
 import TextInput from "../../../../elements/TextInput";
 import ChildrenInput from "../../../../elements/ChildrenInput";
 import withErrorBoundary from "../../../../components/withErrorBoundary";
+import { YearPicker } from "ente-ui/src/elements/YearPicker";
 
 /**
  * # Component Types
@@ -118,6 +121,7 @@ export class CreateUser extends React.Component<Props, State> {
     this.setState({ create: clone });
   };
   handleChangeUsername = this.update("username");
+  handleChangeYear = this.update("graduationYear");
   handleChangeDisplayname = this.update("displayname");
   handleChangePassword = this.update("password");
   handleChangeIsAdult = (
@@ -131,7 +135,12 @@ export class CreateUser extends React.Component<Props, State> {
 
   hasChildren = (): boolean => {
     const { create: { role } } = this.state;
-    return role === Roles.PARENT || role === Roles.MANAGER;
+    return roleHasChildren(role);
+  };
+
+  hasGradYear = (): boolean => {
+    const { create: { role } } = this.state;
+    return roleHasGradYear(role);
   };
 
   /**
@@ -145,7 +154,7 @@ export class CreateUser extends React.Component<Props, State> {
     !this.state.create.password || isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
-  inputValid = (): boolean => isValidUser(this.state.create);
+  inputValid = (): boolean => isValidCreateUser(this.state.create);
 
   render() {
     const { classes, show, fullScreen, getUser, students } = this.props;
@@ -160,7 +169,7 @@ export class CreateUser extends React.Component<Props, State> {
               className={classes.container}
               onKeyPress={this.handleKeyPress}
             >
-              <Grid container direction="row">
+              <Grid container direction="row" spacing={24}>
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     value={create.username || ""}
@@ -226,6 +235,16 @@ export class CreateUser extends React.Component<Props, State> {
                       onChange={(u: UserN[]) =>
                         this.handleChangeChildren(u.map(u => u.get("id")))
                       }
+                    />
+                  </Grid>
+                )}
+                {this.hasGradYear() && (
+                  <Grid item xs={12}>
+                    <YearPicker
+                      label="Abschluss-Jahrgang"
+                      amount={5}
+                      onChange={this.handleChangeYear}
+                      value={create.graduationYear}
                     />
                   </Grid>
                 )}

@@ -41,6 +41,14 @@ export class EntryRepo {
     return !!entry ? Some(EntryRepo.toDto(entry)) : None();
   }
 
+  async findByYear(year: number): Promise<EntryDto[]> {
+    const entry = await this._studentsQuery
+      .where("student.graduationYear = :year", { year })
+      .getMany();
+
+    return entry.map(EntryRepo.toDto);
+  }
+
   async createEntry(
     dto: CreateEntryDto,
     config: { signedByParent: boolean } = { signedByParent: false }

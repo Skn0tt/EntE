@@ -12,7 +12,7 @@ import {
   isValidEmail,
   isValidDisplayname,
   isValidUsername,
-  isValidUser,
+  isValidCreateUser,
   isValidUuid
 } from "./user";
 import { rolesArr, Roles } from "ente-types";
@@ -114,45 +114,48 @@ describe("isValidUser", () => {
   describe("when giving valid infos", () => {
     it("no password", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          isAdult: false,
+          graduationYear: 2019
         })
       ).to.be.true;
     });
     it("returns true", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          isAdult: false,
+          graduationYear: 2019
         })
       ).to.be.true;
     });
     it("regular student", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: true
+          isAdult: true,
+          graduationYear: 2019
         })
       ).to.be.true;
     });
     it("with children", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
@@ -168,20 +171,21 @@ describe("isValidUser", () => {
   describe("when giving invalid infos", () => {
     it("invalid password", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           password: "zukurz",
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          isAdult: false,
+          graduationYear: 2019
         })
       ).to.be.false;
     });
     it("invalid mongoid", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: ["2e239ff6-9f40-48e6-9cec"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
@@ -194,8 +198,22 @@ describe("isValidUser", () => {
     });
     it("student with children", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          role: Roles.STUDENT,
+          password: "m!e1passwort",
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
+          isAdult: false,
+          graduationYear: 2019
+        })
+      ).to.be.false;
+    });
+    it("student without year", () => {
+      expect(
+        isValidCreateUser({
+          children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
@@ -207,33 +225,35 @@ describe("isValidUser", () => {
     });
     it("returns false", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
           email: "herrmann.de",
           username: "herrmann",
-          isAdult: false
+          isAdult: false,
+          graduationYear: 2019
         })
       ).to.be.false;
     });
     it("invalid username", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herr mann",
-          isAdult: false
+          isAdult: false,
+          graduationYear: 2019
         })
       ).to.be.false;
     });
     it("parent cannot be adult", () => {
       expect(
-        isValidUser({
+        isValidCreateUser({
           children: [],
           role: Roles.PARENT,
           password: "m!e1passwort",

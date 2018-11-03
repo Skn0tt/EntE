@@ -48,6 +48,14 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
+  async findByYearOfStudent(year: number): Promise<SlotDto[]> {
+    const slots = await this._slotQueryWithTeacher
+      .where("student.graduationYear = :year", { year })
+      .getMany();
+
+    return slots.map(SlotRepo.toDto);
+  }
+
   async findHavingTeacherUpdatedSince(
     id: string,
     since: Date

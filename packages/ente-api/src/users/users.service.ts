@@ -87,6 +87,11 @@ export class UsersService implements OnModuleInit {
         return Success(await this.userRepo.findAll());
 
       case Roles.MANAGER:
+        const students = await this.userRepo.findByGraduationYear(
+          requestingUser.graduationYear!
+        );
+        return Success([...students, requestingUser]);
+
       case Roles.PARENT:
         const children = await this.userRepo.findByIds(
           ...requestingUser.children.map(c => c.id)
@@ -105,10 +110,6 @@ export class UsersService implements OnModuleInit {
     }
   }
 
-  async findAllTeachers(requestingUser: UserDto): Promise<UserDto[]> {
-    return this.userRepo.findByRole(Roles.TEACHER);
-  }
-
   async findOne(
     id: string,
     requestingUser: UserDto
@@ -118,7 +119,6 @@ export class UsersService implements OnModuleInit {
         return Fail(FindOneUserFailure.ForbiddenForUser);
 
       case Roles.PARENT:
-      case Roles.MANAGER:
         const requestingOneSelf = id === requestingUser.id;
         const requestingChild = requestingUser.children
           .map(c => c.id)
@@ -139,9 +139,16 @@ export class UsersService implements OnModuleInit {
         }
 
         switch (requestingUser.role) {
-          // Already Checked for Manager and Parent above
-          case Roles.MANAGER:
+          // Already Checked for Parent above
           case Roles.PARENT:
+            return Success(u);
+
+          case Roles.MANAGER:
+            const isManagersYear =
+              u.graduationYear === requestingUser.graduationYear;
+            return isManagersYear
+              ? Success(u)
+              : Fail(FindOneUserFailure.ForbiddenForUser);
 
           case Roles.ADMIN:
             return Success(u);
@@ -257,6 +264,11 @@ export class UsersService implements OnModuleInit {
     if (!!patch.email) {
       await this.userRepo.setEmail(id, patch.email);
       user.some().email = patch.email;
+    }
+
+    if (!!patch.graduationYear) {
+      await this.userRepo.setYear(id, patch.graduationYear);
+      user.some().graduationYear = patch.graduationYear;
     }
 
     if (!!patch.children) {

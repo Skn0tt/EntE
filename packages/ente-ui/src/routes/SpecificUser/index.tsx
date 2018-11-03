@@ -39,7 +39,8 @@ import {
   updateUserRequest,
   userIsStudent,
   UserN,
-  deleteUserRequest
+  deleteUserRequest,
+  roleHasGradYear
 } from "ente-redux";
 import lang from "ente-lang";
 import withErrorBoundary from "../../components/withErrorBoundary";
@@ -50,6 +51,7 @@ import {
   isValidUserPatch
 } from "ente-types";
 import { DeleteModal } from "../../components/DeleteModal";
+import { YearPicker } from "ente-ui/src/elements/YearPicker";
 
 /**
  * # Component Types
@@ -221,11 +223,25 @@ export class SpecificUser extends React.PureComponent<Props, State> {
 
                   {/* IsAdult */}
                   {userIsStudent(user) && (
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <SwitchInput
                         value={user.get("isAdult")}
                         title={lang().ui.specificUser.adultTitle}
                         onChange={this.update("isAdult")}
+                      />
+                    </Grid>
+                  )}
+
+                  {/* Graduation Year */}
+                  {roleHasGradYear(user.get("role")) && (
+                    <Grid item xs={6}>
+                      <YearPicker
+                        label="Abschluss-Jahrgang"
+                        onChange={this.update("graduationYear")}
+                        amount={5}
+                        value={
+                          patch.graduationYear || user.get("graduationYear")
+                        }
                       />
                     </Grid>
                   )}

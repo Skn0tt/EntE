@@ -64,15 +64,18 @@ export class UserN extends createRecord<UserDtoNormalised>({
   email: "",
   isAdult: false,
   role: Roles.STUDENT,
-  childrenIds: []
+  childrenIds: [],
+  graduationYear: null
 }) {}
 
 export const userIsManager = (u: UserN) => u.get("role") === Roles.MANAGER;
 export const userIsParent = (u: UserN) => u.get("role") === Roles.PARENT;
 export const userIsStudent = (u: UserN) => u.get("role") === Roles.STUDENT;
 export const userIsTeacher = (u: UserN) => u.get("role") === Roles.TEACHER;
-export const userHasChildren = (u: UserN) =>
-  userIsManager(u) || userIsParent(u);
+export const userHasChildren = (u: UserN) => userIsParent(u);
+export const roleHasChildren = (r: Roles) => r === Roles.PARENT;
+export const roleHasGradYear = (r: Roles) =>
+  [Roles.MANAGER, Roles.STUDENT].includes(r);
 
 export class EntryN extends createRecord<EntryDtoNormalised>({
   createdAt: new Date(),

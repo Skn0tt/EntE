@@ -5,7 +5,8 @@ import {
   IsUUID,
   IsArray,
   ValidateNested,
-  IsOptional
+  IsOptional,
+  IsInt
 } from "class-validator";
 import { CustomStringValidator } from "../helpers";
 import {
@@ -31,6 +32,10 @@ export class UserDto {
   @ValidateNested({ each: true })
   @Type(() => UserDto)
   children: UserDto[];
+
+  @IsOptional()
+  @IsInt()
+  graduationYear?: number;
 
   @IsBoolean() isAdult: boolean;
 }

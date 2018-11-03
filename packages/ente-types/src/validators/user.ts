@@ -18,6 +18,7 @@ import {
   containsSpecialCharsAll
 } from "./shared";
 import { CreateUserDto, PatchUserDto } from "../dtos";
+import { url } from "inspector";
 
 /**
  * Validates a username
@@ -57,7 +58,7 @@ export const isValidEmail: SyncValidator<string> = email =>
     email
   );
 
-export const isValidUserExcludingChildren: SyncValidator<
+export const isValidCreateUserExcludingChildren: SyncValidator<
   CreateUserDto
 > = matches([
   u => isValidDisplayname(u.displayname),
@@ -71,11 +72,12 @@ export const isValidUserExcludingChildren: SyncValidator<
   // if not MANAGER or PARENT, must not have children
   u =>
     [Roles.MANAGER, Roles.PARENT].indexOf(u.role) !== -1 ||
-    u.children.length === 0
+    u.children.length === 0,
+  u => ![Roles.STUDENT, Roles.MANAGER].includes(u.role) || !!u.graduationYear
 ]);
 
-export const isValidUser: SyncValidator<CreateUserDto> = matches([
-  isValidUserExcludingChildren,
+export const isValidCreateUser: SyncValidator<CreateUserDto> = matches([
+  isValidCreateUserExcludingChildren,
   u => u.children.every(c => isValidUuid(c))
 ]);
 

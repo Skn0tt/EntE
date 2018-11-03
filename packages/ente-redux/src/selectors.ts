@@ -12,7 +12,8 @@ import {
   userIsStudent,
   UserN,
   EntryN,
-  SlotN
+  SlotN,
+  roleHasChildren
 } from "./types";
 import { createSelector } from "reselect";
 import { Roles } from "ente-types";
@@ -49,9 +50,8 @@ export const getRole: Selector<Roles> = state => {
   return authState.cata(() => undefined, s => s.get("role"));
 };
 
-export const hasChildren = createSelector(
-  [getRole],
-  role => role === Roles.MANAGER || role === Roles.PARENT
+export const hasChildren = createSelector([getRole], role =>
+  roleHasChildren(role)
 );
 export const canCreateEntries = createSelector(
   [getRole],

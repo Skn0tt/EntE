@@ -26,6 +26,10 @@ export class SlotsService {
         return await this.slotRepo.findAll();
 
       case Roles.MANAGER:
+        return await this.slotRepo.findByYearOfStudent(
+          requestingUser.graduationYear!
+        );
+
       case Roles.PARENT:
         return await this.slotRepo.findByStudents(
           ...requestingUser.children.map(c => c.id)
@@ -49,6 +53,13 @@ export class SlotsService {
       s => {
         switch (requestingUser.role) {
           case Roles.MANAGER:
+            const isSameYear =
+              s.student.graduationYear === requestingUser.graduationYear;
+            if (!isSameYear) {
+              return Fail(FindOneSlotFailure.ForbiddenForUser);
+            }
+            break;
+
           case Roles.PARENT:
             const slotMatchesUser = requestingUser.children
               .map(c => c.id)
