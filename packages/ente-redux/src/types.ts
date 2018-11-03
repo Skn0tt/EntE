@@ -107,6 +107,7 @@ interface IAuthState {
   token: string;
   exp: Date;
   displayname: string;
+  username: string;
   role: Roles;
   children: string[];
 }
@@ -116,6 +117,7 @@ export class AuthState extends createRecord<IAuthState>({
   displayname: "",
   exp: new Date(),
   role: Roles.STUDENT,
+  username: "",
   token: ""
 }) {}
 
