@@ -20,6 +20,9 @@ export class Slot {
    */
   @PrimaryGeneratedColumn("uuid") readonly _id: string;
 
+  @Column("date", { nullable: false })
+  readonly date: Date;
+
   @Column("int", { nullable: false })
   @IsInt()
   readonly hour_from: number;

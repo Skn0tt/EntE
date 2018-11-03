@@ -244,6 +244,7 @@ class SpecificEntry extends React.Component<
                   <Table>
                     <TableHead>
                       <TableRow>
+                        <TableCell>Datum</TableCell>
                         <TableCell>Von</TableCell>
                         <TableCell>Bis</TableCell>
                         <TableCell>Lehrer</TableCell>
@@ -252,6 +253,9 @@ class SpecificEntry extends React.Component<
                     <TableBody>
                       {getSlots(entry.get("slotIds")).map(slot => (
                         <TableRow key={slot.get("id")}>
+                          <TableCell>
+                            {slot.get("date").toLocaleDateString("de")}
+                          </TableCell>
                           <TableCell>{slot.get("from")}</TableCell>
                           <TableCell>{slot.get("to")}</TableCell>
                           <TableCell>

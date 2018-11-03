@@ -4,7 +4,8 @@ import {
   ValidateNested,
   IsOptional,
   IsUUID,
-  IsNumber
+  IsNumber,
+  IsDate
 } from "class-validator";
 import { DateIsAfter } from "../helpers";
 import { twoWeeksBeforeNow } from "../validators";
@@ -31,6 +32,8 @@ export class CreateEntryDto {
 }
 
 export class CreateSlotDto {
+  @IsDate() date: Date;
+
   @IsNumber() from: number;
 
   @IsNumber() to: number;
