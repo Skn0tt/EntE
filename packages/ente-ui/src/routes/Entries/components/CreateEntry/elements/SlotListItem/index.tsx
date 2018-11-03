@@ -20,13 +20,24 @@ import { connect, MapStateToPropsParam } from "react-redux";
 import { AppState, getUser, UserN } from "ente-redux";
 import { CreateSlotDto } from "ente-types";
 
+const getText = (s: CreateSlotDto): string => {
+  if (!!s.date) {
+    const day = s.date.toLocaleDateString("de");
+    return `${day}, ${s.from} - ${s.to}`;
+  }
+
+  return `${s.from} - ${s.to}`;
+};
+
 interface OwnProps {
   slot: CreateSlotDto;
   delete(): void;
 }
+
 interface StateProps {
   getUser(id: string): UserN;
 }
+
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
   OwnProps,
@@ -35,16 +46,16 @@ const mapStateToProps: MapStateToPropsParam<
   getUser: id => getUser(id)(state)
 });
 
-type Props = OwnProps & StateProps & WithStyles;
+type SlotListItemProps = OwnProps & StateProps & WithStyles;
 
-const SlotListItem: React.SFC<Props> = props => {
+const SlotListItem: React.SFC<SlotListItemProps> = props => {
   const { slot, getUser } = props;
 
   return (
     <ListItem>
       <ListItemText
         primary={getUser(slot.teacherId).get("displayname")}
-        secondary={`${slot.from} - ${slot.to}`}
+        secondary={getText(slot)}
       />
       <ListItemSecondaryAction>
         <IconButton aria-label="Delete" onClick={props.delete}>

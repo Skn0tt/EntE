@@ -16,35 +16,43 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { getTeachers, getUser, AppState, UserN } from "ente-redux";
 import { SearchableDropdown } from "../../../../../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
+import { DateInput } from "../../../../../../elements/DateInput";
 
-interface OwnProps {
+interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
+  multiDay: boolean;
+  datePickerConfig?: {
+    min: Date;
+    max: Date;
+  };
+  date: Date;
 }
 
-interface StateProps {
+interface SlotEntryStateProps {
   teachers: UserN[];
   getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
-  OwnProps,
+  SlotEntryStateProps,
+  SlotEntryOwnProps,
   AppState
 > = state => ({
   teachers: getTeachers(state),
   getUser: id => getUser(id)(state)
 });
 
-type Props = StateProps & OwnProps & WithStyles;
+type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
 
 interface State {
   from: string;
   to: string;
+  date?: Date;
   teacher?: string;
 }
 
 class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
-class SlotEntry extends React.Component<Props, State> {
+class SlotEntry extends React.Component<SlotEntryProps & WithStyles, State> {
   state: State = {
     from: "1",
     to: "2"
@@ -104,15 +112,18 @@ class SlotEntry extends React.Component<Props, State> {
     this.props.onAdd({
       from: Number(this.state.from),
       to: Number(this.state.to),
-      teacherId: this.state.teacher
+      teacherId: this.state.teacher,
+      date: this.props.multiDay ? this.state.date : this.props.date
     });
 
   render() {
-    const { teachers } = this.props;
+    const { teachers, multiDay, datePickerConfig } = this.props;
+    const { date } = this.state;
+
     return (
-      <Grid container direction="row">
+      <Grid container direction="row" spacing={16}>
         {/* Teacher */}
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <SearchableDropdownUser
             label="Lehrer"
             helperText="Wählen sie den Lehrer aus."
@@ -128,8 +139,24 @@ class SlotEntry extends React.Component<Props, State> {
           />
         </Grid>
 
+        {/* Date */}
+        {multiDay && (
+          <Grid item xs={3}>
+            <DateInput
+              onChange={date => this.setState({ date })}
+              minDate={datePickerConfig.min}
+              maxDate={datePickerConfig.max}
+              isValid={d =>
+                +datePickerConfig.min <= +d && +datePickerConfig.max >= +d
+              }
+              label="Tag"
+              value={date}
+            />
+          </Grid>
+        )}
+
         {/* From */}
-        <Grid item xs={3}>
+        <Grid item xs={1}>
           <TextField
             label="Von"
             fullWidth
@@ -144,7 +171,7 @@ class SlotEntry extends React.Component<Props, State> {
         </Grid>
 
         {/* To */}
-        <Grid item xs={3}>
+        <Grid item xs={1}>
           <TextField
             label="Bis"
             fullWidth
@@ -159,7 +186,7 @@ class SlotEntry extends React.Component<Props, State> {
         </Grid>
 
         {/* Add */}
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <Tooltip title="Hinzufügen">
             <Button
               variant="raised"
@@ -175,4 +202,8 @@ class SlotEntry extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(SlotEntry));
+export default withStyles(styles)(
+  connect<SlotEntryStateProps, {}, SlotEntryOwnProps, AppState>(
+    mapStateToProps
+  )(SlotEntry)
+);

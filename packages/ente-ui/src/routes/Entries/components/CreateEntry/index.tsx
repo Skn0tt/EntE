@@ -47,7 +47,7 @@ import {
   UserN
 } from "ente-redux";
 import { CreateEntryDto, CreateSlotDto } from "ente-types";
-import { DateInput } from "ente-ui/src/elements/DateInput";
+import { DateInput } from "../../../../elements/DateInput";
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -125,7 +125,7 @@ class CreateEntry extends React.Component<Props, State> {
     this.props.createEntry({
       date: this.state.date,
       dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
-      slots: this.state.isRange ? [] : this.state.slots,
+      slots: this.state.slots,
       forSchool: this.state.forSchool,
       studentId: this.state.student
     });
@@ -175,7 +175,7 @@ class CreateEntry extends React.Component<Props, State> {
   dateEndValid = (): boolean =>
     !this.state.isRange || +this.state.dateEnd > +this.state.date;
   studentValid = (): boolean => !this.props.isParent || !!this.state.student;
-  slotsValid = (): boolean => this.state.isRange || this.state.slots.length > 0;
+  slotsValid = (): boolean => this.state.slots.length > 0;
 
   inputValid = () =>
     this.dateValid() &&
@@ -244,8 +244,8 @@ class CreateEntry extends React.Component<Props, State> {
                 </Grid>
               )}
               <Grid item>
-                <Grid container direction="row">
-                  <Grid item xs={this.state.isRange ? 6 : 12}>
+                <Grid container direction="row" spacing={24}>
+                  <Grid item xs={6}>
                     <DateInput
                       label="Von"
                       isValid={() => this.dateValid()}
@@ -259,7 +259,7 @@ class CreateEntry extends React.Component<Props, State> {
                       <DateInput
                         label="Bis"
                         isValid={() => this.dateEndValid()}
-                        onChange={this.handleChangeDate}
+                        onChange={this.handleChangeDateEnd}
                         minDate={this.state.date}
                         value={this.state.dateEnd}
                       />
@@ -268,25 +268,31 @@ class CreateEntry extends React.Component<Props, State> {
                 </Grid>
               </Grid>
             </Grid>
-            {!this.state.isRange && (
-              <Grid item xs={12}>
-                <Typography variant="title">Stunden</Typography>
-                <Typography variant="caption">
-                  Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
-                  Erstellen sie dafür für jede Stunde einen Eintrag.
-                </Typography>
-                <MUIList>
-                  {this.state.slots.map((slot, index) => (
-                    <SlotListItem
-                      key={index}
-                      slot={slot}
-                      delete={() => this.handleRemoveSlot(index)}
-                    />
-                  ))}
-                </MUIList>
-                <SlotEntry onAdd={slot => this.handleAddSlot(slot)} />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <Typography variant="title">Stunden</Typography>
+              <Typography variant="caption">
+                Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
+                Erstellen sie dafür für jede Stunde eine Zeile.
+              </Typography>
+              <MUIList>
+                {this.state.slots.map((slot, index) => (
+                  <SlotListItem
+                    key={index}
+                    slot={slot}
+                    delete={() => this.handleRemoveSlot(index)}
+                  />
+                ))}
+              </MUIList>
+              <SlotEntry
+                onAdd={slot => this.handleAddSlot(slot)}
+                multiDay={this.state.isRange}
+                datePickerConfig={{
+                  min: this.state.date,
+                  max: this.state.dateEnd
+                }}
+                date={this.state.date}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>

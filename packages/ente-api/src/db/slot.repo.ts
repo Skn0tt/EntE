@@ -12,19 +12,22 @@ export class SlotRepo {
     @InjectRepository(Slot) private readonly repo: Repository<Slot>
   ) {}
 
-  private _slotQueryWithTeacher = this.repo
-    .createQueryBuilder("slot")
-    .leftJoinAndSelect("slot.teacher", "teacher")
-    .leftJoinAndSelect("slot.entry", "entry")
-    .leftJoinAndSelect("entry.student", "student");
+  private _slotQueryWithTeacher = () =>
+    this.repo
+      .createQueryBuilder("slot")
+      .leftJoinAndSelect("slot.teacher", "teacher")
+      .leftJoinAndSelect("slot.entry", "entry")
+      .leftJoinAndSelect("entry.student", "student");
 
   async findAll(): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher.getMany();
+    const slots = await this._slotQueryWithTeacher().getMany();
     return slots.map(SlotRepo.toDto);
   }
 
   async findById(id: string): Promise<Maybe<SlotDto>> {
-    const slot = await this._slotQueryWithTeacher.whereInIds(id).getOne();
+    const slot = await this._slotQueryWithTeacher()
+      .whereInIds(id)
+      .getOne();
     return !!slot ? Some(SlotRepo.toDto(slot)) : None();
   }
 
@@ -42,14 +45,14 @@ export class SlotRepo {
   }
 
   async findHavingTeacher(id: string): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher
+    const slots = await this._slotQueryWithTeacher()
       .where("slot.teacher = :id", { id })
       .getMany();
     return slots.map(SlotRepo.toDto);
   }
 
   async findByYearOfStudent(year: number): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher
+    const slots = await this._slotQueryWithTeacher()
       .where("student.graduationYear = :year", { year })
       .getMany();
 
@@ -60,7 +63,7 @@ export class SlotRepo {
     id: string,
     since: Date
   ): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher
+    const slots = await this._slotQueryWithTeacher()
       .where("slot.teacher = :id", { id })
       .andWhere("entry.updatedAt > :since", { since })
       .getMany();
@@ -72,7 +75,7 @@ export class SlotRepo {
     const result = new SlotDto();
 
     result.id = slot._id;
-    result.date = slot.entry.date;
+    result.date = slot.date;
     result.from = slot.hour_from;
     result.to = slot.hour_to;
     result.teacher = UserRepo.toDto(slot.teacher, { canHaveChildren: false });

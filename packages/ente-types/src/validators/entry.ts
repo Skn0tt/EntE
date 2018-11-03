@@ -7,7 +7,7 @@
  */
 
 import { SyncValidator } from "./";
-import { matches, not, isLength } from "./shared";
+import { matches, not } from "./shared";
 import { isValidSlot } from "./slot";
 import * as _ from "lodash";
 import { CreateEntryDto } from "../dtos";
@@ -23,7 +23,7 @@ export const isOlderThanTwoWeeksBeforeNow: SyncValidator<Date> = d =>
 
 export const areApart = (t: number) => (a: Date, b: Date) => +b - +a >= t;
 
-export const isValidEntry: SyncValidator<CreateEntryDto> = matches([
+export const isValidCreateEntry: SyncValidator<CreateEntryDto> = matches([
   v => not(isOlderThanTwoWeeksBeforeNow)(v.date),
   v => v.slots.every(isValidSlot),
   // A: dateEnd doesn't exist

@@ -16,10 +16,11 @@ export const DateInput: React.SFC<DateInputProps> = props => {
     <DatePicker
       label={label}
       value={value}
-      onChange={onChange}
+      onChange={d => onChange(d.toJSDate())}
       minDate={minDate}
       maxDate={maxDate}
       autoOk
+      fullWidth
       error={!isValid(value)}
     />
   );

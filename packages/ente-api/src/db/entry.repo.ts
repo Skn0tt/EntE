@@ -15,21 +15,22 @@ export class EntryRepo {
     @InjectRepository(Entry) private readonly repo: Repository<Entry>
   ) {}
 
-  private _studentsQuery = this.repo
-    .createQueryBuilder("entry")
-    .leftJoinAndSelect("entry.student", "student")
-    .leftJoinAndSelect("entry.slots", "slot")
-    .leftJoinAndSelect("slot.teacher", "teacher")
-    .leftJoinAndSelect("slot.entry", "slotEntry")
-    .leftJoinAndSelect("slotEntry.student", "slotEntryStudent");
+  private _studentsQuery = () =>
+    this.repo
+      .createQueryBuilder("entry")
+      .leftJoinAndSelect("entry.student", "student")
+      .leftJoinAndSelect("entry.slots", "slot")
+      .leftJoinAndSelect("slot.teacher", "teacher")
+      .leftJoinAndSelect("slot.entry", "slotEntry")
+      .leftJoinAndSelect("slotEntry.student", "slotEntryStudent");
 
   async findAll(): Promise<EntryDto[]> {
-    const entries = await this._studentsQuery.getMany();
+    const entries = await this._studentsQuery().getMany();
     return entries.map(EntryRepo.toDto);
   }
 
   async findByStudents(...studentIds: string[]): Promise<EntryDto[]> {
-    const entries = await this._studentsQuery
+    const entries = await this._studentsQuery()
       .where("student._id IN (:studentIds)", { studentIds })
       .getMany();
 
@@ -37,12 +38,14 @@ export class EntryRepo {
   }
 
   async findById(id: string): Promise<Maybe<EntryDto>> {
-    const entry = await this._studentsQuery.whereInIds(id).getOne();
+    const entry = await this._studentsQuery()
+      .whereInIds(id)
+      .getOne();
     return !!entry ? Some(EntryRepo.toDto(entry)) : None();
   }
 
   async findByYear(year: number): Promise<EntryDto[]> {
-    const entry = await this._studentsQuery
+    const entry = await this._studentsQuery()
       .where("student.graduationYear = :year", { year })
       .getMany();
 
@@ -60,6 +63,8 @@ export class EntryRepo {
         relations: ["children"]
       });
 
+      console.log(dto);
+
       const newEntry = await manager.create(Entry, {
         student,
         signedParent: config.signedByParent,
@@ -72,6 +77,7 @@ export class EntryRepo {
               relations: ["children"]
             });
             return await manager.create(Slot, {
+              date: new Date(s.date),
               hour_from: s.from,
               hour_to: s.to,
               teacher

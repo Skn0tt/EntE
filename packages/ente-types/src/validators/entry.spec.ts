@@ -7,7 +7,11 @@
  */
 
 import { expect } from "chai";
-import { isOlderThanTwoWeeksBeforeNow, isValidEntry, areApart } from "./entry";
+import {
+  isOlderThanTwoWeeksBeforeNow,
+  isValidCreateEntry,
+  areApart
+} from "./entry";
 
 const now = Date.now();
 
@@ -57,11 +61,12 @@ describe("isValidEntry", () => {
   describe("when passing valid entries", () => {
     it("returns true", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           forSchool: true,
           slots: [
             {
+              date: new Date(now),
               from: 1,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -73,10 +78,11 @@ describe("isValidEntry", () => {
 
     it("when passing slots", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           slots: [
             {
+              date: new Date(now),
               from: 3,
               to: 4,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -89,7 +95,7 @@ describe("isValidEntry", () => {
 
     it("returns true", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           dateEnd: new Date(now + 2 * 24 * 60 * 60 * 1000),
           forSchool: true,
@@ -100,7 +106,7 @@ describe("isValidEntry", () => {
 
     it("returns true", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           dateEnd: new Date(now + 2 * 24 * 60 * 60 * 1000),
           forSchool: false,
@@ -111,11 +117,12 @@ describe("isValidEntry", () => {
 
     it("returns true", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           forSchool: true,
           slots: [
             {
+              date: new Date(now),
               from: 1,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -129,7 +136,7 @@ describe("isValidEntry", () => {
   describe("when passing invalid entries returns false", () => {
     it("missing slots", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           forSchool: false,
           slots: []
@@ -139,12 +146,13 @@ describe("isValidEntry", () => {
 
     it("Too much slots", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           dateEnd: new Date(now + 2 * 24 * 60 * 60 * 1000),
           forSchool: false,
           slots: [
             {
+              date: new Date(now),
               from: 2,
               to: 5,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -156,11 +164,12 @@ describe("isValidEntry", () => {
 
     it("Slot invalid uuid", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           forSchool: false,
           slots: [
             {
+              date: new Date(now),
               from: 2,
               to: 5,
               teacherId: "2e239ff6-9f40-48e6-9cec"
@@ -172,11 +181,12 @@ describe("isValidEntry", () => {
 
     it("Slot invalid hours", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           forSchool: false,
           slots: [
             {
+              date: new Date(now),
               from: 5,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -188,12 +198,13 @@ describe("isValidEntry", () => {
 
     it("Dates not far enough apart", () => {
       expect(
-        isValidEntry({
+        isValidCreateEntry({
           date: new Date(now),
           dateEnd: new Date(now + 0.5 * 24 * 60 * 60 * 1000),
           forSchool: false,
           slots: [
             {
+              date: new Date(now),
               from: 5,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
