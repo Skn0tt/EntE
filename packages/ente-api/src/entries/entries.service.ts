@@ -57,8 +57,12 @@ export class EntriesService {
       case Roles.ADMIN:
         return Success(await this.entryRepo.findAll());
 
-      case Roles.PARENT:
       case Roles.MANAGER:
+        return Success(
+          await this.entryRepo.findByYear(requestingUser.graduationYear)
+        );
+
+      case Roles.PARENT:
         return Success(
           await this.entryRepo.findByStudents(
             ...requestingUser.children.map(c => c.id)
@@ -92,8 +96,14 @@ export class EntriesService {
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
 
-          case Roles.PARENT:
           case Roles.MANAGER:
+            const belongsStudentOfYear =
+              e.student.graduationYear === requestingUser.graduationYear;
+            return belongsStudentOfYear
+              ? Success(e)
+              : Fail(FindEntryFailure.ForbiddenForUser);
+
+          case Roles.PARENT:
             const belongsChild = requestingUser.children
               .map(c => c.id)
               .includes(e.student.id);
@@ -192,9 +202,8 @@ export class EntriesService {
       return Fail(SetForSchoolEntryFailure.EntryNotFound);
     }
 
-    const entryBelongsManager = requestingUser.children
-      .map(c => c.id)
-      .includes(entry.some().student.id);
+    const entryBelongsManager =
+      entry.some().student.graduationYear === requestingUser.graduationYear;
     if (!entryBelongsManager) {
       return Fail(SetForSchoolEntryFailure.EntryDoesntBelongToUser);
     }
@@ -209,42 +218,51 @@ export class EntriesService {
     value: boolean,
     requestingUser: UserDto
   ): Promise<Validation<SignEntryFailure, EntryDto>> {
-    switch (requestingUser.role) {
-      case Roles.MANAGER:
-      case Roles.PARENT:
-        const entry = await this.entryRepo.findById(id);
-        if (entry.isNone()) {
-          return Fail(SignEntryFailure.EntryNotFound);
-        }
+    if (![Roles.MANAGER, Roles.PARENT].includes(requestingUser.role)) {
+      return Fail(SignEntryFailure.ForbiddenForUser);
+    }
 
+    const entry = await this.entryRepo.findById(id);
+    if (entry.isNone()) {
+      return Fail(SignEntryFailure.EntryNotFound);
+    }
+
+    switch (requestingUser.role) {
+      case Roles.PARENT:
         const entryBelongsToChild = requestingUser.children
           .map(c => c.id)
           .includes(entry.some().id);
         if (!entryBelongsToChild) {
           return Fail(SignEntryFailure.EntryDoesntBelongToUser);
         }
-
-        if (requestingUser.role === Roles.MANAGER) {
-          await this.entryRepo.setSignedManager(id, value);
-          entry.some().signedManager = value;
-          return Success(entry.some());
-        } else {
-          await this.entryRepo.setSignedParent(id, value);
-          entry.some().signedParent = value;
-
-          const parents = await this.userRepo.getParentsOfUser(
-            entry.some().student.id
-          );
-
-          this.emailService.dispatchSignedInformation(
-            this.getSigningLinkForEntry(entry.some()),
-            parents.some()
-          );
-
-          return Success(entry.some());
+        break;
+      case Roles.MANAGER:
+        const isSameYear = (entry.some().student.graduationYear =
+          requestingUser.graduationYear);
+        if (!isSameYear) {
+          return Fail(SignEntryFailure.EntryDoesntBelongToUser);
         }
-      default:
-        return Fail(SignEntryFailure.ForbiddenForUser);
+        break;
+    }
+
+    if (requestingUser.role === Roles.MANAGER) {
+      await this.entryRepo.setSignedManager(id, value);
+      entry.some().signedManager = value;
+      return Success(entry.some());
+    } else {
+      await this.entryRepo.setSignedParent(id, value);
+      entry.some().signedParent = value;
+
+      const parents = await this.userRepo.getParentsOfUser(
+        entry.some().student.id
+      );
+
+      this.emailService.dispatchSignedInformation(
+        this.getSigningLinkForEntry(entry.some()),
+        parents.some()
+      );
+
+      return Success(entry.some());
     }
   }
 

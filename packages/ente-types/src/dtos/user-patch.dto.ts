@@ -1,5 +1,5 @@
 import { Roles, rolesArr } from "ente-types";
-import { IsOptional, IsIn, IsUUID, IsBoolean } from "class-validator";
+import { IsOptional, IsIn, IsUUID, IsBoolean, IsInt } from "class-validator";
 import { CustomStringValidator } from "../helpers";
 import { isValidDisplayname, isValidEmail } from "../validators";
 
@@ -23,4 +23,8 @@ export class PatchUserDto {
   @IsOptional()
   @IsBoolean()
   isAdult?: boolean;
+
+  @IsOptional()
+  @IsInt()
+  graduationYear?: number;
 }

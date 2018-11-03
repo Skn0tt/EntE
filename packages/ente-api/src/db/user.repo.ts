@@ -86,6 +86,14 @@ export class UserRepo {
     return user.map(UserRepo.toDto);
   }
 
+  async findByGraduationYear(year: number): Promise<UserDto[]> {
+    const users = await this._userQuery()
+      .where("user.graduationYear = :year", { year })
+      .getMany();
+
+    return users.map(u => UserRepo.toDto(u));
+  }
+
   async create(...users: CreateUserDtoWithHash[]): Promise<UserDto[]> {
     const newUsers = await this.repo.create(
       await Promise.all(
@@ -98,7 +106,8 @@ export class UserRepo {
           password: hash,
           role: user.role,
           username: user.username,
-          email: user.email
+          email: user.email,
+          graduationYear: user.graduationYear
         }))
       )
     );
@@ -122,6 +131,10 @@ export class UserRepo {
 
   async setEmail(id: string, email: string) {
     await this.repo.update(id, { email });
+  }
+
+  async setYear(id: string, graduationYear: number) {
+    await this.repo.update(id, { graduationYear });
   }
 
   async setChildren(id: string, children: string[]) {
@@ -235,6 +248,8 @@ export class UserRepo {
     result.isAdult = !!user.isAdult;
     result.role = user.role;
     result.username = user.username;
+    result.graduationYear = user.graduationYear;
+
     return result;
   }
 }

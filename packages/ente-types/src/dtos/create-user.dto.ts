@@ -5,7 +5,8 @@ import {
   IsUUID,
   IsBoolean,
   IsOptional,
-  IsDefined
+  IsDefined,
+  IsInt
 } from "class-validator";
 import { CustomStringValidator } from "../helpers";
 import {
@@ -33,6 +34,10 @@ export class CreateUserDto extends PatchUserDto {
   @IsUUID("4", { each: true })
   children: string[];
 
+  @IsOptional()
+  @IsInt()
+  graduationYear?: number;
+
   @IsDefined()
   @IsBoolean()
   isAdult: boolean;
@@ -48,6 +53,7 @@ export const createDefaultCreateUserDto = (): CreateUserDto => {
   result.role = Roles.STUDENT;
   result.children = [];
   result.isAdult = false;
+  result.graduationYear = 2019;
 
   return result;
 };

@@ -138,12 +138,23 @@ ShallowWrapper {
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
                   item={true}
-                  xs={12}
+                  xs={6}
                 >
                   <Unknown
                     onChange={[Function]}
                     title="Erwachsen"
                     value={false}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={6}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={null}
                   />
                 </WithStyles(Grid)>
               </WithStyles(Grid)>
@@ -250,12 +261,23 @@ ShallowWrapper {
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
                     item={true}
-                    xs={12}
+                    xs={6}
                   >
                     <Unknown
                       onChange={[Function]}
                       title="Erwachsen"
                       value={false}
+                    />
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={6}
+                  >
+                    <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={null}
                     />
                   </WithStyles(Grid)>
                 </WithStyles(Grid)>
@@ -349,12 +371,23 @@ ShallowWrapper {
                     </WithStyles(Grid)>
                     <WithStyles(Grid)
                       item={true}
-                      xs={12}
+                      xs={6}
                     >
                       <Unknown
                         onChange={[Function]}
                         title="Erwachsen"
                         value={false}
+                      />
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
+                      item={true}
+                      xs={6}
+                    >
+                      <Unknown
+                        amount={5}
+                        label="Abschluss-Jahrgang"
+                        onChange={[Function]}
+                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>
@@ -463,12 +496,23 @@ ShallowWrapper {
                     </WithStyles(Grid)>
                     <WithStyles(Grid)
                       item={true}
-                      xs={12}
+                      xs={6}
                     >
                       <Unknown
                         onChange={[Function]}
                         title="Erwachsen"
                         value={false}
+                      />
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
+                      item={true}
+                      xs={6}
+                    >
+                      <Unknown
+                        amount={5}
+                        label="Abschluss-Jahrgang"
+                        onChange={[Function]}
+                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>,
@@ -522,12 +566,23 @@ ShallowWrapper {
                       </WithStyles(Grid)>,
                       <WithStyles(Grid)
                         item={true}
-                        xs={12}
+                        xs={6}
                       >
                         <Unknown
                           onChange={[Function]}
                           title="Erwachsen"
                           value={false}
+                        />
+                      </WithStyles(Grid)>,
+                      <WithStyles(Grid)
+                        item={true}
+                        xs={6}
+                      >
+                        <Unknown
+                          amount={5}
+                          label="Abschluss-Jahrgang"
+                          onChange={[Function]}
+                          value={null}
                         />
                       </WithStyles(Grid)>,
                       false,
@@ -682,7 +737,7 @@ ShallowWrapper {
                           value={false}
                         />,
                         "item": true,
-                        "xs": 12,
+                        "xs": 6,
                       },
                       "ref": null,
                       "rendered": Object {
@@ -693,6 +748,37 @@ ShallowWrapper {
                           "onChange": [Function],
                           "title": "Erwachsen",
                           "value": false,
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Unknown
+                          amount={5}
+                          label="Abschluss-Jahrgang"
+                          onChange={[Function]}
+                          value={null}
+                        />,
+                        "item": true,
+                        "xs": 6,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "amount": 5,
+                          "label": "Abschluss-Jahrgang",
+                          "onChange": [Function],
+                          "value": null,
                         },
                         "ref": null,
                         "rendered": null,
@@ -849,12 +935,23 @@ ShallowWrapper {
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
                     item={true}
-                    xs={12}
+                    xs={6}
                   >
                     <Unknown
                       onChange={[Function]}
                       title="Erwachsen"
                       value={false}
+                    />
+                  </WithStyles(Grid)>
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={6}
+                  >
+                    <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={null}
                     />
                   </WithStyles(Grid)>
                 </WithStyles(Grid)>
@@ -961,12 +1058,23 @@ ShallowWrapper {
                     </WithStyles(Grid)>
                     <WithStyles(Grid)
                       item={true}
-                      xs={12}
+                      xs={6}
                     >
                       <Unknown
                         onChange={[Function]}
                         title="Erwachsen"
                         value={false}
+                      />
+                    </WithStyles(Grid)>
+                    <WithStyles(Grid)
+                      item={true}
+                      xs={6}
+                    >
+                      <Unknown
+                        amount={5}
+                        label="Abschluss-Jahrgang"
+                        onChange={[Function]}
+                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>
@@ -1060,12 +1168,23 @@ ShallowWrapper {
                       </WithStyles(Grid)>
                       <WithStyles(Grid)
                         item={true}
-                        xs={12}
+                        xs={6}
                       >
                         <Unknown
                           onChange={[Function]}
                           title="Erwachsen"
                           value={false}
+                        />
+                      </WithStyles(Grid)>
+                      <WithStyles(Grid)
+                        item={true}
+                        xs={6}
+                      >
+                        <Unknown
+                          amount={5}
+                          label="Abschluss-Jahrgang"
+                          onChange={[Function]}
+                          value={null}
                         />
                       </WithStyles(Grid)>
                     </WithStyles(Grid)>
@@ -1174,12 +1293,23 @@ ShallowWrapper {
                       </WithStyles(Grid)>
                       <WithStyles(Grid)
                         item={true}
-                        xs={12}
+                        xs={6}
                       >
                         <Unknown
                           onChange={[Function]}
                           title="Erwachsen"
                           value={false}
+                        />
+                      </WithStyles(Grid)>
+                      <WithStyles(Grid)
+                        item={true}
+                        xs={6}
+                      >
+                        <Unknown
+                          amount={5}
+                          label="Abschluss-Jahrgang"
+                          onChange={[Function]}
+                          value={null}
                         />
                       </WithStyles(Grid)>
                     </WithStyles(Grid)>,
@@ -1233,12 +1363,23 @@ ShallowWrapper {
                         </WithStyles(Grid)>,
                         <WithStyles(Grid)
                           item={true}
-                          xs={12}
+                          xs={6}
                         >
                           <Unknown
                             onChange={[Function]}
                             title="Erwachsen"
                             value={false}
+                          />
+                        </WithStyles(Grid)>,
+                        <WithStyles(Grid)
+                          item={true}
+                          xs={6}
+                        >
+                          <Unknown
+                            amount={5}
+                            label="Abschluss-Jahrgang"
+                            onChange={[Function]}
+                            value={null}
                           />
                         </WithStyles(Grid)>,
                         false,
@@ -1393,7 +1534,7 @@ ShallowWrapper {
                             value={false}
                           />,
                           "item": true,
-                          "xs": 12,
+                          "xs": 6,
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1404,6 +1545,37 @@ ShallowWrapper {
                             "onChange": [Function],
                             "title": "Erwachsen",
                             "value": false,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Unknown
+                            amount={5}
+                            label="Abschluss-Jahrgang"
+                            onChange={[Function]}
+                            value={null}
+                          />,
+                          "item": true,
+                          "xs": 6,
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "amount": 5,
+                            "label": "Abschluss-Jahrgang",
+                            "onChange": [Function],
+                            "value": null,
                           },
                           "ref": null,
                           "rendered": null,

@@ -8,7 +8,7 @@
 
 import { parse as papaparse, ParseResult } from "papaparse";
 import * as _ from "lodash";
-import { CreateUserDto, isValidUserExcludingChildren } from "ente-types";
+import { CreateUserDto, isValidCreateUserExcludingChildren } from "ente-types";
 
 const isBlank = (str: string) => !str || /^\s*$/.test(str);
 
@@ -31,13 +31,16 @@ const parseCSV = async (
       role: row.role,
       isAdult: !row.isAdult ? false : true,
       children: !!row.children ? row.children.split(":") : [],
-      password: !isBlank(row.password) ? row.password : undefined
+      password: !isBlank(row.password) ? row.password : undefined,
+      graduationYear: isBlank(row.graduationYear)
+        ? undefined
+        : +row.graduationYear
     };
 
     return res;
   });
 
-  const allValid = result.every(isValidUserExcludingChildren);
+  const allValid = result.every(isValidCreateUserExcludingChildren);
   if (!allValid) {
     throw new Error("One of the users is invalid.");
   }

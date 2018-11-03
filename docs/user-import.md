@@ -14,6 +14,7 @@ Each user has different properties that need to be set:
 * role
 * isAdult
 * children
+* graduationYear
 
 If `password` is left blank, a password reset will be invoked for the user so they can set their password themselves.
 
@@ -22,6 +23,8 @@ If the user doesn't have any children, leave the field blank.
 
 `isAdult` needs to be set only for students.
 
+`graduationYear` needs to be set for students and mangers, it matches these by their expected graduation year.
+
 `role` is one of the roles `admin`, `parent`, `student`, `manager`, `teacher`.
 
 The first row of the csv needs to be a header row with the above properties.
@@ -29,13 +32,13 @@ The first row of the csv needs to be a header row with the above properties.
 A sample import file could look like this:
 
 ```csv
-username,displayname,email,role,isAdult,children
-maxmueller,Max Mueller,mmueller@gmail.com,student,TRUE,
-majamueller,Maja Mueller,maja@mueller.de,student,FALSE,
-tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,
-gerdmueller,Gerd Mueller,gerd@mueller.de,parent,,maxmueller:majamueller
-gabimueller,Gabi Mueller,gabi@mueller.de,parent,,maxmueller:majamueller
-bertboesreich,Bert Boesreich,boesreich@your-school.com,manager,,maxmueller:majamueller
+username,displayname,email,role,isAdult,graduationYear,children
+maxmueller,Max Mueller,mmueller@gmail.com,student,TRUE,2019,
+majamueller,Maja Mueller,maja@mueller.de,student,FALSE,2019,
+tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,
+gerdmueller,Gerd Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
+gabimueller,Gabi Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
+bertboesreich,Bert Boesreich,boesreich@your-school.com,manager,,2019,
 ralphreicht,Ralph Reicht,reicht@your-school.com,teacher,,
 ```
 
