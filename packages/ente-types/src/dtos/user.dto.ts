@@ -8,13 +8,14 @@ import {
   IsOptional,
   IsInt
 } from "class-validator";
-import { CustomStringValidator } from "../helpers";
+import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
   isValidDisplayname,
   isValidEmail
 } from "../validators";
 import { Type } from "class-transformer";
+import { EmptyWhen } from "../helpers/empty-when";
 
 export class UserDto {
   @IsUUID() id: string;
@@ -29,6 +30,7 @@ export class UserDto {
 
   @IsOptional()
   @IsArray()
+  @EmptyWhen((u: UserDto) => u.role !== Roles.PARENT)
   @ValidateNested({ each: true })
   @Type(() => UserDto)
   children: UserDto[];

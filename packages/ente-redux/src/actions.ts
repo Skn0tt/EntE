@@ -66,7 +66,10 @@ import {
   DELETE_ENTRY_SUCCESS,
   DELETE_USER_ERROR,
   DELETE_USER_SUCCESS,
-  DELETE_USER_REQUEST
+  DELETE_USER_REQUEST,
+  DOWNLOAD_EXCEL_EXPORT_REQUEST,
+  DOWNLOAD_EXCEL_EXPORT_SUCCESS,
+  DOWNLOAD_EXCEL_EXPORT_ERROR
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import { CreateUserDto, CreateEntryDto, PatchUserDto } from "ente-types";
@@ -96,6 +99,16 @@ export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
 export const unsignEntryRequest = createAction<string>(UNSIGN_ENTRY_REQUEST);
 export const unsignEntrySuccess = createAction(UNSIGN_ENTRY_SUCCESS);
 export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
+
+export const downloadExcelExportRequest = createAction(
+  DOWNLOAD_EXCEL_EXPORT_REQUEST
+);
+export const downloadExcelExportSuccess = createAction(
+  DOWNLOAD_EXCEL_EXPORT_SUCCESS
+);
+export const downloadExcelExportError = createAction<Error>(
+  DOWNLOAD_EXCEL_EXPORT_ERROR
+);
 
 export type PatchForSchoolPayload = {
   id: string;

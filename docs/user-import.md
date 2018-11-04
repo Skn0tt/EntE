@@ -47,13 +47,13 @@ This would create the following users:
 ```mermaid
 graph LR;
 
-maxmueller[Max Mueller, student, is adult]
-majamueller[Maja Mueller, student]
-tomtoblerone[Tom Toblerone, teacher]
-gerdmueller[Gerd Mueller, parent]
-gabimueller[Gabi Mueller, parent]
-bertboesreich[Bert Boesreich, manager]
-ralphreicht[Ralph Reicht, teacher]
+maxmueller["Max Mueller (student, is adult)"]
+majamueller["Maja Mueller (student)"]
+tomtoblerone["Tom Toblerone (teacher)"]
+gerdmueller["Gerd Mueller (parent)"]
+gabimueller["Gabi Mueller (parent)"]
+bertboesreich["Bert Boesreich (manager)"]
+ralphreicht["Ralph Reicht (teacher)"]
 
 subgraph teacher
   tomtoblerone
@@ -65,8 +65,8 @@ gerdmueller -- child --> majamueller
 gabimueller -- child --> maxmueller
 gabimueller -- child --> majamueller
 
-bertboesreich -- child --> maxmueller
-bertboesreich -- child --> majamueller
+bertboesreich --> maxmueller
+bertboesreich --> majamueller
 ```
 
 To create this `.csv` file, you can use the provided [template](https://gitlab.com/Skn0tt/EntE/raw/master/docs/assets/User%20Import%20Template.xlsx?inline=false) for Microsoft Excel.

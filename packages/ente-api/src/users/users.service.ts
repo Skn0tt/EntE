@@ -6,7 +6,13 @@ import {
 } from "@nestjs/common";
 import { Validation, Success, Fail } from "monet";
 import { UserRepo } from "../db/user.repo";
-import { Roles, UserDto, CreateUserDto, PatchUserDto } from "ente-types";
+import {
+  Roles,
+  UserDto,
+  CreateUserDto,
+  PatchUserDto,
+  isValidUuid
+} from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import { days } from "../helpers/time";
 import * as _ from "lodash";
@@ -190,6 +196,11 @@ export class UsersService implements OnModuleInit {
     users: CreateUserDto[],
     requestingUser: UserDto
   ): Promise<Validation<CreateUsersFailure, UserDto[]>> {
+    const userIsAdmin = requestingUser.role === Roles.ADMIN;
+    if (!userIsAdmin) {
+      return Fail(CreateUsersFailure.ForbiddenForUser);
+    }
+
     const dtosValid = (await Promise.all(
       users.map(async u => await validate(u))
     )).every(errors => errors.length === 0);
@@ -197,19 +208,31 @@ export class UsersService implements OnModuleInit {
       return Fail(CreateUsersFailure.IllegalDtos);
     }
 
-    const userIsAdmin = requestingUser.role === Roles.ADMIN;
-    if (!userIsAdmin) {
-      return Fail(CreateUsersFailure.ForbiddenForUser);
+    const studentUsernamesToCreate = users
+      .filter(u => u.role === Roles.STUDENT)
+      .map(u => u.username);
+
+    const children = _.flatMap(users, u => u.children);
+    const [uuids, usernames] = _.partition(children, isValidUuid);
+
+    const uuidsExist = await this.userRepo.hasUsersWithRole(
+      Roles.STUDENT,
+      ...uuids
+    );
+    if (!uuidsExist) {
+      return Fail(CreateUsersFailure.IllegalDtos);
     }
 
-    const childrenIds = _.flatMap(users, u => u.children);
-    const distinctIds = _.uniq(childrenIds);
-    const allChildrenExist = await this.userRepo.hasUsersWithRole(
-      Roles.STUDENT,
-      ...distinctIds
+    const usernamesNotFromCreation = _.difference(
+      usernames,
+      studentUsernamesToCreate
     );
-    if (!allChildrenExist) {
-      return Fail(CreateUsersFailure.ChildrenNotFound);
+    const usernamesNotFromCreationExist = await this.userRepo.hasUsersWithRole(
+      Roles.STUDENT,
+      ...usernamesNotFromCreation
+    );
+    if (!usernamesNotFromCreationExist) {
+      return Fail(CreateUsersFailure.IllegalDtos);
     }
 
     const created = await this._createUsers(...users);

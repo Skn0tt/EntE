@@ -13,6 +13,7 @@ import { LoggerMiddleware } from "./logger.middleware";
 import { UsersModule } from "./users/users.module";
 import { PasswordResetModule } from "./password-reset/password-reset.module";
 import { ScheduleService } from "./schedule.service";
+import { ExportModule } from "./export/export.module";
 
 const { database, host, password, port, username } = Config.getMysqlConfig();
 
@@ -34,7 +35,8 @@ const { database, host, password, port, username } = Config.getMysqlConfig();
     PasswordResetModule,
     UsersModule,
     TokenModule,
-    StatusModule
+    StatusModule,
+    ExportModule
   ],
   providers: [WinstonLoggerService, ScheduleService],
   exports: [WinstonLoggerService]

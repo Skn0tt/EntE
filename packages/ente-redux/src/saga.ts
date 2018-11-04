@@ -46,7 +46,9 @@ import {
   deleteUserSuccess,
   deleteEntrySuccess,
   deleteUserError,
-  deleteEntryError
+  deleteEntryError,
+  downloadExcelExportSuccess,
+  downloadExcelExportError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -66,7 +68,8 @@ import {
   UNSIGN_ENTRY_REQUEST,
   PATCH_FORSCHOOL_REQUEST,
   DELETE_USER_REQUEST,
-  DELETE_ENTRY_REQUEST
+  DELETE_ENTRY_REQUEST,
+  DOWNLOAD_EXCEL_EXPORT_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -116,6 +119,17 @@ function* getNeededUsersSaga() {
     yield dispatchUpdates(result);
   } catch (error) {
     yield put(getNeededUsersError(error));
+  }
+}
+
+function* downloadExcelExportSaga() {
+  try {
+    const token = yield select(selectors.getToken);
+    yield call(api.downloadExcelExport, token);
+
+    yield put(downloadExcelExportSuccess());
+  } catch (error) {
+    yield put(downloadExcelExportError(error));
   }
 }
 
@@ -241,63 +255,11 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
   try {
     const token = yield select(selectors.getToken);
 
-    /**
-     * Split into users
-     * - with children
-     * - without children
-     */
-    const withoutChildren: CreateUserDto[] = [];
-    const withChildren: CreateUserDto[] = [];
-
-    action.payload!.forEach(
-      user =>
-        [Roles.MANAGER, Roles.PARENT].indexOf(user.role) === -1
-          ? withoutChildren.push(user)
-          : withChildren.push(user)
-    );
-
-    let resultWithoutChildren: APIResponse = {
-      entries: [],
-      slots: [],
-      users: []
-    };
-    if (withoutChildren.length !== 0) {
-      resultWithoutChildren = yield call(
-        api.createUsers,
-        withoutChildren,
-        token
-      );
-      yield dispatchUpdates(resultWithoutChildren);
-    }
-
-    if (withChildren.length !== 0) {
-      /**
-       * Map created user's usernames to ids
-       */
-      const ids = Map<string, string>(
-        resultWithoutChildren.users.map(u => [u.get("username"), u.get("id")])
-      );
-
-      /**
-       * Replace usernames by created ids
-       */
-      const withChildrenAsIds = withChildren.map(u => ({
-        ...u,
-        children: u.children.map(c => ids.get(c) || c)
-      }));
-
-      /**
-       * Create users
-       */
-      const resultWithChildren = yield call(
-        api.createUsers,
-        withChildrenAsIds,
-        token
-      );
-      yield dispatchUpdates(resultWithChildren);
-    }
-
+    const result = yield call(api.createUsers, action.payload!, token);
+    yield dispatchUpdates(result);
     yield put(createUsersSuccess());
+
+    return;
   } catch (error) {
     const ex: Error = error;
     yield put(addMessage(ex.message));
@@ -392,6 +354,7 @@ function* saga() {
   yield takeEvery(GET_NEEDED_USERS_REQUEST, getNeededUsersSaga);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
   yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);
+  yield takeEvery(DOWNLOAD_EXCEL_EXPORT_REQUEST, downloadExcelExportSaga);
   yield takeEvery<Action<CreateEntryDto>>(
     CREATE_ENTRY_REQUEST,
     createEntrySaga

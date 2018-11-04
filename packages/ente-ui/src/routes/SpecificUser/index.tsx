@@ -48,7 +48,7 @@ import {
   PatchUserDto,
   isValidDisplayname,
   isValidEmail,
-  isValidUserPatch
+  isValidPatchUserDto
 } from "ente-types";
 import { DeleteModal } from "../../components/DeleteModal";
 import { YearPicker } from "ente-ui/src/elements/YearPicker";
@@ -276,7 +276,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
               size="small"
               color="primary"
               onClick={this.onSubmit}
-              disabled={!isValidUserPatch(this.state.patch)}
+              disabled={!isValidPatchUserDto(this.state.patch)}
             >
               {lang().ui.common.submit}
             </Button>

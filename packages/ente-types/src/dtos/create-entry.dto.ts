@@ -4,12 +4,12 @@ import {
   ValidateNested,
   IsOptional,
   IsUUID,
-  IsNumber,
-  IsDate
+  ArrayMinSize
 } from "class-validator";
-import { DateIsAfter } from "../helpers";
-import { twoWeeksBeforeNow } from "../validators";
+import { DateIsAfter } from "../helpers/date-is-after";
+import { twoWeeksBeforeNow } from "../validators/entry";
 import { Type } from "class-transformer";
+import { CreateSlotDto } from "./create-slot.dto";
 
 export class CreateEntryDto {
   @DateIsAfter(() => twoWeeksBeforeNow())
@@ -20,6 +20,7 @@ export class CreateEntryDto {
   dateEnd?: Date;
 
   @IsArray()
+  @ArrayMinSize(1)
   @ValidateNested()
   @Type(() => CreateSlotDto)
   slots: CreateSlotDto[];
@@ -29,14 +30,4 @@ export class CreateEntryDto {
   @IsOptional()
   @IsUUID()
   studentId?: string;
-}
-
-export class CreateSlotDto {
-  @IsDate() date: Date;
-
-  @IsNumber() from: number;
-
-  @IsNumber() to: number;
-
-  @IsUUID() teacherId: string;
 }

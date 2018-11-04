@@ -1,5 +1,3 @@
-import { SyncValidator } from ".";
-
 /**
  * EntE
  * (c) 2017-present, Simon Knott <info@simonknott.de>
@@ -7,6 +5,8 @@ import { SyncValidator } from ".";
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
+
+export type SyncValidator<T> = (v: T) => boolean;
 
 export const matches = <T>(
   validators: SyncValidator<T>[]

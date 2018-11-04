@@ -28,7 +28,7 @@ import {
   isValidEmail,
   isValidPassword,
   createDefaultCreateUserDto,
-  isValidCreateUser
+  isValidCreateUserDto
 } from "ente-types";
 import {
   getStudents,
@@ -53,7 +53,7 @@ interface OwnProps {
   show: boolean;
 }
 
-interface State {
+interface CreateUserState {
   create: CreateUserDto;
   showImportUsers: boolean;
 }
@@ -78,16 +78,23 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createUser: (user: CreateUserDto) => dispatch(createUsersRequest(user))
 });
 
-type Props = OwnProps & StateProps & DispatchProps & WithStyles & InjectedProps;
+type CreateUserProps = OwnProps &
+  StateProps &
+  DispatchProps &
+  WithStyles &
+  InjectedProps;
 
 /**
  * # Component
  */
-export class CreateUser extends React.Component<Props, State> {
+export class CreateUser extends React.Component<
+  CreateUserProps,
+  CreateUserState
+> {
   /**
    * # Intialization
    */
-  state: State = {
+  state: Readonly<CreateUserState> = {
     create: createDefaultCreateUserDto(),
     showImportUsers: false
   };
@@ -154,7 +161,7 @@ export class CreateUser extends React.Component<Props, State> {
     !this.state.create.password || isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
-  inputValid = (): boolean => isValidCreateUser(this.state.create);
+  inputValid = (): boolean => isValidCreateUserDto(this.state.create);
 
   render() {
     const { classes, show, fullScreen, getUser, students } = this.props;
@@ -284,5 +291,5 @@ export default withStyles(styles)(
   connect<StateProps, DispatchProps, OwnProps, AppState>(
     mapStateToProps,
     mapDispatchToProps
-  )(withMobileDialog<Props>()(withErrorBoundary()(CreateUser)))
+  )(withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser)))
 );

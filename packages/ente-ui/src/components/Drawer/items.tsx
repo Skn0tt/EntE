@@ -7,8 +7,18 @@
  */
 
 import * as React from "react";
-import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import { WatchLater, InsertDriveFile, Person } from "@material-ui/icons";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from "@material-ui/core";
+import {
+  WatchLater,
+  InsertDriveFile,
+  Person,
+  Settings
+} from "@material-ui/icons";
 import { Route } from "react-router-dom";
 
 /**
@@ -53,38 +63,52 @@ const Entries: React.SFC = () => (
   />
 );
 
+const Admin: React.SFC = () => (
+  <Route
+    render={({ history }) => (
+      <ListItem button onClick={() => history.push("/admin")}>
+        <ListItemIcon>
+          <Settings />
+        </ListItemIcon>
+        <ListItemText primary="Admin" />
+      </ListItem>
+    )}
+  />
+);
+
 /**
  * # Composed
  */
 export const AdminItems: React.SFC = () => (
-  <List>
+  <>
     <Entries />
     <Slots />
     <Users />
-  </List>
+    <Admin />
+  </>
 );
 
 export const TeacherItems: React.SFC = () => (
-  <List>
+  <>
     <Slots />
-  </List>
+  </>
 );
 
 export const StudentItems: React.SFC = () => (
-  <List>
+  <>
     <Entries />
-  </List>
+  </>
 );
 
 export const ParentItems: React.SFC = () => (
-  <List>
+  <>
     <Entries />
-  </List>
+  </>
 );
 
 export const ManagerItems: React.SFC = () => (
-  <List>
+  <>
     <Entries />
     <Slots />
-  </List>
+  </>
 );

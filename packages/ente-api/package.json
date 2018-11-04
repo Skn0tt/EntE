@@ -28,6 +28,7 @@
     "class-transformer": "^0.1.10",
     "class-validator": "^0.9.1",
     "ente-types": "^0.6.0",
+    "excel4node": "^1.7.0",
     "handlebars": "^4.0.12",
     "lodash": "^4.17.11",
     "mjml": "^4.2.0",

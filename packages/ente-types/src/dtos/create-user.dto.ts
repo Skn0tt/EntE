@@ -1,22 +1,18 @@
-import { PatchUserDto } from "./user-patch.dto";
 import { rolesArr, Roles } from "ente-types";
-import {
-  IsIn,
-  IsUUID,
-  IsBoolean,
-  IsOptional,
-  IsDefined,
-  IsInt
-} from "class-validator";
-import { CustomStringValidator } from "../helpers";
+import { IsIn, IsBoolean, IsOptional, IsDefined } from "class-validator";
+import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
-  isValidPassword,
   isValidDisplayname,
-  isValidEmail
-} from "../validators";
+  isValidEmail,
+  isValidUuidOrUsername
+} from "../validators/user";
+import { isValidPassword } from "../validators/auth";
+import { EmptyWhen } from "../helpers/empty-when";
+import { UserDto } from "./user.dto";
+import { IsIntWhen } from "../helpers/is-int-when";
 
-export class CreateUserDto extends PatchUserDto {
+export class CreateUserDto {
   @CustomStringValidator(isValidUsername) username: string;
 
   @IsOptional()
@@ -31,11 +27,13 @@ export class CreateUserDto extends PatchUserDto {
   @IsIn(rolesArr)
   role: Roles;
 
-  @IsUUID("4", { each: true })
+  @EmptyWhen((u: CreateUserDto) => u.role !== Roles.PARENT)
+  @CustomStringValidator(isValidUuidOrUsername, { each: true })
   children: string[];
 
-  @IsOptional()
-  @IsInt()
+  @IsIntWhen((u: CreateUserDto) =>
+    [Roles.STUDENT, Roles.MANAGER].includes(u.role)
+  )
   graduationYear?: number;
 
   @IsDefined()

@@ -6,8 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { rolesArr, Roles } from "ente-types";
-import { SyncValidator, isValidPassword } from "./";
+import { rolesArr } from "ente-types";
 import * as _ from "lodash";
 import {
   isLength,
@@ -15,10 +14,9 @@ import {
   containsSpecialChars,
   not,
   containsSpaces,
-  containsSpecialCharsAll
+  containsSpecialCharsAll,
+  SyncValidator
 } from "./shared";
-import { CreateUserDto, PatchUserDto } from "../dtos";
-import { url } from "inspector";
 
 /**
  * Validates a username
@@ -58,32 +56,5 @@ export const isValidEmail: SyncValidator<string> = email =>
     email
   );
 
-export const isValidCreateUserExcludingChildren: SyncValidator<
-  CreateUserDto
-> = matches([
-  u => isValidDisplayname(u.displayname),
-  u => isValidUsername(u.username),
-  u => isValidRole(u.role),
-  u => isValidEmail(u.email),
-  // If password exists, must be valid
-  u => !u.password || isValidPassword(u.password),
-  // If not STUDENT, must not be adult
-  u => u.role === Roles.STUDENT || !u.isAdult,
-  // if not MANAGER or PARENT, must not have children
-  u =>
-    [Roles.MANAGER, Roles.PARENT].indexOf(u.role) !== -1 ||
-    u.children.length === 0,
-  u => ![Roles.STUDENT, Roles.MANAGER].includes(u.role) || !!u.graduationYear
-]);
-
-export const isValidCreateUser: SyncValidator<CreateUserDto> = matches([
-  isValidCreateUserExcludingChildren,
-  u => u.children.every(c => isValidUuid(c))
-]);
-
-export const isValidUserPatch: SyncValidator<PatchUserDto> = matches([
-  u => !u.children || u.children.every(isValidUuid),
-  u => !u.displayname || isValidDisplayname(u.displayname),
-  u => !u.email || isValidEmail(u.email),
-  u => !u.role || isValidRole(u.role)
-]);
+export const isValidUuidOrUsername: SyncValidator<string> = v =>
+  isValidUuid(v) || isValidUsername(v);

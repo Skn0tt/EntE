@@ -64,7 +64,10 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_ENTRY_ERROR,
-  DELETE_ENTRY_SUCCESS
+  DELETE_ENTRY_SUCCESS,
+  DOWNLOAD_EXCEL_EXPORT_REQUEST,
+  DOWNLOAD_EXCEL_EXPORT_ERROR,
+  DOWNLOAD_EXCEL_EXPORT_SUCCESS
 } from "./constants";
 import { ActionType } from "redux-saga/effects";
 import { Map, List } from "immutable";
@@ -180,6 +183,13 @@ const reducer = handleActions(
       UNSIGN_ENTRY_REQUEST,
       UNSIGN_ENTRY_ERROR,
       UNSIGN_ENTRY_SUCCESS
+    ),
+
+    // ## DOWNLOAD_EXCEL_EXPORT
+    ...asyncReducersFull(
+      DOWNLOAD_EXCEL_EXPORT_REQUEST,
+      DOWNLOAD_EXCEL_EXPORT_ERROR,
+      DOWNLOAD_EXCEL_EXPORT_SUCCESS
     ),
 
     // ## PATCH_FORSCHOOl
