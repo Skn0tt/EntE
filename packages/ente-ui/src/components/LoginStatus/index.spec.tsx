@@ -16,7 +16,7 @@ describe("LoginStatus", () => {
   const displayname = "Greg";
 
   const comp = shallow(
-    <LoginStatus classes={{}} displayname={displayname} logout={logout} />
+    <LoginStatus displayname={displayname} logout={logout} />
   );
 
   it("renders correctly", () => {
@@ -24,7 +24,7 @@ describe("LoginStatus", () => {
   });
 
   it("logs out on clicking logout button", () => {
-    comp.find(".logout").simulate("click");
+    comp.find("#logout").simulate("click");
 
     expect(logout).toBeCalled();
   });

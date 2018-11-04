@@ -6,11 +6,8 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { SyncValidator } from "./";
-import { matches, not } from "./shared";
-import { isValidSlot } from "./slot";
 import * as _ from "lodash";
-import { CreateEntryDto } from "../dtos";
+import { SyncValidator } from "./shared";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -22,14 +19,3 @@ export const isOlderThanTwoWeeksBeforeNow: SyncValidator<Date> = d =>
   isBefore(twoWeeksBeforeNow())(d);
 
 export const areApart = (t: number) => (a: Date, b: Date) => +b - +a >= t;
-
-export const isValidCreateEntry: SyncValidator<CreateEntryDto> = matches([
-  v => not(isOlderThanTwoWeeksBeforeNow)(v.date),
-  v => v.slots.every(isValidSlot),
-  // A: dateEnd doesn't exist
-  // B: v shouldn't contains slots
-  v => _.isUndefined(v.dateEnd) !== (v.slots.length === 0),
-  // A: dateEnd doesn't exist
-  // B: dates should be at least 1 day apart
-  v => _.isUndefined(v.dateEnd) || areApart(1 * DAY)(v.date, v.dateEnd)
-]);

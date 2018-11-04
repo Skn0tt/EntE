@@ -59,7 +59,8 @@ const createEntry: CreateEntryDto = {
     {
       from: 1,
       teacherId: benBongo.id,
-      to: 1
+      to: 1,
+      date: new Date()
     }
   ]
 };

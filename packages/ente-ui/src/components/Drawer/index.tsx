@@ -10,13 +10,14 @@ import { AppState, getRole, isLoading } from "ente-redux";
 import { Roles } from "ente-types";
 import {
   AppBar,
-  Divider,
   Hidden,
   IconButton,
   Toolbar,
   WithStyles,
   withStyles,
-  Drawer as MUIDrawer
+  Drawer as MUIDrawer,
+  List,
+  Divider
 } from "@material-ui/core";
 import * as React from "react";
 import { Menu as MenuIcon } from "@material-ui/icons";
@@ -32,7 +33,6 @@ import {
   TeacherItems
 } from "./items";
 import styles from "./styles";
-import { Dispatch } from "redux";
 
 /**
  * # Component Types
@@ -73,7 +73,7 @@ class Drawer extends React.Component<Props, State> {
     const { mobileOpen } = this.state;
 
     const drawer = (
-      <>
+      <List disablePadding>
         <LoginStatus />
         <Divider />
         {
@@ -85,7 +85,7 @@ class Drawer extends React.Component<Props, State> {
             [Roles.MANAGER]: <ManagerItems />
           }[role]
         }
-      </>
+      </List>
     );
 
     return (

@@ -8,7 +8,7 @@
 
 import { parse as papaparse, ParseResult } from "papaparse";
 import * as _ from "lodash";
-import { CreateUserDto, isValidCreateUserExcludingChildren } from "ente-types";
+import { CreateUserDto, isValidCreateUserDto } from "ente-types";
 
 const isBlank = (str: string) => !str || /^\s*$/.test(str);
 
@@ -40,7 +40,7 @@ const parseCSV = async (
     return res;
   });
 
-  const allValid = result.every(isValidCreateUserExcludingChildren);
+  const allValid = result.every(isValidCreateUserDto);
   if (!allValid) {
     throw new Error("One of the users is invalid.");
   }

@@ -1,7 +1,11 @@
 import { Roles, rolesArr } from "ente-types";
-import { IsOptional, IsIn, IsUUID, IsBoolean, IsInt } from "class-validator";
-import { CustomStringValidator } from "../helpers";
-import { isValidDisplayname, isValidEmail } from "../validators";
+import { IsOptional, IsIn, IsBoolean, IsInt } from "class-validator";
+import { CustomStringValidator } from "../helpers/custom-string-validator";
+import {
+  isValidDisplayname,
+  isValidEmail,
+  isValidUuidOrUsername
+} from "../validators";
 
 export class PatchUserDto {
   @IsOptional()
@@ -17,7 +21,7 @@ export class PatchUserDto {
   role?: Roles;
 
   @IsOptional()
-  @IsUUID("4", { each: true })
+  @CustomStringValidator(isValidUuidOrUsername, { each: true })
   children?: string[];
 
   @IsOptional()

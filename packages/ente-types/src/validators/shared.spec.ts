@@ -9,7 +9,6 @@
 import {
   isBetween,
   containsNumbers,
-  containsSpecialChars,
   not,
   containsSpaces,
   containsSpecialCharsAll

@@ -34,7 +34,15 @@ import { Action } from "redux-actions";
 import HttpsGate from "./components/HttpsGate";
 
 const config: ReduxConfig = {
-  baseUrl: `${location.protocol}//${location.hostname}/api`
+  baseUrl: `${location.protocol}//${location.hostname}/api`,
+  onFileDownload: (file, filename) => {
+    const url = window.URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+  }
 };
 
 const { SENTRY_DSN_UI, ALLOW_INSECURE } = getConfig();

@@ -15,6 +15,7 @@ import Users from "./routes/Users";
 import SpecificUser from "./routes/SpecificUser";
 import SpecificEntry from "./routes/SpecificEntry";
 import NotFound from "./routes/NotFound";
+import AdminRoute from "./routes/AdminRoute";
 
 const AdminRoutes: React.SFC = () => (
   <>
@@ -23,6 +24,7 @@ const AdminRoutes: React.SFC = () => (
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
+      <Route path="/admin" component={AdminRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>

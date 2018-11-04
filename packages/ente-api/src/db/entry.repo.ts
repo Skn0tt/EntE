@@ -63,8 +63,6 @@ export class EntryRepo {
         relations: ["children"]
       });
 
-      console.log(dto);
-
       const newEntry = await manager.create(Entry, {
         student,
         signedParent: config.signedByParent,
@@ -137,7 +135,7 @@ export class EntryRepo {
     result.date = entry.date;
     result.dateEnd = entry.dateEnd;
     result.slots = entry.slots.map(SlotRepo.toDto);
-    result.student = UserRepo.toDto(entry.student, { canHaveChildren: false });
+    result.student = UserRepo.toDto(entry.student);
     result.createdAt = entry.createdAt;
     result.updatedAt = entry.updatedAt;
     result.forSchool = !!entry.forSchool;

@@ -8,14 +8,14 @@
 
 import * as React from "react";
 
-import styles from "./styles";
-import { WithStyles } from "@material-ui/core/styles/withStyles";
-import { withStyles, IconButton, List } from "@material-ui/core";
+import {
+  IconButton,
+  ListItemText,
+  ListItem,
+  ListItemIcon
+} from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import { PowerSettingsNew as PowerSettingsNewIcon } from "@material-ui/icons";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { logout, AppState, getDisplayname } from "ente-redux";
 import { Action } from "redux";
 
@@ -36,30 +36,24 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>): DispatchProps => ({
   logout: () => dispatch(logout())
 });
 
-type Props = StateProps & DispatchProps & WithStyles;
+type Props = StateProps & DispatchProps;
 
 /**
  * # Component
  */
 export const LoginStatus: React.SFC<Props> = props => {
-  const { classes, displayname, logout } = props;
+  const { displayname, logout } = props;
 
   return (
-    <div className={classes.container}>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <IconButton aria-label="logout" onClick={logout} className="logout">
-              <PowerSettingsNewIcon />
-            </IconButton>
-          </ListItemIcon>
-          <ListItemText primary={displayname} />
-        </ListItem>
-      </List>
-    </div>
+    <ListItem>
+      <ListItemIcon>
+        <IconButton aria-label="logout" onClick={logout} id="logout">
+          <PowerSettingsNewIcon />
+        </IconButton>
+      </ListItemIcon>
+      <ListItemText primary={displayname} />
+    </ListItem>
   );
 };
 
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(LoginStatus)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginStatus);

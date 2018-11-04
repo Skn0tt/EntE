@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Repository, Brackets } from "typeorm";
 import User from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
-import { Roles, CreateUserDto, UserDto } from "ente-types";
+import { Roles, CreateUserDto, UserDto, isValidUuid } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
 
@@ -95,26 +95,46 @@ export class UserRepo {
   }
 
   async create(...users: CreateUserDtoWithHash[]): Promise<UserDto[]> {
-    const newUsers = await this.repo.create(
-      await Promise.all(
-        users.map(async ({ user, hash }) => ({
-          children: await Promise.all(
-            user.children.map(async c => await this._findById(c))
-          ),
-          displayname: user.displayname,
-          isAdult: user.isAdult,
-          password: hash,
-          role: user.role,
-          username: user.username,
-          email: user.email,
-          graduationYear: user.graduationYear
-        }))
-      )
-    );
+    return this.repo.manager.transaction(async manager => {
+      const [parents, withoutChildren] = _.partition<CreateUserDtoWithHash>(
+        users,
+        u => u.user.role === Roles.PARENT
+      );
 
-    const savedUsers = await this.repo.save(newUsers);
+      const result: User[] = [];
 
-    return savedUsers.map(u => UserRepo.toDto(u));
+      const insert = async (users: CreateUserDtoWithHash[]) => {
+        const newUsers = await manager.create(
+          User,
+          await Promise.all(
+            users.map(async ({ user, hash }) => ({
+              children: await Promise.all(
+                user.children.map(async c => {
+                  return isValidUuid(c)
+                    ? await manager.findOne(User, c)
+                    : await manager.findOne(User, { where: { username: c } });
+                })
+              ),
+              displayname: user.displayname,
+              isAdult: user.isAdult,
+              password: hash,
+              role: user.role,
+              username: user.username,
+              email: user.email,
+              graduationYear: user.graduationYear
+            }))
+          )
+        );
+
+        const savedUsers = await manager.save(User, newUsers);
+        result.push(...savedUsers);
+      };
+
+      await insert(withoutChildren);
+      await insert(parents);
+
+      return result.map(u => UserRepo.toDto(u));
+    });
   }
 
   async setDisplayName(id: string, displayname: string) {
@@ -233,16 +253,14 @@ export class UserRepo {
     await this.repo.delete({ _id: id });
   }
 
-  static toDto(
-    user: User,
-    config: ToUserDtoConfig = { canHaveChildren: true }
-  ): UserDto {
+  static toDto(user: User): UserDto {
     const result = new UserDto();
     result.id = user._id;
 
-    result.children = config.canHaveChildren
-      ? user.children.map(c => UserRepo.toDto(c))
-      : [];
+    result.children =
+      user.role === Roles.PARENT
+        ? user.children.map(c => UserRepo.toDto(c))
+        : [];
     result.displayname = user.displayname;
     result.email = user.email;
     result.isAdult = !!user.isAdult;

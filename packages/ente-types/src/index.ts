@@ -8,5 +8,6 @@
 
 export * from "./roles";
 export * from "./dtos";
-export * from "./validators";
 export * from "./helpers";
+export * from "./validators";
+export * from "./validate-dtos";

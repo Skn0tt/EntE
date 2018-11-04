@@ -199,6 +199,14 @@ export const getNeededUsers = async (token: string): Promise<APIResponse> => {
   return transformUsers(...data);
 };
 
+export const downloadExcelExport = async (token: string): Promise<void> => {
+  const response = await axios.get<Blob>(`${config.baseUrl}/export/excel`, {
+    ...axiosTokenParams(token),
+    responseType: "blob"
+  });
+  config.onFileDownload(response.data, "export.xlsx");
+};
+
 export const getEntry = async (
   id: string,
   token: string

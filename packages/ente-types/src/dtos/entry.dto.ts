@@ -5,7 +5,7 @@ import {
   IsBoolean,
   ValidateNested
 } from "class-validator";
-import { DateIsAfter } from "../helpers";
+import { DateIsAfter } from "../helpers/date-is-after";
 import { SlotDto } from "./slot.dto";
 import { UserDto } from "./user.dto";
 import { Type } from "class-transformer";

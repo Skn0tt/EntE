@@ -18,11 +18,13 @@ export type ReduxConfig = {
   baseUrl: string;
   middlewares?: Middleware[];
   onSagaError?: (err: Error) => void;
+  onFileDownload: (file: Blob, filename: string) => void;
 };
 
 export let config: ReduxConfig = {
   baseUrl: "",
-  middlewares: []
+  middlewares: [],
+  onFileDownload: () => {}
 };
 
 const setup = (conf: ReduxConfig) => {
