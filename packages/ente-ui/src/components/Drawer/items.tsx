@@ -7,12 +7,7 @@
  */
 
 import * as React from "react";
-import {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider
-} from "@material-ui/core";
+import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import {
   WatchLater,
   InsertDriveFile,

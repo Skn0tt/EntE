@@ -71,16 +71,18 @@ const store = setupRedux(config);
 
 const Index = () => (
   <div>
-    <CssBaseline />
-    <MuiThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
-        <HttpsGate disable={ALLOW_INSECURE}>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </HttpsGate>
-      </MuiPickersUtilsProvider>
-    </MuiThemeProvider>
+    <React.StrictMode>
+      <CssBaseline />
+      <MuiThemeProvider theme={theme}>
+        <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+          <HttpsGate disable={ALLOW_INSECURE}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </HttpsGate>
+        </MuiPickersUtilsProvider>
+      </MuiThemeProvider>
+    </React.StrictMode>
   </div>
 );
 
