@@ -23,7 +23,7 @@ export const withErrorBoundary = <C extends { error: Error }>(
         return !!CustomErrorScreen ? (
           <CustomErrorScreen error={error} />
         ) : (
-          <h1 className="error">{error.message}</h1>
+          <p id="error">{error.message}</p>
         );
       }
 

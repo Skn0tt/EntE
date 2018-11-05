@@ -9,8 +9,6 @@
 import * as React from "react";
 import { withErrorBoundary } from "./withErrorBoundary";
 import { shallow, ShallowWrapper, mount } from "enzyme";
-import * as ReactRouterEnzymeContext from "react-router-enzyme-context";
-import { LoginStatus } from "./LoginStatus";
 
 const ErrorComponent: React.SFC<{ throwErr?: boolean }> = ({ throwErr }) => {
   if (throwErr) {

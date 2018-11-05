@@ -37,7 +37,8 @@ import styles from "./styles";
 /**
  * # Component Types
  */
-interface StateProps {
+interface DrawerOwnProps {}
+interface DrawerStateProps {
   loading: boolean;
   role: Roles;
 }
@@ -46,22 +47,25 @@ const mapStateToProps = (state: AppState) => ({
   role: getRole(state)
 });
 
-type Props = StateProps & RouteComponentProps<{}> & WithStyles;
-interface State {
+type DrawerProps = DrawerStateProps &
+  DrawerOwnProps &
+  RouteComponentProps<{}> &
+  WithStyles;
+interface DrawerState {
   mobileOpen: boolean;
 }
 
 /**
  * # Component Logic
  */
-export const toggleDrawer = (s: State): State => ({
+export const toggleDrawer = (s: DrawerState): DrawerState => ({
   mobileOpen: !s.mobileOpen
 });
 
 /**
  * # Component
  */
-class Drawer extends React.Component<Props, State> {
+class Drawer extends React.Component<DrawerProps, DrawerState> {
   state = {
     mobileOpen: false
   };
@@ -143,5 +147,9 @@ class Drawer extends React.Component<Props, State> {
 }
 
 export default withStyles(styles)(
-  withRouter(connect<StateProps, {}, Props, AppState>(mapStateToProps)(Drawer))
+  withRouter(
+    connect<DrawerStateProps, {}, DrawerOwnProps, AppState>(mapStateToProps)(
+      Drawer
+    )
+  )
 );
