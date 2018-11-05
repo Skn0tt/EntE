@@ -107,21 +107,11 @@ export class EntryRepo {
   }
 
   async setSignedManager(id: string, value: boolean) {
-    await this.repo
-      .createQueryBuilder("entry")
-      .update()
-      .set({ signedManager: value })
-      .where(" entry._id = :id", { id })
-      .execute();
+    await this.repo.update(id, { signedManager: value });
   }
 
   async setSignedParent(id: string, value: boolean) {
-    await this.repo
-      .createQueryBuilder("entry")
-      .update()
-      .set({ signedParent: value })
-      .where(" entry._id = :id", { id })
-      .execute();
+    await this.repo.update(id, { signedParent: value });
   }
 
   async delete(id: string) {
