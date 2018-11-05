@@ -29,6 +29,7 @@ import {
 } from "ente-types";
 
 import * as _ from "lodash";
+import { None, Some } from "monet";
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
@@ -130,12 +131,15 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
       student: null,
       teacher: null,
       studentId: student.id,
-      teacherId: teacher.id
+      teacherId: teacher === null ? None() : Some(teacher.id)
     });
 
     result.slots.push(normalised);
 
-    const userResponse = transformUsers(student, teacher);
+    const userResponse =
+      teacher === null
+        ? transformUsers(student)
+        : transformUsers(student, teacher);
     result = mergeAPIResponses(result, userResponse);
   });
 

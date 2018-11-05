@@ -3,7 +3,8 @@ import {
   ValidateNested,
   IsDate,
   IsInt,
-  IsBoolean
+  IsBoolean,
+  IsOptional
 } from "class-validator";
 import { UserDto } from "./user.dto";
 import { Type } from "class-transformer";
@@ -11,9 +12,10 @@ import { Type } from "class-transformer";
 export class SlotDto {
   @IsUUID("4") id: string;
 
+  @IsOptional()
   @Type(() => UserDto)
   @ValidateNested()
-  teacher: UserDto;
+  teacher: UserDto | null;
 
   @Type(() => UserDto)
   @ValidateNested()

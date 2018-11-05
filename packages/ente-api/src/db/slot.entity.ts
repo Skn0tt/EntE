@@ -34,8 +34,11 @@ export class Slot {
   /**
    * ## Relations
    */
-  @ManyToOne(type => User, user => user.slots, { nullable: false })
-  teacher: User;
+  @ManyToOne(type => User, user => user.slots, {
+    nullable: true,
+    onDelete: "SET NULL"
+  })
+  teacher: User | null;
 
   @ManyToOne(type => Entry, entry => entry.slots, {
     nullable: false,
