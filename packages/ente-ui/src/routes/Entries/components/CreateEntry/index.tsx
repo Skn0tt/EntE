@@ -57,6 +57,9 @@ const immutableDelete = (arr: any[], index: number) =>
 
 const oneDay: number = 24 * 60 * 60 * 1000;
 
+const nextDay = (d: Date) => new Date(+d + oneDay);
+const twoWeeksBefore = (d: Date) => new Date(+d - 14 * oneDay);
+
 interface OwnProps {
   onClose(): void;
   show: boolean;
@@ -140,12 +143,15 @@ class CreateEntry extends React.Component<Props, State> {
    * ## Input Handlers
    */
   handleChangeDate = (date: Date) => {
-    const dateEnd =
-      this.state.dateEnd <= date
-        ? new Date(+date + oneDay)
-        : this.state.dateEnd;
-
-    this.setState({ date, dateEnd });
+    const dateEndIsBeforeDate = +this.state.dateEnd <= +date + oneDay;
+    if (dateEndIsBeforeDate) {
+      this.setState({
+        date,
+        dateEnd: nextDay(date)
+      });
+    } else {
+      this.setState({ date });
+    }
   };
   handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
   handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -186,7 +192,7 @@ class CreateEntry extends React.Component<Props, State> {
   /**
    * ## Data
    */
-  minDate: Date = new Date(+new Date() - 14 * 24 * 60 * 60 * 1000);
+  minDate: Date = twoWeeksBefore(new Date());
 
   render() {
     const { isParent } = this.props;
@@ -260,7 +266,7 @@ class CreateEntry extends React.Component<Props, State> {
                         label="Bis"
                         isValid={() => this.dateEndValid()}
                         onChange={this.handleChangeDateEnd}
-                        minDate={this.state.date}
+                        minDate={nextDay(this.state.date)}
                         value={this.state.dateEnd}
                       />
                     </Grid>
