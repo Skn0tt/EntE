@@ -27,7 +27,7 @@ ShallowWrapper {
           item={true}
         >
           <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             TextUpdate
           </WithStyles(Typography)>
@@ -58,7 +58,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             TextUpdate
           </WithStyles(Typography)>,
@@ -71,7 +71,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "TextUpdate",
-            "variant": "title",
+            "variant": "h6",
           },
           "ref": null,
           "rendered": "TextUpdate",
@@ -133,7 +133,7 @@ ShallowWrapper {
             item={true}
           >
             <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               TextUpdate
             </WithStyles(Typography)>
@@ -164,7 +164,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               TextUpdate
             </WithStyles(Typography)>,
@@ -177,7 +177,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": "TextUpdate",
-              "variant": "title",
+              "variant": "h6",
             },
             "ref": null,
             "rendered": "TextUpdate",

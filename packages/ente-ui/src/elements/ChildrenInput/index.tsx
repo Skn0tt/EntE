@@ -93,7 +93,7 @@ export class ChildrenInput extends React.Component<Props & WithStyles, State> {
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography variant="title">
+          <Typography variant="h6">
             {lang().ui.specificUser.childrenTitle}
           </Typography>
         </Grid>

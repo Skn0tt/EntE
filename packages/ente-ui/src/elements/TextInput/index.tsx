@@ -34,7 +34,7 @@ export const TextInput: React.SFC<Props> = props => {
     <Grid container direction="column">
       {!!title && (
         <Grid item>
-          <Typography variant="title">{title}</Typography>
+          <Typography variant="h6">{title}</Typography>
         </Grid>
       )}
       <Grid item>

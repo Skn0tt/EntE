@@ -26,7 +26,7 @@ ShallowWrapper {
           item={true}
         >
           <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Switch
           </WithStyles(Typography)>
@@ -52,7 +52,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Switch
           </WithStyles(Typography)>,
@@ -65,7 +65,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "Switch",
-            "variant": "title",
+            "variant": "h6",
           },
           "ref": null,
           "rendered": "Switch",
@@ -115,7 +115,7 @@ ShallowWrapper {
             item={true}
           >
             <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Switch
             </WithStyles(Typography)>
@@ -141,7 +141,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Switch
             </WithStyles(Typography)>,
@@ -154,7 +154,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": "Switch",
-              "variant": "title",
+              "variant": "h6",
             },
             "ref": null,
             "rendered": "Switch",

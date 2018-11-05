@@ -63,7 +63,7 @@ ShallowWrapper {
           item={true}
         >
           <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Kinder
           </WithStyles(Typography)>
@@ -144,7 +144,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Kinder
           </WithStyles(Typography)>,
@@ -157,7 +157,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "Kinder",
-            "variant": "title",
+            "variant": "h6",
           },
           "ref": null,
           "rendered": "Kinder",
@@ -457,7 +457,7 @@ ShallowWrapper {
             item={true}
           >
             <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Kinder
             </WithStyles(Typography)>
@@ -538,7 +538,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Kinder
             </WithStyles(Typography)>,
@@ -551,7 +551,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": "Kinder",
-              "variant": "title",
+              "variant": "h6",
             },
             "ref": null,
             "rendered": "Kinder",
@@ -913,7 +913,7 @@ ShallowWrapper {
           item={true}
         >
           <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Kinder
           </WithStyles(Typography)>
@@ -980,7 +980,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <WithStyles(Typography)
-            variant="title"
+            variant="h6"
           >
             Kinder
           </WithStyles(Typography)>,
@@ -993,7 +993,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "Kinder",
-            "variant": "title",
+            "variant": "h6",
           },
           "ref": null,
           "rendered": "Kinder",
@@ -1253,7 +1253,7 @@ ShallowWrapper {
             item={true}
           >
             <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Kinder
             </WithStyles(Typography)>
@@ -1320,7 +1320,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <WithStyles(Typography)
-              variant="title"
+              variant="h6"
             >
               Kinder
             </WithStyles(Typography)>,
@@ -1333,7 +1333,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": "Kinder",
-              "variant": "title",
+              "variant": "h6",
             },
             "ref": null,
             "rendered": "Kinder",
