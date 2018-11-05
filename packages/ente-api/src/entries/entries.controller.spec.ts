@@ -18,10 +18,7 @@ const s: EntriesService = {
   getSigningLinkForEntry() {
     return "https://yourlink";
   },
-  async setForSchool(id, v, r) {
-    return Success(mocks.entries.entry);
-  },
-  async sign(id) {
+  async patch(id, r, u) {
     return Success(mocks.entries.entry);
   }
 } as any;
@@ -78,9 +75,13 @@ describe.only("Entries Controller", () => {
         EntriesController
       );
 
-      const response = await controller.sign("id", true, {
-        user: mocks.users.admin
-      });
+      const response = await controller.patch(
+        "id",
+        { signed: true },
+        {
+          user: mocks.users.admin
+        }
+      );
       expect(response).toEqual(mocks.entries.entry);
     });
   });
@@ -91,9 +92,13 @@ describe.only("Entries Controller", () => {
         EntriesController
       );
 
-      const response = await controller.setForSchool("id", true, {
-        user: mocks.users.admin
-      });
+      const response = await controller.patch(
+        "id",
+        { forSchool: true },
+        {
+          user: mocks.users.admin
+        }
+      );
       expect(response).toEqual(mocks.entries.entry);
     });
   });

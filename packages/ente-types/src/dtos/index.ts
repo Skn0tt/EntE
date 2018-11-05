@@ -6,3 +6,4 @@ export * from "./jwt-token-payload";
 export * from "./slot.dto";
 export * from "./user-patch.dto";
 export * from "./user.dto";
+export * from "./patch-entry.dto";
