@@ -183,31 +183,20 @@ class SpecificEntry extends React.Component<
           <DialogContent>
             {!!entry ? (
               <Grid container direction="column" spacing={24}>
-                {/* ID */}
-                <Grid item>
-                  <Grid container>
-                    <Grid item>
-                      <DialogContentText>
-                        ID: {entry.get("id")} <br />
-                      </DialogContentText>
-                    </Grid>
-                    {role === Roles.MANAGER && (
-                      <Grid item>
-                        <IconButton
-                          aria-label="Löschen"
-                          onClick={() => this.setState({ showDelete: true })}
-                          className={classes.deleteButton}
-                        >
-                          <DeleteIcon fontSize="large" />
-                        </IconButton>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Grid>
+                {role === Roles.MANAGER && (
+                  <IconButton
+                    aria-label="Löschen"
+                    onClick={() => this.setState({ showDelete: true })}
+                    className={classes.deleteButton}
+                  >
+                    <DeleteIcon fontSize="large" />
+                  </IconButton>
+                )}
 
                 <Grid item>
-                  <Typography variant="title">Info</Typography>
+                  <Typography variant="h6">Info</Typography>
                   <Typography variant="body1">
+                    <i>ID:</i> {entry.get("id")} <br />
                     <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
                     <br />
                     <i>Schulisch:</i>{" "}
@@ -240,7 +229,7 @@ class SpecificEntry extends React.Component<
 
                 {/* Slots */}
                 <Grid item>
-                  <Typography variant="title">Stunden</Typography>
+                  <Typography variant="h6">Stunden</Typography>
                   <Table>
                     <TableHead>
                       <TableRow>
@@ -269,7 +258,7 @@ class SpecificEntry extends React.Component<
 
                 {/* Signed */}
                 <Grid item>
-                  <Typography variant="title">Signiert</Typography>
+                  <Typography variant="h6">Signiert</Typography>
                   <List>
                     {/* Admin */}
                     <ListItem>

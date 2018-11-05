@@ -269,7 +269,7 @@ class CreateEntry extends React.Component<Props, State> {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="title">Stunden</Typography>
+              <Typography variant="h6">Stunden</Typography>
               <Typography variant="caption">
                 Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
                 Erstellen sie dafür für jede Stunde eine Zeile.

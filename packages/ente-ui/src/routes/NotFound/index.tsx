@@ -30,7 +30,7 @@ export const NotFound: React.SFC<Props> = props => (
       <img src={Diggie} height={400} />
     </Grid>
     <Grid item>
-      <Typography variant="title">Die Seite wurde nicht gefunden.</Typography>
+      <Typography variant="h6">Die Seite wurde nicht gefunden.</Typography>
     </Grid>
   </Grid>
 );

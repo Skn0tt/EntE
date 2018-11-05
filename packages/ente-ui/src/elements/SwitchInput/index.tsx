@@ -29,7 +29,7 @@ export const SwitchInput: React.SFC<Props> = props => {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Typography variant="title">{title}</Typography>
+        <Typography variant="h6">{title}</Typography>
       </Grid>
       <Grid item>
         <Switch
