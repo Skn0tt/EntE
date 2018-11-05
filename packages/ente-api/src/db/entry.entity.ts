@@ -51,13 +51,13 @@ export class Entry {
    */
   @ManyToOne(type => User, user => user.entries, {
     nullable: false,
-    eager: true
+    eager: true,
+    onDelete: "CASCADE"
   })
   readonly student: User;
 
   @OneToMany(type => Slot, slot => slot.entry, {
-    eager: true,
-    onDelete: "CASCADE"
+    eager: true
   })
   readonly slots: Slot[];
 

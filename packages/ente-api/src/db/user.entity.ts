@@ -76,7 +76,7 @@ export class User {
   @ManyToMany(type => User, user => user.children)
   parents: User[];
 
-  @OneToMany(type => Entry, entry => entry.student, { onDelete: "CASCADE" })
+  @OneToMany(type => Entry, entry => entry.student)
   entries: Entry[];
 
   @OneToMany(type => Slot, slot => slot.teacher)

@@ -24,10 +24,12 @@ import {
   UserDto,
   EntryDto,
   SlotDto,
-  JwtTokenPayload
+  JwtTokenPayload,
+  PatchEntryDto
 } from "ente-types";
 
 import * as _ from "lodash";
+import { None, Some } from "monet";
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
@@ -129,12 +131,15 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
       student: null,
       teacher: null,
       studentId: student.id,
-      teacherId: teacher.id
+      teacherId: teacher === null ? None() : Some(teacher.id)
     });
 
     result.slots.push(normalised);
 
-    const userResponse = transformUsers(student, teacher);
+    const userResponse =
+      teacher === null
+        ? transformUsers(student)
+        : transformUsers(student, teacher);
     result = mergeAPIResponses(result, userResponse);
   });
 
@@ -280,13 +285,8 @@ export const createUsers = async (
   return transformUsers(...response);
 };
 
-const patch = async <T>(url: string, token: string, body?: {}) => {
-  const response = await axios.patch<T>(url, body, {
-    transformResponse: transformDates,
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  });
+const patch = async <T, B = {}>(url: string, token: string, body?: B) => {
+  const response = await axios.patch<T>(url, body, axiosStandardParams(token));
   return response.data;
 };
 
@@ -303,7 +303,7 @@ export const updateUser = async (
   return transformUsers(response);
 };
 
-const put = async <T>(url: string, token: string, body?: {}) => {
+const put = async <T, B = {}>(url: string, token: string, body?: B) => {
   const response = await axios.put<T>(url, body, axiosStandardParams(token));
   return response.data;
 };
@@ -312,10 +312,12 @@ export const signEntry = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put<EntryDto>(
+  const response = await patch<EntryDto, PatchEntryDto>(
     `${config.baseUrl}/entries/${id}`,
     token,
-    true
+    {
+      signed: true
+    }
   );
   return transformEntries(response);
 };
@@ -324,10 +326,12 @@ export const unsignEntry = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const response = await put<EntryDto>(
+  const response = await patch<EntryDto, PatchEntryDto>(
     `${config.baseUrl}/entries/${id}`,
     token,
-    false
+    {
+      signed: false
+    }
   );
   return transformEntries(response);
 };
@@ -337,10 +341,12 @@ export const patchForSchool = async (
   forSchool: boolean,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch<EntryDto>(
+  const response = await patch<EntryDto, PatchEntryDto>(
     `${config.baseUrl}/entries/${id}`,
     token,
-    forSchool
+    {
+      forSchool
+    }
   );
   return transformEntries(response);
 };

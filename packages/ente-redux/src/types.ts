@@ -53,7 +53,7 @@ class EntryDtoNormalised extends EntryDto {
 
 class SlotDtoNormalised extends SlotDto {
   studentId: string;
-  teacherId: string;
+  teacherId: Maybe<string>;
 }
 
 export class UserN extends createRecord<UserDtoNormalised>({
@@ -99,7 +99,7 @@ export class SlotN extends createRecord<SlotDtoNormalised>({
   student: null,
   teacher: null,
   studentId: "",
-  teacherId: "",
+  teacherId: None(),
   to: 0
 }) {}
 

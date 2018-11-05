@@ -78,7 +78,8 @@ export class SlotRepo {
     result.date = slot.date;
     result.from = slot.hour_from;
     result.to = slot.hour_to;
-    result.teacher = UserRepo.toDto(slot.teacher);
+    result.teacher =
+      slot.teacher === null ? null : UserRepo.toDto(slot.teacher);
     result.student = UserRepo.toDto(slot.entry.student);
 
     return result;

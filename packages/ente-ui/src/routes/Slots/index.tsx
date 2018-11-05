@@ -81,7 +81,9 @@ export class Slots extends React.Component<Props> {
           "" + slot.get("from"),
           "" + slot.get("to"),
           "" + slot.get("signed"),
-          getUser(slot.get("teacherId")).get("displayname")
+          slot
+            .get("teacherId")
+            .cata(() => "Gelöscht", id => getUser(id).get("displayname"))
         ]}
       />
     );

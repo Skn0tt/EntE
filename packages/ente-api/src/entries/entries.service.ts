@@ -1,11 +1,18 @@
 import { Injectable, Inject, Delete } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { EntryRepo } from "../db/entry.repo";
-import { Roles, EntryDto, UserDto, CreateEntryDto } from "ente-types";
+import {
+  Roles,
+  EntryDto,
+  UserDto,
+  CreateEntryDto,
+  PatchEntryDto
+} from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
 import { validate } from "class-validator";
+import * as _ from "lodash";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -40,6 +47,13 @@ export enum DeleteEntryFailure {
   ForbiddenForRole,
   ForbiddenForUser,
   NotFound
+}
+
+export enum PatchEntryFailure {
+  ForbiddenForRole,
+  ForbiddenForUser,
+  NotFound,
+  IllegalPatch
 }
 
 @Injectable()
@@ -188,82 +202,70 @@ export class EntriesService {
     return Success(result);
   }
 
-  async setForSchool(
+  async patch(
     id: string,
-    value: boolean,
+    patch: PatchEntryDto,
     requestingUser: UserDto
-  ): Promise<Validation<SetForSchoolEntryFailure, EntryDto>> {
-    if (requestingUser.role !== Roles.MANAGER) {
-      return Fail(SetForSchoolEntryFailure.ForbiddenForRole);
+  ): Promise<Validation<PatchEntryFailure, EntryDto>> {
+    const roleIsAllowed = [Roles.MANAGER, Roles.PARENT].includes(
+      requestingUser.role
+    );
+    if (!roleIsAllowed) {
+      return Fail(PatchEntryFailure.ForbiddenForRole);
     }
 
     const entry = await this.entryRepo.findById(id);
     if (entry.isNone()) {
-      return Fail(SetForSchoolEntryFailure.EntryNotFound);
+      return Fail(PatchEntryFailure.NotFound);
     }
 
-    const entryBelongsManager =
-      entry.some().student.graduationYear === requestingUser.graduationYear;
-    if (!entryBelongsManager) {
-      return Fail(SetForSchoolEntryFailure.EntryDoesntBelongToUser);
+    if (!_.isUndefined(patch.forSchool)) {
+      const userIsManager = requestingUser.role === Roles.MANAGER;
+      if (!userIsManager) {
+        return Fail(PatchEntryFailure.ForbiddenForRole);
+      }
+
+      const entryBelongsManager =
+        entry.some().student.graduationYear === requestingUser.graduationYear;
+      if (!entryBelongsManager) {
+        return Fail(PatchEntryFailure.ForbiddenForUser);
+      }
+
+      await this.entryRepo.setForSchool(id, patch.forSchool);
+
+      entry.some().forSchool = patch.forSchool;
     }
 
-    await this.entryRepo.setForSchool(id, value);
-    entry.some().forSchool = value;
-    return Success(entry.some());
-  }
+    if (!_.isUndefined(patch.signed)) {
+      const userIsManager = requestingUser.role === Roles.MANAGER;
+      if (userIsManager) {
+        const entryBelongsManager =
+          entry.some().student.graduationYear === requestingUser.graduationYear;
+        if (!entryBelongsManager) {
+          return Fail(PatchEntryFailure.ForbiddenForUser);
+        }
 
-  async sign(
-    id: string,
-    value: boolean,
-    requestingUser: UserDto
-  ): Promise<Validation<SignEntryFailure, EntryDto>> {
-    if (![Roles.MANAGER, Roles.PARENT].includes(requestingUser.role)) {
-      return Fail(SignEntryFailure.ForbiddenForUser);
-    }
+        await this.entryRepo.setSignedManager(id, patch.signed);
+        entry.some().signedManager = patch.signed;
+      } else {
+        const isTrue = patch.signed === true;
+        if (!isTrue) {
+          return Fail(PatchEntryFailure.IllegalPatch);
+        }
 
-    const entry = await this.entryRepo.findById(id);
-    if (entry.isNone()) {
-      return Fail(SignEntryFailure.EntryNotFound);
-    }
-
-    switch (requestingUser.role) {
-      case Roles.PARENT:
-        const entryBelongsToChild = requestingUser.children
+        const entryBelongsParent = requestingUser.children
           .map(c => c.id)
-          .includes(entry.some().id);
-        if (!entryBelongsToChild) {
-          return Fail(SignEntryFailure.EntryDoesntBelongToUser);
+          .includes(entry.some().student.id);
+        if (!entryBelongsParent) {
+          return Fail(PatchEntryFailure.ForbiddenForUser);
         }
-        break;
-      case Roles.MANAGER:
-        const isSameYear = (entry.some().student.graduationYear =
-          requestingUser.graduationYear);
-        if (!isSameYear) {
-          return Fail(SignEntryFailure.EntryDoesntBelongToUser);
-        }
-        break;
+
+        await this.entryRepo.setSignedParent(id, patch.signed);
+        entry.some().signedParent = patch.signed;
+      }
     }
 
-    if (requestingUser.role === Roles.MANAGER) {
-      await this.entryRepo.setSignedManager(id, value);
-      entry.some().signedManager = value;
-      return Success(entry.some());
-    } else {
-      await this.entryRepo.setSignedParent(id, value);
-      entry.some().signedParent = value;
-
-      const parents = await this.userRepo.getParentsOfUser(
-        entry.some().student.id
-      );
-
-      this.emailService.dispatchSignedInformation(
-        this.getSigningLinkForEntry(entry.some()),
-        parents.some()
-      );
-
-      return Success(entry.some());
-    }
+    return Success(entry.some());
   }
 
   async delete(

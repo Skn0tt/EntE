@@ -5,7 +5,6 @@ import {
   Post,
   Patch,
   Body,
-  Put,
   NotFoundException,
   ForbiddenException,
   Inject,
@@ -18,13 +17,12 @@ import {
   EntriesService,
   FindEntryFailure,
   CreateEntryFailure,
-  SetForSchoolEntryFailure,
-  SignEntryFailure,
   FindAllEntriesFailure,
-  DeleteEntryFailure
+  DeleteEntryFailure,
+  PatchEntryFailure
 } from "./entries.service";
 import { AuthGuard } from "@nestjs/passport";
-import { CreateEntryDto, EntryDto } from "ente-types";
+import { CreateEntryDto, EntryDto, PatchEntryDto } from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 
 @Controller("entries")
@@ -84,37 +82,23 @@ export class EntriesController {
   }
 
   @Patch(":id")
-  async setForSchool(
+  async patch(
     @Param("id") id: string,
-    @Body() value: boolean,
+    @Body(new ValidationPipe())
+    value: PatchEntryDto,
     @Ctx() ctx: RequestContext
   ) {
-    const result = await this.entriesService.setForSchool(id, value, ctx.user);
+    const result = await this.entriesService.patch(id, value, ctx.user);
     return result.cata(fail => {
       switch (fail) {
-        case SetForSchoolEntryFailure.EntryNotFound:
+        case PatchEntryFailure.NotFound:
           throw new NotFoundException();
-        case SetForSchoolEntryFailure.ForbiddenForRole:
+        case PatchEntryFailure.ForbiddenForRole:
           throw new ForbiddenException();
-        default:
+        case PatchEntryFailure.ForbiddenForUser:
           throw new ForbiddenException();
-      }
-    }, entry => entry);
-  }
-
-  @Put(":id")
-  async sign(
-    @Param("id") id: string,
-    @Body() value: boolean,
-    @Ctx() ctx: RequestContext
-  ) {
-    const result = await this.entriesService.sign(id, value, ctx.user);
-    return result.cata(fail => {
-      switch (fail) {
-        case SignEntryFailure.EntryNotFound:
-          throw new NotFoundException();
-        case SignEntryFailure.ForbiddenForUser:
-          throw new ForbiddenException();
+        case PatchEntryFailure.IllegalPatch:
+          throw new BadRequestException();
         default:
           throw new ForbiddenException();
       }

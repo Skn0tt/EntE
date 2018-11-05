@@ -248,7 +248,12 @@ class SpecificEntry extends React.Component<
                           <TableCell>{slot.get("from")}</TableCell>
                           <TableCell>{slot.get("to")}</TableCell>
                           <TableCell>
-                            {getUser(slot.get("teacherId")).get("displayname")}
+                            {slot
+                              .get("teacherId")
+                              .cata(
+                                () => "Gelöscht",
+                                id => getUser(id).get("displayname")
+                              )}
                           </TableCell>
                         </TableRow>
                       ))}

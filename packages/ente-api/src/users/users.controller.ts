@@ -20,7 +20,8 @@ import {
   CreateUsersFailure,
   PatchUserFailure,
   FindAllUsersFailure,
-  FindOneUserFailure
+  FindOneUserFailure,
+  DeleteUserFailure
 } from "./users.service";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
@@ -114,5 +115,13 @@ export class UsersController {
   @Delete(":id")
   async delete(@Param("id") id: string, @Ctx() ctx: RequestContext) {
     const result = await this.usersService.delete(id, ctx.user);
+    return result.cata(fail => {
+      switch (fail) {
+        case DeleteUserFailure.ForbiddenForRole:
+          throw new ForbiddenException();
+        case DeleteUserFailure.UserNotFound:
+          throw new NotFoundException();
+      }
+    }, user => user);
   }
 }
