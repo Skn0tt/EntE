@@ -37,7 +37,10 @@ export class Slot {
   @ManyToOne(type => User, user => user.slots, { nullable: false })
   teacher: User;
 
-  @ManyToOne(type => Entry, entry => entry.slots)
+  @ManyToOne(type => Entry, entry => entry.slots, {
+    nullable: false,
+    onDelete: "CASCADE"
+  })
   entry: Entry;
 }
 

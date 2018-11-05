@@ -339,6 +339,12 @@ export class UsersService implements OnModuleInit {
 
     await this.userRepo.delete(id);
 
+    this.logger.log(
+      `User "${requestingUser.username}" successfully deleted user "${
+        userV.success().username
+      }"`
+    );
+
     return Success(userV.success());
   }
 }

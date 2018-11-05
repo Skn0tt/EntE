@@ -68,7 +68,7 @@ export const getChildren: Selector<UserN[]> = state => {
     () => [],
     s => {
       const children = s.get("children");
-      return children.map(id => getUser(id)(state));
+      return children.map(id => getUser(id)(state)).filter(c => !!c);
     }
   );
 };
