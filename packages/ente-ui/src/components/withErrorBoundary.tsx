@@ -13,6 +13,7 @@ export const withErrorBoundary = <C extends { error: Error }>(
     };
 
     componentDidCatch(error, info) {
+      console.error(error);
       this.setState({ error });
     }
 
