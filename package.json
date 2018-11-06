@@ -11,9 +11,6 @@
   "workspaces": [
     "packages/ente-api",
     "packages/ente-db",
-    "packages/ente-lang",
-    "packages/ente-parser",
-    "packages/ente-redux",
     "packages/ente-types",
     "packages/ente-ui"
   ],

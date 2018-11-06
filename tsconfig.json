@@ -6,9 +6,6 @@
     "skipLibCheck": true, // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16825,
     "paths": {
       "ente-api": ["./ente-api/src"],
-      "ente-lang": ["./ente-lang/src"],
-      "ente-parser": ["./ente-parser/src"],
-      "ente-redux": ["./ente-redux/src"],
       "ente-types": ["./ente-types/src"],
       "ente-ui": ["./ente-ui/src"]
     },

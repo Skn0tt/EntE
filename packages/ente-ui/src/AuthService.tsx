@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MapDispatchToPropsParam } from "../../../node_modules/@types/react-redux";
-import { refreshTokenRequest } from "ente-redux";
+import { refreshTokenRequest } from "./redux";
 import { connect } from "react-redux";
 
 interface AuthServiceOwnProps {
