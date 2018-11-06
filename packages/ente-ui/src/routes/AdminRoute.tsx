@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Button, WithStyles, withStyles, Theme, Grid } from "@material-ui/core";
 import { Attachment as AttachmentIcon } from "@material-ui/icons";
-import { downloadExcelExportRequest } from "ente-redux";
+import { downloadExcelExportRequest } from "../redux";
 
 const styles = (theme: Theme) => ({
   iconLeft: {

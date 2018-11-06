@@ -26,7 +26,7 @@ import setupRedux, {
   AuthState,
   GET_TOKEN_REQUEST,
   ReduxConfig
-} from "ente-redux";
+} from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
 import Raven from "raven-js";

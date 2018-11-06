@@ -18,13 +18,13 @@ import Login from "./routes/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
-import { AppState, isAuthValid, getRole } from "ente-redux";
+import { AppState, isAuthValid, getRole } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
 
 const { ROTATION_PERIOD } = config.get();
 
-interface StateProps {
+interface AppStateProps {
   authValid: boolean;
   role: Roles;
 }
@@ -33,9 +33,9 @@ const mapStateToProps = (state: AppState) => ({
   role: getRole(state)
 });
 
-type Props = StateProps;
+type AppProps = AppStateProps;
 
-const App: React.SFC<Props> = props => (
+const App: React.SFC<AppProps> = props => (
   <BrowserRouter>
     <React.Fragment>
       <MessageStream />
