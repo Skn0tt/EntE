@@ -283,10 +283,10 @@ describe("isValidUser", () => {
         })
       ).to.be.false;
     });
-    it("invalid mongoid", () => {
+    it("invalid uuid/username", () => {
       expect(
         isValidCreateUserDto({
-          children: ["2e239ff6-9f40-48e6-9cec"],
+          children: ["2e239ff6-9f40-48e6-9cec!"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
           displayname: "Herr Mann",

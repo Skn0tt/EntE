@@ -14,7 +14,7 @@ import {
   containsSpecialChars,
   not,
   containsSpaces,
-  containsSpecialCharsAll,
+  containsForbiddenChars,
   SyncValidator
 } from "./shared";
 
@@ -27,7 +27,7 @@ import {
  */
 export const isValidUsername: SyncValidator<string> = matches([
   isLength(4, 100),
-  not(containsSpecialCharsAll),
+  not(containsForbiddenChars),
   not(containsSpaces)
 ]);
 

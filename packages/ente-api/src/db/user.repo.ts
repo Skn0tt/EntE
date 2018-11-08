@@ -74,7 +74,7 @@ export class UserRepo {
 
   private async _findByUsername(username: string): Promise<Maybe<User>> {
     const user = await this._userQueryWithChildren()
-      .where("user.username = :username", { username })
+      .where("LOWER(user.username) = LOWER(:username)", { username })
       .getOne();
 
     return !!user ? Some(user) : None();

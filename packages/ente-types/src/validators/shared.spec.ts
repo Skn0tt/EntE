@@ -11,7 +11,7 @@ import {
   containsNumbers,
   not,
   containsSpaces,
-  containsSpecialCharsAll
+  containsForbiddenChars
 } from "./shared";
 import { expect } from "chai";
 
@@ -65,19 +65,19 @@ describe("containsNumbers", () => {
   });
 });
 
-describe("containsSpecialCharsAll", () => {
+describe("containsForbiddenChars", () => {
   describe("when given a string containing special chars returns true", () => {
-    ["!", "h!ll0", "t%st", "%&/"].forEach(v => {
+    ["!", "h!ll0", "t%st", "%&/", ":"].forEach(v => {
       it(v, () => {
-        expect(containsSpecialCharsAll(v)).to.be.true;
+        expect(containsForbiddenChars(v)).to.be.true;
       });
     });
   });
 
   describe("when given a string not containing special chars returns false", () => {
-    ["fünf", "test", "hallo", "l  rzeichen"].forEach(v => {
+    ["fünf", "test", "hallo", "l  rzeichen", "_", "-", "."].forEach(v => {
       it(v, () => {
-        expect(containsSpecialCharsAll(v)).to.be.false;
+        expect(containsForbiddenChars(v)).to.be.false;
       });
     });
   });
