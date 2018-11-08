@@ -62,7 +62,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Nutzername"
+                    label="Username"
                     onChange={[Function]}
                     required={true}
                     validator={[Function]}
@@ -101,7 +101,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Passwort"
+                    label="Password"
                     onChange={[Function]}
                     type="password"
                     validator={[Function]}
@@ -172,21 +172,21 @@ ShallowWrapper {
             <WithStyles(Button)
               onClick={[Function]}
             >
-              Importieren
+              Import
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Schließen
+              Close
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              OK
+              Submit
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -222,7 +222,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -261,7 +261,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -332,21 +332,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Importieren
+                Import
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Schließen
+                Close
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                OK
+                Submit
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -386,7 +386,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -425,7 +425,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -509,7 +509,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -548,7 +548,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -628,7 +628,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -667,7 +667,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -745,7 +745,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -761,7 +761,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Nutzername",
+                        "label": "Username",
                         "onChange": [Function],
                         "required": true,
                         "validator": [Function],
@@ -849,7 +849,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -864,7 +864,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Passwort",
+                        "label": "Password",
                         "onChange": [Function],
                         "type": "password",
                         "validator": [Function],
@@ -1085,21 +1085,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Importieren
+                  Import
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Schließen
+                  Close
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  OK
+                  Submit
                 </WithStyles(Button)>,
               ],
             },
@@ -1110,11 +1110,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Importieren",
+                  "children": "Import",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Importieren",
+                "rendered": "Import",
                 "type": [Function],
               },
               Object {
@@ -1122,13 +1122,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Schließen",
+                  "children": "Close",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Schließen",
+                "rendered": "Close",
                 "type": [Function],
               },
               Object {
@@ -1136,13 +1136,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "OK",
+                  "children": "Submit",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "OK",
+                "rendered": "Submit",
                 "type": [Function],
               },
             ],
@@ -1196,7 +1196,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -1235,7 +1235,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -1306,21 +1306,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Importieren
+                Import
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Schließen
+                Close
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                OK
+                Submit
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -1356,7 +1356,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1395,7 +1395,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1466,21 +1466,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Importieren
+                  Import
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Schließen
+                  Close
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  OK
+                  Submit
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -1520,7 +1520,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1559,7 +1559,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1643,7 +1643,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1682,7 +1682,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1762,7 +1762,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Nutzername"
+                          label="Username"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -1801,7 +1801,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Passwort"
+                          label="Password"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -1879,7 +1879,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Nutzername"
+                          label="Username"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -1895,7 +1895,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Nutzername",
+                          "label": "Username",
                           "onChange": [Function],
                           "required": true,
                           "validator": [Function],
@@ -1983,7 +1983,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Passwort"
+                          label="Password"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -1998,7 +1998,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Passwort",
+                          "label": "Password",
                           "onChange": [Function],
                           "type": "password",
                           "validator": [Function],
@@ -2219,21 +2219,21 @@ ShallowWrapper {
                   <WithStyles(Button)
                     onClick={[Function]}
                   >
-                    Importieren
+                    Import
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Schließen
+                    Close
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    OK
+                    Submit
                   </WithStyles(Button)>,
                 ],
               },
@@ -2244,11 +2244,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Importieren",
+                    "children": "Import",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Importieren",
+                  "rendered": "Import",
                   "type": [Function],
                 },
                 Object {
@@ -2256,13 +2256,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Schließen",
+                    "children": "Close",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Schließen",
+                  "rendered": "Close",
                   "type": [Function],
                 },
                 Object {
@@ -2270,13 +2270,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "OK",
+                    "children": "Submit",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "OK",
+                  "rendered": "Submit",
                   "type": [Function],
                 },
               ],
@@ -2383,7 +2383,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Nutzername"
+                    label="Username"
                     onChange={[Function]}
                     required={true}
                     validator={[Function]}
@@ -2422,7 +2422,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Passwort"
+                    label="Password"
                     onChange={[Function]}
                     type="password"
                     validator={[Function]}
@@ -2493,21 +2493,21 @@ ShallowWrapper {
             <WithStyles(Button)
               onClick={[Function]}
             >
-              Importieren
+              Import
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Schließen
+              Close
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              OK
+              Submit
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -2543,7 +2543,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2582,7 +2582,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2653,21 +2653,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Importieren
+                Import
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Schließen
+                Close
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                OK
+                Submit
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -2707,7 +2707,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2746,7 +2746,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2830,7 +2830,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2869,7 +2869,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2949,7 +2949,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -2988,7 +2988,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3066,7 +3066,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3082,7 +3082,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Nutzername",
+                        "label": "Username",
                         "onChange": [Function],
                         "required": true,
                         "validator": [Function],
@@ -3170,7 +3170,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3185,7 +3185,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Passwort",
+                        "label": "Password",
                         "onChange": [Function],
                         "type": "password",
                         "validator": [Function],
@@ -3406,21 +3406,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Importieren
+                  Import
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Schließen
+                  Close
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  OK
+                  Submit
                 </WithStyles(Button)>,
               ],
             },
@@ -3431,11 +3431,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Importieren",
+                  "children": "Import",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Importieren",
+                "rendered": "Import",
                 "type": [Function],
               },
               Object {
@@ -3443,13 +3443,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Schließen",
+                  "children": "Close",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Schließen",
+                "rendered": "Close",
                 "type": [Function],
               },
               Object {
@@ -3457,13 +3457,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "OK",
+                  "children": "Submit",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "OK",
+                "rendered": "Submit",
                 "type": [Function],
               },
             ],
@@ -3517,7 +3517,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Nutzername"
+                      label="Username"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -3556,7 +3556,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Passwort"
+                      label="Password"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -3627,21 +3627,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Importieren
+                Import
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Schließen
+                Close
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                OK
+                Submit
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -3677,7 +3677,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3716,7 +3716,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3787,21 +3787,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Importieren
+                  Import
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Schließen
+                  Close
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  OK
+                  Submit
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -3841,7 +3841,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3880,7 +3880,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3964,7 +3964,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Nutzername"
+                        label="Username"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -4003,7 +4003,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Passwort"
+                        label="Password"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -4083,7 +4083,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Nutzername"
+                          label="Username"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -4122,7 +4122,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Passwort"
+                          label="Password"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -4200,7 +4200,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Nutzername"
+                          label="Username"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -4216,7 +4216,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Nutzername",
+                          "label": "Username",
                           "onChange": [Function],
                           "required": true,
                           "validator": [Function],
@@ -4304,7 +4304,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Passwort"
+                          label="Password"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -4319,7 +4319,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Passwort",
+                          "label": "Password",
                           "onChange": [Function],
                           "type": "password",
                           "validator": [Function],
@@ -4540,21 +4540,21 @@ ShallowWrapper {
                   <WithStyles(Button)
                     onClick={[Function]}
                   >
-                    Importieren
+                    Import
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Schließen
+                    Close
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    OK
+                    Submit
                   </WithStyles(Button)>,
                 ],
               },
@@ -4565,11 +4565,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Importieren",
+                    "children": "Import",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Importieren",
+                  "rendered": "Import",
                   "type": [Function],
                 },
                 Object {
@@ -4577,13 +4577,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Schließen",
+                    "children": "Close",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Schließen",
+                  "rendered": "Close",
                   "type": [Function],
                 },
                 Object {
@@ -4591,13 +4591,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "OK",
+                    "children": "Submit",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "OK",
+                  "rendered": "Submit",
                   "type": [Function],
                 },
               ],

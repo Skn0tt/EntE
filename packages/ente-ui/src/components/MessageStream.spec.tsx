@@ -15,11 +15,7 @@ describe("MessageStream", () => {
   const messages = ["Hallo", "Nachricht"];
 
   const comp = shallow(
-    <MessageStream
-      messages={messages}
-      removeMessage={removeMessage}
-      classes={{}}
-    />
+    <MessageStream messages={messages} removeMessage={removeMessage} />
   );
 
   it("renders correctly", () => {

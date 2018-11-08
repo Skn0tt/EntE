@@ -6,11 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import {
-  StyleRules,
-  StyleRulesCallback
-} from "@material-ui/core/styles/withStyles";
-import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import { StyleRulesCallback } from "@material-ui/core/styles/withStyles";
 
 const drawerWidth = 240;
 

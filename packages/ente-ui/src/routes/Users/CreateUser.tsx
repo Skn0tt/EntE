@@ -37,11 +37,36 @@ import {
   roleHasChildren,
   roleHasGradYear
 } from "../../redux";
-import lang from "../../lang";
 import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
+import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    titles: {
+      username: "Username",
+      displayname: "Displayname",
+      email: "Email",
+      password: "Password"
+    },
+    submit: "Submit",
+    close: "Close",
+    import: "Import"
+  },
+  de: {
+    titles: {
+      username: "Nutzername",
+      displayname: "Displayname",
+      email: "Email",
+      password: "Passwort"
+    },
+    submit: "Erstellen",
+    close: "Schließen",
+    import: "Importieren"
+  }
+});
 
 /**
  * # Component Types
@@ -171,7 +196,7 @@ export class CreateUser extends React.Component<
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     value={create.username || ""}
-                    label={lang().ui.createUser.usernameTitle}
+                    label={lang.titles.username}
                     onChange={this.handleChangeUsername}
                     validator={this.usernameValid}
                     required
@@ -179,7 +204,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextInput
-                    label={lang().ui.createUser.displaynameTitle}
+                    label={lang.titles.displayname}
                     value={create.displayname || ""}
                     onChange={this.handleChangeDisplayname}
                     validator={this.displaynameValid}
@@ -188,7 +213,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextInput
-                    label={lang().ui.createUser.emailTitle}
+                    label={lang.titles.email}
                     value={create.email || ""}
                     onChange={this.handleChangeEmail}
                     validator={this.emailValid}
@@ -198,7 +223,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12}>
                   <TextInput
-                    label={lang().ui.createUser.passwordTitle}
+                    label={lang.titles.password}
                     value={create.password || ""}
                     onChange={this.handleChangePassword}
                     validator={this.passwordValid}
@@ -250,15 +275,13 @@ export class CreateUser extends React.Component<
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleShowImport}>
-              {lang().ui.createUser.import}
-            </Button>
+            <Button onClick={this.handleShowImport}>{lang.import}</Button>
             <Button
               onClick={this.handleClose}
               color="secondary"
               className="close"
             >
-              {lang().ui.common.close}
+              {lang.close}
             </Button>
             <Button
               onClick={() => {
@@ -268,7 +291,7 @@ export class CreateUser extends React.Component<
               disabled={!this.inputValid()}
               color="primary"
             >
-              {lang().ui.common.submit}
+              {lang.submit}
             </Button>
           </DialogActions>
         </Dialog>

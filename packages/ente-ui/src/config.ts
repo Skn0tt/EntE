@@ -8,6 +8,7 @@
 import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
 import { Some } from "monet";
+import { Languages } from "./helpers/createTranslation";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -16,6 +17,7 @@ type Config = {
   SENTRY_DSN_UI?: string;
   ROTATION_PERIOD: number;
   ALLOW_INSECURE: boolean;
+  LANGUAGE: Languages;
 };
 
 let config: Config | null = null;
@@ -34,6 +36,12 @@ const getConfig = (): any => {
   return JSON.parse(c);
 };
 
+const getLanguage = (lang: string) =>
+  ({
+    de: Languages.GERMAN,
+    en: Languages.ENGLISH
+  }[lang] || Languages.ENGLISH);
+
 const readConfig = () => {
   const c = getConfig();
 
@@ -44,7 +52,8 @@ const readConfig = () => {
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
     SENTRY_DSN_UI: SENTRY_DSN_UI !== "undefined" ? SENTRY_DSN_UI : undefined,
-    ALLOW_INSECURE: c.ALLOW_INSECURE === "true"
+    ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
+    LANGUAGE: getLanguage(c.LANG)
   };
 };
 

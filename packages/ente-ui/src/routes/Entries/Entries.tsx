@@ -23,11 +23,37 @@ import {
 } from "../../redux";
 import { Action } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { Route, RouteComponentProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import Button from "@material-ui/core/Button/Button";
 import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
+import { createTranslation } from "../../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    headers: {
+      name: "Name",
+      date: "Date",
+      created: "Created",
+      forSchool: "Educational",
+      manager: "Manager",
+      parents: "Parents",
+      yes: "Yes",
+      no: "No"
+    }
+  },
+  de: {
+    name: "Name",
+    date: "Datum",
+    created: "Erstellt",
+    forSchool: "Schulisch",
+    manager: "Stufenleiter",
+    parents: "Eltern",
+    yes: "Ja",
+    no: "Nein"
+  }
+});
 
 class EntriesTable extends Table<EntryN> {}
 
@@ -88,22 +114,22 @@ export class Entries extends React.Component<Props, State> {
         {/* Main */}
         <EntriesTable
           headers={[
-            "Name",
-            "Datum",
-            "Erstellt",
-            { name: "Schulisch", options: { filter: true } },
+            lang.name,
+            lang.date,
+            lang.created,
+            { name: lang.forSchool, options: { filter: true } },
             {
-              name: "Stufenleiter",
+              name: lang.manager,
               options: { customBodyRender, filter: true }
             },
-            { name: "Eltern", options: { customBodyRender, filter: true } }
+            { name: lang.parents, options: { customBodyRender, filter: true } }
           ]}
           items={entries}
           extract={entry => [
             getUser(entry.get("studentId")).get("displayname"),
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
-            entry.get("forSchool") ? "Ja" : "Nein",
+            entry.get("forSchool") ? lang.yes : lang.no,
             "" + entry.get("signedManager"),
             "" + entry.get("signedParent")
           ]}
@@ -113,18 +139,14 @@ export class Entries extends React.Component<Props, State> {
 
         {/* FAB */}
         {canCreateEntries && (
-          <Route
-            render={({ history }) => (
-              <Button
-                color="primary"
-                variant="fab"
-                onClick={this.showCreateEntry}
-                className={classes.fab}
-              >
-                <AddIcon />
-              </Button>
-            )}
-          />
+          <Button
+            color="primary"
+            variant="fab"
+            onClick={this.showCreateEntry}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Button>
         )}
       </React.Fragment>
     );

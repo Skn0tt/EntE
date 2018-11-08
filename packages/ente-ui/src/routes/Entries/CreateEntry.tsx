@@ -46,6 +46,33 @@ import {
 } from "../../redux";
 import { CreateEntryDto, CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
+import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    multiday: "Multiday",
+    forSchool: "Educational",
+    selectChild: "Select the affected child.",
+    addSlotsCaption: "Add the missed classes. Create one row per class.",
+    titles: {
+      slots: "Slots"
+    },
+    ok: "OK",
+    cancel: "Cancel"
+  },
+  de: {
+    multiday: "Mehrtägig",
+    forSchool: "Schulisch",
+    selectChild: "Wählen sie das betroffene Kind aus.",
+    addSlotsCaption: `Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
+    Erstellen sie dafür für jede Stunde eine Zeile.`,
+    titles: {
+      slots: "Stunden"
+    },
+    ok: "OK",
+    cancel: "Zurück"
+  }
+});
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -213,7 +240,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         onChange={this.handleChangeIsRange}
                       />
                     }
-                    label="Mehrtägig"
+                    label={lang.multiday}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -224,7 +251,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         onChange={this.handleChangeForSchool}
                       />
                     }
-                    label="Schulisch"
+                    label={lang.forSchool}
                   />
                 </Grid>
               </Grid>
@@ -236,7 +263,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                     label="Kind"
                     value={this.state.student}
                     onChange={this.handleChangeStudent}
-                    helperText="Wählen sie das betroffene Kind aus."
+                    helperText={lang.selectChild}
                   >
                     {this.props.children.map(child => (
                       <MenuItem key={child.get("id")} value={child.get("id")}>
@@ -272,11 +299,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">Stunden</Typography>
-              <Typography variant="caption">
-                Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
-                Erstellen sie dafür für jede Stunde eine Zeile.
-              </Typography>
+              <Typography variant="h6">{lang.titles.slots}</Typography>
+              <Typography variant="caption">{lang.addSlotsCaption}</Typography>
               <MUIList>
                 {this.state.slots.map((slot, index) => (
                   <SlotListItem
@@ -300,7 +324,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.onClose} color="secondary">
-            Cancel
+            {lang.cancel}
           </Button>
           <Button
             onClick={() => {
@@ -310,7 +334,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
             disabled={!this.inputValid()}
             color="primary"
           >
-            Ok
+            {lang.ok}
           </Button>
         </DialogActions>
       </Dialog>

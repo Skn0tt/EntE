@@ -14,13 +14,7 @@ describe("TableHeadCell", () => {
   const onClick = jest.fn();
 
   const comp = shallow(
-    <TableHeadCell
-      onClick={onClick}
-      classes={{}}
-      sortUp
-      active
-      tooltip="I bims"
-    />
+    <TableHeadCell onClick={onClick} sortUp active tooltip="I bims" />
   );
 
   it("renders correctly", () => {

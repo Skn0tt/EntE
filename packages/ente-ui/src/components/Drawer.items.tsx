@@ -15,6 +15,22 @@ import {
   Settings
 } from "@material-ui/icons";
 import { Route } from "react-router-dom";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    slots: "Slots",
+    users: "Users",
+    entries: "Entries",
+    admin: "Admin"
+  },
+  de: {
+    slots: "Stunden",
+    users: "Nutzer",
+    entries: "Einträge",
+    admin: "Admin"
+  }
+});
 
 /**
  * # Items
@@ -26,7 +42,7 @@ const Slots: React.SFC = () => (
         <ListItemIcon>
           <WatchLater />
         </ListItemIcon>
-        <ListItemText primary="Stunden" />
+        <ListItemText primary={lang.slots} />
       </ListItem>
     )}
   />
@@ -39,7 +55,7 @@ const Users: React.SFC = () => (
         <ListItemIcon>
           <Person />
         </ListItemIcon>
-        <ListItemText primary="Nutzer" />
+        <ListItemText primary={lang.users} />
       </ListItem>
     )}
   />
@@ -52,7 +68,7 @@ const Entries: React.SFC = () => (
         <ListItemIcon>
           <InsertDriveFile />
         </ListItemIcon>
-        <ListItemText primary="Einträge" />
+        <ListItemText primary={lang.entries} />
       </ListItem>
     )}
   />
@@ -65,7 +81,7 @@ const Admin: React.SFC = () => (
         <ListItemIcon>
           <Settings />
         </ListItemIcon>
-        <ListItemText primary="Admin" />
+        <ListItemText primary={lang.admin} />
       </ListItem>
     )}
   />

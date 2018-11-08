@@ -18,6 +18,26 @@ import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
 import { withRouter, RouteComponentProps } from "react-router";
 import Table from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
+import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    headers: {
+      username: "Username",
+      displayname: "Displayname",
+      email: "Email",
+      role: "Role"
+    }
+  },
+  de: {
+    headers: {
+      username: "Nutzername",
+      displayname: "Displayname",
+      email: "Email",
+      role: "Rolle"
+    }
+  }
+});
 
 class UserTable extends Table<UserN> {}
 
@@ -77,25 +97,25 @@ export class Users extends React.PureComponent<UsersProps, UsersState> {
         <UserTable
           headers={[
             {
-              name: "Username",
+              name: lang.headers.username,
               options: {
                 filter: false
               }
             },
             {
-              name: "Displayname",
+              name: lang.headers.displayname,
               options: {
                 filter: false
               }
             },
             {
-              name: "Email",
+              name: lang.headers.email,
               options: {
                 filter: false
               }
             },
             {
-              name: "Role"
+              name: lang.headers.role
             }
           ]}
           items={users}

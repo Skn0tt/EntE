@@ -14,6 +14,34 @@ import { getTeachers, getUser, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
+import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    titles: {
+      teacher: "Teacher",
+      day: "Day",
+      from: "Start",
+      to: "End"
+    },
+    helpers: {
+      teacher: "Select the teacher."
+    },
+    add: "Add"
+  },
+  de: {
+    titles: {
+      teacher: "Lehrer",
+      day: "Tag",
+      from: "Beginn",
+      to: "Ende"
+    },
+    helpers: {
+      teacher: "Wählen sie den Lehrer aus."
+    },
+    add: "Hinzufügen"
+  }
+});
 
 interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
@@ -122,8 +150,8 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
         {/* Teacher */}
         <Grid item xs={12} md={4}>
           <SearchableDropdownUser
-            label="Lehrer"
-            helperText="Wählen sie den Lehrer aus."
+            label={lang.titles.teacher}
+            helperText={lang.helpers.teacher}
             items={teachers}
             onChange={this.handleChangeTeacher}
             includeItem={(item, searchTerm) =>
@@ -146,7 +174,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
               isValid={d =>
                 +datePickerConfig.min <= +d && +datePickerConfig.max >= +d
               }
-              label="Tag"
+              label={lang.titles.day}
               value={date}
             />
           </Grid>
@@ -155,7 +183,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
         {/* From */}
         <Grid item xs={1}>
           <TextField
-            label="Von"
+            label={lang.titles.from}
             fullWidth
             value={this.state.from}
             onChange={this.handleChangeFrom}
@@ -170,7 +198,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
         {/* To */}
         <Grid item xs={1}>
           <TextField
-            label="Bis"
+            label={lang.titles.to}
             fullWidth
             value={this.state.to}
             onChange={this.handleChangeTo}
@@ -184,13 +212,13 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
 
         {/* Add */}
         <Grid item xs={2}>
-          <Tooltip title="Hinzufügen">
+          <Tooltip title={lang.add}>
             <Button
               variant="raised"
               disabled={!this.slotInputValid()}
               onClick={() => this.handleAddSlot()}
             >
-              Hinzufügen
+              {lang.add}
             </Button>
           </Tooltip>
         </Grid>

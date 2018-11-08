@@ -24,6 +24,22 @@ import withMobileDialog, {
 import { setPasswordRequest } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { isValidPassword } from "ente-types";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    password: "Password",
+    verification: "Verification",
+    submit: "Reset Password",
+    title: "Reset Password"
+  },
+  de: {
+    password: "Passwort",
+    verification: "Verifizierung",
+    submit: "Passwort zurücksetzen",
+    title: "Passwort zurücksetzen"
+  }
+});
 
 interface PasswordResetRouteProps {
   token: string;
@@ -68,12 +84,12 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
     return (
       <div>
         <Dialog fullScreen={this.props.fullScreen} open>
-          <DialogTitle>Passwort Ändern</DialogTitle>
+          <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
             <TextField
               fullWidth
               id="password"
-              label="Password"
+              label={lang.password}
               type="password"
               error={!this.passwordValid()}
               onChange={this.handleChangePassword}
@@ -82,7 +98,7 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
               fullWidth
               id="verification"
               type="password"
-              label="Verifizierung"
+              label={lang.verification}
               error={!this.verificationValid()}
               onChange={this.handleChangeVerification}
             />
@@ -93,7 +109,7 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
               disabled={!this.inputValid()}
               onClick={() => this.handleSetPassword()}
             >
-              Passwort Ändern
+              {lang.submit}
             </Button>
           </DialogActions>
         </Dialog>

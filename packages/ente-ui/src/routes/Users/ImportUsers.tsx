@@ -19,10 +19,23 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { Action, Dispatch } from "redux";
-import lang from "../../lang";
 import { CreateUserDto } from "ente-types";
-import { parseCSVFromFile } from "../../parser/parser";
+import { parseCSVFromFile } from "../../helpers/parser";
 import SignedAvatar from "../../elements/SignedAvatar";
+import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    submit: "Import",
+    close: "Close",
+    dropzone: "Drop a .csv file here."
+  },
+  de: {
+    submit: "Importieren",
+    close: "Schließen",
+    dropzone: "Legen sie hier eine .csv-Datei ab."
+  }
+});
 
 const readFile = async (f: File) =>
   new Promise<string>((resolve, reject) => {
@@ -128,7 +141,7 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
               onDrop={this.onDrop}
               className="dropzone"
             >
-              {lang().ui.importUsers.dropzone}
+              {lang.dropzone}
             </Dropzone>
           </Grid>
           <Grid item xs={12}>
@@ -141,7 +154,7 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
             color="secondary"
             className="close"
           >
-            {lang().ui.common.close}
+            {lang.close}
           </Button>
           <Button
             onClick={() => {
@@ -152,7 +165,7 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
             color="primary"
             className="submit"
           >
-            {lang().ui.common.submit}
+            {lang.submit}
           </Button>
         </DialogActions>
       </Dialog>
