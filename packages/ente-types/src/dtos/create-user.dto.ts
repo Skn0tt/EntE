@@ -9,7 +9,6 @@ import {
 } from "../validators/user";
 import { isValidPassword } from "../validators/auth";
 import { EmptyWhen } from "../helpers/empty-when";
-import { UserDto } from "./user.dto";
 import { IsIntWhen } from "../helpers/is-int-when";
 
 export class CreateUserDto {

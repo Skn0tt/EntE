@@ -33,8 +33,8 @@ export const containsSpecialChars: SyncValidator<string> = v =>
   /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]/g.test(v);
 
 // https://stackoverflow.com/a/42203701/8714863
-export const containsSpecialCharsAll: SyncValidator<string> = v =>
-  /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g.test(v);
+export const containsForbiddenChars: SyncValidator<string> = v =>
+  /[!@#$%^&*()+\=\[\]{};':"\\|,<>\/?]/g.test(v);
 
 export const containsSpaces: SyncValidator<string> = v => / /g.test(v);
 

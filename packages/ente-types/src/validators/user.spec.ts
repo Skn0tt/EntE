@@ -85,6 +85,20 @@ describe("isValidUsername", () => {
     });
   });
 
+  describe("special chars", () => {
+    ["hans.wurst", "hans_wurst", "hans-wurst"].forEach(r => {
+      it(r, () => {
+        expect(isValidUsername(r)).to.be.true;
+      });
+    });
+
+    ["hans!wurst", "hans:wurst", "hans?wurst"].forEach(r => {
+      it(r, () => {
+        expect(isValidUsername(r)).to.be.false;
+      });
+    });
+  });
+
   describe("when passed an invalid username returns false", () => {
     [
       "benutzer name",
