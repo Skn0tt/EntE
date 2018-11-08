@@ -13,6 +13,7 @@ smtp:
   username: njydvmi4sh5xmrdg@ethereal.email
 
 config:
+  lang: de
   baseUrl: http://localhost
 
 debug:

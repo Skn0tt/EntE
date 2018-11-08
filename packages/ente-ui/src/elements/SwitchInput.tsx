@@ -12,18 +12,18 @@ import { Grid, Typography, Switch } from "@material-ui/core";
 /**
  * # Component Types
  */
-interface OwnProps {
+interface SwitchInputOwnProps {
   onChange(b: boolean): void;
   value: boolean;
   title: string;
 }
 
-type Props = OwnProps;
+type SwitchInputProps = SwitchInputOwnProps;
 
 /**
  * # Component
  */
-export const SwitchInput: React.SFC<Props> = props => {
+export const SwitchInput: React.SFC<SwitchInputProps> = props => {
   const { onChange, value, title } = props;
 
   return (

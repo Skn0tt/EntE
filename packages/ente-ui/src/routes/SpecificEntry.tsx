@@ -64,7 +64,18 @@ import {
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { DeleteModal } from "../components/DeleteModal";
-import lang from "../lang";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    sign: "Sign",
+    close: "Close"
+  },
+  de: {
+    sign: "Unterschreiben",
+    close: "Schließen"
+  }
+});
 
 /**
  * # Component Types
@@ -301,7 +312,7 @@ class SpecificEntry extends React.Component<
                               className={classes.signEntryButton}
                               onClick={() => signEntry(entry.get("id"))}
                             >
-                              {lang().ui.specificEntry.sign}
+                              {lang.sign}
                               <AssignmentTurnedInIcon />
                             </Button>
                           </ListItemSecondaryAction>
@@ -317,7 +328,7 @@ class SpecificEntry extends React.Component<
 
           <DialogActions>
             <Button size="small" color="primary" onClick={this.onClose}>
-              {lang().ui.common.close}
+              {lang.close}
             </Button>
           </DialogActions>
         </Dialog>

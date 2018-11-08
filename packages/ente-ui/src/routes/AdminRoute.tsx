@@ -3,6 +3,16 @@ import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Button, WithStyles, withStyles, Theme, Grid } from "@material-ui/core";
 import { Attachment as AttachmentIcon } from "@material-ui/icons";
 import { downloadExcelExportRequest } from "../redux";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    downloadExcel: "Download Excel Export"
+  },
+  de: {
+    downloadExcel: "Excel Export downloaden"
+  }
+});
 
 const styles = (theme: Theme) => ({
   iconLeft: {
@@ -41,7 +51,7 @@ const AdminRoute: React.SFC<AdminRouteProps> = props => {
       <Grid item>
         <Button variant="outlined" onClick={downloadExcelExport}>
           <AttachmentIcon className={classes.iconLeft} />
-          Excel Export downloaden
+          {lang.downloadExcel}
         </Button>
       </Grid>
     </Grid>

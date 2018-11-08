@@ -64,7 +64,7 @@ ShallowWrapper {
           <WithStyles(Typography)
             variant="h6"
           >
-            Kinder
+            Children
           </WithStyles(Typography)>
         </WithStyles(Grid)>,
         <WithStyles(Grid)
@@ -94,7 +94,7 @@ ShallowWrapper {
             xs={11}
           >
             <SearchableDropdownUser
-              helperText="Kinder Hinzufügen"
+              helperText="Add children"
               includeItem={[Function]}
               itemToString={[Function]}
               items={
@@ -112,7 +112,7 @@ ShallowWrapper {
                   },
                 ]
               }
-              label="Kind"
+              label="Child"
               onChange={[Function]}
             />
           </WithStyles(Grid)>
@@ -145,7 +145,7 @@ ShallowWrapper {
           "children": <WithStyles(Typography)
             variant="h6"
           >
-            Kinder
+            Children
           </WithStyles(Typography)>,
           "item": true,
         },
@@ -155,11 +155,11 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": "Kinder",
+            "children": "Children",
             "variant": "h6",
           },
           "ref": null,
-          "rendered": "Kinder",
+          "rendered": "Children",
           "type": [Function],
         },
         "type": [Function],
@@ -292,7 +292,7 @@ ShallowWrapper {
               xs={11}
             >
               <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={
@@ -310,7 +310,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />
             </WithStyles(Grid)>,
@@ -340,7 +340,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={
@@ -358,7 +358,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />,
               "item": true,
@@ -370,7 +370,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "helperText": "Kinder Hinzufügen",
+                "helperText": "Add children",
                 "includeItem": [Function],
                 "itemToString": [Function],
                 "items": Array [
@@ -386,7 +386,7 @@ ShallowWrapper {
                     "graduationYear": null,
                   },
                 ],
-                "label": "Kind",
+                "label": "Child",
                 "onChange": [Function],
               },
               "ref": null,
@@ -458,7 +458,7 @@ ShallowWrapper {
             <WithStyles(Typography)
               variant="h6"
             >
-              Kinder
+              Children
             </WithStyles(Typography)>
           </WithStyles(Grid)>,
           <WithStyles(Grid)
@@ -488,7 +488,7 @@ ShallowWrapper {
               xs={11}
             >
               <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={
@@ -506,7 +506,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />
             </WithStyles(Grid)>
@@ -539,7 +539,7 @@ ShallowWrapper {
             "children": <WithStyles(Typography)
               variant="h6"
             >
-              Kinder
+              Children
             </WithStyles(Typography)>,
             "item": true,
           },
@@ -549,11 +549,11 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "Kinder",
+              "children": "Children",
               "variant": "h6",
             },
             "ref": null,
-            "rendered": "Kinder",
+            "rendered": "Children",
             "type": [Function],
           },
           "type": [Function],
@@ -686,7 +686,7 @@ ShallowWrapper {
                 xs={11}
               >
                 <SearchableDropdownUser
-                  helperText="Kinder Hinzufügen"
+                  helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
                   items={
@@ -704,7 +704,7 @@ ShallowWrapper {
                       },
                     ]
                   }
-                  label="Kind"
+                  label="Child"
                   onChange={[Function]}
                 />
               </WithStyles(Grid)>,
@@ -734,7 +734,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <SearchableDropdownUser
-                  helperText="Kinder Hinzufügen"
+                  helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
                   items={
@@ -752,7 +752,7 @@ ShallowWrapper {
                       },
                     ]
                   }
-                  label="Kind"
+                  label="Child"
                   onChange={[Function]}
                 />,
                 "item": true,
@@ -764,7 +764,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "helperText": "Kinder Hinzufügen",
+                  "helperText": "Add children",
                   "includeItem": [Function],
                   "itemToString": [Function],
                   "items": Array [
@@ -780,7 +780,7 @@ ShallowWrapper {
                       "graduationYear": null,
                     },
                   ],
-                  "label": "Kind",
+                  "label": "Child",
                   "onChange": [Function],
                 },
                 "ref": null,
@@ -913,7 +913,7 @@ ShallowWrapper {
           <WithStyles(Typography)
             variant="h6"
           >
-            Kinder
+            Children
           </WithStyles(Typography)>
         </WithStyles(Grid)>,
         <WithStyles(Grid)
@@ -943,11 +943,11 @@ ShallowWrapper {
             xs={11}
           >
             <SearchableDropdownUser
-              helperText="Kinder Hinzufügen"
+              helperText="Add children"
               includeItem={[Function]}
               itemToString={[Function]}
               items={Array []}
-              label="Kind"
+              label="Child"
               onChange={[Function]}
             />
           </WithStyles(Grid)>
@@ -980,7 +980,7 @@ ShallowWrapper {
           "children": <WithStyles(Typography)
             variant="h6"
           >
-            Kinder
+            Children
           </WithStyles(Typography)>,
           "item": true,
         },
@@ -990,11 +990,11 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": "Kinder",
+            "children": "Children",
             "variant": "h6",
           },
           "ref": null,
-          "rendered": "Kinder",
+          "rendered": "Children",
           "type": [Function],
         },
         "type": [Function],
@@ -1127,11 +1127,11 @@ ShallowWrapper {
               xs={11}
             >
               <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={Array []}
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />
             </WithStyles(Grid)>,
@@ -1161,11 +1161,11 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={Array []}
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />,
               "item": true,
@@ -1177,11 +1177,11 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "helperText": "Kinder Hinzufügen",
+                "helperText": "Add children",
                 "includeItem": [Function],
                 "itemToString": [Function],
                 "items": Array [],
-                "label": "Kind",
+                "label": "Child",
                 "onChange": [Function],
               },
               "ref": null,
@@ -1253,7 +1253,7 @@ ShallowWrapper {
             <WithStyles(Typography)
               variant="h6"
             >
-              Kinder
+              Children
             </WithStyles(Typography)>
           </WithStyles(Grid)>,
           <WithStyles(Grid)
@@ -1283,11 +1283,11 @@ ShallowWrapper {
               xs={11}
             >
               <SearchableDropdownUser
-                helperText="Kinder Hinzufügen"
+                helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
                 items={Array []}
-                label="Kind"
+                label="Child"
                 onChange={[Function]}
               />
             </WithStyles(Grid)>
@@ -1320,7 +1320,7 @@ ShallowWrapper {
             "children": <WithStyles(Typography)
               variant="h6"
             >
-              Kinder
+              Children
             </WithStyles(Typography)>,
             "item": true,
           },
@@ -1330,11 +1330,11 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "Kinder",
+              "children": "Children",
               "variant": "h6",
             },
             "ref": null,
-            "rendered": "Kinder",
+            "rendered": "Children",
             "type": [Function],
           },
           "type": [Function],
@@ -1467,11 +1467,11 @@ ShallowWrapper {
                 xs={11}
               >
                 <SearchableDropdownUser
-                  helperText="Kinder Hinzufügen"
+                  helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
                   items={Array []}
-                  label="Kind"
+                  label="Child"
                   onChange={[Function]}
                 />
               </WithStyles(Grid)>,
@@ -1501,11 +1501,11 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <SearchableDropdownUser
-                  helperText="Kinder Hinzufügen"
+                  helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
                   items={Array []}
-                  label="Kind"
+                  label="Child"
                   onChange={[Function]}
                 />,
                 "item": true,
@@ -1517,11 +1517,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "helperText": "Kinder Hinzufügen",
+                  "helperText": "Add children",
                   "includeItem": [Function],
                   "itemToString": [Function],
                   "items": Array [],
-                  "label": "Kind",
+                  "label": "Child",
                   "onChange": [Function],
                 },
                 "ref": null,

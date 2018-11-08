@@ -21,6 +21,32 @@ import {
   UserN
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    headers: {
+      name: "Name",
+      date: "Date",
+      from: "From",
+      to: "To",
+      signed: "Signed",
+      teacher: "Teacher"
+    },
+    deleted: "Deleted"
+  },
+  de: {
+    headers: {
+      name: "Name",
+      date: "Datum",
+      from: "Von",
+      to: "Bis",
+      signed: "Unterschrieben",
+      teacher: "Lehrer"
+    },
+    deleted: "Gelöscht"
+  }
+});
 
 class SlotsTable extends Table<SlotN> {}
 
@@ -59,17 +85,17 @@ export class Slots extends React.Component<SlotsProps> {
     return (
       <SlotsTable
         headers={[
-          "Name",
-          "Datum",
-          "Von",
-          "Bis",
+          lang.headers.name,
+          lang.headers.date,
+          lang.headers.from,
+          lang.headers.to,
           {
-            name: "Signiert",
+            name: lang.headers.signed,
             options: {
               customBodyRender: v => <SignedAvatar signed={v === "true"} />
             }
           },
-          "Lehrer"
+          lang.headers.teacher
         ]}
         items={slots}
         extractId={user => user.get("id")}
@@ -81,7 +107,7 @@ export class Slots extends React.Component<SlotsProps> {
           "" + slot.get("signed"),
           slot
             .get("teacherId")
-            .cata(() => "Gelöscht", id => getUser(id).get("displayname"))
+            .cata(() => lang.deleted, id => getUser(id).get("displayname"))
         ]}
       />
     );

@@ -2,6 +2,7 @@ COMPOSE_PROJECT_NAME: ente
 
 config:
   # baseUrl:
+  language: en
   port: 80
   rotation_period:
     keys: 900

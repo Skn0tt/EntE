@@ -1,6 +1,9 @@
 import { Maybe } from "monet";
 
-export const get = (key: string) => Maybe.fromNull(localStorage.getItem(key));
+const { localStorage } = window;
+
+export const get = (key: string) =>
+  Maybe.fromNull(!!localStorage ? localStorage.getItem(key) : null);
 
 export const set = (key: string, value: string) =>
-  localStorage.setItem(key, value);
+  localStorage && localStorage.setItem(key, value);

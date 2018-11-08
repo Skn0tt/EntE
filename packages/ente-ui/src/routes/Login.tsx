@@ -31,6 +31,26 @@ import {
   BasicCredentials
 } from "../redux";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    title: "Login",
+    pleaseLogin: "In order to use EntE, log in.",
+    submit: "Login",
+    username: "Username",
+    password: "Password",
+    resetPassword: "Reset password"
+  },
+  de: {
+    title: "Anmelden",
+    pleaseLogin: "Bitte melden sie sich an, um EntE zu nutzen.",
+    submit: "Anmelden",
+    username: "Benutzername",
+    password: "Passwort",
+    resetPassword: "Passwort Zurücksetzen"
+  }
+});
 
 interface InjectedProps {
   fullScreen: boolean;
@@ -109,23 +129,21 @@ class Login extends React.Component<Props, State> {
           open
           onKeyPress={this.handleKeyPress}
         >
-          <DialogTitle>Login</DialogTitle>
+          <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Bitte melden sie sich an, um EntE zu nutzen.
-            </DialogContentText>
+            <DialogContentText>{lang.pleaseLogin}</DialogContentText>
             <div className={classes.contentContainer}>
               <TextField
                 fullWidth
                 id="name"
-                label="Name"
+                label={lang.username}
                 autoComplete="username"
                 onChange={this.handleChangeUsername}
               />
               <TextField
                 fullWidth
                 id="password"
-                label="Password"
+                label={lang.password}
                 type="password"
                 autoComplete="current-password"
                 onChange={this.handleChangePassword}
@@ -134,10 +152,10 @@ class Login extends React.Component<Props, State> {
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleResetPassword()}>
-              Passwort Zurücksetzen
+              {lang.resetPassword}
             </Button>
             <Button color="primary" onClick={() => this.handleSignIn()}>
-              Login
+              {lang.submit}
             </Button>
           </DialogActions>
         </Dialog>

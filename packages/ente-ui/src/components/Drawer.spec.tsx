@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import Drawer, { toggleDrawer } from "./Drawer";
-import { mount, shallow } from "enzyme";
+import { shallow } from "enzyme";
 import { getMockRouterProps } from "../../testHelpers/mockRouter";
 
 describe("Drawer", () => {

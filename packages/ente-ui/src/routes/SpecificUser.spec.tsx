@@ -33,7 +33,7 @@ describe("SpecificUser", () => {
       {...getMockRouterProps({ userId })}
       getUser={getUser}
       fullScreen
-      classes={{}}
+      classes={{ deleteButton: "" }}
       loading={false}
       requestUser={requestUser}
       students={[]}
@@ -58,7 +58,7 @@ describe("SpecificUser", () => {
         {...getMockRouterProps({ userId })}
         getUser={getUser}
         fullScreen
-        classes={{}}
+        classes={{ deleteButton: "" }}
         loading={false}
         requestUser={requestUser}
         students={[]}

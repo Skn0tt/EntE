@@ -18,7 +18,20 @@ import Typography from "@material-ui/core/Typography/Typography";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
-import lang from "../lang";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    title: "Children",
+    addChildren: "Add children",
+    child: "Child"
+  },
+  de: {
+    title: "Kinder",
+    addChildren: "Kinder hinzufügen",
+    child: "Kind"
+  }
+});
 
 /**
  * # Helpers
@@ -90,9 +103,7 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography variant="h6">
-            {lang().ui.specificUser.childrenTitle}
-          </Typography>
+          <Typography variant="h6">{lang.title}</Typography>
         </Grid>
         {/* List Children */}
         <Grid item>
@@ -122,8 +133,8 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               }
-              helperText={lang().ui.specificUser.addChildren}
-              label={lang().ui.specificUser.child}
+              helperText={lang.addChildren}
+              label={lang.child}
             />
           </Grid>
           <Grid item xs={1}>

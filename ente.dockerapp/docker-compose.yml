@@ -12,7 +12,8 @@ services:
       SENTRY_DSN_UI: ${sentry.ui}
       ROTATION_PERIOD: ${config.rotation_period.ui}
       ALLOW_INSECURE: ${debug.allow_http}
-      CONFIG_VARS: SENTRY_DSN_UI,ROTATION_PERIOD,ALLOW_INSECURE
+      LANG: ${config.language}
+      CONFIG_VARS: SENTRY_DSN_UI,ROTATION_PERIOD,ALLOW_INSECURE,LANG
     networks:
       - ente_bridge
 

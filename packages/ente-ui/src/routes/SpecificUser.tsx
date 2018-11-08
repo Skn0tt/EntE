@@ -7,7 +7,6 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import {
   connect,
   MapDispatchToPropsParam,
@@ -17,7 +16,15 @@ import ChildrenInput from "../elements/ChildrenInput";
 import SwitchInput from "../elements/SwitchInput";
 import TextInput from "../elements/TextInput";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Button, Dialog, Grid, IconButton } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  Grid,
+  IconButton,
+  withStyles,
+  StyleRulesCallback,
+  WithStyles
+} from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
@@ -50,7 +57,42 @@ import {
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
-import lang from "../lang";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    submit: "OK",
+    close: "Close",
+    titles: {
+      email: "Email",
+      displayname: "Displayname",
+      isAdult: "Adult",
+      id: "ID",
+      role: "Role",
+      gradYear: "Graduation Year"
+    }
+  },
+  de: {
+    submit: "OK",
+    close: "Schließen",
+    titles: {
+      email: "Email",
+      displayname: "Displayname",
+      isAdult: "Erwachsen",
+      id: "ID",
+      role: "Rolle",
+      gradYear: "Abschluss-Jahrgang"
+    }
+  }
+});
+
+const styles: StyleRulesCallback<"deleteButton"> = theme => ({
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0
+  }
+});
 
 /**
  * # Component Types
@@ -58,14 +100,14 @@ import lang from "../lang";
 interface RouteMatch {
   userId: string;
 }
-interface StateProps {
+interface SpecificUserStateProps {
   getUser(id: string): UserN;
   loading: boolean;
   students: UserN[];
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
-  OwnProps,
+  SpecificUserStateProps,
+  SpecificUserOwnProps,
   AppState
 > = state => ({
   getUser: id => getUser(id)(state),
@@ -73,28 +115,27 @@ const mapStateToProps: MapStateToPropsParam<
   students: getStudents(state)
 });
 
-interface DispatchProps {
+interface SpecificUserDispatchProps {
   requestUser(id: string): void;
   updateUser(id: string, u: PatchUserDto): void;
   deleteUser(id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
-  DispatchProps,
-  OwnProps
+  SpecificUserDispatchProps,
+  SpecificUserOwnProps
 > = dispatch => ({
   requestUser: id => dispatch(getUserRequest(id)),
   updateUser: (id, user) => dispatch(updateUserRequest([id, user])),
   deleteUser: id => dispatch(deleteUserRequest(id))
 });
 
-interface OwnProps {}
+interface SpecificUserOwnProps {}
 
-type Props = StateProps &
-  OwnProps &
-  DispatchProps &
-  InjectedProps &
-  WithStyles &
-  RouteComponentProps<RouteMatch>;
+type SpecificUserProps = SpecificUserStateProps &
+  SpecificUserOwnProps &
+  RouteComponentProps<RouteMatch> &
+  SpecificUserDispatchProps &
+  InjectedProps;
 
 interface State {
   patch: PatchUserDto;
@@ -104,7 +145,10 @@ interface State {
 /**
  * # Component
  */
-export class SpecificUser extends React.PureComponent<Props, State> {
+export class SpecificUser extends React.PureComponent<
+  SpecificUserProps & WithStyles<"deleteButton">,
+  State
+> {
   /**
    * ## Intialization
    */
@@ -195,15 +239,15 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                 <Grid container spacing={24} alignItems="stretch">
                   <Grid item xs={12}>
                     <DialogContentText>
-                      {lang().ui.specificUser.id}: {user.get("id")} <br />
-                      {lang().ui.specificUser.role}: {user.get("role")} <br />
+                      {lang.titles.id}: {user.get("id")} <br />
+                      {lang.titles.role}: {user.get("role")} <br />
                     </DialogContentText>
                   </Grid>
 
                   {/* Displayname */}
                   <Grid item xs={12}>
                     <TextInput
-                      title={lang().ui.specificUser.displaynameTitle}
+                      title={lang.titles.displayname}
                       value={patch.displayname || user.get("displayname")}
                       onChange={this.update("displayname")}
                       validator={isValidDisplayname}
@@ -213,7 +257,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                   {/* Email */}
                   <Grid item xs={12}>
                     <TextInput
-                      title={lang().ui.specificUser.emailTitle}
+                      title={lang.titles.email}
                       value={patch.email || user.get("email")}
                       onChange={this.update("email")}
                       validator={isValidEmail}
@@ -225,7 +269,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                     <Grid item xs={6}>
                       <SwitchInput
                         value={user.get("isAdult")}
-                        title={lang().ui.specificUser.adultTitle}
+                        title={lang.titles.isAdult}
                         onChange={this.update("isAdult")}
                       />
                     </Grid>
@@ -235,7 +279,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
                   {roleHasGradYear(user.get("role")) && (
                     <Grid item xs={6}>
                       <YearPicker
-                        label="Abschluss-Jahrgang"
+                        label={lang.titles.gradYear}
                         onChange={this.update("graduationYear")}
                         amount={5}
                         value={
@@ -269,7 +313,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
           )}
           <DialogActions>
             <Button size="small" color="secondary" onClick={this.onClose}>
-              {lang().ui.common.close}
+              {lang.close}
             </Button>
             <Button
               size="small"
@@ -277,7 +321,7 @@ export class SpecificUser extends React.PureComponent<Props, State> {
               onClick={this.onSubmit}
               disabled={!isValidPatchUserDto(this.state.patch)}
             >
-              {lang().ui.common.submit}
+              {lang.submit}
             </Button>
           </DialogActions>
         </Dialog>
@@ -286,7 +330,8 @@ export class SpecificUser extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withMobileDialog<Props>()(withErrorBoundary()(SpecificUser))));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(
+    withMobileDialog()(withErrorBoundary()(withStyles(styles)(SpecificUser)))
+  )
+);
