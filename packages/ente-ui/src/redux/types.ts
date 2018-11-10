@@ -136,9 +136,9 @@ type MessagesState = List<string>;
  * AppState
  */
 export interface IAppState {
-  entries: Map<string, EntryN>;
-  users: Map<string, UserN>;
-  slots: Map<string, SlotN>;
+  entriesMap: Map<string, EntryN>;
+  usersMap: Map<string, UserN>;
+  slotsMap: Map<string, SlotN>;
   auth: Maybe<AuthState>;
   messages: MessagesState;
   loading: number;
@@ -147,9 +147,9 @@ export interface IAppState {
 export type AppState = Record<IAppState>;
 export const AppState = Record<IAppState>(
   {
-    entries: Map<string, EntryN>(),
-    users: Map<string, UserN>(),
-    slots: Map<string, SlotN>(),
+    entriesMap: Map<string, EntryN>(),
+    usersMap: Map<string, UserN>(),
+    slotsMap: Map<string, SlotN>(),
     auth: None(),
     messages: List<string>(),
     loading: 0

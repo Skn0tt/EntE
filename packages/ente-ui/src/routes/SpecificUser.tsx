@@ -135,6 +135,7 @@ type SpecificUserProps = SpecificUserStateProps &
   SpecificUserOwnProps &
   RouteComponentProps<RouteMatch> &
   SpecificUserDispatchProps &
+  WithStyles<"deleteButton"> &
   InjectedProps;
 
 interface State {
@@ -146,7 +147,7 @@ interface State {
  * # Component
  */
 export class SpecificUser extends React.PureComponent<
-  SpecificUserProps & WithStyles<"deleteButton">,
+  SpecificUserProps,
   State
 > {
   /**

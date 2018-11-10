@@ -15,12 +15,6 @@ export const CustomStringValidator = (
           return (value as string[]).every(validator);
         }
 
-        if (!validator) {
-          console.log(validator);
-          console.log(object.constructor);
-          console.log(propertyName);
-        }
-
         return typeof value === "string" && validator(value);
       }
     }

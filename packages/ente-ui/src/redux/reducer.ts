@@ -82,8 +82,10 @@ import {
 import { Some } from "monet";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
-  const entries = state.get("entries").filter(e => ids.includes(e.get("id")));
-  const woEntries = state.update("entries", e =>
+  const entries = state
+    .get("entriesMap")
+    .filter(e => ids.includes(e.get("id")));
+  const woEntries = state.update("entriesMap", e =>
     e.withMutations(m => {
       entries.forEach(e => {
         m.delete(e.get("id"));
@@ -97,7 +99,7 @@ const withoutEntries = (...ids: string[]) => (state: AppState) => {
     .valueSeq()
     .toArray();
 
-  const withoutSlots = woEntries.update("slots", s =>
+  const withoutSlots = woEntries.update("slotsMap", s =>
     s.withMutations(m => {
       slotIds.forEach(s => {
         m.delete(s);
@@ -207,10 +209,10 @@ const reducer = handleActions(
 
       const minusLoading = state.update("loading", l => l - 1);
 
-      const withoutUser = minusLoading.deleteIn(["users", userId]);
+      const withoutUser = minusLoading.deleteIn(["usersMap", userId]);
 
       const entriesOfUser = state
-        .get("entries")
+        .get("entriesMap")
         .filter(e => e.get("studentId") === userId);
 
       return withoutEntries(
@@ -261,7 +263,7 @@ const reducer = handleActions(
     // ## ADD_RESPONSE
     [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
       state
-        .update("users", users =>
+        .update("usersMap", users =>
           users.merge(
             Map<string, UserN>(
               action.payload!.users.map(
@@ -270,7 +272,7 @@ const reducer = handleActions(
             )
           )
         )
-        .update("slots", slots =>
+        .update("slotsMap", slots =>
           slots.merge(
             Map<string, SlotN>(
               action.payload!.slots.map(
@@ -279,7 +281,7 @@ const reducer = handleActions(
             )
           )
         )
-        .update("entries", entries =>
+        .update("entriesMap", entries =>
           entries.merge(
             Map<string, EntryN>(
               action.payload!.entries.map(

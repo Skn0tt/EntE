@@ -36,11 +36,16 @@ const getConfig = (): any => {
   return JSON.parse(c);
 };
 
-const getLanguage = (lang: string) =>
-  ({
-    de: Languages.GERMAN,
-    en: Languages.ENGLISH
-  }[lang] || Languages.ENGLISH);
+const getLanguage = (lang: string): Languages => {
+  switch (lang) {
+    case "en":
+      return Languages.ENGLISH;
+    case "de":
+      return Languages.GERMAN;
+    default:
+      return Languages.ENGLISH;
+  }
+};
 
 const readConfig = () => {
   const c = getConfig();

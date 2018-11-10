@@ -45,7 +45,7 @@ ShallowWrapper {
           open={false}
         >
           <WithStyles(DialogTitle)>
-            Neuer Nutzer
+            New User
           </WithStyles(DialogTitle)>
           <WithStyles(DialogContent)>
             <form
@@ -119,8 +119,8 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Wählen sie die Rolle des Nutzers aus."
-                    label="Rolle"
+                    helperText="Choose the users's role"
+                    label="Role"
                     onChange={[Function]}
                     required={false}
                     select={true}
@@ -160,7 +160,7 @@ ShallowWrapper {
                 >
                   <Unknown
                     amount={5}
-                    label="Abschluss-Jahrgang"
+                    label="Graduation Year"
                     onChange={[Function]}
                     value={2019}
                   />
@@ -205,7 +205,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <WithStyles(DialogTitle)>
-              Neuer Nutzer
+              New User
             </WithStyles(DialogTitle)>,
             <WithStyles(DialogContent)>
               <form
@@ -279,8 +279,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -320,7 +320,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -361,10 +361,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "Neuer Nutzer",
+              "children": "New User",
             },
             "ref": null,
-            "rendered": "Neuer Nutzer",
+            "rendered": "New User",
             "type": [Function],
           },
           Object {
@@ -443,8 +443,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -484,7 +484,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -566,8 +566,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -607,7 +607,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -685,8 +685,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -727,7 +727,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -888,8 +888,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -962,8 +962,8 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Wählen sie die Rolle des Nutzers aus.",
-                        "label": "Rolle",
+                        "helperText": "Choose the users's role",
+                        "label": "Role",
                         "onChange": [Function],
                         "required": false,
                         "select": true,
@@ -1045,7 +1045,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />,
@@ -1059,7 +1059,7 @@ ShallowWrapper {
                       "nodeType": "function",
                       "props": Object {
                         "amount": 5,
-                        "label": "Abschluss-Jahrgang",
+                        "label": "Graduation Year",
                         "onChange": [Function],
                         "value": 2019,
                       },
@@ -1179,7 +1179,7 @@ ShallowWrapper {
             open={false}
           >
             <WithStyles(DialogTitle)>
-              Neuer Nutzer
+              New User
             </WithStyles(DialogTitle)>
             <WithStyles(DialogContent)>
               <form
@@ -1253,8 +1253,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -1294,7 +1294,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -1339,7 +1339,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <WithStyles(DialogTitle)>
-                Neuer Nutzer
+                New User
               </WithStyles(DialogTitle)>,
               <WithStyles(DialogContent)>
                 <form
@@ -1413,8 +1413,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1454,7 +1454,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1495,10 +1495,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "Neuer Nutzer",
+                "children": "New User",
               },
               "ref": null,
-              "rendered": "Neuer Nutzer",
+              "rendered": "New User",
               "type": [Function],
             },
             Object {
@@ -1577,8 +1577,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1618,7 +1618,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1700,8 +1700,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1741,7 +1741,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1819,8 +1819,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus."
-                          label="Rolle"
+                          helperText="Choose the users's role"
+                          label="Role"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -1861,7 +1861,7 @@ ShallowWrapper {
                       >
                         <Unknown
                           amount={5}
-                          label="Abschluss-Jahrgang"
+                          label="Graduation Year"
                           onChange={[Function]}
                           value={2019}
                         />
@@ -2022,8 +2022,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus."
-                          label="Rolle"
+                          helperText="Choose the users's role"
+                          label="Role"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -2096,8 +2096,8 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Wählen sie die Rolle des Nutzers aus.",
-                          "label": "Rolle",
+                          "helperText": "Choose the users's role",
+                          "label": "Role",
                           "onChange": [Function],
                           "required": false,
                           "select": true,
@@ -2179,7 +2179,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": <Unknown
                           amount={5}
-                          label="Abschluss-Jahrgang"
+                          label="Graduation Year"
                           onChange={[Function]}
                           value={2019}
                         />,
@@ -2193,7 +2193,7 @@ ShallowWrapper {
                         "nodeType": "function",
                         "props": Object {
                           "amount": 5,
-                          "label": "Abschluss-Jahrgang",
+                          "label": "Graduation Year",
                           "onChange": [Function],
                           "value": 2019,
                         },
@@ -2366,7 +2366,7 @@ ShallowWrapper {
           open={true}
         >
           <WithStyles(DialogTitle)>
-            Neuer Nutzer
+            New User
           </WithStyles(DialogTitle)>
           <WithStyles(DialogContent)>
             <form
@@ -2440,8 +2440,8 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Wählen sie die Rolle des Nutzers aus."
-                    label="Rolle"
+                    helperText="Choose the users's role"
+                    label="Role"
                     onChange={[Function]}
                     required={false}
                     select={true}
@@ -2481,7 +2481,7 @@ ShallowWrapper {
                 >
                   <Unknown
                     amount={5}
-                    label="Abschluss-Jahrgang"
+                    label="Graduation Year"
                     onChange={[Function]}
                     value={2019}
                   />
@@ -2526,7 +2526,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <WithStyles(DialogTitle)>
-              Neuer Nutzer
+              New User
             </WithStyles(DialogTitle)>,
             <WithStyles(DialogContent)>
               <form
@@ -2600,8 +2600,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -2641,7 +2641,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -2682,10 +2682,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "Neuer Nutzer",
+              "children": "New User",
             },
             "ref": null,
-            "rendered": "Neuer Nutzer",
+            "rendered": "New User",
             "type": [Function],
           },
           Object {
@@ -2764,8 +2764,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -2805,7 +2805,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -2887,8 +2887,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -2928,7 +2928,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -3006,8 +3006,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3048,7 +3048,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -3209,8 +3209,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3283,8 +3283,8 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Wählen sie die Rolle des Nutzers aus.",
-                        "label": "Rolle",
+                        "helperText": "Choose the users's role",
+                        "label": "Role",
                         "onChange": [Function],
                         "required": false,
                         "select": true,
@@ -3366,7 +3366,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />,
@@ -3380,7 +3380,7 @@ ShallowWrapper {
                       "nodeType": "function",
                       "props": Object {
                         "amount": 5,
-                        "label": "Abschluss-Jahrgang",
+                        "label": "Graduation Year",
                         "onChange": [Function],
                         "value": 2019,
                       },
@@ -3500,7 +3500,7 @@ ShallowWrapper {
             open={true}
           >
             <WithStyles(DialogTitle)>
-              Neuer Nutzer
+              New User
             </WithStyles(DialogTitle)>
             <WithStyles(DialogContent)>
               <form
@@ -3574,8 +3574,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus."
-                      label="Rolle"
+                      helperText="Choose the users's role"
+                      label="Role"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -3615,7 +3615,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Abschluss-Jahrgang"
+                      label="Graduation Year"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -3660,7 +3660,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <WithStyles(DialogTitle)>
-                Neuer Nutzer
+                New User
               </WithStyles(DialogTitle)>,
               <WithStyles(DialogContent)>
                 <form
@@ -3734,8 +3734,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3775,7 +3775,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -3816,10 +3816,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "Neuer Nutzer",
+                "children": "New User",
               },
               "ref": null,
-              "rendered": "Neuer Nutzer",
+              "rendered": "New User",
               "type": [Function],
             },
             Object {
@@ -3898,8 +3898,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3939,7 +3939,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -4021,8 +4021,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus."
-                        label="Rolle"
+                        helperText="Choose the users's role"
+                        label="Role"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -4062,7 +4062,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Abschluss-Jahrgang"
+                        label="Graduation Year"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -4140,8 +4140,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus."
-                          label="Rolle"
+                          helperText="Choose the users's role"
+                          label="Role"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -4182,7 +4182,7 @@ ShallowWrapper {
                       >
                         <Unknown
                           amount={5}
-                          label="Abschluss-Jahrgang"
+                          label="Graduation Year"
                           onChange={[Function]}
                           value={2019}
                         />
@@ -4343,8 +4343,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus."
-                          label="Rolle"
+                          helperText="Choose the users's role"
+                          label="Role"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -4417,8 +4417,8 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Wählen sie die Rolle des Nutzers aus.",
-                          "label": "Rolle",
+                          "helperText": "Choose the users's role",
+                          "label": "Role",
                           "onChange": [Function],
                           "required": false,
                           "select": true,
@@ -4500,7 +4500,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": <Unknown
                           amount={5}
-                          label="Abschluss-Jahrgang"
+                          label="Graduation Year"
                           onChange={[Function]}
                           value={2019}
                         />,
@@ -4514,7 +4514,7 @@ ShallowWrapper {
                         "nodeType": "function",
                         "props": Object {
                           "amount": 5,
-                          "label": "Abschluss-Jahrgang",
+                          "label": "Graduation Year",
                           "onChange": [Function],
                           "value": 2019,
                         },

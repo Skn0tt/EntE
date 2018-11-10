@@ -30,8 +30,6 @@
     "@types/chai": "^4.1.2",
     "@types/enzyme": "^3.1.9",
     "@types/jest": "^22.2.2",
-    "@types/mockdate": "^2.0.0",
-    "@types/react-test-renderer": "^16.0.1",
     "@types/sinon": "^4.3.1",
     "chai": "^4.1.2",
     "enzyme": "^3.7.0",
@@ -40,21 +38,18 @@
     "jest": "^23.6.0",
     "jest-junit": "^3.7.0",
     "lerna": "^2.9.0",
-    "mockdate": "^2.0.2",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
-    "react-router-enzyme-context": "^1.2.0",
-    "react-test-renderer": "^16.3.1",
     "reflect-metadata": "^0.1.12",
     "sinon": "^4.5.0",
     "testcafe": "^0.20.5",
-    "testdouble": "^3.7.0",
-    "testdouble-jest": "^2.0.0",
     "ts-jest": "^23.10.4",
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1"
   },
   "jest": {
     "globals": {

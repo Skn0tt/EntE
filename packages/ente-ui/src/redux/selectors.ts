@@ -87,28 +87,31 @@ export const getUsername: Selector<string> = state => {
  * Data
  */
 export const getEntry = (id: string): Selector<EntryN> => state =>
-  state.getIn(["entries", id]);
+  state.getIn(["entriesMap", id]);
+
 export const getEntries: Selector<EntryN[]> = state =>
   state
-    .get("entries")
+    .get("entriesMap")
     .toArray()
     .map(([_, value]) => value);
 
 export const getUser = (id: string): Selector<UserN> => state =>
-  state.getIn(["users", id]);
+  state.getIn(["usersMap", id]);
+
 export const getUsers: Selector<UserN[]> = state =>
   state
-    .get("users")
+    .get("usersMap")
     .toArray()
     .map(([_, value]) => value);
 
 export const getSlots: Selector<SlotN[]> = state =>
   state
-    .get("slots")
+    .get("slotsMap")
     .toArray()
     .map(([_, value]) => value);
+
 export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
-  ids.map(id => state.getIn(["slots", id]));
+  ids.map(id => state.getIn(["slotsMap", id]));
 
 export const getTeachers = createSelector([getUsers], users =>
   users.filter(userIsTeacher)

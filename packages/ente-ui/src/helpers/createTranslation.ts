@@ -14,7 +14,10 @@ export enum Languages {
 
 const getLanguage = (): Languages => config.get().LANGUAGE;
 
-export const createTranslation = <T>(v: { en: T; de: T }): T => {
+export const createTranslation = <T>(v: {
+  en: Required<T>;
+  de: Required<T>;
+}): T => {
   switch (getLanguage()) {
     case Languages.ENGLISH:
       return v.en;
