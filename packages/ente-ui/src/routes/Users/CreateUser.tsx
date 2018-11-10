@@ -46,10 +46,16 @@ import { createTranslation } from "ente-ui/src/helpers/createTranslation";
 const lang = createTranslation({
   en: {
     titles: {
+      newUser: "New User",
       username: "Username",
       displayname: "Displayname",
       email: "Email",
-      password: "Password"
+      password: "Password",
+      role: "Role",
+      gradYear: "Graduation Year"
+    },
+    helpers: {
+      chooseRoleOfUser: "Choose the users's role"
     },
     submit: "Submit",
     close: "Close",
@@ -57,10 +63,16 @@ const lang = createTranslation({
   },
   de: {
     titles: {
+      newUser: "Neuer Nutzer",
       username: "Nutzername",
       displayname: "Displayname",
       email: "Email",
-      password: "Passwort"
+      password: "Passwort",
+      role: "Rolle",
+      gradYear: "Abschluss-Jahrgang"
+    },
+    helpers: {
+      chooseRoleOfUser: "Wählen sie die Rolle des Nutzers aus"
     },
     submit: "Erstellen",
     close: "Schließen",
@@ -189,7 +201,7 @@ export class CreateUser extends React.Component<
     return (
       <>
         <Dialog fullScreen={fullScreen} onClose={this.handleGoBack} open={show}>
-          <DialogTitle>Neuer Nutzer</DialogTitle>
+          <DialogTitle>{lang.titles.newUser}</DialogTitle>
           <DialogContent>
             <form onKeyPress={this.handleKeyPress}>
               <Grid container direction="row" spacing={24}>
@@ -233,12 +245,12 @@ export class CreateUser extends React.Component<
                 <Grid item xs={12}>
                   <TextField
                     select
-                    label="Rolle"
+                    label={lang.titles.role}
                     value={create.role || Roles.STUDENT}
                     onChange={this.handleChangeRole}
                     fullWidth
                     SelectProps={{ native: true }}
-                    helperText="Wählen sie die Rolle des Nutzers aus."
+                    helperText={lang.helpers.chooseRoleOfUser}
                   >
                     {Object.keys(Roles).map(role => (
                       <option
@@ -264,7 +276,7 @@ export class CreateUser extends React.Component<
                 {this.hasGradYear() && (
                   <Grid item xs={12}>
                     <YearPicker
-                      label="Abschluss-Jahrgang"
+                      label={lang.titles.gradYear}
                       amount={5}
                       onChange={this.handleChangeYear}
                       value={create.graduationYear}

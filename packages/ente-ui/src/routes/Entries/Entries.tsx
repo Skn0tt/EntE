@@ -38,18 +38,20 @@ const lang = createTranslation({
       created: "Created",
       forSchool: "Educational",
       manager: "Manager",
-      parents: "Parents",
-      yes: "Yes",
-      no: "No"
-    }
+      parents: "Parents"
+    },
+    yes: "Yes",
+    no: "No"
   },
   de: {
-    name: "Name",
-    date: "Datum",
-    created: "Erstellt",
-    forSchool: "Schulisch",
-    manager: "Stufenleiter",
-    parents: "Eltern",
+    headers: {
+      name: "Name",
+      date: "Datum",
+      created: "Erstellt",
+      forSchool: "Schulisch",
+      manager: "Stufenleiter",
+      parents: "Eltern"
+    },
     yes: "Ja",
     no: "Nein"
   }
@@ -114,15 +116,18 @@ export class Entries extends React.Component<Props, State> {
         {/* Main */}
         <EntriesTable
           headers={[
-            lang.name,
-            lang.date,
-            lang.created,
-            { name: lang.forSchool, options: { filter: true } },
+            lang.headers.name,
+            lang.headers.date,
+            lang.headers.created,
+            { name: lang.headers.forSchool, options: { filter: true } },
             {
-              name: lang.manager,
+              name: lang.headers.manager,
               options: { customBodyRender, filter: true }
             },
-            { name: lang.parents, options: { customBodyRender, filter: true } }
+            {
+              name: lang.headers.parents,
+              options: { customBodyRender, filter: true }
+            }
           ]}
           items={entries}
           extract={entry => [
