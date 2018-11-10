@@ -15,6 +15,6 @@ docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $(pwd)/ente.dockerapp/:/usr/app/ente.dockerapp/ \
   skn0tt/docker-app \
-  "echo $DOCKER_HUB_PASSWORD | docker login --username skn0tt --password-stdin && cd /usr/app/ && docker-app push --tag $tag"
+  "echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com && cd /usr/app/ && docker-app push --tag $tag"
 
 cd $cwd

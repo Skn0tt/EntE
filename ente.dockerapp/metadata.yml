@@ -1,7 +1,7 @@
 version: v0.7.1
 name: EntE
 description: "EntE: Digital Excuse Workflow for Schools."
-namespace: skn0tt
+namespace: registry.gitlab.com/skn0tt/ente/
 maintainers:
   - name: skn0tt
     email: info@simonknott.de
