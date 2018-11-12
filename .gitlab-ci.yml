@@ -165,7 +165,6 @@ deploy:images:
     - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-    - echo $DOCKER_HUB_PASSWORD | docker login -u skn0tt --password-stdin
   script: "./ci/publish_images.sh"
 
 release:trigger_deployment:
