@@ -1,14 +1,14 @@
 stages:
-  - test:unit
-  - build
   - test
+  - build
+  - test:e2e
   - generate
   - deploy
   - release
 
 test:unit:
   image: node:9
-  stage: test:unit
+  stage: test
   script: "./ci/test_unit.sh"
   dependencies: []
   artifacts:
@@ -20,9 +20,41 @@ test:version:
   image:
     name: node:9
     entrypoint: [""]
-  stage: test:unit
+  stage: test
   dependencies: []
   script: "./ci/test_version.sh"
+
+license_management:
+  image: 
+    name: "registry.gitlab.com/gitlab-org/security-products/license-management:$CI_SERVER_VERSION_MAJOR-$CI_SERVER_VERSION_MINOR-stable"
+    entrypoint: [""]
+  stage: test
+  allow_failure: true
+  script:
+    - /run.sh analyze .
+  artifacts:
+    paths: [gl-license-management-report.json]
+
+
+sast:
+  image: docker:stable
+  stage: test
+  dependencies: []
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
+        --volume "$PWD:/code"
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+  artifacts:
+    paths:
+      - gl-sast-report.json
 
 build:api:
   image: skn0tt/dind-make
@@ -54,7 +86,7 @@ build:docker-app:
 
 test:e2e:
   image: skn0tt/node-browsers-docker-app
-  stage: test
+  stage: test:e2e
   dependencies: []
   services:
     - name: docker:stable-dind
@@ -71,26 +103,6 @@ test:e2e:
       - screenshots/
       - e2e.xml
       - compose-logs.txt
-
-sast:
-  image: docker:stable
-  stage: test
-  dependencies: []
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
-  artifacts:
-    paths:
-      - gl-sast-report.json
 
 generate:docs:
   image: python
