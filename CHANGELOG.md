@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Added Check for Sentry DSN wether it is a valid DSN
+
 * Changed Docker Repository of ente.dockerapp: Now uses Gitlab Registry.
 
 ## [v0.7.1] - 2018-11-10

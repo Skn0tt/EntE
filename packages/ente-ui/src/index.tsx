@@ -32,6 +32,7 @@ import { Provider } from "react-redux";
 import Raven from "raven-js";
 import { Action } from "redux-actions";
 import HttpsGate from "./components/HttpsGate";
+import { isSentryDsn } from "./helpers/isSentryDsn";
 
 const config: ReduxConfig = {
   baseUrl: `${location.protocol}//${location.hostname}/api`,
@@ -47,8 +48,13 @@ const config: ReduxConfig = {
 
 const { SENTRY_DSN_UI, ALLOW_INSECURE } = getConfig();
 
-if (SENTRY_DSN_UI) {
-  Raven.config(SENTRY_DSN_UI).install();
+const setupSentry = (dsn: string) => {
+  if (!isSentryDsn(dsn)) {
+    console.error("Invalid Sentry DSN passed.");
+    return;
+  }
+
+  Raven.config(dsn).install();
 
   const ravenMiddleWare = createRavenMiddleware(Raven, {
     actionTransformer: (action: Action<AuthState | {}>) => {
@@ -65,6 +71,10 @@ if (SENTRY_DSN_UI) {
 
   config.middlewares = [ravenMiddleWare];
   config.onSagaError = Raven.captureException;
+};
+
+if (!!SENTRY_DSN_UI) {
+  setupSentry(SENTRY_DSN_UI);
 }
 
 const store = setupRedux(config);
