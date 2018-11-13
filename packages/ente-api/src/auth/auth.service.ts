@@ -26,6 +26,11 @@ export class AuthService {
       return None();
     }
 
+    // No Password Set
+    if (!userAndHash.some().hash) {
+      return None();
+    }
+
     const isValidPassword = await checkPassword(
       userAndHash.some().hash,
       password
