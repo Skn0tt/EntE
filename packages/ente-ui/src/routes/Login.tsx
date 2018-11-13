@@ -7,9 +7,6 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-
-import styles from "./Login.styles";
 import { connect, Dispatch } from "react-redux";
 import { Action } from "redux";
 import { Redirect, RouteComponentProps } from "react-router";
@@ -20,7 +17,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  TextField
+  TextField,
+  Grid
 } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import {
@@ -32,23 +30,28 @@ import {
 } from "../redux";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
 import { createTranslation } from "../helpers/createTranslation";
+import * as config from "../config";
+
+const { INSTANCE_INFO_DE, INSTANCE_INFO_EN } = config.get();
 
 const lang = createTranslation({
   en: {
     title: "Login",
-    pleaseLogin: "In order to use EntE, log in.",
     submit: "Login",
     username: "Username",
     password: "Password",
-    resetPassword: "Reset password"
+    resetPassword: "Reset password",
+    instanceInfo: INSTANCE_INFO_EN.orSome("In order to use EntE, log in.")
   },
   de: {
     title: "Anmelden",
-    pleaseLogin: "Bitte melden sie sich an, um EntE zu nutzen.",
     submit: "Anmelden",
     username: "Benutzername",
     password: "Passwort",
-    resetPassword: "Passwort Zurücksetzen"
+    resetPassword: "Passwort Zurücksetzen",
+    instanceInfo: INSTANCE_INFO_DE.orSome(
+      "Bitte melden sie sich an, um EntE zu nutzen."
+    )
   }
 });
 
@@ -76,7 +79,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 type Props = StateProps &
   DispatchProps &
   InjectedProps &
-  WithStyles &
   RouteComponentProps<{}>;
 
 interface State {
@@ -116,7 +118,6 @@ class Login extends React.Component<Props, State> {
     });
 
   render() {
-    const { classes } = this.props;
     const { from } = this.props.location.state || {
       from: { pathname: "/" }
     };
@@ -131,24 +132,31 @@ class Login extends React.Component<Props, State> {
         >
           <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
-            <DialogContentText>{lang.pleaseLogin}</DialogContentText>
-            <div className={classes.contentContainer}>
-              <TextField
-                fullWidth
-                id="name"
-                label={lang.username}
-                autoComplete="username"
-                onChange={this.handleChangeUsername}
-              />
-              <TextField
-                fullWidth
-                id="password"
-                label={lang.password}
-                type="password"
-                autoComplete="current-password"
-                onChange={this.handleChangePassword}
-              />
-            </div>
+            <DialogContentText
+              dangerouslySetInnerHTML={{ __html: lang.instanceInfo }}
+            />
+            <Grid container direction="column">
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="name"
+                  label={lang.username}
+                  autoComplete="username"
+                  onChange={this.handleChangeUsername}
+                />
+              </Grid>
+
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="password"
+                  label={lang.password}
+                  type="password"
+                  autoComplete="current-password"
+                  onChange={this.handleChangePassword}
+                />
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleResetPassword()}>
@@ -164,8 +172,6 @@ class Login extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withMobileDialog<Props>()(withErrorBoundary()(Login))
-  )
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<Props>()(withErrorBoundary()(Login))
 );

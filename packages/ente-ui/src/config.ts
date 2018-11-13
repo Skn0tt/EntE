@@ -7,7 +7,7 @@
  */
 import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
-import { Some } from "monet";
+import { Some, None, Maybe } from "monet";
 import { Languages } from "./helpers/createTranslation";
 
 const SECOND = 1000;
@@ -18,6 +18,8 @@ type Config = {
   ROTATION_PERIOD: number;
   ALLOW_INSECURE: boolean;
   LANGUAGE: Languages;
+  INSTANCE_INFO_DE: Maybe<string>;
+  INSTANCE_INFO_EN: Maybe<string>;
 };
 
 let config: Config | null = null;
@@ -56,6 +58,8 @@ const readConfig = () => {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
+    INSTANCE_INFO_DE: !!c.INSTANCE_INFO_DE ? Some(c.INSTANCE_INFO_DE) : None(),
+    INSTANCE_INFO_EN: !!c.INSTANCE_INFO_EN ? Some(c.INSTANCE_INFO_EN) : None(),
     SENTRY_DSN_UI: SENTRY_DSN_UI !== "undefined" ? SENTRY_DSN_UI : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
     LANGUAGE: getLanguage(c.LANG)
