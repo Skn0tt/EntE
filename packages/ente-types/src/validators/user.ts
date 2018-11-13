@@ -11,7 +11,6 @@ import * as _ from "lodash";
 import {
   isLength,
   matches,
-  containsSpecialChars,
   not,
   containsSpaces,
   containsForbiddenChars,
@@ -38,8 +37,8 @@ export const isValidUsername: SyncValidator<string> = matches([
  * - No Special Characters
  */
 export const isValidDisplayname: SyncValidator<string> = matches([
-  isLength(8, 100),
-  not(containsSpecialChars)
+  isLength(1, 100),
+  not(containsForbiddenChars)
 ]);
 
 export const isValidUuid: SyncValidator<string> = v =>

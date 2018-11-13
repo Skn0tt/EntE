@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed Username, displayname spec to allow common chars (-., umlauts)
+
 * Added License Check in CI ([Gitlab License Management](https://docs.gitlab.com/ee/user/project/merge_requests/license_management.html))
 
 ## [v0.7.2] - 2018-11-12

@@ -266,6 +266,62 @@ describe("isValidUser", () => {
         })
       ).to.be.true;
     });
+
+    it("umlauts in username", () => {
+      expect(
+        isValidCreateUserDto({
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          role: Roles.PARENT,
+          password: "m!e1passwofrt",
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmänn",
+          isAdult: false
+        })
+      ).to.be.true;
+    });
+
+    it("umlauts in displayname", () => {
+      expect(
+        isValidCreateUserDto({
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          role: Roles.PARENT,
+          password: "m!e1passwofrt",
+          displayname: "Herr Männ",
+          email: "herr@mann.de",
+          username: "herrmänn",
+          isAdult: false
+        })
+      ).to.be.true;
+    });
+
+    it("Special Chars in displayname", () => {
+      expect(
+        isValidCreateUserDto({
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          role: Roles.PARENT,
+          password: "m!e1passwofrt",
+          displayname: "Herr-Mann",
+          email: "herr@mann.de",
+          username: "herrmänn",
+          isAdult: false
+        })
+      ).to.be.true;
+    });
+
+    it("Special Chars in displayname", () => {
+      expect(
+        isValidCreateUserDto({
+          children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          role: Roles.PARENT,
+          password: "m!e1passwofrt",
+          displayname: "Herr. Mann",
+          email: "herr@mann.de",
+          username: "herrmänn",
+          isAdult: false
+        })
+      ).to.be.true;
+    });
   });
 
   describe("when giving invalid infos", () => {

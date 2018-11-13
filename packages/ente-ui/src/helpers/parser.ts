@@ -47,7 +47,7 @@ const parseCSV = async (
 
   const usernames = result.map(u => u.username).concat(existingUsernames);
   const childrenValid = result.every(u =>
-    u.children.every(c => usernames.indexOf(c) !== -1)
+    u.children.every(c => usernames.includes(c))
   );
   if (!childrenValid) {
     throw new Error("One of the children does not exist");
