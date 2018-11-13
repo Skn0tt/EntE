@@ -1,8 +1,9 @@
-COMPOSE_PROJECT_NAME: ente
-
 config:
   # baseUrl:
   language: en
+  instanceInfo:
+    en: ""
+    de: ""
   port: 80
   rotation_period:
     keys: 900
