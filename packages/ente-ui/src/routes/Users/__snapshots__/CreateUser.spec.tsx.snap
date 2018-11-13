@@ -54,7 +54,6 @@ ShallowWrapper {
               <WithStyles(Grid)
                 container={true}
                 direction="row"
-                spacing={24}
               >
                 <WithStyles(Grid)
                   item={true}
@@ -108,6 +107,11 @@ ShallowWrapper {
                     value=""
                   />
                 </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <en />
+                </WithStyles(Typography)>
                 <WithStyles(Grid)
                   item={true}
                   xs={12}
@@ -214,7 +218,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -268,6 +271,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -378,7 +386,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -432,6 +439,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -501,7 +513,6 @@ ShallowWrapper {
                 "children": <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -555,6 +566,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -674,6 +690,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>,
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>,
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -735,7 +756,6 @@ ShallowWrapper {
                   ],
                   "container": true,
                   "direction": "row",
-                  "spacing": 24,
                 },
                 "ref": null,
                 "rendered": Array [
@@ -870,6 +890,26 @@ ShallowWrapper {
                         "validator": [Function],
                         "value": "",
                       },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <en />,
+                      "variant": "body1",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {},
                       "ref": null,
                       "rendered": null,
                       "type": [Function],
@@ -1188,7 +1228,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -1242,6 +1281,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -1348,7 +1392,6 @@ ShallowWrapper {
                   <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -1402,6 +1445,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -1512,7 +1560,6 @@ ShallowWrapper {
                   <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -1566,6 +1613,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -1635,7 +1687,6 @@ ShallowWrapper {
                   "children": <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -1689,6 +1740,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -1808,6 +1864,11 @@ ShallowWrapper {
                           value=""
                         />
                       </WithStyles(Grid)>,
+                      <WithStyles(Typography)
+                        variant="body1"
+                      >
+                        <en />
+                      </WithStyles(Typography)>,
                       <WithStyles(Grid)
                         item={true}
                         xs={12}
@@ -1869,7 +1930,6 @@ ShallowWrapper {
                     ],
                     "container": true,
                     "direction": "row",
-                    "spacing": 24,
                   },
                   "ref": null,
                   "rendered": Array [
@@ -2004,6 +2064,26 @@ ShallowWrapper {
                           "validator": [Function],
                           "value": "",
                         },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <en />,
+                        "variant": "body1",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {},
                         "ref": null,
                         "rendered": null,
                         "type": [Function],
@@ -2375,7 +2455,6 @@ ShallowWrapper {
               <WithStyles(Grid)
                 container={true}
                 direction="row"
-                spacing={24}
               >
                 <WithStyles(Grid)
                   item={true}
@@ -2429,6 +2508,11 @@ ShallowWrapper {
                     value=""
                   />
                 </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <en />
+                </WithStyles(Typography)>
                 <WithStyles(Grid)
                   item={true}
                   xs={12}
@@ -2535,7 +2619,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -2589,6 +2672,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -2699,7 +2787,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -2753,6 +2840,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -2822,7 +2914,6 @@ ShallowWrapper {
                 "children": <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -2876,6 +2967,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -2995,6 +3091,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>,
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>,
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -3056,7 +3157,6 @@ ShallowWrapper {
                   ],
                   "container": true,
                   "direction": "row",
-                  "spacing": 24,
                 },
                 "ref": null,
                 "rendered": Array [
@@ -3191,6 +3291,26 @@ ShallowWrapper {
                         "validator": [Function],
                         "value": "",
                       },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <en />,
+                      "variant": "body1",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {},
                       "ref": null,
                       "rendered": null,
                       "type": [Function],
@@ -3509,7 +3629,6 @@ ShallowWrapper {
                 <WithStyles(Grid)
                   container={true}
                   direction="row"
-                  spacing={24}
                 >
                   <WithStyles(Grid)
                     item={true}
@@ -3563,6 +3682,11 @@ ShallowWrapper {
                       value=""
                     />
                   </WithStyles(Grid)>
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <en />
+                  </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
                     xs={12}
@@ -3669,7 +3793,6 @@ ShallowWrapper {
                   <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -3723,6 +3846,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -3833,7 +3961,6 @@ ShallowWrapper {
                   <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -3887,6 +4014,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -3956,7 +4088,6 @@ ShallowWrapper {
                   "children": <WithStyles(Grid)
                     container={true}
                     direction="row"
-                    spacing={24}
                   >
                     <WithStyles(Grid)
                       item={true}
@@ -4010,6 +4141,11 @@ ShallowWrapper {
                         value=""
                       />
                     </WithStyles(Grid)>
+                    <WithStyles(Typography)
+                      variant="body1"
+                    >
+                      <en />
+                    </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
                       xs={12}
@@ -4129,6 +4265,11 @@ ShallowWrapper {
                           value=""
                         />
                       </WithStyles(Grid)>,
+                      <WithStyles(Typography)
+                        variant="body1"
+                      >
+                        <en />
+                      </WithStyles(Typography)>,
                       <WithStyles(Grid)
                         item={true}
                         xs={12}
@@ -4190,7 +4331,6 @@ ShallowWrapper {
                     ],
                     "container": true,
                     "direction": "row",
-                    "spacing": 24,
                   },
                   "ref": null,
                   "rendered": Array [
@@ -4325,6 +4465,26 @@ ShallowWrapper {
                           "validator": [Function],
                           "value": "",
                         },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <en />,
+                        "variant": "body1",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {},
                         "ref": null,
                         "rendered": null,
                         "type": [Function],

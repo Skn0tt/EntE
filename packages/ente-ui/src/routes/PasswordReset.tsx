@@ -16,7 +16,9 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  Button
+  Button,
+  Grid,
+  Typography
 } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
@@ -25,19 +27,22 @@ import { setPasswordRequest } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { isValidPassword } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
+import { PasswordRequirements } from "../elements/PasswordRequirements";
 
 const lang = createTranslation({
   en: {
-    password: "Password",
-    verification: "Verification",
+    password: "New Password",
+    verification: "Enter again",
     submit: "Reset Password",
-    title: "Reset Password"
+    title: "Reset Password",
+    passwordSpecs: PasswordRequirements.en
   },
   de: {
-    password: "Passwort",
-    verification: "Verifizierung",
+    password: "Neues Passwort",
+    verification: "Passwort erneut eingeben",
     submit: "Passwort zurücksetzen",
-    title: "Passwort zurücksetzen"
+    title: "Passwort zurücksetzen",
+    passwordSpecs: PasswordRequirements.de
   }
 });
 
@@ -86,22 +91,31 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
         <Dialog fullScreen={this.props.fullScreen} open>
           <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
-            <TextField
-              fullWidth
-              id="password"
-              label={lang.password}
-              type="password"
-              error={!this.passwordValid()}
-              onChange={this.handleChangePassword}
-            />
-            <TextField
-              fullWidth
-              id="verification"
-              type="password"
-              label={lang.verification}
-              error={!this.verificationValid()}
-              onChange={this.handleChangeVerification}
-            />
+            <Grid container direction="column">
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="password"
+                  label={lang.password}
+                  type="password"
+                  error={!this.passwordValid()}
+                  onChange={this.handleChangePassword}
+                />
+              </Grid>
+              <Typography variant="body2">
+                <lang.passwordSpecs />
+              </Typography>
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="verification"
+                  type="password"
+                  label={lang.verification}
+                  error={!this.verificationValid()}
+                  onChange={this.handleChangeVerification}
+                />
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button

@@ -9,7 +9,7 @@
 import * as React from "react";
 import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
 
-import { Dialog, Button, Grid, TextField } from "@material-ui/core";
+import { Dialog, Button, Grid, TextField, Typography } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -42,6 +42,7 @@ import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
 import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { PasswordRequirements } from "ente-ui/src/elements/PasswordRequirements";
 
 const lang = createTranslation({
   en: {
@@ -59,7 +60,8 @@ const lang = createTranslation({
     },
     submit: "Submit",
     close: "Close",
-    import: "Import"
+    import: "Import",
+    passwordSpec: PasswordRequirements.en
   },
   de: {
     titles: {
@@ -76,7 +78,8 @@ const lang = createTranslation({
     },
     submit: "Erstellen",
     close: "Schließen",
-    import: "Importieren"
+    import: "Importieren",
+    passwordSpec: PasswordRequirements.de
   }
 });
 
@@ -204,7 +207,7 @@ export class CreateUser extends React.Component<
           <DialogTitle>{lang.titles.newUser}</DialogTitle>
           <DialogContent>
             <form onKeyPress={this.handleKeyPress}>
-              <Grid container direction="row" spacing={24}>
+              <Grid container direction="row">
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     value={create.username || ""}
@@ -242,6 +245,9 @@ export class CreateUser extends React.Component<
                     type="password"
                   />
                 </Grid>
+                <Typography variant="body1">
+                  <lang.passwordSpec />
+                </Typography>
                 <Grid item xs={12}>
                   <TextField
                     select
