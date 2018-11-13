@@ -6,7 +6,14 @@ interface IConfig {
   baseUrl: string;
   DSN: Maybe<string>;
   signerBaseUrl: string;
-  railmailHost: string;
+  mail: {
+    sender: string;
+    host: string;
+    port: number;
+    username: string;
+    password: string;
+    pool: boolean;
+  };
   cron: {
     enable: boolean;
     weeklySummary: string;
@@ -33,7 +40,13 @@ const config = (): IConfig => {
     REDIS_PORT,
     REDIS_PREFIX,
     ENABLE_CRON,
-    CRON_WEEKLY_SUMMARY
+    CRON_WEEKLY_SUMMARY,
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USERNAME,
+    SMTP_PASSWORD,
+    SMTP_SENDER,
+    SMTP_POOL
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL),
@@ -47,7 +60,14 @@ const config = (): IConfig => {
         ? Some(envVars.SENTRY_DSN_API)
         : None<string>(),
     signerBaseUrl: envVars.SIGNER_BASEURL,
-    railmailHost: process.env.RAILMAIL_HOST,
+    mail: {
+      host: SMTP_HOST,
+      port: +SMTP_PORT,
+      password: SMTP_PASSWORD,
+      sender: SMTP_SENDER,
+      username: SMTP_USERNAME,
+      pool: SMTP_POOL === "FALSE" ? false : true
+    },
     db: {
       host: envVars.MYSQL_HOST,
       port: +envVars.MYSQL_PORT,
@@ -92,7 +112,7 @@ export class Config {
     return this.getConfig().signerBaseUrl;
   }
 
-  static getRailmailHost() {
-    return this.getConfig().railmailHost;
+  static getMailConfig() {
+    return this.getConfig().mail;
   }
 }

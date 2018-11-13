@@ -1,5 +1,4 @@
 import { Injectable, Inject, LoggerService } from "@nestjs/common";
-import { RailmailService } from "../infrastructure/railmail.service";
 import SignRequest from "../templates/SignRequest";
 import SignedInformation from "../templates/SignedInformation";
 import PasswordResetLink from "../templates/PasswordResetLink";
@@ -9,11 +8,14 @@ import WeeklySummary, {
 } from "../templates/WeeklySummary";
 import { UserDto, SlotDto } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
+import { NodemailerService } from "../infrastructure/nodemailer.service";
+import { EmailTransportService } from "../infrastructure/email-transport.service";
 
 @Injectable()
 export class EmailService {
   constructor(
-    @Inject(RailmailService) private readonly railMailService: RailmailService,
+    @Inject(NodemailerService)
+    private readonly railMailService: EmailTransportService,
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 

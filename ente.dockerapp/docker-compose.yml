@@ -22,7 +22,6 @@ services:
     restart: on-failure
     depends_on:
       - redis
-      - railmail
       - signer
     labels:
       - "traefik.enable=true"
@@ -30,7 +29,6 @@ services:
     environment:
       NODE_ENV: ${debug.environment}
       BASE_URL: ${config.baseUrl}
-      RAILMAIL_HOST: http://railmail
       SIGNER_BASEURL: http://signer:3000
       ENABLE_CRON_JOBS: "true"
       CRON_WEEKLY_SUMMARY: "0 16 * * 5"
@@ -40,20 +38,13 @@ services:
       MYSQL_DATABASE: ${mysql.database}
       MYSQL_USERNAME: ${mysql.username}
       MYSQL_PASSWORD: ${mysql.password}
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    networks:
-      - ente_bridge
-
-  railmail:
-    image: skn0tt/railmail:v0.3.0
-    restart: on-failure
-    environment:
       SMTP_HOST: ${smtp.host}
       SMTP_PORT: ${smtp.port}
       SMTP_USERNAME: ${smtp.username}
       SMTP_PASSWORD: ${smtp.password}
       SMTP_SENDER: ${smtp.sender}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     networks:
       - ente_bridge
 
