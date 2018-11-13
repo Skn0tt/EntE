@@ -68,7 +68,7 @@ describe("isValidDisplayname", () => {
   });
 
   describe("when passed some other value returns false", () => {
-    ["zukurz", "Hermann", "!(/&/(?!=?%&/("].forEach(r => {
+    ["", "!(/&/(?!=?%&/("].forEach(r => {
       it(r, () => {
         expect(isValidDisplayname(r)).to.be.false;
       });
