@@ -21,7 +21,8 @@ If `password` is left blank, a password reset will be invoked for the user so th
 `children` should contain a list of the usernames of that users children, separated by colons.
 If the user doesn't have any children, leave the field blank.
 
-`isAdult` needs to be set only for students.
+`isAdult` needs to be set only for students; set it to `"true"` should they be adult.
+If they are not adult - leave the field blank.
 
 `graduationYear` needs to be set for students and mangers, it matches these by their expected graduation year.
 
