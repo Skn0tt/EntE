@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.8.2] - 2018-11-14
+
 * Added Sentry Error reporting to API
 
-- Added more information to UI Sentry
+* Added more information to UI Sentry
 
 ## [v0.8.1] - 2018-11-14
 
