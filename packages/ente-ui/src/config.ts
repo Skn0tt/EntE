@@ -10,17 +10,19 @@ import * as localStorage from "./localStorage";
 import { Some, None, Maybe } from "monet";
 import { Languages } from "./helpers/createTranslation";
 import * as _ from "lodash";
+const pack = require("../package.json");
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 
 type Config = {
-  SENTRY_DSN_UI?: string;
+  SENTRY_DSN?: string;
   ROTATION_PERIOD: number;
   ALLOW_INSECURE: boolean;
   LANGUAGE: Languages;
   INSTANCE_INFO_DE: Maybe<string>;
   INSTANCE_INFO_EN: Maybe<string>;
+  VERSION: string;
 };
 
 let config: Config | null = null;
@@ -67,7 +69,7 @@ const isSet = (s?: string): boolean => {
 const readConfig = () => {
   const c = getConfig();
 
-  const { SENTRY_DSN_UI } = c;
+  const { SENTRY_DSN } = c;
 
   const instanceInfoDe = (isSet(c.INSTANCE_INFO_DE)
     ? Some(c.INSTANCE_INFO_DE)
@@ -84,9 +86,10 @@ const readConfig = () => {
       : 5 * MINUTE,
     INSTANCE_INFO_DE: instanceInfoDe,
     INSTANCE_INFO_EN: instanceInfoEn,
-    SENTRY_DSN_UI: SENTRY_DSN_UI !== "undefined" ? SENTRY_DSN_UI : undefined,
+    SENTRY_DSN: SENTRY_DSN !== "undefined" ? SENTRY_DSN : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
-    LANGUAGE: getLanguage(c.LANG)
+    LANGUAGE: getLanguage(c.LANG),
+    VERSION: pack.version as string
   };
 };
 

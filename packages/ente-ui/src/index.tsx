@@ -11,7 +11,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import createRavenMiddleware from "raven-for-redux";
+import * as createRavenMiddleware from "raven-for-redux";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
 import { get as getConfig } from "./config";
@@ -29,13 +29,15 @@ import setupRedux, {
 } from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
-import Raven from "raven-js";
+import * as Raven from "raven-js";
 import { Action } from "redux-actions";
 import HttpsGate from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
 
+const baseUrl = `${location.protocol}//${location.hostname}`;
+
 const config: ReduxConfig = {
-  baseUrl: `${location.protocol}//${location.hostname}/api`,
+  baseUrl: `${baseUrl}/api`,
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
     const link = document.createElement("a");
@@ -46,7 +48,7 @@ const config: ReduxConfig = {
   }
 };
 
-const { SENTRY_DSN_UI, ALLOW_INSECURE } = getConfig();
+const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();
 
 const setupSentry = (dsn: string) => {
   if (!isSentryDsn(dsn)) {
@@ -54,7 +56,11 @@ const setupSentry = (dsn: string) => {
     return;
   }
 
-  Raven.config(dsn).install();
+  Raven.config(dsn, {
+    release: VERSION,
+    serverName: location.hostname,
+    tags: { version: VERSION }
+  }).install();
 
   const ravenMiddleWare = createRavenMiddleware(Raven, {
     actionTransformer: (action: Action<AuthState | {}>) => {
@@ -73,8 +79,8 @@ const setupSentry = (dsn: string) => {
   config.onSagaError = Raven.captureException;
 };
 
-if (!!SENTRY_DSN_UI) {
-  setupSentry(SENTRY_DSN_UI);
+if (!!SENTRY_DSN) {
+  setupSentry(SENTRY_DSN);
 }
 
 const store = setupRedux(config);
