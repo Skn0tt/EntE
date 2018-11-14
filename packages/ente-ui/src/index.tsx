@@ -29,7 +29,7 @@ import setupRedux, {
 } from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
-import * as Raven from "raven-js";
+import Raven from "raven-js";
 import { Action } from "redux-actions";
 import HttpsGate from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
