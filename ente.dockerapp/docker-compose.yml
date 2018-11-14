@@ -29,7 +29,6 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /api/"
     environment:
-      VERSION: ${API_TAG}
       NODE_ENV: ${debug.environment}
       BASE_URL: ${config.baseUrl}
       SIGNER_BASEURL: http://signer:3000

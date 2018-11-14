@@ -1,5 +1,6 @@
 import { Some, None, Maybe } from "monet";
 import { ensureNotEnding } from "./ensure-not-ending";
+const pack = require("../../package.json");
 
 interface IConfig {
   production: boolean;
@@ -47,8 +48,7 @@ const config = (): IConfig => {
     SMTP_USERNAME,
     SMTP_PASSWORD,
     SMTP_SENDER,
-    SMTP_POOL,
-    VERSION
+    SMTP_POOL
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL),
@@ -61,7 +61,7 @@ const config = (): IConfig => {
       envVars.SENTRY_DSN !== "undefined"
         ? Some(envVars.SENTRY_DSN)
         : None<string>(),
-    version: VERSION || "",
+    version: pack.version,
     signerBaseUrl: envVars.SIGNER_BASEURL,
     mail: {
       host: SMTP_HOST,
