@@ -37,7 +37,6 @@ const getConfig = (): any => {
     .orSome("{}");
 
   localStorage.set(LOCAL_STORAGE_CONFIG_KEY, c);
-  console.log(c);
   return JSON.parse(c);
 };
 
