@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ErrorReporting } from "../ErrorReporting";
 
 interface WithErrorBoundaryState {
   error: Error | null;
@@ -14,6 +15,7 @@ export const withErrorBoundary = <C extends { error: Error }>(
 
     componentDidCatch(error, info) {
       console.error(error);
+      ErrorReporting.report(error);
       this.setState({ error });
     }
 
