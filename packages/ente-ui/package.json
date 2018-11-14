@@ -21,7 +21,6 @@
     "classnames": "^2.2.6",
     "ente-types": "^0.8.0",
     "immutable": "^4.0.0-rc.12",
-    "js-cookie": "^2.2.0",
     "luxon": "^1.4.5",
     "material-ui-pickers": "^v1.0.1",
     "monet": "^0.8.10",
