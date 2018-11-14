@@ -6,7 +6,7 @@ _EntE_ is configured through a docker-app config file.
 config:
   baseUrl: https://ente.simonknott.de
   language: en # "en" | "de"
-  instanceInfo: # Is shown on login screen
+  instanceInfo: # Is shown on login screen, encoded with URI-Encoding
     en: "Welcome to the EntE instance."
     de: "Willkommen auf der EntE-Instanz."
   port: 80

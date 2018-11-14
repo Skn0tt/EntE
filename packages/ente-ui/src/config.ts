@@ -9,6 +9,7 @@ import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
 import { Some, None, Maybe } from "monet";
 import { Languages } from "./helpers/createTranslation";
+import * as _ from "lodash";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -27,14 +28,16 @@ let config: Config | null = null;
 const CONFIG_COOKIE = "_config";
 const LOCAL_STORAGE_CONFIG_KEY = "CONFIG";
 
+const fromUriEncoding = (s: string) => decodeURI(s);
+
 const getConfig = (): any => {
   const c = cookie
     .get(CONFIG_COOKIE)
     .orElse(localStorage.get(LOCAL_STORAGE_CONFIG_KEY))
-    .orElse(Some("{}"))
-    .some();
+    .orSome("{}");
 
   localStorage.set(LOCAL_STORAGE_CONFIG_KEY, c);
+  console.log(c);
   return JSON.parse(c);
 };
 
@@ -49,17 +52,39 @@ const getLanguage = (lang: string): Languages => {
   }
 };
 
+const NULL_VALUES = ["<Nil>", "<nil>", ""];
+
+const isSet = (s?: string): boolean => {
+  if (_.isUndefined(s)) {
+    return false;
+  }
+  if (NULL_VALUES.includes(s)) {
+    return false;
+  }
+
+  return true;
+};
+
 const readConfig = () => {
   const c = getConfig();
 
   const { SENTRY_DSN_UI } = c;
 
+  const instanceInfoDe = (isSet(c.INSTANCE_INFO_DE)
+    ? Some(c.INSTANCE_INFO_DE)
+    : None()
+  ).map(fromUriEncoding);
+  const instanceInfoEn = (isSet(c.INSTANCE_INFO_EN)
+    ? Some(c.INSTANCE_INFO_EN)
+    : None()
+  ).map(fromUriEncoding);
+
   config = {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
-    INSTANCE_INFO_DE: !!c.INSTANCE_INFO_DE ? Some(c.INSTANCE_INFO_DE) : None(),
-    INSTANCE_INFO_EN: !!c.INSTANCE_INFO_EN ? Some(c.INSTANCE_INFO_EN) : None(),
+    INSTANCE_INFO_DE: instanceInfoDe,
+    INSTANCE_INFO_EN: instanceInfoEn,
     SENTRY_DSN_UI: SENTRY_DSN_UI !== "undefined" ? SENTRY_DSN_UI : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
     LANGUAGE: getLanguage(c.LANG)

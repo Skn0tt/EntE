@@ -133,7 +133,9 @@ class Login extends React.Component<Props, State> {
           <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
             <DialogContentText
-              dangerouslySetInnerHTML={{ __html: lang.instanceInfo }}
+              dangerouslySetInnerHTML={{
+                __html: lang.instanceInfo.replace("\n", "<br />")
+              }}
             />
             <Grid container direction="column">
               <Grid item>

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed: InstanceInfo now should be passed in Url-Encoding
+
 ## [v0.8.0] - 2018-11-13
 
 ### Added
