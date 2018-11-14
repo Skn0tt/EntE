@@ -1,14 +1,15 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { WinstonLoggerService } from "./winston-logger.service";
-import { ValidationPipe } from "@nestjs/common";
 import * as bodyParser from "body-parser";
+import { DefaultRavenInterceptor } from "./helpers/default-raven-interceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new WinstonLoggerService(),
     bodyParser: false
   });
+  app.useGlobalInterceptors(DefaultRavenInterceptor);
   app.use(
     bodyParser.json({
       type: "application/json"

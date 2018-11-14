@@ -6,6 +6,7 @@ interface IConfig {
   baseUrl: string;
   DSN: Maybe<string>;
   signerBaseUrl: string;
+  version: string;
   mail: {
     sender: string;
     host: string;
@@ -46,7 +47,8 @@ const config = (): IConfig => {
     SMTP_USERNAME,
     SMTP_PASSWORD,
     SMTP_SENDER,
-    SMTP_POOL
+    SMTP_POOL,
+    VERSION
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL),
@@ -56,9 +58,10 @@ const config = (): IConfig => {
       weeklySummary: CRON_WEEKLY_SUMMARY
     },
     DSN:
-      envVars.SENTRY_DSN_API !== "undefined"
-        ? Some(envVars.SENTRY_DSN_API)
+      envVars.SENTRY_DSN !== "undefined"
+        ? Some(envVars.SENTRY_DSN)
         : None<string>(),
+    version: VERSION || "",
     signerBaseUrl: envVars.SIGNER_BASEURL,
     mail: {
       host: SMTP_HOST,
@@ -96,6 +99,10 @@ export class Config {
     return this.getConfig().baseUrl;
   }
 
+  static getSentryDsn() {
+    return this.getConfig().DSN;
+  }
+
   static getConfig() {
     return config();
   }
@@ -110,6 +117,10 @@ export class Config {
 
   static getSignerBaseUrl() {
     return this.getConfig().signerBaseUrl;
+  }
+
+  static getVersion() {
+    return this.getConfig().version;
   }
 
   static getMailConfig() {
