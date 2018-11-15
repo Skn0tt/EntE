@@ -1,10 +1,4 @@
-import {
-  Controller,
-  ConflictException,
-  Get,
-  Inject,
-  UseInterceptors
-} from "@nestjs/common";
+import { Controller, ConflictException, Get, Inject } from "@nestjs/common";
 import { StatusService } from "./status.service";
 
 @Controller("status")
