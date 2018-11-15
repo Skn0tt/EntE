@@ -13,10 +13,12 @@ import {
   UserN,
   EntryN,
   SlotN,
-  roleHasChildren
+  roleHasChildren,
+  AuthState
 } from "./types";
 import { createSelector } from "reselect";
 import { Roles } from "ente-types";
+import { Maybe } from "monet";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -44,6 +46,9 @@ export const isParent: Selector<boolean> = state => {
   const role = getRole(state);
   return role === Roles.PARENT;
 };
+
+export const getAuthState: Selector<Maybe<AuthState>> = state =>
+  state.get("auth");
 
 export const getRole: Selector<Roles> = state => {
   const authState = state.get("auth");
