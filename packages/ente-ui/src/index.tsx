@@ -11,7 +11,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import * as createRavenMiddleware from "raven-for-redux";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
 import { get as getConfig } from "./config";
@@ -20,19 +19,14 @@ import { get as getConfig } from "./config";
 import "typeface-roboto";
 
 import theme from "./theme";
-import setupRedux, {
-  AppState,
-  getUsername,
-  AuthState,
-  GET_TOKEN_REQUEST,
-  ReduxConfig
-} from "./redux";
+import setupRedux, { ReduxConfig } from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
-import Raven from "raven-js";
-import { Action } from "redux-actions";
+import * as Sentry from "@sentry/browser";
 import HttpsGate from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
+import { createSentryMiddleware } from "./sentry.middleware";
+import { ErrorReporting } from "./ErrorReporting";
 
 const baseUrl = `${location.protocol}//${location.hostname}`;
 
@@ -45,7 +39,8 @@ const config: ReduxConfig = {
     link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
-  }
+  },
+  middlewares: []
 };
 
 const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();
@@ -56,27 +51,17 @@ const setupSentry = (dsn: string) => {
     return;
   }
 
-  Raven.config(dsn, {
-    release: VERSION,
-    serverName: location.hostname,
-    tags: { version: VERSION }
-  }).install();
-
-  const ravenMiddleWare = createRavenMiddleware(Raven, {
-    actionTransformer: (action: Action<AuthState | {}>) => {
-      if (action.type === GET_TOKEN_REQUEST) {
-        return {
-          ...action,
-          payload: "deleted"
-        };
-      }
-      return action;
-    },
-    getUserContext: (state: AppState) => ({ username: getUsername(state) })
+  const sentryClient = new Sentry.BrowserClient({
+    dsn,
+    release: VERSION
   });
 
-  config.middlewares = [ravenMiddleWare];
-  config.onSagaError = Raven.captureException;
+  ErrorReporting.supplySentryClient(sentryClient);
+
+  const ravenMiddleware = createSentryMiddleware(sentryClient);
+
+  config.middlewares.push(ravenMiddleware);
+  config.onSagaError = ErrorReporting.report;
 };
 
 if (!!SENTRY_DSN) {

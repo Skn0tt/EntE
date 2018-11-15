@@ -1,14 +1,19 @@
-import * as config from "./config";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
+import { None, Maybe, Some } from "monet";
 
-const sentryIsEnabled = !!config.get().SENTRY_DSN;
+let client: Maybe<Sentry.BrowserClient> = None();
 
 const report = (error: any) => {
-  if (sentryIsEnabled) {
-    Raven.captureException(error);
+  if (client.isSome()) {
+    client.some().captureException(error);
   }
 };
 
+const supplySentryClient = (c: Sentry.BrowserClient) => {
+  client = Some(c);
+};
+
 export const ErrorReporting = {
-  report
+  report,
+  supplySentryClient
 };

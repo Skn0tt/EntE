@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Use @sentry/browser in frontend
 * Fixed: Inject Sentry Interceptor conditionally in backend
 * Changed: Use @sentry/node instead of nest-raven
 
