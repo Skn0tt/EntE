@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.8.5] - 2018-11-16
+
+* Fixed: InstanceInfo URI Decoding
+
 ## [v0.8.4] - 2018-11-15
 
 * Use @sentry/browser in frontend
