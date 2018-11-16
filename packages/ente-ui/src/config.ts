@@ -30,7 +30,7 @@ let config: Config | null = null;
 const CONFIG_COOKIE = "_config";
 const LOCAL_STORAGE_CONFIG_KEY = "CONFIG";
 
-const fromUriEncoding = (s: string) => decodeURI(s);
+const fromUriEncoding = (s: string) => decodeURIComponent(s);
 
 const getConfig = (): any => {
   const c = cookie
