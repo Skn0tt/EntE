@@ -1,15 +1,10 @@
-import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-  BadRequestException
-} from "@nestjs/common";
+import { PipeTransform, Injectable, BadRequestException } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 
 interface ValidationPipeConfig {
   array: boolean;
-  arrayType: any;
+  type: any;
 }
 
 @Injectable()
@@ -17,21 +12,18 @@ export class ValidationPipe implements PipeTransform<any> {
   constructor(
     private readonly config: ValidationPipeConfig = {
       array: false,
-      arrayType: null
+      type: null
     }
   ) {}
 
-  async transform(value: any, metadata: ArgumentMetadata) {
-    if (this.config.array) {
-      return this.transformArray(value, this.config.arrayType);
+  async transform(value: any) {
+    const { array, type } = this.config;
+
+    if (array) {
+      return this.transformArray(value, type);
     }
 
-    const { metatype } = metadata;
-    if (!metatype || !ValidationPipe.needsToBeValidated(metatype)) {
-      return value;
-    }
-
-    const c = plainToClass(metatype, value);
+    const c = plainToClass(type, value);
     const errors = await validate(c, {
       forbidNonWhitelisted: true,
       forbidUnknownValues: true

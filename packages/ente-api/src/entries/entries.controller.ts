@@ -60,7 +60,7 @@ export class EntriesController {
 
   @Post()
   async create(
-    @Body(new ValidationPipe())
+    @Body(new ValidationPipe({ array: false, type: CreateEntryDto }))
     entry: CreateEntryDto,
     @Ctx() ctx: RequestContext
   ): Promise<EntryDto> {
@@ -84,7 +84,7 @@ export class EntriesController {
   @Patch(":id")
   async patch(
     @Param("id") id: string,
-    @Body(new ValidationPipe())
+    @Body(new ValidationPipe({ array: false, type: PatchEntryDto }))
     value: PatchEntryDto,
     @Ctx() ctx: RequestContext
   ) {

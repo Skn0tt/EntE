@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Entry creation now works again
+
 ## [v0.8.5] - 2018-11-16
 
 * Fixed: InstanceInfo URI Decoding

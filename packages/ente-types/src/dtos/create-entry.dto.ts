@@ -13,10 +13,12 @@ import { CreateSlotDto } from "./create-slot.dto";
 
 export class CreateEntryDto {
   @DateIsAfter(() => twoWeeksBeforeNow())
+  @Type(() => Date)
   date: Date;
 
   @IsOptional()
   @DateIsAfter("date")
+  @Type(() => Date)
   dateEnd?: Date;
 
   @IsArray()

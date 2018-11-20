@@ -13,8 +13,11 @@ import { Type } from "class-transformer";
 export class EntryDto {
   @IsUUID("4") id: string;
 
-  @IsDate() date: Date;
+  @IsDate()
+  @Type(() => Date)
+  date: Date;
 
+  @Type(() => Date)
   @IsOptional()
   @IsDate()
   @DateIsAfter("date")
@@ -34,7 +37,11 @@ export class EntryDto {
   @ValidateNested()
   student: UserDto;
 
-  @IsDate() createdAt: Date;
+  @IsDate()
+  @Type(() => Date)
+  createdAt: Date;
 
-  @IsDate() updatedAt: Date;
+  @IsDate()
+  @Type(() => Date)
+  updatedAt: Date;
 }

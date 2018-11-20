@@ -68,7 +68,7 @@ export class UsersController {
   async createUsers(
     @Body(
       new ArrayBodyTransformPipe(),
-      new ValidationPipe({ array: true, arrayType: CreateUserDto })
+      new ValidationPipe({ array: true, type: CreateUserDto })
     )
     users: CreateUserDto[],
     @Ctx() ctx: RequestContext
@@ -92,7 +92,7 @@ export class UsersController {
   @Patch(":id")
   async patchUser(
     @Param("id") id: string,
-    @Body(new ValidationPipe())
+    @Body(new ValidationPipe({ array: false, type: PatchUserDto }))
     patch: PatchUserDto,
     @Ctx() ctx: RequestContext
   ) {

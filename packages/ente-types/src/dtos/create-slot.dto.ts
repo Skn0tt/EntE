@@ -1,8 +1,11 @@
 import { IsDate, IsNumber, Min, Max, IsUUID } from "class-validator";
 import { CompareToProperty } from "../helpers/compare-to-property";
+import { Type } from "class-transformer";
 
 export class CreateSlotDto {
-  @IsDate() date: Date;
+  @IsDate()
+  @Type(() => Date)
+  date: Date;
 
   @IsNumber()
   @Min(1)
