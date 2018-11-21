@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Bug where specific entries couldn't be openend
 * Added: `smtp.address` contains email-address of smtp data
 * Fixed: Email now supplies `From`-Header
 * Fixed: Password requirements hint now shows "1 Number" instead of "1 upper-case"
