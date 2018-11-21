@@ -7,20 +7,21 @@ import {
 import { Config } from "../helpers/config";
 import * as nodemailer from "nodemailer";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { EmailTransportService } from "./email-transport.service";
+import { EmailTransportService, Envelope } from "./email-transport.service";
 
 @Injectable()
 export class NodemailerService implements EmailTransportService, OnModuleInit {
   private readonly transport: nodemailer.Transporter;
+  private readonly sender: string;
 
   constructor(
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {
     const config = Config.getMailConfig();
+    this.sender = `${config.sender} <${config.address}>`;
     this.transport = nodemailer.createTransport({
       host: config.host,
       port: config.port,
-      sender: config.sender,
       pool: config.pool as true,
       auth: {
         user: config.username,
@@ -38,12 +39,13 @@ export class NodemailerService implements EmailTransportService, OnModuleInit {
     }
   }
 
-  async sendMail(envelope) {
+  async sendMail(envelope: Envelope) {
     await this.transport.sendMail({
       to: envelope.recipients,
       subject: envelope.subject,
       text: envelope.body.text,
-      html: envelope.body.html
+      html: envelope.body.html,
+      from: this.sender
     });
   }
 }

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Added: `smtp.address` contains email-address of smtp data
+* Fixed: Email now supplies `From`-Header
+
 ## [v0.8.6] - 2018-11-20
 
 * Fixed: Entry creation now works again
