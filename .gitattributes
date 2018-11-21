@@ -1,3 +1,4 @@
+CHANGELOG.md merge=union
 doc/Paper/DB.png filter=lfs diff=lfs merge=lfs -text
 doc/out/Square[[:space:]]Logo@0.5x.png filter=lfs diff=lfs merge=lfs -text
 doc/out/Logo[[:space:]]Mit[[:space:]]Schrift.png filter=lfs diff=lfs merge=lfs -text
