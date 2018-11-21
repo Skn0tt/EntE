@@ -7,7 +7,10 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
+import withStyles, {
+  WithStyles,
+  StyleRules
+} from "@material-ui/core/styles/withStyles";
 import {
   connect,
   MapStateToPropsParam,
@@ -33,7 +36,6 @@ import TableBody from "@material-ui/core/TableBody";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import Typography from "@material-ui/core/Typography/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -65,6 +67,7 @@ import {
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { DeleteModal } from "../components/DeleteModal";
 import { createTranslation } from "../helpers/createTranslation";
+import { green, red, common } from "@material-ui/core/colors";
 
 const lang = createTranslation({
   en: {
@@ -77,10 +80,31 @@ const lang = createTranslation({
   }
 });
 
+const styles: StyleRules = {
+  list: {
+    width: "100%"
+  },
+  listItem: {
+    width: "100%"
+  },
+  signEntryButton: {
+    backgroundColor: green[500],
+    color: common.white
+  },
+  unsignEntryButton: {
+    color: red[500]
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0
+  }
+};
+
 /**
  * # Component Types
  */
-interface RouteMatch {
+interface SpecificEntryRouteMatch {
   entryId: string;
 }
 
@@ -130,7 +154,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 interface OwnProps {}
 
 type SpecificEntryProps = WithStyles &
-  RouteComponentProps<RouteMatch> &
+  RouteComponentProps<SpecificEntryRouteMatch> &
   InjectedProps &
   StateProps &
   DispatchProps;
@@ -142,7 +166,7 @@ interface SpecificEntryState {
 /**
  * # Component
  */
-class SpecificEntry extends React.Component<
+class SpecificEntry extends React.PureComponent<
   SpecificEntryProps,
   SpecificEntryState
 > {
@@ -339,6 +363,8 @@ class SpecificEntry extends React.Component<
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(
-    withMobileDialog<SpecificEntryProps>()(withErrorBoundary()(SpecificEntry))
+    withStyles(styles)(
+      withMobileDialog<SpecificEntryProps>()(withErrorBoundary()(SpecificEntry))
+    )
   )
 );
