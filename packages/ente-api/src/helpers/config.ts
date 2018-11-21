@@ -9,6 +9,7 @@ interface IConfig {
   signerBaseUrl: string;
   version: string;
   mail: {
+    address: string;
     sender: string;
     host: string;
     port: number;
@@ -48,7 +49,8 @@ const config = (): IConfig => {
     SMTP_USERNAME,
     SMTP_PASSWORD,
     SMTP_SENDER,
-    SMTP_POOL
+    SMTP_POOL,
+    SMTP_ADDRESS
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL),
@@ -64,6 +66,7 @@ const config = (): IConfig => {
     version: pack.version,
     signerBaseUrl: envVars.SIGNER_BASEURL,
     mail: {
+      address: SMTP_ADDRESS,
       host: SMTP_HOST,
       port: +SMTP_PORT,
       password: SMTP_PASSWORD,

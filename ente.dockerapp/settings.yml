@@ -26,6 +26,7 @@ sentry: # Override when using Sentry
   # username:
   # password:
   # sender:
+  # address:
 
 debug:
   traefik_dashboard_port: 8080
