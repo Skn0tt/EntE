@@ -30,5 +30,6 @@ smtp: # smtp config
   port:
   username:
   password:
-  sender:
+  address: ente@simonknott.de # address that is used ()
+  sender: Example-EntE # display of address ("EntE")
 ```

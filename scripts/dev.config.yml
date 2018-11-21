@@ -9,7 +9,8 @@ smtp:
   host: smtp.ethereal.email
   password: rfaCPVfc1S448n9cy2
   port: "587"
-  sender: EntE@simonknott.de
+  sender: Example-EntE
+  address: EntE@simonknott.de
   username: njydvmi4sh5xmrdg@ethereal.email
 
 config:
