@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Password requirements hint now shows "1 Number" instead of "1 upper-case"
+
 ## [v0.8.6] - 2018-11-20
 
 * Fixed: Entry creation now works again

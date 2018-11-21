@@ -27,7 +27,7 @@ import { setPasswordRequest } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { isValidPassword } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
-import { PasswordRequirements } from "../elements/PasswordRequirements";
+import { PasswordRequirementsHint } from "../elements/PasswordRequirementsHint";
 
 const lang = createTranslation({
   en: {
@@ -35,14 +35,14 @@ const lang = createTranslation({
     verification: "Enter again",
     submit: "Reset Password",
     title: "Reset Password",
-    passwordSpecs: PasswordRequirements.en
+    passwordSpecs: PasswordRequirementsHint.en
   },
   de: {
     password: "Neues Passwort",
     verification: "Passwort erneut eingeben",
     submit: "Passwort zurücksetzen",
     title: "Passwort zurücksetzen",
-    passwordSpecs: PasswordRequirements.de
+    passwordSpecs: PasswordRequirementsHint.de
   }
 });
 
