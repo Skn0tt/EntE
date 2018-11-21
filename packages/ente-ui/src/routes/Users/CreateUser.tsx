@@ -42,7 +42,7 @@ import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
 import { createTranslation } from "ente-ui/src/helpers/createTranslation";
-import { PasswordRequirements } from "ente-ui/src/elements/PasswordRequirements";
+import { PasswordRequirementsHint } from "ente-ui/src/elements/PasswordRequirementsHint";
 
 const lang = createTranslation({
   en: {
@@ -61,7 +61,7 @@ const lang = createTranslation({
     submit: "Submit",
     close: "Close",
     import: "Import",
-    passwordSpec: PasswordRequirements.en
+    passwordSpec: PasswordRequirementsHint.en
   },
   de: {
     titles: {
@@ -79,7 +79,7 @@ const lang = createTranslation({
     submit: "Erstellen",
     close: "Schließen",
     import: "Importieren",
-    passwordSpec: PasswordRequirements.de
+    passwordSpec: PasswordRequirementsHint.de
   }
 });
 
