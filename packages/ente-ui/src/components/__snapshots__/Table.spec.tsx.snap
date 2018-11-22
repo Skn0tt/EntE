@@ -79,6 +79,39 @@ ShallowWrapper {
           100,
         ],
         "selectableRows": false,
+        "textLabels": Object {
+          "body": Object {
+            "noMatch": "Sorry, no matching records found",
+            "toolTip": "Sort",
+          },
+          "filter": Object {
+            "all": "All",
+            "reset": "RESET",
+            "title": "FILTERS",
+          },
+          "pagination": Object {
+            "displayRows": "of",
+            "next": "Next Page",
+            "previous": "Previous Page",
+            "rowsPerPage": "Rows per page:",
+          },
+          "selectedRows": Object {
+            "delete": "Delete",
+            "deleteAria": "Delete Selected Rows",
+            "text": "rows(s) selected",
+          },
+          "toolbar": Object {
+            "downloadCsv": "Download CSV",
+            "filterTable": "Filter Table",
+            "print": "Print",
+            "search": "Search",
+            "viewColumns": "View Columns",
+          },
+          "viewColumns": Object {
+            "title": "Show Columns",
+            "titleAria": "Show/Hide Table Columns",
+          },
+        },
       },
     },
     "ref": null,
@@ -128,6 +161,39 @@ ShallowWrapper {
             100,
           ],
           "selectableRows": false,
+          "textLabels": Object {
+            "body": Object {
+              "noMatch": "Sorry, no matching records found",
+              "toolTip": "Sort",
+            },
+            "filter": Object {
+              "all": "All",
+              "reset": "RESET",
+              "title": "FILTERS",
+            },
+            "pagination": Object {
+              "displayRows": "of",
+              "next": "Next Page",
+              "previous": "Previous Page",
+              "rowsPerPage": "Rows per page:",
+            },
+            "selectedRows": Object {
+              "delete": "Delete",
+              "deleteAria": "Delete Selected Rows",
+              "text": "rows(s) selected",
+            },
+            "toolbar": Object {
+              "downloadCsv": "Download CSV",
+              "filterTable": "Filter Table",
+              "print": "Print",
+              "search": "Search",
+              "viewColumns": "View Columns",
+            },
+            "viewColumns": Object {
+              "title": "Show Columns",
+              "titleAria": "Show/Hide Table Columns",
+            },
+          },
         },
       },
       "ref": null,
