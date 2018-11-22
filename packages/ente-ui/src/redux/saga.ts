@@ -75,7 +75,7 @@ import * as api from "./api";
 import { Action } from "redux-actions";
 import * as selectors from "./selectors";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
-import { CreateEntryDto, CreateUserDto, PatchUserDto } from "ente-types";
+import { CreateEntryDto, CreateUserDto, PatchUserDto, Roles } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
 const lang = createTranslation({
   en: {
@@ -112,7 +112,11 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
 
     yield put(getTokenSuccess(authState));
 
-    yield put(getNeededUsersRequest());
+    const isTeacher = authState.get("role") === Roles.TEACHER;
+
+    if (!isTeacher) {
+      yield put(getNeededUsersRequest());
+    }
   } catch (error) {
     yield put(addMessage(lang.requestError));
     yield put(getTokenError(error));
