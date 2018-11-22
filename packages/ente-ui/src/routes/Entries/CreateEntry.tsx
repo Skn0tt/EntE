@@ -58,7 +58,10 @@ const lang = createTranslation({
       slots: "Slots"
     },
     ok: "OK",
-    cancel: "Cancel"
+    cancel: "Cancel",
+    fromLabel: "From",
+    toLabel: "To",
+    dateMustBeBiggerThanFrom: `Must be after 'From'`
   },
   de: {
     multiday: "Mehrtägig",
@@ -70,7 +73,10 @@ const lang = createTranslation({
       slots: "Stunden"
     },
     ok: "OK",
-    cancel: "Zurück"
+    cancel: "Zurück",
+    fromLabel: "Von",
+    toLabel: "Bis",
+    dateMustBeBiggerThanFrom: `Muss nach 'Von' sein`
   }
 });
 
@@ -292,6 +298,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         onChange={this.handleChangeDateEnd}
                         minDate={nextDay(this.state.date)}
                         value={this.state.dateEnd}
+                        minDateMessage={lang.dateMustBeBiggerThanFrom}
                       />
                     </Grid>
                   )}

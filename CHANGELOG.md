@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed: Translation on Datepickers now is german as well
+
 ## [v0.8.7] - 2018-11-21
 
 * Fixed: Bug where specific entries couldn't be openend
