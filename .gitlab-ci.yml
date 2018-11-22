@@ -6,10 +6,17 @@ stages:
   - deploy
   - release
 
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
 test:unit:
   image: node:9
   stage: test
   script: "./ci/test_unit.sh"
+  cache:
+    key: "test-unit"
+    paths:
+      - node_modules/
   dependencies: []
   artifacts:
     paths:
@@ -34,7 +41,6 @@ license_management:
     - /run.sh analyze .
   artifacts:
     paths: [gl-license-management-report.json]
-
 
 sast:
   image: docker:stable
@@ -88,6 +94,10 @@ test:e2e:
   image: skn0tt/node-browsers-docker-app
   stage: test:e2e
   dependencies: []
+  cache:
+    key: "test-e2e"
+    paths:
+      - node_modules/
   services:
     - name: docker:stable-dind
       alias: dind
@@ -108,6 +118,11 @@ generate:docs:
   image: python
   stage: generate
   dependencies: []
+  cache:
+    key: "generate-docs"
+    paths:
+      - .cache/pip
+      - venv/
   script: "./ci/generate_docs.sh"
   artifacts:
     paths:
