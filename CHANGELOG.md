@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 * Changed: Translation on Datepickers now is german as well
+* Fixed: When user is teacher, needed users are not requested
 
 ## [v0.8.7] - 2018-11-21
 
