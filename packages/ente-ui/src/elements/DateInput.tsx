@@ -1,5 +1,17 @@
 import * as React from "react";
 import { DatePicker } from "material-ui-pickers";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    minDateMessage: "Date should be after minimal date",
+    maxDateMessage: "Date should be before maximal date"
+  },
+  de: {
+    minDateMessage: "Datum sollte nach Mindest-Datum liegen",
+    maxDateMessage: "Datum sollte bevor Maximal-Datum liegen"
+  }
+});
 
 interface DateInputProps {
   value: Date;
@@ -8,10 +20,21 @@ interface DateInputProps {
   minDate?: Date;
   maxDate?: Date;
   label: string;
+  maxDateMessage?: string;
+  minDateMessage?: string;
 }
 
 export const DateInput: React.SFC<DateInputProps> = props => {
-  const { value, onChange, minDate, maxDate, label, isValid } = props;
+  const {
+    value,
+    onChange,
+    minDate,
+    maxDate,
+    label,
+    isValid,
+    maxDateMessage,
+    minDateMessage
+  } = props;
   return (
     <DatePicker
       label={label}
@@ -22,6 +45,8 @@ export const DateInput: React.SFC<DateInputProps> = props => {
       autoOk
       fullWidth
       error={!isValid(value)}
+      minDateMessage={minDateMessage || lang.minDateMessage}
+      maxDateMessage={maxDateMessage || lang.maxDateMessage}
     />
   );
 };
