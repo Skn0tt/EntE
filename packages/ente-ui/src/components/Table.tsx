@@ -1,6 +1,80 @@
 import * as React from "react";
 import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  en: {
+    textLabels: {
+      body: {
+        noMatch: "Sorry, no matching records found",
+        toolTip: "Sort",
+      },
+      pagination: {
+        next: "Next Page",
+        previous: "Previous Page",
+        rowsPerPage: "Rows per page:",
+        displayRows: "of",
+      },
+      toolbar: {
+        search: "Search",
+        downloadCsv: "Download CSV",
+        print: "Print",
+        viewColumns: "View Columns",
+        filterTable: "Filter Table",
+      },
+      filter: {
+        all: "All",
+        title: "FILTERS",
+        reset: "RESET",
+      },
+      viewColumns: {
+        title: "Show Columns",
+        titleAria: "Show/Hide Table Columns",
+      },
+      selectedRows: {
+        text: "rows(s) selected",
+        delete: "Delete",
+        deleteAria: "Delete Selected Rows",
+      },
+    }
+  },
+  de: {
+    textLabels: {
+      body: {
+        noMatch: "Es liegen keine Datensätze vor.",
+        toolTip: "Sortieren",
+      },
+      pagination: {
+        next: "Nächste Seite",
+        previous: "Vorherige Seite",
+        rowsPerPage: "Zeilen pro Seite:",
+        displayRows: "von",
+      },
+      toolbar: {
+        search: "Suchen",
+        downloadCsv: "Als CSV herunterladen",
+        print: "Drucken",
+        viewColumns: "Spalten zeigen",
+        filterTable: "Tabelle filtern",
+      },
+      filter: {
+        all: "Alles",
+        title: "Filter".toUpperCase(),
+        reset: "Zurücksetzen".toUpperCase(),
+      },
+      viewColumns: {
+        title: "Spalten",
+        titleAria: "Tabellenzeilen Zeigen/Verstecken",
+      },
+      selectedRows: {
+        text: "Zeile(n) ausgewählt",
+        delete: "Löschen",
+        deleteAria: "Ausgewählte Zeilen löschen",
+      },
+    }
+  }
+});
 
 interface ColumnConfig {
   name: string;
@@ -39,7 +113,8 @@ export class Table<T> extends React.PureComponent<TableProps<T>> {
           rowsPerPageOptions: [20, 50, 100],
           selectableRows: false,
           responsive: "scroll",
-          onRowClick: d => onClick(d[0])
+          onRowClick: d => onClick(d[0]),
+          textLabels: lang.textLabels,
         }}
       />
     );
