@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.8.8] - 2018-11-24
+
 * Fixed: Now users with umlauts in their username can log in
 * Changed: Translation on Datepickers now is german as well
-* Fixed: When user is teacher, needed users are not requested
-
-- Fixed: Translation of Datatable
+* Fixed: When user is of role `teacher`, no additional users are
+* Fixed: Translation of Datatable
 
 ## [v0.8.7] - 2018-11-21
 
