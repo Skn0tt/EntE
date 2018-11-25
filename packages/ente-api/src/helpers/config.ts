@@ -42,7 +42,7 @@ const config = (): IConfig => {
     REDIS_HOST,
     REDIS_PORT,
     REDIS_PREFIX,
-    ENABLE_CRON,
+    ENABLE_CRON_JOBS,
     CRON_WEEKLY_SUMMARY,
     SMTP_HOST,
     SMTP_PORT,
@@ -56,7 +56,7 @@ const config = (): IConfig => {
     baseUrl: ensureNotEnding("/")(BASE_URL),
     production: envVars.NODE_ENV === "production",
     cron: {
-      enable: ENABLE_CRON === "true",
+      enable: ENABLE_CRON_JOBS === "true",
       weeklySummary: CRON_WEEKLY_SUMMARY
     },
     DSN:
