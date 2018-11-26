@@ -19,6 +19,7 @@ import * as _ from "lodash";
 import { hashPassword } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { validate } from "class-validator";
+import { RequestContextUser } from "../helpers/request-context";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -86,29 +87,34 @@ export class UsersService implements OnModuleInit {
   }
 
   async findAll(
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.userRepo.findAll());
 
       case Roles.MANAGER:
+        const user = (await requestingUser.getDto()).some();
         const students = await this.userRepo.findByGraduationYear(
-          requestingUser.graduationYear!
+          user.graduationYear!
         );
-        return Success([...students, requestingUser]);
+        return Success([...students, user]);
 
       case Roles.PARENT:
         const children = await this.userRepo.findByIds(
-          ...requestingUser.children.map(c => c.id)
+          ...requestingUser.childrenIds
         );
         const teachers = await this.userRepo.findByRole(Roles.TEACHER);
-        return Success([...children, ...teachers, requestingUser]);
+        return Success([
+          ...children,
+          ...teachers,
+          (await requestingUser.getDto()).some()
+        ]);
 
       case Roles.STUDENT:
         return Success([
           ...(await this.userRepo.findByRole(Roles.TEACHER)),
-          requestingUser
+          (await requestingUser.getDto()).some()
         ]);
 
       case Roles.TEACHER:
@@ -118,33 +124,35 @@ export class UsersService implements OnModuleInit {
 
   async findOne(
     id: string,
-    requestingUser: UserDto
+    _requestingUser: RequestContextUser
   ): Promise<Validation<FindOneUserFailure, UserDto>> {
-    switch (requestingUser.role) {
+    switch (_requestingUser.role) {
       case Roles.TEACHER:
         return Fail(FindOneUserFailure.ForbiddenForUser);
 
       case Roles.PARENT:
-        const requestingOneSelf = id === requestingUser.id;
-        const requestingChild = requestingUser.children
-          .map(c => c.id)
-          .includes(id);
+        const requestingOneSelf = id === _requestingUser.id;
+        const requestingChild = _requestingUser.childrenIds.includes(id);
         if (!(requestingOneSelf || requestingChild)) {
           return Fail(FindOneUserFailure.ForbiddenForUser);
         }
         break;
     }
 
+    const requestingUser =
+      _requestingUser.role === Roles.MANAGER &&
+      (await _requestingUser.getDto()).some();
+
     const user = await this.userRepo.findById(id);
     return user.cata(
       () => Fail(FindOneUserFailure.UserNotFound),
       u => {
-        const requestingOneSelf = id === requestingUser.id;
+        const requestingOneSelf = id === _requestingUser.id;
         if (requestingOneSelf) {
           return Success(u);
         }
 
-        switch (requestingUser.role) {
+        switch (_requestingUser.role) {
           // Already Checked for Parent above
           case Roles.PARENT:
             return Success(u);
@@ -194,7 +202,7 @@ export class UsersService implements OnModuleInit {
 
   async createUsers(
     users: CreateUserDto[],
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<CreateUsersFailure, UserDto[]>> {
     const userIsAdmin = requestingUser.role === Roles.ADMIN;
     if (!userIsAdmin) {
@@ -251,7 +259,7 @@ export class UsersService implements OnModuleInit {
   async patchUser(
     id: string,
     patch: PatchUserDto,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<PatchUserFailure, UserDto>> {
     const dtoIsLegal =
       (await validate(patch, { forbidNonWhitelisted: true })).length === 0;
@@ -321,7 +329,7 @@ export class UsersService implements OnModuleInit {
 
   async delete(
     id: string,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<DeleteUserFailure, UserDto>> {
     if (requestingUser.role !== Roles.ADMIN) {
       return Fail(DeleteUserFailure.ForbiddenForRole);

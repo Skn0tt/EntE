@@ -12,6 +12,7 @@ import { JwtStrategy } from "./jwt.strategy";
 import { Request } from "express";
 import { Base64, CharacterSets } from "../helpers/base64";
 import { Maybe, Some, None } from "monet";
+import { RequestContextUser } from "../helpers/request-context";
 
 const BEARER_REGEX = /(?<=Bearer )(\S+)/gm;
 const BASIC_REGEX = /(?<=Basic )(\S+)/gm;
@@ -29,7 +30,7 @@ export class CombinedStrategy extends PassportStrategy(
     super();
   }
 
-  async validate(req: Request) {
+  async validate(req: Request): Promise<RequestContextUser> {
     const authorization = req.headers.authorization as string;
 
     const isBasicAuth = BASIC_REGEX.test(authorization);

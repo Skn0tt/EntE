@@ -2,9 +2,10 @@ import { UserRepo } from "../db/user.repo";
 import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
-import { UserDto, Roles } from "ente-types";
+import { Roles } from "ente-types";
 import { Fail, Validation, Success } from "monet";
 import { Inject } from "@nestjs/common";
+import { RequestContextUser } from "../helpers/request-context";
 
 export enum ExportExcelFailure {
   ForbiddenForRole
@@ -18,7 +19,7 @@ export class ExportService {
   ) {}
 
   async getExcelExport(
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<ExportExcelFailure, Buffer>> {
     const userIsAdmin = requestingUser.role === Roles.ADMIN;
     if (!userIsAdmin) {
