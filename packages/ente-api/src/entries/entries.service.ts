@@ -1,18 +1,13 @@
-import { Injectable, Inject, Delete } from "@nestjs/common";
+import { Injectable, Inject } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { EntryRepo } from "../db/entry.repo";
-import {
-  Roles,
-  EntryDto,
-  UserDto,
-  CreateEntryDto,
-  PatchEntryDto
-} from "ente-types";
+import { Roles, EntryDto, CreateEntryDto, PatchEntryDto } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
 import { validate } from "class-validator";
 import * as _ from "lodash";
+import { RequestContextUser } from "../helpers/request-context";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -65,22 +60,19 @@ export class EntriesService {
   ) {}
 
   async findAll(
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.entryRepo.findAll());
 
       case Roles.MANAGER:
-        return Success(
-          await this.entryRepo.findByYear(requestingUser.graduationYear)
-        );
+        const user = (await requestingUser.getDto()).some();
+        return Success(await this.entryRepo.findByYear(user.graduationYear));
 
       case Roles.PARENT:
         return Success(
-          await this.entryRepo.findByStudents(
-            ...requestingUser.children.map(c => c.id)
-          )
+          await this.entryRepo.findByStudents(...requestingUser.childrenIds)
         );
 
       case Roles.STUDENT:
@@ -93,9 +85,12 @@ export class EntriesService {
 
   async findOne(
     id: string,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<FindEntryFailure, EntryDto>> {
     const entry = await this.entryRepo.findById(id);
+
+    const user =
+      requestingUser.role === Roles.MANAGER && (await requestingUser.getDto());
 
     return entry.cata(
       () => Fail(FindEntryFailure.EntryNotFound),
@@ -112,15 +107,15 @@ export class EntriesService {
 
           case Roles.MANAGER:
             const belongsStudentOfYear =
-              e.student.graduationYear === requestingUser.graduationYear;
+              e.student.graduationYear === user.some().graduationYear;
             return belongsStudentOfYear
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
 
           case Roles.PARENT:
-            const belongsChild = requestingUser.children
-              .map(c => c.id)
-              .includes(e.student.id);
+            const belongsChild = requestingUser.childrenIds.includes(
+              e.student.id
+            );
             return belongsChild
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
@@ -134,7 +129,7 @@ export class EntriesService {
 
   async create(
     entry: CreateEntryDto,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<CreateEntryFailure, EntryDto>> {
     const isValidDto =
       (await validate(entry, { forbidNonWhitelisted: true })).length === 0;
@@ -154,8 +149,8 @@ export class EntriesService {
         return Fail(CreateEntryFailure.StudentIdMissing);
       }
 
-      const studentIsChild = requestingUser.children.some(
-        c => c.id === entry.studentId
+      const studentIsChild = requestingUser.childrenIds.includes(
+        entry.studentId
       );
       if (!studentIsChild) {
         return Fail(CreateEntryFailure.ForbiddenForUser);
@@ -173,7 +168,8 @@ export class EntriesService {
     }
 
     const result = await this.entryRepo.createEntry(entry, {
-      signedByParent: userIsParent || requestingUser.isAdult
+      signedByParent:
+        userIsParent || (await requestingUser.getDto()).some().isAdult
     });
 
     if (!result.signedParent) {
@@ -205,10 +201,10 @@ export class EntriesService {
   async patch(
     id: string,
     patch: PatchEntryDto,
-    requestingUser: UserDto
+    _requestingUser: RequestContextUser
   ): Promise<Validation<PatchEntryFailure, EntryDto>> {
     const roleIsAllowed = [Roles.MANAGER, Roles.PARENT].includes(
-      requestingUser.role
+      _requestingUser.role
     );
     if (!roleIsAllowed) {
       return Fail(PatchEntryFailure.ForbiddenForRole);
@@ -218,6 +214,8 @@ export class EntriesService {
     if (entry.isNone()) {
       return Fail(PatchEntryFailure.NotFound);
     }
+
+    const requestingUser = (await _requestingUser.getDto()).some();
 
     if (!_.isUndefined(patch.forSchool)) {
       const userIsManager = requestingUser.role === Roles.MANAGER;
@@ -270,7 +268,7 @@ export class EntriesService {
 
   async delete(
     id: string,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
     if (
       [Roles.PARENT, Roles.STUDENT, Roles.TEACHER, Roles.ADMIN].includes(

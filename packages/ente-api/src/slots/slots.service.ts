@@ -1,10 +1,11 @@
 import { Injectable, Inject, LoggerService } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { SlotRepo } from "../db/slot.repo";
-import { Roles, UserDto, SlotDto, twoWeeksBeforeNow } from "ente-types";
+import { Roles, SlotDto, twoWeeksBeforeNow } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
+import { RequestContextUser } from "../helpers/request-context";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -20,19 +21,18 @@ export class SlotsService {
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async findAll(requestingUser: UserDto): Promise<SlotDto[]> {
+  async findAll(requestingUser: RequestContextUser): Promise<SlotDto[]> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return await this.slotRepo.findAll();
 
       case Roles.MANAGER:
-        return await this.slotRepo.findByYearOfStudent(
-          requestingUser.graduationYear!
-        );
+        const user = (await requestingUser.getDto()).some();
+        return await this.slotRepo.findByYearOfStudent(user.graduationYear!);
 
       case Roles.PARENT:
         return await this.slotRepo.findByStudents(
-          ...requestingUser.children.map(c => c.id)
+          ...requestingUser.childrenIds
         );
 
       case Roles.TEACHER:
@@ -45,25 +45,29 @@ export class SlotsService {
 
   async findOne(
     id: string,
-    requestingUser: UserDto
+    requestingUser: RequestContextUser
   ): Promise<Validation<FindOneSlotFailure, SlotDto>> {
     const slot = await this.slotRepo.findById(id);
+
+    const user =
+      requestingUser.role === Roles.MANAGER &&
+      (await requestingUser.getDto()).some();
+
     return slot.cata(
       () => Fail(FindOneSlotFailure.SlotNotFound),
       s => {
         switch (requestingUser.role) {
           case Roles.MANAGER:
-            const isSameYear =
-              s.student.graduationYear === requestingUser.graduationYear;
+            const isSameYear = s.student.graduationYear === user.graduationYear;
             if (!isSameYear) {
               return Fail(FindOneSlotFailure.ForbiddenForUser);
             }
             break;
 
           case Roles.PARENT:
-            const slotMatchesUser = requestingUser.children
-              .map(c => c.id)
-              .includes(s.student.id);
+            const slotMatchesUser = requestingUser.childrenIds.includes(
+              s.student.id
+            );
             if (!slotMatchesUser) {
               return Fail(FindOneSlotFailure.ForbiddenForUser);
             }
