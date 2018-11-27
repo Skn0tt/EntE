@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 * Fixed: Removed malicious dependency on `event-stream` ([event-stream/#116](https://github.com/dominictarr/event-stream/issues/116))
+* Changed: Backend now requests requesting user from database only when needed
 
 ## [v0.8.9] - 2018-11-26
 
