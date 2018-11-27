@@ -27,9 +27,9 @@ import {
   JwtTokenPayload,
   PatchEntryDto
 } from "ente-types";
-
 import * as _ from "lodash";
 import { None, Some } from "monet";
+import { Base64 } from "../helpers/base64";
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
@@ -84,9 +84,9 @@ export const transformUsers = (...users: UserDto[]): APIResponse => {
     const childrenIds = children.map(c => c.id);
 
     const normalised = new UserN({
+      childrenIds,
       ...user,
-      children: [],
-      childrenIds
+      children: []
     });
     result.users.push(normalised);
 
@@ -146,21 +146,19 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
   return result;
 };
 
-const fromBase64 = (b64: string) =>
-  Buffer.from(b64, "base64").toString("ascii");
-
 export const getTokenPayload = (token: string): JwtTokenPayload => {
-  const payload = JSON.parse(fromBase64(token.split(".")[1]));
+  const [header, payload, signature] = token.split(".");
+  const decodedPayload = JSON.parse(Base64.decode(payload));
 
-  return payload;
+  return decodedPayload;
 };
 
 const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
   return new AuthState({
+    token,
     role: payload.role,
     displayname: payload.displayname,
     username: payload.username,
-    token,
     children: payload.childrenIds,
     exp: new Date((payload as any).exp * 1000)
   });
