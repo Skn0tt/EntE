@@ -10,7 +10,6 @@ ADD packages/ente-types/package.json ./packages/ente-types/package.json
 
 RUN yarn --frozen-lockfile
 RUN yarn lerna bootstrap
-RUN yarn global add nodemon
 
 ADD packages/ente-api ./packages/ente-api
 ADD packages/ente-types ./packages/ente-types

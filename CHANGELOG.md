@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Removed malicious dependency on `event-stream` ([event-stream/#116](https://github.com/dominictarr/event-stream/issues/116))
+
 ## [v0.8.9] - 2018-11-26
 
 * Fixed: Cron job env var is now named correctly (cron jobs now work)
