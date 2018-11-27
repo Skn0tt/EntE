@@ -155,7 +155,11 @@ const reducer = handleActions(
         .update("loading", loading => loading - 1),
 
     // ## LOGOUT
-    [LOGOUT]: (): AppState => new AppState({}),
+    [LOGOUT]: (state: AppState): AppState =>
+      new AppState({
+        messages: state.get("messages"),
+        loading: state.get("loading")
+      }),
 
     // ## RESET_PASSWORD
     ...asyncReducersFull(
