@@ -30,10 +30,13 @@ const lang = createTranslation({
       date: "Date",
       from: "From",
       to: "To",
+      forSchool: "For School",
       signed: "Signed",
       teacher: "Teacher"
     },
-    deleted: "Deleted"
+    deleted: "Deleted",
+    yes: "Yes",
+    no: "No"
   },
   de: {
     headers: {
@@ -41,10 +44,13 @@ const lang = createTranslation({
       date: "Datum",
       from: "Von",
       to: "Bis",
+      forSchool: "Schulisch",
       signed: "Unterschrieben",
       teacher: "Lehrer"
     },
-    deleted: "Gelöscht"
+    deleted: "Gelöscht",
+    yes: "Ja",
+    no: "Nein"
   }
 });
 
@@ -89,6 +95,7 @@ export class Slots extends React.Component<SlotsProps> {
           lang.headers.date,
           lang.headers.from,
           lang.headers.to,
+          lang.headers.forSchool,
           {
             name: lang.headers.signed,
             options: {
@@ -104,6 +111,7 @@ export class Slots extends React.Component<SlotsProps> {
           slot.get("date").toLocaleDateString(),
           "" + slot.get("from"),
           "" + slot.get("to"),
+          slot.get("forSchool") ? lang.yes : lang.no,
           "" + slot.get("signed"),
           slot
             .get("teacherId")

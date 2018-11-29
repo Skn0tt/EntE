@@ -28,4 +28,6 @@ export class SlotDto {
   @IsDate() to: number;
 
   @IsBoolean() signed: boolean;
+
+  @IsBoolean() forSchool: boolean;
 }
