@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { Grid, TextField, Button } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import { getTeachers, getUser, AppState, UserN } from "../../redux";
+import { getTeachers, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
@@ -55,15 +55,13 @@ interface SlotEntryOwnProps {
 
 interface SlotEntryStateProps {
   teachers: UserN[];
-  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotEntryStateProps,
   SlotEntryOwnProps,
   AppState
 > = state => ({
-  teachers: getTeachers(state),
-  getUser: id => getUser(id)(state)
+  teachers: getTeachers(state)
 });
 
 type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;

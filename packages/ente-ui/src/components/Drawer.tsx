@@ -33,6 +33,7 @@ import {
   TeacherItems
 } from "./Drawer.items";
 import styles from "./Drawer.styles";
+import { Maybe } from "monet";
 
 /**
  * # Component Types
@@ -40,9 +41,9 @@ import styles from "./Drawer.styles";
 interface DrawerOwnProps {}
 interface DrawerStateProps {
   loading: boolean;
-  role: Roles;
+  role: Maybe<Roles>;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): DrawerStateProps => ({
   loading: isLoading(state),
   role: getRole(state)
 });
@@ -87,7 +88,7 @@ class Drawer extends React.Component<DrawerProps, DrawerState> {
             [Roles.PARENT]: <ParentItems />,
             [Roles.STUDENT]: <StudentItems />,
             [Roles.MANAGER]: <ManagerItems />
-          }[role]
+          }[role.some()]
         }
       </List>
     );
