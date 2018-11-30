@@ -28,7 +28,8 @@ import {
   resetPasswordRequest,
   BasicCredentials,
   GET_TOKEN_REQUEST,
-  isTypePending
+  isTypePending,
+  RESET_PASSWORD_REQUEST
 } from "../redux";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
 import { createTranslation } from "../helpers/createTranslation";
@@ -64,10 +65,12 @@ interface InjectedProps {
 interface StateProps {
   authValid: boolean;
   loginPending: boolean;
+  passwordResetPending: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
   authValid: isAuthValid(state),
-  loginPending: isTypePending(state)(GET_TOKEN_REQUEST)
+  loginPending: isTypePending(state)(GET_TOKEN_REQUEST),
+  passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST)
 });
 
 interface DispatchProps {
@@ -122,7 +125,13 @@ class Login extends React.Component<Props, State> {
     });
 
   render() {
-    const { authValid, location, fullScreen, loginPending } = this.props;
+    const {
+      authValid,
+      location,
+      fullScreen,
+      loginPending,
+      passwordResetPending
+    } = this.props;
     const { from } = location.state || {
       from: { pathname: "/" }
     };
@@ -164,7 +173,10 @@ class Login extends React.Component<Props, State> {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleResetPassword}>
+          <Button
+            onClick={this.handleResetPassword}
+            disabled={passwordResetPending}
+          >
             {lang.resetPassword}
           </Button>
           <Button
