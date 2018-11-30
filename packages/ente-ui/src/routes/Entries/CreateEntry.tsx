@@ -46,7 +46,7 @@ import {
 } from "../../redux";
 import { CreateEntryDto, CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
 import { Maybe } from "monet";
 
 const lang = createTranslation({

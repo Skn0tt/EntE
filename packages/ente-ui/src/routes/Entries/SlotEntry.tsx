@@ -14,7 +14,7 @@ import { getTeachers, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
 
 const lang = createTranslation({
   en: {

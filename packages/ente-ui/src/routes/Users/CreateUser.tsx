@@ -41,8 +41,9 @@ import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
-import { PasswordRequirementsHint } from "ente-ui/src/elements/PasswordRequirementsHint";
+import { createTranslation } from "../../helpers/createTranslation";
+import { PasswordRequirementsHint } from "../../elements/PasswordRequirementsHint";
+import * as _ from "lodash";
 import { Maybe } from "monet";
 
 const lang = createTranslation({
@@ -165,9 +166,12 @@ export class CreateUser extends React.Component<
   handleChangeUsername = this.update("username");
   handleChangeYear = this.update("graduationYear");
   handleChangeDisplayname = this.update("displayname");
-  handleChangePassword = this.update("password");
+  handleChangePassword = (value: string) => {
+    const newValue = value === "" ? undefined : value;
+    this.update("password")(newValue);
+  };
   handleChangeIsAdult = (
-    ignored: React.ChangeEvent<HTMLInputElement>,
+    _: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => this.update("isAdult")(checked);
   handleChangeEmail = this.update("email");
@@ -193,7 +197,8 @@ export class CreateUser extends React.Component<
     isValidDisplayname(this.state.create.displayname);
   emailValid = (): boolean => isValidEmail(this.state.create.email);
   passwordValid = (): boolean =>
-    !this.state.create.password || isValidPassword(this.state.create.password);
+    _.isUndefined(this.state.create.password) ||
+    isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
   inputValid = (): boolean => isValidCreateUserDto(this.state.create);
