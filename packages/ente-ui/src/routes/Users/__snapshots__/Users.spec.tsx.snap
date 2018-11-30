@@ -136,13 +136,12 @@ ShallowWrapper {
           }
           onClick={[Function]}
         />,
-        <WithStyles(Button)
+        <WithStyles(Fab)
           color="primary"
           onClick={[Function]}
-          variant="fab"
         >
           <pure(AddIcon) />
-        </WithStyles(Button)>,
+        </WithStyles(Fab)>,
       ],
     },
     "ref": null,
@@ -217,7 +216,6 @@ ShallowWrapper {
           "className": undefined,
           "color": "primary",
           "onClick": [Function],
-          "variant": "fab",
         },
         "ref": null,
         "rendered": Object {
@@ -290,13 +288,12 @@ ShallowWrapper {
             }
             onClick={[Function]}
           />,
-          <WithStyles(Button)
+          <WithStyles(Fab)
             color="primary"
             onClick={[Function]}
-            variant="fab"
           >
             <pure(AddIcon) />
-          </WithStyles(Button)>,
+          </WithStyles(Fab)>,
         ],
       },
       "ref": null,
@@ -371,7 +368,6 @@ ShallowWrapper {
             "className": undefined,
             "color": "primary",
             "onClick": [Function],
-            "variant": "fab",
           },
           "ref": null,
           "rendered": Object {

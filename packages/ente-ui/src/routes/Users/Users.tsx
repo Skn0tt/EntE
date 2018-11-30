@@ -12,7 +12,7 @@ import { connect, Dispatch } from "react-redux";
 import styles from "./Users.styles";
 import { Action } from "redux";
 import CreateUser from "./CreateUser";
-import { Button } from "@material-ui/core";
+import Fab from "@material-ui/core/Fab";
 import { Add as AddIcon } from "@material-ui/icons";
 import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -130,14 +130,13 @@ export class Users extends React.PureComponent<UsersProps, UsersState> {
         />
 
         {/* FAB */}
-        <Button
+        <Fab
           color="primary"
-          variant="fab"
           onClick={this.showCreateModal}
           className={classes.fab}
         >
           <AddIcon />
-        </Button>
+        </Fab>
       </React.Fragment>
     );
   }

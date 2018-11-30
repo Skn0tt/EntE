@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Updated to Material-UI 3.6
+
 ## [v0.8.11] - 2018-11-30
 
 * Fixed: password in user creation is now optional
