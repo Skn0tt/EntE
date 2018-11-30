@@ -44,7 +44,11 @@ import {
   getUser,
   UserN
 } from "../../redux";
-import { CreateEntryDto, CreateSlotDto } from "ente-types";
+import {
+  CreateEntryDto,
+  CreateSlotDto,
+  isValidCreateSlotDto
+} from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { createTranslation } from "../../helpers/createTranslation";
 import { Maybe } from "monet";
@@ -58,6 +62,8 @@ const lang = createTranslation({
     titles: {
       slots: "Slots"
     },
+    newEntry: "New Entry",
+    child: "Child",
     ok: "OK",
     cancel: "Cancel",
     fromLabel: "From",
@@ -73,6 +79,8 @@ const lang = createTranslation({
     titles: {
       slots: "Stunden"
     },
+    newEntry: "Neuer Eintrag",
+    child: "Kind",
     ok: "OK",
     cancel: "Zurück",
     fromLabel: "Von",
@@ -173,23 +181,51 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   /**
    * ## Input Handlers
    */
-  handleChangeDate = (date: Date) => {
+  handleChangeBeginDate = (date: Date) => {
+    const slotsWithoutSlotsThatAreTooEarly = this.state.slots.filter(
+      s => s.date > date
+    );
     const dateEndIsBeforeDate = +this.state.dateEnd <= +date + oneDay;
     if (dateEndIsBeforeDate) {
       this.setState({
         date,
-        dateEnd: nextDay(date)
+        dateEnd: nextDay(date),
+        slots: slotsWithoutSlotsThatAreTooEarly
       });
     } else {
-      this.setState({ date });
+      this.setState({
+        date,
+        slots: slotsWithoutSlotsThatAreTooEarly
+      });
     }
   };
-  handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
+
+  handleChangeDateEnd = (dateEnd: Date) => {
+    const slotsWithoutSlotsThatAreTooLate = this.state.slots.filter(
+      s => s.date < dateEnd
+    );
+    this.setState({ dateEnd, slots: slotsWithoutSlotsThatAreTooLate });
+  };
+
   handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ forSchool: event.target.checked });
 
-  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ isRange: event.target.checked });
+    if (event.target.checked === false) {
+      const withoutDate = this.state.slots.map(s => ({
+        ...s,
+        date: undefined
+      }));
+      this.setState({ slots: withoutDate });
+    } else {
+      const withDate = this.state.slots.map(s => ({
+        ...s,
+        date: this.state.date
+      }));
+      this.setState({ slots: withDate });
+    }
+  };
 
   handleAddSlot = (slot: CreateSlotDto) => {
     if (this.state.slots.indexOf(slot) !== -1) return;
@@ -212,7 +248,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   dateEndValid = (): boolean =>
     !this.state.isRange || +this.state.dateEnd > +this.state.date;
   studentValid = (): boolean => !this.props.isParent || !!this.state.student;
-  slotsValid = (): boolean => this.state.slots.length > 0;
+  slotsValid = (): boolean =>
+    this.state.slots.length > 0 && this.state.slots.every(isValidCreateSlotDto);
 
   inputValid = () =>
     this.dateValid() &&
@@ -231,7 +268,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
 
     return (
       <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
-        <DialogTitle>Neuer Eintrag</DialogTitle>
+        <DialogTitle>{lang.newEntry}</DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={40}>
             <Grid item container direction="column">
@@ -264,7 +301,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <TextField
                     fullWidth
                     select
-                    label="Kind"
+                    label={lang.child}
                     value={student}
                     onChange={this.handleChangeStudent}
                     helperText={lang.selectChild}
@@ -281,9 +318,9 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                 <Grid container direction="row" spacing={24}>
                   <Grid item xs={6}>
                     <DateInput
-                      label="Von"
-                      isValid={() => this.dateValid()}
-                      onChange={this.handleChangeDate}
+                      label={lang.fromLabel}
+                      isValid={this.dateValid}
+                      onChange={this.handleChangeBeginDate}
                       minDate={this.minDate}
                       value={date}
                     />
@@ -291,8 +328,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   {isRange && (
                     <Grid item xs={6}>
                       <DateInput
-                        label="Bis"
-                        isValid={() => this.dateEndValid()}
+                        label={lang.toLabel}
+                        isValid={this.dateEndValid}
                         onChange={this.handleChangeDateEnd}
                         minDate={nextDay(date)}
                         value={dateEnd}
