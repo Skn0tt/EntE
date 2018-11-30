@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: translation of filter values in table
 * Fixed: Import window now accepts all mime types and instead filters by file ending (must end on ".csv")
 * Changed: Password Reset screen now redirects to login screen
 * Changed: Login screen now shows feedback while pending requests

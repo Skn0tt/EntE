@@ -59,8 +59,6 @@ const lang = createTranslation({
 
 class EntriesTable extends Table<EntryN> {}
 
-const customBodyRender = v => <SignedAvatar signed={v === "true"} />;
-
 /**
  * # Component Types
  */
@@ -102,6 +100,8 @@ export class Entries extends React.Component<Props, State> {
   showCreateEntry = () => this.setState({ showCreateEntry: true });
   closeCreateEntry = () => this.setState({ showCreateEntry: false });
 
+  customBodyRender = v => <SignedAvatar signed={v === lang.yes} />;
+
   render() {
     const { classes, canCreateEntries, entries, getUser, history } = this.props;
 
@@ -122,11 +122,11 @@ export class Entries extends React.Component<Props, State> {
             { name: lang.headers.forSchool, options: { filter: true } },
             {
               name: lang.headers.manager,
-              options: { customBodyRender, filter: true }
+              options: { customBodyRender: this.customBodyRender, filter: true }
             },
             {
               name: lang.headers.parents,
-              options: { customBodyRender, filter: true }
+              options: { customBodyRender: this.customBodyRender, filter: true }
             }
           ]}
           items={entries}
@@ -135,8 +135,8 @@ export class Entries extends React.Component<Props, State> {
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
             entry.get("forSchool") ? lang.yes : lang.no,
-            "" + entry.get("signedManager"),
-            "" + entry.get("signedParent")
+            entry.get("signedManager") ? lang.yes : lang.no,
+            entry.get("signedParent") ? lang.yes : lang.no
           ]}
           extractId={entry => entry.get("id")}
           onClick={id => history.push(`/entries/${id}`)}

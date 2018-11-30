@@ -33,7 +33,9 @@ const lang = createTranslation({
       signed: "Signed",
       teacher: "Teacher"
     },
-    deleted: "Deleted"
+    deleted: "Deleted",
+    yes: "Yes",
+    no: "No"
   },
   de: {
     headers: {
@@ -44,7 +46,9 @@ const lang = createTranslation({
       signed: "Unterschrieben",
       teacher: "Lehrer"
     },
-    deleted: "Gelöscht"
+    deleted: "Gelöscht",
+    yes: "Ja",
+    no: "Nein"
   }
 });
 
@@ -92,7 +96,7 @@ export class Slots extends React.Component<SlotsProps> {
           {
             name: lang.headers.signed,
             options: {
-              customBodyRender: v => <SignedAvatar signed={v === "true"} />
+              customBodyRender: v => <SignedAvatar signed={v === lang.yes} />
             }
           },
           lang.headers.teacher
@@ -104,7 +108,7 @@ export class Slots extends React.Component<SlotsProps> {
           slot.get("date").toLocaleDateString(),
           "" + slot.get("from"),
           "" + slot.get("to"),
-          "" + slot.get("signed"),
+          slot.get("signed") ? lang.yes : lang.no,
           slot
             .get("teacherId")
             .cata(() => lang.deleted, id => getUser(id).get("displayname"))
