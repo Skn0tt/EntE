@@ -9,7 +9,7 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { Action } from "redux";
-import { Redirect, RouteComponentProps } from "react-router";
+import { Redirect, RouteComponentProps, withRouter } from "react-router";
 import {
   Dialog,
   DialogTitle,
@@ -26,7 +26,9 @@ import {
   isAuthValid,
   getTokenRequest,
   resetPasswordRequest,
-  BasicCredentials
+  BasicCredentials,
+  GET_TOKEN_REQUEST,
+  isTypePending
 } from "../redux";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
 import { createTranslation } from "../helpers/createTranslation";
@@ -61,9 +63,11 @@ interface InjectedProps {
 
 interface StateProps {
   authValid: boolean;
+  loginPending: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
-  authValid: isAuthValid(state)
+  authValid: isAuthValid(state),
+  loginPending: isTypePending(state)(GET_TOKEN_REQUEST)
 });
 
 interface DispatchProps {
@@ -118,62 +122,66 @@ class Login extends React.Component<Props, State> {
     });
 
   render() {
-    const { from } = this.props.location.state || {
+    const { authValid, location, fullScreen, loginPending } = this.props;
+    const { from } = location.state || {
       from: { pathname: "/" }
     };
 
-    return (
-      <div>
-        {this.props.authValid && <Redirect to={from} />}
-        <Dialog
-          fullScreen={this.props.fullScreen}
-          open
-          onKeyPress={this.handleKeyPress}
-        >
-          <DialogTitle>{lang.title}</DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              dangerouslySetInnerHTML={{
-                __html: lang.instanceInfo.replace("\n", "<br />")
-              }}
-            />
-            <Grid container direction="column">
-              <Grid item>
-                <TextField
-                  fullWidth
-                  id="name"
-                  label={lang.username}
-                  autoComplete="username"
-                  onChange={this.handleChangeUsername}
-                />
-              </Grid>
+    if (authValid) {
+      return <Redirect to={from.pathname} />;
+    }
 
-              <Grid item>
-                <TextField
-                  fullWidth
-                  id="password"
-                  label={lang.password}
-                  type="password"
-                  autoComplete="current-password"
-                  onChange={this.handleChangePassword}
-                />
-              </Grid>
+    return (
+      <Dialog fullScreen={fullScreen} open onKeyPress={this.handleKeyPress}>
+        <DialogTitle>{lang.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            dangerouslySetInnerHTML={{
+              __html: lang.instanceInfo.replace("\n", "<br />")
+            }}
+          />
+          <Grid container direction="column">
+            <Grid item>
+              <TextField
+                fullWidth
+                id="name"
+                label={lang.username}
+                autoComplete="username"
+                onChange={this.handleChangeUsername}
+              />
             </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.handleResetPassword()}>
-              {lang.resetPassword}
-            </Button>
-            <Button color="primary" onClick={() => this.handleSignIn()}>
-              {lang.submit}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+
+            <Grid item>
+              <TextField
+                fullWidth
+                id="password"
+                label={lang.password}
+                type="password"
+                autoComplete="current-password"
+                onChange={this.handleChangePassword}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleResetPassword}>
+            {lang.resetPassword}
+          </Button>
+          <Button
+            color="primary"
+            onClick={this.handleSignIn}
+            disabled={loginPending}
+          >
+            {lang.submit}
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<Props>()(withErrorBoundary()(Login))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withMobileDialog<Props>()(withErrorBoundary()(Login))
+  )
 );

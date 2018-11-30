@@ -19,15 +19,24 @@ import {
 import { createSelector } from "reselect";
 import { Roles } from "ente-types";
 import { Maybe } from "monet";
+import * as _ from "lodash";
+import { Action } from "redux";
 
 type Selector<T> = (state: AppState) => T;
 
 /**
  * State
  */
-export const isLoading: Selector<boolean> = state => state.get("loading") > 0;
-export const getMessages: Selector<String[]> = state =>
-  state.get("messages").toArray();
+export const isLoading: Selector<boolean> = state =>
+  state.get("pendingActions").size > 0;
+export const isTypePending: Selector<(type: string) => boolean> = _.memoize(
+  (state: AppState) => (type: string) =>
+    !!state.get("pendingActions").find(action => action.type === type)
+);
+export const isActionPending: Selector<(action: Action) => boolean> = _.memoize(
+  (state: AppState) => (action: Action) =>
+    !!state.get("pendingActions").find(v => _.isEqual(action, v))
+);
 
 /**
  * Auth

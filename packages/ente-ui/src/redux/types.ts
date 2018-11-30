@@ -6,9 +6,10 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { Map, List, Record } from "immutable";
+import { Map, Record, Set } from "immutable";
 import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
 import { Maybe, None } from "monet";
+import { Action } from "redux";
 
 export interface BasicCredentials {
   username: string;
@@ -127,10 +128,7 @@ export const AuthState = Record<IAuthState>(
   "AuthState"
 );
 
-/**
- * Messages
- */
-type MessagesState = List<string>;
+export type PendingActions = Set<Action>;
 
 /**
  * AppState
@@ -140,8 +138,7 @@ export interface IAppState {
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
   auth: Maybe<AuthState>;
-  messages: MessagesState;
-  loading: number;
+  pendingActions: PendingActions;
 }
 
 export type AppState = Record<IAppState>;
@@ -151,8 +148,7 @@ export const AppState = Record<IAppState>(
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
     auth: None(),
-    messages: List<string>(),
-    loading: 0
+    pendingActions: Set<Action>()
   },
   "AppState"
 );

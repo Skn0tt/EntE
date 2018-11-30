@@ -37,7 +37,7 @@ type AppProps = AppStateProps;
 
 const App: React.SFC<AppProps> = props => (
   <BrowserRouter>
-    <React.Fragment>
+    <>
       <MessageStream />
       <AuthService period={ROTATION_PERIOD} />
       <Switch>
@@ -49,7 +49,7 @@ const App: React.SFC<AppProps> = props => (
           </Drawer>
         </AuthenticatedRoute>
       </Switch>
-    </React.Fragment>
+    </>
   </BrowserRouter>
 );
 

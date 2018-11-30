@@ -27,6 +27,7 @@ import HttpsGate from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
 import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
+import { MessagesProvider } from "./context/Messages";
 
 const baseUrl = `${location.protocol}//${location.hostname}`;
 
@@ -77,9 +78,11 @@ const Index = () => (
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
           <HttpsGate disable={ALLOW_INSECURE}>
-            <Provider store={store}>
-              <App />
-            </Provider>
+            <MessagesProvider>
+              <Provider store={store}>
+                <App />
+              </Provider>
+            </MessagesProvider>
           </HttpsGate>
         </MuiPickersUtilsProvider>
       </MuiThemeProvider>

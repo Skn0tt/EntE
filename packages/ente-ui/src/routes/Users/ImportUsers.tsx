@@ -6,12 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import {
-  AppState,
-  addMessage,
-  createUsersRequest,
-  getStudents
-} from "../../redux";
+import { AppState, createUsersRequest, getStudents } from "../../redux";
 import { Button, Dialog, Grid } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -22,7 +17,8 @@ import { Action, Dispatch } from "redux";
 import { CreateUserDto } from "ente-types";
 import { parseCSVFromFile } from "../../helpers/parser";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
+import { MessagesContext, MessagesContextValue } from "../../context/Messages";
 
 const lang = createTranslation({
   en: {
@@ -70,11 +66,9 @@ const mapStateToProps: MapStateToPropsParam<
 
 interface ImportUsersDispatchProps {
   createUsers(users: CreateUserDto[]): void;
-  addMessage(msg: string): void;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUsers: (users: CreateUserDto[]) => dispatch(createUsersRequest(users)),
-  addMessage: (msg: string) => dispatch(addMessage(msg))
+  createUsers: (users: CreateUserDto[]) => dispatch(createUsersRequest(users))
 });
 
 interface InjectedProps {
@@ -105,6 +99,8 @@ export class ImportUsers extends React.Component<
     error: true
   };
 
+  static contextType = MessagesContext;
+
   /**
    * # Handlers
    */
@@ -131,7 +127,8 @@ export class ImportUsers extends React.Component<
       this.setState({ users, error: false });
     } catch (error) {
       this.setState({ error: true });
-      this.props.addMessage(error.message);
+      const { addMessages } = this.context as MessagesContextValue;
+      addMessages(error.message);
     }
   };
 
