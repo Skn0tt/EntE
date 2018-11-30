@@ -28,14 +28,18 @@ const lang = createTranslation({
   en: {
     submit: "Import",
     close: "Close",
-    dropzone: "Drop a .csv file here."
+    dropzone: "Drop a .csv file here.",
+    pleaseUploadCsvFile: "Please upload a .csv file."
   },
   de: {
     submit: "Importieren",
     close: "Schließen",
-    dropzone: "Legen sie hier eine .csv-Datei ab."
+    dropzone: "Legen sie hier eine .csv-Datei ab.",
+    pleaseUploadCsvFile: "Bitte laden sie eine .csv-Datei hoch."
   }
 });
+
+const isCsvFile = (f: File) => f.name.endsWith(".csv");
 
 const readFile = async (f: File) =>
   new Promise<string>((resolve, reject) => {
@@ -48,23 +52,23 @@ const readFile = async (f: File) =>
 /**
  * # Component Types
  */
-interface OwnProps {
+interface ImportUsersOwnProps {
   onClose(): void;
   show: boolean;
 }
 
-interface StateProps {
+interface ImportUsersStateProps {
   usernames: string[];
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
-  OwnProps,
+  ImportUsersStateProps,
+  ImportUsersOwnProps,
   AppState
 > = state => ({
   usernames: getStudents(state).map(u => u.get("username"))
 });
 
-interface DispatchProps {
+interface ImportUsersDispatchProps {
   createUsers(users: CreateUserDto[]): void;
   addMessage(msg: string): void;
 }
@@ -77,21 +81,26 @@ interface InjectedProps {
   fullScreen: boolean;
 }
 
-interface State {
+interface ImportUsersState {
   users: CreateUserDto[];
   error: boolean;
 }
 
-type Props = OwnProps & DispatchProps & StateProps;
+type ImportUsersProps = ImportUsersOwnProps &
+  ImportUsersDispatchProps &
+  ImportUsersStateProps;
 
 /**
  * # Component
  */
-export class ImportUsers extends React.Component<Props & InjectedProps, State> {
+export class ImportUsers extends React.Component<
+  ImportUsersProps & InjectedProps,
+  ImportUsersState
+> {
   /**
    * ## Intialization
    */
-  state: State = {
+  state: ImportUsersState = {
     users: [],
     error: true
   };
@@ -104,13 +113,20 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
   handleSubmit = () =>
     this.state.users.length !== 0 && this.props.createUsers(this.state.users);
 
-  onDrop = async (accepted: File[], rejected: File[]) => {
-    if (accepted.length === 0) {
+  onDrop = async (accepted: File[]) => {
+    const [file] = accepted;
+
+    if (!file) {
+      return;
+    }
+
+    if (!isCsvFile(file)) {
+      this.props.addMessage(lang.pleaseUploadCsvFile);
       return;
     }
 
     try {
-      const input = await readFile(accepted[0]);
+      const input = await readFile(file);
       const users = await parseCSVFromFile(input, this.props.usernames);
       this.setState({ users, error: false });
     } catch (error) {
@@ -136,11 +152,7 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
       <Dialog fullScreen={fullScreen} onClose={this.handleClose} open={show}>
         <Grid container direction="column">
           <Grid item xs={12}>
-            <Dropzone
-              accept="text/csv"
-              onDrop={this.onDrop}
-              className="dropzone"
-            >
+            <Dropzone onDrop={this.onDrop} className="dropzone">
               {lang.dropzone}
             </Dropzone>
           </Grid>
@@ -173,7 +185,11 @@ export class ImportUsers extends React.Component<Props & InjectedProps, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<Props>()(ImportUsers));
+export default connect<
+  ImportUsersStateProps,
+  ImportUsersDispatchProps,
+  ImportUsersOwnProps,
+  AppState
+>(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<ImportUsersProps>()(ImportUsers)
+);

@@ -158,8 +158,6 @@ export class Entries extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withRouter(withErrorBoundary()(Entries))
-  )
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(withErrorBoundary()(withStyles(styles)(Entries)))
 );
