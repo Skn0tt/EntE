@@ -18,12 +18,13 @@ import { connect, Dispatch } from "react-redux";
 import { PowerSettingsNew as PowerSettingsNewIcon } from "@material-ui/icons";
 import { logout, AppState, getDisplayname } from "../redux";
 import { Action } from "redux";
+import { Maybe } from "monet";
 
 /**
  * # Component Types
  */
 interface LoginStatusStateProps {
-  displayname: string;
+  displayname: Maybe<string>;
 }
 const mapStateToProps = (state: AppState): LoginStatusStateProps => ({
   displayname: getDisplayname(state)
@@ -53,7 +54,7 @@ export const LoginStatus: React.SFC<LoginStatusProps> = props => {
           <PowerSettingsNewIcon />
         </IconButton>
       </ListItemIcon>
-      <ListItemText primary={displayname} />
+      <ListItemText primary={displayname.orSome("")} />
     </ListItem>
   );
 };

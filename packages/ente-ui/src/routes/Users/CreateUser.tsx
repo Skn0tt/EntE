@@ -43,6 +43,7 @@ import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
 import { createTranslation } from "ente-ui/src/helpers/createTranslation";
 import { PasswordRequirementsHint } from "ente-ui/src/elements/PasswordRequirementsHint";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -98,7 +99,7 @@ interface CreateUserState {
 
 interface StateProps {
   students: UserN[];
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -271,7 +272,7 @@ export class CreateUser extends React.Component<
                 {this.hasChildren() && (
                   <Grid item xs={12}>
                     <ChildrenInput
-                      children={create.children.map(getUser)}
+                      children={create.children.map(getUser).map(c => c.some())}
                       students={students}
                       onChange={(u: UserN[]) =>
                         this.handleChangeChildren(u.map(u => u.get("id")))

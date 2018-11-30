@@ -21,7 +21,9 @@ export const createSentryMiddleware = (
   sentryClient: Sentry.BrowserClient
 ): Middleware => store => next => action => {
   Sentry.withScope(scope => {
-    const username = selectors.getUsername(store.getState());
+    const username = selectors
+      .getUsername(store.getState())
+      .orSome("NOT_LOGGED_IN");
     scope.setUser({ username });
 
     if (!IGNORED_ACTION_TYPES.includes(action.type)) {
