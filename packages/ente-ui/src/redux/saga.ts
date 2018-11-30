@@ -47,7 +47,9 @@ import {
   deleteUserError,
   deleteEntryError,
   downloadExcelExportSuccess,
-  downloadExcelExportError
+  downloadExcelExportError,
+  setPasswordSuccess,
+  setPasswordError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -360,10 +362,10 @@ function* setPasswordSaga(action: Action<INewPassword>) {
     );
 
     addMessages(lang.setPassword.success);
-    yield put(resetPasswordSuccess(result, action));
+    yield put(setPasswordSuccess(result, action));
   } catch (error) {
     addMessages(lang.setPassword.error);
-    yield put(resetPasswordError(error, action));
+    yield put(setPasswordError(error, action));
   }
 }
 
