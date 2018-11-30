@@ -110,7 +110,7 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
   try {
     const authState: AuthState = yield call(api.getToken, action.payload!);
 
-    yield put(getTokenSuccess(authState));
+    yield put(getTokenSuccess(authState, action));
 
     const isTeacher = authState.get("role") === Roles.TEACHER;
 
@@ -119,7 +119,7 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
     }
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getTokenError(error));
+    yield put(getTokenError(error, action));
     yield put(logout());
   }
 }
@@ -129,34 +129,34 @@ function* refreshTokenSaga(action: Action<void>) {
     const token = yield select(selectors.getToken);
     const authState: AuthState = yield call(api.refreshToken, token);
 
-    yield put(refreshTokenSuccess(authState));
+    yield put(refreshTokenSuccess(authState, action));
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(refreshTokenError(error));
+    yield put(refreshTokenError(error, action));
     yield put(logout());
   }
 }
 
-function* getNeededUsersSaga() {
+function* getNeededUsersSaga(action) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getNeededUsers, token);
 
-    yield put(getNeededUsersSuccess());
+    yield put(getNeededUsersSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(getNeededUsersError(error));
+    yield put(getNeededUsersError(error, action));
   }
 }
 
-function* downloadExcelExportSaga() {
+function* downloadExcelExportSaga(action) {
   try {
     const token = yield select(selectors.getToken);
     yield call(api.downloadExcelExport, token);
 
-    yield put(downloadExcelExportSuccess());
+    yield put(downloadExcelExportSuccess(action));
   } catch (error) {
-    yield put(downloadExcelExportError(error));
+    yield put(downloadExcelExportError(error, action));
   }
 }
 
@@ -165,11 +165,11 @@ function* getEntrySaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getEntry, action.payload!, token);
 
-    yield put(getEntrySuccess());
+    yield put(getEntrySuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getEntryError(error));
+    yield put(getEntryError(error, action));
   }
 }
 
@@ -178,10 +178,10 @@ function* deleteUserSaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     yield call(api.deleteUser, action.payload!, token);
 
-    yield put(deleteUserSuccess(action.payload));
+    yield put(deleteUserSuccess(action.payload, action));
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(deleteUserError(error));
+    yield put(deleteUserError(error, action));
   }
 }
 
@@ -190,36 +190,36 @@ function* deleteEntrySaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     yield call(api.deleteEntry, action.payload!, token);
 
-    yield put(deleteEntrySuccess(action.payload));
+    yield put(deleteEntrySuccess(action.payload, action));
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(deleteEntryError(error));
+    yield put(deleteEntryError(error, action));
   }
 }
 
-function* getEntriesSaga() {
+function* getEntriesSaga(action) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getEntries, token);
 
-    yield put(getEntriesSuccess());
+    yield put(getEntriesSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getEntriesError(error));
+    yield put(getEntriesError(error, action));
   }
 }
 
-function* getSlotsSaga() {
+function* getSlotsSaga(action) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getSlots, token);
 
-    yield put(getSlotsSuccess());
+    yield put(getSlotsSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getSlotsError(error));
+    yield put(getSlotsError(error, action));
   }
 }
 
@@ -228,24 +228,24 @@ function* getUserSaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getUser, action.payload!, token);
 
-    yield put(getUserSuccess());
+    yield put(getUserSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getUserError(error));
+    yield put(getUserError(error, action));
   }
 }
 
-function* getUsersSaga() {
+function* getUsersSaga(action) {
   try {
     const token = yield select(selectors.getToken);
     const result = yield call(api.getUsers, token);
 
-    yield put(getUsersSuccess());
+    yield put(getUsersSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(getUsersError(error));
+    yield put(getUsersError(error, action));
   }
 }
 
@@ -254,10 +254,10 @@ function* createEntrySaga(action: Action<CreateEntryDto>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.createEntry, action.payload!, token);
 
-    yield put(createEntrySuccess());
+    yield put(createEntrySuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(createEntryError(error));
+    yield put(createEntryError(error, action));
   }
 }
 
@@ -271,10 +271,10 @@ function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
       token
     );
 
-    yield put(patchForSchoolSuccess());
+    yield put(patchForSchoolSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(patchForSchoolError(error));
+    yield put(patchForSchoolError(error, action));
   }
 }
 
@@ -284,13 +284,13 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
 
     const result = yield call(api.createUsers, action.payload!, token);
     yield dispatchUpdates(result);
-    yield put(createUsersSuccess());
+    yield put(createUsersSuccess(action));
 
     return;
   } catch (error) {
     const ex: Error = error;
     addMessages(ex.message);
-    yield put(createUsersError(ex));
+    yield put(createUsersError(ex, action));
   }
 }
 
@@ -304,10 +304,10 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
       token
     );
 
-    yield put(updateUserSuccess());
+    yield put(updateUserSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(createUsersError(error));
+    yield put(createUsersError(error, action));
   }
 }
 
@@ -316,11 +316,11 @@ function* signEntrySaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.signEntry, action.payload!, token);
 
-    yield put(signEntrySuccess());
+    yield put(signEntrySuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.signingError);
-    yield put(signEntryError(error));
+    yield put(signEntryError(error, action));
   }
 }
 
@@ -329,11 +329,11 @@ function* unsignEntrySaga(action: Action<string>) {
     const token = yield select(selectors.getToken);
     const result = yield call(api.unsignEntry, action.payload!, token);
 
-    yield put(unsignEntrySuccess());
+    yield put(unsignEntrySuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
     addMessages(lang.signingError);
-    yield put(unsignEntryError(error));
+    yield put(unsignEntryError(error, action));
   }
 }
 
@@ -342,10 +342,10 @@ function* resetPasswordSaga(action: Action<string>) {
     const result = yield call(api.resetPassword, action.payload!);
 
     addMessages(lang.resetPassword.success);
-    yield put(resetPasswordSuccess(result));
+    yield put(resetPasswordSuccess(result, action));
   } catch (error) {
     addMessages(lang.requestError);
-    yield put(resetPasswordError(error));
+    yield put(resetPasswordError(error, action));
   }
 }
 
@@ -358,10 +358,10 @@ function* setPasswordSaga(action: Action<INewPassword>) {
     );
 
     addMessages(lang.setPassword.success);
-    yield put(resetPasswordSuccess(result));
+    yield put(resetPasswordSuccess(result, action));
   } catch (error) {
     addMessages(lang.setPassword.error);
-    yield put(resetPasswordError(error));
+    yield put(resetPasswordError(error, action));
   }
 }
 

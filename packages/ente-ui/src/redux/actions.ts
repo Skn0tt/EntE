@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { createAction } from "redux-actions";
+import { createAction, Action } from "redux-actions";
 
 import {
   CREATE_ENTRY_REQUEST,
@@ -71,12 +71,25 @@ import {
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import { CreateUserDto, CreateEntryDto, PatchUserDto } from "ente-types";
+import * as _ from "lodash";
+
+const createMetaAction = <Meta, Payload = any>(type: string) =>
+  createAction<Payload, Meta>(
+    type,
+    null,
+    (...args: any[]) => args[1] || args[0]
+  );
 
 export const createEntryRequest = createAction<CreateEntryDto>(
   CREATE_ENTRY_REQUEST
 );
-export const createEntrySuccess = createAction(CREATE_ENTRY_SUCCESS);
-export const createEntryError = createAction<Error>(CREATE_ENTRY_ERROR);
+export const createEntrySuccess = createMetaAction<
+  Action<CreateEntryDto>,
+  void
+>(CREATE_ENTRY_SUCCESS);
+export const createEntryError = createMetaAction<Action<CreateEntryDto>, Error>(
+  CREATE_ENTRY_ERROR
+);
 
 export const createUsersRequest = createAction<
   CreateUserDto[],
@@ -87,24 +100,38 @@ export const createUsersRequest = createAction<
   }
   return [input];
 });
-export const createUsersSuccess = createAction(CREATE_USERS_SUCCESS);
-export const createUsersError = createAction<Error>(CREATE_USERS_ERROR);
+export const createUsersSuccess = createMetaAction<
+  Action<CreateUserDto[]>,
+  void
+>(CREATE_USERS_SUCCESS);
+export const createUsersError = createMetaAction<
+  Action<CreateUserDto[]>,
+  Error
+>(CREATE_USERS_ERROR);
 
 export const signEntryRequest = createAction<string>(SIGN_ENTRY_REQUEST);
-export const signEntrySuccess = createAction(SIGN_ENTRY_SUCCESS);
-export const signEntryError = createAction<Error>(SIGN_ENTRY_ERROR);
+export const signEntrySuccess = createMetaAction<Action<string>, void>(
+  SIGN_ENTRY_SUCCESS
+);
+export const signEntryError = createMetaAction<Action<string>, Error>(
+  SIGN_ENTRY_ERROR
+);
 
 export const unsignEntryRequest = createAction<string>(UNSIGN_ENTRY_REQUEST);
-export const unsignEntrySuccess = createAction(UNSIGN_ENTRY_SUCCESS);
-export const unsignEntryError = createAction<Error>(UNSIGN_ENTRY_ERROR);
+export const unsignEntrySuccess = createMetaAction<Action<string>, Error>(
+  UNSIGN_ENTRY_SUCCESS
+);
+export const unsignEntryError = createMetaAction<Action<string>, Error>(
+  UNSIGN_ENTRY_ERROR
+);
 
 export const downloadExcelExportRequest = createAction(
   DOWNLOAD_EXCEL_EXPORT_REQUEST
 );
-export const downloadExcelExportSuccess = createAction(
+export const downloadExcelExportSuccess = createMetaAction<Action<void>, void>(
   DOWNLOAD_EXCEL_EXPORT_SUCCESS
 );
-export const downloadExcelExportError = createAction<Error>(
+export const downloadExcelExportError = createMetaAction<Action<void>, Error>(
   DOWNLOAD_EXCEL_EXPORT_ERROR
 );
 
@@ -115,66 +142,119 @@ export type PatchForSchoolPayload = {
 export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
   PATCH_FORSCHOOL_REQUEST
 );
-export const patchForSchoolSuccess = createAction(PATCH_FORSCHOOL_SUCCESS);
-export const patchForSchoolError = createAction<Error>(PATCH_FORSCHOOL_ERROR);
+export const patchForSchoolSuccess = createMetaAction<
+  Action<PatchForSchoolPayload>,
+  void
+>(PATCH_FORSCHOOL_SUCCESS);
+export const patchForSchoolError = createMetaAction<
+  Action<PatchForSchoolPayload>,
+  Error
+>(PATCH_FORSCHOOL_ERROR);
 
 export const updateUserRequest = createAction<[string, PatchUserDto]>(
   UPDATE_USER_REQUEST
 );
-export const updateUserSuccess = createAction(UPDATE_USER_SUCCESS);
-export const updateUserError = createAction<Error>(UPDATE_USER_ERROR);
+export const updateUserSuccess = createMetaAction<
+  Action<[string, PatchUserDto]>,
+  void
+>(UPDATE_USER_SUCCESS);
+export const updateUserError = createMetaAction<
+  Action<[string, PatchUserDto]>,
+  Error
+>(UPDATE_USER_ERROR);
 
 export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
-export const getEntriesSuccess = createAction(GET_ENTRIES_SUCCESS);
-export const getEntriesError = createAction<Error>(GET_ENTRIES_ERROR);
+export const getEntriesSuccess = createMetaAction<Action<void>, void>(
+  GET_ENTRIES_SUCCESS
+);
+export const getEntriesError = createMetaAction<Action<void>, Error>(
+  GET_ENTRIES_ERROR
+);
 
 export const getEntryRequest = createAction<string>(GET_ENTRY_REQUEST);
-export const getEntrySuccess = createAction(GET_ENTRY_SUCCESS);
-export const getEntryError = createAction<Error>(GET_ENTRY_ERROR);
+export const getEntrySuccess = createMetaAction<Action<string>, void>(
+  GET_ENTRY_SUCCESS
+);
+export const getEntryError = createMetaAction<Action<string>, Error>(
+  GET_ENTRY_ERROR
+);
 
 export const getUserRequest = createAction<string>(GET_USER_REQUEST);
-export const getUserSuccess = createAction(GET_USER_SUCCESS);
-export const getUserError = createAction<Error>(GET_USER_ERROR);
+export const getUserSuccess = createMetaAction<Action<string>, void>(
+  GET_USER_SUCCESS
+);
+export const getUserError = createMetaAction<Action<string>, Error>(
+  GET_USER_ERROR
+);
 
 export const getUsersRequest = createAction(GET_USERS_REQUEST);
-export const getUsersSuccess = createAction(GET_USERS_SUCCESS);
-export const getUsersError = createAction<Error>(GET_USERS_ERROR);
+export const getUsersSuccess = createMetaAction<Action<void>, void>(
+  GET_USERS_SUCCESS
+);
+export const getUsersError = createMetaAction<Action<void>, Error>(
+  GET_USERS_ERROR
+);
 
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
-export const getSlotsSuccess = createAction(GET_SLOTS_SUCCESS);
-export const getSlotsError = createAction<Error>(GET_SLOTS_ERROR);
+export const getSlotsSuccess = createMetaAction<Action<void>, void>(
+  GET_SLOTS_SUCCESS
+);
+export const getSlotsError = createMetaAction<Action<void>, Error>(
+  GET_SLOTS_ERROR
+);
 
 export const getNeededUsersRequest = createAction(GET_NEEDED_USERS_REQUEST);
-export const getNeededUsersSuccess = createAction(GET_NEEDED_USERS_SUCCESS);
-export const getNeededUsersError = createAction<Error>(GET_NEEDED_USERS_ERROR);
+export const getNeededUsersSuccess = createMetaAction<Action<void>, void>(
+  GET_NEEDED_USERS_SUCCESS
+);
+export const getNeededUsersError = createMetaAction<Action<void>, Error>(
+  GET_NEEDED_USERS_ERROR
+);
 
 export const deleteUserRequest = createAction<string>(DELETE_USER_REQUEST);
-export const deleteUserSuccess = createAction<string>(DELETE_USER_SUCCESS);
-export const deleteUserError = createAction<Error>(DELETE_USER_ERROR);
+export const deleteUserSuccess = createMetaAction<Action<string>, string>(
+  DELETE_USER_SUCCESS
+);
+export const deleteUserError = createMetaAction<Action<string>, Error>(
+  DELETE_USER_ERROR
+);
 
 export const deleteEntryRequest = createAction<string>(DELETE_ENTRY_REQUEST);
-export const deleteEntrySuccess = createAction<string>(DELETE_ENTRY_SUCCESS);
-export const deleteEntryError = createAction<Error>(DELETE_ENTRY_ERROR);
+export const deleteEntrySuccess = createMetaAction<Action<string>, string>(
+  DELETE_ENTRY_SUCCESS
+);
+export const deleteEntryError = createMetaAction<Action<string>, Error>(
+  DELETE_ENTRY_ERROR
+);
 
 export const getTokenRequest = createAction<BasicCredentials>(
   GET_TOKEN_REQUEST
 );
-export const getTokenSuccess = createAction<AuthState>(GET_TOKEN_SUCCESS);
-export const getTokenError = createAction<Error>(GET_TOKEN_ERROR);
+export const getTokenSuccess = createMetaAction<
+  Action<BasicCredentials>,
+  AuthState
+>(GET_TOKEN_SUCCESS);
+export const getTokenError = createMetaAction<Action<BasicCredentials>, Error>(
+  GET_TOKEN_ERROR
+);
 
 export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);
-export const refreshTokenSuccess = createAction<AuthState>(
+export const refreshTokenSuccess = createMetaAction<Action<void>, AuthState>(
   REFRESH_TOKEN_SUCCESS
 );
-export const refreshTokenError = createAction<Error>(REFRESH_TOKEN_ERROR);
+export const refreshTokenError = createMetaAction<Action<void>, Error>(
+  REFRESH_TOKEN_ERROR
+);
 
 export const resetPasswordRequest = createAction<string>(
   RESET_PASSWORD_REQUEST
 );
-export const resetPasswordSuccess = createAction<string>(
+export const resetPasswordSuccess = createMetaAction<Action<string>, string>(
   RESET_PASSWORD_SUCCESS
 );
-export const resetPasswordError = createAction<Error>(RESET_PASSWORD_ERROR);
+export const resetPasswordError = createMetaAction<Action<string>, Error>(
+  RESET_PASSWORD_ERROR
+);
 
 export interface INewPassword {
   token: string;
@@ -184,8 +264,13 @@ export interface INewPassword {
 export const setPasswordRequest = createAction<INewPassword>(
   SET_PASSWORD_REQUEST
 );
-export const setPasswordSuccess = createAction<string>(SET_PASSWORD_SUCCESS);
-export const setPasswordError = createAction<Error>(SET_PASSWORD_ERROR);
+export const setPasswordSuccess = createMetaAction<
+  Action<INewPassword>,
+  string
+>(SET_PASSWORD_SUCCESS);
+export const setPasswordError = createMetaAction<Action<INewPassword>, Error>(
+  SET_PASSWORD_ERROR
+);
 
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 

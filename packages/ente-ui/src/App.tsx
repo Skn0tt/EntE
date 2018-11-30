@@ -21,7 +21,6 @@ import { Roles } from "ente-types";
 import { AppState, isAuthValid, getRole } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
-import { MessagesProvider } from "./context/Messages";
 
 const { ROTATION_PERIOD } = config.get();
 
@@ -38,7 +37,7 @@ type AppProps = AppStateProps;
 
 const App: React.SFC<AppProps> = props => (
   <BrowserRouter>
-    <MessagesProvider>
+    <>
       <MessageStream />
       <AuthService period={ROTATION_PERIOD} />
       <Switch>
@@ -50,7 +49,7 @@ const App: React.SFC<AppProps> = props => (
           </Drawer>
         </AuthenticatedRoute>
       </Switch>
-    </MessagesProvider>
+    </>
   </BrowserRouter>
 );
 

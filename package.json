@@ -10,7 +10,6 @@
   "private": true,
   "workspaces": [
     "packages/ente-api",
-    "packages/ente-db",
     "packages/ente-types",
     "packages/ente-ui"
   ],
