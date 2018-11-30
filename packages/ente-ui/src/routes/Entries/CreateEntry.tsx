@@ -57,6 +57,7 @@ const lang = createTranslation({
     titles: {
       slots: "Slots"
     },
+    child: "Child",
     ok: "OK",
     cancel: "Cancel",
     fromLabel: "From",
@@ -72,6 +73,7 @@ const lang = createTranslation({
     titles: {
       slots: "Stunden"
     },
+    child: "Kind",
     ok: "OK",
     cancel: "Zurück",
     fromLabel: "Von",
@@ -266,7 +268,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <TextField
                     fullWidth
                     select
-                    label="Kind"
+                    label={lang.child}
                     value={this.state.student}
                     onChange={this.handleChangeStudent}
                     helperText={lang.selectChild}
@@ -283,8 +285,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                 <Grid container direction="row" spacing={24}>
                   <Grid item xs={6}>
                     <DateInput
-                      label="Von"
-                      isValid={() => this.dateValid()}
+                      label={lang.fromLabel}
+                      isValid={this.dateValid}
                       onChange={this.handleChangeDate}
                       minDate={this.minDate}
                       value={this.state.date}
@@ -293,8 +295,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   {this.state.isRange && (
                     <Grid item xs={6}>
                       <DateInput
-                        label="Bis"
-                        isValid={() => this.dateEndValid()}
+                        label={lang.toLabel}
+                        isValid={this.dateEndValid}
                         onChange={this.handleChangeDateEnd}
                         minDate={nextDay(this.state.date)}
                         value={this.state.dateEnd}
