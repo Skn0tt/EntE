@@ -78,7 +78,9 @@ import * as selectors from "./selectors";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import { CreateEntryDto, CreateUserDto, PatchUserDto, Roles } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
+import { Maybe } from "monet";
 import { addMessages } from "../context/Messages";
+
 const lang = createTranslation({
   en: {
     requestError: "Request failed.",
@@ -130,8 +132,8 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
 
 function* refreshTokenSaga(action: Action<void>) {
   try {
-    const token = yield select(selectors.getToken);
-    const authState: AuthState = yield call(api.refreshToken, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const authState: AuthState = yield call(api.refreshToken, token.some());
 
     yield put(refreshTokenSuccess(authState, action));
   } catch (error) {
@@ -143,8 +145,8 @@ function* refreshTokenSaga(action: Action<void>) {
 
 function* getNeededUsersSaga(action) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getNeededUsers, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getNeededUsers, token.some());
 
     yield put(getNeededUsersSuccess(action));
     yield dispatchUpdates(result);
@@ -155,8 +157,8 @@ function* getNeededUsersSaga(action) {
 
 function* downloadExcelExportSaga(action) {
   try {
-    const token = yield select(selectors.getToken);
-    yield call(api.downloadExcelExport, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.downloadExcelExport, token.some());
 
     yield put(downloadExcelExportSuccess(action));
   } catch (error) {
@@ -166,8 +168,8 @@ function* downloadExcelExportSaga(action) {
 
 function* getEntrySaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getEntry, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getEntry, action.payload!, token.some());
 
     yield put(getEntrySuccess(action));
     yield dispatchUpdates(result);
@@ -179,8 +181,8 @@ function* getEntrySaga(action: Action<string>) {
 
 function* deleteUserSaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    yield call(api.deleteUser, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.deleteUser, action.payload!, token.some());
 
     yield put(deleteUserSuccess(action.payload, action));
   } catch (error) {
@@ -191,8 +193,8 @@ function* deleteUserSaga(action: Action<string>) {
 
 function* deleteEntrySaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    yield call(api.deleteEntry, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.deleteEntry, action.payload!, token.some());
 
     yield put(deleteEntrySuccess(action.payload, action));
   } catch (error) {
@@ -203,8 +205,8 @@ function* deleteEntrySaga(action: Action<string>) {
 
 function* getEntriesSaga(action) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getEntries, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getEntries, token.some());
 
     yield put(getEntriesSuccess(action));
     yield dispatchUpdates(result);
@@ -216,8 +218,8 @@ function* getEntriesSaga(action) {
 
 function* getSlotsSaga(action) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getSlots, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getSlots, token.some());
 
     yield put(getSlotsSuccess(action));
     yield dispatchUpdates(result);
@@ -229,8 +231,8 @@ function* getSlotsSaga(action) {
 
 function* getUserSaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getUser, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getUser, action.payload!, token.some());
 
     yield put(getUserSuccess(action));
     yield dispatchUpdates(result);
@@ -242,8 +244,8 @@ function* getUserSaga(action: Action<string>) {
 
 function* getUsersSaga(action) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.getUsers, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.getUsers, token.some());
 
     yield put(getUsersSuccess(action));
     yield dispatchUpdates(result);
@@ -255,8 +257,8 @@ function* getUsersSaga(action) {
 
 function* createEntrySaga(action: Action<CreateEntryDto>) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.createEntry, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.createEntry, action.payload!, token.some());
 
     yield put(createEntrySuccess(action));
     yield dispatchUpdates(result);
@@ -267,12 +269,12 @@ function* createEntrySaga(action: Action<CreateEntryDto>) {
 
 function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
   try {
-    const token = yield select(selectors.getToken);
+    const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(
       api.patchForSchool,
       action.payload!.id,
       action.payload!.forSchool,
-      token
+      token.some()
     );
 
     yield put(patchForSchoolSuccess(action));
@@ -284,9 +286,9 @@ function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
 
 function* createUsersSaga(action: Action<CreateUserDto[]>) {
   try {
-    const token = yield select(selectors.getToken);
+    const token: Maybe<string> = yield select(selectors.getToken);
 
-    const result = yield call(api.createUsers, action.payload!, token);
+    const result = yield call(api.createUsers, action.payload!, token.some());
     yield dispatchUpdates(result);
     yield put(createUsersSuccess(action));
 
@@ -300,12 +302,12 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
 
 function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
   try {
-    const token = yield select(selectors.getToken);
+    const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(
       api.updateUser,
       action.payload[0],
       action.payload[1],
-      token
+      token.some()
     );
 
     yield put(updateUserSuccess(action));
@@ -317,8 +319,8 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
 
 function* signEntrySaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.signEntry, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.signEntry, action.payload!, token.some());
 
     yield put(signEntrySuccess(action));
     yield dispatchUpdates(result);
@@ -330,8 +332,8 @@ function* signEntrySaga(action: Action<string>) {
 
 function* unsignEntrySaga(action: Action<string>) {
   try {
-    const token = yield select(selectors.getToken);
-    const result = yield call(api.unsignEntry, action.payload!, token);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    const result = yield call(api.unsignEntry, action.payload!, token.some());
 
     yield put(unsignEntrySuccess(action));
     yield dispatchUpdates(result);

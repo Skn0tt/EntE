@@ -29,6 +29,7 @@ import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { createTranslation } from "../../helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -64,10 +65,10 @@ class EntriesTable extends Table<EntryN> {}
  */
 interface StateProps {
   entries: EntryN[];
-  canCreateEntries: boolean;
-  getUser(id: string): UserN;
+  canCreateEntries: Maybe<boolean>;
+  getUser(id: string): Maybe<UserN>;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
   getUser: (id: string) => getUser(id)(state)
@@ -131,7 +132,9 @@ export class Entries extends React.Component<Props, State> {
           ]}
           items={entries}
           extract={entry => [
-            getUser(entry.get("studentId")).get("displayname"),
+            getUser(entry.get("studentId"))
+              .some()
+              .get("displayname"),
             entry.get("date").toLocaleDateString(),
             entry.get("createdAt").toLocaleString(),
             entry.get("forSchool") ? lang.yes : lang.no,
@@ -143,7 +146,7 @@ export class Entries extends React.Component<Props, State> {
         />
 
         {/* FAB */}
-        {canCreateEntries && (
+        {canCreateEntries.some() && (
           <Button
             color="primary"
             variant="fab"

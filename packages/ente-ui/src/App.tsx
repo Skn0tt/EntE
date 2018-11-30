@@ -21,12 +21,13 @@ import { Roles } from "ente-types";
 import { AppState, isAuthValid, getRole } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
+import { Maybe } from "monet";
 
 const { ROTATION_PERIOD } = config.get();
 
 interface AppStateProps {
   authValid: boolean;
-  role: Roles;
+  role: Maybe<Roles>;
 }
 const mapStateToProps = (state: AppState) => ({
   authValid: isAuthValid(state),
@@ -45,7 +46,7 @@ const App: React.SFC<AppProps> = props => (
         <Route path="/login" component={Login} />
         <AuthenticatedRoute isLoggedIn={props.authValid}>
           <Drawer>
-            <Routes role={props.role} />
+            <Routes role={props.role.orSome(Roles.STUDENT)} />
           </Drawer>
         </AuthenticatedRoute>
       </Switch>
