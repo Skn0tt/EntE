@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Import window now accepts all mime types and instead filters by file ending (must end on ".csv")
+
 ## [v0.8.10] - 2018-11-26
 
 * Fixed: JWT decoding now works on non-ascii chars, so users like tom.schoß work as well

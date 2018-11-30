@@ -34,7 +34,6 @@ ShallowWrapper {
             xs={12}
           >
             <UNDEFINED
-              accept="text/csv"
               className="dropzone"
               onDrop={[Function]}
             >
@@ -85,7 +84,6 @@ ShallowWrapper {
               xs={12}
             >
               <UNDEFINED
-                accept="text/csv"
                 className="dropzone"
                 onDrop={[Function]}
               >
@@ -112,7 +110,6 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <UNDEFINED
-                accept="text/csv"
                 className="dropzone"
                 onDrop={[Function]}
               >
@@ -127,7 +124,6 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "function",
               "props": Object {
-                "accept": "text/csv",
                 "children": "Drop a .csv file here.",
                 "className": "dropzone",
                 "onDrop": [Function],
@@ -242,7 +238,6 @@ ShallowWrapper {
               xs={12}
             >
               <UNDEFINED
-                accept="text/csv"
                 className="dropzone"
                 onDrop={[Function]}
               >
@@ -293,7 +288,6 @@ ShallowWrapper {
                 xs={12}
               >
                 <UNDEFINED
-                  accept="text/csv"
                   className="dropzone"
                   onDrop={[Function]}
                 >
@@ -320,7 +314,6 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <UNDEFINED
-                  accept="text/csv"
                   className="dropzone"
                   onDrop={[Function]}
                 >
@@ -335,7 +328,6 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "function",
                 "props": Object {
-                  "accept": "text/csv",
                   "children": "Drop a .csv file here.",
                   "className": "dropzone",
                   "onDrop": [Function],
