@@ -24,7 +24,7 @@ import {
 import { Action } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { RouteComponentProps, withRouter } from "react-router";
-import Button from "@material-ui/core/Button/Button";
+import Fab from "@material-ui/core/Fab";
 import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
@@ -147,14 +147,13 @@ export class Entries extends React.Component<Props, State> {
 
         {/* FAB */}
         {canCreateEntries.some() && (
-          <Button
+          <Fab
             color="primary"
-            variant="fab"
             onClick={this.showCreateEntry}
             className={classes.fab}
           >
             <AddIcon />
-          </Button>
+          </Fab>
         )}
       </React.Fragment>
     );
