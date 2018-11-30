@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.8.11] - 2018-11-30
+
 * Fixed: password in user creation is now optional
 * Fixed: translation of filter values in table
 * Changed: API now takes entry date for slots as well, if it is a single-day entry
