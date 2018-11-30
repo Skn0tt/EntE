@@ -63,6 +63,8 @@ export class EntryRepo {
         relations: ["children"]
       });
 
+      const isMultiDayEntry = !!dto.dateEnd;
+
       const newEntry = await manager.create(Entry, {
         student,
         signedParent: config.signedByParent,
@@ -75,7 +77,7 @@ export class EntryRepo {
               relations: ["children"]
             });
             return await manager.create(Slot, {
-              date: new Date(s.date),
+              date: isMultiDayEntry ? new Date(s.date) : dto.date,
               hour_from: s.from,
               hour_to: s.to,
               teacher
