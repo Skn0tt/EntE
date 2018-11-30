@@ -25,7 +25,7 @@ export class SearchableDropdown<T> extends React.PureComponent<
 
   handleStateChange = changes => {
     const { items, includeItem } = this.props;
-    if (typeof changes.inputValue === "string") {
+    if (changes.type === "__autocomplete_change_input__") {
       const filteredItems = items.filter(i =>
         includeItem(i, changes.inputValue)
       );
