@@ -1,9 +1,10 @@
 import * as React from "react";
 import MuiDownshift from "mui-downshift";
+import { Maybe } from "monet";
 
 interface SearchableDropdownProps<T> {
   items: ReadonlyArray<T>;
-  onChange: (v: T) => void;
+  onChange: (v: Maybe<T>) => void;
   itemToString: (v: T) => string;
   includeItem: (item: T, searchTerm: string) => boolean;
   label?: string;
@@ -44,7 +45,9 @@ export class SearchableDropdown<T> extends React.PureComponent<
     return (
       <MuiDownshift
         items={itemsToShow}
-        onChange={selection => !!selection && onChange(selection.value)}
+        onChange={selection =>
+          onChange(Maybe.fromNull(selection).map(s => s.value))
+        }
         onStateChange={this.handleStateChange}
         getInputProps={() => ({ label, helperText })}
       />

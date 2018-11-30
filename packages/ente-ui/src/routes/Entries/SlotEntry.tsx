@@ -15,6 +15,7 @@ import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { createTranslation } from "../../helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -99,8 +100,8 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
       to: event.target.value
     });
 
-  handleChangeTeacher = (teacher: UserN) =>
-    this.setState({ teacher: teacher.get("id") });
+  handleChangeTeacher = (teacher: Maybe<UserN>) =>
+    this.setState({ teacher: teacher.cata(() => undefined, t => t.get("id")) });
 
   /**
    * ## Form Validation Logic

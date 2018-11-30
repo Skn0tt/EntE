@@ -19,6 +19,7 @@ import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
 import { createTranslation } from "../helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -57,7 +58,7 @@ interface ChildrenInputOwnProps {
 type ChildrenInputProps = ChildrenInputOwnProps;
 
 interface State {
-  selected: UserN;
+  selected: UserN | null;
 }
 
 class SearchableDropdownUser extends SearchableDropdown<UserN> {}
@@ -83,10 +84,11 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
     }
   }
 
-  handleSelectChild = (u: UserN) =>
+  handleSelectChild = (u: Maybe<UserN>) =>
     this.setState({
-      selected: u
+      selected: u.orSome(null)
     });
+
   handleAdd = () =>
     this.props.onChange([
       ...(this.props.children as UserN[]),
