@@ -9,13 +9,14 @@
 import * as React from "react";
 import { shallow } from "enzyme";
 import { LoginStatus } from "./LoginStatus";
+import { Some } from "monet";
 
 describe("LoginStatus", () => {
   const logout = jest.fn();
   const displayname = "Greg";
 
   const comp = shallow(
-    <LoginStatus displayname={displayname} logout={logout} />
+    <LoginStatus displayname={Some(displayname)} logout={logout} />
   );
 
   it("renders correctly", () => {

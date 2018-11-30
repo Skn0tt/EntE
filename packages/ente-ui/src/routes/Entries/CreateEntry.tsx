@@ -47,6 +47,7 @@ import {
 import { CreateEntryDto, CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -97,10 +98,10 @@ interface CreateEntryOwnProps {
 }
 
 interface CreateEntryStateProps {
-  isParent: boolean;
-  children: UserN[];
+  isParent: Maybe<boolean>;
+  children: Maybe<UserN[]>;
   teachers: UserN[];
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateEntryStateProps,
@@ -141,7 +142,7 @@ interface State {
 class CreateEntry extends React.Component<CreateEntryProps, State> {
   state: State = {
     student:
-      this.props.children.length > 0
+      this.props.children.some().length > 0
         ? this.props.children[0].get("id")
         : undefined,
     isRange: false,
@@ -225,14 +226,11 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   minDate: Date = twoWeeksBefore(new Date());
 
   render() {
-    const { isParent } = this.props;
+    const { isParent, fullScreen, onClose, show, children } = this.props;
+    const { isRange, student, forSchool, date, dateEnd, slots } = this.state;
 
     return (
-      <Dialog
-        fullScreen={this.props.fullScreen}
-        onClose={this.props.onClose}
-        open={this.props.show}
-      >
+      <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
         <DialogTitle>Neuer Eintrag</DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={40}>
@@ -242,7 +240,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={this.state.isRange}
+                        checked={isRange}
                         onChange={this.handleChangeIsRange}
                       />
                     }
@@ -253,7 +251,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={this.state.forSchool}
+                        checked={forSchool}
                         onChange={this.handleChangeForSchool}
                       />
                     }
@@ -261,17 +259,17 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   />
                 </Grid>
               </Grid>
-              {isParent && (
+              {isParent.some() && (
                 <Grid item>
                   <TextField
                     fullWidth
                     select
                     label="Kind"
-                    value={this.state.student}
+                    value={student}
                     onChange={this.handleChangeStudent}
                     helperText={lang.selectChild}
                   >
-                    {this.props.children.map(child => (
+                    {children.some().map(child => (
                       <MenuItem key={child.get("id")} value={child.get("id")}>
                         {child.get("displayname")}
                       </MenuItem>
@@ -287,17 +285,17 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                       isValid={() => this.dateValid()}
                       onChange={this.handleChangeDate}
                       minDate={this.minDate}
-                      value={this.state.date}
+                      value={date}
                     />
                   </Grid>
-                  {this.state.isRange && (
+                  {isRange && (
                     <Grid item xs={6}>
                       <DateInput
                         label="Bis"
                         isValid={() => this.dateEndValid()}
                         onChange={this.handleChangeDateEnd}
-                        minDate={nextDay(this.state.date)}
-                        value={this.state.dateEnd}
+                        minDate={nextDay(date)}
+                        value={dateEnd}
                         minDateMessage={lang.dateMustBeBiggerThanFrom}
                       />
                     </Grid>
@@ -309,7 +307,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               <Typography variant="h6">{lang.titles.slots}</Typography>
               <Typography variant="caption">{lang.addSlotsCaption}</Typography>
               <MUIList>
-                {this.state.slots.map((slot, index) => (
+                {slots.map((slot, index) => (
                   <SlotListItem
                     key={index}
                     slot={slot}
@@ -319,24 +317,24 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               </MUIList>
               <SlotEntry
                 onAdd={slot => this.handleAddSlot(slot)}
-                multiDay={this.state.isRange}
+                multiDay={isRange}
                 datePickerConfig={{
-                  min: this.state.date,
-                  max: this.state.dateEnd
+                  min: date,
+                  max: dateEnd
                 }}
-                date={this.state.date}
+                date={date}
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose} color="secondary">
+          <Button onClick={onClose} color="secondary">
             {lang.cancel}
           </Button>
           <Button
             onClick={() => {
               this.handleSubmit();
-              this.props.onClose();
+              onClose();
             }}
             disabled={!this.inputValid()}
             color="primary"
