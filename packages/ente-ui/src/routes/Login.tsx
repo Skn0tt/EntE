@@ -26,7 +26,9 @@ import {
   isAuthValid,
   getTokenRequest,
   resetPasswordRequest,
-  BasicCredentials
+  BasicCredentials,
+  GET_TOKEN_REQUEST,
+  isTypePending
 } from "../redux";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
 import { createTranslation } from "../helpers/createTranslation";
@@ -61,9 +63,11 @@ interface InjectedProps {
 
 interface StateProps {
   authValid: boolean;
+  loginPending: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
-  authValid: isAuthValid(state)
+  authValid: isAuthValid(state),
+  loginPending: isTypePending(state)(GET_TOKEN_REQUEST)
 });
 
 interface DispatchProps {
@@ -118,7 +122,7 @@ class Login extends React.Component<Props, State> {
     });
 
   render() {
-    const { authValid, location, fullScreen } = this.props;
+    const { authValid, location, fullScreen, loginPending } = this.props;
     const { from } = location.state || {
       from: { pathname: "/" }
     };
@@ -163,7 +167,11 @@ class Login extends React.Component<Props, State> {
           <Button onClick={this.handleResetPassword}>
             {lang.resetPassword}
           </Button>
-          <Button color="primary" onClick={this.handleSignIn}>
+          <Button
+            color="primary"
+            onClick={this.handleSignIn}
+            disabled={loginPending}
+          >
             {lang.submit}
           </Button>
         </DialogActions>
