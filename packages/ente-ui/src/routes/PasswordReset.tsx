@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { Dispatch, Action } from "redux";
-import { connect } from "react-redux";
+import { connect, MapStateToPropsParam } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import {
   Dialog,
@@ -23,7 +23,12 @@ import {
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
-import { setPasswordRequest } from "../redux";
+import {
+  setPasswordRequest,
+  AppState,
+  isTypePending,
+  SET_PASSWORD_REQUEST
+} from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { isValidPassword } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
@@ -46,6 +51,18 @@ const lang = createTranslation({
   }
 });
 
+interface PasswordResetStateProps {
+  resetIsPending: boolean;
+}
+
+const mapStateToProps: MapStateToPropsParam<
+  PasswordResetStateProps,
+  {},
+  AppState
+> = state => ({
+  resetIsPending: isTypePending(state)(SET_PASSWORD_REQUEST)
+});
+
 interface PasswordResetRouteProps {
   token: string;
 }
@@ -59,6 +76,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 });
 
 type PasswordResetProps = PasswordResetDispatchProps &
+  PasswordResetStateProps &
   RouteComponentProps<PasswordResetRouteProps> &
   InjectedProps;
 
@@ -86,9 +104,10 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
   };
 
   render() {
+    const { fullScreen, resetIsPending } = this.props;
     return (
       <div>
-        <Dialog fullScreen={this.props.fullScreen} open>
+        <Dialog fullScreen={fullScreen} open>
           <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
             <Grid container direction="column">
@@ -120,8 +139,8 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
           <DialogActions>
             <Button
               variant="raised"
-              disabled={!this.inputValid()}
-              onClick={() => this.handleSetPassword()}
+              disabled={resetIsPending || !this.inputValid()}
+              onClick={this.handleSetPassword}
             >
               {lang.submit}
             </Button>
@@ -132,6 +151,6 @@ class PasswordReset extends React.Component<PasswordResetProps, State> {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   withMobileDialog<PasswordResetProps>()(withErrorBoundary()(PasswordReset))
 );
