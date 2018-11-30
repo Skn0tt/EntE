@@ -26,8 +26,6 @@ type Selector<T> = (state: AppState) => T;
  * State
  */
 export const isLoading: Selector<boolean> = state => state.get("loading") > 0;
-export const getMessages: Selector<String[]> = state =>
-  state.get("messages").toArray();
 
 /**
  * Auth

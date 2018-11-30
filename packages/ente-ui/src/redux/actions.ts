@@ -38,11 +38,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
-  REMOVE_MESSAGE,
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_SUCCESS,
   SET_PASSWORD_ERROR,
-  ADD_MESSAGE,
   GET_TOKEN_REQUEST,
   GET_TOKEN_SUCCESS,
   GET_TOKEN_ERROR,
@@ -169,9 +167,6 @@ export const refreshTokenSuccess = createAction<AuthState>(
   REFRESH_TOKEN_SUCCESS
 );
 export const refreshTokenError = createAction<Error>(REFRESH_TOKEN_ERROR);
-
-export const removeMessage = createAction<number>(REMOVE_MESSAGE);
-export const addMessage = createAction<string>(ADD_MESSAGE);
 
 export const resetPasswordRequest = createAction<string>(
   RESET_PASSWORD_REQUEST

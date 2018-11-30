@@ -27,7 +27,6 @@ import {
   signEntrySuccess,
   resetPasswordError,
   resetPasswordSuccess,
-  addMessage,
   getTokenSuccess,
   refreshTokenSuccess,
   getTokenError,
@@ -77,6 +76,7 @@ import * as selectors from "./selectors";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import { CreateEntryDto, CreateUserDto, PatchUserDto, Roles } from "ente-types";
 import { createTranslation } from "../helpers/createTranslation";
+import { addMessages } from "../context/Messages";
 const lang = createTranslation({
   en: {
     requestError: "Request failed.",
@@ -118,7 +118,7 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
       yield put(getNeededUsersRequest());
     }
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getTokenError(error));
     yield put(logout());
   }
@@ -131,7 +131,7 @@ function* refreshTokenSaga(action: Action<void>) {
 
     yield put(refreshTokenSuccess(authState));
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(refreshTokenError(error));
     yield put(logout());
   }
@@ -168,7 +168,7 @@ function* getEntrySaga(action: Action<string>) {
     yield put(getEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getEntryError(error));
   }
 }
@@ -180,7 +180,7 @@ function* deleteUserSaga(action: Action<string>) {
 
     yield put(deleteUserSuccess(action.payload));
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(deleteUserError(error));
   }
 }
@@ -192,7 +192,7 @@ function* deleteEntrySaga(action: Action<string>) {
 
     yield put(deleteEntrySuccess(action.payload));
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(deleteEntryError(error));
   }
 }
@@ -205,7 +205,7 @@ function* getEntriesSaga() {
     yield put(getEntriesSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getEntriesError(error));
   }
 }
@@ -218,7 +218,7 @@ function* getSlotsSaga() {
     yield put(getSlotsSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getSlotsError(error));
   }
 }
@@ -231,7 +231,7 @@ function* getUserSaga(action: Action<string>) {
     yield put(getUserSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getUserError(error));
   }
 }
@@ -244,7 +244,7 @@ function* getUsersSaga() {
     yield put(getUsersSuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(getUsersError(error));
   }
 }
@@ -289,7 +289,7 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
     return;
   } catch (error) {
     const ex: Error = error;
-    yield put(addMessage(ex.message));
+    addMessages(ex.message);
     yield put(createUsersError(ex));
   }
 }
@@ -319,7 +319,7 @@ function* signEntrySaga(action: Action<string>) {
     yield put(signEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.signingError));
+    addMessages(lang.signingError);
     yield put(signEntryError(error));
   }
 }
@@ -332,7 +332,7 @@ function* unsignEntrySaga(action: Action<string>) {
     yield put(unsignEntrySuccess());
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(addMessage(lang.signingError));
+    addMessages(lang.signingError);
     yield put(unsignEntryError(error));
   }
 }
@@ -341,10 +341,10 @@ function* resetPasswordSaga(action: Action<string>) {
   try {
     const result = yield call(api.resetPassword, action.payload!);
 
-    yield put(addMessage(lang.resetPassword.success));
+    addMessages(lang.resetPassword.success);
     yield put(resetPasswordSuccess(result));
   } catch (error) {
-    yield put(addMessage(lang.requestError));
+    addMessages(lang.requestError);
     yield put(resetPasswordError(error));
   }
 }
@@ -357,10 +357,10 @@ function* setPasswordSaga(action: Action<INewPassword>) {
       action.payload!.newPassword
     );
 
-    yield put(addMessage(lang.setPassword.success));
+    addMessages(lang.setPassword.success);
     yield put(resetPasswordSuccess(result));
   } catch (error) {
-    yield put(addMessage(lang.setPassword.error));
+    addMessages(lang.setPassword.error);
     yield put(resetPasswordError(error));
   }
 }

@@ -28,11 +28,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_SUCCESS,
-  REMOVE_MESSAGE,
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_ERROR,
   SET_PASSWORD_SUCCESS,
-  ADD_MESSAGE,
   GET_TOKEN_REQUEST,
   GET_TOKEN_ERROR,
   GET_TOKEN_SUCCESS,
@@ -157,7 +155,6 @@ const reducer = handleActions(
     // ## LOGOUT
     [LOGOUT]: (state: AppState): AppState =>
       new AppState({
-        messages: state.get("messages"),
         loading: state.get("loading")
       }),
 
@@ -320,18 +317,7 @@ const reducer = handleActions(
       UPDATE_USER_REQUEST,
       UPDATE_USER_SUCCESS,
       UPDATE_USER_ERROR
-    ),
-
-    /**
-     * # UI
-     */
-    // ## ADD_MESSAGE
-    [ADD_MESSAGE]: (state: AppState, action: Action<string>): AppState =>
-      state.update("messages", messages => messages.push(action.payload)),
-
-    // ## REMOVE_MESSAGE
-    [REMOVE_MESSAGE]: (state: AppState, action: Action<number>) =>
-      state.update("messages", messages => messages.remove(action.payload!))
+    )
   } as ReducerMap<AppState, ActionType>,
   initialState
 ); // tslint:disable-line:align

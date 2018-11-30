@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { Map, List, Record } from "immutable";
+import { Map, Record } from "immutable";
 import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
 import { Maybe, None } from "monet";
 
@@ -128,11 +128,6 @@ export const AuthState = Record<IAuthState>(
 );
 
 /**
- * Messages
- */
-type MessagesState = List<string>;
-
-/**
  * AppState
  */
 export interface IAppState {
@@ -140,7 +135,6 @@ export interface IAppState {
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
   auth: Maybe<AuthState>;
-  messages: MessagesState;
   loading: number;
 }
 
@@ -151,7 +145,6 @@ export const AppState = Record<IAppState>(
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
     auth: None(),
-    messages: List<string>(),
     loading: 0
   },
   "AppState"
