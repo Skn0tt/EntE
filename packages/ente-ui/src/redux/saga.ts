@@ -81,6 +81,7 @@ const lang = createTranslation({
   en: {
     requestError: "Request failed.",
     signingError: "Signing failed.",
+    invalidCredentials: "Wrong credentials.",
     resetPassword: {
       success: "You will receive an email shortly."
     },
@@ -92,6 +93,7 @@ const lang = createTranslation({
   de: {
     requestError: "Anfrage fehlgeschlagen.",
     signingError: "Unterschrift fehlgeschlagen.",
+    invalidCredentials: "Anmeldedaten sind ungültig.",
     resetPassword: {
       success: "Sie erhalten in kürze eine Email."
     },
@@ -118,7 +120,7 @@ function* getTokenSaga(action: Action<BasicCredentials>) {
       yield put(getNeededUsersRequest());
     }
   } catch (error) {
-    addMessages(lang.requestError);
+    addMessages(lang.invalidCredentials);
     yield put(getTokenError(error, action));
     yield put(logout());
   }
