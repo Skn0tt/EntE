@@ -44,7 +44,7 @@ export const createDefaultCreateUserDto = (): CreateUserDto => {
   const result = new CreateUserDto();
 
   result.username = "";
-  result.password = "";
+  result.password = undefined;
   result.displayname = "";
   result.email = "";
   result.role = Roles.STUDENT;

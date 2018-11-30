@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: password in user creation is now optional
 * Changed: Redux selectors now return maybe types in some cases
 
 * Fixed: Import window now accepts all mime types and instead filters by file ending (must end on ".csv")

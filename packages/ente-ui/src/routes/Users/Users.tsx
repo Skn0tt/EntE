@@ -18,7 +18,7 @@ import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
 import { withRouter, RouteComponentProps } from "react-router";
 import Table from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
 
 const lang = createTranslation({
   en: {
