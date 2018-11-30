@@ -25,97 +25,35 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "children": Array [
-        <WithStyles(Snackbar)
-          action={
-            <WithStyles(IconButton)
-              className="remove0"
-              color="inherit"
-              onClick={[Function]}
-            >
-              <pure(CloseIcon) />
-            </WithStyles(IconButton)>
-          }
-          autoHideDuration={6000}
-          message={
-            <span>
-              Hallo
-            </span>
-          }
-          onClose={[Function]}
-          open={true}
-        />,
-        <WithStyles(Snackbar)
-          action={
-            <WithStyles(IconButton)
-              className="remove1"
-              color="inherit"
-              onClick={[Function]}
-            >
-              <pure(CloseIcon) />
-            </WithStyles(IconButton)>
-          }
-          autoHideDuration={6000}
-          message={
-            <span>
-              Nachricht
-            </span>
-          }
-          onClose={[Function]}
-          open={true}
-        />,
-      ],
+      "children": [Function],
     },
     "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": "0",
-        "nodeType": "class",
-        "props": Object {
-          "action": <WithStyles(IconButton)
-            className="remove0"
-            color="inherit"
-            onClick={[Function]}
-          >
-            <pure(CloseIcon) />
-          </WithStyles(IconButton)>,
-          "autoHideDuration": 6000,
-          "message": <span>
-            Hallo
-          </span>,
-          "onClose": [Function],
-          "open": true,
+    "rendered": [Function],
+    "type": Object {
+      "$$typeof": Symbol(react.context),
+      "_calculateChangedBits": null,
+      "_context": Object {
+        "$$typeof": Symbol(react.context),
+        "Consumer": [Circular],
+        "Provider": Object {
+          "$$typeof": Symbol(react.provider),
+          "_context": [Circular],
         },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": "1",
-        "nodeType": "class",
-        "props": Object {
-          "action": <WithStyles(IconButton)
-            className="remove1"
-            color="inherit"
-            onClick={[Function]}
-          >
-            <pure(CloseIcon) />
-          </WithStyles(IconButton)>,
-          "autoHideDuration": 6000,
-          "message": <span>
-            Nachricht
-          </span>,
-          "onClose": [Function],
-          "open": true,
+        "_calculateChangedBits": null,
+        "_currentRenderer": null,
+        "_currentRenderer2": null,
+        "_currentValue": Object {
+          "addMessages": [Function],
+          "messages": Array [],
+          "removeMessage": [Function],
         },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
+        "_currentValue2": Object {
+          "addMessages": [Function],
+          "messages": Array [],
+          "removeMessage": [Function],
+        },
       },
-    ],
-    "type": Symbol(react.fragment),
+    },
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
@@ -123,97 +61,35 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "children": Array [
-          <WithStyles(Snackbar)
-            action={
-              <WithStyles(IconButton)
-                className="remove0"
-                color="inherit"
-                onClick={[Function]}
-              >
-                <pure(CloseIcon) />
-              </WithStyles(IconButton)>
-            }
-            autoHideDuration={6000}
-            message={
-              <span>
-                Hallo
-              </span>
-            }
-            onClose={[Function]}
-            open={true}
-          />,
-          <WithStyles(Snackbar)
-            action={
-              <WithStyles(IconButton)
-                className="remove1"
-                color="inherit"
-                onClick={[Function]}
-              >
-                <pure(CloseIcon) />
-              </WithStyles(IconButton)>
-            }
-            autoHideDuration={6000}
-            message={
-              <span>
-                Nachricht
-              </span>
-            }
-            onClose={[Function]}
-            open={true}
-          />,
-        ],
+        "children": [Function],
       },
       "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": "0",
-          "nodeType": "class",
-          "props": Object {
-            "action": <WithStyles(IconButton)
-              className="remove0"
-              color="inherit"
-              onClick={[Function]}
-            >
-              <pure(CloseIcon) />
-            </WithStyles(IconButton)>,
-            "autoHideDuration": 6000,
-            "message": <span>
-              Hallo
-            </span>,
-            "onClose": [Function],
-            "open": true,
+      "rendered": [Function],
+      "type": Object {
+        "$$typeof": Symbol(react.context),
+        "_calculateChangedBits": null,
+        "_context": Object {
+          "$$typeof": Symbol(react.context),
+          "Consumer": [Circular],
+          "Provider": Object {
+            "$$typeof": Symbol(react.provider),
+            "_context": [Circular],
           },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": "1",
-          "nodeType": "class",
-          "props": Object {
-            "action": <WithStyles(IconButton)
-              className="remove1"
-              color="inherit"
-              onClick={[Function]}
-            >
-              <pure(CloseIcon) />
-            </WithStyles(IconButton)>,
-            "autoHideDuration": 6000,
-            "message": <span>
-              Nachricht
-            </span>,
-            "onClose": [Function],
-            "open": true,
+          "_calculateChangedBits": null,
+          "_currentRenderer": null,
+          "_currentRenderer2": null,
+          "_currentValue": Object {
+            "addMessages": [Function],
+            "messages": Array [],
+            "removeMessage": [Function],
           },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
+          "_currentValue2": Object {
+            "addMessages": [Function],
+            "messages": Array [],
+            "removeMessage": [Function],
+          },
         },
-      ],
-      "type": Symbol(react.fragment),
+      },
     },
   ],
   Symbol(enzyme.__options__): Object {
