@@ -128,8 +128,21 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     return !!teacher;
   };
 
+  dateValid = (): boolean => {
+    const { date } = this.state;
+    const { datePickerConfig: { min, max }, multiDay } = this.props;
+    if (!multiDay) {
+      return true;
+    }
+
+    return min <= date && max >= date;
+  };
+
   slotInputValid = () =>
-    this.fromValid() && this.toValid() && this.teacherValid();
+    this.fromValid() &&
+    this.toValid() &&
+    this.teacherValid() &&
+    this.dateValid();
 
   handleAddSlot = () =>
     this.props.onAdd({
@@ -214,7 +227,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
             <Button
               variant="raised"
               disabled={!this.slotInputValid()}
-              onClick={() => this.handleAddSlot()}
+              onClick={this.handleAddSlot}
             >
               {lang.add}
             </Button>
