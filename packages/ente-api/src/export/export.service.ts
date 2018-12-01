@@ -3,7 +3,7 @@ import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
 import { Roles } from "ente-types";
-import { Fail, Validation, Success } from "monet";
+import { Fail, Validation, Success, None } from "monet";
 import { Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 
@@ -26,9 +26,18 @@ export class ExportService {
       return Fail(ExportExcelFailure.ForbiddenForRole);
     }
 
-    const users = await this.userRepo.findAll();
-    const entries = await this.entryRepo.findAll();
-    const slots = await this.slotRepo.findAll();
+    const users = await this.userRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
+    const entries = await this.entryRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
+    const slots = await this.slotRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
 
     const spreadsheet = await createSpreadsheet(
       {

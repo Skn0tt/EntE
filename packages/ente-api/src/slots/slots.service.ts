@@ -6,6 +6,7 @@ import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
+import { PaginationInformation } from "helpers/pagination-info";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -21,25 +22,38 @@ export class SlotsService {
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async findAll(requestingUser: RequestContextUser): Promise<SlotDto[]> {
+  async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ): Promise<SlotDto[]> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
-        return await this.slotRepo.findAll();
+        return await this.slotRepo.findAll(paginationInfo);
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        return await this.slotRepo.findByYearOfStudent(user.graduationYear!);
+        return await this.slotRepo.findByYearOfStudent(
+          user.graduationYear!,
+          paginationInfo
+        );
 
       case Roles.PARENT:
         return await this.slotRepo.findByStudents(
-          ...requestingUser.childrenIds
+          requestingUser.childrenIds,
+          paginationInfo
         );
 
       case Roles.TEACHER:
-        return await this.slotRepo.findHavingTeacher(requestingUser.id);
+        return await this.slotRepo.findHavingTeacher(
+          requestingUser.id,
+          paginationInfo
+        );
 
       case Roles.STUDENT:
-        return await this.slotRepo.findByStudents(requestingUser.id);
+        return await this.slotRepo.findByStudents(
+          [requestingUser.id],
+          paginationInfo
+        );
     }
   }
 
@@ -102,7 +116,7 @@ export class SlotsService {
           teacher.id,
           twoWeeksBeforeNow()
         );
-        this.emailService.dispatchWeeklySummary(teacher, slots);
+        await this.emailService.dispatchWeeklySummary(teacher, slots);
       })
     );
     this.logger.log("Weekly summary successfully dispatched.");

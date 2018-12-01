@@ -8,6 +8,10 @@ import Slot from "./slot.entity";
 import { UserRepo } from "./user.repo";
 import { SlotRepo } from "./slot.repo";
 import { EntryDto, CreateEntryDto } from "ente-types";
+import {
+  PaginationInformation,
+  withPagination
+} from "../helpers/pagination-info";
 
 @Injectable()
 export class EntryRepo {
@@ -24,15 +28,22 @@ export class EntryRepo {
       .leftJoinAndSelect("slot.entry", "slotEntry")
       .leftJoinAndSelect("slotEntry.student", "slotEntryStudent");
 
-  async findAll(): Promise<EntryDto[]> {
-    const entries = await this._studentsQuery().getMany();
+  async findAll(paginationInfo: PaginationInformation): Promise<EntryDto[]> {
+    const entries = await withPagination(paginationInfo)(
+      this._studentsQuery()
+    ).getMany();
     return entries.map(EntryRepo.toDto);
   }
 
-  async findByStudents(...studentIds: string[]): Promise<EntryDto[]> {
-    const entries = await this._studentsQuery()
-      .where("student._id IN (:studentIds)", { studentIds })
-      .getMany();
+  async findByStudents(
+    studentIds: string[],
+    paginationInfo: PaginationInformation
+  ): Promise<EntryDto[]> {
+    const entries = await withPagination(paginationInfo)(
+      this._studentsQuery().where("student._id IN (:studentIds)", {
+        studentIds
+      })
+    ).getMany();
 
     return entries.map(EntryRepo.toDto);
   }
@@ -44,10 +55,13 @@ export class EntryRepo {
     return !!entry ? Some(EntryRepo.toDto(entry)) : None();
   }
 
-  async findByYear(year: number): Promise<EntryDto[]> {
-    const entry = await this._studentsQuery()
-      .where("student.graduationYear = :year", { year })
-      .getMany();
+  async findByYear(
+    year: number,
+    paginationInfo: PaginationInformation
+  ): Promise<EntryDto[]> {
+    const entry = await withPagination(paginationInfo)(
+      this._studentsQuery().where("student.graduationYear = :year", { year })
+    ).getMany();
 
     return entry.map(EntryRepo.toDto);
   }

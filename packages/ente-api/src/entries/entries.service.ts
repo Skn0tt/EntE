@@ -8,6 +8,7 @@ import { Config } from "../helpers/config";
 import { validate } from "class-validator";
 import * as _ from "lodash";
 import { RequestContextUser } from "../helpers/request-context";
+import { PaginationInformation } from "../helpers/pagination-info";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -60,23 +61,34 @@ export class EntriesService {
   ) {}
 
   async findAll(
-    requestingUser: RequestContextUser
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
-        return Success(await this.entryRepo.findAll());
+        return Success(await this.entryRepo.findAll(paginationInfo));
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        return Success(await this.entryRepo.findByYear(user.graduationYear));
+        return Success(
+          await this.entryRepo.findByYear(user.graduationYear, paginationInfo)
+        );
 
       case Roles.PARENT:
         return Success(
-          await this.entryRepo.findByStudents(...requestingUser.childrenIds)
+          await this.entryRepo.findByStudents(
+            requestingUser.childrenIds,
+            paginationInfo
+          )
         );
 
       case Roles.STUDENT:
-        return Success(await this.entryRepo.findByStudents(requestingUser.id));
+        return Success(
+          await this.entryRepo.findByStudents(
+            [requestingUser.id],
+            paginationInfo
+          )
+        );
 
       case Roles.TEACHER:
         return Fail(FindAllEntriesFailure.ForbiddenForRole);

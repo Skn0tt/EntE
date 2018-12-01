@@ -5,6 +5,10 @@ import { Maybe, Some, None, Validation, Fail, Success } from "monet";
 import { Roles, CreateUserDto, UserDto, isValidUuid } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
+import {
+  PaginationInformation,
+  withPagination
+} from "../helpers/pagination-info";
 
 interface UserAndPasswordHash {
   user: UserDto;
@@ -42,8 +46,10 @@ export class UserRepo {
       .leftJoinAndSelect("user.children", "child")
       .leftJoinAndSelect("child.children", "grandChild");
 
-  async findAll(): Promise<UserDto[]> {
-    const users = await this._userQueryWithChildren().getMany();
+  async findAll(paginationInfo: PaginationInformation): Promise<UserDto[]> {
+    const users = await withPagination(paginationInfo)(
+      this._userQueryWithChildren()
+    ).getMany();
     return users.map(u => UserRepo.toDto(u));
   }
 

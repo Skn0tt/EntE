@@ -24,6 +24,10 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { CreateEntryDto, EntryDto, PatchEntryDto } from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
+import {
+  PaginationInfo,
+  PaginationInformation
+} from "../helpers/pagination-info";
 
 @Controller("entries")
 @UseGuards(AuthGuard("combined"))
@@ -33,8 +37,11 @@ export class EntriesController {
   ) {}
 
   @Get()
-  async findAll(@Ctx() ctx: RequestContext): Promise<EntryDto[]> {
-    const entry = await this.entriesService.findAll(ctx.user);
+  async findAll(
+    @Ctx() ctx: RequestContext,
+    @PaginationInfo() pInfo: PaginationInformation
+  ): Promise<EntryDto[]> {
+    const entry = await this.entriesService.findAll(ctx.user, pInfo);
     return entry.cata(fail => {
       switch (fail) {
         case FindAllEntriesFailure.ForbiddenForRole:
