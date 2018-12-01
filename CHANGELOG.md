@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Add Precaching and Home-Screen add functionality
 * API now supports pagination using `limit` and `offset` query params
 
 * Updated to Material-UI 3.6
