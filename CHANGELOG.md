@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-* Fixed: Now you can create entries (bug with monet)
+## [v0.9.0] - 2018-12-01
 
+* Fixed: Now you can create entries (bug with monet)
 * Add Precaching and Home-Screen add functionality
 * API now supports pagination using `limit` and `offset` query params
 * Changed: Password Reset now works using a modal
 * Updated to React 16.7 (Hooks Alpha)
-
 * Updated to Material-UI 3.6
 
 ## [v0.8.11] - 2018-11-30
@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed: translation of filter values in table
 * Changed: API now takes entry date for slots as well, if it is a single-day entry
 * Changed: Redux selectors now return maybe types in some cases
-
 * Fixed: Import window now accepts all mime types and instead filters by file ending (must end on ".csv")
 * Changed: Password Reset screen now redirects to login screen
 * Changed: Login screen now shows feedback while pending requests
