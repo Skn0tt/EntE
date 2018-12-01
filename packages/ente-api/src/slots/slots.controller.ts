@@ -10,6 +10,10 @@ import {
 import { RequestContext, Ctx } from "../helpers/request-context";
 import { SlotsService, FindOneSlotFailure } from "./slots.service";
 import { AuthGuard } from "@nestjs/passport";
+import {
+  PaginationInfo,
+  PaginationInformation
+} from "../helpers/pagination-info";
 
 @Controller("slots")
 @UseGuards(AuthGuard("combined"))
@@ -19,8 +23,11 @@ export class SlotsController {
   ) {}
 
   @Get()
-  async findAll(@Ctx() ctx: RequestContext) {
-    return await this.slotsService.findAll(ctx.user);
+  async findAll(
+    @Ctx() ctx: RequestContext,
+    @PaginationInfo() pInfo: PaginationInformation
+  ) {
+    return await this.slotsService.findAll(ctx.user, pInfo);
   }
 
   @Get(":id")

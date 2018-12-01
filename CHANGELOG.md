@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* API now supports pagination using `limit` and `offset` query params
+
 * Updated to Material-UI 3.6
 
 ## [v0.8.11] - 2018-11-30

@@ -4,7 +4,7 @@ import {
   OnModuleInit,
   LoggerService
 } from "@nestjs/common";
-import { Validation, Success, Fail } from "monet";
+import { Validation, Success, Fail, Maybe } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
   Roles,
@@ -20,6 +20,7 @@ import { hashPassword } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
+import { PaginationInformation } from "../helpers/pagination-info";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -87,11 +88,12 @@ export class UsersService implements OnModuleInit {
   }
 
   async findAll(
-    requestingUser: RequestContextUser
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
-        return Success(await this.userRepo.findAll());
+        return Success(await this.userRepo.findAll(paginationInfo));
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();

@@ -118,7 +118,6 @@ class PasswordReset extends React.Component<
     const { fullScreen, resetIsPending } = this.props;
     const { alreadyRequested } = this.state;
 
-    console.log(alreadyRequested, resetIsPending);
     if (alreadyRequested && !resetIsPending) {
       return <Redirect to="/login" />;
     }

@@ -28,6 +28,10 @@ import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
 import { AuthGuard } from "@nestjs/passport";
 import { UserDto, CreateUserDto, PatchUserDto } from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
+import {
+  PaginationInfo,
+  PaginationInformation
+} from "../helpers/pagination-info";
 
 @Controller("users")
 @UseGuards(AuthGuard("combined"))
@@ -37,8 +41,11 @@ export class UsersController {
   ) {}
 
   @Get()
-  async findAll(@Ctx() ctx: RequestContext): Promise<UserDto[]> {
-    const result = await this.usersService.findAll(ctx.user);
+  async findAll(
+    @Ctx() ctx: RequestContext,
+    @PaginationInfo() pInfo: PaginationInformation
+  ): Promise<UserDto[]> {
+    const result = await this.usersService.findAll(ctx.user, pInfo);
     return result.cata(fail => {
       switch (fail) {
         case FindAllUsersFailure.ForbiddenForRole:
