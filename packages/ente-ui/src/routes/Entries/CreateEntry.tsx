@@ -47,7 +47,7 @@ import {
 import {
   CreateEntryDto,
   CreateSlotDto,
-  isValidCreateSlotDto
+  isValidCreateEntryDto
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { createTranslation } from "../../helpers/createTranslation";
@@ -95,6 +95,12 @@ const lang = createTranslation({
 const immutableDelete = (arr: any[], index: number) =>
   arr.slice(0, index).concat(arr.slice(index + 1));
 
+const stripTime = (date: Date): Date => {
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  return result;
+};
+
 const oneDay: number = 24 * 60 * 60 * 1000;
 
 const nextDay = (d: Date) => new Date(+d + oneDay);
@@ -141,7 +147,7 @@ type CreateEntryProps = CreateEntryOwnProps &
 interface State {
   isRange: boolean;
   date: Date;
-  dateEnd: Date;
+  dateEnd?: Date;
   student?: string;
   slots: CreateSlotDto[];
   forSchool: boolean;
@@ -154,8 +160,8 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
         ? this.props.children[0].get("id")
         : undefined,
     isRange: false,
-    date: new Date(),
-    dateEnd: new Date(),
+    date: stripTime(new Date()),
+    dateEnd: undefined,
     slots: [],
     forSchool: false
   };
@@ -166,7 +172,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   handleSubmit = () =>
     this.props.createEntry({
       date: this.state.date,
-      dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
+      dateEnd: this.state.dateEnd,
       slots: this.state.slots,
       forSchool: this.state.forSchool,
       studentId: this.state.student
@@ -182,10 +188,11 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
    * ## Input Handlers
    */
   handleChangeBeginDate = (date: Date) => {
-    const slotsWithoutSlotsThatAreTooEarly = this.state.slots.filter(
-      s => s.date > date
-    );
-    const dateEndIsBeforeDate = +this.state.dateEnd <= +date + oneDay;
+    const { slots, isRange, dateEnd } = this.state;
+    const slotsWithoutSlotsThatAreTooEarly = isRange
+      ? slots.filter(s => s.date >= date)
+      : slots;
+    const dateEndIsBeforeDate = +dateEnd <= +date + oneDay;
     if (dateEndIsBeforeDate) {
       this.setState({
         date,
@@ -201,9 +208,10 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   };
 
   handleChangeDateEnd = (dateEnd: Date) => {
-    const slotsWithoutSlotsThatAreTooLate = this.state.slots.filter(
-      s => s.date < dateEnd
-    );
+    const { slots, isRange } = this.state;
+    const slotsWithoutSlotsThatAreTooLate = isRange
+      ? slots.filter(s => s.date <= dateEnd)
+      : slots;
     this.setState({ dateEnd, slots: slotsWithoutSlotsThatAreTooLate });
   };
 
@@ -217,13 +225,13 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
         ...s,
         date: undefined
       }));
-      this.setState({ slots: withoutDate });
+      this.setState({ slots: withoutDate, dateEnd: undefined });
     } else {
       const withDate = this.state.slots.map(s => ({
         ...s,
         date: this.state.date
       }));
-      this.setState({ slots: withDate });
+      this.setState({ slots: withDate, dateEnd: this.state.date });
     }
   };
 
@@ -245,17 +253,39 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   dateValid = (): boolean =>
     // Less than 14 Days ago
     +this.state.date > +this.minDate;
-  dateEndValid = (): boolean =>
-    !this.state.isRange || +this.state.dateEnd > +this.state.date;
-  studentValid = (): boolean => !this.props.isParent || !!this.state.student;
-  slotsValid = (): boolean =>
-    this.state.slots.length > 0 && this.state.slots.every(isValidCreateSlotDto);
 
-  inputValid = () =>
-    this.dateValid() &&
-    this.dateEndValid() &&
-    this.studentValid() &&
-    this.slotsValid();
+  dateEndValid = (): boolean => {
+    const { isRange, dateEnd, date } = this.state;
+    if (!isRange) {
+      return true;
+    }
+
+    return !!dateEnd && dateEnd > date;
+  };
+
+  studentValid = (): boolean => {
+    const { isParent } = this.props;
+    const { student } = this.state;
+    if (!isParent.some()) {
+      return true;
+    }
+
+    return !!student;
+  };
+
+  inputValid = () => {
+    const { student, forSchool, date, dateEnd, slots } = this.state;
+
+    return (
+      isValidCreateEntryDto({
+        date,
+        dateEnd,
+        forSchool,
+        slots,
+        studentId: student
+      }) && this.studentValid()
+    );
+  };
 
   /**
    * ## Data

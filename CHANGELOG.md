@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Now you can create entries (bug with monet)
+
 * API now supports pagination using `limit` and `offset` query params
 
 * Updated to Material-UI 3.6
