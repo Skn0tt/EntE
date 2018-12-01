@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed: Password Reset now works using a modal
+* Updated to React 16.7 (Hooks Alpha)
+
 * Updated to Material-UI 3.6
 
 ## [v0.8.11] - 2018-11-30

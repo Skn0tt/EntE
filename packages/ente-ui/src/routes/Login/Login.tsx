@@ -30,10 +30,11 @@ import {
   GET_TOKEN_REQUEST,
   isTypePending,
   RESET_PASSWORD_REQUEST
-} from "../redux";
-import { withErrorBoundary } from "../hocs/withErrorBoundary";
-import { createTranslation } from "../helpers/createTranslation";
-import * as config from "../config";
+} from "../../redux";
+import { withErrorBoundary } from "../../hocs/withErrorBoundary";
+import { createTranslation } from "../../helpers/createTranslation";
+import * as config from "../../config";
+import { PasswordResetModal } from "./PasswordResetModal";
 
 const { INSTANCE_INFO_DE, INSTANCE_INFO_EN } = config.get();
 
@@ -43,7 +44,7 @@ const lang = createTranslation({
     submit: "Login",
     username: "Username",
     password: "Password",
-    resetPassword: "Reset password",
+    passwordForgot: "Forgot Password?",
     instanceInfo: INSTANCE_INFO_EN.orSome("In order to use EntE, log in.")
   },
   de: {
@@ -51,7 +52,7 @@ const lang = createTranslation({
     submit: "Anmelden",
     username: "Benutzername",
     password: "Passwort",
-    resetPassword: "Passwort Zurücksetzen",
+    passwordForgot: "Passwort Vergessen?",
     instanceInfo: INSTANCE_INFO_DE.orSome(
       "Bitte melden sie sich an, um EntE zu nutzen."
     )
@@ -91,16 +92,20 @@ type Props = StateProps &
 interface State {
   username: string;
   password: string;
+  showPasswordResetModal: boolean;
 }
 
 class Login extends React.Component<Props, State> {
   state: State = {
     username: "",
-    password: ""
+    password: "",
+    showPasswordResetModal: false
   };
 
-  handleResetPassword = () =>
-    this.props.triggerPasswordReset(this.state.username);
+  onResetPassword = (username: string) => {
+    this.props.triggerPasswordReset(username);
+    this.hidePasswordResetModal();
+  };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
     if (event.key === "Enter") {
@@ -124,6 +129,10 @@ class Login extends React.Component<Props, State> {
       password: this.state.password
     });
 
+  showResetModal = () => this.setState({ showPasswordResetModal: true });
+  hidePasswordResetModal = () =>
+    this.setState({ showPasswordResetModal: false });
+
   render() {
     const {
       authValid,
@@ -132,6 +141,7 @@ class Login extends React.Component<Props, State> {
       loginPending,
       passwordResetPending
     } = this.props;
+    const { showPasswordResetModal } = this.state;
     const { from } = location.state || {
       from: { pathname: "/" }
     };
@@ -141,53 +151,60 @@ class Login extends React.Component<Props, State> {
     }
 
     return (
-      <Dialog fullScreen={fullScreen} open onKeyPress={this.handleKeyPress}>
-        <DialogTitle>{lang.title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            dangerouslySetInnerHTML={{
-              __html: lang.instanceInfo.replace("\n", "<br />")
-            }}
-          />
-          <Grid container direction="column">
-            <Grid item>
-              <TextField
-                fullWidth
-                id="name"
-                label={lang.username}
-                autoComplete="username"
-                onChange={this.handleChangeUsername}
-              />
-            </Grid>
+      <>
+        <PasswordResetModal
+          onReset={this.onResetPassword}
+          show={showPasswordResetModal}
+          onClose={this.hidePasswordResetModal}
+        />
+        <Dialog fullScreen={fullScreen} open onKeyPress={this.handleKeyPress}>
+          <DialogTitle>{lang.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              dangerouslySetInnerHTML={{
+                __html: lang.instanceInfo.replace("\n", "<br />")
+              }}
+            />
+            <Grid container direction="column">
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="name"
+                  label={lang.username}
+                  autoComplete="username"
+                  onChange={this.handleChangeUsername}
+                />
+              </Grid>
 
-            <Grid item>
-              <TextField
-                fullWidth
-                id="password"
-                label={lang.password}
-                type="password"
-                autoComplete="current-password"
-                onChange={this.handleChangePassword}
-              />
+              <Grid item>
+                <TextField
+                  fullWidth
+                  id="password"
+                  label={lang.password}
+                  type="password"
+                  autoComplete="current-password"
+                  onChange={this.handleChangePassword}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={this.handleResetPassword}
-            disabled={passwordResetPending}
-          >
-            {lang.resetPassword}
-          </Button>
-          <Button
-            color="primary"
-            onClick={this.handleSignIn}
-            disabled={loginPending}
-          >
-            {lang.submit}
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={this.showResetModal}
+              disabled={passwordResetPending}
+            >
+              {lang.passwordForgot}
+            </Button>
+            <Button
+              color="primary"
+              onClick={this.handleSignIn}
+              disabled={loginPending}
+            >
+              {lang.submit}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
     );
   }
 }
