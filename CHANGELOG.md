@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed: Now you can create entries (bug with monet)
 
+* Add Precaching and Home-Screen add functionality
 * API now supports pagination using `limit` and `offset` query params
 * Changed: Password Reset now works using a modal
 * Updated to React 16.7 (Hooks Alpha)
