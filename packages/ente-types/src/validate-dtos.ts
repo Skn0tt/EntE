@@ -15,7 +15,6 @@ const validateDto = <T>(
 ) => (value: T) => {
   const c = value instanceof _class ? value : plainToClass(_class, value);
   const errors = validateSync(c);
-  console.log(errors);
   return errors.length === 0 && additional(c);
 };
 
