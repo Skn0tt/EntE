@@ -14,7 +14,7 @@ import MessageStream from "./components/MessageStream";
 
 // Routes
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import Login from "./routes/Login";
+import Login from "./routes/Login/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
