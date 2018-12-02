@@ -91,7 +91,7 @@ export class EntryRepo {
               relations: ["children"]
             });
             return await manager.create(Slot, {
-              date: isMultiDayEntry ? new Date(s.date) : dto.date,
+              date: isMultiDayEntry ? new Date(s.date) : new Date(dto.date),
               hour_from: s.from,
               hour_to: s.to,
               teacher
