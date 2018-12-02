@@ -1,6 +1,6 @@
 {
   "name": "ente-types",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Typings for EntE",
   "main": "src/index.ts",
   "repository": "gitlab.com/skn0tt/EntE/master/ente-types",
