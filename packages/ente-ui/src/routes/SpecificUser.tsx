@@ -70,7 +70,12 @@ const lang = createTranslation({
       isAdult: "Adult",
       id: "ID",
       role: "Role",
-      gradYear: "Graduation Year"
+      gradYear: "Graduation Year",
+      areYouSureYouWannaDelete: username =>
+        `Are you sure you want to delete user "${username}"?`
+    },
+    ariaLabels: {
+      delete: "Delete"
     }
   },
   de: {
@@ -82,7 +87,12 @@ const lang = createTranslation({
       isAdult: "Erwachsen",
       id: "ID",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang"
+      gradYear: "Abschluss-Jahrgang",
+      areYouSureYouWannaDelete: username =>
+        `Sind sie sicher, dass sie den Nutzer "${username}" löschen möchten?`
+    },
+    ariaLabels: {
+      delete: "Löschen"
     }
   }
 });
@@ -223,8 +233,7 @@ export class SpecificUser extends React.PureComponent<
               deleteUser(this.userId);
               this.onClose();
             }}
-            text={`Sind sie sicher, dass sie den Nutzer "${user &&
-              user.get("username")}" löschen möchten?`}
+            text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
           />
           <Dialog open onClose={this.onGoBack} fullScreen={fullScreen}>
             {!!user ? (
@@ -232,7 +241,7 @@ export class SpecificUser extends React.PureComponent<
                 <DialogTitle>
                   {user.get("displayname")}
                   <IconButton
-                    aria-label="Löschen"
+                    aria-label={lang.ariaLabels.delete}
                     onClick={() => this.setState({ showDelete: true })}
                     className={classes.deleteButton}
                   >

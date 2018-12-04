@@ -73,11 +73,58 @@ import { Maybe } from "monet";
 const lang = createTranslation({
   en: {
     sign: "Sign",
-    close: "Close"
+    close: "Close",
+    delete: "Delete",
+    areYouSureToDelete: "Are you sure that you want to delete this entry?",
+    yes: "Yes",
+    no: "No",
+    student: "Student:",
+    id: "ID:",
+    createdAt: "Created:",
+    forSchool: "For School:",
+    date: "Date:",
+    dateRange: (start: Date, end: Date) =>
+      `From ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`,
+    slotsTable: {
+      title: "Slots",
+      date: "Date",
+      from: "From",
+      to: "To",
+      teacher: "Teacher",
+      deleted: "Deleted"
+    },
+    signed: {
+      manager: "Manager",
+      parents: "Parents"
+    }
   },
   de: {
     sign: "Unterschreiben",
-    close: "Schließen"
+    close: "Schließen",
+    delete: "Löschen",
+    areYouSureToDelete:
+      "Sind sie sicher, dass sie diesen Eintrag löschen möchten?",
+    yes: "Ja",
+    no: "Nein",
+    student: "Schüler:",
+    id: "ID:",
+    createdAt: "Erstellt:",
+    forSchool: "Schulisch:",
+    date: "Datum:",
+    dateRange: (start: Date, end: Date) =>
+      `Von ${start.toLocaleDateString()} bis ${end.toLocaleDateString()}`,
+    slotsTable: {
+      title: "Stunden",
+      date: "Datum",
+      from: "Von",
+      to: "Bis",
+      teacher: "Lehrer",
+      deleted: "Gelöscht"
+    },
+    signed: {
+      manager: "Stufenleiter",
+      parents: "Eltern"
+    }
   }
 });
 
@@ -213,7 +260,7 @@ class SpecificEntry extends React.PureComponent<
               this.onClose();
             }}
             show={showDelete}
-            text="Sind sie sicher, dass sie diesen Eintrag löschen möchten?"
+            text={lang.areYouSureToDelete}
           />
           <Dialog open fullScreen={fullScreen} onClose={this.onClose} fullWidth>
             <DialogContent>
@@ -221,7 +268,7 @@ class SpecificEntry extends React.PureComponent<
                 <Grid container direction="column" spacing={24}>
                   {role.some() === Roles.MANAGER && (
                     <IconButton
-                      aria-label="Löschen"
+                      aria-label={lang.delete}
                       onClick={() => this.setState({ showDelete: true })}
                       className={classes.deleteButton}
                     >
@@ -232,10 +279,10 @@ class SpecificEntry extends React.PureComponent<
                   <Grid item>
                     <Typography variant="h6">Info</Typography>
                     <Typography variant="body1">
-                      <i>ID:</i> {entry.get("id")} <br />
-                      <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
-                      <br />
-                      <i>Schulisch:</i>{" "}
+                      <i>{lang.id}</i> {entry.get("id")} <br />
+                      <i>{lang.createdAt}</i>{" "}
+                      {entry.get("createdAt").toLocaleString()} <br />
+                      <i>{lang.forSchool}</i>{" "}
                       {role.some() === Roles.MANAGER ? (
                         <Checkbox
                           checked={entry.get("forSchool")}
@@ -247,20 +294,22 @@ class SpecificEntry extends React.PureComponent<
                           }
                         />
                       ) : entry.get("forSchool") ? (
-                        "Ja"
+                        lang.yes
                       ) : (
-                        "Nein"
+                        lang.no
                       )}{" "}
                       <br />
-                      <i>Schüler:</i>{" "}
+                      <i>{lang.student}</i>{" "}
                       {getUser(entry.get("studentId"))
                         .some()
                         .get("displayname")}{" "}
                       <br />
-                      <i>Datum:</i>{" "}
+                      <i>{lang.date}</i>{" "}
                       {!!entry.get("dateEnd")
-                        ? `Von ${entry.get("date").toLocaleDateString()}
-                  bis ${entry.get("dateEnd")!.toLocaleDateString()}`
+                        ? lang.dateRange(
+                            entry.get("date"),
+                            entry.get("dateEnd")
+                          )
                         : entry.get("date").toLocaleDateString()}{" "}
                       <br />
                     </Typography>
@@ -268,14 +317,16 @@ class SpecificEntry extends React.PureComponent<
 
                   {/* Slots */}
                   <Grid item>
-                    <Typography variant="h6">Stunden</Typography>
+                    <Typography variant="h6">
+                      {lang.slotsTable.title}
+                    </Typography>
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Datum</TableCell>
-                          <TableCell>Von</TableCell>
-                          <TableCell>Bis</TableCell>
-                          <TableCell>Lehrer</TableCell>
+                          <TableCell>{lang.slotsTable.date}</TableCell>
+                          <TableCell>{lang.slotsTable.from}</TableCell>
+                          <TableCell>{lang.slotsTable.to}</TableCell>
+                          <TableCell>{lang.slotsTable.teacher}</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -288,7 +339,7 @@ class SpecificEntry extends React.PureComponent<
                             <TableCell>{slot.get("to")}</TableCell>
                             <TableCell>
                               {slot.get("teacherId").cata(
-                                () => "Gelöscht",
+                                () => lang.slotsTable.deleted,
                                 id =>
                                   getUser(id)
                                     .some()
@@ -308,7 +359,7 @@ class SpecificEntry extends React.PureComponent<
                       {/* Admin */}
                       <ListItem>
                         <SignedAvatar signed={entry.get("signedManager")} />
-                        <ListItemText primary="Stufenleiter" />
+                        <ListItemText primary={lang.signed.manager} />
                         {role.some() === Roles.MANAGER &&
                           (entry.get("signedManager") ? (
                             <ListItemSecondaryAction>
@@ -335,7 +386,7 @@ class SpecificEntry extends React.PureComponent<
                       {/* Parents */}
                       <ListItem>
                         <SignedAvatar signed={entry.get("signedParent")} />
-                        <ListItemText primary="Eltern" />
+                        <ListItemText primary={lang.signed.parents} />
                         {!entry.get("signedParent") &&
                           role.some() === Roles.PARENT && (
                             <ListItemSecondaryAction>
