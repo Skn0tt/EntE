@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.10.0] - 2018-12-04
+
 * Changed: More information on sentry errors
 * Fixed: Error where all slots appeared as non-signed
 * Added: About page showing version
