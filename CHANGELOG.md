@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Changed: More information on sentry errors
 * Fixed: Error where all slots appeared as non-signed
+* Added: About page showing version
 
 ## [v0.9.1] - 2018-12-02
 

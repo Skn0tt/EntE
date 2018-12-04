@@ -16,6 +16,7 @@ import SpecificUser from "./routes/SpecificUser";
 import SpecificEntry from "./routes/SpecificEntry";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
+import AboutRoute from "./routes/About";
 
 const AdminRoutes: React.SFC = () => (
   <>
@@ -25,6 +26,7 @@ const AdminRoutes: React.SFC = () => (
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
       <Route path="/admin" component={AdminRoute} />
+      <Route path="/about" component={AboutRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
@@ -39,6 +41,7 @@ const ParentRoutes: React.SFC = () => (
     <Switch>
       <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
+      <Route path="/about" component={AboutRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
@@ -46,12 +49,13 @@ const ParentRoutes: React.SFC = () => (
     </Switch>
   </>
 );
-const StudentRoutes: React.SFC = () => <ParentRoutes />;
+const StudentRoutes = ParentRoutes;
 
 const TeacherRoutes: React.SFC = () => (
   <Switch>
     <Redirect exact from="/" to="/slots" />
     <Route path="/slots" component={Slots} />
+    <Route path="/about" component={AboutRoute} />
     <Route component={NotFound} />
   </Switch>
 );
@@ -62,6 +66,7 @@ const ManagerRoutes: React.SFC = () => (
       <Redirect exact from="/" to="/entries" />
       <Route path="/entries" component={Entries} />
       <Route path="/slots" component={Slots} />
+      <Route path="/about" component={AboutRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>

@@ -76,7 +76,7 @@ ShallowWrapper {
           onClose={[Function]}
           onDelete={[Function]}
           show={false}
-          text="Sind sie sicher, dass sie den Nutzer \\"hhansen\\" löschen möchten?"
+          text="Are you sure you want to delete user \\"hhansen\\"?"
         />,
         <WithStyles(Dialog)
           fullScreen={true}
@@ -87,7 +87,7 @@ ShallowWrapper {
             <WithStyles(DialogTitle)>
               Horst Hansen
               <WithStyles(IconButton)
-                aria-label="Löschen"
+                aria-label="Delete"
                 className=""
                 onClick={[Function]}
               >
@@ -195,7 +195,7 @@ ShallowWrapper {
           "onClose": [Function],
           "onDelete": [Function],
           "show": false,
-          "text": "Sind sie sicher, dass sie den Nutzer \\"hhansen\\" löschen möchten?",
+          "text": "Are you sure you want to delete user \\"hhansen\\"?",
         },
         "ref": null,
         "rendered": null,
@@ -211,7 +211,7 @@ ShallowWrapper {
               <WithStyles(DialogTitle)>
                 Horst Hansen
                 <WithStyles(IconButton)
-                  aria-label="Löschen"
+                  aria-label="Delete"
                   className=""
                   onClick={[Function]}
                 >
@@ -322,7 +322,7 @@ ShallowWrapper {
                 <WithStyles(DialogTitle)>
                   Horst Hansen
                   <WithStyles(IconButton)
-                    aria-label="Löschen"
+                    aria-label="Delete"
                     className=""
                     onClick={[Function]}
                   >
@@ -411,7 +411,7 @@ ShallowWrapper {
                   "children": Array [
                     "Horst Hansen",
                     <WithStyles(IconButton)
-                      aria-label="Löschen"
+                      aria-label="Delete"
                       className=""
                       onClick={[Function]}
                     >
@@ -429,7 +429,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "aria-label": "Löschen",
+                      "aria-label": "Delete",
                       "children": <pure(DeleteIcon)
                         fontSize="large"
                       />,
@@ -877,7 +877,7 @@ ShallowWrapper {
             onClose={[Function]}
             onDelete={[Function]}
             show={false}
-            text="Sind sie sicher, dass sie den Nutzer \\"hhansen\\" löschen möchten?"
+            text="Are you sure you want to delete user \\"hhansen\\"?"
           />,
           <WithStyles(Dialog)
             fullScreen={true}
@@ -888,7 +888,7 @@ ShallowWrapper {
               <WithStyles(DialogTitle)>
                 Horst Hansen
                 <WithStyles(IconButton)
-                  aria-label="Löschen"
+                  aria-label="Delete"
                   className=""
                   onClick={[Function]}
                 >
@@ -996,7 +996,7 @@ ShallowWrapper {
             "onClose": [Function],
             "onDelete": [Function],
             "show": false,
-            "text": "Sind sie sicher, dass sie den Nutzer \\"hhansen\\" löschen möchten?",
+            "text": "Are you sure you want to delete user \\"hhansen\\"?",
           },
           "ref": null,
           "rendered": null,
@@ -1012,7 +1012,7 @@ ShallowWrapper {
                 <WithStyles(DialogTitle)>
                   Horst Hansen
                   <WithStyles(IconButton)
-                    aria-label="Löschen"
+                    aria-label="Delete"
                     className=""
                     onClick={[Function]}
                   >
@@ -1123,7 +1123,7 @@ ShallowWrapper {
                   <WithStyles(DialogTitle)>
                     Horst Hansen
                     <WithStyles(IconButton)
-                      aria-label="Löschen"
+                      aria-label="Delete"
                       className=""
                       onClick={[Function]}
                     >
@@ -1212,7 +1212,7 @@ ShallowWrapper {
                     "children": Array [
                       "Horst Hansen",
                       <WithStyles(IconButton)
-                        aria-label="Löschen"
+                        aria-label="Delete"
                         className=""
                         onClick={[Function]}
                       >
@@ -1230,7 +1230,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "aria-label": "Löschen",
+                        "aria-label": "Delete",
                         "children": <pure(DeleteIcon)
                           fontSize="large"
                         />,

@@ -34,6 +34,7 @@ import {
 } from "./Drawer.items";
 import styles from "./Drawer.styles";
 import { Maybe } from "monet";
+import { SettingsMenu } from "./SettingsMenu";
 
 /**
  * # Component Types
@@ -97,7 +98,7 @@ class Drawer extends React.Component<DrawerProps, DrawerState> {
       <div className={classes.root}>
         <div className={classes.appFrame}>
           <AppBar className={classes.appBar}>
-            <Toolbar>
+            <Toolbar className={classes.toolBar}>
               <IconButton
                 aria-label="open drawer"
                 onClick={this.handleDrawerToggle}
@@ -112,6 +113,7 @@ class Drawer extends React.Component<DrawerProps, DrawerState> {
               />
               <div className={classes.grow} />
               <RefreshButton />
+              <SettingsMenu />
             </Toolbar>
           </AppBar>
           <Hidden mdUp>

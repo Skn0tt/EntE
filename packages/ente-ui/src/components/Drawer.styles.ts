@@ -29,6 +29,9 @@ const styles: StyleRulesCallback = theme => ({
       width: `calc(100% - ${drawerWidth}px)`
     }
   },
+  toolBar: {
+    paddingRight: 0
+  },
   grow: {
     flex: "1 1 auto"
   },
