@@ -8,9 +8,9 @@ cd $(dirname "$(readlink -f "$0")")
 # Generates Docs with mkdocs
 # Outdir: /site
 
-cd ..
+cd ../..
 
-pip install -r requirements.txt
+pip install -r ./docs/requirements.txt
 mkdocs build
 
 cd $cwd

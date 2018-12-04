@@ -7,7 +7,7 @@ cd $(dirname "$(readlink -f "$0")")
 
 . "./ci_helpers.sh"
 
-cd ..
+cd ../..
 
 tag=$(get_commit_sha)
 

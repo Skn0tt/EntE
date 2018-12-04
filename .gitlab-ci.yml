@@ -12,7 +12,7 @@ variables:
 test:unit:
   image: node:9
   stage: test
-  script: "./ci/test_unit.sh"
+  script: "./scripts/ci/test_unit.sh"
   cache:
     key: "test-unit"
     paths:
@@ -29,7 +29,7 @@ test:version:
     entrypoint: [""]
   stage: test
   dependencies: []
-  script: "./ci/test_version.sh"
+  script: "./scripts/ci/test_version.sh"
 
 license_management:
   image: 
@@ -70,7 +70,7 @@ build:api:
     - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script: "./ci/build_docker.sh api"
+  script: "./scripts/ci/build_docker.sh api"
   
 build:ui:
   image: skn0tt/dind-make
@@ -80,7 +80,7 @@ build:ui:
     - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script: "./ci/build_docker.sh ui"
+  script: "./scripts/ci/build_docker.sh ui"
 
 build:docker-app:
   image: docker:stable
@@ -88,7 +88,7 @@ build:docker-app:
   dependencies: []
   services:
     - docker:stable-dind
-  script: "./ci/build_dockerapp.sh"
+  script: "./scripts/ci/build_dockerapp.sh"
 
 test:e2e:
   image: skn0tt/node-browsers-docker-app
@@ -106,13 +106,13 @@ test:e2e:
     DOCKER_HOST: dind:2375
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script: ./ci/test_e2e.sh
+  script: ./scripts/ci/test_e2e.sh
   artifacts:
     when: always
     paths:
       - screenshots/
       - e2e.xml
-      - compose-logs.txt
+      - tests/e2e/logs.txt
 
 generate:docs:
   image: python
@@ -123,7 +123,7 @@ generate:docs:
     paths:
       - .cache/pip
       - venv/
-  script: "./ci/generate_docs.sh"
+  script: "./scripts/ci/generate_docs.sh"
   artifacts:
     paths:
       - site/
@@ -134,7 +134,7 @@ generate:allure:
   dependencies:
     - test:unit
     - test:e2e
-  script: "./ci/generate_allure.sh"
+  script: "./scripts/ci/generate_allure.sh"
   artifacts:
     paths:
       - allure-report/
@@ -143,10 +143,10 @@ generate:pages:
   image: node:9
   stage: generate
   dependencies: []
-  script: "./ci/generate_pages.sh"
+  script: "./scripts/ci/generate_pages.sh"
   artifacts:
     paths:
-      - pages/dist/
+      - assets/pages/dist/
 
 pages:
   image: debian
@@ -163,7 +163,7 @@ pages:
   script:
     - mkdir .public
     - mkdir .public/coverage .public/allure-report .public/docs
-    - cp -R pages/dist/* .public/
+    - cp -R assets/pages/dist/* .public/
     - cp -R coverage/lcov-report/* .public/coverage/
     - cp -R site/* .public/docs/
     - cp -R allure-report/* .public/allure-report/
@@ -180,7 +180,7 @@ deploy:images:
     - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
-  script: "./ci/publish_images.sh"
+  script: "./scripts/ci/publish_images.sh"
 
 release:trigger_deployment:
   image: tutum/curl

@@ -8,9 +8,8 @@ cd $(dirname "$(readlink -f "$0")")
 # generates allure report
 # OutDir: allure-report
 
-cd ../pages
+cd ../..
 
-npm install
-npm run build:prod
+allure generate ./
 
 cd $cwd

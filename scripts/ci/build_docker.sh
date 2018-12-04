@@ -8,7 +8,7 @@ cd $(dirname "$(readlink -f "$0")")
 . "./ci_helpers.sh"
 . "./docker_helpers.sh"
 
-cd ..
+cd ../..
 
 build () {
   path=$1
