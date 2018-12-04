@@ -12,7 +12,7 @@ cd $(dirname "$(readlink -f "$0")")
 # docker
 #
 
-cd ..
+cd ../..
 
 sha=$(get_commit_sha)
 ref=$(get_commit_ref)

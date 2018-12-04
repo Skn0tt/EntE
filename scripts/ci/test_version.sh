@@ -5,7 +5,7 @@ set -e
 cwd=$(pwd)
 cd $(dirname "$(readlink -f "$0")")
 
-cd ..
+cd ../..
 
 node ./scripts/dockerapp-version.js check
 
