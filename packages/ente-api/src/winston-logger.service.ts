@@ -4,12 +4,16 @@ import * as winston from "winston";
 const { combine, timestamp, json, metadata } = winston.format;
 
 export class WinstonLoggerService implements LoggerService {
-  private readonly logger = winston.createLogger({
+  static readonly logger = winston.createLogger({
     transports: [new winston.transports.Console({ level: "debug" })],
     format: combine(timestamp(), metadata(), json())
   });
 
-  log = this.logger.info;
-  error = this.logger.error;
-  warn = this.logger.warn;
+  static log = WinstonLoggerService.logger.info;
+  static error = WinstonLoggerService.logger.error;
+  static warn = WinstonLoggerService.logger.warn;
+
+  log = WinstonLoggerService.log;
+  error = WinstonLoggerService.error;
+  warn = WinstonLoggerService.warn;
 }
