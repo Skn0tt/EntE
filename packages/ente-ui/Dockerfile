@@ -13,7 +13,7 @@ COPY packages/ente-types ./packages/ente-types
 
 RUN yarn --cwd packages/ente-ui build
 
-FROM skn0tt/nginx-spa
+FROM skn0tt/nginx-spa:v0.1.0
 
 # Install Curl (for Healthcheck)
 RUN apt-get update; apt-get -y install curl;
