@@ -14,6 +14,7 @@ import { UsersModule } from "./users/users.module";
 import { PasswordResetModule } from "./password-reset/password-reset.module";
 import { ScheduleService } from "./schedule.service";
 import { ExportModule } from "./export/export.module";
+import { migrations } from "./db/migrations";
 
 const { database, host, password, port, username } = Config.getMysqlConfig();
 
@@ -23,12 +24,13 @@ const { database, host, password, port, username } = Config.getMysqlConfig();
     TypeOrmModule.forRoot({
       type: "mysql",
       username,
+      migrations,
       port,
       password,
       host,
       database,
       entities: [User, Slot, Entry],
-      synchronize: true
+      synchronize: false
     }),
     SlotsModule,
     EntriesModule,
