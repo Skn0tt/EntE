@@ -1,10 +1,10 @@
 import * as React from "react";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
-import * as config from "../config";
 import { None, Some, Maybe } from "monet";
 import { createTranslation } from "../helpers/createTranslation";
 import { Route } from "react-router";
+import { History } from "history";
 
 const lang = createTranslation({
   en: {
@@ -27,6 +27,11 @@ export const SettingsMenu = React.memo(() => {
     setAnchorEl(None());
   };
 
+  const navigateToPathFactory = (path: string, history: History) => () => {
+    closeMenu();
+    history.push(path);
+  }
+
   return (
     <div>
       <IconButton onClick={openMenu} color="primary" style={{ color: "white" }}>
@@ -35,7 +40,7 @@ export const SettingsMenu = React.memo(() => {
       <Menu open={open} anchorEl={anchorEl.orSome(null)} onClose={closeMenu}>
         <Route
           render={({ history }) => (
-            <MenuItem dense onClick={() => history.push("/about")}>
+            <MenuItem dense onClick={navigateToPathFactory("/about", history)}>
               {lang.about}
             </MenuItem>
           )}
