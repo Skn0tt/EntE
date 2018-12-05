@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed: When slot belongs to single-day entry, no date is saved
+
+* Changed: DB Schema is not synced but only created when none is available
+
 ## [v0.10.0] - 2018-12-04
 
 * Changed: More information on sentry errors
