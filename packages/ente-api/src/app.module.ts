@@ -15,6 +15,7 @@ import { PasswordResetModule } from "./password-reset/password-reset.module";
 import { ScheduleService } from "./schedule.service";
 import { ExportModule } from "./export/export.module";
 import { migrations } from "./db/migrations";
+import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 
 const { database, host, password, port, username } = Config.getMysqlConfig();
 
@@ -30,7 +31,9 @@ const { database, host, password, port, username } = Config.getMysqlConfig();
       host,
       database,
       entities: [User, Slot, Entry],
-      synchronize: false
+      synchronize: false,
+      logger: new CustomTypeOrmLogger(),
+      logging: "all"
     }),
     SlotsModule,
     EntriesModule,
