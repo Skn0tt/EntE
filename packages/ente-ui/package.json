@@ -1,7 +1,7 @@
 {
   "name": "ente-ui",
   "repository": "https://gitlab.com/skn0tt/EntE/master/packages/ente-ui",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "private": true,
   "scripts": {
     "start": "yarn parcel src/index.html",
@@ -20,7 +20,7 @@
     "@sentry/browser": "^4.3.0",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "ente-types": "^0.10.0",
+    "ente-types": "^0.11.0",
     "immutable": "^4.0.0-rc.12",
     "luxon": "^1.4.5",
     "material-ui-pickers": "^v1.0.1",

@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.11.0] - 2018-12-04
+
 * Changed: TypeOrm now logs more information
 * Changed: When slot belongs to single-day entry, no date is saved
-
 * Changed: DB Schema is not synced but only created when none is available
 * Fixed: Close Settingsmenu on clicking item
 * Changed: UI now responds with a 404 when requesting assets that do not exist
