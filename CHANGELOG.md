@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Changed: UI now responds with a 404 when requesting assets that do not exist
+
 ## [v0.10.0] - 2018-12-04
 
 * Changed: More information on sentry errors
