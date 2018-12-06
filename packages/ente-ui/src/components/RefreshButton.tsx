@@ -11,7 +11,7 @@ import { IconButton, CircularProgress } from "@material-ui/core";
 import { Dispatch, connect } from "react-redux";
 import { Action } from "redux";
 import { withRouter, RouteComponentProps } from "react-router";
-import { Refresh as RefreshIcon } from "@material-ui/icons";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import {
   AppState,
   isLoading,

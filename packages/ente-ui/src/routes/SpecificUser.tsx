@@ -32,7 +32,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import { Delete as DeleteIcon } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
 import LoadingIndicator from "../elements/LoadingIndicator";
 import * as _ from "lodash";
 import {

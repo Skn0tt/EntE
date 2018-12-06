@@ -20,7 +20,7 @@ import {
   Divider
 } from "@material-ui/core";
 import * as React from "react";
-import { Menu as MenuIcon } from "@material-ui/icons";
+import MenuIcon from "@material-ui/icons/Menu";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import LoginStatus from "./LoginStatus";

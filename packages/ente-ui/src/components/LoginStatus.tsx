@@ -15,7 +15,7 @@ import {
   ListItemIcon
 } from "@material-ui/core";
 import { connect, Dispatch } from "react-redux";
-import { PowerSettingsNew as PowerSettingsNewIcon } from "@material-ui/icons";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { logout, AppState, getDisplayname } from "../redux";
 import { Action } from "redux";
 import { Maybe } from "monet";

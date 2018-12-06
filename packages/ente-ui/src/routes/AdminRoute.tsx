@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Button, WithStyles, withStyles, Theme, Grid } from "@material-ui/core";
-import { Attachment as AttachmentIcon } from "@material-ui/icons";
+import Attachment from "@material-ui/icons/Attachment";
 import { downloadExcelExportRequest } from "../redux";
 import { createTranslation } from "../helpers/createTranslation";
 

@@ -9,7 +9,7 @@
 import * as React from "react";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import { IconButton } from "@material-ui/core";
-import { Close as CloseIcon } from "@material-ui/icons";
+import CloseIcon from "@material-ui/icons/Close";
 import { MessagesConsumer } from "../context/Messages";
 
 interface MessageStreamOwnProps {}
