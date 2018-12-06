@@ -17,7 +17,14 @@ import { ExportModule } from "./export/export.module";
 import { migrations } from "./db/migrations";
 import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 
-const { database, host, password, port, username } = Config.getMysqlConfig();
+const {
+  database,
+  host,
+  password,
+  port,
+  username,
+  timezone
+} = Config.getMysqlConfig();
 
 @Global()
 @Module({
@@ -30,6 +37,7 @@ const { database, host, password, port, username } = Config.getMysqlConfig();
       password,
       host,
       database,
+      timezone,
       entities: [User, Slot, Entry],
       synchronize: false,
       logger: new CustomTypeOrmLogger(),

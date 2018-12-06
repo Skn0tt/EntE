@@ -4,6 +4,7 @@ mysql:
   database: ente
   username: ente
   password: root
+  timezone: Z
 
 smtp:
   host: smtp.ethereal.email
