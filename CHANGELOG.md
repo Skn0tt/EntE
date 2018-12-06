@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed: Timezone of MySQL Instance now needs to be set for the API, so that dates can be adjusted accordingly
   * Breaking: New Configuration Parameter `mysql.timezone`
 
-## [v0.11.0] - 2018-12-04
+## [v0.11.0] - 2018-12-05
 
 * Changed: TypeOrm now logs more information
 * Changed: When slot belongs to single-day entry, no date is saved
