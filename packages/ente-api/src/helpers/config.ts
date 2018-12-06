@@ -27,6 +27,7 @@ interface IConfig {
     username: string;
     password: string;
     database: string;
+    timezone: string;
   };
   redis: {
     host: string;
@@ -79,7 +80,8 @@ const config = (): IConfig => {
       port: +envVars.MYSQL_PORT,
       username: envVars.MYSQL_USERNAME,
       password: envVars.MYSQL_PASSWORD,
-      database: envVars.MYSQL_DATABASE
+      database: envVars.MYSQL_DATABASE,
+      timezone: envVars.MYSQL_TIMEZONE
     },
     redis: {
       host: REDIS_HOST,

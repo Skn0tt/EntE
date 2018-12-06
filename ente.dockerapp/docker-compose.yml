@@ -40,6 +40,7 @@ services:
       MYSQL_DATABASE: ${mysql.database}
       MYSQL_USERNAME: ${mysql.username}
       MYSQL_PASSWORD: ${mysql.password}
+      MYSQL_TIMEZONE: ${mysql.timezone}
       SMTP_HOST: ${smtp.host}
       SMTP_PORT: ${smtp.port}
       SMTP_USERNAME: ${smtp.username}
