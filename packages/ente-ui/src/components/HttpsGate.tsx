@@ -1,6 +1,6 @@
 import * as React from "react";
 import { WithStyles, withStyles, Typography } from "@material-ui/core";
-import { Warning as WarningIcon } from "@material-ui/icons";
+import WarningIcon from "@material-ui/icons/Warning";
 import styles from "./HttpsGate.styles";
 import { createTranslation } from "../helpers/createTranslation";
 

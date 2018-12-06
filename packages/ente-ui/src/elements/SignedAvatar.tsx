@@ -7,10 +7,11 @@
  */
 
 import * as React from "react";
-import { withStyles, Theme } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { WithStyles, StyleRules } from "@material-ui/core/styles/withStyles";
 import Avatar from "@material-ui/core/Avatar/Avatar";
-import { Done, Close } from "@material-ui/icons";
+import Close from "@material-ui/icons/Close";
+import Done from "@material-ui/icons/Done";
 import { green, pink } from "@material-ui/core/colors";
 
 const styles = (): StyleRules => ({

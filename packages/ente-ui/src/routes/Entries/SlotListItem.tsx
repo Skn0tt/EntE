@@ -13,7 +13,7 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from "@material-ui/core";
-import { Delete as DeleteIcon } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { AppState, getUser, UserN } from "../../redux";
 import { CreateSlotDto } from "ente-types";

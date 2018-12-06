@@ -40,11 +40,9 @@ import Typography from "@material-ui/core/Typography/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import {
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  AssignmentReturned as AssignmentReturnedIcon,
-  Delete as DeleteIcon
-} from "@material-ui/icons";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
+import DeleteIcon from "@material-ui/icons/Delete";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import LoadingIndicator from "../elements/LoadingIndicator";
 import { Roles } from "ente-types";

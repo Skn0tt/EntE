@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { None, Some, Maybe } from "monet";
 import { createTranslation } from "../helpers/createTranslation";
 import { Route } from "react-router";
@@ -30,7 +30,7 @@ export const SettingsMenu = React.memo(() => {
   const navigateToPathFactory = (path: string, history: History) => () => {
     closeMenu();
     history.push(path);
-  }
+  };
 
   return (
     <div>

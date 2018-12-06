@@ -6,7 +6,7 @@
   "scripts": {
     "start": "yarn parcel src/index.html",
     "build":
-      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && yarn serviceworker",
+      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && yarn serviceworker && size-limit",
     "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
     "serviceworker": "yarn workbox generateSW",
@@ -57,8 +57,10 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "parcel-bundler": "^1.10.3",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "prop-types": "^15.6.2",
     "redux-devtools-extension": "^2.13.5",
+    "size-limit": "^0.21.0",
     "source-map-explorer": "^1.5.0",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.4.2",
@@ -66,5 +68,13 @@
     "typescript": "^2.7.2",
     "workbox-build": "^3.0.1",
     "workbox-cli": "^3.0.1"
-  }
+  },
+  "size-limit": [
+    {
+      "limit": "4 MB",
+      "webpack": false,
+      "gzip": false,
+      "path": "dist/src.*.js"
+    }
+  ]
 }

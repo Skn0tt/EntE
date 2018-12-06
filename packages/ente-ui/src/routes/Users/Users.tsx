@@ -13,7 +13,7 @@ import styles from "./Users.styles";
 import { Action } from "redux";
 import CreateUser from "./CreateUser";
 import Fab from "@material-ui/core/Fab";
-import { Add as AddIcon } from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/Add";
 import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
 import { withRouter, RouteComponentProps } from "react-router";
 import Table from "../../components/Table";

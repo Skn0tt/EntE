@@ -8,12 +8,10 @@
 
 import * as React from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import {
-  WatchLater,
-  InsertDriveFile,
-  Person,
-  Settings
-} from "@material-ui/icons";
+import WatchLater from "@material-ui/icons/WatchLater";
+import InsertDriveFile from "@material-ui/icons/InsertDriveFile";
+import Person from "@material-ui/icons/Person";
+import Settings from "@material-ui/icons/Settings";
 import { Route } from "react-router-dom";
 import { createTranslation } from "../helpers/createTranslation";
 

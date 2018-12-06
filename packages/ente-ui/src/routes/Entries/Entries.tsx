@@ -10,8 +10,7 @@ import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { connect, Dispatch } from "react-redux";
 import styles from "./Entries.styles";
-import { Add as AddIcon } from "@material-ui/icons";
-
+import AddIcon from "@material-ui/icons/Add";
 import {
   AppState,
   getEntries,
