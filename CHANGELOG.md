@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-* Bundle size was decreased drastically to 2.5mb (500kb gzipped), now also javascript source code is cached.
+## [v0.12.0] - 2018-12-06
 
+* Bundle size was decreased drastically to 2.5mb (500kb gzipped), now also javascript source code is cached.
 * Changed: Timezone of MySQL Instance now needs to be set for the API, so that dates can be adjusted accordingly
+  * Breaking: New Configuration Parameter `mysql.timezone`
 
 ## [v0.11.0] - 2018-12-04
 
