@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.12.1] - 2018-12-07
+
 * Fixed: Weeklysummary now does not break because of type inaccuracies
-* Fix bug where AttachmentIcon was undefined
+* Fixed bug where AttachmentIcon was undefined
 
 ## [v0.12.0] - 2018-12-06
 
