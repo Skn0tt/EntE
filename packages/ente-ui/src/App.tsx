@@ -22,6 +22,7 @@ import { AppState, isAuthValid, getRole } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
 import { Maybe } from "monet";
+import withErrorBoundary from "./hocs/withErrorBoundary";
 
 const { ROTATION_PERIOD } = config.get();
 
@@ -54,4 +55,4 @@ const App: React.SFC<AppProps> = props => (
   </BrowserRouter>
 );
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withErrorBoundary()(App));
