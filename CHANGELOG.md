@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* Fixed: Weeklysummary now does not break because of type inaccuracies
+
 ## [v0.12.0] - 2018-12-06
 
 * Bundle size was decreased drastically to 2.5mb (500kb gzipped), now also javascript source code is cached.
