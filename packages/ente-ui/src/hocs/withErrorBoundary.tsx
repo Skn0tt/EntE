@@ -1,5 +1,17 @@
 import * as React from "react";
 import { ErrorReporting } from "../ErrorReporting";
+import { createTranslation } from "../helpers/createTranslation";
+
+const lang = createTranslation({
+  de: {
+    reportFeedback: "Feedback rückmelden",
+    anErrorOccured: msg => `Es ist ein Fehler aufgetreten: ${msg}`
+  },
+  en: {
+    reportFeedback: "Report feedback",
+    anErrorOccured: msg => `An Error occured: ${msg}`
+  }
+});
 
 interface WithErrorBoundaryState {
   error: Error | null;
@@ -23,11 +35,22 @@ export const withErrorBoundary = <C extends { error: Error }>(
       const { error } = this.state;
 
       if (!!error) {
-        return !!CustomErrorScreen ? (
-          <CustomErrorScreen error={error} />
-        ) : (
-          <p id="error">{error.message}</p>
-        );
+        if (!!CustomErrorScreen) {
+          return <CustomErrorScreen error={error} />;
+        }
+
+        if (ErrorReporting.isActive) {
+          return (
+            <>
+              <p id="error">{lang.anErrorOccured(error.message)}</p>
+              <a onClick={ErrorReporting.showReportDialog}>
+                {lang.reportFeedback}
+              </a>
+            </>
+          );
+        }
+
+        return <p id="error">{lang.anErrorOccured(error.message)}</p>;
       }
 
       return <Component {...this.props} />;
