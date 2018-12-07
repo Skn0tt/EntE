@@ -7,10 +7,23 @@ import { SentryInterceptor } from "./helpers/sentry-interceptor";
 import { getConnectionToken } from "@nestjs/typeorm";
 import { Connection } from "typeorm";
 import { isDbSchemaPresent } from "./helpers/is-db-schema-present";
+import * as Sentry from "@sentry/node";
 
 const sentryDsn = Config.getSentryDsn();
 
 async function bootstrap() {
+  async function setupSentry(dsn: string) {
+    Sentry.init({
+      dsn,
+      release: Config.getVersion(),
+      serverName: Config.getBaseUrl()
+    });
+  }
+
+  if (sentryDsn.isSome()) {
+    setupSentry(sentryDsn.some());
+  }
+
   const logger = new WinstonLoggerService();
 
   const app = await NestFactory.create(AppModule, {
@@ -54,4 +67,5 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
+
 bootstrap();

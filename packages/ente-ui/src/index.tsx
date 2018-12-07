@@ -52,10 +52,13 @@ const setupSentry = (dsn: string) => {
     return;
   }
 
-  const sentryClient = new Sentry.BrowserClient({
+  const sentryConfig: Sentry.BrowserOptions = {
     dsn,
     release: VERSION
-  });
+  };
+
+  Sentry.init(sentryConfig);
+  const sentryClient = new Sentry.BrowserClient(sentryConfig);
 
   ErrorReporting.supplySentryClient(sentryClient);
 

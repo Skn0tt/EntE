@@ -96,6 +96,14 @@ export class Config {
     return this.getConfig().redis;
   }
 
+  static isDevMode() {
+    return !this.getConfig().production;
+  }
+
+  static isProduction() {
+    return this.getConfig().production;
+  }
+
   static getMysqlConfig() {
     return this.getConfig().db;
   }

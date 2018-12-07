@@ -16,6 +16,7 @@ import { ScheduleService } from "./schedule.service";
 import { ExportModule } from "./export/export.module";
 import { migrations } from "./db/migrations";
 import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
+import { DevModule } from "dev/dev.module";
 
 const {
   database,
@@ -25,6 +26,8 @@ const {
   username,
   timezone
 } = Config.getMysqlConfig();
+
+const isDevMode = Config.isDevMode();
 
 @Global()
 @Module({
@@ -49,7 +52,8 @@ const {
     UsersModule,
     TokenModule,
     StatusModule,
-    ExportModule
+    ExportModule,
+    ...(isDevMode ? [DevModule] : [])
   ],
   providers: [WinstonLoggerService, ScheduleService],
   exports: [WinstonLoggerService]

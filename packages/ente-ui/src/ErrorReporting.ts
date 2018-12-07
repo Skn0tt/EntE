@@ -13,7 +13,17 @@ const supplySentryClient = (c: Sentry.BrowserClient) => {
   client = Some(c);
 };
 
+const isActive = () => client.isSome();
+
+const showReportDialog = () => {
+  if (client.isSome()) {
+    client.some().showReportDialog();
+  }
+};
+
 export const ErrorReporting = {
   report,
-  supplySentryClient
+  supplySentryClient,
+  isActive,
+  showReportDialog
 };
