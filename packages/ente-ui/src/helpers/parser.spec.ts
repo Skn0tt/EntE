@@ -8,6 +8,7 @@
 
 import parse from "./parser";
 import { Roles, CreateUserDto } from "ente-types";
+import { Success } from "monet";
 
 const sampleData = `
 username,displayname,email,password,role,isAdult,graduationYear,children
@@ -16,11 +17,20 @@ lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,Piet Vater,pvater@arcor.de,,parent,,,schüler
 leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
+
 const sampleDataError = `
 username,displayname,email,password,role,isAdult,graduationYear,children
 schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,PVater,pvaterarcor.de,parent,,,,schüler
+leiter,l.leiter,leiter@email.de,,manager,,2019,
+`;
+
+const sampleDataUnknownStudent = `
+username,displayname,email,password,role,isAdult,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
+vater,Piet Vater,pvater@arcor.de,,parent,,,schüler2
 leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
@@ -165,7 +175,7 @@ describe("parse", () => {
       }
     ];
 
-    expect(await parse(exampleImport, [])).toEqual(expectedResult);
+    expect((await parse(exampleImport, [])).success()).toEqual(expectedResult);
   });
 
   it("returns the right data", async () => {
@@ -212,34 +222,21 @@ describe("parse", () => {
       }
     ];
 
-    expect(await parse(sampleData, [])).toEqual(expectedResult);
+    expect((await parse(sampleData, [])).success()).toEqual(expectedResult);
   });
 
   it("throws error on giving wrong data", async () => {
-    expect.assertions(1);
-    try {
-      await parse(sampleDataError, []);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    const result = await parse(sampleDataError, []);
+    expect(result.isFail()).toBe(true);
   });
 
   it("throws error on giving data with a not existing user", async () => {
-    expect.assertions(1);
-    try {
-      await parse(sampleDataError, []);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    const result = await parse(sampleDataUnknownStudent, []);
+    expect(result.isFail()).toEqual(true);
   });
 
   it("doesn't throw error on giving data with user from usernames param", async () => {
-    expect.assertions(1);
-    try {
-      const result = await parse(sampleDataError, ["schüler2"]);
-      expect(result).toBeInstanceOf(Array);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    const result = await parse(sampleDataUnknownStudent, ["schüler2"]);
+    expect(result.isSuccess()).toBe(true);
   });
 });

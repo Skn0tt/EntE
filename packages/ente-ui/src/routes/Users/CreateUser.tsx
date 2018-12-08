@@ -112,10 +112,11 @@ const mapStateToProps: MapStateToPropsParam<
 });
 
 interface DispatchProps {
-  createUser(user: CreateUserDto): Action;
+  createUsers(...users: CreateUserDto[]): Action;
 }
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUser: (user: CreateUserDto) => dispatch(createUsersRequest(user))
+  createUsers: (...users: CreateUserDto[]) =>
+    dispatch(createUsersRequest(users))
 });
 
 type CreateUserProps = OwnProps & StateProps & DispatchProps & InjectedProps;
@@ -146,13 +147,19 @@ export class CreateUser extends React.Component<
   handleCloseImport = () => this.setState({ showImportUsers: false });
 
   handleSubmit = () => {
-    return this.props.createUser(this.state.create);
+    return this.props.createUsers(this.state.create);
   };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
     if (event.key === "Enter" && this.inputValid()) {
       this.handleSubmit();
     }
+  };
+
+  handleImport = (u: CreateUserDto[]) => {
+    this.props.createUsers(...u);
+    this.handleCloseImport();
+    this.handleClose();
   };
 
   /**
@@ -319,7 +326,11 @@ export class CreateUser extends React.Component<
             </Button>
           </DialogActions>
         </Dialog>
-        <ImportUsers onClose={this.handleCloseImport} show={showImportUsers} />
+        <ImportUsers
+          onClose={this.handleCloseImport}
+          show={showImportUsers}
+          onImport={this.handleImport}
+        />
       </>
     );
   }

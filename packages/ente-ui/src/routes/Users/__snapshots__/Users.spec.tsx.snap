@@ -91,35 +91,9 @@ ShallowWrapper {
           onClose={[Function]}
           show={false}
         />,
-        <UserTable
-          extract={[Function]}
-          extractId={[Function]}
-          headers={
-            Array [
-              Object {
-                "name": "Username",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Displayname",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Email",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Role",
-              },
-            ]
-          }
-          items={
+        <Unknown
+          onClick={[Function]}
+          users={
             Array [
               Immutable.UserN {
                 "id": "mystupidid",
@@ -134,7 +108,6 @@ ShallowWrapper {
               },
             ]
           }
-          onClick={[Function]}
         />,
         <WithStyles(Fab)
           color="primary"
@@ -161,34 +134,10 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "class",
+        "nodeType": "function",
         "props": Object {
-          "extract": [Function],
-          "extractId": [Function],
-          "headers": Array [
-            Object {
-              "name": "Username",
-              "options": Object {
-                "filter": false,
-              },
-            },
-            Object {
-              "name": "Displayname",
-              "options": Object {
-                "filter": false,
-              },
-            },
-            Object {
-              "name": "Email",
-              "options": Object {
-                "filter": false,
-              },
-            },
-            Object {
-              "name": "Role",
-            },
-          ],
-          "items": Array [
+          "onClick": [Function],
+          "users": Array [
             Immutable.UserN {
               "id": "mystupidid",
               "username": "simon",
@@ -201,7 +150,6 @@ ShallowWrapper {
               "graduationYear": null,
             },
           ],
-          "onClick": [Function],
         },
         "ref": null,
         "rendered": null,
@@ -243,35 +191,9 @@ ShallowWrapper {
             onClose={[Function]}
             show={false}
           />,
-          <UserTable
-            extract={[Function]}
-            extractId={[Function]}
-            headers={
-              Array [
-                Object {
-                  "name": "Username",
-                  "options": Object {
-                    "filter": false,
-                  },
-                },
-                Object {
-                  "name": "Displayname",
-                  "options": Object {
-                    "filter": false,
-                  },
-                },
-                Object {
-                  "name": "Email",
-                  "options": Object {
-                    "filter": false,
-                  },
-                },
-                Object {
-                  "name": "Role",
-                },
-              ]
-            }
-            items={
+          <Unknown
+            onClick={[Function]}
+            users={
               Array [
                 Immutable.UserN {
                   "id": "mystupidid",
@@ -286,7 +208,6 @@ ShallowWrapper {
                 },
               ]
             }
-            onClick={[Function]}
           />,
           <WithStyles(Fab)
             color="primary"
@@ -313,34 +234,10 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "class",
+          "nodeType": "function",
           "props": Object {
-            "extract": [Function],
-            "extractId": [Function],
-            "headers": Array [
-              Object {
-                "name": "Username",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Displayname",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Email",
-                "options": Object {
-                  "filter": false,
-                },
-              },
-              Object {
-                "name": "Role",
-              },
-            ],
-            "items": Array [
+            "onClick": [Function],
+            "users": Array [
               Immutable.UserN {
                 "id": "mystupidid",
                 "username": "simon",
@@ -353,7 +250,6 @@ ShallowWrapper {
                 "graduationYear": null,
               },
             ],
-            "onClick": [Function],
           },
           "ref": null,
           "rendered": null,
