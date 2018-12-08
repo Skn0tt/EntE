@@ -30,7 +30,7 @@ describe("Users", () => {
     <CreateUser
       getUser={getUser}
       fullScreen
-      createUser={createUser}
+      createUsers={createUser}
       onClose={onClose}
       show
       students={students}
@@ -46,7 +46,7 @@ describe("Users", () => {
       <CreateUser
         getUser={getUser}
         fullScreen
-        createUser={createUser}
+        createUsers={createUser}
         onClose={onClose}
         show={false}
         students={students}

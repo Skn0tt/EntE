@@ -8,7 +8,9 @@
 
 import { parse as papaparse, ParseResult } from "papaparse";
 import * as _ from "lodash";
-import { CreateUserDto, isValidCreateUserDto } from "ente-types";
+import { CreateUserDto, isValidCreateUserDtoWithErrors } from "ente-types";
+import { Validation, Success, Fail } from "monet";
+import { ValidationError } from "class-validator";
 
 const isBlank = (str: string) => !str || /^\s*$/.test(str);
 
@@ -20,7 +22,9 @@ export const parseCSVFromFile = async (
 const parseCSV = async (
   input: string,
   existingUsernames: string[]
-): Promise<CreateUserDto[]> => {
+): Promise<Validation<(ValidationError | string)[], CreateUserDto[]>> => {
+  const errors: (ValidationError | string)[] = [];
+
   const parsed = await parse(input.trim());
 
   const result: CreateUserDto[] = parsed.data.map(row => {
@@ -40,20 +44,21 @@ const parseCSV = async (
     return res;
   });
 
-  const allValid = result.every(isValidCreateUserDto);
-  if (!allValid) {
-    throw new Error("One of the users is invalid.");
-  }
+  const validations = result.map(isValidCreateUserDtoWithErrors);
+  validations.forEach(validation => {
+    validation.forEachFail(fail => {
+      errors.push(...fail);
+    });
+  });
 
   const usernames = result.map(u => u.username).concat(existingUsernames);
-  const childrenValid = result.every(u =>
-    u.children.every(c => usernames.includes(c))
-  );
-  if (!childrenValid) {
-    throw new Error("One of the children does not exist");
-  }
+  const childrenThatDontExist = result.reduce<string[]>((acc, user) => {
+    const notExistant = user.children.filter(c => !usernames.includes(c));
+    return acc.concat(notExistant);
+  }, []);
+  errors.push(...childrenThatDontExist.map(c => `Unknown child: ${c}`));
 
-  return result;
+  return errors.length === 0 ? Success(result) : Fail(errors);
 };
 
 const parse = (input: string) =>
