@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 * Reworked Import screen
+* Updated to `react-redux@6.0.0`
 
 ## [v0.12.1] - 2018-12-07
 
