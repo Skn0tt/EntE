@@ -98,7 +98,7 @@ export class SlotRepo {
     result.teacher =
       slot.teacher === null ? null : UserRepo.toDto(slot.teacher);
     result.student = UserRepo.toDto(slot.entry.student);
-    result.signed = slot.entry.signedManager && slot.entry.signedParent;
+    result.signed = !!slot.entry.signedManager && !!slot.entry.signedParent;
 
     return result;
   }
