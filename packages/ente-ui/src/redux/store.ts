@@ -6,17 +6,46 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { createStore as reduxCreateStore, applyMiddleware } from "redux";
-import reducer from "./reducer";
+import { createStore as reduxCreateStore, applyMiddleware, Store } from "redux";
+import reducer, { initialState } from "./reducer";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reduxSaga from "redux-saga";
-
+import {
+  autoRehydrate,
+  persistStore,
+  createTransform
+} from "./redux-persist-immutable";
 import saga from "./saga";
 import { config } from "./";
+import { AppState, IAppState, UserN, SlotN, AuthState, EntryN } from "./types";
+import * as _ from "lodash";
 
-let store;
+const keysToRemove: (keyof IAppState)[] = ["pendingActions"];
+const removeUnneededTransform = createTransform(
+  (inboundState: AppState, key: keyof IAppState) =>
+    keysToRemove.indexOf(key) !== -1 ? initialState.get(key) : inboundState,
+  _.identity
+);
 
-export const createStore = () => {
+const startPersistance = (store: Store) => {
+  let persistor: any;
+  return new Promise((resolve, reject) => {
+    persistor = persistStore(
+      store,
+      {
+        storage: config.storage,
+        transforms: [removeUnneededTransform],
+        records: [UserN, SlotN, AuthState, AppState, EntryN]
+      },
+      () => resolve(persistor)
+    );
+  });
+};
+
+let store: Store;
+let persistor: any;
+
+export const createStore = async () => {
   const sagaMiddleware = reduxSaga({
     onError: config.onSagaError
   });
@@ -26,10 +55,15 @@ export const createStore = () => {
 
   store = reduxCreateStore(
     reducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware, ...middlewares))
+    composeEnhancers(
+      applyMiddleware(sagaMiddleware, ...middlewares),
+      autoRehydrate()
+    )
   );
 
   sagaMiddleware.run(saga);
+
+  persistor = await startPersistance(store);
 
   return store;
 };

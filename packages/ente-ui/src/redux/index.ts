@@ -8,6 +8,7 @@
 
 import { createStore } from "./store";
 import { Middleware } from "redux";
+import storage from "redux-persist/storages";
 
 export * from "./selectors";
 export * from "./actions";
@@ -19,18 +20,22 @@ export type ReduxConfig = {
   middlewares?: Middleware[];
   onSagaError?: (err: Error) => void;
   onFileDownload: (file: Blob, filename: string) => void;
+  storage: any;
 };
 
-export let config: ReduxConfig = {
+const defaultConfig: ReduxConfig = {
+  storage,
   baseUrl: "",
   middlewares: [],
   onFileDownload: () => {}
 };
 
-const setup = (conf: ReduxConfig) => {
-  config = conf;
+export let config: ReduxConfig;
 
-  return createStore();
+const setup = async (conf: Partial<ReduxConfig>) => {
+  config = { ...defaultConfig, ...conf };
+
+  return await createStore();
 };
 
 export default setup;

@@ -3,11 +3,7 @@ import { None, Maybe, Some } from "monet";
 
 let client: Maybe<Sentry.BrowserClient> = None();
 
-const report = (error: any) => {
-  if (client.isSome()) {
-    client.some().captureException(error);
-  }
-};
+const report = (error: any) => client.forEach(c => c.captureException(error));
 
 const supplySentryClient = (c: Sentry.BrowserClient) => {
   client = Some(c);
@@ -15,11 +11,7 @@ const supplySentryClient = (c: Sentry.BrowserClient) => {
 
 const isActive = () => client.isSome();
 
-const showReportDialog = () => {
-  if (client.isSome()) {
-    client.some().showReportDialog();
-  }
-};
+const showReportDialog = () => client.forEach(c => c.showReportDialog());
 
 export const ErrorReporting = {
   report,

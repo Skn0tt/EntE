@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased
 
+* Added Redux persistance
 * Fixed bug where Slot "signed" had wrong type
 * Reworked Import screen
 * Updated to `react-redux@6.0.0`

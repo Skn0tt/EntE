@@ -77,7 +77,6 @@ import {
   SlotN,
   EntryN
 } from "./types";
-import { Some } from "monet";
 import * as _ from "lodash";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
@@ -161,7 +160,7 @@ const asyncReducersFull = (
   }
 });
 
-const initialState = new AppState({});
+export const initialState = new AppState({});
 
 const reducer = handleActions(
   {
@@ -173,8 +172,7 @@ const reducer = handleActions(
       GET_TOKEN_REQUEST,
       GET_TOKEN_ERROR,
       GET_TOKEN_SUCCESS,
-      (state, action: Action<AuthState>) =>
-        state.set("auth", Some(action.payload))
+      (state, action: Action<AuthState>) => state.set("auth", action.payload!)
     ),
 
     // ## REFRESH_TOKEN
@@ -183,7 +181,7 @@ const reducer = handleActions(
       REFRESH_TOKEN_ERROR,
       REFRESH_TOKEN_SUCCESS,
       (state: AppState, action: Action<AuthState>) =>
-        state.set("auth", Some(action.payload))
+        state.set("auth", action.payload!)
     ),
 
     // ## LOGOUT

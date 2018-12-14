@@ -148,7 +148,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     this.props.onAdd({
       from: Number(this.state.from),
       to: Number(this.state.to),
-      teacherId: this.state.teacher,
+      teacherId: this.state.teacher!,
       date: this.props.multiDay ? this.state.date : undefined
     });
 

@@ -8,7 +8,6 @@
 
 import { Map, Record, Set } from "immutable";
 import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
-import { Maybe, None } from "monet";
 import { Action } from "redux";
 
 export interface BasicCredentials {
@@ -41,7 +40,7 @@ class EntryDtoNormalised extends EntryDto {
 
 class SlotDtoNormalised extends SlotDto {
   studentId: string;
-  teacherId: Maybe<string>;
+  teacherId: string | null;
 }
 
 export type UserN = Record<UserDtoNormalised>;
@@ -55,7 +54,7 @@ export const UserN = Record<UserDtoNormalised>(
     isAdult: false,
     role: Roles.STUDENT,
     childrenIds: [],
-    graduationYear: null
+    graduationYear: undefined
   },
   "UserN"
 );
@@ -80,7 +79,7 @@ export const EntryN = Record<EntryDtoNormalised>(
     signedParent: false,
     slots: [],
     slotIds: [],
-    student: null,
+    student: (null as unknown) as UserDto,
     studentId: "",
     updatedAt: new Date()
   },
@@ -94,10 +93,10 @@ export const SlotN = Record<SlotDtoNormalised>(
     from: 0,
     id: "",
     signed: false,
-    student: null,
+    student: (null as unknown) as UserDto,
     teacher: null,
     studentId: "",
-    teacherId: None(),
+    teacherId: null,
     to: 0
   },
   "SlotN"
@@ -137,7 +136,7 @@ export interface IAppState {
   entriesMap: Map<string, EntryN>;
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
-  auth: Maybe<AuthState>;
+  auth: AuthState | null;
   pendingActions: PendingActions;
 }
 
@@ -147,7 +146,7 @@ export const AppState = Record<IAppState>(
     entriesMap: Map<string, EntryN>(),
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
-    auth: None(),
+    auth: null,
     pendingActions: Set<Action>()
   },
   "AppState"

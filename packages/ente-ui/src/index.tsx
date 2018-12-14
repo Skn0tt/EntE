@@ -64,7 +64,7 @@ const setupSentry = (dsn: string) => {
 
   const ravenMiddleware = createSentryMiddleware(sentryClient);
 
-  config.middlewares.push(ravenMiddleware);
+  config.middlewares!.push(ravenMiddleware);
   config.onSagaError = ErrorReporting.report;
 };
 
@@ -72,25 +72,29 @@ if (!!SENTRY_DSN) {
   setupSentry(SENTRY_DSN);
 }
 
-const store = setupRedux(config);
+const bootstrap = async () => {
+  const store = await setupRedux(config);
 
-const Index = () => (
-  <div>
-    <React.StrictMode>
-      <CssBaseline />
-      <MuiThemeProvider theme={theme}>
-        <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
-          <HttpsGate disable={ALLOW_INSECURE}>
-            <MessagesProvider>
-              <Provider store={store}>
-                <App />
-              </Provider>
-            </MessagesProvider>
-          </HttpsGate>
-        </MuiPickersUtilsProvider>
-      </MuiThemeProvider>
-    </React.StrictMode>
-  </div>
-);
+  const Index = () => (
+    <div>
+      <React.StrictMode>
+        <CssBaseline />
+        <MuiThemeProvider theme={theme}>
+          <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+            <HttpsGate disable={ALLOW_INSECURE}>
+              <MessagesProvider>
+                <Provider store={store}>
+                  <App />
+                </Provider>
+              </MessagesProvider>
+            </HttpsGate>
+          </MuiPickersUtilsProvider>
+        </MuiThemeProvider>
+      </React.StrictMode>
+    </div>
+  );
 
-ReactDOM.render(<Index />, document.getElementById("root"));
+  ReactDOM.render(<Index />, document.getElementById("root"));
+};
+
+bootstrap();

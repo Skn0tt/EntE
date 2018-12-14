@@ -131,7 +131,7 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
       student: null,
       teacher: null,
       studentId: student.id,
-      teacherId: teacher === null ? None() : Some(teacher.id)
+      teacherId: teacher
     });
 
     result.slots.push(normalised);

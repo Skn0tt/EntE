@@ -112,7 +112,7 @@ export class Slots extends React.Component<SlotsProps> {
           "" + slot.get("from"),
           "" + slot.get("to"),
           slot.get("signed") ? lang.yes : lang.no,
-          slot.get("teacherId").cata(
+          Maybe.fromNull(slot.get("teacherId")).cata(
             () => lang.deleted,
             id =>
               getUser(id)
