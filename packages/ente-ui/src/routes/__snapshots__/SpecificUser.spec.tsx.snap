@@ -159,7 +159,6 @@ ShallowWrapper {
                     amount={5}
                     label="Graduation Year"
                     onChange={[Function]}
-                    value={null}
                   />
                 </WithStyles(Grid)>
               </WithStyles(Grid)>
@@ -283,7 +282,6 @@ ShallowWrapper {
                       amount={5}
                       label="Graduation Year"
                       onChange={[Function]}
-                      value={null}
                     />
                   </WithStyles(Grid)>
                 </WithStyles(Grid)>
@@ -394,7 +392,6 @@ ShallowWrapper {
                         amount={5}
                         label="Graduation Year"
                         onChange={[Function]}
-                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>
@@ -520,7 +517,6 @@ ShallowWrapper {
                         amount={5}
                         label="Graduation Year"
                         onChange={[Function]}
-                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>,
@@ -590,7 +586,6 @@ ShallowWrapper {
                           amount={5}
                           label="Graduation Year"
                           onChange={[Function]}
-                          value={null}
                         />
                       </WithStyles(Grid)>,
                       false,
@@ -772,7 +767,6 @@ ShallowWrapper {
                           amount={5}
                           label="Graduation Year"
                           onChange={[Function]}
-                          value={null}
                         />,
                         "item": true,
                         "xs": 6,
@@ -786,7 +780,7 @@ ShallowWrapper {
                           "amount": 5,
                           "label": "Graduation Year",
                           "onChange": [Function],
-                          "value": null,
+                          "value": undefined,
                         },
                         "ref": null,
                         "rendered": null,
@@ -960,7 +954,6 @@ ShallowWrapper {
                       amount={5}
                       label="Graduation Year"
                       onChange={[Function]}
-                      value={null}
                     />
                   </WithStyles(Grid)>
                 </WithStyles(Grid)>
@@ -1084,7 +1077,6 @@ ShallowWrapper {
                         amount={5}
                         label="Graduation Year"
                         onChange={[Function]}
-                        value={null}
                       />
                     </WithStyles(Grid)>
                   </WithStyles(Grid)>
@@ -1195,7 +1187,6 @@ ShallowWrapper {
                           amount={5}
                           label="Graduation Year"
                           onChange={[Function]}
-                          value={null}
                         />
                       </WithStyles(Grid)>
                     </WithStyles(Grid)>
@@ -1321,7 +1312,6 @@ ShallowWrapper {
                           amount={5}
                           label="Graduation Year"
                           onChange={[Function]}
-                          value={null}
                         />
                       </WithStyles(Grid)>
                     </WithStyles(Grid)>,
@@ -1391,7 +1381,6 @@ ShallowWrapper {
                             amount={5}
                             label="Graduation Year"
                             onChange={[Function]}
-                            value={null}
                           />
                         </WithStyles(Grid)>,
                         false,
@@ -1573,7 +1562,6 @@ ShallowWrapper {
                             amount={5}
                             label="Graduation Year"
                             onChange={[Function]}
-                            value={null}
                           />,
                           "item": true,
                           "xs": 6,
@@ -1587,7 +1575,7 @@ ShallowWrapper {
                             "amount": 5,
                             "label": "Graduation Year",
                             "onChange": [Function],
-                            "value": null,
+                            "value": undefined,
                           },
                           "ref": null,
                           "rendered": null,

@@ -5,11 +5,11 @@ import { createTranslation } from "../helpers/createTranslation";
 const lang = createTranslation({
   de: {
     reportFeedback: "Feedback rückmelden",
-    anErrorOccured: msg => `Es ist ein Fehler aufgetreten: ${msg}`
+    anErrorOccured: (msg: string) => `Es ist ein Fehler aufgetreten: ${msg}`
   },
   en: {
     reportFeedback: "Report feedback",
-    anErrorOccured: msg => `An Error occured: ${msg}`
+    anErrorOccured: (msg: string) => `An Error occured: ${msg}`
   }
 });
 
@@ -39,13 +39,13 @@ export const withErrorBoundary = <C extends { error: Error }>(
           return <CustomErrorScreen error={error} />;
         }
 
-        if (ErrorReporting.isActive) {
+        if (ErrorReporting.isActive()) {
           return (
             <>
               <p id="error">{lang.anErrorOccured(error.message)}</p>
-              <a onClick={ErrorReporting.showReportDialog}>
+              <button onClick={ErrorReporting.showReportDialog}>
                 {lang.reportFeedback}
-              </a>
+              </button>
             </>
           );
         }

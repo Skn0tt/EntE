@@ -20,7 +20,7 @@ ShallowWrapper {
           "isAdult": false,
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": null,
+          "graduationYear": undefined,
         },
       ]
     }
@@ -2425,7 +2425,7 @@ ShallowWrapper {
           "isAdult": false,
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": null,
+          "graduationYear": undefined,
         },
       ]
     }
