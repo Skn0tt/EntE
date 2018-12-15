@@ -5,16 +5,26 @@
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
-
-import template from "./SignedInformation";
+import { SignedInformation } from "./SignedInformation";
 import { expect } from "chai";
+import { Languages } from "ente-types";
 
 describe("SignedInformation", () => {
   const link = "https://simonknott.de";
 
-  it("outputs the right info", () => {
-    const { html, subject } = template(link);
+  describe("de", () => {
+    it("outputs the right info", () => {
+      const { html, subject } = SignedInformation(link, Languages.GERMAN);
 
-    expect(html).to.contain(link);
+      expect(html).to.contain(link);
+    });
+  });
+
+  describe("en", () => {
+    it("outputs the right info", () => {
+      const { html, subject } = SignedInformation(link, Languages.ENGLISH);
+
+      expect(html).to.contain(link);
+    });
   });
 });
