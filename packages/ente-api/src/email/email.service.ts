@@ -1,27 +1,28 @@
 import { Injectable, Inject, LoggerService } from "@nestjs/common";
-import SignRequest from "../templates/SignRequest";
-import SignedInformation from "../templates/SignedInformation";
-import PasswordResetLink from "../templates/PasswordResetLink";
-import PasswordResetSuccess from "../templates/PasswordResetSuccess";
-import WeeklySummary, {
-  WeeklySummaryRowData
+import {
+  WeeklySummaryRowData,
+  WeeklySummary
 } from "../templates/WeeklySummary";
-import { UserDto, SlotDto } from "ente-types";
+import { UserDto, SlotDto, Languages } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { NodemailerService } from "../infrastructure/nodemailer.service";
 import { EmailTransportService } from "../infrastructure/email-transport.service";
+import { SignedInformation } from "../templates/SignedInformation";
+import { PasswordResetLink } from "../templates/PasswordResetLink";
+import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
+import { SignRequest } from "../templates/SignRequest";
 
 @Injectable()
 export class EmailService {
   constructor(
     @Inject(NodemailerService)
-    private readonly railMailService: EmailTransportService,
+    private readonly emailTransport: EmailTransportService,
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
   async dispatchSignRequest(link: string, recipients: UserDto[]) {
-    const { html, subject } = await SignRequest(link);
-    await this.railMailService.sendMail({
+    const { html, subject } = await SignRequest(link, Languages.GERMAN);
+    await this.emailTransport.sendMail({
       recipients: recipients.map(r => r.email),
       body: {
         html
@@ -36,24 +37,35 @@ export class EmailService {
   }
 
   async dispatchSignedInformation(link: string, recipients: UserDto[]) {
-    const { html, subject } = await SignedInformation(link);
-    await this.railMailService.sendMail({
-      recipients: recipients.map(r => r.email),
-      body: {
-        html
-      },
-      subject
-    });
-    this.logger.log(
-      `Successfully dispatched SignedInformation to ${JSON.stringify(
-        recipients.map(r => [r.username, r.email])
-      )}`
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await SignedInformation(
+          link,
+          Languages.GERMAN
+        );
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched SignedInformation to ${JSON.stringify(
+            recipients.map(r => [r.username, r.email])
+          )}`
+        );
+      })
     );
   }
 
   async dispatchPasswordResetLink(link: string, user: UserDto) {
-    const { subject, html } = await PasswordResetLink(link, user.username);
-    await this.railMailService.sendMail({
+    const { subject, html } = await PasswordResetLink(
+      link,
+      user.username,
+      Languages.GERMAN
+    );
+    await this.emailTransport.sendMail({
       recipients: [user.email],
       body: {
         html
@@ -68,8 +80,11 @@ export class EmailService {
   }
 
   async dispatchPasswordResetSuccess(user: UserDto) {
-    const { subject, html } = await PasswordResetSuccess(user.username);
-    await this.railMailService.sendMail({
+    const { subject, html } = await PasswordResetSuccess(
+      user.username,
+      Languages.GERMAN
+    );
+    await this.emailTransport.sendMail({
       recipients: [user.email],
       body: {
         html
@@ -91,8 +106,8 @@ export class EmailService {
       hour_to: s.to,
       signed: s.signed
     }));
-    const { html, subject } = await WeeklySummary(data);
-    await this.railMailService.sendMail({
+    const { html, subject } = await WeeklySummary(data, Languages.GERMAN);
+    await this.emailTransport.sendMail({
       recipients: [teacher.email],
       body: {
         html
