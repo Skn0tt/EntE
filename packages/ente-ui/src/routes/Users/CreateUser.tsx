@@ -7,7 +7,11 @@
  */
 
 import * as React from "react";
-import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
+import {
+  connect,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 
 import { Dialog, Button, Grid, TextField, Typography } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -98,12 +102,12 @@ interface CreateUserState {
   showImportUsers: boolean;
 }
 
-interface StateProps {
+interface CreateUserStateProps {
   students: UserN[];
   getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
+  CreateUserStateProps,
   OwnProps,
   AppState
 > = state => ({
@@ -111,15 +115,21 @@ const mapStateToProps: MapStateToPropsParam<
   students: getStudents(state)
 });
 
-interface DispatchProps {
+interface CreateUserDispatchProps {
   createUsers(...users: CreateUserDto[]): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  CreateUserDispatchProps,
+  OwnProps
+> = dispatch => ({
   createUsers: (...users: CreateUserDto[]) =>
     dispatch(createUsersRequest(users))
 });
 
-type CreateUserProps = OwnProps & StateProps & DispatchProps & InjectedProps;
+type CreateUserProps = OwnProps &
+  CreateUserStateProps &
+  CreateUserDispatchProps &
+  InjectedProps;
 
 /**
  * # Component
@@ -298,7 +308,7 @@ export class CreateUser extends React.Component<
                       label={lang.titles.gradYear}
                       amount={5}
                       onChange={this.handleChangeYear}
-                      value={create.graduationYear}
+                      value={create.graduationYear!}
                     />
                   </Grid>
                 )}
@@ -336,7 +346,11 @@ export class CreateUser extends React.Component<
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser)));
+export default connect<
+  CreateUserStateProps,
+  CreateUserDispatchProps,
+  OwnProps,
+  AppState
+>(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser))
+);

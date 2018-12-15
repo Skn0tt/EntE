@@ -37,22 +37,26 @@ const mapStateToProps = (state: AppState) => ({
 
 type AppProps = AppStateProps;
 
-const App: React.SFC<AppProps> = props => (
-  <BrowserRouter>
-    <>
-      <MessageStream />
-      <AuthService period={ROTATION_PERIOD} />
-      <Switch>
-        <Route path="/passwordReset/:token" component={PasswordReset} />
-        <Route path="/login" component={Login} />
-        <AuthenticatedRoute isLoggedIn={props.authValid}>
-          <Drawer>
-            <Routes role={props.role.orSome(Roles.STUDENT)} />
-          </Drawer>
-        </AuthenticatedRoute>
-      </Switch>
-    </>
-  </BrowserRouter>
-);
+const App: React.FunctionComponent<AppProps> = props => {
+  const { authValid, role } = props;
+
+  return (
+    <BrowserRouter>
+      <>
+        <MessageStream />
+        <AuthService period={ROTATION_PERIOD} />
+        <Switch>
+          <Route path="/passwordReset/:token" component={PasswordReset} />
+          <Route path="/login" component={Login} />
+          <AuthenticatedRoute isLoggedIn={authValid}>
+            <Drawer>
+              <Routes role={role.orSome(Roles.STUDENT)} />
+            </Drawer>
+          </AuthenticatedRoute>
+        </Switch>
+      </>
+    </BrowserRouter>
+  );
+};
 
 export default connect(mapStateToProps)(withErrorBoundary()(App));

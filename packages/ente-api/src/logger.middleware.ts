@@ -21,6 +21,6 @@ export class LoggerMiddleware implements NestMiddleware {
           this.winstonLogger.log(s);
         }
       }
-    });
+    }) as MiddlewareFunction;
   }
 }

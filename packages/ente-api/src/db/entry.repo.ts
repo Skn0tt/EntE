@@ -91,7 +91,7 @@ export class EntryRepo {
               relations: ["children"]
             });
             return await manager.create(Slot, {
-              date: isMultiDayEntry ? new Date(s.date) : null,
+              date: isMultiDayEntry ? new Date(s.date!) : null,
               hour_from: s.from,
               hour_to: s.to,
               teacher
@@ -139,7 +139,7 @@ export class EntryRepo {
 
     result.id = entry._id;
     result.date = entry.date;
-    result.dateEnd = entry.dateEnd;
+    result.dateEnd = entry.dateEnd || undefined;
     result.slots = entry.slots.map(SlotRepo.toDto);
     result.student = UserRepo.toDto(entry.student);
     result.createdAt = entry.createdAt;

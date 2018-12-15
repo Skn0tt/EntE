@@ -6,7 +6,7 @@ describe("isSentryDsn", () => {
     "https://23bnjkadsk@sentry.io/321"
   ];
   valid.forEach(v => {
-    test(v, () => {
+    it(v, () => {
       expect(isSentryDsn(v)).toBe(true);
     });
   });
@@ -18,7 +18,7 @@ describe("isSentryDsn", () => {
     "https://23bnjkadsk:890asdjkl@simonknott.de/321"
   ];
   invalid.forEach(v => {
-    test(v, () => {
+    it(v, () => {
       expect(isSentryDsn(v)).toBe(false);
     });
   });

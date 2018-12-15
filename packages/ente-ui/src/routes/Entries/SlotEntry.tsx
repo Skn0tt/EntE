@@ -47,8 +47,8 @@ interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
   multiDay: boolean;
   datePickerConfig?: {
-    min: Date;
-    max: Date;
+    min?: Date;
+    max?: Date;
   };
   date: Date;
 }
@@ -80,6 +80,10 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     from: "1",
     to: "2"
   };
+
+  get datePickerConfig() {
+    return this.props.datePickerConfig || {};
+  }
 
   /**
    * Handlers
@@ -130,12 +134,22 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
 
   dateValid = (): boolean => {
     const { date } = this.state;
-    const { datePickerConfig: { min, max }, multiDay } = this.props;
+    const { multiDay } = this.props;
     if (!multiDay) {
       return true;
     }
 
-    return min <= date && max >= date;
+    const { min, max } = this.datePickerConfig;
+
+    if (!!min && min > date!) {
+      return false;
+    }
+
+    if (!!max && max < date!) {
+      return false;
+    }
+
+    return true;
   };
 
   slotInputValid = () =>
@@ -180,13 +194,14 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
           <Grid item xs={3}>
             <DateInput
               onChange={date => this.setState({ date })}
-              minDate={datePickerConfig.min}
-              maxDate={datePickerConfig.max}
+              minDate={datePickerConfig!.min}
+              maxDate={datePickerConfig!.max}
               isValid={d =>
-                +datePickerConfig.min <= +d && +datePickerConfig.max >= +d
+                +(this.datePickerConfig.min || 0) <= +d &&
+                +(this.datePickerConfig.max || Number.POSITIVE_INFINITY) >= +d
               }
               label={lang.titles.day}
-              value={date}
+              value={date!}
             />
           </Grid>
         )}

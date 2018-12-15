@@ -38,14 +38,14 @@ export class SentryInterceptor implements NestInterceptor, OnModuleInit {
     const userData: UserDto | null = !!httpRequest ? httpRequest.user : null;
 
     return call$.pipe(
-      tap(null, exception => {
+      tap(undefined, exception => {
         if (this.shouldReport(exception)) {
           Sentry.withScope(scope => {
             if (!!userData) {
               scope.setUser({
                 email: userData.email,
                 id: userData.id,
-                ip_address: httpRequest && httpRequest.ip,
+                ip_address: !!httpRequest ? httpRequest.ip : undefined,
                 username: userData.username
               });
             }

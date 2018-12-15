@@ -1,4 +1,4 @@
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import * as React from "react";
 
 export const messages$ = new BehaviorSubject<string[]>([]);
@@ -29,40 +29,29 @@ export const MessagesContext = React.createContext<MessagesContextValue>({
 
 export const MessagesConsumer = MessagesContext.Consumer;
 
-export class MessagesProvider extends React.PureComponent<
-  {},
-  { messages: string[] }
-> {
-  state = {
-    messages: messages$.getValue()
-  };
+export const MessagesProvider: React.FunctionComponent<{}> = props => {
+  const { children } = props;
 
-  subscription: Subscription;
+  const [messages, updateMessages] = React.useState(messages$.getValue());
 
-  componentDidMount() {
-    this.subscription = messages$.subscribe(messages =>
-      this.setState({ messages })
-    );
-  }
+  React.useEffect(() => {
+    const subscription = messages$.subscribe(msgs => {
+      updateMessages(msgs);
+    });
+    return subscription.unsubscribe;
+  }, []);
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
+  return (
+    <MessagesContext.Provider
+      value={{
+        messages,
+        addMessages,
+        removeMessage
+      }}
+    >
+      {children}
+    </MessagesContext.Provider>
+  );
+};
 
-  render() {
-    const { children } = this.props;
-    const { messages } = this.state;
-
-    return (
-      <MessagesContext.Provider
-        value={{
-          messages,
-          addMessages,
-          removeMessage
-        }}
-      >
-        {children}
-      </MessagesContext.Provider>
-    );
-  }
-}
+export const useMessages = () => React.useContext(MessagesContext);

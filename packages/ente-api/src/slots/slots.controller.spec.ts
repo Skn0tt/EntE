@@ -4,12 +4,14 @@ import { setupEnvVars } from "../../test/setup";
 import { SlotsService } from "./slots.service";
 import { Success } from "monet";
 import { mocks } from "../../test/mocks/entities";
+import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
+import { RequestContextUser } from "../helpers/request-context";
 
 const slotsServiceMock: SlotsService = {
-  async findAll(r) {
+  async findAll() {
     return [mocks.slots.slot];
   },
-  async findOne(id, r) {
+  async findOne(id: string) {
     if (id !== "exists") {
       throw new Error();
     }
@@ -45,7 +47,10 @@ describe("Slots Controller", () => {
       const controller: SlotsController = module.get<SlotsController>(
         SlotsController
       );
-      const result = await controller.findAll({ user: mocks.users.admin });
+      const result = await controller.findAll(
+        { user: mocks.users.admin },
+        NO_PAGINATION_INFO
+      );
       expect(result).toEqual([mocks.slots.slot]);
     });
   });

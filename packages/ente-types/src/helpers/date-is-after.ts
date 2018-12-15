@@ -17,7 +17,7 @@ export function DateIsAfter(
       validator: {
         validate(value: any, args: ValidationArguments) {
           if (typeof comparison === "string") {
-            const v = args.object[comparison] as Date;
+            const v = (args.object as any)[comparison] as Date;
             return value instanceof Date && +v < +value;
           } else {
             return value instanceof Date && +comparison() < +value;

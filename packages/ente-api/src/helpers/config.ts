@@ -54,38 +54,38 @@ const config = (): IConfig => {
     SMTP_ADDRESS
   } = envVars;
   return {
-    baseUrl: ensureNotEnding("/")(BASE_URL),
+    baseUrl: ensureNotEnding("/")(BASE_URL!),
     production: envVars.NODE_ENV === "production",
     cron: {
       enable: ENABLE_CRON_JOBS === "true",
-      weeklySummary: CRON_WEEKLY_SUMMARY
+      weeklySummary: CRON_WEEKLY_SUMMARY!
     },
     DSN:
       envVars.SENTRY_DSN !== "undefined"
-        ? Some(envVars.SENTRY_DSN)
+        ? Some(envVars.SENTRY_DSN!)
         : None<string>(),
     version: pack.version,
-    signerBaseUrl: envVars.SIGNER_BASEURL,
+    signerBaseUrl: envVars.SIGNER_BASEURL!,
     mail: {
-      address: SMTP_ADDRESS,
-      host: SMTP_HOST,
-      port: +SMTP_PORT,
-      password: SMTP_PASSWORD,
-      sender: SMTP_SENDER,
-      username: SMTP_USERNAME,
+      address: SMTP_ADDRESS!,
+      host: SMTP_HOST!,
+      port: +SMTP_PORT!,
+      password: SMTP_PASSWORD!,
+      sender: SMTP_SENDER!,
+      username: SMTP_USERNAME!,
       pool: SMTP_POOL === "FALSE" ? false : true
     },
     db: {
-      host: envVars.MYSQL_HOST,
-      port: +envVars.MYSQL_PORT,
-      username: envVars.MYSQL_USERNAME,
-      password: envVars.MYSQL_PASSWORD,
-      database: envVars.MYSQL_DATABASE,
-      timezone: envVars.MYSQL_TIMEZONE
+      host: envVars.MYSQL_HOST!,
+      port: +envVars.MYSQL_PORT!,
+      username: envVars.MYSQL_USERNAME!,
+      password: envVars.MYSQL_PASSWORD!,
+      database: envVars.MYSQL_DATABASE!,
+      timezone: envVars.MYSQL_TIMEZONE!
     },
     redis: {
-      host: REDIS_HOST,
-      port: +REDIS_PORT,
+      host: REDIS_HOST!,
+      port: +REDIS_PORT!,
       prefix: REDIS_PREFIX || "ENTE_API_"
     }
   };

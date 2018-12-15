@@ -28,31 +28,31 @@ interface PasswordResetModal {
   show: boolean;
 }
 
-export const PasswordResetModal: React.SFC<PasswordResetModal> = React.memo(
-  props => {
-    const { onClose, onReset, show } = props;
-    const [username, setUsername] = React.useState("");
+export const PasswordResetModal: React.FunctionComponent<
+  PasswordResetModal
+> = React.memo(props => {
+  const { onClose, onReset, show } = props;
+  const [username, setUsername] = React.useState("");
 
-    return (
-      <Modal
-        onClose={onClose}
-        onOk={() => onReset(username)}
-        show={show}
-        title={lang.title}
-        description={lang.description}
-        labels={{ ok: lang.ok }}
-      >
-        <TextField
-          onChange={event => setUsername(event.target.value)}
-          value={username}
-          fullWidth
-          autoFocus
-          margin="dense"
-          label={lang.username}
-          error={!isValidUsername(username)}
-          helperText={!isValidUsername(username) && lang.inputValidUsername}
-        />
-      </Modal>
-    );
-  }
-);
+  return (
+    <Modal
+      onClose={onClose}
+      onOk={() => onReset(username)}
+      show={show}
+      title={lang.title}
+      description={lang.description}
+      labels={{ ok: lang.ok }}
+    >
+      <TextField
+        onChange={event => setUsername(event.target.value)}
+        value={username}
+        fullWidth
+        autoFocus
+        margin="dense"
+        label={lang.username}
+        error={!isValidUsername(username)}
+        helperText={!isValidUsername(username) && lang.inputValidUsername}
+      />
+    </Modal>
+  );
+});

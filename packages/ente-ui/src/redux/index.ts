@@ -8,7 +8,7 @@
 
 import { createStore } from "./store";
 import { Middleware } from "redux";
-import storage from "redux-persist/storages";
+import { asyncLocalStorage } from "redux-persist/storages";
 
 export * from "./selectors";
 export * from "./actions";
@@ -24,7 +24,7 @@ export type ReduxConfig = {
 };
 
 const defaultConfig: ReduxConfig = {
-  storage,
+  storage: asyncLocalStorage,
   baseUrl: "",
   middlewares: [],
   onFileDownload: () => {}

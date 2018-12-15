@@ -76,7 +76,7 @@ import * as _ from "lodash";
 const createMetaAction = <Meta, Payload = any>(type: string) =>
   createAction<Payload, Meta>(
     type,
-    null,
+    _.identity,
     (...args: any[]) => args[1] || args[0]
   );
 

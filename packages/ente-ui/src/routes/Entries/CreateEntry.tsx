@@ -157,7 +157,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   state: State = {
     student:
       this.props.children.some().length > 0
-        ? this.props.children[0].get("id")
+        ? this.props.children.some()[0].get("id")
         : undefined,
     isRange: false,
     date: stripTime(new Date()),
@@ -190,9 +190,9 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   handleChangeBeginDate = (date: Date) => {
     const { slots, isRange, dateEnd } = this.state;
     const slotsWithoutSlotsThatAreTooEarly = isRange
-      ? slots.filter(s => s.date >= date)
+      ? slots.filter(s => s.date! >= date)
       : slots;
-    const dateEndIsBeforeDate = +dateEnd <= +date + oneDay;
+    const dateEndIsBeforeDate = +dateEnd! <= +date + oneDay;
     if (dateEndIsBeforeDate) {
       this.setState({
         date,
@@ -210,7 +210,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   handleChangeDateEnd = (dateEnd: Date) => {
     const { slots, isRange } = this.state;
     const slotsWithoutSlotsThatAreTooLate = isRange
-      ? slots.filter(s => s.date <= dateEnd)
+      ? slots.filter(s => s.date! <= dateEnd)
       : slots;
     this.setState({ dateEnd, slots: slotsWithoutSlotsThatAreTooLate });
   };
@@ -362,7 +362,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         isValid={this.dateEndValid}
                         onChange={this.handleChangeDateEnd}
                         minDate={nextDay(date)}
-                        value={dateEnd}
+                        value={dateEnd!}
                         minDateMessage={lang.dateMustBeBiggerThanFrom}
                       />
                     </Grid>

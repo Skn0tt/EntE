@@ -141,14 +141,10 @@ export class UsersService implements OnModuleInit {
         break;
     }
 
-    const requestingUser =
-      _requestingUser.role === Roles.MANAGER &&
-      (await _requestingUser.getDto()).some();
-
     const user = await this.userRepo.findById(id);
-    return user.cata(
-      () => Fail(FindOneUserFailure.UserNotFound),
-      u => {
+    return await user.cata<Promise<Validation<FindOneUserFailure, UserDto>>>(
+      async () => Fail(FindOneUserFailure.UserNotFound),
+      async u => {
         const requestingOneSelf = id === _requestingUser.id;
         if (requestingOneSelf) {
           return Success(u);
@@ -160,8 +156,9 @@ export class UsersService implements OnModuleInit {
             return Success(u);
 
           case Roles.MANAGER:
+            const requestingUser = (await _requestingUser.getDto()).some();
             const isManagersYear =
-              u.graduationYear === requestingUser.graduationYear;
+              u.graduationYear === requestingUser.graduationYear!;
             return isManagersYear
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
@@ -175,6 +172,8 @@ export class UsersService implements OnModuleInit {
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
         }
+
+        throw new Error("Not reachable");
       }
     );
   }
@@ -188,15 +187,17 @@ export class UsersService implements OnModuleInit {
     );
     const created = await this.userRepo.create(...withHash);
 
-    created.forEach(user => {
-      const hasPasswordSet = !!users.find(u => user.username === u.username)
+    const usersWithoutPassword = created.filter(created => {
+      const hasPasswordSet = users.find(u => created.username === u.username)!
         .password;
-      if (!hasPasswordSet) {
-        this.passwordResetService.startPasswordResetRoutine(
-          user.username,
-          days(7)
-        );
-      }
+      return hasPasswordSet;
+    });
+
+    usersWithoutPassword.forEach(user => {
+      this.passwordResetService.startPasswordResetRoutine(
+        user.username,
+        days(7)
+      );
     });
 
     return created;
@@ -251,7 +252,7 @@ export class UsersService implements OnModuleInit {
       `User ${
         requestingUser.username
       } successfully created users ${JSON.stringify(
-        created.map(c => c.username)
+        created.map((c: UserDto) => c.username)
       )}`
     );
 

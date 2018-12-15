@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { connect, Dispatch } from "react-redux";
+import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Action } from "redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router";
 import {
@@ -59,11 +59,13 @@ const lang = createTranslation({
   }
 });
 
+interface LoginOwnProps {}
+
 interface InjectedProps {
   fullScreen: boolean;
 }
 
-interface StateProps {
+interface LoginStateProps {
   authValid: boolean;
   loginPending: boolean;
   passwordResetPending: boolean;
@@ -74,18 +76,22 @@ const mapStateToProps = (state: AppState) => ({
   passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST)
 });
 
-interface DispatchProps {
+interface LoginDispatchProps {
   checkAuth(credentials: BasicCredentials): Action;
   triggerPasswordReset(username: string): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  LoginDispatchProps,
+  LoginOwnProps
+> = dispatch => ({
   checkAuth: (auth: BasicCredentials) => dispatch(getTokenRequest(auth)),
   triggerPasswordReset: (username: string) =>
     dispatch(resetPasswordRequest(username))
 });
 
-type Props = StateProps &
-  DispatchProps &
+type Props = LoginStateProps &
+  LoginOwnProps &
+  LoginDispatchProps &
   InjectedProps &
   RouteComponentProps<{}>;
 

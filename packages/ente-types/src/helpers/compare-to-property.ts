@@ -16,7 +16,7 @@ export const CompareToProperty = (
     options: validationOptions,
     validator: {
       validate(value: any, args: ValidationArguments) {
-        const p = args.object[prop];
+        const p: any = (args.object as any)[prop];
 
         return validator(value, p);
       }

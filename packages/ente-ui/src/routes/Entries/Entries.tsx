@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import { connect, MapDispatchToPropsParam } from "react-redux";
 import styles from "./Entries.styles";
 import AddIcon from "@material-ui/icons/Add";
 import {
@@ -59,105 +59,109 @@ const lang = createTranslation({
 
 class EntriesTable extends Table<EntryN> {}
 
-/**
- * # Component Types
- */
-interface StateProps {
+interface EntriesOwnProps {}
+
+interface EntriesStateProps {
   entries: EntryN[];
   canCreateEntries: Maybe<boolean>;
   getUser(id: string): Maybe<UserN>;
 }
-const mapStateToProps = (state: AppState): StateProps => ({
+const mapStateToProps = (state: AppState): EntriesStateProps => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
   getUser: (id: string) => getUser(id)(state)
 });
 
-interface DispatchProps {
+interface EntriesDispatchProps {
   requestEntries(): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  EntriesDispatchProps,
+  EntriesOwnProps
+> = dispatch => ({
   requestEntries: () => dispatch(getEntriesRequest())
 });
 
 interface State {
   showCreateEntry: boolean;
 }
-type Props = StateProps & DispatchProps & WithStyles & RouteComponentProps<{}>;
+type Props = EntriesOwnProps &
+  EntriesStateProps &
+  EntriesDispatchProps &
+  WithStyles &
+  RouteComponentProps<{}>;
 
 /**
  * # Component
  */
-export class Entries extends React.Component<Props, State> {
-  state: State = {
-    showCreateEntry: false
-  };
 
-  componentDidMount() {
-    this.props.requestEntries();
-  }
+export const Entries: React.FunctionComponent<Props> = props => {
+  const {
+    classes,
+    canCreateEntries,
+    entries,
+    getUser,
+    history,
+    requestEntries
+  } = props;
 
-  showCreateEntry = () => this.setState({ showCreateEntry: true });
-  closeCreateEntry = () => this.setState({ showCreateEntry: false });
+  const [createEntryIsVisible, setCreateEntryIsVisible] = React.useState(false);
 
-  customBodyRender = v => <SignedAvatar signed={v === lang.yes} />;
+  React.useEffect(() => {
+    requestEntries();
+  }, []);
 
-  render() {
-    const { classes, canCreateEntries, entries, getUser, history } = this.props;
+  const showCreateEntry = () => setCreateEntryIsVisible(true);
+  const closeCreateEntry = () => setCreateEntryIsVisible(false);
+  const customBodyRender = (v: string) => (
+    <SignedAvatar signed={v === lang.yes} />
+  );
 
-    return (
-      <React.Fragment>
-        {/* Modals */}
-        <CreateEntry
-          onClose={this.closeCreateEntry}
-          show={this.state.showCreateEntry}
-        />
+  return (
+    <React.Fragment>
+      {/* Modals */}
+      <CreateEntry onClose={closeCreateEntry} show={createEntryIsVisible} />
 
-        {/* Main */}
-        <EntriesTable
-          headers={[
-            lang.headers.name,
-            lang.headers.date,
-            lang.headers.created,
-            { name: lang.headers.forSchool, options: { filter: true } },
-            {
-              name: lang.headers.manager,
-              options: { customBodyRender: this.customBodyRender, filter: true }
-            },
-            {
-              name: lang.headers.parents,
-              options: { customBodyRender: this.customBodyRender, filter: true }
-            }
-          ]}
-          items={entries}
-          extract={entry => [
-            getUser(entry.get("studentId"))
-              .some()
-              .get("displayname"),
-            entry.get("date").toLocaleDateString(),
-            entry.get("createdAt").toLocaleString(),
-            entry.get("forSchool") ? lang.yes : lang.no,
-            entry.get("signedManager") ? lang.yes : lang.no,
-            entry.get("signedParent") ? lang.yes : lang.no
-          ]}
-          extractId={entry => entry.get("id")}
-          onClick={id => history.push(`/entries/${id}`)}
-        />
+      {/* Main */}
+      <EntriesTable
+        headers={[
+          lang.headers.name,
+          lang.headers.date,
+          lang.headers.created,
+          { name: lang.headers.forSchool, options: { filter: true } },
+          {
+            name: lang.headers.manager,
+            options: { customBodyRender, filter: true }
+          },
+          {
+            name: lang.headers.parents,
+            options: { customBodyRender, filter: true }
+          }
+        ]}
+        items={entries}
+        extract={entry => [
+          getUser(entry.get("studentId"))
+            .some()
+            .get("displayname"),
+          entry.get("date").toLocaleDateString(),
+          entry.get("createdAt").toLocaleString(),
+          entry.get("forSchool") ? lang.yes : lang.no,
+          entry.get("signedManager") ? lang.yes : lang.no,
+          entry.get("signedParent") ? lang.yes : lang.no
+        ]}
+        extractId={entry => entry.get("id")}
+        onClick={id => history.push(`/entries/${id}`)}
+      />
 
-        {/* FAB */}
-        {canCreateEntries.some() && (
-          <Fab
-            color="primary"
-            onClick={this.showCreateEntry}
-            className={classes.fab}
-          >
-            <AddIcon />
-          </Fab>
-        )}
-      </React.Fragment>
-    );
-  }
-}
+      {/* FAB */}
+      {canCreateEntries.some() && (
+        <Fab color="primary" onClick={showCreateEntry} className={classes.fab}>
+          <AddIcon />
+        </Fab>
+      )}
+    </React.Fragment>
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   withRouter(withErrorBoundary()(withStyles(styles)(Entries)))
