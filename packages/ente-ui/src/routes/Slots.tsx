@@ -7,7 +7,11 @@
  */
 
 import * as React from "react";
-import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
+import {
+  connect,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 
 import SignedAvatar from "../elements/SignedAvatar";
 import { Action } from "redux";
@@ -71,7 +75,10 @@ const mapStateToProps: MapStateToPropsParam<
 interface SlotsDispatchProps {
   requestSlots(): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  SlotsDispatchProps,
+  SlotsOwnProps
+> = dispatch => ({
   requestSlots: () => dispatch(getSlotsRequest())
 });
 

@@ -96,7 +96,7 @@ type ImportUsersProps = ImportUsersOwnProps &
   WithStyles<"dropzone"> &
   InjectedProps;
 
-export const ImportUsers: React.SFC<ImportUsersProps> = props => {
+export const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
   const { fullScreen, show, classes, onClose, usernames, onImport } = props;
 
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
@@ -149,14 +149,14 @@ export const ImportUsers: React.SFC<ImportUsersProps> = props => {
                 <UserTable users={users.map(toUserN)} />
               </Grid>
             ))
-            .orSome(null)}
+            .orSome(<></>)}
           {errors
             .map(errors => (
               <Grid item xs={12}>
                 <ErrorDisplay errors={errors} />
               </Grid>
             ))
-            .orSome(null)}
+            .orSome(<></>)}
         </Grid>
       </DialogContent>
       <DialogActions>

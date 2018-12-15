@@ -1,4 +1,4 @@
-import { Maybe } from "monet";
+import { Maybe, None } from "monet";
 import { SelectQueryBuilder } from "typeorm";
 import { createParamDecorator } from "@nestjs/common";
 import { Request } from "express";
@@ -8,6 +8,11 @@ export interface PaginationInformation {
   offset: Maybe<number>;
   limit: Maybe<number>;
 }
+
+export const NO_PAGINATION_INFO: PaginationInformation = {
+  offset: None(),
+  limit: None()
+};
 
 export const withPagination = (info: PaginationInformation) => <T>(
   _qB: SelectQueryBuilder<T>

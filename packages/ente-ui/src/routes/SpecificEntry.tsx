@@ -306,7 +306,7 @@ class SpecificEntry extends React.PureComponent<
                       {!!entry.get("dateEnd")
                         ? lang.dateRange(
                             entry.get("date"),
-                            entry.get("dateEnd")
+                            entry.get("dateEnd")!
                           )
                         : entry.get("date").toLocaleDateString()}{" "}
                       <br />
@@ -336,7 +336,7 @@ class SpecificEntry extends React.PureComponent<
                             <TableCell>{slot.get("from")}</TableCell>
                             <TableCell>{slot.get("to")}</TableCell>
                             <TableCell>
-                              {slot.get("teacherId").cata(
+                              {Maybe.fromFalsy(slot.get("teacherId")).cata(
                                 () => lang.slotsTable.deleted,
                                 id =>
                                   getUser(id)

@@ -37,7 +37,11 @@ export const SettingsMenu = React.memo(() => {
       <IconButton onClick={openMenu} color="primary" style={{ color: "white" }}>
         <MoreVertIcon />
       </IconButton>
-      <Menu open={open} anchorEl={anchorEl.orSome(null)} onClose={closeMenu}>
+      <Menu
+        open={open}
+        anchorEl={anchorEl.orSome(null as any)}
+        onClose={closeMenu}
+      >
         <Route
           render={({ history }) => (
             <MenuItem dense onClick={navigateToPathFactory("/about", history)}>

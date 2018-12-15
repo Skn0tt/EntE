@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import Drawer, { toggleDrawer } from "./Drawer";
+import Drawer from "./Drawer";
 import { shallow } from "enzyme";
 import { getMockRouterProps } from "../../testHelpers/mockRouter";
 
@@ -17,12 +17,5 @@ describe("Drawer", () => {
       <Drawer {...getMockRouterProps<{}>({})}>Hallo</Drawer>
     );
     expect(comp).toMatchSnapshot();
-  });
-});
-
-describe("toggleDrawer", () => {
-  it("toggles state", () => {
-    expect(toggleDrawer({ mobileOpen: true })).toEqual({ mobileOpen: false });
-    expect(toggleDrawer({ mobileOpen: false })).toEqual({ mobileOpen: true });
   });
 });

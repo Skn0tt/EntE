@@ -1,7 +1,13 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { Validation, Fail, Success } from "monet";
+import { Validation, Fail, Success, Maybe } from "monet";
 import { EntryRepo } from "../db/entry.repo";
-import { Roles, EntryDto, CreateEntryDto, PatchEntryDto } from "ente-types";
+import {
+  Roles,
+  EntryDto,
+  CreateEntryDto,
+  PatchEntryDto,
+  UserDto
+} from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
@@ -71,7 +77,7 @@ export class EntriesService {
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
         return Success(
-          await this.entryRepo.findByYear(user.graduationYear, paginationInfo)
+          await this.entryRepo.findByYear(user.graduationYear!, paginationInfo)
         );
 
       case Roles.PARENT:
@@ -119,7 +125,8 @@ export class EntriesService {
 
           case Roles.MANAGER:
             const belongsStudentOfYear =
-              e.student.graduationYear === user.some().graduationYear;
+              e.student.graduationYear ===
+              (user as Maybe<UserDto>).some().graduationYear;
             return belongsStudentOfYear
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
@@ -162,7 +169,7 @@ export class EntriesService {
       }
 
       const studentIsChild = requestingUser.childrenIds.includes(
-        entry.studentId
+        entry.studentId!
       );
       if (!studentIsChild) {
         return Fail(CreateEntryFailure.ForbiddenForUser);

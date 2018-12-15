@@ -1,12 +1,12 @@
 import { Injectable, Inject, LoggerService } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { SlotRepo } from "../db/slot.repo";
-import { Roles, SlotDto, twoWeeksBeforeNow } from "ente-types";
+import { Roles, SlotDto, twoWeeksBeforeNow, UserDto } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
-import { PaginationInformation } from "helpers/pagination-info";
+import { PaginationInformation } from "../helpers/pagination-info";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -72,7 +72,8 @@ export class SlotsService {
       s => {
         switch (requestingUser.role) {
           case Roles.MANAGER:
-            const isSameYear = s.student.graduationYear === user.graduationYear;
+            const isSameYear =
+              s.student.graduationYear === (user as UserDto).graduationYear!;
             if (!isSameYear) {
               return Fail(FindOneSlotFailure.ForbiddenForUser);
             }
@@ -95,7 +96,8 @@ export class SlotsService {
             break;
 
           case Roles.TEACHER:
-            const slotBelongsTeacher = s.teacher.id === requestingUser.id;
+            const slotBelongsTeacher =
+              !!s.teacher && s.teacher.id === requestingUser.id;
             if (!slotBelongsTeacher) {
               return Fail(FindOneSlotFailure.ForbiddenForUser);
             }

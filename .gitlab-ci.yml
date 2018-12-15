@@ -23,6 +23,16 @@ test:unit:
       - coverage/lcov-report/
       - junit.xml
 
+test:tsc:
+  image: node:9
+  stage: test
+  script: "./scripts/ci/test_tsc.sh"
+  cache:
+    key: "test-unit"
+    paths:
+      - node_modules/
+  dependencies: []
+
 test:version:
   image:
     name: node:9

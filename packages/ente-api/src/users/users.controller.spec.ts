@@ -5,25 +5,26 @@ import { mocks } from "../../test/mocks/entities";
 import { UsersService } from "./users.service";
 import { Success } from "monet";
 import * as _ from "lodash";
+import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
 
 const usersServiceMock: UsersService = {
-  async createUsers(dtos, r) {
+  async createUsers() {
     return Success([mocks.users.students.tomTallis]);
   },
-  async findOne(id, r) {
+  async findOne(id: string) {
     if (id !== "exists") {
       throw new Error();
     }
 
     return Success(mocks.users.students.tomTallis);
   },
-  async findAll(r) {
+  async findAll() {
     return Success(mocks.users.allUsers);
   },
-  async findAllTeachers(r) {
+  async findAllTeachers() {
     return _.values(mocks.users.teachers);
   },
-  async patchUser(p, r) {
+  async patchUser() {
     return Success(mocks.users.teachers.benBongo);
   }
 } as any;
@@ -54,7 +55,10 @@ describe("Users Controller", () => {
       const controller: UsersController = module.get<UsersController>(
         UsersController
       );
-      const result = await controller.findAll({ user: mocks.users.admin });
+      const result = await controller.findAll(
+        { user: mocks.users.admin },
+        NO_PAGINATION_INFO
+      );
       expect(result).toEqual(mocks.users.allUsers);
     });
   });

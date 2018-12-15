@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Switch, Route, Redirect } from "react-router";
+import { Switch, Route, Redirect, withRouter } from "react-router";
 import { Roles } from "ente-types";
 import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";
@@ -78,7 +78,7 @@ const ManagerRoutes: React.SFC = () => (
 interface Props {
   role: Roles;
 }
-const Routes: React.SFC<Props> = props => {
+const Routes: React.FunctionComponent<Props> = props => {
   switch (props.role) {
     case Roles.ADMIN:
       return <AdminRoutes />;

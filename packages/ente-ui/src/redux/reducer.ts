@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { handleActions, ReducerMap, Action, ActionMeta } from "redux-actions";
+import { handleActions, Action, ActionMeta } from "redux-actions";
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -119,7 +119,7 @@ const asyncReducersFullWithoutMetaPayload = (
   request: string,
   error: string,
   success: string,
-  update: (state: AppState, action) => AppState = _.identity
+  update: (state: AppState, action: Action<any>) => AppState = _.identity
 ) => ({
   [request]: (state: AppState, action: Action<void>) =>
     state.update("pendingActions", pending =>
@@ -145,7 +145,7 @@ const asyncReducersFull = (
   request: string,
   error: string,
   success: string,
-  update: (state: AppState, action) => AppState = _.identity
+  update: (state: AppState, action: Action<any>) => AppState = _.identity
 ) => ({
   ...asyncReducers(request, error),
   [success]: (
@@ -162,7 +162,7 @@ const asyncReducersFull = (
 
 export const initialState = new AppState({});
 
-const reducer = handleActions(
+const reducer = handleActions<AppState | undefined, any>(
   {
     /**
      * # Auth
@@ -185,9 +185,9 @@ const reducer = handleActions(
     ),
 
     // ## LOGOUT
-    [LOGOUT]: (state: AppState): AppState =>
+    [LOGOUT]: (state?: AppState): AppState =>
       new AppState({
-        pendingActions: state.get("pendingActions")
+        pendingActions: state!.get("pendingActions")
       }),
 
     // ## RESET_PASSWORD
@@ -296,12 +296,12 @@ const reducer = handleActions(
     ),
 
     // ## ADD_RESPONSE
-    [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
-      state
+    [ADD_RESPONSE]: (state?: AppState, action?: Action<APIResponse>) =>
+      state!
         .update("usersMap", users =>
           users.merge(
             Map<string, UserN>(
-              action.payload!.users.map(
+              action!.payload!.users.map(
                 user => [user.get("id"), user] as [string, UserN]
               )
             )
@@ -310,7 +310,7 @@ const reducer = handleActions(
         .update("slotsMap", slots =>
           slots.merge(
             Map<string, SlotN>(
-              action.payload!.slots.map(
+              action!.payload!.slots.map(
                 slot => [slot.get("id"), slot] as [string, SlotN]
               )
             )
@@ -319,7 +319,7 @@ const reducer = handleActions(
         .update("entriesMap", entries =>
           entries.merge(
             Map<string, EntryN>(
-              action.payload!.entries.map(
+              action!.payload!.entries.map(
                 entry => [entry.get("id"), entry] as [string, EntryN]
               )
             )
@@ -352,7 +352,7 @@ const reducer = handleActions(
       UPDATE_USER_SUCCESS,
       UPDATE_USER_ERROR
     )
-  } as ReducerMap<AppState, ActionType>,
+  },
   initialState
 ); // tslint:disable-line:align
 

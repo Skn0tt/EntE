@@ -8,7 +8,11 @@
 
 import * as React from "react";
 import { IconButton, CircularProgress } from "@material-ui/core";
-import { Dispatch, connect } from "react-redux";
+import {
+  connect,
+  MapDispatchToPropsParam,
+  MapStateToPropsParam
+} from "react-redux";
 import { Action } from "redux";
 import { withRouter, RouteComponentProps } from "react-router";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -20,19 +24,28 @@ import {
   getSlotsRequest
 } from "../redux";
 
-interface StateProps {
+interface RefreshButtonOwnProps {}
+
+interface RefreshButtonStateProps {
   loading: boolean;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps: MapStateToPropsParam<
+  RefreshButtonStateProps,
+  RefreshButtonOwnProps,
+  AppState
+> = state => ({
   loading: isLoading(state)
 });
 
-interface DispatchProps {
+interface RefreshButtonDispatchProps {
   getEntries(): Action;
   getUsers(): Action;
   getSlots(): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  RefreshButtonDispatchProps,
+  RefreshButtonOwnProps
+> = dispatch => ({
   getEntries: () => dispatch(getEntriesRequest()),
   getUsers: () => dispatch(getUsersRequest()),
   getSlots: () => dispatch(getSlotsRequest())
@@ -42,9 +55,11 @@ const renderPaths: string[] = ["/entries", "/users", "/slots"];
 
 const shouldRender = (path: string) => renderPaths.indexOf(path) !== -1;
 
-type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
+type RefreshButtonProps = RefreshButtonStateProps &
+  RefreshButtonDispatchProps &
+  RouteComponentProps<{}>;
 
-const RefreshButton: React.SFC<Props> = props =>
+const RefreshButton: React.SFC<RefreshButtonProps> = props =>
   props.loading ? (
     <CircularProgress style={{ color: "white" }} />
   ) : shouldRender(props.location.pathname) ? (

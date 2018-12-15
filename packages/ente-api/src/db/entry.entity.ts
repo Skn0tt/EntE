@@ -32,7 +32,7 @@ export class Entry {
   @Column("datetime") readonly date: Date;
 
   @Column("datetime", { nullable: true })
-  readonly dateEnd?: Date | null;
+  readonly dateEnd: Date | null;
 
   @Column("tinyint")
   @IsBoolean()

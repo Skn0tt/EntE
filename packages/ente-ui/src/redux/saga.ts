@@ -143,7 +143,7 @@ function* refreshTokenSaga(action: Action<void>) {
   }
 }
 
-function* getNeededUsersSaga(action) {
+function* getNeededUsersSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getNeededUsers, token.some());
@@ -155,7 +155,7 @@ function* getNeededUsersSaga(action) {
   }
 }
 
-function* downloadExcelExportSaga(action) {
+function* downloadExcelExportSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
     yield call(api.downloadExcelExport, token.some());
@@ -203,7 +203,7 @@ function* deleteEntrySaga(action: Action<string>) {
   }
 }
 
-function* getEntriesSaga(action) {
+function* getEntriesSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getEntries, token.some());
@@ -216,7 +216,7 @@ function* getEntriesSaga(action) {
   }
 }
 
-function* getSlotsSaga(action) {
+function* getSlotsSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getSlots, token.some());
@@ -242,7 +242,7 @@ function* getUserSaga(action: Action<string>) {
   }
 }
 
-function* getUsersSaga(action) {
+function* getUsersSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getUsers, token.some());
@@ -305,8 +305,8 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(
       api.updateUser,
-      action.payload[0],
-      action.payload[1],
+      action.payload![0],
+      action.payload![1],
       token.some()
     );
 

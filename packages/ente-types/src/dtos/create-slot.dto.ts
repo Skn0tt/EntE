@@ -13,7 +13,7 @@ export class CreateSlotDto {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  date: Date;
+  date?: Date;
 
   @IsNumber()
   @Min(1)

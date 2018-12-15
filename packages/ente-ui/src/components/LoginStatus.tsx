@@ -14,15 +14,13 @@ import {
   ListItem,
   ListItemIcon
 } from "@material-ui/core";
-import { connect, Dispatch } from "react-redux";
+import { connect, MapDispatchToPropsParam } from "react-redux";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { logout, AppState, getDisplayname } from "../redux";
-import { Action } from "redux";
 import { Maybe } from "monet";
 
-/**
- * # Component Types
- */
+interface LoginStatusOwnProps {}
+
 interface LoginStatusStateProps {
   displayname: Maybe<string>;
 }
@@ -33,9 +31,10 @@ const mapStateToProps = (state: AppState): LoginStatusStateProps => ({
 interface LoginStatusDispatchProps {
   logout(): void;
 }
-const mapDispatchToProps = (
-  dispatch: Dispatch<Action>
-): LoginStatusDispatchProps => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  LoginStatusDispatchProps,
+  LoginStatusOwnProps
+> = dispatch => ({
   logout: () => dispatch(logout())
 });
 

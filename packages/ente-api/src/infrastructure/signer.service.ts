@@ -24,6 +24,7 @@ export class SignerService {
     if (result.status === 404) {
       return false;
     }
+    throw new Error(`Contract with Signer broken: Returned ${result.status}`);
   }
 
   async decryptToken<T>(token: string): Promise<Maybe<T>> {
@@ -36,6 +37,7 @@ export class SignerService {
     if (result.status === 404) {
       return None();
     }
+    throw new Error(`Contract with Signer broken: Returned ${result.status}`);
   }
 
   async blockToken(token: string) {

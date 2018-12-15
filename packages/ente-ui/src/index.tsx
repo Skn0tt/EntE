@@ -14,6 +14,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
 import { get as getConfig } from "./config";
+import {
+  install as installMuiStyles,
+  ThemeProvider as MuiStylesThemeProvider
+} from "@material-ui/styles";
 
 // Fonts
 import "typeface-roboto";
@@ -29,9 +33,11 @@ import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
 
+installMuiStyles();
+
 const baseUrl = `${location.protocol}//${location.hostname}`;
 
-const config: ReduxConfig = {
+const config: Partial<ReduxConfig> = {
   baseUrl: `${baseUrl}/api`,
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
@@ -62,9 +68,9 @@ const setupSentry = (dsn: string) => {
 
   ErrorReporting.supplySentryClient(sentryClient);
 
-  const ravenMiddleware = createSentryMiddleware(sentryClient);
+  const sentryMiddleware = createSentryMiddleware(sentryClient);
 
-  config.middlewares!.push(ravenMiddleware);
+  config.middlewares!.push(sentryMiddleware);
   config.onSagaError = ErrorReporting.report;
 };
 
@@ -79,17 +85,19 @@ const bootstrap = async () => {
     <div>
       <React.StrictMode>
         <CssBaseline />
-        <MuiThemeProvider theme={theme}>
-          <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
-            <HttpsGate disable={ALLOW_INSECURE}>
-              <MessagesProvider>
-                <Provider store={store}>
-                  <App />
-                </Provider>
-              </MessagesProvider>
-            </HttpsGate>
-          </MuiPickersUtilsProvider>
-        </MuiThemeProvider>
+        <MuiStylesThemeProvider theme={theme}>
+          <MuiThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+              <HttpsGate disable={ALLOW_INSECURE}>
+                <MessagesProvider>
+                  <Provider store={store}>
+                    <App />
+                  </Provider>
+                </MessagesProvider>
+              </HttpsGate>
+            </MuiPickersUtilsProvider>
+          </MuiThemeProvider>
+        </MuiStylesThemeProvider>
       </React.StrictMode>
     </div>
   );

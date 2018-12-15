@@ -8,9 +8,9 @@
 
 import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import styles from "./Users.styles";
-import { Action } from "redux";
+import { Action, Dispatch } from "redux";
 import CreateUser from "./CreateUser";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";

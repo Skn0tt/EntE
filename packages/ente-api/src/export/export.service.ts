@@ -79,7 +79,7 @@ export class ExportService {
         rows: entries.map(e => [
           e.id,
           e.date.toISOString(),
-          e.dateEnd.toISOString(),
+          !!e.dateEnd ? e.dateEnd.toISOString() : "",
           e.student.username,
           "" + e.forSchool,
           e.createdAt.toISOString(),
@@ -87,9 +87,9 @@ export class ExportService {
           "" + e.signedParent,
           ...e.slots.map(
             s =>
-              `${s.date.toISOString()}, ${s.teacher.username}, ${s.from}, ${
-                s.to
-              }`
+              `${s.date.toISOString()}, ${
+                !!s.teacher ? s.teacher.username : "N/A"
+              }, ${s.from}, ${s.to}`
           )
         ])
       },
@@ -99,7 +99,7 @@ export class ExportService {
         rows: slots.map(s => [
           s.id,
           s.date.toISOString(),
-          s.teacher.username,
+          !!s.teacher ? s.teacher.username : "N/A",
           s.student.username,
           "" + s.from,
           "" + s.to,

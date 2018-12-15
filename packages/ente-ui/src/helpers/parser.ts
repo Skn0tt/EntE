@@ -27,7 +27,7 @@ const parseCSV = async (
 
   const parsed = await parse(input.trim());
 
-  const result: CreateUserDto[] = parsed.data.map(row => {
+  const result: CreateUserDto[] = parsed.data.map((row: any) => {
     const res: CreateUserDto = {
       username: row.username,
       displayname: row.displayname,

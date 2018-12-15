@@ -22,8 +22,10 @@ import * as _ from "lodash";
 
 const keysToRemove: (keyof IAppState)[] = ["pendingActions"];
 const removeUnneededTransform = createTransform(
-  (inboundState: AppState, key: keyof IAppState) =>
-    keysToRemove.indexOf(key) !== -1 ? initialState.get(key) : inboundState,
+  (inboundState: AppState, key: string) =>
+    keysToRemove.indexOf(key as keyof IAppState) !== -1
+      ? initialState.get(key as keyof IAppState)
+      : inboundState,
   _.identity
 );
 
@@ -42,7 +44,7 @@ const startPersistance = (store: Store) => {
   });
 };
 
-let store: Store;
+let store: Store | null = null;
 let persistor: any;
 
 export const createStore = async () => {
@@ -54,7 +56,7 @@ export const createStore = async () => {
   const middlewares = config.middlewares || [];
 
   store = reduxCreateStore(
-    reducer,
+    reducer as any,
     composeEnhancers(
       applyMiddleware(sagaMiddleware, ...middlewares),
       autoRehydrate()
@@ -68,4 +70,4 @@ export const createStore = async () => {
   return store;
 };
 
-export default store;
+export default (store as unknown) as Store;

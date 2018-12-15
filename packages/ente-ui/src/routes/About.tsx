@@ -6,7 +6,6 @@ import {
   DialogActions,
   Button,
   Dialog,
-  Typography,
   Typography
 } from "@material-ui/core";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
@@ -19,12 +18,12 @@ const lang = createTranslation({
   en: {
     back: "Close",
     title: "About",
-    version: v => `Version: ${v}`
+    version: (v: string) => `Version: ${v}`
   },
   de: {
     back: "Zurück",
     title: "Über",
-    version: v => `Version: ${v}`
+    version: (v: string) => `Version: ${v}`
   }
 });
 

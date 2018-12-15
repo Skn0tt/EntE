@@ -23,7 +23,8 @@ import {
   IconButton,
   withStyles,
   StyleRulesCallback,
-  WithStyles
+  WithStyles,
+  createStyles
 } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
@@ -59,6 +60,7 @@ import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
 import { createTranslation } from "../helpers/createTranslation";
 import { Maybe } from "monet";
+import { WithWidth } from "@material-ui/core/withWidth";
 
 const lang = createTranslation({
   en: {
@@ -71,7 +73,7 @@ const lang = createTranslation({
       id: "ID",
       role: "Role",
       gradYear: "Graduation Year",
-      areYouSureYouWannaDelete: username =>
+      areYouSureYouWannaDelete: (username: string) =>
         `Are you sure you want to delete user "${username}"?`
     },
     ariaLabels: {
@@ -88,7 +90,7 @@ const lang = createTranslation({
       id: "ID",
       role: "Rolle",
       gradYear: "Abschluss-Jahrgang",
-      areYouSureYouWannaDelete: username =>
+      areYouSureYouWannaDelete: (username: string) =>
         `Sind sie sicher, dass sie den Nutzer "${username}" löschen möchten?`
     },
     ariaLabels: {
@@ -97,7 +99,7 @@ const lang = createTranslation({
   }
 });
 
-const styles: StyleRulesCallback<"deleteButton"> = theme => ({
+const styles = createStyles<"deleteButton">({
   deleteButton: {
     position: "absolute",
     top: 0,
@@ -149,206 +151,183 @@ type SpecificUserProps = SpecificUserStateProps &
   WithStyles<"deleteButton"> &
   InjectedProps;
 
-interface State {
-  patch: PatchUserDto;
-  showDelete: boolean;
-}
-
 /**
  * # Component
  */
-export class SpecificUser extends React.PureComponent<
-  SpecificUserProps,
-  State
-> {
-  /**
-   * ## Intialization
-   */
-  state: State = {
-    patch: new PatchUserDto(),
-    showDelete: false
-  };
+export const SpecificUser: React.FunctionComponent<
+  SpecificUserProps
+> = props => {
+  const [showDelete, setShowDelete] = React.useState(false);
+  const [patch, setPatch] = React.useState(new PatchUserDto());
+  const {
+    fullScreen,
+    loading,
+    getUser,
+    students,
+    deleteUser,
+    classes,
+    updateUser,
+    history,
+    match,
+    requestUser
+  } = props;
 
-  /**
-   * ## Lifecycle Hooks
-   */
-  componentDidMount() {
-    const { userId } = this.props.match.params;
-    const user = this.props.getUser(userId);
+  const userId = match.params.userId;
+  const user = getUser(userId);
 
-    if (user.isNone()) {
-      this.props.requestUser(userId);
-    }
-  }
+  React.useEffect(
+    () => {
+      const user = getUser(userId);
 
-  update = (key: keyof PatchUserDto) => (value: any) => {
-    const clone = Object.assign({}, this.state.patch);
+      if (user.isNone()) {
+        requestUser(userId);
+      }
+    },
+    [userId]
+  );
+
+  const updatePatch = (key: keyof PatchUserDto) => (value: any) => {
+    const clone = Object.assign({}, patch);
     clone[key] = value;
-    this.setState({ patch: clone });
+    setPatch(clone);
   };
 
-  /**
-   * ## Handlers
-   */
-  onClose = () => this.props.history.goBack();
-  onGoBack = () => this.onClose();
-  onSubmit = () => {
-    const { updateUser } = this.props;
-    const { patch } = this.state;
-
-    updateUser(this.userId, patch);
-
-    this.onClose();
+  const onClose = history.goBack;
+  const onGoBack = onClose;
+  const onSubmit = () => {
+    updateUser(userId, patch);
+    onClose();
   };
 
-  get userId() {
-    return this.props.match.params.userId;
-  }
-
-  /**
-   * ## Render
-   */
-  render() {
-    const {
-      fullScreen,
-      loading,
-      getUser,
-      students,
-      deleteUser,
-      classes
-    } = this.props;
-    const { patch, showDelete } = this.state;
-
-    const user = getUser(this.userId);
-
-    return user.cata(
-      () => <LoadingIndicator />,
-      user => (
-        <>
-          <DeleteModal
-            show={showDelete}
-            onClose={() => this.setState({ showDelete: false })}
-            onDelete={() => {
-              this.setState({ showDelete: false });
-              deleteUser(this.userId);
-              this.onClose();
-            }}
-            text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
-          />
-          <Dialog open onClose={this.onGoBack} fullScreen={fullScreen}>
-            {!!user ? (
-              <>
-                <DialogTitle>
-                  {user.get("displayname")}
-                  <IconButton
-                    aria-label={lang.ariaLabels.delete}
-                    onClick={() => this.setState({ showDelete: true })}
-                    className={classes.deleteButton}
-                  >
-                    <DeleteIcon fontSize="large" />
-                  </IconButton>
-                </DialogTitle>
-                <DialogContent>
-                  <Grid container spacing={24} alignItems="stretch">
-                    <Grid item xs={12}>
-                      <DialogContentText>
-                        {lang.titles.id}: {user.get("id")} <br />
-                        {lang.titles.role}: {user.get("role")} <br />
-                      </DialogContentText>
-                    </Grid>
-
-                    {/* Displayname */}
-                    <Grid item xs={12}>
-                      <TextInput
-                        title={lang.titles.displayname}
-                        value={patch.displayname || user.get("displayname")}
-                        onChange={this.update("displayname")}
-                        validator={isValidDisplayname}
-                      />
-                    </Grid>
-
-                    {/* Email */}
-                    <Grid item xs={12}>
-                      <TextInput
-                        title={lang.titles.email}
-                        value={patch.email || user.get("email")}
-                        onChange={this.update("email")}
-                        validator={isValidEmail}
-                      />
-                    </Grid>
-
-                    {/* IsAdult */}
-                    {userIsStudent(user) && (
-                      <Grid item xs={6}>
-                        <SwitchInput
-                          value={user.get("isAdult")}
-                          title={lang.titles.isAdult}
-                          onChange={this.update("isAdult")}
-                        />
-                      </Grid>
-                    )}
-
-                    {/* Graduation Year */}
-                    {roleHasGradYear(user.get("role")) && (
-                      <Grid item xs={6}>
-                        <YearPicker
-                          label={lang.titles.gradYear}
-                          onChange={this.update("graduationYear")}
-                          amount={5}
-                          value={
-                            patch.graduationYear || user.get("graduationYear")
-                          }
-                        />
-                      </Grid>
-                    )}
-
-                    {/* Children */}
-                    {userHasChildren(user) && (
-                      <Grid item xs={12}>
-                        <ChildrenInput
-                          children={
-                            !!patch.children
-                              ? patch.children.map(getUser).map(c => c.some())
-                              : user
-                                  .get("childrenIds")
-                                  .map(getUser)
-                                  .map(c => c.some())
-                          }
-                          students={students}
-                          onChange={c =>
-                            this.update("children")(c.map(v => v.get("id")))
-                          }
-                        />
-                      </Grid>
-                    )}
+  return user.cata(
+    () => <LoadingIndicator />,
+    user => (
+      <>
+        <DeleteModal
+          show={showDelete}
+          onClose={() => setShowDelete(false)}
+          onDelete={() => {
+            setShowDelete(false);
+            deleteUser(userId);
+            onClose();
+          }}
+          text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
+        />
+        <Dialog open onClose={onGoBack} fullScreen={fullScreen}>
+          {!!user ? (
+            <>
+              <DialogTitle>
+                {user.get("displayname")}
+                <IconButton
+                  aria-label={lang.ariaLabels.delete}
+                  onClick={() => setShowDelete(true)}
+                  className={classes.deleteButton}
+                >
+                  <DeleteIcon fontSize="large" />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent>
+                <Grid container spacing={24} alignItems="stretch">
+                  <Grid item xs={12}>
+                    <DialogContentText>
+                      {lang.titles.id}: {user.get("id")} <br />
+                      {lang.titles.role}: {user.get("role")} <br />
+                    </DialogContentText>
                   </Grid>
-                </DialogContent>
-              </>
-            ) : (
-              loading && <LoadingIndicator />
-            )}
-            <DialogActions>
-              <Button size="small" color="secondary" onClick={this.onClose}>
-                {lang.close}
-              </Button>
-              <Button
-                size="small"
-                color="primary"
-                onClick={this.onSubmit}
-                disabled={!isValidPatchUserDto(this.state.patch)}
-              >
-                {lang.submit}
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )
-    );
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(
-    withMobileDialog()(withErrorBoundary()(withStyles(styles)(SpecificUser)))
+                  {/* Displayname */}
+                  <Grid item xs={12}>
+                    <TextInput
+                      title={lang.titles.displayname}
+                      value={patch.displayname || user.get("displayname")}
+                      onChange={updatePatch("displayname")}
+                      validator={isValidDisplayname}
+                    />
+                  </Grid>
+
+                  {/* Email */}
+                  <Grid item xs={12}>
+                    <TextInput
+                      title={lang.titles.email}
+                      value={patch.email || user.get("email")}
+                      onChange={updatePatch("email")}
+                      validator={isValidEmail}
+                    />
+                  </Grid>
+
+                  {/* IsAdult */}
+                  {userIsStudent(user) && (
+                    <Grid item xs={6}>
+                      <SwitchInput
+                        value={user.get("isAdult")}
+                        title={lang.titles.isAdult}
+                        onChange={updatePatch("isAdult")}
+                      />
+                    </Grid>
+                  )}
+
+                  {/* Graduation Year */}
+                  {roleHasGradYear(user.get("role")) && (
+                    <Grid item xs={6}>
+                      <YearPicker
+                        label={lang.titles.gradYear}
+                        onChange={updatePatch("graduationYear")}
+                        amount={5}
+                        value={
+                          patch.graduationYear! || user.get("graduationYear")!
+                        }
+                      />
+                    </Grid>
+                  )}
+
+                  {/* Children */}
+                  {userHasChildren(user) && (
+                    <Grid item xs={12}>
+                      <ChildrenInput
+                        children={
+                          !!patch.children
+                            ? patch.children.map(getUser).map(c => c.some())
+                            : user
+                                .get("childrenIds")
+                                .map(getUser)
+                                .map(c => c.some())
+                        }
+                        students={students}
+                        onChange={c =>
+                          updatePatch("children")(c.map(v => v.get("id")))
+                        }
+                      />
+                    </Grid>
+                  )}
+                </Grid>
+              </DialogContent>
+            </>
+          ) : (
+            loading && <LoadingIndicator />
+          )}
+          <DialogActions>
+            <Button size="small" color="secondary" onClick={onClose}>
+              {lang.close}
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              onClick={onSubmit}
+              disabled={!isValidPatchUserDto(patch)}
+            >
+              {lang.submit}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    )
+  );
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withStyles(styles)(
+      withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
+    )
   )
 );

@@ -58,13 +58,11 @@ describe("withErrorBoundary", () => {
   });
 
   it("renders the original component", () => {
-    let comp: ShallowWrapper;
     try {
-      comp = shallow(<Bounded />);
+      const comp = shallow(<Bounded />);
+      expect(comp.text()).toEqual("<ErrorComponent />");
     } catch {
       expect(false).toBe(true);
     }
-
-    expect(comp.text()).toEqual("<ErrorComponent />");
   });
 });

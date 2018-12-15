@@ -1,12 +1,21 @@
 import { Map, fromJS } from "immutable";
+import { AppState } from "../types";
 
-export function stateReconciler(state, inboundState, reducedState, logger) {
+export function stateReconciler(
+  state: AppState,
+  inboundState: AppState | null,
+  reducedState: AppState,
+  logger: any
+) {
   if (inboundState === null) {
     return reducedState;
   }
 
-  const newState = reducedState ? reducedState : Map();
   const inboundStateImmutable = fromJS(inboundState);
 
-  return newState.merge(inboundStateImmutable);
+  if (!reducedState) {
+    return inboundStateImmutable;
+  }
+
+  return reducedState.merge(inboundStateImmutable);
 }

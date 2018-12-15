@@ -5,13 +5,13 @@ import { PasswordResetService } from "./password-reset.service";
 import { Success } from "monet";
 
 const passwordResetServiceMock: PasswordResetService = {
-  getPasswordResetLink(t) {
+  getPasswordResetLink(t: any) {
     return t;
   },
-  async setNewPassword(token, newPassword) {
+  async setNewPassword() {
     return Success(true);
   },
-  async startPasswordResetRoutine(username) {
+  async startPasswordResetRoutine() {
     return Success(true);
   }
 } as any;
