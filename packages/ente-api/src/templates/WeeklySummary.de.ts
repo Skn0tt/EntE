@@ -35,7 +35,7 @@ const template: HandlebarsTemplateDelegate<
               <th>Status</th>
             </tr>
             {{#each items}}
-              {{ this }}
+              {{{ this }}}
             {{/each}}
           </mj-table>
         {{else}}

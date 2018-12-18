@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased
 
+* Do not escape html table
 * Introduced `@material-ui/styles`
 * Added Redux persistance
 * Fixed bug where Slot "signed" had wrong type
