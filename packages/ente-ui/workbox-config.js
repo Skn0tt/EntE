@@ -1,7 +1,9 @@
+const mb = 1024 * 1024;
+
 module.exports = {
   globDirectory: "dist/",
-  globPatterns: ["*.{html,js,css}"],
+  globPatterns: ["**/*.{png,ico,html,js,svg,woff2,woff,css,webmanifest}"],
   swDest: "dist/sw.js",
-  globIgnores: ["../workbox-cli-config.js"],
-  maximumFileSizeToCacheInBytes: 32 * 1024 * 1024
+  navigateFallback: "/index.html",
+  maximumFileSizeToCacheInBytes: 4 * mb
 };

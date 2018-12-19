@@ -1,12 +1,12 @@
 {
   "name": "ente-ui",
   "repository": "https://gitlab.com/skn0tt/EntE/master/packages/ente-ui",
-  "version": "0.8.10",
+  "version": "0.12.1",
   "private": true,
   "scripts": {
     "start": "yarn parcel src/index.html",
     "build":
-      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && yarn serviceworker",
+      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && yarn serviceworker && size-limit",
     "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
     "serviceworker": "yarn workbox generateSW",
@@ -15,29 +15,33 @@
     "lint": "tslint --project ."
   },
   "dependencies": {
-    "@material-ui/core": "^3.4.0",
+    "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/styles": "^3.0.0-alpha.3",
     "@sentry/browser": "^4.3.0",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "ente-types": "^0.8.10",
+    "ente-types": "^0.12.1",
     "immutable": "^4.0.0-rc.12",
     "luxon": "^1.4.5",
     "material-ui-pickers": "^v1.0.1",
-    "monet": "^0.8.10",
-    "mui-datatables": "^2.0.0-beta-32",
+    "monet": "^0.9.0",
+    "mui-datatables": "^2.0.0-beta-41",
     "mui-downshift": "^1.2.1",
     "papaparse": "^4.6.1",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^16.7.0-alpha.2",
+    "react-dom": "^16.7.0-alpha.2",
     "react-dropzone": "^4.2.7",
-    "react-redux": "^5.0.6",
+    "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
+    "redux-persist": "^4",
+    "redux-persist-transform-immutable": "^4.1",
     "redux-saga": "^0.16.2",
     "reselect": "^4.0.0",
+    "rxjs": "^6.3.3",
     "typeface-roboto": "^0.0.45"
   },
   "devDependencies": {
@@ -45,18 +49,22 @@
     "@types/jest": "^21.1.9",
     "@types/js-cookie": "^2.1.0",
     "@types/node": "^8.5.2",
-    "@types/react": "^16.4.18",
+    "@types/papaparse": "^4.5.5",
+    "@types/react": "^16.7.11",
     "@types/react-dom": "^16.0.9",
     "@types/react-dropzone": "^4.2.0",
-    "@types/react-redux": "^5.0.14",
-    "@types/react-router": "^4.0.20",
+    "@types/react-redux": "^6.0.11",
+    "@types/react-router": "^4.3.1",
     "@types/react-router-dom": "^4.2.3",
+    "@types/redux-actions": "^2.3.1",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "parcel-bundler": "^1.10.1",
+    "parcel-bundler": "^1.10.3",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "prop-types": "^15.6.2",
     "redux-devtools-extension": "^2.13.5",
+    "size-limit": "^0.21.0",
     "source-map-explorer": "^1.5.0",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.4.2",
@@ -64,5 +72,13 @@
     "typescript": "^2.7.2",
     "workbox-build": "^3.0.1",
     "workbox-cli": "^3.0.1"
-  }
+  },
+  "size-limit": [
+    {
+      "limit": "4 MB",
+      "webpack": false,
+      "gzip": false,
+      "path": "dist/src.*.js"
+    }
+  ]
 }

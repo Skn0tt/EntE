@@ -5,6 +5,10 @@ import { Maybe, Some, None, Validation, Fail, Success } from "monet";
 import { Roles, CreateUserDto, UserDto, isValidUuid } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
+import {
+  PaginationInformation,
+  withPagination
+} from "../helpers/pagination-info";
 
 interface UserAndPasswordHash {
   user: UserDto;
@@ -18,7 +22,7 @@ interface UserWithRole {
 
 interface CreateUserDtoWithHash {
   user: CreateUserDto;
-  hash: string;
+  hash?: string;
 }
 
 export enum SetPasswordHashFailure {
@@ -42,8 +46,10 @@ export class UserRepo {
       .leftJoinAndSelect("user.children", "child")
       .leftJoinAndSelect("child.children", "grandChild");
 
-  async findAll(): Promise<UserDto[]> {
-    const users = await this._userQueryWithChildren().getMany();
+  async findAll(paginationInfo: PaginationInformation): Promise<UserDto[]> {
+    const users = await withPagination(paginationInfo)(
+      this._userQueryWithChildren()
+    ).getMany();
     return users.map(u => UserRepo.toDto(u));
   }
 
@@ -61,15 +67,17 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
-  async _findById(id: string): Promise<User> {
-    return await this._userQueryWithChildren()
+  async _findById(id: string): Promise<Maybe<User>> {
+    const result = await this._userQueryWithChildren()
       .whereInIds(id)
       .getOne();
+
+    return Maybe.fromUndefined(result);
   }
 
   async findById(id: string): Promise<Maybe<UserDto>> {
     const user = await this._findById(id);
-    return !!user ? Some(UserRepo.toDto(user)) : None();
+    return user.map(UserRepo.toDto);
   }
 
   private async _findByUsername(username: string): Promise<Maybe<User>> {
@@ -77,7 +85,7 @@ export class UserRepo {
       .where("LOWER(user.username) = LOWER(:username)", { username })
       .getOne();
 
-    return !!user ? Some(user) : None();
+    return Maybe.fromUndefined(user);
   }
 
   async findByUsername(username: string): Promise<Maybe<UserDto>> {
@@ -168,10 +176,16 @@ export class UserRepo {
   ): Promise<Maybe<UserAndPasswordHash>> {
     const user = await this._findByUsername(username);
 
-    return user.map(u => ({
-      user: UserRepo.toDto(u),
-      hash: u.password
-    }));
+    return user.bind(u => {
+      if (u.password === null) {
+        return None();
+      }
+
+      return Some({
+        user: UserRepo.toDto(u),
+        hash: u.password
+      });
+    });
   }
 
   async setPasswordHash(
@@ -179,13 +193,17 @@ export class UserRepo {
     hash: string
   ): Promise<Validation<SetPasswordHashFailure, UserDto>> {
     const user = await this._findById(userId);
-    if (!user) {
-      return Fail(SetPasswordHashFailure.UserNotFound);
-    }
-
-    user.password = hash;
-    await this.repo.save(user);
-    return Success(UserRepo.toDto(user));
+    return await user.cata(
+      async () =>
+        Fail<SetPasswordHashFailure, UserDto>(
+          SetPasswordHashFailure.UserNotFound
+        ),
+      async u => {
+        u.password = hash;
+        await this.repo.save(u);
+        return Success<SetPasswordHashFailure, UserDto>(UserRepo.toDto(u));
+      }
+    );
   }
 
   async hasIds(id: string): Promise<boolean> {
@@ -197,7 +215,7 @@ export class UserRepo {
     const needed = users.length;
 
     let query = this.repo.createQueryBuilder("user");
-    const firstUser = users.pop();
+    const [firstUser, ...otherUsers] = users;
     query = query.where(
       new Brackets(qb => {
         qb
@@ -206,7 +224,7 @@ export class UserRepo {
       })
     );
 
-    users.forEach(({ id, role }) => {
+    otherUsers.forEach(({ id, role }) => {
       query = query.orWhere(
         new Brackets(qb => {
           qb

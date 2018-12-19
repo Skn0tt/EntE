@@ -1,13 +1,20 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { Validation, Fail, Success } from "monet";
+import { Validation, Fail, Success, Maybe } from "monet";
 import { EntryRepo } from "../db/entry.repo";
-import { Roles, EntryDto, CreateEntryDto, PatchEntryDto } from "ente-types";
+import {
+  Roles,
+  EntryDto,
+  CreateEntryDto,
+  PatchEntryDto,
+  UserDto
+} from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
 import { validate } from "class-validator";
 import * as _ from "lodash";
 import { RequestContextUser } from "../helpers/request-context";
+import { PaginationInformation } from "../helpers/pagination-info";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -60,23 +67,34 @@ export class EntriesService {
   ) {}
 
   async findAll(
-    requestingUser: RequestContextUser
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
-        return Success(await this.entryRepo.findAll());
+        return Success(await this.entryRepo.findAll(paginationInfo));
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        return Success(await this.entryRepo.findByYear(user.graduationYear));
+        return Success(
+          await this.entryRepo.findByYear(user.graduationYear!, paginationInfo)
+        );
 
       case Roles.PARENT:
         return Success(
-          await this.entryRepo.findByStudents(...requestingUser.childrenIds)
+          await this.entryRepo.findByStudents(
+            requestingUser.childrenIds,
+            paginationInfo
+          )
         );
 
       case Roles.STUDENT:
-        return Success(await this.entryRepo.findByStudents(requestingUser.id));
+        return Success(
+          await this.entryRepo.findByStudents(
+            [requestingUser.id],
+            paginationInfo
+          )
+        );
 
       case Roles.TEACHER:
         return Fail(FindAllEntriesFailure.ForbiddenForRole);
@@ -107,7 +125,8 @@ export class EntriesService {
 
           case Roles.MANAGER:
             const belongsStudentOfYear =
-              e.student.graduationYear === user.some().graduationYear;
+              e.student.graduationYear ===
+              (user as Maybe<UserDto>).some().graduationYear;
             return belongsStudentOfYear
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
@@ -150,7 +169,7 @@ export class EntriesService {
       }
 
       const studentIsChild = requestingUser.childrenIds.includes(
-        entry.studentId
+        entry.studentId!
       );
       if (!studentIsChild) {
         return Fail(CreateEntryFailure.ForbiddenForUser);

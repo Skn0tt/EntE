@@ -24,6 +24,7 @@ mysql: # mysql config
   username:
   password:
   database:
+  timezone: "+01:00" # timezone of the database, specified as in ISO 8601
 
 smtp: # smtp config
   host:

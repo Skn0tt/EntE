@@ -1,9 +1,10 @@
 import * as React from "react";
 import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Button, WithStyles, withStyles, Theme, Grid } from "@material-ui/core";
-import { Attachment as AttachmentIcon } from "@material-ui/icons";
+import AttachmentIcon from "@material-ui/icons/Attachment";
 import { downloadExcelExportRequest } from "../redux";
 import { createTranslation } from "../helpers/createTranslation";
+import withErrorBoundary from "../hocs/withErrorBoundary";
 
 const lang = createTranslation({
   en: {
@@ -59,5 +60,5 @@ const AdminRoute: React.SFC<AdminRouteProps> = props => {
 };
 
 export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(AdminRoute)
+  withStyles(styles)(withErrorBoundary()(AdminRoute))
 );

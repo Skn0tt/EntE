@@ -7,20 +7,21 @@
  */
 
 import { ClientFunction } from "testcafe";
-import config from "../e2eConfig";
+import config from "./config";
 
 const { baseUrl } = config;
 
-fixture("Login Form").page(baseUrl);
+fixture("Login Form").page(baseUrl!);
 
 const USERNAME = "admin";
 const PASSWORD = "root";
+
 test("Login", async t => {
   await t
     .typeText("#name", USERNAME)
     .typeText("#password", PASSWORD)
     .pressKey("enter");
 
-  const getPathname = ClientFunction(() => document.location.pathname);
+  const getPathname = ClientFunction(() => document.location!.pathname);
   await t.expect(getPathname()).contains("/entries");
 });

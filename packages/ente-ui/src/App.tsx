@@ -14,19 +14,21 @@ import MessageStream from "./components/MessageStream";
 
 // Routes
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import Login from "./routes/Login";
+import Login from "./routes/Login/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
 import { AppState, isAuthValid, getRole } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
+import { Maybe } from "monet";
+import withErrorBoundary from "./hocs/withErrorBoundary";
 
 const { ROTATION_PERIOD } = config.get();
 
 interface AppStateProps {
   authValid: boolean;
-  role: Roles;
+  role: Maybe<Roles>;
 }
 const mapStateToProps = (state: AppState) => ({
   authValid: isAuthValid(state),
@@ -35,22 +37,26 @@ const mapStateToProps = (state: AppState) => ({
 
 type AppProps = AppStateProps;
 
-const App: React.SFC<AppProps> = props => (
-  <BrowserRouter>
-    <React.Fragment>
-      <MessageStream />
-      <AuthService period={ROTATION_PERIOD} />
-      <Switch>
-        <Route path="/passwordReset/:token" component={PasswordReset} />
-        <Route path="/login" component={Login} />
-        <AuthenticatedRoute isLoggedIn={props.authValid}>
-          <Drawer>
-            <Routes role={props.role} />
-          </Drawer>
-        </AuthenticatedRoute>
-      </Switch>
-    </React.Fragment>
-  </BrowserRouter>
-);
+const App: React.FunctionComponent<AppProps> = props => {
+  const { authValid, role } = props;
 
-export default connect(mapStateToProps)(App);
+  return (
+    <BrowserRouter>
+      <>
+        <MessageStream />
+        <AuthService period={ROTATION_PERIOD} />
+        <Switch>
+          <Route path="/passwordReset/:token" component={PasswordReset} />
+          <Route path="/login" component={Login} />
+          <AuthenticatedRoute isLoggedIn={authValid}>
+            <Drawer>
+              <Routes role={role.orSome(Roles.STUDENT)} />
+            </Drawer>
+          </AuthenticatedRoute>
+        </Switch>
+      </>
+    </BrowserRouter>
+  );
+};
+
+export default connect(mapStateToProps)(withErrorBoundary()(App));

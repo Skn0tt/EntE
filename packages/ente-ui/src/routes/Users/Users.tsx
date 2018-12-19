@@ -8,38 +8,16 @@
 
 import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import styles from "./Users.styles";
-import { Action } from "redux";
+import { Action, Dispatch } from "redux";
 import CreateUser from "./CreateUser";
-import { Button } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
 import { withRouter, RouteComponentProps } from "react-router";
-import Table from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
-
-const lang = createTranslation({
-  en: {
-    headers: {
-      username: "Username",
-      displayname: "Displayname",
-      email: "Email",
-      role: "Role"
-    }
-  },
-  de: {
-    headers: {
-      username: "Nutzername",
-      displayname: "Displayname",
-      email: "Email",
-      role: "Rolle"
-    }
-  }
-});
-
-class UserTable extends Table<UserN> {}
+import { UserTable } from "./UserTable";
 
 /**
  * # Component Types
@@ -94,57 +72,21 @@ export class Users extends React.PureComponent<UsersProps, UsersState> {
         />
 
         {/* Main */}
-        <UserTable
-          headers={[
-            {
-              name: lang.headers.username,
-              options: {
-                filter: false
-              }
-            },
-            {
-              name: lang.headers.displayname,
-              options: {
-                filter: false
-              }
-            },
-            {
-              name: lang.headers.email,
-              options: {
-                filter: false
-              }
-            },
-            {
-              name: lang.headers.role
-            }
-          ]}
-          items={users}
-          extract={user => [
-            user.get("username")!,
-            user.get("displayname")!,
-            user.get("email")!,
-            user.get("role")!
-          ]}
-          extractId={user => user.get("id")}
-          onClick={id => history.push(`/users/${id}`)}
-        />
+        <UserTable users={users} onClick={id => history.push(`/users/${id}`)} />
 
         {/* FAB */}
-        <Button
+        <Fab
           color="primary"
-          variant="fab"
           onClick={this.showCreateModal}
           className={classes.fab}
         >
           <AddIcon />
-        </Button>
+        </Fab>
       </React.Fragment>
     );
   }
 }
 
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withRouter(withErrorBoundary()(Users))
-  )
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withRouter(withErrorBoundary()(withStyles(styles)(Users)))
 );

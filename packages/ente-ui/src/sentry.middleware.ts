@@ -20,30 +20,34 @@ const IGNORED_ACTION_TYPES = [
 export const createSentryMiddleware = (
   sentryClient: Sentry.BrowserClient
 ): Middleware => store => next => action => {
-  Sentry.withScope(scope => {
-    const username = selectors.getUsername(store.getState());
+  Sentry.configureScope(scope => {
+    const username = selectors
+      .getUsername(store.getState())
+      .orSome("NOT_LOGGED_IN");
+
     scope.setUser({ username });
 
-    if (!IGNORED_ACTION_TYPES.includes(action.type)) {
-      sentryClient.addBreadcrumb(
-        {
-          category: SentryBreadcrumbCategories.REDUX_ACTION,
-          data: action
-        },
-        {},
-        scope
-      );
-    }
-
-    try {
-      return next(action);
-    } catch (err) {
-      if (IGNORED_ACTION_TYPES.includes(action.type)) {
-        return;
-      }
-
-      console.error("Caught an exception!", err);
-      sentryClient.captureException(err, {}, scope);
+    if (IGNORED_ACTION_TYPES.includes(action.type)) {
+      scope.addBreadcrumb({
+        category: SentryBreadcrumbCategories.REDUX_ACTION,
+        data: { type: action.type }
+      });
+    } else {
+      scope.addBreadcrumb({
+        category: SentryBreadcrumbCategories.REDUX_ACTION,
+        data: action
+      });
     }
   });
+
+  try {
+    return next(action);
+  } catch (err) {
+    if (IGNORED_ACTION_TYPES.includes(action.type)) {
+      return;
+    }
+
+    console.error("Caught an exception!", err);
+    sentryClient.captureException(err);
+  }
 };

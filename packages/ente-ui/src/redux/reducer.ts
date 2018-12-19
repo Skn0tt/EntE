@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { handleActions, Action, ReducerMap } from "redux-actions";
+import { handleActions, Action, ActionMeta } from "redux-actions";
 import {
   GET_ENTRIES_REQUEST,
   GET_ENTRIES_SUCCESS,
@@ -28,11 +28,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_SUCCESS,
-  REMOVE_MESSAGE,
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_ERROR,
   SET_PASSWORD_SUCCESS,
-  ADD_MESSAGE,
   GET_TOKEN_REQUEST,
   GET_TOKEN_ERROR,
   GET_TOKEN_SUCCESS,
@@ -70,7 +68,7 @@ import {
   DOWNLOAD_EXCEL_EXPORT_SUCCESS
 } from "./constants";
 import { ActionType } from "redux-saga/effects";
-import { Map, List, Record } from "immutable";
+import { Map } from "immutable";
 import {
   AppState,
   AuthState,
@@ -79,7 +77,7 @@ import {
   SlotN,
   EntryN
 } from "./types";
-import { Some } from "monet";
+import * as _ from "lodash";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -112,53 +110,84 @@ const withoutEntries = (...ids: string[]) => (state: AppState) => {
 
 const asyncReducers = (request: string, error: string) => ({
   [request]: (state: AppState, action: Action<void>) =>
-    state.update("loading", loading => loading + 1),
-  [error]: (state: AppState, action: Action<Error>) =>
-    state.update("loading", loading => loading - 1)
+    state.update("pendingActions", pending => pending.add(action)),
+  [error]: (state: AppState, action: ActionMeta<Error, Action<any>>) =>
+    state.update("pendingActions", pending => pending.remove(action.meta))
+});
+
+const asyncReducersFullWithoutMetaPayload = (
+  request: string,
+  error: string,
+  success: string,
+  update: (state: AppState, action: Action<any>) => AppState = _.identity
+) => ({
+  [request]: (state: AppState, action: Action<void>) =>
+    state.update("pendingActions", pending =>
+      pending.add({ type: action.type })
+    ),
+  [error]: (state: AppState, action: ActionMeta<Error, Action<any>>) =>
+    state.update("pendingActions", pending =>
+      pending.filter(p => p.type !== action.meta.type)
+    ),
+  [success]: (
+    state: AppState,
+    action: ActionMeta<void, Action<any>>
+  ): AppState =>
+    update(
+      state.update("pendingActions", pending =>
+        pending.filter(p => p.type !== action.meta.type)
+      ),
+      action
+    )
 });
 
 const asyncReducersFull = (
   request: string,
   error: string,
-  success: string
+  success: string,
+  update: (state: AppState, action: Action<any>) => AppState = _.identity
 ) => ({
   ...asyncReducers(request, error),
-  [success]: (state: AppState, action: Action<void>): AppState =>
-    state.update("loading", loading => loading - 1)
+  [success]: (
+    state: AppState,
+    action: ActionMeta<void, Action<any>>
+  ): AppState => {
+    const withoutPending = state.update("pendingActions", pending =>
+      pending.remove(action.meta)
+    );
+    const updated = update(withoutPending, action);
+    return updated;
+  }
 });
 
-const initialState = new AppState({});
+export const initialState = new AppState({});
 
-const reducer = handleActions(
+const reducer = handleActions<AppState | undefined, any>(
   {
     /**
      * # Auth
      */
     // ## GET_TOKEN
-    [GET_TOKEN_REQUEST]: state =>
-      state.update("loading", loading => loading + 1),
-    [GET_TOKEN_ERROR]: (state, action: Action<Error>) =>
-      state.update("loading", loading => loading - 1),
-    [GET_TOKEN_SUCCESS]: (state, action: Action<AuthState>) =>
-      state
-        .set("auth", Some(action.payload))
-        .update("loading", loading => loading - 1),
+    ...asyncReducersFullWithoutMetaPayload(
+      GET_TOKEN_REQUEST,
+      GET_TOKEN_ERROR,
+      GET_TOKEN_SUCCESS,
+      (state, action: Action<AuthState>) => state.set("auth", action.payload!)
+    ),
 
     // ## REFRESH_TOKEN
-    [REFRESH_TOKEN_REQUEST]: state =>
-      state.update("loading", loading => loading + 1),
-    [REFRESH_TOKEN_ERROR]: (state, action: Action<Error>) =>
-      state.update("loading", loading => loading - 1),
-    [REFRESH_TOKEN_SUCCESS]: (state, action: Action<AuthState>) =>
-      state
-        .set("auth", Some(action.payload))
-        .update("loading", loading => loading - 1),
+    ...asyncReducersFull(
+      REFRESH_TOKEN_REQUEST,
+      REFRESH_TOKEN_ERROR,
+      REFRESH_TOKEN_SUCCESS,
+      (state: AppState, action: Action<AuthState>) =>
+        state.set("auth", action.payload!)
+    ),
 
     // ## LOGOUT
-    [LOGOUT]: (state: AppState): AppState =>
+    [LOGOUT]: (state?: AppState): AppState =>
       new AppState({
-        messages: state.get("messages"),
-        loading: state.get("loading")
+        pendingActions: state!.get("pendingActions")
       }),
 
     // ## RESET_PASSWORD
@@ -169,7 +198,7 @@ const reducer = handleActions(
     ),
 
     // ## SET_PASSWORD
-    ...asyncReducersFull(
+    ...asyncReducersFullWithoutMetaPayload(
       SET_PASSWORD_REQUEST,
       SET_PASSWORD_ERROR,
       SET_PASSWORD_SUCCESS
@@ -207,33 +236,35 @@ const reducer = handleActions(
     ),
 
     // ## DELETE_USER
-    ...asyncReducers(DELETE_USER_REQUEST, DELETE_USER_ERROR),
-    [DELETE_USER_SUCCESS]: (state: AppState, action: Action<string>) => {
-      const userId = action.payload;
+    ...asyncReducersFull(
+      DELETE_USER_REQUEST,
+      DELETE_USER_ERROR,
+      DELETE_USER_SUCCESS,
+      (state: AppState, action: Action<string>) => {
+        const userId = action.payload;
 
-      const minusLoading = state.update("loading", l => l - 1);
+        const withoutUser = state.deleteIn(["usersMap", userId]);
 
-      const withoutUser = minusLoading.deleteIn(["usersMap", userId]);
+        const entriesOfUser = state
+          .get("entriesMap")
+          .filter(e => e.get("studentId") === userId);
 
-      const entriesOfUser = state
-        .get("entriesMap")
-        .filter(e => e.get("studentId") === userId);
-
-      return withoutEntries(
-        ...entriesOfUser
-          .map(m => m.get("id"))
-          .valueSeq()
-          .toArray()
-      )(withoutUser);
-    },
+        return withoutEntries(
+          ...entriesOfUser
+            .map(m => m.get("id"))
+            .valueSeq()
+            .toArray()
+        )(withoutUser);
+      }
+    ),
 
     // ## DELETE_ENTRY
-    ...asyncReducers(DELETE_ENTRY_ERROR, DELETE_ENTRY_ERROR),
-    [DELETE_ENTRY_SUCCESS]: (state: AppState, action: Action<string>) => {
-      const entryId = action.payload;
-      const minusLoading = state.update("loading", l => l - 1);
-      return withoutEntries(entryId)(minusLoading);
-    },
+    ...asyncReducersFull(
+      DELETE_ENTRY_ERROR,
+      DELETE_ENTRY_ERROR,
+      DELETE_ENTRY_SUCCESS,
+      (state, action) => withoutEntries(action.payload)(state)
+    ),
 
     /**
      * # GET
@@ -265,12 +296,12 @@ const reducer = handleActions(
     ),
 
     // ## ADD_RESPONSE
-    [ADD_RESPONSE]: (state: AppState, action: Action<APIResponse>): AppState =>
-      state
+    [ADD_RESPONSE]: (state?: AppState, action?: Action<APIResponse>) =>
+      state!
         .update("usersMap", users =>
           users.merge(
             Map<string, UserN>(
-              action.payload!.users.map(
+              action!.payload!.users.map(
                 user => [user.get("id"), user] as [string, UserN]
               )
             )
@@ -279,7 +310,7 @@ const reducer = handleActions(
         .update("slotsMap", slots =>
           slots.merge(
             Map<string, SlotN>(
-              action.payload!.slots.map(
+              action!.payload!.slots.map(
                 slot => [slot.get("id"), slot] as [string, SlotN]
               )
             )
@@ -288,7 +319,7 @@ const reducer = handleActions(
         .update("entriesMap", entries =>
           entries.merge(
             Map<string, EntryN>(
-              action.payload!.entries.map(
+              action!.payload!.entries.map(
                 entry => [entry.get("id"), entry] as [string, EntryN]
               )
             )
@@ -320,19 +351,8 @@ const reducer = handleActions(
       UPDATE_USER_REQUEST,
       UPDATE_USER_SUCCESS,
       UPDATE_USER_ERROR
-    ),
-
-    /**
-     * # UI
-     */
-    // ## ADD_MESSAGE
-    [ADD_MESSAGE]: (state: AppState, action: Action<string>): AppState =>
-      state.update("messages", messages => messages.push(action.payload)),
-
-    // ## REMOVE_MESSAGE
-    [REMOVE_MESSAGE]: (state: AppState, action: Action<number>) =>
-      state.update("messages", messages => messages.remove(action.payload!))
-  } as ReducerMap<AppState, ActionType>,
+    )
+  },
   initialState
 ); // tslint:disable-line:align
 

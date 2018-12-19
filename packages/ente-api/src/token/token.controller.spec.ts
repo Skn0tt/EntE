@@ -2,11 +2,12 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { TokenController } from "./token.controller";
 import { setupEnvVars } from "../../test/setup";
 import { TokenService } from "./token.service";
+import { RequestContextUser } from "../helpers/request-context";
 
 const mockToken = "token";
 
 const tokenServiceMock: TokenService = {
-  async createToken(u) {
+  async createToken() {
     return mockToken;
   }
 } as any;
@@ -37,7 +38,9 @@ describe("Token Controller", () => {
       const controller: TokenController = module.get<TokenController>(
         TokenController
       );
-      const t = await controller.getToken({ user: null });
+      const t = await controller.getToken({
+        user: (null as unknown) as RequestContextUser
+      });
       expect(t).toEqual(mockToken);
     });
   });

@@ -10,13 +10,13 @@
   "private": true,
   "workspaces": [
     "packages/ente-api",
-    "packages/ente-db",
     "packages/ente-types",
     "packages/ente-ui"
   ],
   "scripts": {
     "precommit": "pretty-quick --staged",
     "preversion": "yarn test:unit && ./scripts/dockerapp-version.js update",
+    "test:tsc": "yarn tsc",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
     "test:unit:ci":
@@ -29,11 +29,11 @@
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/enzyme": "^3.1.9",
-    "@types/jest": "^22.2.2",
+    "@types/jest": "^23.3.10",
     "@types/sinon": "^4.3.1",
     "chai": "^4.1.2",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "husky": "^0.14.3",
     "jest": "^23.6.0",
     "jest-junit": "^3.7.0",
@@ -44,7 +44,7 @@
     "sinon": "^4.5.0",
     "testcafe": "^0.20.5",
     "ts-jest": "^23.10.4",
-    "typescript": "^3.0.1"
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "npm": "^5.8.0",
@@ -57,7 +57,7 @@
         "diagnostics": false
       }
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/tests/jestSetup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/jest/jestSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -70,8 +70,8 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/tests/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/tests/assetsTransformer.js"
+        "<rootDir>/tests/jest/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/tests/jest/assetsTransformer.js"
     }
   }
 }

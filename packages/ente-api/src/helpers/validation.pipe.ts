@@ -56,7 +56,7 @@ export class ValidationPipe implements PipeTransform<any> {
     return classes;
   }
 
-  static needsToBeValidated(metatype): boolean {
+  static needsToBeValidated(metatype: any): boolean {
     const notNeeded = [String, Boolean, Number, Array, Object];
     const isNotNeeded = !!notNeeded.find(t => t === metatype);
     return !isNotNeeded;

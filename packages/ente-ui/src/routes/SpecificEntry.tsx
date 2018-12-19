@@ -40,11 +40,9 @@ import Typography from "@material-ui/core/Typography/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import {
-  AssignmentTurnedIn as AssignmentTurnedInIcon,
-  AssignmentReturned as AssignmentReturnedIcon,
-  Delete as DeleteIcon
-} from "@material-ui/icons";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
+import DeleteIcon from "@material-ui/icons/Delete";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import LoadingIndicator from "../elements/LoadingIndicator";
 import { Roles } from "ente-types";
@@ -68,15 +66,63 @@ import withErrorBoundary from "../hocs/withErrorBoundary";
 import { DeleteModal } from "../components/DeleteModal";
 import { createTranslation } from "../helpers/createTranslation";
 import { green, red, common } from "@material-ui/core/colors";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
     sign: "Sign",
-    close: "Close"
+    close: "Close",
+    delete: "Delete",
+    areYouSureToDelete: "Are you sure that you want to delete this entry?",
+    yes: "Yes",
+    no: "No",
+    student: "Student:",
+    id: "ID:",
+    createdAt: "Created:",
+    forSchool: "For School:",
+    date: "Date:",
+    dateRange: (start: Date, end: Date) =>
+      `From ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`,
+    slotsTable: {
+      title: "Slots",
+      date: "Date",
+      from: "From",
+      to: "To",
+      teacher: "Teacher",
+      deleted: "Deleted"
+    },
+    signed: {
+      manager: "Manager",
+      parents: "Parents"
+    }
   },
   de: {
     sign: "Unterschreiben",
-    close: "Schließen"
+    close: "Schließen",
+    delete: "Löschen",
+    areYouSureToDelete:
+      "Sind sie sicher, dass sie diesen Eintrag löschen möchten?",
+    yes: "Ja",
+    no: "Nein",
+    student: "Schüler:",
+    id: "ID:",
+    createdAt: "Erstellt:",
+    forSchool: "Schulisch:",
+    date: "Datum:",
+    dateRange: (start: Date, end: Date) =>
+      `Von ${start.toLocaleDateString()} bis ${end.toLocaleDateString()}`,
+    slotsTable: {
+      title: "Stunden",
+      date: "Datum",
+      from: "Von",
+      to: "Bis",
+      teacher: "Lehrer",
+      deleted: "Gelöscht"
+    },
+    signed: {
+      manager: "Stufenleiter",
+      parents: "Eltern"
+    }
   }
 });
 
@@ -113,11 +159,11 @@ interface InjectedProps {
 }
 
 interface StateProps {
-  getEntry(id: string): EntryN;
-  getUser(id: string): UserN;
+  getEntry(id: string): Maybe<EntryN>;
+  getUser(id: string): Maybe<UserN>;
   getSlots(ids: string[]): SlotN[];
   loading: boolean;
-  role: Roles;
+  role: Maybe<Roles>;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -201,162 +247,173 @@ class SpecificEntry extends React.PureComponent<
     } = this.props;
     const { showDelete } = this.state;
 
-    return (
-      <>
-        <DeleteModal
-          onClose={() => this.setState({ showDelete: false })}
-          onDelete={() => {
-            deleteEntry(entryId);
-            this.onClose();
-          }}
-          show={showDelete}
-          text="Sind sie sicher, dass sie diesen Eintrag löschen möchten?"
-        />
-        <Dialog open fullScreen={fullScreen} onClose={this.onClose} fullWidth>
-          <DialogContent>
-            {!!entry ? (
-              <Grid container direction="column" spacing={24}>
-                {role === Roles.MANAGER && (
-                  <IconButton
-                    aria-label="Löschen"
-                    onClick={() => this.setState({ showDelete: true })}
-                    className={classes.deleteButton}
-                  >
-                    <DeleteIcon fontSize="large" />
-                  </IconButton>
-                )}
+    return entry.cata(
+      () => <LoadingIndicator />,
+      entry => (
+        <>
+          <DeleteModal
+            onClose={() => this.setState({ showDelete: false })}
+            onDelete={() => {
+              deleteEntry(entryId);
+              this.onClose();
+            }}
+            show={showDelete}
+            text={lang.areYouSureToDelete}
+          />
+          <Dialog open fullScreen={fullScreen} onClose={this.onClose} fullWidth>
+            <DialogContent>
+              {!!entry ? (
+                <Grid container direction="column" spacing={24}>
+                  {role.some() === Roles.MANAGER && (
+                    <IconButton
+                      aria-label={lang.delete}
+                      onClick={() => this.setState({ showDelete: true })}
+                      className={classes.deleteButton}
+                    >
+                      <DeleteIcon fontSize="large" />
+                    </IconButton>
+                  )}
 
-                <Grid item>
-                  <Typography variant="h6">Info</Typography>
-                  <Typography variant="body1">
-                    <i>ID:</i> {entry.get("id")} <br />
-                    <i>Erstellt:</i> {entry.get("createdAt").toLocaleString()}{" "}
-                    <br />
-                    <i>Schulisch:</i>{" "}
-                    {role === Roles.MANAGER ? (
-                      <Checkbox
-                        checked={entry.get("forSchool")}
-                        onChange={() =>
-                          patchForSchool(
-                            entry.get("id"),
-                            !entry.get("forSchool")
+                  <Grid item>
+                    <Typography variant="h6">Info</Typography>
+                    <Typography variant="body1">
+                      <i>{lang.id}</i> {entry.get("id")} <br />
+                      <i>{lang.createdAt}</i>{" "}
+                      {entry.get("createdAt").toLocaleString()} <br />
+                      <i>{lang.forSchool}</i>{" "}
+                      {role.some() === Roles.MANAGER ? (
+                        <Checkbox
+                          checked={entry.get("forSchool")}
+                          onChange={() =>
+                            patchForSchool(
+                              entry.get("id"),
+                              !entry.get("forSchool")
+                            )
+                          }
+                        />
+                      ) : entry.get("forSchool") ? (
+                        lang.yes
+                      ) : (
+                        lang.no
+                      )}{" "}
+                      <br />
+                      <i>{lang.student}</i>{" "}
+                      {getUser(entry.get("studentId"))
+                        .some()
+                        .get("displayname")}{" "}
+                      <br />
+                      <i>{lang.date}</i>{" "}
+                      {!!entry.get("dateEnd")
+                        ? lang.dateRange(
+                            entry.get("date"),
+                            entry.get("dateEnd")!
                           )
-                        }
-                      />
-                    ) : entry.get("forSchool") ? (
-                      "Ja"
-                    ) : (
-                      "Nein"
-                    )}{" "}
-                    <br />
-                    <i>Schüler:</i>{" "}
-                    {getUser(entry.get("studentId")).get("displayname")} <br />
-                    <i>Datum:</i>{" "}
-                    {!!entry.get("dateEnd")
-                      ? `Von ${entry.get("date").toLocaleDateString()}
-                bis ${entry.get("dateEnd")!.toLocaleDateString()}`
-                      : entry.get("date").toLocaleDateString()}{" "}
-                    <br />
-                  </Typography>
-                </Grid>
+                        : entry.get("date").toLocaleDateString()}{" "}
+                      <br />
+                    </Typography>
+                  </Grid>
 
-                {/* Slots */}
-                <Grid item>
-                  <Typography variant="h6">Stunden</Typography>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Datum</TableCell>
-                        <TableCell>Von</TableCell>
-                        <TableCell>Bis</TableCell>
-                        <TableCell>Lehrer</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {getSlots(entry.get("slotIds")).map(slot => (
-                        <TableRow key={slot.get("id")}>
-                          <TableCell>
-                            {slot.get("date").toLocaleDateString("de")}
-                          </TableCell>
-                          <TableCell>{slot.get("from")}</TableCell>
-                          <TableCell>{slot.get("to")}</TableCell>
-                          <TableCell>
-                            {slot
-                              .get("teacherId")
-                              .cata(
-                                () => "Gelöscht",
-                                id => getUser(id).get("displayname")
-                              )}
-                          </TableCell>
+                  {/* Slots */}
+                  <Grid item>
+                    <Typography variant="h6">
+                      {lang.slotsTable.title}
+                    </Typography>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>{lang.slotsTable.date}</TableCell>
+                          <TableCell>{lang.slotsTable.from}</TableCell>
+                          <TableCell>{lang.slotsTable.to}</TableCell>
+                          <TableCell>{lang.slotsTable.teacher}</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Grid>
-
-                {/* Signed */}
-                <Grid item>
-                  <Typography variant="h6">Signiert</Typography>
-                  <List>
-                    {/* Admin */}
-                    <ListItem>
-                      <SignedAvatar signed={entry.get("signedManager")} />
-                      <ListItemText primary="Stufenleiter" />
-                      {role === Roles.MANAGER &&
-                        (entry.get("signedManager") ? (
-                          <ListItemSecondaryAction>
-                            <Button
-                              className={classes.unsignEntryButton}
-                              onClick={() => unsignEntry(entry.get("id"))}
-                            >
-                              <AssignmentReturnedIcon />
-                            </Button>
-                          </ListItemSecondaryAction>
-                        ) : (
-                          <ListItemSecondaryAction>
-                            <Button
-                              className={classes.signEntryButton}
-                              onClick={() => signEntry(entry.get("id"))}
-                              variant="raised"
-                            >
-                              <AssignmentTurnedInIcon />
-                            </Button>
-                          </ListItemSecondaryAction>
+                      </TableHead>
+                      <TableBody>
+                        {getSlots(entry.get("slotIds")).map(slot => (
+                          <TableRow key={slot.get("id")}>
+                            <TableCell>
+                              {slot.get("date").toLocaleDateString("de")}
+                            </TableCell>
+                            <TableCell>{slot.get("from")}</TableCell>
+                            <TableCell>{slot.get("to")}</TableCell>
+                            <TableCell>
+                              {Maybe.fromFalsy(slot.get("teacherId")).cata(
+                                () => lang.slotsTable.deleted,
+                                id =>
+                                  getUser(id)
+                                    .some()
+                                    .get("displayname")
+                              )}
+                            </TableCell>
+                          </TableRow>
                         ))}
-                    </ListItem>
+                      </TableBody>
+                    </Table>
+                  </Grid>
 
-                    {/* Parents */}
-                    <ListItem>
-                      <SignedAvatar signed={entry.get("signedParent")} />
-                      <ListItemText primary="Eltern" />
-                      {!entry.get("signedParent") &&
-                        role === Roles.PARENT && (
-                          <ListItemSecondaryAction>
-                            <Button
-                              className={classes.signEntryButton}
-                              onClick={() => signEntry(entry.get("id"))}
-                            >
-                              {lang.sign}
-                              <AssignmentTurnedInIcon />
-                            </Button>
-                          </ListItemSecondaryAction>
-                        )}
-                    </ListItem>
-                  </List>
+                  {/* Signed */}
+                  <Grid item>
+                    <Typography variant="h6">Signiert</Typography>
+                    <List>
+                      {/* Admin */}
+                      <ListItem>
+                        <SignedAvatar signed={entry.get("signedManager")} />
+                        <ListItemText primary={lang.signed.manager} />
+                        {role.some() === Roles.MANAGER &&
+                          (entry.get("signedManager") ? (
+                            <ListItemSecondaryAction>
+                              <Button
+                                className={classes.unsignEntryButton}
+                                onClick={() => unsignEntry(entry.get("id"))}
+                              >
+                                <AssignmentReturnedIcon />
+                              </Button>
+                            </ListItemSecondaryAction>
+                          ) : (
+                            <ListItemSecondaryAction>
+                              <Button
+                                className={classes.signEntryButton}
+                                onClick={() => signEntry(entry.get("id"))}
+                                variant="raised"
+                              >
+                                <AssignmentTurnedInIcon />
+                              </Button>
+                            </ListItemSecondaryAction>
+                          ))}
+                      </ListItem>
+
+                      {/* Parents */}
+                      <ListItem>
+                        <SignedAvatar signed={entry.get("signedParent")} />
+                        <ListItemText primary={lang.signed.parents} />
+                        {!entry.get("signedParent") &&
+                          role.some() === Roles.PARENT && (
+                            <ListItemSecondaryAction>
+                              <Button
+                                className={classes.signEntryButton}
+                                onClick={() => signEntry(entry.get("id"))}
+                              >
+                                {lang.sign}
+                                <AssignmentTurnedInIcon />
+                              </Button>
+                            </ListItemSecondaryAction>
+                          )}
+                      </ListItem>
+                    </List>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ) : (
-              loading && <LoadingIndicator />
-            )}
-          </DialogContent>
+              ) : (
+                loading && <LoadingIndicator />
+              )}
+            </DialogContent>
 
-          <DialogActions>
-            <Button size="small" color="primary" onClick={this.onClose}>
-              {lang.close}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
+            <DialogActions>
+              <Button size="small" color="primary" onClick={this.onClose}>
+                {lang.close}
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )
     );
   }
 }

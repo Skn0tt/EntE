@@ -4,7 +4,7 @@ import {
   OnModuleInit,
   LoggerService
 } from "@nestjs/common";
-import { Validation, Success, Fail } from "monet";
+import { Validation, Success, Fail, Maybe } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
   Roles,
@@ -20,6 +20,7 @@ import { hashPassword } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
+import { PaginationInformation } from "../helpers/pagination-info";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -87,11 +88,12 @@ export class UsersService implements OnModuleInit {
   }
 
   async findAll(
-    requestingUser: RequestContextUser
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
-        return Success(await this.userRepo.findAll());
+        return Success(await this.userRepo.findAll(paginationInfo));
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
@@ -139,14 +141,10 @@ export class UsersService implements OnModuleInit {
         break;
     }
 
-    const requestingUser =
-      _requestingUser.role === Roles.MANAGER &&
-      (await _requestingUser.getDto()).some();
-
     const user = await this.userRepo.findById(id);
-    return user.cata(
-      () => Fail(FindOneUserFailure.UserNotFound),
-      u => {
+    return await user.cata<Promise<Validation<FindOneUserFailure, UserDto>>>(
+      async () => Fail(FindOneUserFailure.UserNotFound),
+      async u => {
         const requestingOneSelf = id === _requestingUser.id;
         if (requestingOneSelf) {
           return Success(u);
@@ -158,8 +156,9 @@ export class UsersService implements OnModuleInit {
             return Success(u);
 
           case Roles.MANAGER:
+            const requestingUser = (await _requestingUser.getDto()).some();
             const isManagersYear =
-              u.graduationYear === requestingUser.graduationYear;
+              u.graduationYear === requestingUser.graduationYear!;
             return isManagersYear
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
@@ -173,6 +172,8 @@ export class UsersService implements OnModuleInit {
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
         }
+
+        throw new Error("Not reachable");
       }
     );
   }
@@ -186,15 +187,17 @@ export class UsersService implements OnModuleInit {
     );
     const created = await this.userRepo.create(...withHash);
 
-    created.forEach(user => {
-      const hasPasswordSet = !!users.find(u => user.username === u.username)
+    const usersWithoutPassword = created.filter(created => {
+      const hasPasswordSet = users.find(u => created.username === u.username)!
         .password;
-      if (!hasPasswordSet) {
-        this.passwordResetService.startPasswordResetRoutine(
-          user.username,
-          days(7)
-        );
-      }
+      return hasPasswordSet;
+    });
+
+    usersWithoutPassword.forEach(user => {
+      this.passwordResetService.startPasswordResetRoutine(
+        user.username,
+        days(7)
+      );
     });
 
     return created;
@@ -249,7 +252,7 @@ export class UsersService implements OnModuleInit {
       `User ${
         requestingUser.username
       } successfully created users ${JSON.stringify(
-        created.map(c => c.username)
+        created.map((c: UserDto) => c.username)
       )}`
     );
 

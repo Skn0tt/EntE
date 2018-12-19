@@ -6,9 +6,9 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { Map, List, Record } from "immutable";
+import { Map, Record, Set } from "immutable";
 import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
-import { Maybe, None } from "monet";
+import { Action } from "redux";
 
 export interface BasicCredentials {
   username: string;
@@ -40,7 +40,7 @@ class EntryDtoNormalised extends EntryDto {
 
 class SlotDtoNormalised extends SlotDto {
   studentId: string;
-  teacherId: Maybe<string>;
+  teacherId: string | null;
 }
 
 export type UserN = Record<UserDtoNormalised>;
@@ -54,7 +54,7 @@ export const UserN = Record<UserDtoNormalised>(
     isAdult: false,
     role: Roles.STUDENT,
     childrenIds: [],
-    graduationYear: null
+    graduationYear: undefined
   },
   "UserN"
 );
@@ -79,7 +79,7 @@ export const EntryN = Record<EntryDtoNormalised>(
     signedParent: false,
     slots: [],
     slotIds: [],
-    student: null,
+    student: (null as unknown) as UserDto,
     studentId: "",
     updatedAt: new Date()
   },
@@ -93,10 +93,10 @@ export const SlotN = Record<SlotDtoNormalised>(
     from: 0,
     id: "",
     signed: false,
-    student: null,
+    student: (null as unknown) as UserDto,
     teacher: null,
     studentId: "",
-    teacherId: None(),
+    teacherId: null,
     to: 0,
     forSchool: false
   },
@@ -128,10 +128,7 @@ export const AuthState = Record<IAuthState>(
   "AuthState"
 );
 
-/**
- * Messages
- */
-type MessagesState = List<string>;
+export type PendingActions = Set<Action>;
 
 /**
  * AppState
@@ -140,9 +137,8 @@ export interface IAppState {
   entriesMap: Map<string, EntryN>;
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
-  auth: Maybe<AuthState>;
-  messages: MessagesState;
-  loading: number;
+  auth: AuthState | null;
+  pendingActions: PendingActions;
 }
 
 export type AppState = Record<IAppState>;
@@ -151,9 +147,8 @@ export const AppState = Record<IAppState>(
     entriesMap: Map<string, EntryN>(),
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
-    auth: None(),
-    messages: List<string>(),
-    loading: 0
+    auth: null,
+    pendingActions: Set<Action>()
   },
   "AppState"
 );

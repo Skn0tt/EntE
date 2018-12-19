@@ -10,7 +10,7 @@ describe("base64", () => {
       ];
 
       inputs.forEach(([value, result]) => {
-        test(value, () => {
+        it(value, () => {
           expect(Base64.decode(value, CharacterSets.LATIN_1)).toEqual(result);
         });
       });

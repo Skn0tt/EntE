@@ -35,7 +35,7 @@ export class CombinedStrategy extends PassportStrategy(
 
     const isBasicAuth = BASIC_REGEX.test(authorization);
     if (isBasicAuth) {
-      const b64 = authorization.match(BASIC_REGEX)[0];
+      const b64 = authorization.match(BASIC_REGEX)![0];
       const text = Base64.decode(b64, CharacterSets.LATIN_1);
       const creds = CombinedStrategy.extractCredentials(text);
       if (creds.isNone()) {
@@ -49,7 +49,7 @@ export class CombinedStrategy extends PassportStrategy(
 
     const isBearerAuth = BEARER_REGEX.test(authorization);
     if (isBearerAuth) {
-      const token = authorization.match(BEARER_REGEX)[0];
+      const token = authorization.match(BEARER_REGEX)![0];
 
       return await this.jwtStrategy.validate(token);
     }

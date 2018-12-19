@@ -14,6 +14,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
 import { get as getConfig } from "./config";
+import {
+  install as installMuiStyles,
+  ThemeProvider as MuiStylesThemeProvider
+} from "@material-ui/styles";
 
 // Fonts
 import "typeface-roboto";
@@ -27,10 +31,13 @@ import HttpsGate from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
 import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
+import { MessagesProvider } from "./context/Messages";
+
+installMuiStyles();
 
 const baseUrl = `${location.protocol}//${location.hostname}`;
 
-const config: ReduxConfig = {
+const config: Partial<ReduxConfig> = {
   baseUrl: `${baseUrl}/api`,
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
@@ -51,16 +58,19 @@ const setupSentry = (dsn: string) => {
     return;
   }
 
-  const sentryClient = new Sentry.BrowserClient({
+  const sentryConfig: Sentry.BrowserOptions = {
     dsn,
     release: VERSION
-  });
+  };
+
+  Sentry.init(sentryConfig);
+  const sentryClient = new Sentry.BrowserClient(sentryConfig);
 
   ErrorReporting.supplySentryClient(sentryClient);
 
-  const ravenMiddleware = createSentryMiddleware(sentryClient);
+  const sentryMiddleware = createSentryMiddleware(sentryClient);
 
-  config.middlewares.push(ravenMiddleware);
+  config.middlewares!.push(sentryMiddleware);
   config.onSagaError = ErrorReporting.report;
 };
 
@@ -68,23 +78,31 @@ if (!!SENTRY_DSN) {
   setupSentry(SENTRY_DSN);
 }
 
-const store = setupRedux(config);
+const bootstrap = async () => {
+  const store = await setupRedux(config);
 
-const Index = () => (
-  <div>
-    <React.StrictMode>
-      <CssBaseline />
-      <MuiThemeProvider theme={theme}>
-        <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
-          <HttpsGate disable={ALLOW_INSECURE}>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </HttpsGate>
-        </MuiPickersUtilsProvider>
-      </MuiThemeProvider>
-    </React.StrictMode>
-  </div>
-);
+  const Index = () => (
+    <div>
+      <React.StrictMode>
+        <CssBaseline />
+        <MuiStylesThemeProvider theme={theme}>
+          <MuiThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+              <HttpsGate disable={ALLOW_INSECURE}>
+                <MessagesProvider>
+                  <Provider store={store}>
+                    <App />
+                  </Provider>
+                </MessagesProvider>
+              </HttpsGate>
+            </MuiPickersUtilsProvider>
+          </MuiThemeProvider>
+        </MuiStylesThemeProvider>
+      </React.StrictMode>
+    </div>
+  );
 
-ReactDOM.render(<Index />, document.getElementById("root"));
+  ReactDOM.render(<Index />, document.getElementById("root"));
+};
+
+bootstrap();

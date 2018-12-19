@@ -22,7 +22,7 @@ export class SearchableDropdown<T> extends React.PureComponent<
     filteredItems: this.props.items
   };
 
-  handleStateChange = changes => {
+  handleStateChange = (changes: any) => {
     const { items, includeItem } = this.props;
     if (typeof changes.inputValue === "string") {
       const filteredItems = items.filter(i =>
@@ -44,7 +44,7 @@ export class SearchableDropdown<T> extends React.PureComponent<
     return (
       <MuiDownshift
         items={itemsToShow}
-        onChange={selection => !!selection && onChange(selection.value)}
+        onChange={(selection: any) => !!selection && onChange(selection.value)}
         onStateChange={this.handleStateChange}
         getInputProps={() => ({ label, helperText })}
       />

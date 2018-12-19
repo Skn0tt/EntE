@@ -7,7 +7,11 @@
  */
 
 import * as React from "react";
-import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
+import {
+  connect,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 
 import { Dialog, Button, Grid, TextField, Typography } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -41,8 +45,10 @@ import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
-import { PasswordRequirementsHint } from "ente-ui/src/elements/PasswordRequirementsHint";
+import { createTranslation } from "../../helpers/createTranslation";
+import { PasswordRequirementsHint } from "../../elements/PasswordRequirementsHint";
+import * as _ from "lodash";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -96,12 +102,12 @@ interface CreateUserState {
   showImportUsers: boolean;
 }
 
-interface StateProps {
+interface CreateUserStateProps {
   students: UserN[];
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
+  CreateUserStateProps,
   OwnProps,
   AppState
 > = state => ({
@@ -109,14 +115,21 @@ const mapStateToProps: MapStateToPropsParam<
   students: getStudents(state)
 });
 
-interface DispatchProps {
-  createUser(user: CreateUserDto): Action;
+interface CreateUserDispatchProps {
+  createUsers(...users: CreateUserDto[]): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUser: (user: CreateUserDto) => dispatch(createUsersRequest(user))
+const mapDispatchToProps: MapDispatchToPropsParam<
+  CreateUserDispatchProps,
+  OwnProps
+> = dispatch => ({
+  createUsers: (...users: CreateUserDto[]) =>
+    dispatch(createUsersRequest(users))
 });
 
-type CreateUserProps = OwnProps & StateProps & DispatchProps & InjectedProps;
+type CreateUserProps = OwnProps &
+  CreateUserStateProps &
+  CreateUserDispatchProps &
+  InjectedProps;
 
 /**
  * # Component
@@ -144,13 +157,19 @@ export class CreateUser extends React.Component<
   handleCloseImport = () => this.setState({ showImportUsers: false });
 
   handleSubmit = () => {
-    return this.props.createUser(this.state.create);
+    return this.props.createUsers(this.state.create);
   };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
     if (event.key === "Enter" && this.inputValid()) {
       this.handleSubmit();
     }
+  };
+
+  handleImport = (u: CreateUserDto[]) => {
+    this.props.createUsers(...u);
+    this.handleCloseImport();
+    this.handleClose();
   };
 
   /**
@@ -164,9 +183,12 @@ export class CreateUser extends React.Component<
   handleChangeUsername = this.update("username");
   handleChangeYear = this.update("graduationYear");
   handleChangeDisplayname = this.update("displayname");
-  handleChangePassword = this.update("password");
+  handleChangePassword = (value: string) => {
+    const newValue = value === "" ? undefined : value;
+    this.update("password")(newValue);
+  };
   handleChangeIsAdult = (
-    ignored: React.ChangeEvent<HTMLInputElement>,
+    _: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => this.update("isAdult")(checked);
   handleChangeEmail = this.update("email");
@@ -192,7 +214,8 @@ export class CreateUser extends React.Component<
     isValidDisplayname(this.state.create.displayname);
   emailValid = (): boolean => isValidEmail(this.state.create.email);
   passwordValid = (): boolean =>
-    !this.state.create.password || isValidPassword(this.state.create.password);
+    _.isUndefined(this.state.create.password) ||
+    isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
   inputValid = (): boolean => isValidCreateUserDto(this.state.create);
@@ -271,7 +294,7 @@ export class CreateUser extends React.Component<
                 {this.hasChildren() && (
                   <Grid item xs={12}>
                     <ChildrenInput
-                      children={create.children.map(getUser)}
+                      children={create.children.map(getUser).map(c => c.some())}
                       students={students}
                       onChange={(u: UserN[]) =>
                         this.handleChangeChildren(u.map(u => u.get("id")))
@@ -285,7 +308,7 @@ export class CreateUser extends React.Component<
                       label={lang.titles.gradYear}
                       amount={5}
                       onChange={this.handleChangeYear}
-                      value={create.graduationYear}
+                      value={create.graduationYear!}
                     />
                   </Grid>
                 )}
@@ -313,13 +336,21 @@ export class CreateUser extends React.Component<
             </Button>
           </DialogActions>
         </Dialog>
-        <ImportUsers onClose={this.handleCloseImport} show={showImportUsers} />
+        <ImportUsers
+          onClose={this.handleCloseImport}
+          show={showImportUsers}
+          onImport={this.handleImport}
+        />
       </>
     );
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser)));
+export default connect<
+  CreateUserStateProps,
+  CreateUserDispatchProps,
+  OwnProps,
+  AppState
+>(mapStateToProps, mapDispatchToProps)(
+  withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser))
+);

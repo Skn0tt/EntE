@@ -3,7 +3,7 @@ import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
 import { Roles } from "ente-types";
-import { Fail, Validation, Success } from "monet";
+import { Fail, Validation, Success, None } from "monet";
 import { Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 
@@ -26,9 +26,18 @@ export class ExportService {
       return Fail(ExportExcelFailure.ForbiddenForRole);
     }
 
-    const users = await this.userRepo.findAll();
-    const entries = await this.entryRepo.findAll();
-    const slots = await this.slotRepo.findAll();
+    const users = await this.userRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
+    const entries = await this.entryRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
+    const slots = await this.slotRepo.findAll({
+      limit: None(),
+      offset: None()
+    });
 
     const spreadsheet = await createSpreadsheet(
       {
@@ -70,7 +79,7 @@ export class ExportService {
         rows: entries.map(e => [
           e.id,
           e.date.toISOString(),
-          e.dateEnd.toISOString(),
+          !!e.dateEnd ? e.dateEnd.toISOString() : "",
           e.student.username,
           "" + e.forSchool,
           e.createdAt.toISOString(),
@@ -78,9 +87,9 @@ export class ExportService {
           "" + e.signedParent,
           ...e.slots.map(
             s =>
-              `${s.date.toISOString()}, ${s.teacher.username}, ${s.from}, ${
-                s.to
-              }`
+              `${s.date.toISOString()}, ${
+                !!s.teacher ? s.teacher.username : "N/A"
+              }, ${s.from}, ${s.to}`
           )
         ])
       },
@@ -90,7 +99,7 @@ export class ExportService {
         rows: slots.map(s => [
           s.id,
           s.date.toISOString(),
-          s.teacher.username,
+          !!s.teacher ? s.teacher.username : "N/A",
           s.student.username,
           "" + s.from,
           "" + s.to,

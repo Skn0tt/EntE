@@ -10,11 +10,11 @@ import * as React from "react";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { Grid, TextField, Button } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import { getTeachers, getUser, AppState, UserN } from "../../redux";
+import { getTeachers, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
 
 const lang = createTranslation({
   en: {
@@ -47,23 +47,21 @@ interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
   multiDay: boolean;
   datePickerConfig?: {
-    min: Date;
-    max: Date;
+    min?: Date;
+    max?: Date;
   };
   date: Date;
 }
 
 interface SlotEntryStateProps {
   teachers: UserN[];
-  getUser(id: string): UserN;
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotEntryStateProps,
   SlotEntryOwnProps,
   AppState
 > = state => ({
-  teachers: getTeachers(state),
-  getUser: id => getUser(id)(state)
+  teachers: getTeachers(state)
 });
 
 type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
@@ -82,6 +80,10 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     from: "1",
     to: "2"
   };
+
+  get datePickerConfig() {
+    return this.props.datePickerConfig || {};
+  }
 
   /**
    * Handlers
@@ -130,15 +132,38 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     return !!teacher;
   };
 
+  dateValid = (): boolean => {
+    const { date } = this.state;
+    const { multiDay } = this.props;
+    if (!multiDay) {
+      return true;
+    }
+
+    const { min, max } = this.datePickerConfig;
+
+    if (!!min && min > date!) {
+      return false;
+    }
+
+    if (!!max && max < date!) {
+      return false;
+    }
+
+    return true;
+  };
+
   slotInputValid = () =>
-    this.fromValid() && this.toValid() && this.teacherValid();
+    this.fromValid() &&
+    this.toValid() &&
+    this.teacherValid() &&
+    this.dateValid();
 
   handleAddSlot = () =>
     this.props.onAdd({
       from: Number(this.state.from),
       to: Number(this.state.to),
-      teacherId: this.state.teacher,
-      date: this.props.multiDay ? this.state.date : this.props.date
+      teacherId: this.state.teacher!,
+      date: this.props.multiDay ? this.state.date : undefined
     });
 
   render() {
@@ -169,13 +194,14 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
           <Grid item xs={3}>
             <DateInput
               onChange={date => this.setState({ date })}
-              minDate={datePickerConfig.min}
-              maxDate={datePickerConfig.max}
+              minDate={datePickerConfig!.min}
+              maxDate={datePickerConfig!.max}
               isValid={d =>
-                +datePickerConfig.min <= +d && +datePickerConfig.max >= +d
+                +(this.datePickerConfig.min || 0) <= +d &&
+                +(this.datePickerConfig.max || Number.POSITIVE_INFINITY) >= +d
               }
               label={lang.titles.day}
-              value={date}
+              value={date!}
             />
           </Grid>
         )}
@@ -216,7 +242,7 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
             <Button
               variant="raised"
               disabled={!this.slotInputValid()}
-              onClick={() => this.handleAddSlot()}
+              onClick={this.handleAddSlot}
             >
               {lang.add}
             </Button>

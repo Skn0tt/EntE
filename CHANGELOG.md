@@ -5,7 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unreleased
+
+* Do not escape html table
+* Introduced `@material-ui/styles`
+* Added Redux persistance
+* Fixed bug where Slot "signed" had wrong type
+* Reworked Import screen
+* Updated to `react-redux@6.0.0`
+
+## [v0.12.1] - 2018-12-07
+
+* Fixed: Weeklysummary now does not break because of type inaccuracies
+* Fixed bug where AttachmentIcon was undefined
+
+## [v0.12.0] - 2018-12-06
+
+* Bundle size was decreased drastically to 2.5mb (500kb gzipped), now also javascript source code is cached.
+* Changed: Timezone of MySQL Instance now needs to be set for the API, so that dates can be adjusted accordingly
+  * Breaking: New Configuration Parameter `mysql.timezone`
+
+## [v0.11.0] - 2018-12-05
+
+* Changed: TypeOrm now logs more information
+* Changed: When slot belongs to single-day entry, no date is saved
+* Changed: DB Schema is not synced but only created when none is available
+* Fixed: Close Settingsmenu on clicking item
+* Changed: UI now responds with a 404 when requesting assets that do not exist
+
+## [v0.10.0] - 2018-12-04
+
+* Changed: More information on sentry errors
+* Fixed: Error where all slots appeared as non-signed
+* Added: About page showing version
+
+## [v0.9.1] - 2018-12-02
+
+* Fixed: Bug where entry could not be created
+
+## [v0.9.0] - 2018-12-01
+
+* Fixed: Now you can create entries (bug with monet)
+* Add Precaching and Home-Screen add functionality
+* API now supports pagination using `limit` and `offset` query params
+* Changed: Password Reset now works using a modal
+* Updated to React 16.7 (Hooks Alpha)
+* Updated to Material-UI 3.6
+
+## [v0.8.11] - 2018-11-30
+
+* Fixed: password in user creation is now optional
+* Fixed: translation of filter values in table
+* Changed: API now takes entry date for slots as well, if it is a single-day entry
+* Changed: Redux selectors now return maybe types in some cases
+* Fixed: Import window now accepts all mime types and instead filters by file ending (must end on ".csv")
+* Changed: Password Reset screen now redirects to login screen
+* Changed: Login screen now shows feedback while pending requests
 
 * Changed: Slots now shows wether the entry was for school or not, so teachers know about that
 

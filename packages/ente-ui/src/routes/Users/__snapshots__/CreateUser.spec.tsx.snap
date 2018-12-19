@@ -4,7 +4,7 @@ exports[`Users doesn't render when show=false 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <CreateUser
-    createUser={[MockFunction]}
+    createUsers={[MockFunction]}
     fullScreen={true}
     getUser={[MockFunction]}
     onClose={[MockFunction]}
@@ -20,7 +20,7 @@ ShallowWrapper {
           "isAdult": false,
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": null,
+          "graduationYear": undefined,
         },
       ]
     }
@@ -194,8 +194,9 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
+          onImport={[Function]}
           show={false}
         />,
       ],
@@ -1197,6 +1198,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "onClose": [Function],
+          "onImport": [Function],
           "show": false,
         },
         "ref": null,
@@ -1368,8 +1370,9 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
+            onImport={[Function]}
             show={false}
           />,
         ],
@@ -2371,6 +2374,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "onClose": [Function],
+            "onImport": [Function],
             "show": false,
           },
           "ref": null,
@@ -2405,7 +2409,7 @@ exports[`Users renders correctly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <CreateUser
-    createUser={[MockFunction]}
+    createUsers={[MockFunction]}
     fullScreen={true}
     getUser={[MockFunction]}
     onClose={[MockFunction]}
@@ -2421,7 +2425,7 @@ ShallowWrapper {
           "isAdult": false,
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": null,
+          "graduationYear": undefined,
         },
       ]
     }
@@ -2595,8 +2599,9 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
           onClose={[Function]}
+          onImport={[Function]}
           show={false}
         />,
       ],
@@ -3598,6 +3603,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "onClose": [Function],
+          "onImport": [Function],
           "show": false,
         },
         "ref": null,
@@ -3769,8 +3775,9 @@ ShallowWrapper {
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
             onClose={[Function]}
+            onImport={[Function]}
             show={false}
           />,
         ],
@@ -4772,6 +4779,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "onClose": [Function],
+            "onImport": [Function],
             "show": false,
           },
           "ref": null,

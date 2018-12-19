@@ -44,9 +44,14 @@ import {
   getUser,
   UserN
 } from "../../redux";
-import { CreateEntryDto, CreateSlotDto } from "ente-types";
+import {
+  CreateEntryDto,
+  CreateSlotDto,
+  isValidCreateEntryDto
+} from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { createTranslation } from "../../helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -57,6 +62,8 @@ const lang = createTranslation({
     titles: {
       slots: "Slots"
     },
+    newEntry: "New Entry",
+    child: "Child",
     ok: "OK",
     cancel: "Cancel",
     fromLabel: "From",
@@ -72,6 +79,8 @@ const lang = createTranslation({
     titles: {
       slots: "Stunden"
     },
+    newEntry: "Neuer Eintrag",
+    child: "Kind",
     ok: "OK",
     cancel: "Zurück",
     fromLabel: "Von",
@@ -86,6 +95,12 @@ const lang = createTranslation({
 const immutableDelete = (arr: any[], index: number) =>
   arr.slice(0, index).concat(arr.slice(index + 1));
 
+const stripTime = (date: Date): Date => {
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  return result;
+};
+
 const oneDay: number = 24 * 60 * 60 * 1000;
 
 const nextDay = (d: Date) => new Date(+d + oneDay);
@@ -97,10 +112,10 @@ interface CreateEntryOwnProps {
 }
 
 interface CreateEntryStateProps {
-  isParent: boolean;
-  children: UserN[];
+  isParent: Maybe<boolean>;
+  children: Maybe<UserN[]>;
   teachers: UserN[];
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateEntryStateProps,
@@ -132,7 +147,7 @@ type CreateEntryProps = CreateEntryOwnProps &
 interface State {
   isRange: boolean;
   date: Date;
-  dateEnd: Date;
+  dateEnd?: Date;
   student?: string;
   slots: CreateSlotDto[];
   forSchool: boolean;
@@ -141,12 +156,12 @@ interface State {
 class CreateEntry extends React.Component<CreateEntryProps, State> {
   state: State = {
     student:
-      this.props.children.length > 0
-        ? this.props.children[0].get("id")
+      this.props.children.some().length > 0
+        ? this.props.children.some()[0].get("id")
         : undefined,
     isRange: false,
-    date: new Date(),
-    dateEnd: new Date(),
+    date: stripTime(new Date()),
+    dateEnd: undefined,
     slots: [],
     forSchool: false
   };
@@ -157,7 +172,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   handleSubmit = () =>
     this.props.createEntry({
       date: this.state.date,
-      dateEnd: this.state.isRange ? this.state.dateEnd : undefined,
+      dateEnd: this.state.dateEnd,
       slots: this.state.slots,
       forSchool: this.state.forSchool,
       studentId: this.state.student
@@ -172,23 +187,53 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   /**
    * ## Input Handlers
    */
-  handleChangeDate = (date: Date) => {
-    const dateEndIsBeforeDate = +this.state.dateEnd <= +date + oneDay;
+  handleChangeBeginDate = (date: Date) => {
+    const { slots, isRange, dateEnd } = this.state;
+    const slotsWithoutSlotsThatAreTooEarly = isRange
+      ? slots.filter(s => s.date! >= date)
+      : slots;
+    const dateEndIsBeforeDate = +dateEnd! <= +date + oneDay;
     if (dateEndIsBeforeDate) {
       this.setState({
         date,
-        dateEnd: nextDay(date)
+        dateEnd: nextDay(date),
+        slots: slotsWithoutSlotsThatAreTooEarly
       });
     } else {
-      this.setState({ date });
+      this.setState({
+        date,
+        slots: slotsWithoutSlotsThatAreTooEarly
+      });
     }
   };
-  handleChangeDateEnd = (dateEnd: Date) => this.setState({ dateEnd });
+
+  handleChangeDateEnd = (dateEnd: Date) => {
+    const { slots, isRange } = this.state;
+    const slotsWithoutSlotsThatAreTooLate = isRange
+      ? slots.filter(s => s.date! <= dateEnd)
+      : slots;
+    this.setState({ dateEnd, slots: slotsWithoutSlotsThatAreTooLate });
+  };
+
   handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ forSchool: event.target.checked });
 
-  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ isRange: event.target.checked });
+    if (event.target.checked === false) {
+      const withoutDate = this.state.slots.map(s => ({
+        ...s,
+        date: undefined
+      }));
+      this.setState({ slots: withoutDate, dateEnd: undefined });
+    } else {
+      const withDate = this.state.slots.map(s => ({
+        ...s,
+        date: this.state.date
+      }));
+      this.setState({ slots: withDate, dateEnd: this.state.date });
+    }
+  };
 
   handleAddSlot = (slot: CreateSlotDto) => {
     if (this.state.slots.indexOf(slot) !== -1) return;
@@ -208,16 +253,39 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   dateValid = (): boolean =>
     // Less than 14 Days ago
     +this.state.date > +this.minDate;
-  dateEndValid = (): boolean =>
-    !this.state.isRange || +this.state.dateEnd > +this.state.date;
-  studentValid = (): boolean => !this.props.isParent || !!this.state.student;
-  slotsValid = (): boolean => this.state.slots.length > 0;
 
-  inputValid = () =>
-    this.dateValid() &&
-    this.dateEndValid() &&
-    this.studentValid() &&
-    this.slotsValid();
+  dateEndValid = (): boolean => {
+    const { isRange, dateEnd, date } = this.state;
+    if (!isRange) {
+      return true;
+    }
+
+    return !!dateEnd && dateEnd > date;
+  };
+
+  studentValid = (): boolean => {
+    const { isParent } = this.props;
+    const { student } = this.state;
+    if (!isParent.some()) {
+      return true;
+    }
+
+    return !!student;
+  };
+
+  inputValid = () => {
+    const { student, forSchool, date, dateEnd, slots } = this.state;
+
+    return (
+      isValidCreateEntryDto({
+        date,
+        dateEnd,
+        forSchool,
+        slots,
+        studentId: student
+      }) && this.studentValid()
+    );
+  };
 
   /**
    * ## Data
@@ -225,15 +293,12 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   minDate: Date = twoWeeksBefore(new Date());
 
   render() {
-    const { isParent } = this.props;
+    const { isParent, fullScreen, onClose, show, children } = this.props;
+    const { isRange, student, forSchool, date, dateEnd, slots } = this.state;
 
     return (
-      <Dialog
-        fullScreen={this.props.fullScreen}
-        onClose={this.props.onClose}
-        open={this.props.show}
-      >
-        <DialogTitle>Neuer Eintrag</DialogTitle>
+      <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+        <DialogTitle>{lang.newEntry}</DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={40}>
             <Grid item container direction="column">
@@ -242,7 +307,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={this.state.isRange}
+                        checked={isRange}
                         onChange={this.handleChangeIsRange}
                       />
                     }
@@ -253,7 +318,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={this.state.forSchool}
+                        checked={forSchool}
                         onChange={this.handleChangeForSchool}
                       />
                     }
@@ -261,17 +326,17 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   />
                 </Grid>
               </Grid>
-              {isParent && (
+              {isParent.some() && (
                 <Grid item>
                   <TextField
                     fullWidth
                     select
-                    label="Kind"
-                    value={this.state.student}
+                    label={lang.child}
+                    value={student}
                     onChange={this.handleChangeStudent}
                     helperText={lang.selectChild}
                   >
-                    {this.props.children.map(child => (
+                    {children.some().map(child => (
                       <MenuItem key={child.get("id")} value={child.get("id")}>
                         {child.get("displayname")}
                       </MenuItem>
@@ -283,21 +348,21 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                 <Grid container direction="row" spacing={24}>
                   <Grid item xs={6}>
                     <DateInput
-                      label="Von"
-                      isValid={() => this.dateValid()}
-                      onChange={this.handleChangeDate}
+                      label={lang.fromLabel}
+                      isValid={this.dateValid}
+                      onChange={this.handleChangeBeginDate}
                       minDate={this.minDate}
-                      value={this.state.date}
+                      value={date}
                     />
                   </Grid>
-                  {this.state.isRange && (
+                  {isRange && (
                     <Grid item xs={6}>
                       <DateInput
-                        label="Bis"
-                        isValid={() => this.dateEndValid()}
+                        label={lang.toLabel}
+                        isValid={this.dateEndValid}
                         onChange={this.handleChangeDateEnd}
-                        minDate={nextDay(this.state.date)}
-                        value={this.state.dateEnd}
+                        minDate={nextDay(date)}
+                        value={dateEnd!}
                         minDateMessage={lang.dateMustBeBiggerThanFrom}
                       />
                     </Grid>
@@ -309,7 +374,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               <Typography variant="h6">{lang.titles.slots}</Typography>
               <Typography variant="caption">{lang.addSlotsCaption}</Typography>
               <MUIList>
-                {this.state.slots.map((slot, index) => (
+                {slots.map((slot, index) => (
                   <SlotListItem
                     key={index}
                     slot={slot}
@@ -319,24 +384,24 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               </MUIList>
               <SlotEntry
                 onAdd={slot => this.handleAddSlot(slot)}
-                multiDay={this.state.isRange}
+                multiDay={isRange}
                 datePickerConfig={{
-                  min: this.state.date,
-                  max: this.state.dateEnd
+                  min: date,
+                  max: dateEnd
                 }}
-                date={this.state.date}
+                date={date}
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose} color="secondary">
+          <Button onClick={onClose} color="secondary">
             {lang.cancel}
           </Button>
           <Button
             onClick={() => {
               this.handleSubmit();
-              this.props.onClose();
+              onClose();
             }}
             disabled={!this.inputValid()}
             color="primary"

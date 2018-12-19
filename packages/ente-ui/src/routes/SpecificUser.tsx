@@ -23,7 +23,8 @@ import {
   IconButton,
   withStyles,
   StyleRulesCallback,
-  WithStyles
+  WithStyles,
+  createStyles
 } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
@@ -32,7 +33,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import { Delete as DeleteIcon } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
 import LoadingIndicator from "../elements/LoadingIndicator";
 import * as _ from "lodash";
 import {
@@ -58,6 +59,8 @@ import {
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
 import { createTranslation } from "../helpers/createTranslation";
+import { Maybe } from "monet";
+import { WithWidth } from "@material-ui/core/withWidth";
 
 const lang = createTranslation({
   en: {
@@ -69,7 +72,12 @@ const lang = createTranslation({
       isAdult: "Adult",
       id: "ID",
       role: "Role",
-      gradYear: "Graduation Year"
+      gradYear: "Graduation Year",
+      areYouSureYouWannaDelete: (username: string) =>
+        `Are you sure you want to delete user "${username}"?`
+    },
+    ariaLabels: {
+      delete: "Delete"
     }
   },
   de: {
@@ -81,12 +89,17 @@ const lang = createTranslation({
       isAdult: "Erwachsen",
       id: "ID",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang"
+      gradYear: "Abschluss-Jahrgang",
+      areYouSureYouWannaDelete: (username: string) =>
+        `Sind sie sicher, dass sie den Nutzer "${username}" löschen möchten?`
+    },
+    ariaLabels: {
+      delete: "Löschen"
     }
   }
 });
 
-const styles: StyleRulesCallback<"deleteButton"> = theme => ({
+const styles = createStyles<"deleteButton">({
   deleteButton: {
     position: "absolute",
     top: 0,
@@ -101,7 +114,7 @@ interface RouteMatch {
   userId: string;
 }
 interface SpecificUserStateProps {
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
   loading: boolean;
   students: UserN[];
 }
@@ -138,99 +151,76 @@ type SpecificUserProps = SpecificUserStateProps &
   WithStyles<"deleteButton"> &
   InjectedProps;
 
-interface State {
-  patch: PatchUserDto;
-  showDelete: boolean;
-}
-
 /**
  * # Component
  */
-export class SpecificUser extends React.PureComponent<
-  SpecificUserProps,
-  State
-> {
-  /**
-   * ## Intialization
-   */
-  state: State = {
-    patch: new PatchUserDto(),
-    showDelete: false
-  };
+export const SpecificUser: React.FunctionComponent<
+  SpecificUserProps
+> = props => {
+  const [showDelete, setShowDelete] = React.useState(false);
+  const [patch, setPatch] = React.useState(new PatchUserDto());
+  const {
+    fullScreen,
+    loading,
+    getUser,
+    students,
+    deleteUser,
+    classes,
+    updateUser,
+    history,
+    match,
+    requestUser
+  } = props;
 
-  /**
-   * ## Lifecycle Hooks
-   */
-  componentDidMount() {
-    const { userId } = this.props.match.params;
-    const user = this.props.getUser(userId);
+  const userId = match.params.userId;
+  const user = getUser(userId);
 
-    if (!user) {
-      this.props.requestUser(userId);
-    }
-  }
+  React.useEffect(
+    () => {
+      const user = getUser(userId);
 
-  update = (key: keyof PatchUserDto) => (value: any) => {
-    const clone = Object.assign({}, this.state.patch);
+      if (user.isNone()) {
+        requestUser(userId);
+      }
+    },
+    [userId]
+  );
+
+  const updatePatch = (key: keyof PatchUserDto) => (value: any) => {
+    const clone = Object.assign({}, patch);
     clone[key] = value;
-    this.setState({ patch: clone });
+    setPatch(clone);
   };
 
-  /**
-   * ## Handlers
-   */
-  onClose = () => this.props.history.goBack();
-  onGoBack = () => this.onClose();
-  onSubmit = () => {
-    const { updateUser } = this.props;
-    const { patch } = this.state;
-
-    updateUser(this.userId, patch);
-
-    this.onClose();
+  const onClose = history.goBack;
+  const onGoBack = onClose;
+  const onSubmit = () => {
+    updateUser(userId, patch);
+    onClose();
   };
 
-  get userId() {
-    return this.props.match.params.userId;
-  }
-
-  /**
-   * ## Render
-   */
-  render() {
-    const {
-      fullScreen,
-      loading,
-      getUser,
-      students,
-      deleteUser,
-      classes
-    } = this.props;
-    const { patch, showDelete } = this.state;
-
-    const user = getUser(this.userId);
-
-    return (
+  return user.cata(
+    () => <LoadingIndicator />,
+    user => (
       <>
         <DeleteModal
           show={showDelete}
-          onClose={() => this.setState({ showDelete: false })}
+          onClose={() => setShowDelete(false)}
           onDelete={() => {
-            this.setState({ showDelete: false });
-            deleteUser(this.userId);
-            this.onClose();
+            setShowDelete(false);
+            deleteUser(userId);
+            onClose();
           }}
-          text={`Sind sie sicher, dass sie den Nutzer "${user &&
-            user.get("username")}" löschen möchten?`}
+          text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
         />
-        <Dialog open onClose={this.onGoBack} fullScreen={fullScreen}>
+        <Dialog open onClose={onGoBack} fullScreen={fullScreen}>
           {!!user ? (
             <>
               <DialogTitle>
                 {user.get("displayname")}
                 <IconButton
-                  aria-label="Löschen"
-                  onClick={() => this.setState({ showDelete: true })}
+                  aria-label={lang.ariaLabels.delete}
+                  onClick={() => setShowDelete(true)}
                   className={classes.deleteButton}
                 >
                   <DeleteIcon fontSize="large" />
@@ -250,7 +240,7 @@ export class SpecificUser extends React.PureComponent<
                     <TextInput
                       title={lang.titles.displayname}
                       value={patch.displayname || user.get("displayname")}
-                      onChange={this.update("displayname")}
+                      onChange={updatePatch("displayname")}
                       validator={isValidDisplayname}
                     />
                   </Grid>
@@ -260,7 +250,7 @@ export class SpecificUser extends React.PureComponent<
                     <TextInput
                       title={lang.titles.email}
                       value={patch.email || user.get("email")}
-                      onChange={this.update("email")}
+                      onChange={updatePatch("email")}
                       validator={isValidEmail}
                     />
                   </Grid>
@@ -271,7 +261,7 @@ export class SpecificUser extends React.PureComponent<
                       <SwitchInput
                         value={user.get("isAdult")}
                         title={lang.titles.isAdult}
-                        onChange={this.update("isAdult")}
+                        onChange={updatePatch("isAdult")}
                       />
                     </Grid>
                   )}
@@ -281,10 +271,10 @@ export class SpecificUser extends React.PureComponent<
                     <Grid item xs={6}>
                       <YearPicker
                         label={lang.titles.gradYear}
-                        onChange={this.update("graduationYear")}
+                        onChange={updatePatch("graduationYear")}
                         amount={5}
                         value={
-                          patch.graduationYear || user.get("graduationYear")
+                          patch.graduationYear! || user.get("graduationYear")!
                         }
                       />
                     </Grid>
@@ -296,12 +286,15 @@ export class SpecificUser extends React.PureComponent<
                       <ChildrenInput
                         children={
                           !!patch.children
-                            ? patch.children.map(getUser)
-                            : user.get("childrenIds").map(getUser)
+                            ? patch.children.map(getUser).map(c => c.some())
+                            : user
+                                .get("childrenIds")
+                                .map(getUser)
+                                .map(c => c.some())
                         }
                         students={students}
                         onChange={c =>
-                          this.update("children")(c.map(v => v.get("id")))
+                          updatePatch("children")(c.map(v => v.get("id")))
                         }
                       />
                     </Grid>
@@ -313,26 +306,28 @@ export class SpecificUser extends React.PureComponent<
             loading && <LoadingIndicator />
           )}
           <DialogActions>
-            <Button size="small" color="secondary" onClick={this.onClose}>
+            <Button size="small" color="secondary" onClick={onClose}>
               {lang.close}
             </Button>
             <Button
               size="small"
               color="primary"
-              onClick={this.onSubmit}
-              disabled={!isValidPatchUserDto(this.state.patch)}
+              onClick={onSubmit}
+              disabled={!isValidPatchUserDto(patch)}
             >
               {lang.submit}
             </Button>
           </DialogActions>
         </Dialog>
       </>
-    );
-  }
-}
+    )
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(
-    withMobileDialog()(withErrorBoundary()(withStyles(styles)(SpecificUser)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+    withStyles(styles)(
+      withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
+    )
   )
 );

@@ -7,7 +7,11 @@
  */
 
 import * as React from "react";
-import { connect, Dispatch, MapStateToPropsParam } from "react-redux";
+import {
+  connect,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 
 import SignedAvatar from "../elements/SignedAvatar";
 import { Action } from "redux";
@@ -22,6 +26,7 @@ import {
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { createTranslation } from "../helpers/createTranslation";
+import { Maybe } from "monet";
 
 const lang = createTranslation({
   en: {
@@ -58,7 +63,7 @@ class SlotsTable extends Table<SlotN> {}
 
 interface SlotsStateProps {
   slots: SlotN[];
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotsStateProps,
@@ -72,7 +77,10 @@ const mapStateToProps: MapStateToPropsParam<
 interface SlotsDispatchProps {
   requestSlots(): Action;
 }
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+const mapDispatchToProps: MapDispatchToPropsParam<
+  SlotsDispatchProps,
+  SlotsOwnProps
+> = dispatch => ({
   requestSlots: () => dispatch(getSlotsRequest())
 });
 
@@ -99,7 +107,7 @@ export class Slots extends React.Component<SlotsProps> {
           {
             name: lang.headers.signed,
             options: {
-              customBodyRender: v => <SignedAvatar signed={v === "true"} />
+              customBodyRender: v => <SignedAvatar signed={v === lang.yes} />
             }
           },
           lang.headers.teacher
@@ -107,15 +115,21 @@ export class Slots extends React.Component<SlotsProps> {
         items={slots}
         extractId={user => user.get("id")}
         extract={slot => [
-          getUser(slot.get("studentId")).get("displayname"),
+          getUser(slot.get("studentId"))
+            .some()
+            .get("displayname"),
           slot.get("date").toLocaleDateString(),
           "" + slot.get("from"),
           "" + slot.get("to"),
           slot.get("forSchool") ? lang.yes : lang.no,
-          "" + slot.get("signed"),
-          slot
-            .get("teacherId")
-            .cata(() => lang.deleted, id => getUser(id).get("displayname"))
+          slot.get("signed") ? lang.yes : lang.no,
+          Maybe.fromNull(slot.get("teacherId")).cata(
+            () => lang.deleted,
+            id =>
+              getUser(id)
+                .some()
+                .get("displayname")
+          )
         ]}
       />
     );

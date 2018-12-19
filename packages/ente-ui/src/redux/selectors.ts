@@ -19,21 +19,30 @@ import {
 import { createSelector } from "reselect";
 import { Roles } from "ente-types";
 import { Maybe } from "monet";
+import * as _ from "lodash";
+import { Action } from "redux";
 
 type Selector<T> = (state: AppState) => T;
 
 /**
  * State
  */
-export const isLoading: Selector<boolean> = state => state.get("loading") > 0;
-export const getMessages: Selector<String[]> = state =>
-  state.get("messages").toArray();
+export const isLoading: Selector<boolean> = state =>
+  state.get("pendingActions").size > 0;
+export const isTypePending: Selector<(type: string) => boolean> = _.memoize(
+  (state: AppState) => (type: string) =>
+    !!state.get("pendingActions").find(action => action.type === type)
+);
+export const isActionPending: Selector<(action: Action) => boolean> = _.memoize(
+  (state: AppState) => (action: Action) =>
+    !!state.get("pendingActions").find(v => _.isEqual(action, v))
+);
 
 /**
  * Auth
  */
 export const isAuthValid: Selector<boolean> = state => {
-  const authState = state.get("auth");
+  const authState = getAuthState(state);
   return authState.cata(
     () => false,
     a => {
@@ -42,57 +51,56 @@ export const isAuthValid: Selector<boolean> = state => {
     }
   );
 };
-export const isParent: Selector<boolean> = state => {
+export const isParent: Selector<Maybe<boolean>> = state => {
   const role = getRole(state);
-  return role === Roles.PARENT;
+  return role.map(r => r === Roles.PARENT);
 };
 
 export const getAuthState: Selector<Maybe<AuthState>> = state =>
-  state.get("auth");
+  Maybe.fromNull(state.get("auth"));
 
-export const getRole: Selector<Roles> = state => {
-  const authState = state.get("auth");
-  return authState.cata(() => undefined, s => s.get("role"));
+export const getRole: Selector<Maybe<Roles>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => s.get("role"));
 };
 
 export const hasChildren = createSelector([getRole], role =>
-  roleHasChildren(role)
+  role.map(roleHasChildren)
 );
-export const canCreateEntries = createSelector(
-  [getRole],
-  role => role === Roles.STUDENT || role === Roles.PARENT
+
+export const canCreateEntries = createSelector([getRole], role =>
+  role.map(role => role === Roles.STUDENT || role === Roles.PARENT)
 );
-export const getToken: Selector<string> = state => {
-  const authState = state.get("auth");
-  return authState.cata(() => undefined, s => s.get("token"));
+
+export const getToken: Selector<Maybe<string>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => s.get("token"));
 };
 
-export const getChildren: Selector<UserN[]> = state => {
-  const authState = state.get("auth");
-  return authState.cata(
-    () => [],
-    s => {
-      const children = s.get("children");
-      return children.map(id => getUser(id)(state)).filter(c => !!c);
-    }
-  );
+export const getChildren: Selector<Maybe<UserN[]>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => {
+    const childrenIds = s.get("children");
+    const children = childrenIds.map(id => getUser(id)(state));
+    return children.filter(c => c.isSome()).map(c => c.some());
+  });
 };
 
-export const getDisplayname: Selector<string> = state => {
-  const authState = state.get("auth");
-  return authState.cata(() => undefined, s => s.get("displayname"));
+export const getDisplayname: Selector<Maybe<string>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => s.get("displayname"));
 };
 
-export const getUsername: Selector<string> = state => {
-  const authState = state.get("auth");
-  return authState.cata(() => undefined, s => s.get("username"));
+export const getUsername: Selector<Maybe<string>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => s.get("username"));
 };
 
 /**
  * Data
  */
-export const getEntry = (id: string): Selector<EntryN> => state =>
-  state.getIn(["entriesMap", id]);
+export const getEntry = (id: string): Selector<Maybe<EntryN>> => state =>
+  Maybe.fromUndefined(state.getIn(["entriesMap", id]));
 
 export const getEntries: Selector<EntryN[]> = state =>
   state
@@ -100,8 +108,8 @@ export const getEntries: Selector<EntryN[]> = state =>
     .toArray()
     .map(([_, value]) => value);
 
-export const getUser = (id: string): Selector<UserN> => state =>
-  state.getIn(["usersMap", id]);
+export const getUser = (id: string): Selector<Maybe<UserN>> => state =>
+  Maybe.fromUndefined(state.getIn(["usersMap", id]));
 
 export const getUsers: Selector<UserN[]> = state =>
   state
@@ -116,7 +124,7 @@ export const getSlots: Selector<SlotN[]> = state =>
     .map(([_, value]) => value);
 
 export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
-  ids.map(id => state.getIn(["slotsMap", id]));
+  ids.map(id => state.getIn(["slotsMap", id])).filter(s => !!s);
 
 export const getTeachers = createSelector([getUsers], users =>
   users.filter(userIsTeacher)

@@ -5,6 +5,10 @@ import { Some, None, Maybe } from "monet";
 import Slot from "./slot.entity";
 import { UserRepo } from "./user.repo";
 import { SlotDto } from "ente-types";
+import {
+  PaginationInformation,
+  withPagination
+} from "../helpers/pagination-info";
 
 @Injectable()
 export class SlotRepo {
@@ -19,8 +23,10 @@ export class SlotRepo {
       .leftJoinAndSelect("slot.entry", "entry")
       .leftJoinAndSelect("entry.student", "student");
 
-  async findAll(): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher().getMany();
+  async findAll(paginationInfo: PaginationInformation): Promise<SlotDto[]> {
+    const slots = await withPagination(paginationInfo)(
+      this._slotQueryWithTeacher()
+    ).getMany();
     return slots.map(SlotRepo.toDto);
   }
 
@@ -31,30 +37,41 @@ export class SlotRepo {
     return !!slot ? Some(SlotRepo.toDto(slot)) : None();
   }
 
-  async findByStudents(...ids: string[]): Promise<SlotDto[]> {
-    const slots = await this.repo
-      .createQueryBuilder("slot")
-      .leftJoinAndSelect("slot.entry", "entry")
-      .leftJoinAndSelect("entry.student", "student")
-      .leftJoinAndSelect("slot.teacher", "teacher")
-      .leftJoinAndSelect("teacher.children", "child")
-      .where("student._id IN (:ids)", { ids })
-      .getMany();
+  async findByStudents(
+    ids: string[],
+    paginationInfo: PaginationInformation
+  ): Promise<SlotDto[]> {
+    const slots = await withPagination(paginationInfo)(
+      this.repo
+        .createQueryBuilder("slot")
+        .leftJoinAndSelect("slot.entry", "entry")
+        .leftJoinAndSelect("entry.student", "student")
+        .leftJoinAndSelect("slot.teacher", "teacher")
+        .where("student._id IN (:ids)", { ids })
+    ).getMany();
 
     return slots.map(SlotRepo.toDto);
   }
 
-  async findHavingTeacher(id: string): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher()
-      .where("slot.teacher = :id", { id })
-      .getMany();
+  async findHavingTeacher(
+    id: string,
+    paginationInfo: PaginationInformation
+  ): Promise<SlotDto[]> {
+    const slots = await withPagination(paginationInfo)(
+      this._slotQueryWithTeacher().where("slot.teacher = :id", { id })
+    ).getMany();
     return slots.map(SlotRepo.toDto);
   }
 
-  async findByYearOfStudent(year: number): Promise<SlotDto[]> {
-    const slots = await this._slotQueryWithTeacher()
-      .where("student.graduationYear = :year", { year })
-      .getMany();
+  async findByYearOfStudent(
+    year: number,
+    paginationInfo: PaginationInformation
+  ): Promise<SlotDto[]> {
+    const slots = await withPagination(paginationInfo)(
+      this._slotQueryWithTeacher().where("student.graduationYear = :year", {
+        year
+      })
+    ).getMany();
 
     return slots.map(SlotRepo.toDto);
   }
@@ -75,13 +92,14 @@ export class SlotRepo {
     const result = new SlotDto();
 
     result.id = slot._id;
-    result.date = slot.date;
+    result.date = new Date(slot.date || slot.entry.date);
     result.from = slot.hour_from;
     result.to = slot.hour_to;
     result.teacher =
       slot.teacher === null ? null : UserRepo.toDto(slot.teacher);
     result.student = UserRepo.toDto(slot.entry.student);
     result.forSchool = slot.entry.forSchool;
+    result.signed = !!slot.entry.signedManager && !!slot.entry.signedParent;
 
     return result;
   }

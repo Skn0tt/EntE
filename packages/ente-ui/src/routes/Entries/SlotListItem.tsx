@@ -13,10 +13,11 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from "@material-ui/core";
-import { Delete as DeleteIcon } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { AppState, getUser, UserN } from "../../redux";
 import { CreateSlotDto } from "ente-types";
+import { Maybe } from "monet";
 
 const getText = (s: CreateSlotDto): string => {
   if (!!s.date) {
@@ -33,7 +34,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  getUser(id: string): UserN;
+  getUser(id: string): Maybe<UserN>;
 }
 
 const mapStateToProps: MapStateToPropsParam<
@@ -52,7 +53,9 @@ const SlotListItem: React.SFC<SlotListItemProps> = props => {
   return (
     <ListItem>
       <ListItemText
-        primary={getUser(slot.teacherId).get("displayname")}
+        primary={getUser(slot.teacherId)
+          .some()
+          .get("displayname")}
         secondary={getText(slot)}
       />
       <ListItemSecondaryAction>

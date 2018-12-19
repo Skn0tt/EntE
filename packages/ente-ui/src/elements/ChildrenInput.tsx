@@ -9,7 +9,8 @@
 import * as React from "react";
 import { Grid, Button } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import { Add as AddIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import List from "@material-ui/core/List/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";

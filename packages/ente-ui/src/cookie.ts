@@ -6,10 +6,10 @@ export const get = (key: string): Maybe<string> => {
 
   if (parts.length === 2) {
     const result = parts
-      .pop()
+      .pop()!
       .split(";")
       .shift();
-    return Some(result);
+    return Some(result!);
   }
   return None();
 };

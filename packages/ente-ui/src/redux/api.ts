@@ -104,7 +104,7 @@ export const transformEntries = (...entries: EntryDto[]): APIResponse => {
     const { student, slots } = entry;
     const normalised = new EntryN({
       ...entry,
-      student: null,
+      student: (null as unknown) as UserDto,
       slots: [],
       studentId: student.id,
       slotIds: slots.map(s => s.id)
@@ -128,10 +128,10 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
     const { student, teacher } = slot;
     const normalised = new SlotN({
       ...slot,
-      student: null,
-      teacher: null,
+      student: (null as unknown) as UserDto,
+      teacher: (null as unknown) as UserDto,
       studentId: student.id,
-      teacherId: teacher === null ? None() : Some(teacher.id)
+      teacherId: !!teacher ? teacher.id : null
     });
 
     result.slots.push(normalised);

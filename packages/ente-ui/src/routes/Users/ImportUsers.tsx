@@ -7,173 +7,191 @@
  */
 
 import {
-  AppState,
-  addMessage,
-  createUsersRequest,
-  getStudents
-} from "../../redux";
-import { Button, Dialog, Grid } from "@material-ui/core";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
+  Button,
+  createStyles,
+  Dialog,
+  Grid,
+  Theme,
+  Typography,
+  withStyles,
+  WithStyles,
+  DialogTitle,
+  DialogContent
+} from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
+import withMobileDialog, {
+  InjectedProps
+} from "@material-ui/core/withMobileDialog";
+import { ValidationError } from "class-validator";
+import { CreateUserDto } from "ente-types";
+import { Maybe, None, Some } from "monet";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { Action, Dispatch } from "redux";
-import { CreateUserDto } from "ente-types";
+import { createTranslation } from "../../helpers/createTranslation";
 import { parseCSVFromFile } from "../../helpers/parser";
-import SignedAvatar from "../../elements/SignedAvatar";
-import { createTranslation } from "ente-ui/src/helpers/createTranslation";
+import { AppState, createUsersRequest, getStudents, UserN } from "../../redux";
+import * as _ from "lodash";
+import ErrorDisplay from "./ErrorDisplay";
+import { UserTable } from "./UserTable";
 
 const lang = createTranslation({
   en: {
     submit: "Import",
+    title: "Import",
     close: "Close",
-    dropzone: "Drop a .csv file here."
+    dropzone: "Drop a .csv file or click here.",
+    pleaseUploadCsvFile: "Please upload a .csv file."
   },
   de: {
     submit: "Importieren",
+    title: "Importieren",
     close: "Schließen",
-    dropzone: "Legen sie hier eine .csv-Datei ab."
+    dropzone: "Legen sie eine .csv-Datei ab oder klicken sie hier.",
+    pleaseUploadCsvFile: "Bitte laden sie eine .csv-Datei hoch."
   }
 });
 
-const readFile = async (f: File) =>
-  new Promise<string>((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = _ => resolve(r.result as string);
-    r.onerror = reject;
-    r.readAsText(f);
+const toUserN = (u: CreateUserDto): UserN => {
+  return new UserN({
+    username: u.username,
+    childrenIds: [],
+    email: u.email,
+    displayname: u.displayname,
+    graduationYear: u.graduationYear,
+    isAdult: u.isAdult,
+    id: u.username,
+    role: u.role
   });
+};
+
+const readFile = async (f: File) => {
+  const response = new Response(f);
+  return await response.text();
+};
 
 /**
  * # Component Types
  */
-interface OwnProps {
+interface ImportUsersOwnProps {
   onClose(): void;
   show: boolean;
+  onImport: (u: CreateUserDto[]) => void;
 }
 
-interface StateProps {
+interface ImportUsersStateProps {
   usernames: string[];
 }
 const mapStateToProps: MapStateToPropsParam<
-  StateProps,
-  OwnProps,
+  ImportUsersStateProps,
+  ImportUsersOwnProps,
   AppState
 > = state => ({
   usernames: getStudents(state).map(u => u.get("username"))
 });
 
-interface DispatchProps {
-  createUsers(users: CreateUserDto[]): void;
-  addMessage(msg: string): void;
-}
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createUsers: (users: CreateUserDto[]) => dispatch(createUsersRequest(users)),
-  addMessage: (msg: string) => dispatch(addMessage(msg))
-});
+type ImportUsersProps = ImportUsersOwnProps &
+  ImportUsersStateProps &
+  WithStyles<"dropzone"> &
+  InjectedProps;
 
-interface InjectedProps {
-  fullScreen: boolean;
-}
+export const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
+  const { fullScreen, show, classes, onClose, usernames, onImport } = props;
 
-interface State {
-  users: CreateUserDto[];
-  error: boolean;
-}
+  const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
+  const [errors, setErrors] = React.useState<
+    Maybe<(ValidationError | string)[]>
+  >(None());
 
-type Props = OwnProps & DispatchProps & StateProps;
-
-/**
- * # Component
- */
-export class ImportUsers extends React.Component<Props & InjectedProps, State> {
-  /**
-   * ## Intialization
-   */
-  state: State = {
-    users: [],
-    error: true
+  const handleSubmit = () => {
+    users.forEach(onImport);
   };
 
-  /**
-   * # Handlers
-   */
-  handleClose = () => this.props.onClose();
+  const onDrop = async (accepted: File[]) => {
+    const [file] = accepted;
 
-  handleSubmit = () =>
-    this.state.users.length !== 0 && this.props.createUsers(this.state.users);
-
-  onDrop = async (accepted: File[], rejected: File[]) => {
-    if (accepted.length === 0) {
+    if (!file) {
       return;
     }
 
-    try {
-      const input = await readFile(accepted[0]);
-      const users = await parseCSVFromFile(input, this.props.usernames);
-      this.setState({ users, error: false });
-    } catch (error) {
-      this.setState({ error: true });
-      this.props.addMessage(error.message);
-    }
+    const input = await readFile(file);
+    const result = await parseCSVFromFile(input, usernames);
+    result.forEach(success => {
+      setUsers(Some(success));
+      setErrors(None());
+    });
+    result.forEachFail(fail => {
+      setUsers(None());
+      setErrors(Some(fail));
+    });
   };
 
-  /**
-   * # Validation
-   */
-  inputValid = (): boolean =>
-    !this.state.error && this.state.users.length !== 0;
+  const inputIsValid = users.isSome();
 
-  /**
-   * # Render
-   */
-  render() {
-    const { show, fullScreen } = this.props;
-    const { error } = this.state;
-
-    return (
-      <Dialog fullScreen={fullScreen} onClose={this.handleClose} open={show}>
-        <Grid container direction="column">
+  return (
+    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+      <DialogTitle>{lang.title}</DialogTitle>
+      <DialogContent>
+        <Grid container spacing={24} direction="column">
           <Grid item xs={12}>
             <Dropzone
-              accept="text/csv"
-              onDrop={this.onDrop}
-              className="dropzone"
+              onDrop={onDrop}
+              className={classes.dropzone}
+              accept=".csv"
             >
-              {lang.dropzone}
+              <Typography variant="body1">{lang.dropzone}</Typography>
             </Dropzone>
           </Grid>
-          <Grid item xs={12}>
-            <SignedAvatar signed={!error} />
-          </Grid>
+          {users
+            .map(users => (
+              <Grid item xs={12}>
+                <UserTable users={users.map(toUserN)} />
+              </Grid>
+            ))
+            .orSome(<></>)}
+          {errors
+            .map(errors => (
+              <Grid item xs={12}>
+                <ErrorDisplay errors={errors} />
+              </Grid>
+            ))
+            .orSome(<></>)}
         </Grid>
-        <DialogActions>
-          <Button
-            onClick={this.handleClose}
-            color="secondary"
-            className="close"
-          >
-            {lang.close}
-          </Button>
-          <Button
-            onClick={() => {
-              this.handleSubmit();
-              this.handleClose();
-            }}
-            disabled={!this.inputValid()}
-            color="primary"
-            className="submit"
-          >
-            {lang.submit}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary" className="close">
+          {lang.close}
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={!inputIsValid}
+          color="primary"
+          className="submit"
+        >
+          {lang.submit}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
-export default connect<StateProps, DispatchProps, OwnProps, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<Props>()(ImportUsers));
+const styles = (theme: Theme) =>
+  createStyles({
+    dropzone: {
+      minHeight: 24,
+      border: `1px solid ${theme.palette.grey[300]}`,
+      borderRadius: theme.spacing.unit,
+      padding: theme.spacing.unit * 2,
+      boxSizing: "border-box"
+    }
+  });
+
+export default connect<
+  ImportUsersStateProps,
+  {},
+  ImportUsersOwnProps,
+  AppState
+>(mapStateToProps)(
+  withStyles(styles)(withMobileDialog<ImportUsersProps>()(ImportUsers))
+);

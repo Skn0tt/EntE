@@ -17,7 +17,8 @@ import {
 @Controller("passwordReset")
 export class PasswordResetController {
   constructor(
-    @Inject(PasswordResetService) private readonly authService: any
+    @Inject(PasswordResetService)
+    private readonly authService: PasswordResetService
   ) {}
 
   @Post("/:username")

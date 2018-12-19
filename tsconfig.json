@@ -13,15 +13,8 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "lib": ["es2015", "es2016", "dom"],
-    "resolveJsonModule": true
-
-    // Enable later!
-    /*
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true
-    */
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictPropertyInitialization": false
   }
 }
