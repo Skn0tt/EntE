@@ -62,6 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed: Password Reset screen now redirects to login screen
 * Changed: Login screen now shows feedback while pending requests
 
+* Changed: Slots now shows wether the entry was for school or not, so teachers know about that
+
 ## [v0.8.10] - 2018-11-26
 
 * Fixed: JWT decoding now works on non-ascii chars, so users like tom.schoß work as well

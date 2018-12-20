@@ -60,5 +60,5 @@ const AdminRoute: React.SFC<AdminRouteProps> = props => {
 };
 
 export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(withErrorBoundary()(AdminRoute)
-));
+  withStyles(styles)(withErrorBoundary()(AdminRoute))
+);

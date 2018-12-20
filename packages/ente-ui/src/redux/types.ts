@@ -97,7 +97,8 @@ export const SlotN = Record<SlotDtoNormalised>(
     teacher: null,
     studentId: "",
     teacherId: null,
-    to: 0
+    to: 0,
+    forSchool: false
   },
   "SlotN"
 );
