@@ -36,6 +36,7 @@ const slot: SlotDto = {
   signed: false,
   teacher: benni,
   student: simon,
+  forSchool: true,
   to: 1
 };
 

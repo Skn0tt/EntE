@@ -49,7 +49,8 @@ const slot: SlotDto = {
   to: 4,
   teacher: benBongo,
   signed: false,
-  student: tomTallis
+  student: tomTallis,
+  forSchool: false,
 };
 
 const entry: EntryDto = {
