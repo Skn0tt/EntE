@@ -26,7 +26,7 @@
     "luxon": "^1.4.5",
     "material-ui-pickers": "^v1.0.1",
     "monet": "^0.9.0",
-    "mui-datatables": "^2.0.0-beta-41",
+    "mui-datatables": "2.0.0-beta-42",
     "mui-downshift": "^1.2.1",
     "papaparse": "^4.6.1",
     "react": "^16.7.0-alpha.2",

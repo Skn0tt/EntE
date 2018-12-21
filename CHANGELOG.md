@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased
 
+* Fixed crash on old browsers ([#204](https://gitlab.com/Skn0tt/EntE/issues/204))
 * Do not escape html table
 * Introduced `@material-ui/styles`
 * Added Redux persistance
