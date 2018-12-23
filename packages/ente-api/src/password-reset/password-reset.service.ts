@@ -9,7 +9,9 @@ import { EmailService } from "../email/email.service";
 import { hashPassword } from "../helpers/password-hash";
 import { Config } from "../helpers/config";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { isValidPassword } from "ente-types";
+import { isValidPassword, UserDto } from "ente-types";
+import { days } from "../helpers/time";
+import * as querystring from "querystring";
 
 export enum StartPasswordRoutineFailure {
   UserNotFound
@@ -32,7 +34,7 @@ export class PasswordResetService {
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async startPasswordResetRoutine(
+  async invokePasswordResetRoutine(
     username: string,
     expiry?: number
   ): Promise<Validation<StartPasswordRoutineFailure, boolean>> {
@@ -43,16 +45,32 @@ export class PasswordResetService {
 
     const token = await this.passwordTokenService.createToken(
       user.some().id,
+      false,
       expiry
     );
     await this.emailService.dispatchPasswordResetLink(
-      this.getPasswordResetLink(token),
+      this.getPasswordResetLink(token, username),
       user.some()
     );
 
     this.logger.log(`User ${username} invoked password reset routine.`);
 
     return Success(true);
+  }
+
+  async invokeInvitationRoutine(user: UserDto): Promise<void> {
+    const token = await this.passwordTokenService.createToken(
+      user.id,
+      true,
+      days(7)
+    );
+    await this.emailService.dispatchInvitationLink(
+      this.getInvitationLink(token, user.username),
+      user
+    );
+    this.logger.log(
+      `Successfully invoked InvitationRoutine for user "${user.username}".`
+    );
   }
 
   async setNewPassword(
@@ -64,43 +82,60 @@ export class PasswordResetService {
       return Fail(SetNewPasswordFailure.PasswordIllegal);
     }
 
-    const userId = await this.passwordTokenService.findToken(token);
-    if (userId.isFail()) {
-      switch (userId.fail()) {
-        case FindTokenFailure.TokenExpired:
-          return Fail(SetNewPasswordFailure.TokenExpired);
-        case FindTokenFailure.TokenNotFound:
-          return Fail(SetNewPasswordFailure.TokenUnknown);
-      }
-    }
+    const tokenInfo = await this.passwordTokenService.findToken(token);
+    await this.passwordTokenService.destroyToken(token);
 
-    const newPasswordHash = await hashPassword(newPassword);
-    const result = await this.userRepo.setPasswordHash(
-      userId.success(),
-      newPasswordHash
-    );
-
-    return result.cata(
-      fail => {
+    return await tokenInfo.cata<
+      Promise<Validation<SetNewPasswordFailure, boolean>>
+    >(
+      async fail => {
         switch (fail) {
-          case SetPasswordHashFailure.UserNotFound:
-            return Fail(SetNewPasswordFailure.UserNotFound);
+          case FindTokenFailure.TokenExpired:
+            return Fail(SetNewPasswordFailure.TokenExpired);
+          case FindTokenFailure.TokenNotFound:
+            return Fail(SetNewPasswordFailure.TokenUnknown);
         }
       },
-      user => {
-        this.emailService.dispatchPasswordResetSuccess(user);
+      async tokenInfo => {
+        const { isInvitation, userId } = tokenInfo;
+        const newPasswordHash = await hashPassword(newPassword);
+        const result = await this.userRepo.setPasswordHash(
+          userId,
+          newPasswordHash
+        );
 
-        this.passwordTokenService.destroyToken(token);
+        return result.cata(
+          fail => {
+            switch (fail) {
+              case SetPasswordHashFailure.UserNotFound:
+                return Fail(SetNewPasswordFailure.UserNotFound);
+            }
+          },
+          user => {
+            if (!isInvitation) {
+              this.emailService.dispatchPasswordResetSuccess(user);
+            }
 
-        this.logger.log(`User ${user.username} successfully reset password.`);
+            this.logger.log(
+              `User ${user.username} successfully reset password.`
+            );
 
-        return Success(true);
+            return Success(true);
+          }
+        );
       }
     );
   }
 
-  getPasswordResetLink(token: string) {
+  getPasswordResetLink(token: string, username: string) {
     const baseUrl = Config.getBaseUrl();
-    return `${baseUrl}/passwordReset/${token}`;
+    const query = querystring.stringify({ username });
+    return `${baseUrl}/passwordReset/${token}?${query}`;
+  }
+
+  getInvitationLink(token: string, username: string) {
+    const baseUrl = Config.getBaseUrl();
+    const query = querystring.stringify({ username });
+    return `${baseUrl}/invitation/${token}?${query}`;
   }
 }

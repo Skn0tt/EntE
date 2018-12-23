@@ -8,8 +8,8 @@
 import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
 import { Some, None, Maybe } from "monet";
-import { Languages } from "./helpers/createTranslation";
 import * as _ from "lodash";
+import { Languages } from "ente-types";
 const pack = require("../package.json");
 
 const SECOND = 1000;
@@ -24,8 +24,6 @@ type Config = {
   INSTANCE_INFO_EN: Maybe<string>;
   VERSION: string;
 };
-
-let config: Config | null = null;
 
 const CONFIG_COOKIE = "_config";
 const LOCAL_STORAGE_CONFIG_KEY = "CONFIG";
@@ -42,17 +40,6 @@ const getConfig = (): any => {
   return JSON.parse(c);
 };
 
-const getLanguage = (lang: string): Languages => {
-  switch (lang) {
-    case "en":
-      return Languages.ENGLISH;
-    case "de":
-      return Languages.GERMAN;
-    default:
-      return Languages.ENGLISH;
-  }
-};
-
 const NULL_VALUES = ["<Nil>", "<nil>", ""];
 
 const isSet = (s?: string): boolean => {
@@ -66,7 +53,7 @@ const isSet = (s?: string): boolean => {
   return true;
 };
 
-const readConfig = () => {
+const readConfig = (): Config => {
   const c = getConfig();
 
   const { SENTRY_DSN } = c;
@@ -80,7 +67,7 @@ const readConfig = () => {
     : None()
   ).map(fromUriEncoding);
 
-  config = {
+  return {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
@@ -88,14 +75,16 @@ const readConfig = () => {
     INSTANCE_INFO_EN: instanceInfoEn,
     SENTRY_DSN: SENTRY_DSN !== "undefined" ? SENTRY_DSN : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
-    LANGUAGE: getLanguage(c.LANG),
+    LANGUAGE: c.LANG,
     VERSION: pack.version as string
   };
 };
 
+let config: Config | null = null;
+
 export const get = () => {
   if (!config) {
-    readConfig();
+    config = readConfig();
   }
 
   return config!;

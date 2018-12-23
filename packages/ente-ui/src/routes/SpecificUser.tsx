@@ -58,11 +58,10 @@ import {
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
-import { createTranslation } from "../helpers/createTranslation";
 import { Maybe } from "monet";
-import { WithWidth } from "@material-ui/core/withWidth";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     submit: "OK",
     close: "Close",
@@ -157,6 +156,7 @@ type SpecificUserProps = SpecificUserStateProps &
 export const SpecificUser: React.FunctionComponent<
   SpecificUserProps
 > = props => {
+  const lang = useTranslation();
   const [showDelete, setShowDelete] = React.useState(false);
   const [patch, setPatch] = React.useState(new PatchUserDto());
   const {
@@ -325,7 +325,10 @@ export const SpecificUser: React.FunctionComponent<
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(
     withStyles(styles)(
       withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
     )

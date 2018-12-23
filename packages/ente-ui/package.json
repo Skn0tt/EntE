@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "yarn parcel src/index.html",
-    "build":
-      "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && yarn serviceworker && size-limit",
+    "build": "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && yarn serviceworker && size-limit",
     "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
     "serviceworker": "yarn workbox generateSW",
@@ -26,9 +25,10 @@
     "luxon": "^1.4.5",
     "material-ui-pickers": "^v1.0.1",
     "monet": "^0.9.0",
-    "mui-datatables": "2.0.0-beta-42",
+    "mui-datatables": "^2.0.0-beta-42",
     "mui-downshift": "^1.2.1",
     "papaparse": "^4.6.1",
+    "query-string": "^6.2.0",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.2",
     "react-dropzone": "^4.2.7",
@@ -44,12 +44,17 @@
     "rxjs": "^6.3.3",
     "typeface-roboto": "^0.0.45"
   },
+  "resolutions": {
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2"
+  },
   "devDependencies": {
     "@babel/runtime": "^7.1.2",
     "@types/jest": "^21.1.9",
     "@types/js-cookie": "^2.1.0",
     "@types/node": "^8.5.2",
     "@types/papaparse": "^4.5.5",
+    "@types/query-string": "^6.1.1",
     "@types/react": "^16.7.11",
     "@types/react-dom": "^16.0.9",
     "@types/react-dropzone": "^4.2.0",

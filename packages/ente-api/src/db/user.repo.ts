@@ -29,10 +29,6 @@ export enum SetPasswordHashFailure {
   UserNotFound
 }
 
-interface ToUserDtoConfig {
-  canHaveChildren: boolean;
-}
-
 @Injectable()
 export class UserRepo {
   constructor(
@@ -218,18 +214,19 @@ export class UserRepo {
     const [firstUser, ...otherUsers] = users;
     query = query.where(
       new Brackets(qb => {
-        qb
-          .where("user._id = :id", { id: firstUser.id })
-          .andWhere("user.role = :role", { role: firstUser.role });
+        qb.where("user._id = :id", { id: firstUser.id }).andWhere(
+          "user.role = :role",
+          { role: firstUser.role }
+        );
       })
     );
 
     otherUsers.forEach(({ id, role }) => {
       query = query.orWhere(
         new Brackets(qb => {
-          qb
-            .where("user._id = :id", { id })
-            .andWhere("user.role = :role", { role });
+          qb.where("user._id = :id", { id }).andWhere("user.role = :role", {
+            role
+          });
         })
       );
     });

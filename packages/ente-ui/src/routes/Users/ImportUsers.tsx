@@ -28,15 +28,14 @@ import { Maybe, None, Some } from "monet";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { connect, MapStateToPropsParam } from "react-redux";
-import { Action, Dispatch } from "redux";
-import { createTranslation } from "../../helpers/createTranslation";
 import { parseCSVFromFile } from "../../helpers/parser";
-import { AppState, createUsersRequest, getStudents, UserN } from "../../redux";
+import { AppState, getStudents, UserN } from "../../redux";
 import * as _ from "lodash";
 import ErrorDisplay from "./ErrorDisplay";
 import { UserTable } from "./UserTable";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     submit: "Import",
     title: "Import",
@@ -98,6 +97,7 @@ type ImportUsersProps = ImportUsersOwnProps &
 
 export const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
   const { fullScreen, show, classes, onClose, usernames, onImport } = props;
+  const lang = useTranslation();
 
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
   const [errors, setErrors] = React.useState<

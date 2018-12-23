@@ -31,6 +31,13 @@ ShallowWrapper {
         },
       ]
     }
+    translation={
+      Object {
+        "addChildren": "Add children",
+        "child": "Child",
+        "title": "Children",
+      }
+    }
   >
     Immutable.UserN {
       "id": "fdas90ß9sß0",
@@ -879,6 +886,13 @@ ShallowWrapper {
           "graduationYear": undefined,
         },
       ]
+    }
+    translation={
+      Object {
+        "addChildren": "Add children",
+        "child": "Child",
+        "title": "Children",
+      }
     }
   >
     Immutable.UserN {

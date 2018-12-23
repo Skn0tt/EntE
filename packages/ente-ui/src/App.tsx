@@ -23,6 +23,7 @@ import AuthService from "./AuthService";
 import * as config from "./config";
 import { Maybe } from "monet";
 import withErrorBoundary from "./hocs/withErrorBoundary";
+import Invitation from "./routes/Invitation/Invitation";
 
 const { ROTATION_PERIOD } = config.get();
 
@@ -47,6 +48,7 @@ const App: React.FunctionComponent<AppProps> = props => {
         <AuthService period={ROTATION_PERIOD} />
         <Switch>
           <Route path="/passwordReset/:token" component={PasswordReset} />
+          <Route path="/invitation/:token" component={Invitation} />
           <Route path="/login" component={Login} />
           <AuthenticatedRoute isLoggedIn={authValid}>
             <Drawer>

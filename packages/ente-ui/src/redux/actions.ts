@@ -67,10 +67,16 @@ import {
   DELETE_USER_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_SUCCESS,
-  DOWNLOAD_EXCEL_EXPORT_ERROR
+  DOWNLOAD_EXCEL_EXPORT_ERROR,
+  SET_LANGUAGE
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
-import { CreateUserDto, CreateEntryDto, PatchUserDto } from "ente-types";
+import {
+  CreateUserDto,
+  CreateEntryDto,
+  PatchUserDto,
+  Languages
+} from "ente-types";
 import * as _ from "lodash";
 
 const createMetaAction = <Meta, Payload = any>(type: string) =>
@@ -273,5 +279,7 @@ export const setPasswordError = createMetaAction<Action<INewPassword>, Error>(
 );
 
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
+
+export const setLanguage = createAction<Languages>(SET_LANGUAGE);
 
 export const logout = createAction(LOGOUT);

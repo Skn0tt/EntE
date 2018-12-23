@@ -7,8 +7,9 @@
  */
 
 import { Map, Record, Set } from "immutable";
-import { Roles, UserDto, EntryDto, SlotDto } from "ente-types";
+import { Roles, UserDto, EntryDto, SlotDto, Languages } from "ente-types";
 import { Action } from "redux";
+import { getConfig } from "./config";
 
 export interface BasicCredentials {
   username: string;
@@ -138,6 +139,7 @@ export interface IAppState {
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
   auth: AuthState | null;
+  language: Languages;
   pendingActions: PendingActions;
 }
 
@@ -148,6 +150,7 @@ export const AppState = Record<IAppState>(
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
     auth: null,
+    language: getConfig().defaultLanguage,
     pendingActions: Set<Action>()
   },
   "AppState"

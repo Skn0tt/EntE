@@ -87,7 +87,7 @@ ShallowWrapper {
     "nodeType": "function",
     "props": Object {
       "children": Array [
-        <Connect(WithTheme(WithWidth(WithMobileDialog)))
+        <Connect(Component)
           onClose={[Function]}
           show={false}
         />,
@@ -187,7 +187,7 @@ ShallowWrapper {
       "nodeType": "function",
       "props": Object {
         "children": Array [
-          <Connect(WithTheme(WithWidth(WithMobileDialog)))
+          <Connect(Component)
             onClose={[Function]}
             show={false}
           />,

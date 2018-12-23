@@ -87,6 +87,7 @@ export class Users extends React.PureComponent<UsersProps, UsersState> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(withErrorBoundary()(withStyles(styles)(Users)))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withStyles(styles)(withErrorBoundary()(Users))));

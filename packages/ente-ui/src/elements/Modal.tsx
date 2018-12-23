@@ -7,9 +7,9 @@ import {
   DialogActions,
   Button
 } from "@material-ui/core";
-import { createTranslation } from "../helpers/createTranslation";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     ok: "OK",
     cancel: "Cancel"
@@ -42,6 +42,7 @@ export const Modal: React.SFC<Modal> = React.memo(props => {
     labels = {},
     description
   } = props;
+  const lang = useTranslation();
 
   return (
     <Dialog open={show} onClose={onClose}>

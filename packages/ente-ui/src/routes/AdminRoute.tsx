@@ -3,10 +3,10 @@ import { connect, MapDispatchToPropsParam } from "react-redux";
 import { Button, WithStyles, withStyles, Theme, Grid } from "@material-ui/core";
 import AttachmentIcon from "@material-ui/icons/Attachment";
 import { downloadExcelExportRequest } from "../redux";
-import { createTranslation } from "../helpers/createTranslation";
 import withErrorBoundary from "../hocs/withErrorBoundary";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     downloadExcel: "Download Excel Export"
   },
@@ -46,6 +46,7 @@ type AdminRouteProps = AdminRouteOwnProps &
 
 const AdminRoute: React.SFC<AdminRouteProps> = props => {
   const { downloadExcelExport, classes } = props;
+  const lang = useTranslation();
 
   return (
     <Grid container spacing={24} className={classes.container}>
@@ -59,6 +60,7 @@ const AdminRoute: React.SFC<AdminRouteProps> = props => {
   );
 };
 
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(withErrorBoundary()(AdminRoute))
-);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(withStyles(styles)(withErrorBoundary()(AdminRoute)));

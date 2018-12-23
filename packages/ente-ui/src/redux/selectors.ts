@@ -17,7 +17,7 @@ import {
   AuthState
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles } from "ente-types";
+import { Roles, Languages } from "ente-types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Action } from "redux";
@@ -64,12 +64,14 @@ export const getRole: Selector<Maybe<Roles>> = state => {
   return authState.map(s => s.get("role"));
 };
 
-export const hasChildren = createSelector([getRole], role =>
-  role.map(roleHasChildren)
+export const hasChildren = createSelector(
+  [getRole],
+  role => role.map(roleHasChildren)
 );
 
-export const canCreateEntries = createSelector([getRole], role =>
-  role.map(role => role === Roles.STUDENT || role === Roles.PARENT)
+export const canCreateEntries = createSelector(
+  [getRole],
+  role => role.map(role => role === Roles.STUDENT || role === Roles.PARENT)
 );
 
 export const getToken: Selector<Maybe<string>> = state => {
@@ -126,10 +128,14 @@ export const getSlots: Selector<SlotN[]> = state =>
 export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
   ids.map(id => state.getIn(["slotsMap", id])).filter(s => !!s);
 
-export const getTeachers = createSelector([getUsers], users =>
-  users.filter(userIsTeacher)
+export const getTeachers = createSelector(
+  [getUsers],
+  users => users.filter(userIsTeacher)
 );
 
-export const getStudents = createSelector([getUsers], users =>
-  users.filter(userIsStudent)
+export const getStudents = createSelector(
+  [getUsers],
+  users => users.filter(userIsStudent)
 );
+
+export const getLanguage: Selector<Languages> = state => state.get("language");

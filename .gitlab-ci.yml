@@ -10,7 +10,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 test:unit:
-  image: node:9
+  image: node:10
   stage: test
   script: "./scripts/ci/test_unit.sh"
   cache:
@@ -24,7 +24,7 @@ test:unit:
       - junit.xml
 
 test:tsc:
-  image: node:9
+  image: node:10
   stage: test
   script: "./scripts/ci/test_tsc.sh"
   cache:
@@ -35,14 +35,14 @@ test:tsc:
 
 test:version:
   image:
-    name: node:9
+    name: node:10
     entrypoint: [""]
   stage: test
   dependencies: []
   script: "./scripts/ci/test_version.sh"
 
 license_management:
-  image: 
+  image:
     name: "registry.gitlab.com/gitlab-org/security-products/license-management:$CI_SERVER_VERSION_MAJOR-$CI_SERVER_VERSION_MINOR-stable"
     entrypoint: [""]
   stage: test
@@ -64,10 +64,10 @@ sast:
   script:
     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
-        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+      --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
+      --volume "$PWD:/code"
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
   artifacts:
     paths:
       - gl-sast-report.json
@@ -81,7 +81,7 @@ build:api:
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/build_docker.sh api"
-  
+
 build:ui:
   image: skn0tt/dind-make
   stage: build
@@ -101,7 +101,7 @@ build:docker-app:
   script: "./scripts/ci/build_dockerapp.sh"
 
 test:e2e:
-  image: skn0tt/node-browsers-docker-app
+  image: skn0tt/node-browsers-docker-app:node-10-docker-app-v0.6.0
   stage: test:e2e
   dependencies: []
   cache:
@@ -150,7 +150,7 @@ generate:allure:
       - allure-report/
 
 generate:pages:
-  image: node:9
+  image: node:10
   stage: generate
   dependencies: []
   script: "./scripts/ci/generate_pages.sh"

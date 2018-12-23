@@ -1,6 +1,7 @@
 import { getByLanguage, Languages } from "ente-types";
 import { SignedInformationDE } from "./SignedInformation.de";
 import { SignedInformationEN } from "./SignedInformation.en";
+import { mjml2html } from "../helpers/mjml";
 
 /**
  * EntE
@@ -9,9 +10,6 @@ import { SignedInformationEN } from "./SignedInformation.en";
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
-// tslint:disable-next-line:no-var-requires
-const mjml2html = require("mjml").default;
-
 const getTemplate = getByLanguage({
   [Languages.GERMAN]: SignedInformationDE,
   [Languages.ENGLISH]: SignedInformationEN

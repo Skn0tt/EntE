@@ -25,10 +25,10 @@ import {
   UserN
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { createTranslation } from "../helpers/createTranslation";
 import { Maybe } from "monet";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     headers: {
       name: "Name",
@@ -88,54 +88,54 @@ interface SlotsOwnProps {}
 
 type SlotsProps = SlotsStateProps & SlotsDispatchProps;
 
-export class Slots extends React.Component<SlotsProps> {
-  componentDidMount() {
-    this.props.requestSlots();
-  }
+const Slots: React.FunctionComponent<SlotsProps> = props => {
+  const lang = useTranslation();
+  const { getUser, slots, requestSlots } = props;
 
-  render() {
-    const { getUser, slots } = this.props;
+  React.useEffect(() => {
+    requestSlots();
+  }, []);
 
-    return (
-      <SlotsTable
-        headers={[
-          lang.headers.name,
-          lang.headers.date,
-          lang.headers.from,
-          lang.headers.to,
-          lang.headers.forSchool,
-          {
-            name: lang.headers.signed,
-            options: {
-              customBodyRender: v => <SignedAvatar signed={v === lang.yes} />
-            }
-          },
-          lang.headers.teacher
-        ]}
-        items={slots}
-        extractId={user => user.get("id")}
-        extract={slot => [
-          getUser(slot.get("studentId"))
-            .some()
-            .get("displayname"),
-          slot.get("date").toLocaleDateString(),
-          "" + slot.get("from"),
-          "" + slot.get("to"),
-          slot.get("forSchool") ? lang.yes : lang.no,
-          slot.get("signed") ? lang.yes : lang.no,
-          Maybe.fromNull(slot.get("teacherId")).cata(
-            () => lang.deleted,
-            id =>
-              getUser(id)
-                .some()
-                .get("displayname")
-          )
-        ]}
-      />
-    );
-  }
-}
+  return (
+    <SlotsTable
+      headers={[
+        lang.headers.name,
+        lang.headers.date,
+        lang.headers.from,
+        lang.headers.to,
+        lang.headers.forSchool,
+        {
+          name: lang.headers.signed,
+          options: {
+            customBodyRender: v => <SignedAvatar signed={v === lang.yes} />
+          }
+        },
+        lang.headers.teacher
+      ]}
+      items={slots}
+      extractId={user => user.get("id")}
+      extract={slot => [
+        getUser(slot.get("studentId"))
+          .some()
+          .get("displayname"),
+        slot.get("date").toLocaleDateString(),
+        "" + slot.get("from"),
+        "" + slot.get("to"),
+        slot.get("forSchool") ? lang.yes : lang.no,
+        slot.get("signed") ? lang.yes : lang.no,
+        Maybe.fromNull(slot.get("teacherId")).cata(
+          () => lang.deleted,
+          id =>
+            getUser(id)
+              .some()
+              .get("displayname")
+        )
+      ]}
+    />
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withErrorBoundary()(Slots)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorBoundary()(Slots));

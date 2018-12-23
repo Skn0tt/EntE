@@ -4,7 +4,7 @@ import {
   OnModuleInit,
   LoggerService
 } from "@nestjs/common";
-import { Validation, Success, Fail, Maybe } from "monet";
+import { Validation, Success, Fail } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
   Roles,
@@ -14,7 +14,6 @@ import {
   isValidUuid
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
-import { days } from "../helpers/time";
 import * as _ from "lodash";
 import { hashPassword } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
@@ -188,16 +187,13 @@ export class UsersService implements OnModuleInit {
     const created = await this.userRepo.create(...withHash);
 
     const usersWithoutPassword = created.filter(created => {
-      const hasPasswordSet = users.find(u => created.username === u.username)!
+      const hasPasswordSet = !!users.find(u => created.username === u.username)!
         .password;
-      return hasPasswordSet;
+      return !hasPasswordSet;
     });
 
     usersWithoutPassword.forEach(user => {
-      this.passwordResetService.startPasswordResetRoutine(
-        user.username,
-        days(7)
-      );
+      this.passwordResetService.invokeInvitationRoutine(user);
     });
 
     return created;

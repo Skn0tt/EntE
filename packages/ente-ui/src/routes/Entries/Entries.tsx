@@ -27,10 +27,11 @@ import Fab from "@material-ui/core/Fab";
 import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { createTranslation } from "../../helpers/createTranslation";
 import { Maybe } from "monet";
+import { getByLanguage } from "ente-types";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     headers: {
       name: "Name",
@@ -105,6 +106,8 @@ export const Entries: React.FunctionComponent<Props> = props => {
     requestEntries
   } = props;
 
+  const lang = useTranslation();
+
   const [createEntryIsVisible, setCreateEntryIsVisible] = React.useState(false);
 
   React.useEffect(() => {
@@ -163,6 +166,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(withErrorBoundary()(withStyles(styles)(Entries)))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withErrorBoundary()(withStyles(styles)(Entries))));

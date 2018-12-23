@@ -9,12 +9,12 @@ import {
   Typography
 } from "@material-ui/core";
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
-import { createTranslation } from "../helpers/createTranslation";
 import * as config from "../config";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
 const { VERSION } = config.get();
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     back: "Close",
     title: "About",
@@ -33,6 +33,7 @@ type AboutProps = AboutOwnProps & RouteComponentProps;
 
 export const About: React.SFC<AboutProps> = props => {
   const { history } = props;
+  const lang = useTranslation();
 
   const onClose = history.goBack;
 

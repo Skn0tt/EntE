@@ -1,6 +1,7 @@
 import { getByLanguage, Languages } from "ente-types";
 import { PasswordResetSuccessDE } from "./PasswordResetSuccess.de";
 import { PasswordResetSuccessEN } from "./PasswordResetSuccess.en";
+import { mjml2html } from "../helpers/mjml";
 
 /**
  * EntE
@@ -9,9 +10,6 @@ import { PasswordResetSuccessEN } from "./PasswordResetSuccess.en";
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
-// tslint:disable-next-line:no-var-requires
-const mjml2html = require("mjml").default;
-
 const getTemplate = getByLanguage({
   [Languages.GERMAN]: PasswordResetSuccessDE,
   [Languages.ENGLISH]: PasswordResetSuccessEN

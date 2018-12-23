@@ -8,7 +8,6 @@
 
 import axios, { AxiosRequestConfig } from "axios";
 
-import { config } from "./";
 import {
   APIResponse,
   UserN,
@@ -28,8 +27,12 @@ import {
   PatchEntryDto
 } from "ente-types";
 import * as _ from "lodash";
-import { None, Some } from "monet";
 import { Base64 } from "../helpers/base64";
+import { getConfig } from "./config";
+
+const { baseUrl, onFileDownload } = getConfig();
+
+const getBaseUrl = () => getConfig().baseUrl;
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
@@ -165,7 +168,7 @@ const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
 };
 
 export const getToken = async (auth: BasicCredentials): Promise<AuthState> => {
-  const response = await axios.get<string>(`${config.baseUrl}/token`, {
+  const response = await axios.get<string>(`${getBaseUrl()}/token`, {
     auth
   });
 
@@ -177,7 +180,7 @@ export const getToken = async (auth: BasicCredentials): Promise<AuthState> => {
 export const refreshToken = async (token: string): Promise<AuthState> => {
   try {
     const result = await axios.get<string>(
-      `${config.baseUrl}/token`,
+      `${getBaseUrl()}/token`,
       axiosTokenParams(token)
     );
 
@@ -191,40 +194,40 @@ export const refreshToken = async (token: string): Promise<AuthState> => {
 
 export const getChildren = async (token: string): Promise<APIResponse> => {
   const data = await get<UserDto[]>(
-    `${config.baseUrl}/users?filter=children`,
+    `${getBaseUrl()}/users?filter=children`,
     token
   );
   return transformUsers(...data);
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`${config.baseUrl}/users`, token);
+  const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
   return transformUsers(...data);
 };
 
 export const downloadExcelExport = async (token: string): Promise<void> => {
-  const response = await axios.get<Blob>(`${config.baseUrl}/export/excel`, {
+  const response = await axios.get<Blob>(`${getBaseUrl()}/export/excel`, {
     ...axiosTokenParams(token),
     responseType: "blob"
   });
-  config.onFileDownload(response.data, "export.xlsx");
+  onFileDownload(response.data, "export.xlsx");
 };
 
 export const getEntry = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<EntryDto>(`${config.baseUrl}/entries/${id}`, token);
+  const data = await get<EntryDto>(`${getBaseUrl()}/entries/${id}`, token);
   return transformEntries(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
-  const data = await get<EntryDto[]>(`${config.baseUrl}/entries`, token);
+  const data = await get<EntryDto[]>(`${getBaseUrl()}/entries`, token);
   return transformEntries(...data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
-  const data = await get<SlotDto[]>(`${config.baseUrl}/slots`, token);
+  const data = await get<SlotDto[]>(`${getBaseUrl()}/slots`, token);
   return transformSlots(...data);
 };
 
@@ -232,7 +235,7 @@ export const getUser = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<UserDto>(`${config.baseUrl}/users/${id}`, token);
+  const data = await get<UserDto>(`${getBaseUrl()}/users/${id}`, token);
   return transformUsers(data);
 };
 
@@ -242,15 +245,15 @@ const _delete = async <T>(url: string, token: string) => {
 };
 
 export const deleteUser = async (id: string, token: string) => {
-  await _delete(`${config.baseUrl}/users/${id}`, token);
+  await _delete(`${getBaseUrl()}/users/${id}`, token);
 };
 
 export const deleteEntry = async (id: string, token: string) => {
-  await _delete(`${config.baseUrl}/entries/${id}`, token);
+  await _delete(`${getBaseUrl()}/entries/${id}`, token);
 };
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`${config.baseUrl}/users`, token);
+  const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
   return transformUsers(...data);
 };
 
@@ -264,7 +267,7 @@ export const createEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await post<EntryDto>(
-    `${config.baseUrl}/entries/`,
+    `${getBaseUrl()}/entries/`,
     token,
     entry
   );
@@ -276,7 +279,7 @@ export const createUsers = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await post<UserDto[]>(
-    `${config.baseUrl}/users/`,
+    `${getBaseUrl()}/users/`,
     token,
     users
   );
@@ -294,7 +297,7 @@ export const updateUser = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<UserDto>(
-    `${config.baseUrl}/users/${userId}`,
+    `${getBaseUrl()}/users/${userId}`,
     token,
     user
   );
@@ -311,7 +314,7 @@ export const signEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `${config.baseUrl}/entries/${id}`,
+    `${getBaseUrl()}/entries/${id}`,
     token,
     {
       signed: true
@@ -325,7 +328,7 @@ export const unsignEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `${config.baseUrl}/entries/${id}`,
+    `${getBaseUrl()}/entries/${id}`,
     token,
     {
       signed: false
@@ -340,7 +343,7 @@ export const patchForSchool = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `${config.baseUrl}/entries/${id}`,
+    `${getBaseUrl()}/entries/${id}`,
     token,
     {
       forSchool
@@ -350,15 +353,13 @@ export const patchForSchool = async (
 };
 
 export const resetPassword = async (username: string): Promise<string> => {
-  const result = await axios.post(
-    `${config.baseUrl}/passwordReset/${username}`
-  );
+  const result = await axios.post(`${getBaseUrl()}/passwordReset/${username}`);
   return result.data;
 };
 
 export const setPassword = async (token: string, newPassword: string) => {
   const result = await axios.put(
-    `${config.baseUrl}/passwordReset/${token}`,
+    `${getBaseUrl()}/passwordReset/${token}`,
     newPassword,
     {
       headers: {
