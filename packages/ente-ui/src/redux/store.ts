@@ -16,9 +16,9 @@ import {
   createTransform
 } from "./redux-persist-immutable";
 import saga from "./saga";
-import { config } from "./";
 import { AppState, IAppState, UserN, SlotN, AuthState, EntryN } from "./types";
 import * as _ from "lodash";
+import { getConfig } from "./config";
 
 const keysToRemove: (keyof IAppState)[] = ["pendingActions"];
 const removeUnneededTransform = createTransform(
@@ -35,7 +35,7 @@ const startPersistance = (store: Store) => {
     persistor = persistStore(
       store,
       {
-        storage: config.storage,
+        storage: getConfig().storage,
         transforms: [removeUnneededTransform],
         records: [UserN, SlotN, AuthState, AppState, EntryN]
       },
@@ -49,11 +49,11 @@ let persistor: any;
 
 export const createStore = async () => {
   const sagaMiddleware = reduxSaga({
-    onError: config.onSagaError
+    onError: getConfig().onSagaError
   });
   const composeEnhancers = composeWithDevTools({});
 
-  const middlewares = config.middlewares || [];
+  const middlewares = getConfig().middlewares || [];
 
   store = reduxCreateStore(
     reducer as any,

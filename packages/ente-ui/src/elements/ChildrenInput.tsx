@@ -19,9 +19,9 @@ import Typography from "@material-ui/core/Typography/Typography";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
-import { createTranslation } from "../helpers/createTranslation";
+import { WithTranslation, withTranslation } from "../helpers/with-translation";
 
-const lang = createTranslation({
+export const translation = {
   en: {
     title: "Children",
     addChildren: "Add children",
@@ -32,7 +32,7 @@ const lang = createTranslation({
     addChildren: "Kinder hinzufügen",
     child: "Kind"
   }
-});
+};
 
 /**
  * # Helpers
@@ -55,7 +55,8 @@ interface ChildrenInputOwnProps {
   onChange: (children: UserN[]) => void;
 }
 
-type ChildrenInputProps = ChildrenInputOwnProps;
+type ChildrenInputProps = ChildrenInputOwnProps &
+  WithTranslation<typeof translation.en>;
 
 interface State {
   selected: UserN;
@@ -98,13 +99,13 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
     this.props.onChange(without(this.props.children, index));
 
   render() {
-    const { students, children } = this.props;
+    const { students, children, translation } = this.props;
     const { selected } = this.state;
 
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography variant="h6">{lang.title}</Typography>
+          <Typography variant="h6">{translation.title}</Typography>
         </Grid>
         {/* List Children */}
         <Grid item>
@@ -134,8 +135,8 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               }
-              helperText={lang.addChildren}
-              label={lang.child}
+              helperText={translation.addChildren}
+              label={translation.child}
             />
           </Grid>
           <Grid item xs={1}>
@@ -155,4 +156,4 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
   }
 }
 
-export default ChildrenInput;
+export default withTranslation(translation)(ChildrenInput);

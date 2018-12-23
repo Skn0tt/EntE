@@ -45,12 +45,15 @@ import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { YearPicker } from "../../elements/YearPicker";
-import { createTranslation } from "../../helpers/createTranslation";
 import { PasswordRequirementsHint } from "../../elements/PasswordRequirementsHint";
 import * as _ from "lodash";
 import { Maybe } from "monet";
+import {
+  WithTranslation,
+  withTranslation
+} from "../../helpers/with-translation";
 
-const lang = createTranslation({
+export const lang = {
   en: {
     titles: {
       newUser: "New User",
@@ -87,7 +90,7 @@ const lang = createTranslation({
     import: "Importieren",
     passwordSpec: PasswordRequirementsHint.de
   }
-});
+};
 
 /**
  * # Component Types
@@ -129,6 +132,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 type CreateUserProps = OwnProps &
   CreateUserStateProps &
   CreateUserDispatchProps &
+  WithTranslation<typeof lang.en> &
   InjectedProps;
 
 /**
@@ -197,12 +201,16 @@ export class CreateUser extends React.Component<
   handleChangeChildren = this.update("children");
 
   hasChildren = (): boolean => {
-    const { create: { role } } = this.state;
+    const {
+      create: { role }
+    } = this.state;
     return roleHasChildren(role);
   };
 
   hasGradYear = (): boolean => {
-    const { create: { role } } = this.state;
+    const {
+      create: { role }
+    } = this.state;
     return roleHasGradYear(role);
   };
 
@@ -221,20 +229,20 @@ export class CreateUser extends React.Component<
   inputValid = (): boolean => isValidCreateUserDto(this.state.create);
 
   render() {
-    const { show, fullScreen, getUser, students } = this.props;
+    const { show, fullScreen, getUser, students, translation } = this.props;
     const { create, showImportUsers } = this.state;
 
     return (
       <>
         <Dialog fullScreen={fullScreen} onClose={this.handleGoBack} open={show}>
-          <DialogTitle>{lang.titles.newUser}</DialogTitle>
+          <DialogTitle>{translation.titles.newUser}</DialogTitle>
           <DialogContent>
             <form onKeyPress={this.handleKeyPress}>
               <Grid container direction="row">
                 <Grid item xs={12} lg={6}>
                   <TextInput
                     value={create.username || ""}
-                    label={lang.titles.username}
+                    label={translation.titles.username}
                     onChange={this.handleChangeUsername}
                     validator={this.usernameValid}
                     required
@@ -242,7 +250,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextInput
-                    label={lang.titles.displayname}
+                    label={translation.titles.displayname}
                     value={create.displayname || ""}
                     onChange={this.handleChangeDisplayname}
                     validator={this.displaynameValid}
@@ -251,7 +259,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextInput
-                    label={lang.titles.email}
+                    label={translation.titles.email}
                     value={create.email || ""}
                     onChange={this.handleChangeEmail}
                     validator={this.emailValid}
@@ -261,7 +269,7 @@ export class CreateUser extends React.Component<
                 </Grid>
                 <Grid item xs={12}>
                   <TextInput
-                    label={lang.titles.password}
+                    label={translation.titles.password}
                     value={create.password || ""}
                     onChange={this.handleChangePassword}
                     validator={this.passwordValid}
@@ -269,17 +277,17 @@ export class CreateUser extends React.Component<
                   />
                 </Grid>
                 <Typography variant="body1">
-                  <lang.passwordSpec />
+                  <translation.passwordSpec />
                 </Typography>
                 <Grid item xs={12}>
                   <TextField
                     select
-                    label={lang.titles.role}
+                    label={translation.titles.role}
                     value={create.role || Roles.STUDENT}
                     onChange={this.handleChangeRole}
                     fullWidth
                     SelectProps={{ native: true }}
-                    helperText={lang.helpers.chooseRoleOfUser}
+                    helperText={translation.helpers.chooseRoleOfUser}
                   >
                     {Object.keys(Roles).map(role => (
                       <option
@@ -305,7 +313,7 @@ export class CreateUser extends React.Component<
                 {this.hasGradYear() && (
                   <Grid item xs={12}>
                     <YearPicker
-                      label={lang.titles.gradYear}
+                      label={translation.titles.gradYear}
                       amount={5}
                       onChange={this.handleChangeYear}
                       value={create.graduationYear!}
@@ -316,13 +324,15 @@ export class CreateUser extends React.Component<
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleShowImport}>{lang.import}</Button>
+            <Button onClick={this.handleShowImport}>
+              {translation.import}
+            </Button>
             <Button
               onClick={this.handleClose}
               color="secondary"
               className="close"
             >
-              {lang.close}
+              {translation.close}
             </Button>
             <Button
               onClick={() => {
@@ -332,7 +342,7 @@ export class CreateUser extends React.Component<
               disabled={!this.inputValid()}
               color="primary"
             >
-              {lang.submit}
+              {translation.submit}
             </Button>
           </DialogActions>
         </Dialog>
@@ -351,6 +361,11 @@ export default connect<
   CreateUserDispatchProps,
   OwnProps,
   AppState
->(mapStateToProps, mapDispatchToProps)(
-  withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser))
+>(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withTranslation(lang)(
+    withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser))
+  )
 );

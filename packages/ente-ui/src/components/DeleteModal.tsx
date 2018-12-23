@@ -7,9 +7,9 @@ import {
   DialogActions,
   Button
 } from "@material-ui/core";
-import { createTranslation } from "../helpers/createTranslation";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     title: "Delete?",
     abort: "Abort",
@@ -31,6 +31,7 @@ interface DeleteModalProps {
 
 export const DeleteModal: React.SFC<DeleteModalProps> = props => {
   const { show, onDelete, onClose, text } = props;
+  const translation = useTranslation();
 
   return (
     <Dialog
@@ -39,7 +40,7 @@ export const DeleteModal: React.SFC<DeleteModalProps> = props => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{lang.title}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{translation.title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           {text}
@@ -47,10 +48,10 @@ export const DeleteModal: React.SFC<DeleteModalProps> = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary" autoFocus>
-          {lang.abort}
+          {translation.abort}
         </Button>
         <Button onClick={onDelete} color="secondary">
-          {lang.submit}
+          {translation.submit}
         </Button>
       </DialogActions>
     </Dialog>

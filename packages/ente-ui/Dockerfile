@@ -1,4 +1,4 @@
-FROM node:9 as build
+FROM node:10 as build
 WORKDIR /usr/src/app
 
 ADD package.json yarn.lock tsconfig.json lerna.json ./

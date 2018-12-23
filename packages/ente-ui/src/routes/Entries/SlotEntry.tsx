@@ -14,9 +14,12 @@ import { getTeachers, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "../../helpers/createTranslation";
+import {
+  WithTranslation,
+  withTranslation
+} from "../../helpers/with-translation";
 
-const lang = createTranslation({
+const lang = {
   en: {
     titles: {
       teacher: "Teacher",
@@ -41,7 +44,7 @@ const lang = createTranslation({
     },
     add: "Hinzufügen"
   }
-});
+};
 
 interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
@@ -64,7 +67,9 @@ const mapStateToProps: MapStateToPropsParam<
   teachers: getTeachers(state)
 });
 
-type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
+type SlotEntryProps = SlotEntryStateProps &
+  SlotEntryOwnProps &
+  WithTranslation<typeof lang.en>;
 
 interface State {
   from: string;
@@ -167,7 +172,12 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
     });
 
   render() {
-    const { teachers, multiDay, datePickerConfig } = this.props;
+    const {
+      teachers,
+      multiDay,
+      datePickerConfig,
+      translation: lang
+    } = this.props;
     const { date } = this.state;
 
     return (
@@ -255,4 +265,4 @@ class SlotEntry extends React.Component<SlotEntryProps, State> {
 
 export default connect<SlotEntryStateProps, {}, SlotEntryOwnProps, AppState>(
   mapStateToProps
-)(SlotEntry);
+)(withTranslation(lang)(SlotEntry));

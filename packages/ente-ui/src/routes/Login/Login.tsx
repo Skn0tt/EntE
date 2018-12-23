@@ -32,13 +32,17 @@ import {
   RESET_PASSWORD_REQUEST
 } from "../../redux";
 import { withErrorBoundary } from "../../hocs/withErrorBoundary";
-import { createTranslation } from "../../helpers/createTranslation";
 import * as config from "../../config";
 import { PasswordResetModal } from "./PasswordResetModal";
+import {
+  WithTranslation,
+  withTranslation
+} from "../../helpers/with-translation";
+import * as querystring from "query-string";
 
 const { INSTANCE_INFO_DE, INSTANCE_INFO_EN } = config.get();
 
-const lang = createTranslation({
+const lang = {
   en: {
     title: "Login",
     submit: "Login",
@@ -57,7 +61,7 @@ const lang = createTranslation({
       "Bitte melden sie sich an, um EntE zu nutzen."
     )
   }
-});
+};
 
 interface LoginOwnProps {}
 
@@ -89,11 +93,12 @@ const mapDispatchToProps: MapDispatchToPropsParam<
     dispatch(resetPasswordRequest(username))
 });
 
-type Props = LoginStateProps &
+type LoginProps = LoginStateProps &
   LoginOwnProps &
   LoginDispatchProps &
   InjectedProps &
-  RouteComponentProps<{}>;
+  RouteComponentProps<{}> &
+  WithTranslation<typeof lang.en>;
 
 interface State {
   username: string;
@@ -101,12 +106,18 @@ interface State {
   showPasswordResetModal: boolean;
 }
 
-class Login extends React.Component<Props, State> {
+class Login extends React.Component<LoginProps, State> {
   state: State = {
-    username: "",
+    username: this.initialUsername,
     password: "",
     showPasswordResetModal: false
   };
+
+  get initialUsername() {
+    const { search } = this.props.location;
+    const { username = "" } = querystring.parse(search);
+    return typeof username === "string" ? username : username![0];
+  }
 
   onResetPassword = (username: string) => {
     this.props.triggerPasswordReset(username);
@@ -145,9 +156,10 @@ class Login extends React.Component<Props, State> {
       location,
       fullScreen,
       loginPending,
-      passwordResetPending
+      passwordResetPending,
+      translation: lang
     } = this.props;
-    const { showPasswordResetModal } = this.state;
+    const { showPasswordResetModal, username } = this.state;
     const { from } = location.state || {
       from: { pathname: "/" }
     };
@@ -179,6 +191,7 @@ class Login extends React.Component<Props, State> {
                   label={lang.username}
                   autoComplete="username"
                   onChange={this.handleChangeUsername}
+                  value={username}
                 />
               </Grid>
 
@@ -216,7 +229,12 @@ class Login extends React.Component<Props, State> {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withMobileDialog<Props>()(withErrorBoundary()(Login))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(
+    withTranslation(lang)(
+      withMobileDialog<LoginProps>()(withErrorBoundary()(Login))
+    )
   )
 );

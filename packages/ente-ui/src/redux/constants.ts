@@ -83,5 +83,6 @@ export const DELETE_ENTRY_SUCCESS = "DELETE_ENTRY_SUCCESS";
 export const DELETE_ENTRY_ERROR = "DELETE_ENTRY_ERROR";
 
 export const ADD_RESPONSE = "ADD_RESPONSE";
+export const SET_LANGUAGE = "SET_LANGUAGE";
 
 export const LOGOUT = "LOGOUT";

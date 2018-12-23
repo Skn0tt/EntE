@@ -7,6 +7,7 @@ import { Validation, Success, Fail } from "monet";
 interface PasswordResetTokenRedisPayload {
   userId: string;
   expires: number;
+  isInvitation: boolean;
 }
 
 export enum FindTokenFailure {
@@ -22,12 +23,14 @@ export class PasswordResetTokenService {
 
   async createToken(
     userId: string,
+    isInvitation: boolean,
     expiryTimeInMilliSeconds: number = hours(24)
   ) {
     const token = await this.generateToken();
-    const payload = {
+    const payload: PasswordResetTokenRedisPayload = {
       userId,
-      expiry: Date.now() + expiryTimeInMilliSeconds
+      expires: Date.now() + expiryTimeInMilliSeconds,
+      isInvitation
     };
 
     await this.redisService.setWithExpiry(
@@ -41,20 +44,22 @@ export class PasswordResetTokenService {
 
   async findToken(
     token: string
-  ): Promise<Validation<FindTokenFailure, string>> {
+  ): Promise<
+    Validation<FindTokenFailure, { userId: string; isInvitation: boolean }>
+  > {
     const value = await this.redisService.get(token);
     return value.cata(
       () => {
         return Fail(FindTokenFailure.TokenNotFound);
       },
       v => {
-        const { userId, expires } = JSON.parse(
+        const { userId, expires, isInvitation } = JSON.parse(
           v
         ) as PasswordResetTokenRedisPayload;
-        if (expires > Date.now()) {
+        if (Date.now() > expires) {
           return Fail(FindTokenFailure.TokenExpired);
         }
-        return Success(userId);
+        return Success({ userId, isInvitation });
       }
     );
   }

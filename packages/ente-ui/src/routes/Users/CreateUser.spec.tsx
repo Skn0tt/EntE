@@ -7,9 +7,9 @@
  */
 
 import * as React from "react";
-import { CreateUser } from "./CreateUser";
+import { CreateUser, lang } from "./CreateUser";
 import { shallow } from "enzyme";
-import { Roles } from "ente-types";
+import { Roles, Languages } from "ente-types";
 import { UserN } from "../../redux";
 
 describe("Users", () => {
@@ -30,6 +30,7 @@ describe("Users", () => {
     <CreateUser
       getUser={getUser}
       fullScreen
+      translation={lang.de}
       createUsers={createUser}
       onClose={onClose}
       show
@@ -46,6 +47,7 @@ describe("Users", () => {
       <CreateUser
         getUser={getUser}
         fullScreen
+        translation={lang.de}
         createUsers={createUser}
         onClose={onClose}
         show={false}

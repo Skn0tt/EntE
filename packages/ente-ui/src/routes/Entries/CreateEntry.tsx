@@ -50,10 +50,13 @@ import {
   isValidCreateEntryDto
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import { createTranslation } from "../../helpers/createTranslation";
 import { Maybe } from "monet";
+import {
+  WithTranslation,
+  withTranslation
+} from "../../helpers/with-translation";
 
-const lang = createTranslation({
+const lang = {
   en: {
     multiday: "Multiday",
     forSchool: "Educational",
@@ -87,7 +90,7 @@ const lang = createTranslation({
     toLabel: "Bis",
     dateMustBeBiggerThanFrom: `Muss nach 'Von' sein`
   }
-});
+};
 
 /**
  * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
@@ -142,6 +145,7 @@ type CreateEntryProps = CreateEntryOwnProps &
   CreateEntryDispatchProps &
   CreateEntryStateProps &
   RouteComponentProps<{}> &
+  WithTranslation<typeof lang.en> &
   InjectedProps;
 
 interface State {
@@ -293,12 +297,19 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
   minDate: Date = twoWeeksBefore(new Date());
 
   render() {
-    const { isParent, fullScreen, onClose, show, children } = this.props;
+    const {
+      isParent,
+      fullScreen,
+      onClose,
+      show,
+      children,
+      translation
+    } = this.props;
     const { isRange, student, forSchool, date, dateEnd, slots } = this.state;
 
     return (
       <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
-        <DialogTitle>{lang.newEntry}</DialogTitle>
+        <DialogTitle>{translation.newEntry}</DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={40}>
             <Grid item container direction="column">
@@ -311,7 +322,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         onChange={this.handleChangeIsRange}
                       />
                     }
-                    label={lang.multiday}
+                    label={translation.multiday}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -322,7 +333,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                         onChange={this.handleChangeForSchool}
                       />
                     }
-                    label={lang.forSchool}
+                    label={translation.forSchool}
                   />
                 </Grid>
               </Grid>
@@ -331,10 +342,10 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   <TextField
                     fullWidth
                     select
-                    label={lang.child}
+                    label={translation.child}
                     value={student}
                     onChange={this.handleChangeStudent}
-                    helperText={lang.selectChild}
+                    helperText={translation.selectChild}
                   >
                     {children.some().map(child => (
                       <MenuItem key={child.get("id")} value={child.get("id")}>
@@ -348,7 +359,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                 <Grid container direction="row" spacing={24}>
                   <Grid item xs={6}>
                     <DateInput
-                      label={lang.fromLabel}
+                      label={translation.fromLabel}
                       isValid={this.dateValid}
                       onChange={this.handleChangeBeginDate}
                       minDate={this.minDate}
@@ -358,12 +369,12 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
                   {isRange && (
                     <Grid item xs={6}>
                       <DateInput
-                        label={lang.toLabel}
+                        label={translation.toLabel}
                         isValid={this.dateEndValid}
                         onChange={this.handleChangeDateEnd}
                         minDate={nextDay(date)}
                         value={dateEnd!}
-                        minDateMessage={lang.dateMustBeBiggerThanFrom}
+                        minDateMessage={translation.dateMustBeBiggerThanFrom}
                       />
                     </Grid>
                   )}
@@ -371,8 +382,10 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">{lang.titles.slots}</Typography>
-              <Typography variant="caption">{lang.addSlotsCaption}</Typography>
+              <Typography variant="h6">{translation.titles.slots}</Typography>
+              <Typography variant="caption">
+                {translation.addSlotsCaption}
+              </Typography>
               <MUIList>
                 {slots.map((slot, index) => (
                   <SlotListItem
@@ -396,7 +409,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="secondary">
-            {lang.cancel}
+            {translation.cancel}
           </Button>
           <Button
             onClick={() => {
@@ -406,7 +419,7 @@ class CreateEntry extends React.Component<CreateEntryProps, State> {
             disabled={!this.inputValid()}
             color="primary"
           >
-            {lang.ok}
+            {translation.ok}
           </Button>
         </DialogActions>
       </Dialog>
@@ -419,6 +432,11 @@ export default connect<
   CreateEntryDispatchProps,
   CreateEntryOwnProps,
   AppState
->(mapStateToProps, mapDispatchToProps)(
-  withRouter(withMobileDialog<CreateEntryProps>()(CreateEntry))
+>(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withRouter(
+    withTranslation(lang)(withMobileDialog<CreateEntryProps>()(CreateEntry))
+  )
 );

@@ -11,6 +11,7 @@ import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";
 import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
 import { SignRequest } from "../templates/SignRequest";
+import { InvitationLink } from "../templates/InvitationLink";
 
 @Injectable()
 export class EmailService {
@@ -74,6 +75,22 @@ export class EmailService {
     });
     this.logger.log(
       `Successfully dispatched PasswordResetLink to ${user.username}, ${
+        user.email
+      }`
+    );
+  }
+
+  async dispatchInvitationLink(link: string, user: UserDto) {
+    const { subject, html } = await InvitationLink(link, Languages.GERMAN);
+    await this.emailTransport.sendMail({
+      recipients: [user.email],
+      body: {
+        html
+      },
+      subject
+    });
+    this.logger.log(
+      `Successfully dispatched InvitationLink to ${user.username}, ${
         user.email
       }`
     );

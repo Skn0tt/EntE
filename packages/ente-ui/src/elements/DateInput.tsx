@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DatePicker } from "material-ui-pickers";
-import { createTranslation } from "../helpers/createTranslation";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     minDateMessage: "Date should be after minimal date",
     maxDateMessage: "Date should be before maximal date"
@@ -35,6 +35,9 @@ export const DateInput: React.SFC<DateInputProps> = props => {
     maxDateMessage,
     minDateMessage
   } = props;
+
+  const lang = useTranslation();
+
   return (
     <DatePicker
       label={label}

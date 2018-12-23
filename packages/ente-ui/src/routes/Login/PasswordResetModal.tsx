@@ -1,10 +1,10 @@
 import * as React from "react";
-import { createTranslation } from "../../helpers/createTranslation";
 import { Modal } from "../../elements/Modal";
 import { TextField } from "@material-ui/core";
 import { isValidUsername } from "ente-types";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     ok: "Reset Password",
     title: "Reset Password",
@@ -33,6 +33,7 @@ export const PasswordResetModal: React.FunctionComponent<
 > = React.memo(props => {
   const { onClose, onReset, show } = props;
   const [username, setUsername] = React.useState("");
+  const lang = useTranslation();
 
   return (
     <Modal

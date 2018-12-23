@@ -16,7 +16,7 @@ export const removeMessage = (msg: string) => {
 };
 
 export interface MessagesContextValue {
-  messages: string[];
+  messages: Readonly<string[]>;
   addMessages: (...msg: string[]) => void;
   removeMessage: (msg: string) => void;
 }

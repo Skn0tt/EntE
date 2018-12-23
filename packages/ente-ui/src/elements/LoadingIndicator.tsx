@@ -7,15 +7,10 @@
  */
 
 import * as React from "react";
-import {
-  withStyles,
-  CircularProgress,
-  WithStyles,
-  Grid,
-  StyleRulesCallback
-} from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
-const styles: StyleRulesCallback = theme => ({
+const useStyles = makeStyles({
   container: {
     width: "100%",
     height: "100%"
@@ -26,12 +21,12 @@ const styles: StyleRulesCallback = theme => ({
  * # Component Types
  */
 interface OwnProps {}
-type Props = OwnProps & WithStyles;
+type Props = OwnProps;
 /**
  * # Component
  */
 export const LoadingIndicator: React.SFC<Props> = props => {
-  const { classes } = props;
+  const classes = useStyles(props);
 
   return (
     <Grid
@@ -47,4 +42,4 @@ export const LoadingIndicator: React.SFC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(LoadingIndicator);
+export default LoadingIndicator;

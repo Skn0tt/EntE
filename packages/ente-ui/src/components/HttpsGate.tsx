@@ -1,10 +1,22 @@
 import * as React from "react";
-import { WithStyles, withStyles, Typography } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
-import styles from "./HttpsGate.styles";
-import { createTranslation } from "../helpers/createTranslation";
+import { getByLanguage } from "ente-types";
+import { makeStyles } from "@material-ui/styles";
+import { Typography } from "@material-ui/core";
 
-const lang = createTranslation({
+const useStyles = makeStyles({
+  center: {
+    display: "flex",
+    height: "100vh",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  text: {
+    fontSize: "1.2em"
+  }
+});
+
+const lang = getByLanguage({
   en: "This connection is not encrypted. Please contact your Administrator.",
   de:
     "Diese Verbindung ist nicht verschlüsselt. Bitte kontaktieren sie ihren Administrator."
@@ -16,10 +28,11 @@ interface HttpsGateOwnProps {
   disable?: boolean;
 }
 
-type HttpsGateProps = HttpsGateOwnProps & WithStyles;
+type HttpsGateProps = HttpsGateOwnProps;
 
 export const HttpsGate: React.SFC<HttpsGateProps> = props => {
-  const { disable = false, children, classes } = props;
+  const classes = useStyles(props);
+  const { disable = false, children } = props;
   if (disable || isSecure) {
     return <>{children}</>;
   }
@@ -35,5 +48,3 @@ export const HttpsGate: React.SFC<HttpsGateProps> = props => {
     </div>
   );
 };
-
-export default withStyles(styles)(HttpsGate);

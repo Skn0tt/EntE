@@ -1,9 +1,9 @@
 import * as React from "react";
 import Table from "../../components/Table";
 import { UserN } from "../../redux";
-import { createTranslation } from "../../helpers/createTranslation";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
-const lang = createTranslation({
+const useTranslation = makeTranslationHook({
   en: {
     headers: {
       username: "Username",
@@ -29,8 +29,9 @@ interface UserTableOwnProps {
 
 class _UserTable extends Table<UserN> {}
 
-export const UserTable: React.SFC<UserTableOwnProps> = props => {
+export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
   const { users, onClick } = props;
+  const lang = useTranslation();
 
   return (
     <_UserTable

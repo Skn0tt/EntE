@@ -7,33 +7,16 @@
  */
 
 import { createStore } from "./store";
-import { Middleware } from "redux";
-import { asyncLocalStorage } from "redux-persist/storages";
+import { updateConfig, ReduxConfig } from "./config";
 
 export * from "./selectors";
 export * from "./actions";
 export * from "./types";
 export * from "./constants";
-
-export type ReduxConfig = {
-  baseUrl: string;
-  middlewares?: Middleware[];
-  onSagaError?: (err: Error) => void;
-  onFileDownload: (file: Blob, filename: string) => void;
-  storage: any;
-};
-
-const defaultConfig: ReduxConfig = {
-  storage: asyncLocalStorage,
-  baseUrl: "",
-  middlewares: [],
-  onFileDownload: () => {}
-};
-
-export let config: ReduxConfig;
+export * from "./config";
 
 const setup = async (conf: Partial<ReduxConfig>) => {
-  config = { ...defaultConfig, ...conf };
+  updateConfig(conf);
 
   return await createStore();
 };

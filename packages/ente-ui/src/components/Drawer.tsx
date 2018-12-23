@@ -30,7 +30,7 @@ import {
   TeacherItems
 } from "./Drawer.items";
 import { Maybe } from "monet";
-import { SettingsMenu } from "./SettingsMenu";
+import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
 import { withRouter, RouteComponentProps } from "react-router";

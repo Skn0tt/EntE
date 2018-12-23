@@ -24,6 +24,26 @@ ShallowWrapper {
         },
       ]
     }
+    translation={
+      Object {
+        "close": "Schließen",
+        "helpers": Object {
+          "chooseRoleOfUser": "Wählen sie die Rolle des Nutzers aus",
+        },
+        "import": "Importieren",
+        "passwordSpec": [Function],
+        "submit": "Erstellen",
+        "titles": Object {
+          "displayname": "Displayname",
+          "email": "Email",
+          "gradYear": "Abschluss-Jahrgang",
+          "newUser": "Neuer Nutzer",
+          "password": "Passwort",
+          "role": "Rolle",
+          "username": "Nutzername",
+        },
+      }
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -45,7 +65,7 @@ ShallowWrapper {
           open={false}
         >
           <WithStyles(DialogTitle)>
-            New User
+            Neuer Nutzer
           </WithStyles(DialogTitle)>
           <WithStyles(DialogContent)>
             <form
@@ -61,7 +81,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Username"
+                    label="Nutzername"
                     onChange={[Function]}
                     required={true}
                     validator={[Function]}
@@ -100,7 +120,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Password"
+                    label="Passwort"
                     onChange={[Function]}
                     type="password"
                     validator={[Function]}
@@ -110,7 +130,7 @@ ShallowWrapper {
                 <WithStyles(Typography)
                   variant="body1"
                 >
-                  <en />
+                  <de />
                 </WithStyles(Typography)>
                 <WithStyles(Grid)
                   item={true}
@@ -123,8 +143,8 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Choose the users's role"
-                    label="Role"
+                    helperText="Wählen sie die Rolle des Nutzers aus"
+                    label="Rolle"
                     onChange={[Function]}
                     required={false}
                     select={true}
@@ -164,7 +184,7 @@ ShallowWrapper {
                 >
                   <Unknown
                     amount={5}
-                    label="Graduation Year"
+                    label="Abschluss-Jahrgang"
                     onChange={[Function]}
                     value={2019}
                   />
@@ -176,21 +196,21 @@ ShallowWrapper {
             <WithStyles(Button)
               onClick={[Function]}
             >
-              Import
+              Importieren
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Close
+              Schließen
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              Submit
+              Erstellen
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -210,7 +230,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <WithStyles(DialogTitle)>
-              New User
+              Neuer Nutzer
             </WithStyles(DialogTitle)>,
             <WithStyles(DialogContent)>
               <form
@@ -226,7 +246,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -265,7 +285,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -275,7 +295,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -288,8 +308,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -329,7 +349,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -341,21 +361,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Close
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Submit
+                Erstellen
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -370,10 +390,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "New User",
+              "children": "Neuer Nutzer",
             },
             "ref": null,
-            "rendered": "New User",
+            "rendered": "Neuer Nutzer",
             "type": [Function],
           },
           Object {
@@ -394,7 +414,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -433,7 +453,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -443,7 +463,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -456,8 +476,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -497,7 +517,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -521,7 +541,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -560,7 +580,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -570,7 +590,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -583,8 +603,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -624,7 +644,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -645,7 +665,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -684,7 +704,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -694,7 +714,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>,
                     <WithStyles(Grid)
                       item={true}
@@ -707,8 +727,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -749,7 +769,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -766,7 +786,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -782,7 +802,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Username",
+                        "label": "Nutzername",
                         "onChange": [Function],
                         "required": true,
                         "validator": [Function],
@@ -870,7 +890,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -885,7 +905,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Password",
+                        "label": "Passwort",
                         "onChange": [Function],
                         "type": "password",
                         "validator": [Function],
@@ -902,7 +922,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <en />,
+                      "children": <de />,
                       "variant": "body1",
                     },
                     "ref": null,
@@ -929,8 +949,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1003,8 +1023,8 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Choose the users's role",
-                        "label": "Role",
+                        "helperText": "Wählen sie die Rolle des Nutzers aus",
+                        "label": "Rolle",
                         "onChange": [Function],
                         "required": false,
                         "select": true,
@@ -1086,7 +1106,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />,
@@ -1100,7 +1120,7 @@ ShallowWrapper {
                       "nodeType": "function",
                       "props": Object {
                         "amount": 5,
-                        "label": "Graduation Year",
+                        "label": "Abschluss-Jahrgang",
                         "onChange": [Function],
                         "value": 2019,
                       },
@@ -1126,21 +1146,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Close
+                  Schließen
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Submit
+                  Erstellen
                 </WithStyles(Button)>,
               ],
             },
@@ -1151,11 +1171,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Import",
+                  "children": "Importieren",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Import",
+                "rendered": "Importieren",
                 "type": [Function],
               },
               Object {
@@ -1163,13 +1183,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Close",
+                  "children": "Schließen",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Close",
+                "rendered": "Schließen",
                 "type": [Function],
               },
               Object {
@@ -1177,13 +1197,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Submit",
+                  "children": "Erstellen",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Submit",
+                "rendered": "Erstellen",
                 "type": [Function],
               },
             ],
@@ -1221,7 +1241,7 @@ ShallowWrapper {
             open={false}
           >
             <WithStyles(DialogTitle)>
-              New User
+              Neuer Nutzer
             </WithStyles(DialogTitle)>
             <WithStyles(DialogContent)>
               <form
@@ -1237,7 +1257,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -1276,7 +1296,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -1286,7 +1306,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -1299,8 +1319,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -1340,7 +1360,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -1352,21 +1372,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Close
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Submit
+                Erstellen
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -1386,7 +1406,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <WithStyles(DialogTitle)>
-                New User
+                Neuer Nutzer
               </WithStyles(DialogTitle)>,
               <WithStyles(DialogContent)>
                 <form
@@ -1402,7 +1422,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1441,7 +1461,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1451,7 +1471,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -1464,8 +1484,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1505,7 +1525,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1517,21 +1537,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Close
+                  Schließen
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Submit
+                  Erstellen
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -1546,10 +1566,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "New User",
+                "children": "Neuer Nutzer",
               },
               "ref": null,
-              "rendered": "New User",
+              "rendered": "Neuer Nutzer",
               "type": [Function],
             },
             Object {
@@ -1570,7 +1590,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1609,7 +1629,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1619,7 +1639,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -1632,8 +1652,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1673,7 +1693,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1697,7 +1717,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -1736,7 +1756,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -1746,7 +1766,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -1759,8 +1779,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -1800,7 +1820,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -1821,7 +1841,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Username"
+                          label="Nutzername"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -1860,7 +1880,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Password"
+                          label="Passwort"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -1870,7 +1890,7 @@ ShallowWrapper {
                       <WithStyles(Typography)
                         variant="body1"
                       >
-                        <en />
+                        <de />
                       </WithStyles(Typography)>,
                       <WithStyles(Grid)
                         item={true}
@@ -1883,8 +1903,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Choose the users's role"
-                          label="Role"
+                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          label="Rolle"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -1925,7 +1945,7 @@ ShallowWrapper {
                       >
                         <Unknown
                           amount={5}
-                          label="Graduation Year"
+                          label="Abschluss-Jahrgang"
                           onChange={[Function]}
                           value={2019}
                         />
@@ -1942,7 +1962,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Username"
+                          label="Nutzername"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -1958,7 +1978,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Username",
+                          "label": "Nutzername",
                           "onChange": [Function],
                           "required": true,
                           "validator": [Function],
@@ -2046,7 +2066,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Password"
+                          label="Passwort"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -2061,7 +2081,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Password",
+                          "label": "Passwort",
                           "onChange": [Function],
                           "type": "password",
                           "validator": [Function],
@@ -2078,7 +2098,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <en />,
+                        "children": <de />,
                         "variant": "body1",
                       },
                       "ref": null,
@@ -2105,8 +2125,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Choose the users's role"
-                          label="Role"
+                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          label="Rolle"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -2179,8 +2199,8 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Choose the users's role",
-                          "label": "Role",
+                          "helperText": "Wählen sie die Rolle des Nutzers aus",
+                          "label": "Rolle",
                           "onChange": [Function],
                           "required": false,
                           "select": true,
@@ -2262,7 +2282,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": <Unknown
                           amount={5}
-                          label="Graduation Year"
+                          label="Abschluss-Jahrgang"
                           onChange={[Function]}
                           value={2019}
                         />,
@@ -2276,7 +2296,7 @@ ShallowWrapper {
                         "nodeType": "function",
                         "props": Object {
                           "amount": 5,
-                          "label": "Graduation Year",
+                          "label": "Abschluss-Jahrgang",
                           "onChange": [Function],
                           "value": 2019,
                         },
@@ -2302,21 +2322,21 @@ ShallowWrapper {
                   <WithStyles(Button)
                     onClick={[Function]}
                   >
-                    Import
+                    Importieren
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Close
+                    Schließen
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    Submit
+                    Erstellen
                   </WithStyles(Button)>,
                 ],
               },
@@ -2327,11 +2347,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Import",
+                    "children": "Importieren",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Import",
+                  "rendered": "Importieren",
                   "type": [Function],
                 },
                 Object {
@@ -2339,13 +2359,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Close",
+                    "children": "Schließen",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Close",
+                  "rendered": "Schließen",
                   "type": [Function],
                 },
                 Object {
@@ -2353,13 +2373,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Submit",
+                    "children": "Erstellen",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Submit",
+                  "rendered": "Erstellen",
                   "type": [Function],
                 },
               ],
@@ -2429,6 +2449,26 @@ ShallowWrapper {
         },
       ]
     }
+    translation={
+      Object {
+        "close": "Schließen",
+        "helpers": Object {
+          "chooseRoleOfUser": "Wählen sie die Rolle des Nutzers aus",
+        },
+        "import": "Importieren",
+        "passwordSpec": [Function],
+        "submit": "Erstellen",
+        "titles": Object {
+          "displayname": "Displayname",
+          "email": "Email",
+          "gradYear": "Abschluss-Jahrgang",
+          "newUser": "Neuer Nutzer",
+          "password": "Passwort",
+          "role": "Rolle",
+          "username": "Nutzername",
+        },
+      }
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -2450,7 +2490,7 @@ ShallowWrapper {
           open={true}
         >
           <WithStyles(DialogTitle)>
-            New User
+            Neuer Nutzer
           </WithStyles(DialogTitle)>
           <WithStyles(DialogContent)>
             <form
@@ -2466,7 +2506,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Username"
+                    label="Nutzername"
                     onChange={[Function]}
                     required={true}
                     validator={[Function]}
@@ -2505,7 +2545,7 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    label="Password"
+                    label="Passwort"
                     onChange={[Function]}
                     type="password"
                     validator={[Function]}
@@ -2515,7 +2555,7 @@ ShallowWrapper {
                 <WithStyles(Typography)
                   variant="body1"
                 >
-                  <en />
+                  <de />
                 </WithStyles(Typography)>
                 <WithStyles(Grid)
                   item={true}
@@ -2528,8 +2568,8 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Choose the users's role"
-                    label="Role"
+                    helperText="Wählen sie die Rolle des Nutzers aus"
+                    label="Rolle"
                     onChange={[Function]}
                     required={false}
                     select={true}
@@ -2569,7 +2609,7 @@ ShallowWrapper {
                 >
                   <Unknown
                     amount={5}
-                    label="Graduation Year"
+                    label="Abschluss-Jahrgang"
                     onChange={[Function]}
                     value={2019}
                   />
@@ -2581,21 +2621,21 @@ ShallowWrapper {
             <WithStyles(Button)
               onClick={[Function]}
             >
-              Import
+              Importieren
             </WithStyles(Button)>
             <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
             >
-              Close
+              Schließen
             </WithStyles(Button)>
             <WithStyles(Button)
               color="primary"
               disabled={true}
               onClick={[Function]}
             >
-              Submit
+              Erstellen
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
@@ -2615,7 +2655,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <WithStyles(DialogTitle)>
-              New User
+              Neuer Nutzer
             </WithStyles(DialogTitle)>,
             <WithStyles(DialogContent)>
               <form
@@ -2631,7 +2671,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2670,7 +2710,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2680,7 +2720,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -2693,8 +2733,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -2734,7 +2774,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -2746,21 +2786,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Close
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Submit
+                Erstellen
               </WithStyles(Button)>
             </WithStyles(DialogActions)>,
           ],
@@ -2775,10 +2815,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": "New User",
+              "children": "Neuer Nutzer",
             },
             "ref": null,
-            "rendered": "New User",
+            "rendered": "Neuer Nutzer",
             "type": [Function],
           },
           Object {
@@ -2799,7 +2839,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2838,7 +2878,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2848,7 +2888,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -2861,8 +2901,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -2902,7 +2942,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -2926,7 +2966,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -2965,7 +3005,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -2975,7 +3015,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -2988,8 +3028,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -3029,7 +3069,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -3050,7 +3090,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3089,7 +3129,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3099,7 +3139,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>,
                     <WithStyles(Grid)
                       item={true}
@@ -3112,8 +3152,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3154,7 +3194,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -3171,7 +3211,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3187,7 +3227,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Username",
+                        "label": "Nutzername",
                         "onChange": [Function],
                         "required": true,
                         "validator": [Function],
@@ -3275,7 +3315,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3290,7 +3330,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "label": "Password",
+                        "label": "Passwort",
                         "onChange": [Function],
                         "type": "password",
                         "validator": [Function],
@@ -3307,7 +3347,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <en />,
+                      "children": <de />,
                       "variant": "body1",
                     },
                     "ref": null,
@@ -3334,8 +3374,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3408,8 +3448,8 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Choose the users's role",
-                        "label": "Role",
+                        "helperText": "Wählen sie die Rolle des Nutzers aus",
+                        "label": "Rolle",
                         "onChange": [Function],
                         "required": false,
                         "select": true,
@@ -3491,7 +3531,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />,
@@ -3505,7 +3545,7 @@ ShallowWrapper {
                       "nodeType": "function",
                       "props": Object {
                         "amount": 5,
-                        "label": "Graduation Year",
+                        "label": "Abschluss-Jahrgang",
                         "onChange": [Function],
                         "value": 2019,
                       },
@@ -3531,21 +3571,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Close
+                  Schließen
                 </WithStyles(Button)>,
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Submit
+                  Erstellen
                 </WithStyles(Button)>,
               ],
             },
@@ -3556,11 +3596,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Import",
+                  "children": "Importieren",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Import",
+                "rendered": "Importieren",
                 "type": [Function],
               },
               Object {
@@ -3568,13 +3608,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Close",
+                  "children": "Schließen",
                   "className": "close",
                   "color": "secondary",
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Close",
+                "rendered": "Schließen",
                 "type": [Function],
               },
               Object {
@@ -3582,13 +3622,13 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "Submit",
+                  "children": "Erstellen",
                   "color": "primary",
                   "disabled": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "Submit",
+                "rendered": "Erstellen",
                 "type": [Function],
               },
             ],
@@ -3626,7 +3666,7 @@ ShallowWrapper {
             open={true}
           >
             <WithStyles(DialogTitle)>
-              New User
+              Neuer Nutzer
             </WithStyles(DialogTitle)>
             <WithStyles(DialogContent)>
               <form
@@ -3642,7 +3682,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Username"
+                      label="Nutzername"
                       onChange={[Function]}
                       required={true}
                       validator={[Function]}
@@ -3681,7 +3721,7 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      label="Password"
+                      label="Passwort"
                       onChange={[Function]}
                       type="password"
                       validator={[Function]}
@@ -3691,7 +3731,7 @@ ShallowWrapper {
                   <WithStyles(Typography)
                     variant="body1"
                   >
-                    <en />
+                    <de />
                   </WithStyles(Typography)>
                   <WithStyles(Grid)
                     item={true}
@@ -3704,8 +3744,8 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Choose the users's role"
-                      label="Role"
+                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      label="Rolle"
                       onChange={[Function]}
                       required={false}
                       select={true}
@@ -3745,7 +3785,7 @@ ShallowWrapper {
                   >
                     <Unknown
                       amount={5}
-                      label="Graduation Year"
+                      label="Abschluss-Jahrgang"
                       onChange={[Function]}
                       value={2019}
                     />
@@ -3757,21 +3797,21 @@ ShallowWrapper {
               <WithStyles(Button)
                 onClick={[Function]}
               >
-                Import
+                Importieren
               </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
                 onClick={[Function]}
               >
-                Close
+                Schließen
               </WithStyles(Button)>
               <WithStyles(Button)
                 color="primary"
                 disabled={true}
                 onClick={[Function]}
               >
-                Submit
+                Erstellen
               </WithStyles(Button)>
             </WithStyles(DialogActions)>
           </WithStyles(Dialog)>,
@@ -3791,7 +3831,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <WithStyles(DialogTitle)>
-                New User
+                Neuer Nutzer
               </WithStyles(DialogTitle)>,
               <WithStyles(DialogContent)>
                 <form
@@ -3807,7 +3847,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -3846,7 +3886,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -3856,7 +3896,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -3869,8 +3909,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -3910,7 +3950,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -3922,21 +3962,21 @@ ShallowWrapper {
                 <WithStyles(Button)
                   onClick={[Function]}
                 >
-                  Import
+                  Importieren
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
                 >
-                  Close
+                  Schließen
                 </WithStyles(Button)>
                 <WithStyles(Button)
                   color="primary"
                   disabled={true}
                   onClick={[Function]}
                 >
-                  Submit
+                  Erstellen
                 </WithStyles(Button)>
               </WithStyles(DialogActions)>,
             ],
@@ -3951,10 +3991,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "New User",
+                "children": "Neuer Nutzer",
               },
               "ref": null,
-              "rendered": "New User",
+              "rendered": "Neuer Nutzer",
               "type": [Function],
             },
             Object {
@@ -3975,7 +4015,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -4014,7 +4054,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -4024,7 +4064,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -4037,8 +4077,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -4078,7 +4118,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -4102,7 +4142,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Username"
+                        label="Nutzername"
                         onChange={[Function]}
                         required={true}
                         validator={[Function]}
@@ -4141,7 +4181,7 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        label="Password"
+                        label="Passwort"
                         onChange={[Function]}
                         type="password"
                         validator={[Function]}
@@ -4151,7 +4191,7 @@ ShallowWrapper {
                     <WithStyles(Typography)
                       variant="body1"
                     >
-                      <en />
+                      <de />
                     </WithStyles(Typography)>
                     <WithStyles(Grid)
                       item={true}
@@ -4164,8 +4204,8 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Choose the users's role"
-                        label="Role"
+                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        label="Rolle"
                         onChange={[Function]}
                         required={false}
                         select={true}
@@ -4205,7 +4245,7 @@ ShallowWrapper {
                     >
                       <Unknown
                         amount={5}
-                        label="Graduation Year"
+                        label="Abschluss-Jahrgang"
                         onChange={[Function]}
                         value={2019}
                       />
@@ -4226,7 +4266,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Username"
+                          label="Nutzername"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -4265,7 +4305,7 @@ ShallowWrapper {
                         xs={12}
                       >
                         <Unknown
-                          label="Password"
+                          label="Passwort"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -4275,7 +4315,7 @@ ShallowWrapper {
                       <WithStyles(Typography)
                         variant="body1"
                       >
-                        <en />
+                        <de />
                       </WithStyles(Typography)>,
                       <WithStyles(Grid)
                         item={true}
@@ -4288,8 +4328,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Choose the users's role"
-                          label="Role"
+                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          label="Rolle"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -4330,7 +4370,7 @@ ShallowWrapper {
                       >
                         <Unknown
                           amount={5}
-                          label="Graduation Year"
+                          label="Abschluss-Jahrgang"
                           onChange={[Function]}
                           value={2019}
                         />
@@ -4347,7 +4387,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Username"
+                          label="Nutzername"
                           onChange={[Function]}
                           required={true}
                           validator={[Function]}
@@ -4363,7 +4403,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Username",
+                          "label": "Nutzername",
                           "onChange": [Function],
                           "required": true,
                           "validator": [Function],
@@ -4451,7 +4491,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <Unknown
-                          label="Password"
+                          label="Passwort"
                           onChange={[Function]}
                           type="password"
                           validator={[Function]}
@@ -4466,7 +4506,7 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "function",
                         "props": Object {
-                          "label": "Password",
+                          "label": "Passwort",
                           "onChange": [Function],
                           "type": "password",
                           "validator": [Function],
@@ -4483,7 +4523,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <en />,
+                        "children": <de />,
                         "variant": "body1",
                       },
                       "ref": null,
@@ -4510,8 +4550,8 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Choose the users's role"
-                          label="Role"
+                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          label="Rolle"
                           onChange={[Function]}
                           required={false}
                           select={true}
@@ -4584,8 +4624,8 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Choose the users's role",
-                          "label": "Role",
+                          "helperText": "Wählen sie die Rolle des Nutzers aus",
+                          "label": "Rolle",
                           "onChange": [Function],
                           "required": false,
                           "select": true,
@@ -4667,7 +4707,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": <Unknown
                           amount={5}
-                          label="Graduation Year"
+                          label="Abschluss-Jahrgang"
                           onChange={[Function]}
                           value={2019}
                         />,
@@ -4681,7 +4721,7 @@ ShallowWrapper {
                         "nodeType": "function",
                         "props": Object {
                           "amount": 5,
-                          "label": "Graduation Year",
+                          "label": "Abschluss-Jahrgang",
                           "onChange": [Function],
                           "value": 2019,
                         },
@@ -4707,21 +4747,21 @@ ShallowWrapper {
                   <WithStyles(Button)
                     onClick={[Function]}
                   >
-                    Import
+                    Importieren
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     className="close"
                     color="secondary"
                     onClick={[Function]}
                   >
-                    Close
+                    Schließen
                   </WithStyles(Button)>,
                   <WithStyles(Button)
                     color="primary"
                     disabled={true}
                     onClick={[Function]}
                   >
-                    Submit
+                    Erstellen
                   </WithStyles(Button)>,
                 ],
               },
@@ -4732,11 +4772,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Import",
+                    "children": "Importieren",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Import",
+                  "rendered": "Importieren",
                   "type": [Function],
                 },
                 Object {
@@ -4744,13 +4784,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Close",
+                    "children": "Schließen",
                     "className": "close",
                     "color": "secondary",
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Close",
+                  "rendered": "Schließen",
                   "type": [Function],
                 },
                 Object {
@@ -4758,13 +4798,13 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": "Submit",
+                    "children": "Erstellen",
                     "color": "primary",
                     "disabled": true,
                     "onClick": [Function],
                   },
                   "ref": null,
-                  "rendered": "Submit",
+                  "rendered": "Erstellen",
                   "type": [Function],
                 },
               ],

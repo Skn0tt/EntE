@@ -19,17 +19,15 @@
     "test:tsc": "yarn tsc",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
-    "test:unit:ci":
-      "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
-    "test:e2e":
-      "docker-app render --set API_VERSION=latest --set UI_VERSION=latest | docker-compose -f - up -d && sleep 5 && BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e && docker-app render | docker-compose -f - down",
-    "test:e2e:ci":
-      "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
+    "test:unit:ci": "yarn jest --ci --coverage --testResultsProcessor=\"jest-junit\"",
+    "test:e2e": "docker-app render --set API_VERSION=latest --set UI_VERSION=latest | docker-compose -f - up -d && sleep 5 && BASE_URL=http://localhost:80 yarn testcafe chrome tests/e2e && docker-app render | docker-compose -f - down",
+    "test:e2e:ci": "testcafe chrome:headless tests/e2e/**/* -S screenshots -r xunit:e2e.xml"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/enzyme": "^3.1.9",
     "@types/jest": "^23.3.10",
+    "@types/react": "^16.7.18",
     "@types/sinon": "^4.3.1",
     "chai": "^4.1.2",
     "enzyme": "^3.7.0",
@@ -40,17 +38,15 @@
     "lerna": "^2.9.0",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "^16.7.0-alpha.2",
     "reflect-metadata": "^0.1.12",
     "sinon": "^4.5.0",
     "testcafe": "^0.20.5",
     "ts-jest": "^23.10.4",
     "typescript": "^3.2.2"
   },
-  "dependencies": {
-    "npm": "^5.8.0",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
-  },
+  "dependencies": {},
   "jest": {
     "globals": {
       "ts-jest": {
@@ -65,12 +61,20 @@
       "packages/*/src/**/*.{ts,tsx,js,jsx}",
       "!packages/*/src/**/styles.ts"
     ],
-    "coveragePathIgnorePatterns": [".*\\.d\\.ts"],
+    "coveragePathIgnorePatterns": [
+      ".*\\.d\\.ts"
+    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/tests/jest/assetsTransformer.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/jest/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/tests/jest/assetsTransformer.js"
     }
   }

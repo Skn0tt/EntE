@@ -1,7 +1,6 @@
-version: '3.6'
+version: "3.6"
 
 services:
-
   mariadb:
     image: mariadb
     ports:
@@ -11,3 +10,10 @@ services:
       MYSQL_DATABASE: ente
       MYSQL_PASSWORD: root
       MYSQL_USER: ente
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+    networks:
+      - ente_bridge

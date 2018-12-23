@@ -27,11 +27,12 @@ import setupRedux, { ReduxConfig } from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
-import HttpsGate from "./components/HttpsGate";
+import { HttpsGate } from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
 import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
+import { StoreContext } from "./helpers/store-context";
 
 installMuiStyles();
 
@@ -47,7 +48,8 @@ const config: Partial<ReduxConfig> = {
     document.body.appendChild(link);
     link.click();
   },
-  middlewares: []
+  middlewares: [],
+  defaultLanguage: getConfig().LANGUAGE
 };
 
 const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();
@@ -90,9 +92,11 @@ const bootstrap = async () => {
             <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
               <HttpsGate disable={ALLOW_INSECURE}>
                 <MessagesProvider>
-                  <Provider store={store}>
-                    <App />
-                  </Provider>
+                  <StoreContext.Provider value={store}>
+                    <Provider store={store}>
+                      <App />
+                    </Provider>
+                  </StoreContext.Provider>
                 </MessagesProvider>
               </HttpsGate>
             </MuiPickersUtilsProvider>

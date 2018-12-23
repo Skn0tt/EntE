@@ -6,7 +6,8 @@ import {
   Param,
   NotFoundException,
   ForbiddenException,
-  Inject
+  Inject,
+  BadRequestException
 } from "@nestjs/common";
 import {
   PasswordResetService,
@@ -23,7 +24,7 @@ export class PasswordResetController {
 
   @Post("/:username")
   async forgotPassword(@Param("username") username: string) {
-    const result = await this.authService.startPasswordResetRoutine(username);
+    const result = await this.authService.invokePasswordResetRoutine(username);
     return result.cata(
       fail => {
         switch (fail) {
@@ -47,6 +48,12 @@ export class PasswordResetController {
       fail => {
         switch (fail) {
           case SetNewPasswordFailure.TokenUnknown:
+            throw new NotFoundException();
+          case SetNewPasswordFailure.PasswordIllegal:
+            throw new BadRequestException("Password illegal");
+          case SetNewPasswordFailure.TokenExpired:
+            throw new NotFoundException();
+          case SetNewPasswordFailure.UserNotFound:
             throw new NotFoundException();
           default:
             throw new ForbiddenException();

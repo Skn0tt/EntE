@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { ChildrenInput, includes } from "./ChildrenInput";
+import { ChildrenInput, includes, translation } from "./ChildrenInput";
 import { shallow } from "enzyme";
 import { Roles } from "ente-types";
 import * as sinon from "sinon";
@@ -40,6 +40,7 @@ describe("ChildrenInput", () => {
     <ChildrenInput
       children={[user]}
       onChange={onChange}
+      translation={translation.en}
       students={[user, user2]}
     />
   );
@@ -51,7 +52,12 @@ describe("ChildrenInput", () => {
   it("renders when no additional users are available", () => {
     const onChange = sinon.spy();
     const comp = shallow(
-      <ChildrenInput children={[user]} onChange={onChange} students={[user]} />
+      <ChildrenInput
+        children={[user]}
+        onChange={onChange}
+        students={[user]}
+        translation={translation.en}
+      />
     );
 
     expect(comp).toMatchSnapshot();

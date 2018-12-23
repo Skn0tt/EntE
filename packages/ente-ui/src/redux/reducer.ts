@@ -65,10 +65,9 @@ import {
   DELETE_ENTRY_SUCCESS,
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_ERROR,
-  DOWNLOAD_EXCEL_EXPORT_SUCCESS
+  DOWNLOAD_EXCEL_EXPORT_SUCCESS,
+  SET_LANGUAGE
 } from "./constants";
-import { ActionType } from "redux-saga/effects";
-import { Map } from "immutable";
 import {
   AppState,
   AuthState,
@@ -78,6 +77,8 @@ import {
   EntryN
 } from "./types";
 import * as _ from "lodash";
+import { Languages } from "ente-types";
+import { Map } from "immutable";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -296,12 +297,15 @@ const reducer = handleActions<AppState | undefined, any>(
     ),
 
     // ## ADD_RESPONSE
-    [ADD_RESPONSE]: (state?: AppState, action?: Action<APIResponse>) =>
+    [ADD_RESPONSE]: (
+      state: AppState | undefined,
+      action: Action<APIResponse>
+    ) =>
       state!
         .update("usersMap", users =>
           users.merge(
             Map<string, UserN>(
-              action!.payload!.users.map(
+              action.payload!.users.map(
                 user => [user.get("id"), user] as [string, UserN]
               )
             )
@@ -310,7 +314,7 @@ const reducer = handleActions<AppState | undefined, any>(
         .update("slotsMap", slots =>
           slots.merge(
             Map<string, SlotN>(
-              action!.payload!.slots.map(
+              action.payload!.slots.map(
                 slot => [slot.get("id"), slot] as [string, SlotN]
               )
             )
@@ -319,7 +323,7 @@ const reducer = handleActions<AppState | undefined, any>(
         .update("entriesMap", entries =>
           entries.merge(
             Map<string, EntryN>(
-              action!.payload!.entries.map(
+              action.payload!.entries.map(
                 entry => [entry.get("id"), entry] as [string, EntryN]
               )
             )
@@ -351,7 +355,10 @@ const reducer = handleActions<AppState | undefined, any>(
       UPDATE_USER_REQUEST,
       UPDATE_USER_SUCCESS,
       UPDATE_USER_ERROR
-    )
+    ),
+
+    [SET_LANGUAGE]: (state: AppState | undefined, action: Action<Languages>) =>
+      state!.set("language", action.payload!)
   },
   initialState
 ); // tslint:disable-line:align

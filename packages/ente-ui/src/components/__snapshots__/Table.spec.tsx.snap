@@ -42,81 +42,11 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "columns": Array [
-        Object {
-          "name": "ID",
-          "options": Object {
-            "display": false,
-            "filter": false,
-          },
-        },
-        Object {
-          "name": "Name",
-        },
-        Object {
-          "name": "Alter",
-        },
-      ],
-      "data": Array [
-        Array [
-          "Bernd",
-          "Bernd",
-          "16",
-        ],
-        Array [
-          "Volker",
-          "Volker",
-          "17",
-        ],
-      ],
-      "options": Object {
-        "onRowClick": [Function],
-        "responsive": "scroll",
-        "rowsPerPage": 50,
-        "rowsPerPageOptions": Array [
-          20,
-          50,
-          100,
-        ],
-        "selectableRows": false,
-        "textLabels": Object {
-          "body": Object {
-            "noMatch": "Sorry, no matching records found",
-            "toolTip": "Sort",
-          },
-          "filter": Object {
-            "all": "All",
-            "reset": "RESET",
-            "title": "FILTERS",
-          },
-          "pagination": Object {
-            "displayRows": "of",
-            "next": "Next Page",
-            "previous": "Previous Page",
-            "rowsPerPage": "Rows per page:",
-          },
-          "selectedRows": Object {
-            "delete": "Delete",
-            "deleteAria": "Delete Selected Rows",
-            "text": "rows(s) selected",
-          },
-          "toolbar": Object {
-            "downloadCsv": "Download CSV",
-            "filterTable": "Filter Table",
-            "print": "Print",
-            "search": "Search",
-            "viewColumns": "View Columns",
-          },
-          "viewColumns": Object {
-            "title": "Show Columns",
-            "titleAria": "Show/Hide Table Columns",
-          },
-        },
-      },
+      "children": [Function],
     },
     "ref": null,
-    "rendered": null,
-    "type": undefined,
+    "rendered": [Function],
+    "type": [Function],
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
@@ -124,81 +54,11 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "columns": Array [
-          Object {
-            "name": "ID",
-            "options": Object {
-              "display": false,
-              "filter": false,
-            },
-          },
-          Object {
-            "name": "Name",
-          },
-          Object {
-            "name": "Alter",
-          },
-        ],
-        "data": Array [
-          Array [
-            "Bernd",
-            "Bernd",
-            "16",
-          ],
-          Array [
-            "Volker",
-            "Volker",
-            "17",
-          ],
-        ],
-        "options": Object {
-          "onRowClick": [Function],
-          "responsive": "scroll",
-          "rowsPerPage": 50,
-          "rowsPerPageOptions": Array [
-            20,
-            50,
-            100,
-          ],
-          "selectableRows": false,
-          "textLabels": Object {
-            "body": Object {
-              "noMatch": "Sorry, no matching records found",
-              "toolTip": "Sort",
-            },
-            "filter": Object {
-              "all": "All",
-              "reset": "RESET",
-              "title": "FILTERS",
-            },
-            "pagination": Object {
-              "displayRows": "of",
-              "next": "Next Page",
-              "previous": "Previous Page",
-              "rowsPerPage": "Rows per page:",
-            },
-            "selectedRows": Object {
-              "delete": "Delete",
-              "deleteAria": "Delete Selected Rows",
-              "text": "rows(s) selected",
-            },
-            "toolbar": Object {
-              "downloadCsv": "Download CSV",
-              "filterTable": "Filter Table",
-              "print": "Print",
-              "search": "Search",
-              "viewColumns": "View Columns",
-            },
-            "viewColumns": Object {
-              "title": "Show Columns",
-              "titleAria": "Show/Hide Table Columns",
-            },
-          },
-        },
+        "children": [Function],
       },
       "ref": null,
-      "rendered": null,
-      "type": undefined,
+      "rendered": [Function],
+      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {
