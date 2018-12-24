@@ -62,12 +62,14 @@ import { makeStyles } from "@material-ui/styles";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MailIcon from "@material-ui/icons/MailRounded";
 
 const useTranslation = makeTranslationHook({
   en: {
     sign: "Sign",
     close: "Close",
     delete: "Delete",
+    mail: "Mail",
     areYouSureToDelete: "Are you sure that you want to delete this entry?",
     yes: "Yes",
     no: "No",
@@ -95,6 +97,7 @@ const useTranslation = makeTranslationHook({
     sign: "Unterschreiben",
     close: "Schließen",
     delete: "Löschen",
+    mail: "Mail",
     areYouSureToDelete:
       "Sind sie sicher, dass sie diesen Eintrag löschen möchten?",
     yes: "Ja",
@@ -139,6 +142,11 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 0,
     right: 0
+  },
+  mailButton: {
+    position: "absolute",
+    top: 0,
+    right: 56
   }
 });
 
@@ -258,13 +266,24 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
             {!!entry ? (
               <Grid container direction="column" spacing={24}>
                 {role.some() === Roles.MANAGER && (
-                  <IconButton
-                    aria-label={lang.delete}
-                    onClick={() => setShowDelete(true)}
-                    className={classes.deleteButton}
-                  >
-                    <DeleteIcon fontSize="large" />
-                  </IconButton>
+                  <>
+                    <IconButton
+                      aria-label={lang.delete}
+                      onClick={() => setShowDelete(true)}
+                      className={classes.deleteButton}
+                    >
+                      <DeleteIcon fontSize="large" />
+                    </IconButton>
+                    <IconButton
+                      aria-label={lang.mail}
+                      href={`mailto:${getUser(entry.get("studentId"))
+                        .some()
+                        .get("email")}`}
+                      className={classes.mailButton}
+                    >
+                      <MailIcon fontSize="large" color="action" />
+                    </IconButton>
+                  </>
                 )}
 
                 <Grid item>
