@@ -87,21 +87,21 @@ const bootstrap = async () => {
     <div>
       <React.StrictMode>
         <CssBaseline />
-        <MuiStylesThemeProvider theme={theme}>
-          <MuiThemeProvider theme={theme}>
-            <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
-              <HttpsGate disable={ALLOW_INSECURE}>
-                <MessagesProvider>
-                  <StoreContext.Provider value={store}>
-                    <Provider store={store}>
+        <StoreContext.Provider value={store}>
+          <Provider store={store}>
+            <MuiStylesThemeProvider theme={theme}>
+              <MuiThemeProvider theme={theme}>
+                <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+                  <HttpsGate disable={ALLOW_INSECURE}>
+                    <MessagesProvider>
                       <App />
-                    </Provider>
-                  </StoreContext.Provider>
-                </MessagesProvider>
-              </HttpsGate>
-            </MuiPickersUtilsProvider>
-          </MuiThemeProvider>
-        </MuiStylesThemeProvider>
+                    </MessagesProvider>
+                  </HttpsGate>
+                </MuiPickersUtilsProvider>
+              </MuiThemeProvider>
+            </MuiStylesThemeProvider>
+          </Provider>
+        </StoreContext.Provider>
       </React.StrictMode>
     </div>
   );

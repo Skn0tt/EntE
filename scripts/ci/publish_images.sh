@@ -50,15 +50,13 @@ publish () {
   ui_img_ref=$(construct_image_name ui $l_tag)
   upload $ui_img_sha $ui_img_ref
 
-  dockerapp_image_ref=$(construct_image_name ente.dockerapp $l_tag)
-  upload_dockerapp $dockerapp_image_ref
+  upload_dockerapp $l_tag
 }
 
 echo "### Pulling commit images ###"
 
 docker pull $api_img_sha
 docker pull $ui_img_sha
-docker pull $dockerapp_image_sha
 
 echo $CI_COMMIT_TAG
 
