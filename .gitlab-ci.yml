@@ -183,7 +183,7 @@ pages:
       - public
 
 deploy:images:
-  image: docker
+  image: docker:stable
   stage: deploy
   dependencies: []
   services:

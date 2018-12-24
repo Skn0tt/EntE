@@ -30,6 +30,16 @@ upload () {
   docker push $as
 }
 
+upload_dockerapp () {
+  l_tag=$1
+
+  docker run \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(pwd)/ente.dockerapp/:/usr/app/ente.dockerapp/ \
+    skn0tt/docker-app \
+    "echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com && cd /usr/app/ && docker-app push --tag $l_tag"
+}
+
 # tag to use (version, ref, etc)
 publish () {
   l_tag=$1
@@ -41,7 +51,7 @@ publish () {
   upload $ui_img_sha $ui_img_ref
 
   dockerapp_image_ref=$(construct_image_name ente.dockerapp $l_tag)
-  upload $dockerapp_image_sha $dockerapp_image_ref
+  upload_dockerapp $dockerapp_image_ref
 }
 
 echo "### Pulling commit images ###"
