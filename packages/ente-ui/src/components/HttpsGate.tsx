@@ -1,8 +1,8 @@
 import * as React from "react";
 import WarningIcon from "@material-ui/icons/Warning";
-import { getByLanguage } from "ente-types";
 import { makeStyles } from "@material-ui/styles";
 import { Typography } from "@material-ui/core";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
 const useStyles = makeStyles({
   center: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }
 });
 
-const lang = getByLanguage({
+const useTranslation = makeTranslationHook({
   en: "This connection is not encrypted. Please contact your Administrator.",
   de:
     "Diese Verbindung ist nicht verschlüsselt. Bitte kontaktieren sie ihren Administrator."
@@ -30,8 +30,9 @@ interface HttpsGateOwnProps {
 
 type HttpsGateProps = HttpsGateOwnProps;
 
-export const HttpsGate: React.SFC<HttpsGateProps> = props => {
+export const HttpsGate: React.FC<HttpsGateProps> = props => {
   const classes = useStyles(props);
+  const lang = useTranslation();
   const { disable = false, children } = props;
   if (disable || isSecure) {
     return <>{children}</>;

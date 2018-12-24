@@ -17,7 +17,7 @@ import {
   AppState,
   isTypePending,
   SET_PASSWORD_REQUEST
-} from "ente-ui/src/redux";
+} from "../../redux";
 
 const useTranslation = makeTranslationHook({
   en: {
