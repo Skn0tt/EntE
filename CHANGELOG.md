@@ -5,13 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased
+## [Unreleased]
 
+- Added Email Button to Entry ([#222](https://gitlab.com/Skn0tt/EntE/issues/222))
 - Added Invitation Link ([#171](https://gitlab.com/Skn0tt/EntE/issues/171))
 - Fixed crash on old browsers ([#204](https://gitlab.com/Skn0tt/EntE/issues/204))
 - Added ability to change language on the fly
-- Added ability to change language on the fly
-- Fixed crash on old browsers ([#204](https://gitlab.com/Skn0tt/EntE/issues/204))
 - Do not escape html table
 - Introduced `@material-ui/styles`
 - Added Redux persistance
