@@ -3,6 +3,7 @@ import {
   ValidationOptions,
   ValidationArguments
 } from "class-validator";
+import { isAfter } from "date-fns";
 
 export function DateIsAfter(
   comparison: (() => Date) | string,
@@ -17,10 +18,11 @@ export function DateIsAfter(
       validator: {
         validate(value: any, args: ValidationArguments) {
           if (typeof comparison === "string") {
-            const v = (args.object as any)[comparison] as Date;
-            return value instanceof Date && +v < +value;
+            const v = (args.object as any)[comparison];
+            return isAfter(value, v);
           } else {
-            return value instanceof Date && +comparison() < +value;
+            const v = comparison();
+            return isAfter(value, v);
           }
         }
       }

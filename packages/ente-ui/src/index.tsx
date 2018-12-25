@@ -12,7 +12,7 @@ import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import LuxonUtils from "material-ui-pickers/utils/luxon-utils";
+import DateFnsUtils from "@date-io/date-fns";
 import { get as getConfig } from "./config";
 import {
   install as installMuiStyles,
@@ -91,7 +91,7 @@ const bootstrap = async () => {
           <Provider store={store}>
             <MuiStylesThemeProvider theme={theme}>
               <MuiThemeProvider theme={theme}>
-                <MuiPickersUtilsProvider utils={LuxonUtils} locale="de">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <HttpsGate disable={ALLOW_INSECURE}>
                     <MessagesProvider>
                       <App />

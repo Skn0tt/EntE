@@ -6,7 +6,6 @@ import { Config } from "./helpers/config";
 import { SentryInterceptor } from "./helpers/sentry-interceptor";
 import { getConnectionToken } from "@nestjs/typeorm";
 import { Connection } from "typeorm";
-import { isDbSchemaPresent } from "./helpers/is-db-schema-present";
 import * as Sentry from "@sentry/node";
 
 const sentryDsn = Config.getSentryDsn();
@@ -48,20 +47,6 @@ async function bootstrap() {
   );
 
   const dbConnection: Connection = app.get(getConnectionToken() as string);
-
-  async function ensureDBSchemaIsCreated() {
-    const schemaIsSynced = await isDbSchemaPresent(dbConnection);
-    if (schemaIsSynced) {
-      logger.log("DB schema already created. Skipping creation.");
-      return;
-    }
-
-    logger.log("No DB schema detected. Creating DB schema.");
-    await dbConnection.synchronize();
-    logger.log("Successfully created DB schema.");
-  }
-
-  await ensureDBSchemaIsCreated();
 
   await dbConnection.runMigrations();
 

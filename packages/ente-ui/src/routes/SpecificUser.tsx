@@ -13,7 +13,6 @@ import {
   MapStateToPropsParam
 } from "react-redux";
 import ChildrenInput from "../elements/ChildrenInput";
-import SwitchInput from "../elements/SwitchInput";
 import TextInput from "../elements/TextInput";
 import { withRouter, RouteComponentProps } from "react-router";
 import {
@@ -22,7 +21,6 @@ import {
   Grid,
   IconButton,
   withStyles,
-  StyleRulesCallback,
   WithStyles,
   createStyles
 } from "@material-ui/core";
@@ -44,7 +42,6 @@ import {
   getStudents,
   userHasChildren,
   updateUserRequest,
-  userIsStudent,
   UserN,
   deleteUserRequest,
   roleHasGradYear
@@ -54,12 +51,15 @@ import {
   PatchUserDto,
   isValidDisplayname,
   isValidEmail,
-  isValidPatchUserDto
+  isValidPatchUserDto,
+  roleHasBirthday,
+  isValidPatchUserDtoWithErrors
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { DateInput } from "../elements/DateInput";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -68,7 +68,7 @@ const useTranslation = makeTranslationHook({
     titles: {
       email: "Email",
       displayname: "Displayname",
-      isAdult: "Adult",
+      birthday: "Birthday",
       id: "ID",
       role: "Role",
       gradYear: "Graduation Year",
@@ -85,7 +85,7 @@ const useTranslation = makeTranslationHook({
     titles: {
       email: "Email",
       displayname: "Displayname",
-      isAdult: "Erwachsen",
+      birthday: "Geburtstag",
       id: "ID",
       role: "Rolle",
       gradYear: "Abschluss-Jahrgang",
@@ -255,13 +255,13 @@ export const SpecificUser: React.FunctionComponent<
                     />
                   </Grid>
 
-                  {/* IsAdult */}
-                  {userIsStudent(user) && (
+                  {/* Birthday */}
+                  {roleHasBirthday(user.get("role")) && (
                     <Grid item xs={6}>
-                      <SwitchInput
-                        value={user.get("isAdult")}
-                        title={lang.titles.isAdult}
-                        onChange={updatePatch("isAdult")}
+                      <DateInput
+                        value={patch.birthday || user.get("birthday")!}
+                        label={lang.titles.birthday}
+                        onChange={updatePatch("birthday")}
                       />
                     </Grid>
                   )}

@@ -7,19 +7,17 @@ import {
   ArrayMinSize
 } from "class-validator";
 import { DateIsAfter } from "../helpers/date-is-after";
-import { twoWeeksBeforeNow } from "../validators/entry";
 import { Type } from "class-transformer";
 import { CreateSlotDto } from "./create-slot.dto";
+import { daysBeforeNow } from "../validators";
 
 export class CreateEntryDto {
-  @DateIsAfter(() => twoWeeksBeforeNow())
-  @Type(() => Date)
-  date: Date;
+  @DateIsAfter(() => daysBeforeNow(14))
+  date: string;
 
   @IsOptional()
   @DateIsAfter("date")
-  @Type(() => Date)
-  dateEnd?: Date;
+  dateEnd?: string;
 
   @IsArray()
   @ArrayMinSize(1)

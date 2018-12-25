@@ -2,7 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { Repository, Brackets } from "typeorm";
 import User from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
-import { Roles, CreateUserDto, UserDto, isValidUuid } from "ente-types";
+import {
+  Roles,
+  CreateUserDto,
+  UserDto,
+  isValidUuid,
+  roleHasGraduationYear,
+  roleHasChildren,
+  roleHasBirthday
+} from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
 import {
@@ -27,6 +35,11 @@ interface CreateUserDtoWithHash {
 
 export enum SetPasswordHashFailure {
   UserNotFound
+}
+
+export enum UpdateUserFailure {
+  UserNotFound,
+  UserWrongRole
 }
 
 @Injectable()
@@ -120,7 +133,7 @@ export class UserRepo {
                 })
               ),
               displayname: user.displayname,
-              isAdult: user.isAdult,
+              birthday: user.birthday,
               password: hash,
               role: user.role,
               username: user.username,
@@ -145,8 +158,21 @@ export class UserRepo {
     await this.repo.update(id, { displayname });
   }
 
-  async setIsAdult(id: string, isAdult: boolean) {
-    await this.repo.update(id, { isAdult });
+  async setBirthday(
+    id: string,
+    birthday: string
+  ): Promise<Validation<UpdateUserFailure, true>> {
+    const user = Maybe.fromUndefined(await this.repo.findOne(id));
+    return await user.cata<Promise<Validation<UpdateUserFailure, true>>>(
+      async () => Fail(UpdateUserFailure.UserNotFound),
+      async user => {
+        if (!roleHasBirthday(user.role)) {
+          return Fail(UpdateUserFailure.UserWrongRole);
+        }
+        await this.repo.update(id, { birthday });
+        return Success<UpdateUserFailure, true>(true);
+      }
+    );
   }
 
   async setRole(id: string, role: Roles) {
@@ -157,14 +183,41 @@ export class UserRepo {
     await this.repo.update(id, { email });
   }
 
-  async setYear(id: string, graduationYear: number) {
-    await this.repo.update(id, { graduationYear });
+  async setYear(
+    id: string,
+    graduationYear: number
+  ): Promise<Validation<UpdateUserFailure, true>> {
+    const user = Maybe.fromUndefined(await this.repo.findOne(id));
+    return await user.cata<Promise<Validation<UpdateUserFailure, true>>>(
+      async () => Fail(UpdateUserFailure.UserNotFound),
+      async user => {
+        if (!roleHasGraduationYear(user.role)) {
+          return Fail(UpdateUserFailure.UserWrongRole);
+        }
+        await this.repo.update(id, { graduationYear });
+        return Success<UpdateUserFailure, true>(true);
+      }
+    );
   }
 
-  async setChildren(id: string, children: string[]) {
-    await this.repo.update(id, {
-      children: children.map(c => ({ _id: c }))
-    });
+  async setChildren(
+    id: string,
+    children: string[]
+  ): Promise<Validation<UpdateUserFailure, true>> {
+    const user = Maybe.fromUndefined(await this.repo.findOne(id));
+    return await user.cata<Promise<Validation<UpdateUserFailure, true>>>(
+      async () => Fail(UpdateUserFailure.UserNotFound),
+      async user => {
+        if (!roleHasChildren(user.role)) {
+          return Fail(UpdateUserFailure.UserWrongRole);
+        }
+
+        await this.repo.update(id, {
+          children: children.map(c => ({ _id: c }))
+        });
+        return Success<UpdateUserFailure, true>(true);
+      }
+    );
   }
 
   async findUserAndPasswordHashByUsername(
@@ -278,7 +331,7 @@ export class UserRepo {
         : [];
     result.displayname = user.displayname;
     result.email = user.email;
-    result.isAdult = !!user.isAdult;
+    result.birthday = user.birthday;
     result.role = user.role;
     result.username = user.username;
     result.graduationYear = user.graduationYear;

@@ -59,7 +59,7 @@ const toUserN = (u: CreateUserDto): UserN => {
     email: u.email,
     displayname: u.displayname,
     graduationYear: u.graduationYear,
-    isAdult: u.isAdult,
+    birthday: u.birthday,
     id: u.username,
     role: u.role
   });

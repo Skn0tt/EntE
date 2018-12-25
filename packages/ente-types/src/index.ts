@@ -12,3 +12,4 @@ export * from "./helpers";
 export * from "./validators";
 export * from "./validate-dtos";
 export * from "./languages";
+export * from "./date-to-iso-string";

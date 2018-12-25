@@ -1,10 +1,10 @@
-username;displayname;email;password;role;isAdult;graduationYear;children
-norahparis;Norah Paris;test@test.com;p4sswort!;student;TRUE;2019;
-marcusparis;Marcus Paris;test@test.com;p4sswort!;student;FALSE;2021;
+username;displayname;email;password;role;birthday;graduationYear;children
+norahparis;Norah Paris;test@test.com;p4sswort!;student;2000-02-01;2019;
+marcusparis;Marcus Paris;test@test.com;p4sswort!;student;2100-02-01;2021;
 seymourparis;Seymour Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
 candaceparis;Candace Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
-montyabrams;Monty Abrams;test@test.com;p4sswort!;student;FALSE;2019;
-penabrams;Pen Abrams;test@test.com;p4sswort!;student;FALSE;2021;
+montyabrams;Monty Abrams;test@test.com;p4sswort!;student;2100-04-02;2019;
+penabrams;Pen Abrams;test@test.com;p4sswort!;student;2050-03-09;2021;
 hermanabrams;Herman Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
 claudabrams;Claud Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
 orvillekeighley;Orville Keighley;test@test.com;p4sswort!;teacher;;;

@@ -52,7 +52,7 @@ export const UserN = Record<UserDtoNormalised>(
     children: [],
     displayname: "",
     email: "",
-    isAdult: false,
+    birthday: undefined,
     role: Roles.STUDENT,
     childrenIds: [],
     graduationYear: undefined

@@ -30,7 +30,8 @@ import {
   isValidEmail,
   isValidPassword,
   createDefaultCreateUserDto,
-  isValidCreateUserDto
+  isValidCreateUserDto,
+  roleHasBirthday
 } from "ente-types";
 import {
   getStudents,
@@ -52,6 +53,7 @@ import {
   WithTranslation,
   withTranslation
 } from "../../helpers/with-translation";
+import { DateInput } from "../../elements/DateInput";
 
 export const lang = {
   en: {
@@ -62,7 +64,8 @@ export const lang = {
       email: "Email",
       password: "Password",
       role: "Role",
-      gradYear: "Graduation Year"
+      gradYear: "Graduation Year",
+      birthday: "Birthday"
     },
     helpers: {
       chooseRoleOfUser: "Choose the users's role"
@@ -80,7 +83,8 @@ export const lang = {
       email: "Email",
       password: "Passwort",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang"
+      gradYear: "Abschluss-Jahrgang",
+      birthday: "Geburtstag"
     },
     helpers: {
       chooseRoleOfUser: "Wählen sie die Rolle des Nutzers aus"
@@ -191,10 +195,8 @@ export class CreateUser extends React.Component<
     const newValue = value === "" ? undefined : value;
     this.update("password")(newValue);
   };
-  handleChangeIsAdult = (
-    _: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => this.update("isAdult")(checked);
+  handleChangeBirthday = (birthday: string) =>
+    this.update("birthday")(birthday);
   handleChangeEmail = this.update("email");
   handleChangeRole = (event: React.ChangeEvent<HTMLInputElement>) =>
     this.update("role")(event.target.value as Roles);
@@ -212,6 +214,13 @@ export class CreateUser extends React.Component<
       create: { role }
     } = this.state;
     return roleHasGradYear(role);
+  };
+
+  hasBirthday = (): boolean => {
+    const {
+      create: { role }
+    } = this.state;
+    return roleHasBirthday(role);
   };
 
   /**
@@ -317,6 +326,17 @@ export class CreateUser extends React.Component<
                       amount={5}
                       onChange={this.handleChangeYear}
                       value={create.graduationYear!}
+                    />
+                  </Grid>
+                )}
+                {this.hasBirthday() && (
+                  <Grid item xs={12}>
+                    <DateInput
+                      value={create.birthday!}
+                      isValid={_ => true}
+                      label={translation.titles.birthday}
+                      onChange={this.handleChangeBirthday}
+                      maxDate={Date.now()}
                     />
                   </Grid>
                 )}

@@ -23,7 +23,7 @@ describe.skip("SpecificUser", () => {
     children: [],
     displayname: "Horst Hansen",
     email: "hort@hansen.de",
-    isAdult: false,
+    birthday: "2100-01-01",
     role: Roles.STUDENT,
     username: "hhansen"
   });

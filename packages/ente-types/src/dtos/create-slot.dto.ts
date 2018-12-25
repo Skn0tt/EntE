@@ -4,16 +4,15 @@ import {
   Min,
   Max,
   IsUUID,
-  IsOptional
+  IsOptional,
+  IsISO8601
 } from "class-validator";
 import { CompareToProperty } from "../helpers/compare-to-property";
-import { Type } from "class-transformer";
 
 export class CreateSlotDto {
   @IsOptional()
-  @IsDate()
-  @Type(() => Date)
-  date?: Date;
+  @IsISO8601()
+  date?: string;
 
   @IsNumber()
   @Min(1)

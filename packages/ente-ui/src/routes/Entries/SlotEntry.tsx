@@ -14,12 +14,11 @@ import { getTeachers, AppState, UserN } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
-import {
-  WithTranslation,
-  withTranslation
-} from "../../helpers/with-translation";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import * as _ from "lodash";
+import { isBefore, isAfter } from "date-fns";
 
-const lang = {
+const useTranslation = makeTranslationHook({
   en: {
     titles: {
       teacher: "Teacher",
@@ -44,16 +43,16 @@ const lang = {
     },
     add: "Hinzufügen"
   }
-};
+});
 
 interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
-  multiDay: boolean;
+  isMultiDay: boolean;
   datePickerConfig?: {
-    min?: Date;
-    max?: Date;
+    min?: string;
+    max?: string;
   };
-  date: Date;
+  defaultDate: string;
 }
 
 interface SlotEntryStateProps {
@@ -67,202 +66,128 @@ const mapStateToProps: MapStateToPropsParam<
   teachers: getTeachers(state)
 });
 
-type SlotEntryProps = SlotEntryStateProps &
-  SlotEntryOwnProps &
-  WithTranslation<typeof lang.en>;
-
-interface State {
-  from: string;
-  to: string;
-  date?: Date;
-  teacher?: string;
-}
+type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
 
 class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
-class SlotEntry extends React.Component<SlotEntryProps, State> {
-  state: State = {
-    from: "1",
-    to: "2"
-  };
+const SlotEntry: React.FC<SlotEntryProps> = props => {
+  const { defaultDate, datePickerConfig, onAdd, isMultiDay, teachers } = props;
+  const translation = useTranslation();
 
-  get datePickerConfig() {
-    return this.props.datePickerConfig || {};
-  }
+  const [from, setFrom] = React.useState(1);
+  const [to, setTo] = React.useState(2);
+  const [date, setDate] = React.useState<string>(defaultDate);
+  const [teacherId, setTeacherId] = React.useState<string | undefined>(
+    undefined
+  );
 
-  /**
-   * Handlers
-   */
+  const isFromValid = from > 0 && from <= to;
+  const isToValid = to > 0 && to <= 12 && to >= from;
+  const isTeacherValid = !!teacherId;
 
-  handleChangeFrom = (event: React.ChangeEvent<HTMLInputElement>) =>
-    (event.target.value === "" ||
-      (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
-    this.setState({
-      from: event.target.value
-    });
+  const isValid = isFromValid && isToValid && isTeacherValid;
 
-  handleChangeTo = (event: React.ChangeEvent<HTMLInputElement>) =>
-    (event.target.value === "" ||
-      (Number(event.target.value) > 0 && Number(event.target.value) < 12)) &&
-    this.setState({
-      to: event.target.value
-    });
+  const handleSubmit = React.useCallback(
+    () => {
+      onAdd({
+        from,
+        to,
+        date: isMultiDay ? date : undefined,
+        teacherId: teacherId!
+      });
+    },
+    [from, to, date, isMultiDay, teacherId]
+  );
 
-  handleChangeTeacher = (teacher: UserN) =>
-    this.setState({ teacher: teacher.get("id") });
-
-  /**
-   * ## Form Validation Logic
-   */
-  /**
-   * ### Slot
-   */
-  fromValid = (): boolean => {
-    const { from } = this.state;
-    const nmbFrom = parseInt(from, 10);
-
-    return !isNaN(nmbFrom) && nmbFrom > 0 && nmbFrom < 12;
-  };
-
-  toValid = (): boolean => {
-    const { from, to } = this.state;
-    const nmbTo = parseInt(to, 10);
-    const nmbFrom = parseInt(from, 10);
-
-    return !isNaN(nmbTo) && nmbTo >= nmbFrom && nmbTo > 0 && nmbTo < 12;
-  };
-
-  teacherValid = (): boolean => {
-    const { teacher } = this.state;
-    return !!teacher;
-  };
-
-  dateValid = (): boolean => {
-    const { date } = this.state;
-    const { multiDay } = this.props;
-    if (!multiDay) {
-      return true;
-    }
-
-    const { min, max } = this.datePickerConfig;
-
-    if (!!min && min > date!) {
-      return false;
-    }
-
-    if (!!max && max < date!) {
-      return false;
-    }
-
-    return true;
-  };
-
-  slotInputValid = () =>
-    this.fromValid() &&
-    this.toValid() &&
-    this.teacherValid() &&
-    this.dateValid();
-
-  handleAddSlot = () =>
-    this.props.onAdd({
-      from: Number(this.state.from),
-      to: Number(this.state.to),
-      teacherId: this.state.teacher!,
-      date: this.props.multiDay ? this.state.date : undefined
-    });
-
-  render() {
-    const {
-      teachers,
-      multiDay,
-      datePickerConfig,
-      translation: lang
-    } = this.props;
-    const { date } = this.state;
-
-    return (
-      <Grid container direction="row" spacing={16}>
-        {/* Teacher */}
-        <Grid item xs={12} md={4}>
-          <SearchableDropdownUser
-            label={lang.titles.teacher}
-            helperText={lang.helpers.teacher}
-            items={teachers}
-            onChange={this.handleChangeTeacher}
-            includeItem={(item, searchTerm) =>
-              item
-                .get("displayname")
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-            }
-            itemToString={i => i.get("displayname")}
-          />
-        </Grid>
-
-        {/* Date */}
-        {multiDay && (
-          <Grid item xs={3}>
-            <DateInput
-              onChange={date => this.setState({ date })}
-              minDate={datePickerConfig!.min}
-              maxDate={datePickerConfig!.max}
-              isValid={d =>
-                +(this.datePickerConfig.min || 0) <= +d &&
-                +(this.datePickerConfig.max || Number.POSITIVE_INFINITY) >= +d
-              }
-              label={lang.titles.day}
-              value={date!}
-            />
-          </Grid>
-        )}
-
-        {/* From */}
-        <Grid item xs={1}>
-          <TextField
-            label={lang.titles.from}
-            fullWidth
-            value={this.state.from}
-            onChange={this.handleChangeFrom}
-            type="number"
-            error={!this.fromValid()}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        </Grid>
-
-        {/* To */}
-        <Grid item xs={1}>
-          <TextField
-            label={lang.titles.to}
-            fullWidth
-            value={this.state.to}
-            onChange={this.handleChangeTo}
-            error={!this.toValid()}
-            type="number"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        </Grid>
-
-        {/* Add */}
-        <Grid item xs={2}>
-          <Tooltip title={lang.add}>
-            <Button
-              variant="raised"
-              disabled={!this.slotInputValid()}
-              onClick={this.handleAddSlot}
-            >
-              {lang.add}
-            </Button>
-          </Tooltip>
-        </Grid>
+  return (
+    <Grid container direction="row" spacing={16}>
+      {/* Teacher */}
+      <Grid item xs={12} md={4}>
+        <SearchableDropdownUser
+          label={translation.titles.teacher}
+          helperText={translation.helpers.teacher}
+          items={teachers}
+          onChange={t => setTeacherId(t.get("id"))}
+          includeItem={(item, searchTerm) =>
+            item
+              .get("displayname")
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          }
+          itemToString={i => i.get("displayname")}
+        />
       </Grid>
-    );
-  }
-}
+
+      {/* Date */}
+      {isMultiDay && (
+        <Grid item xs={3}>
+          <DateInput
+            onChange={setDate}
+            minDate={!!datePickerConfig ? datePickerConfig.min : undefined}
+            maxDate={!!datePickerConfig ? datePickerConfig.max : undefined}
+            label={translation.titles.day}
+            isValid={v => {
+              if (!!datePickerConfig) {
+                if (!!datePickerConfig.min) {
+                  if (isBefore(v, datePickerConfig.min)) {
+                    return false;
+                  }
+                }
+                if (!!datePickerConfig.max) {
+                  if (isAfter(v, datePickerConfig.max)) {
+                    return false;
+                  }
+                }
+              }
+              return true;
+            }}
+            value={date!}
+          />
+        </Grid>
+      )}
+
+      {/* From */}
+      <Grid item xs={1}>
+        <TextField
+          label={translation.titles.from}
+          fullWidth
+          value={from}
+          onChange={evt => setFrom(+evt.target.value)}
+          type="number"
+          error={!isFromValid}
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
+      </Grid>
+
+      {/* To */}
+      <Grid item xs={1}>
+        <TextField
+          label={translation.titles.to}
+          fullWidth
+          value={to}
+          onChange={evt => setTo(+evt.target.value)}
+          error={!isToValid}
+          type="number"
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
+      </Grid>
+
+      {/* Add */}
+      <Grid item xs={2}>
+        <Tooltip title={translation.add}>
+          <Button variant="raised" disabled={!isValid} onClick={handleSubmit}>
+            {translation.add}
+          </Button>
+        </Tooltip>
+      </Grid>
+    </Grid>
+  );
+};
 
 export default connect<SlotEntryStateProps, {}, SlotEntryOwnProps, AppState>(
   mapStateToProps
-)(withTranslation(lang)(SlotEntry));
+)(SlotEntry);

@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "class-transformer": "^0.1.10",
-    "class-validator": "^0.9.1"
+    "class-validator": "^0.9.1",
+    "date-fns": "^2.0.0-alpha.26"
   }
 }

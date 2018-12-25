@@ -68,7 +68,7 @@ export class UsersService implements OnModuleInit {
           children: [],
           role: Roles.ADMIN,
           displayname: "Administrator",
-          isAdult: false,
+          birthday: undefined,
           password: "root",
           username: "admin",
           email: "admin@ente.de"
@@ -281,9 +281,9 @@ export class UsersService implements OnModuleInit {
       user.some().displayname = patch.displayname;
     }
 
-    if (!!patch.isAdult) {
-      await this.userRepo.setIsAdult(id, patch.isAdult);
-      user.some().isAdult = patch.isAdult;
+    if (!!patch.birthday) {
+      await this.userRepo.setBirthday(id, patch.birthday);
+      user.some().birthday = patch.birthday;
     }
 
     if (!!patch.role) {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DatePicker } from "material-ui-pickers";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { format } from "date-fns";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -14,35 +15,43 @@ const useTranslation = makeTranslationHook({
 });
 
 interface DateInputProps {
-  value: Date;
-  onChange: (d: Date) => void;
-  isValid: (d: Date) => boolean;
-  minDate?: Date;
-  maxDate?: Date;
+  value: string;
+  onChange: (d: string) => void;
+  isValid?: (d: string) => boolean;
+  minDate?: string | number | Date;
+  maxDate?: string | number | Date;
   label: string;
   maxDateMessage?: string;
   minDateMessage?: string;
 }
 
-export const DateInput: React.SFC<DateInputProps> = props => {
+export const DateInput: React.FC<DateInputProps> = props => {
   const {
     value,
     onChange,
     minDate,
     maxDate,
     label,
-    isValid,
+    isValid = () => true,
     maxDateMessage,
     minDateMessage
   } = props;
 
   const lang = useTranslation();
 
+  const handleOnChange = React.useCallback(
+    (d: Date) => {
+      const s = format(d, "yyyy-MM-dd");
+      onChange(s);
+    },
+    [onChange]
+  );
+
   return (
     <DatePicker
       label={label}
       value={value}
-      onChange={d => onChange(d.toJSDate())}
+      onChange={handleOnChange}
       minDate={minDate}
       maxDate={maxDate}
       autoOk

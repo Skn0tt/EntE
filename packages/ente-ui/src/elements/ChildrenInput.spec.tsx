@@ -19,7 +19,7 @@ const user = new UserN({
   children: [],
   displayname: "Horst Hansen",
   email: "hort@hansen.de",
-  isAdult: false,
+  birthday: "2100-01-01",
   role: Roles.STUDENT,
   username: "hhansen"
 });
@@ -28,7 +28,7 @@ const user2 = new UserN({
   children: [],
   displayname: "Hanni Ball",
   email: "hanni@ball.de",
-  isAdult: false,
+  birthday: "2100-01-01",
   role: Roles.STUDENT,
   username: "hball"
 });

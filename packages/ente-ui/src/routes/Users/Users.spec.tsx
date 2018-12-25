@@ -19,7 +19,7 @@ describe("Users", () => {
       username: "simon",
       displayname: "Simon",
       email: "email@emai.com",
-      isAdult: false,
+      birthday: "2100-01-01",
       role: Roles.STUDENT,
       id: "mystupidid"
     })

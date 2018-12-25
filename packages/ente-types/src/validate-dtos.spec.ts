@@ -5,19 +5,21 @@ import {
 } from "./validate-dtos";
 import { expect } from "chai";
 import { Roles } from "./roles";
+import { dateToIsoString } from "./date-to-iso-string";
+import { addDays, addHours } from "date-fns";
 
-const now = new Date();
+const now = Date.now();
 
 describe("isValidCreateEntryDto", () => {
   describe("when passing valid entries", () => {
     it("returns true", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
+          date: dateToIsoString(now),
           forSchool: true,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 1,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -30,10 +32,10 @@ describe("isValidCreateEntryDto", () => {
     it("when passing slots", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
+          date: dateToIsoString(now),
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 3,
               to: 4,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -47,12 +49,12 @@ describe("isValidCreateEntryDto", () => {
     it("returns true", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
-          dateEnd: new Date(+now + 2 * 24 * 60 * 60 * 1000),
+          date: dateToIsoString(now),
+          dateEnd: dateToIsoString(addDays(now, 2)),
           forSchool: true,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 3,
               to: 4,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -65,12 +67,12 @@ describe("isValidCreateEntryDto", () => {
     it("returns true", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
-          dateEnd: new Date(+now + 2 * 24 * 60 * 60 * 1000),
+          date: dateToIsoString(now),
+          dateEnd: dateToIsoString(addDays(now, 2)),
           forSchool: false,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 1,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -83,11 +85,11 @@ describe("isValidCreateEntryDto", () => {
     it("returns true", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
+          date: dateToIsoString(now),
           forSchool: true,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 1,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -102,11 +104,11 @@ describe("isValidCreateEntryDto", () => {
     it("Slot invalid teacher id", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
+          date: dateToIsoString(now),
           forSchool: false,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 2,
               to: 5,
               teacherId: "2e239ff6-9f40-48e6-9cec"
@@ -119,11 +121,11 @@ describe("isValidCreateEntryDto", () => {
     it("Slot invalid hours", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
+          date: dateToIsoString(now),
           forSchool: false,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 5,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -136,12 +138,12 @@ describe("isValidCreateEntryDto", () => {
     it("Dates not far enough apart", () => {
       expect(
         isValidCreateEntryDto({
-          date: new Date(now),
-          dateEnd: new Date(+now + 0.5 * 24 * 60 * 60 * 1000),
+          date: dateToIsoString(now),
+          dateEnd: dateToIsoString(addHours(now, 12)),
           forSchool: false,
           slots: [
             {
-              date: new Date(now),
+              date: dateToIsoString(now),
               from: 5,
               to: 2,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
@@ -160,7 +162,7 @@ describe("isValidCreateSlotDto", () => {
         from: 1,
         to: 2,
         teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50",
-        date: now
+        date: dateToIsoString(now)
       })
     ).to.be.true;
   });
@@ -171,7 +173,7 @@ describe("isValidCreateSlotDto", () => {
         from: 1,
         to: 2,
         teacherId: "2e239ff6-9f40-48e6-9cec-cae9f98",
-        date: now
+        date: dateToIsoString(now)
       })
     ).to.be.false;
   });
@@ -182,7 +184,7 @@ describe("isValidCreateSlotDto", () => {
         from: 2,
         to: 1,
         teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50",
-        date: now
+        date: dateToIsoString(now)
       })
     ).to.be.false;
   });
@@ -193,7 +195,7 @@ describe("isValidCreateSlotDto", () => {
         from: -1,
         to: 10,
         teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50",
-        date: now
+        date: dateToIsoString(now)
       })
     ).to.be.false;
   });
@@ -204,7 +206,7 @@ describe("isValidCreateSlotDto", () => {
         from: 13,
         to: 0,
         teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50",
-        date: now
+        date: dateToIsoString(now)
       })
     ).to.be.false;
   });
@@ -220,7 +222,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.true;
@@ -234,7 +236,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.true;
@@ -248,7 +250,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: true,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.true;
@@ -262,7 +264,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.true;
     });
@@ -276,7 +278,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmänn",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.true;
     });
@@ -290,7 +292,7 @@ describe("isValidUser", () => {
           displayname: "Herr Männ",
           email: "herr@mann.de",
           username: "herrmänn",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.true;
     });
@@ -304,7 +306,7 @@ describe("isValidUser", () => {
           displayname: "Herr-Mann",
           email: "herr@mann.de",
           username: "herrmänn",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.true;
     });
@@ -318,7 +320,7 @@ describe("isValidUser", () => {
           displayname: "Herr. Mann",
           email: "herr@mann.de",
           username: "herrmänn",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.true;
     });
@@ -334,7 +336,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false,
+          birthday: undefined,
           graduationYear: 2019
         })
       ).to.be.false;
@@ -348,7 +350,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          birthday: undefined
         })
       ).to.be.false;
     });
@@ -361,7 +363,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.false;
@@ -375,7 +377,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
-          isAdult: false
+          birthday: "2000-01-01"
         })
       ).to.be.false;
     });
@@ -388,7 +390,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herrmann.de",
           username: "herrmann",
-          isAdult: false,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.false;
@@ -402,12 +404,12 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herr mann",
-          isAdult: false,
+          birthday: "2000-01-01",
           graduationYear: 2019
         })
       ).to.be.false;
     });
-    it("parent cannot be adult", () => {
+    it("parent cannot have birthday", () => {
       expect(
         isValidCreateUserDto({
           children: [],
@@ -416,7 +418,7 @@ describe("isValidUser", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herr mann",
-          isAdult: true
+          birthday: "2000-01-01"
         })
       ).to.be.false;
     });

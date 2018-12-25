@@ -32,4 +32,7 @@ export const isValidCreateUserDtoWithErrors = validateDtoWithErrors(
   CreateUserDto
 );
 export const isValidPatchUserDto = validateDto(PatchUserDto);
+export const isValidPatchUserDtoWithErrors = validateDtoWithErrors(
+  PatchUserDto
+);
 export const isValidCreateSlotDto = validateDto(CreateSlotDto);
