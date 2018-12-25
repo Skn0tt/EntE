@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Use birthday instead of "isAdult" field to determine wether user is adult
+- Added Email Button to Entry ([#222](https://gitlab.com/Skn0tt/EntE/issues/222))
+- Added Invitation Link ([#171](https://gitlab.com/Skn0tt/EntE/issues/171))
+- Added ability to change language on the fly
+- Fixed crash on old browsers ([#204](https://gitlab.com/Skn0tt/EntE/issues/204))
 - Added Email Button to Entry ([#222](https://gitlab.com/Skn0tt/EntE/issues/222))
 - Added Invitation Link ([#171](https://gitlab.com/Skn0tt/EntE/issues/171))
 - Fixed crash on old browsers ([#204](https://gitlab.com/Skn0tt/EntE/issues/204))

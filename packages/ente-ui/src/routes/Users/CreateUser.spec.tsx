@@ -9,40 +9,54 @@
 import * as React from "react";
 import { CreateUser, lang } from "./CreateUser";
 import { shallow } from "enzyme";
-import { Roles, Languages } from "ente-types";
+import { Roles } from "ente-types";
 import { UserN } from "../../redux";
+import * as mockdate from "mockdate";
 
-describe("Users", () => {
+describe("CreateUser", () => {
+  beforeAll(() => {
+    mockdate.set(946681200000);
+  });
+
+  afterAll(() => {
+    mockdate.reset();
+  });
+
   const students: UserN[] = [
     new UserN({
       username: "simon",
       displayname: "Simon",
       email: "email@emai.com",
-      isAdult: false,
+      birthday: "2100-01-01",
       role: Roles.STUDENT,
       id: "mystupidid"
     })
   ];
-  const getUser = jest.fn();
-  const createUser = jest.fn();
-  const onClose = jest.fn();
-  const comp = shallow(
-    <CreateUser
-      getUser={getUser}
-      fullScreen
-      translation={lang.de}
-      createUsers={createUser}
-      onClose={onClose}
-      show
-      students={students}
-    />
-  );
 
   it("renders correctly", () => {
+    const getUser = jest.fn();
+    const createUser = jest.fn();
+    const onClose = jest.fn();
+    const comp = shallow(
+      <CreateUser
+        getUser={getUser}
+        fullScreen
+        translation={lang.de}
+        createUsers={createUser}
+        onClose={onClose}
+        show
+        students={students}
+      />
+    );
+
     expect(comp).toMatchSnapshot();
   });
 
   it("doesn't render when show=false", () => {
+    const getUser = jest.fn();
+    const createUser = jest.fn();
+    const onClose = jest.fn();
+
     const comp = shallow(
       <CreateUser
         getUser={getUser}
@@ -58,6 +72,22 @@ describe("Users", () => {
   });
 
   it("closes on clicking close", () => {
+    const getUser = jest.fn();
+    const createUser = jest.fn();
+    const onClose = jest.fn();
+
+    const comp = shallow(
+      <CreateUser
+        getUser={getUser}
+        fullScreen
+        translation={lang.de}
+        createUsers={createUser}
+        onClose={onClose}
+        show={false}
+        students={students}
+      />
+    );
+
     comp.find(".close").simulate("click");
     expect(onClose).toHaveBeenCalled();
   });

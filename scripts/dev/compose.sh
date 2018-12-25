@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IS_CI=${CI:-"false"}
+CI=${CI:-"false"}
 TAG=${TAG:-latest}
 
 cwd=$(pwd)
@@ -12,7 +12,7 @@ tempfile=$(mktemp)
 
 docker-app render -f ./scripts/dev/dev.config.yml --set API_TAG="$TAG" --set UI_TAG="$TAG" > $tempfile
 
-if [ "$IS_CI" = "false" ]; then
+if [ "$CI" = "false" ]; then
   docker-compose -f "$tempfile" -f ./scripts/dev/docker-compose.base.yml -f ./scripts/dev/docker-compose.dev.yml "$@"
 else
   docker-compose -f "$tempfile" -f ./scripts/dev/docker-compose.base.yml "$@"

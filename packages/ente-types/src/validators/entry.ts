@@ -8,14 +8,13 @@
 
 import * as _ from "lodash";
 import { SyncValidator } from "./shared";
+import { subDays, isBefore as _isBefore } from "date-fns";
 
-const DAY = 24 * 60 * 60 * 1000;
+export const daysBeforeNow = (n: number) => subDays(Date.now(), n);
 
-export const twoWeeksBeforeNow = () => new Date(+new Date() - 14 * DAY);
+const isBefore = (a: Date | number | string) => (b: Date | number | string) =>
+  _isBefore(b, a);
 
-const isBefore = (a: Date) => (b: Date) => +a > +b;
-
-export const isOlderThanTwoWeeksBeforeNow: SyncValidator<Date> = d =>
-  isBefore(twoWeeksBeforeNow())(d);
-
-export const areApart = (t: number) => (a: Date, b: Date) => +b - +a >= t;
+export const isOlderThanTwoWeeksBeforeNow: SyncValidator<
+  Date | number | string
+> = isBefore(daysBeforeNow(14));

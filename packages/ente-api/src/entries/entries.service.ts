@@ -6,7 +6,8 @@ import {
   EntryDto,
   CreateEntryDto,
   PatchEntryDto,
-  UserDto
+  UserDto,
+  userIsAdult
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -188,7 +189,7 @@ export class EntriesService {
 
     const result = await this.entryRepo.createEntry(entry, {
       signedByParent:
-        userIsParent || (await requestingUser.getDto()).some().isAdult
+        userIsParent || userIsAdult((await requestingUser.getDto()).some())
     });
 
     if (!result.signedParent) {

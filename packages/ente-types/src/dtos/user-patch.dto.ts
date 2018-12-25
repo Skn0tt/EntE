@@ -1,5 +1,5 @@
 import { Roles, rolesArr } from "ente-types";
-import { IsOptional, IsIn, IsBoolean, IsInt } from "class-validator";
+import { IsOptional, IsIn, IsInt, IsISO8601 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidDisplayname,
@@ -25,8 +25,8 @@ export class PatchUserDto {
   children?: string[];
 
   @IsOptional()
-  @IsBoolean()
-  isAdult?: boolean;
+  @IsISO8601()
+  birthday?: string;
 
   @IsOptional()
   @IsInt()

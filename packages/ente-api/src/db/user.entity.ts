@@ -22,7 +22,7 @@ import {
   JoinTable,
   OneToMany
 } from "typeorm";
-import { IsBoolean, IsIn, IsInt } from "class-validator";
+import { IsIn, IsInt, IsISO8601 } from "class-validator";
 import Entry from "./entry.entity";
 import Slot from "./slot.entity";
 
@@ -48,9 +48,9 @@ export class User {
   @CustomStringValidator(isValidEmail)
   email: string;
 
-  @Column("tinyint", { default: false })
-  @IsBoolean()
-  isAdult: boolean;
+  @Column("date", { nullable: true })
+  @IsISO8601()
+  birthday: string;
 
   @Column("varchar", { length: 80 })
   @IsIn(rolesArr)

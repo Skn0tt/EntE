@@ -33,7 +33,7 @@ const parseCSV = async (
       displayname: row.displayname,
       email: row.email,
       role: row.role,
-      isAdult: !row.isAdult ? false : true,
+      birthday: !!row.birthday ? row.birthday : undefined,
       children: !!row.children ? row.children.split(":") : [],
       password: !isBlank(row.password) ? row.password : undefined,
       graduationYear: isBlank(row.graduationYear)

@@ -7,22 +7,21 @@ To make onboarding easier, you can import users from a `.csv` file.
 
 Each user has different properties that need to be set:
 
-* username
-* displayname
-* password
-* email
-* role
-* isAdult
-* children
-* graduationYear
+- username
+- displayname
+- password
+- email
+- role
+- birthday
+- children
+- graduationYear
 
 If `password` is left blank, a password reset will be invoked for the user so they can set their password themselves.
 
 `children` should contain a list of the usernames of that users children, separated by colons.
 If the user doesn't have any children, leave the field blank.
 
-`isAdult` needs to be set only for students; set it to `"true"` should they be adult.
-If they are not adult - leave the field blank.
+`birthday` needs to be set only for students; set it to their birthday in ISO-8601 format (e.g. "2000-02-01" for Feb. 1st, 2000).
 
 `graduationYear` needs to be set for students and mangers, it matches these by their expected graduation year.
 
@@ -33,9 +32,9 @@ The first row of the csv needs to be a header row with the above properties.
 A sample import file could look like this:
 
 ```csv
-username,displayname,email,role,isAdult,graduationYear,children
-maxmueller,Max Mueller,mmueller@gmail.com,student,TRUE,2019,
-majamueller,Maja Mueller,maja@mueller.de,student,FALSE,2019,
+username,displayname,email,role,birthday,graduationYear,children
+maxmueller,Max Mueller,mmueller@gmail.com,student,2000-02-01,2019,
+majamueller,Maja Mueller,maja@mueller.de,student,2001-02-01,2019,
 tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,
 gerdmueller,Gerd Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
 gabimueller,Gabi Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
@@ -48,8 +47,8 @@ This would create the following users:
 ```mermaid
 graph LR;
 
-maxmueller["Max Mueller (student, is adult)"]
-majamueller["Maja Mueller (student)"]
+maxmueller["Max Mueller (student, birthday: 2000-02-01)"]
+majamueller["Maja Mueller (student, birthday: 2001-02-01)"]
 tomtoblerone["Tom Toblerone (teacher)"]
 gerdmueller["Gerd Mueller (parent)"]
 gabimueller["Gabi Mueller (parent)"]

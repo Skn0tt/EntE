@@ -4,7 +4,7 @@ import { UserDto, Roles, EntryDto, SlotDto } from "ente-types";
 const simon: UserDto = {
   displayname: "Simon",
   email: "info@simonknott.de",
-  isAdult: false,
+  birthday: "2100-01-01",
   id: "abc",
   role: Roles.STUDENT,
   children: [],
@@ -15,7 +15,7 @@ const susanne: UserDto = {
   children: [simon],
   email: "susanne@simonknott.de",
   id: "asdaj",
-  isAdult: true,
+  birthday: undefined,
   role: Roles.PARENT,
   username: "susan"
 };
@@ -24,7 +24,7 @@ const benni: UserDto = {
   children: [],
   email: "benni@simonknott.de",
   id: "asjd",
-  isAdult: true,
+  birthday: undefined,
   role: Roles.TEACHER,
   username: "benny"
 };

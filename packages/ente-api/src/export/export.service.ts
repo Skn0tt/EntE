@@ -48,7 +48,7 @@ export class ExportService {
           "displayname",
           "email",
           "role",
-          "isAdult",
+          "birthday",
           "graduationYear",
           "children"
         ],
@@ -58,7 +58,7 @@ export class ExportService {
           u.displayname,
           u.email,
           u.role,
-          "" + u.isAdult,
+          "" + u.birthday,
           "" + u.graduationYear,
           u.children.map(c => c.username).join(", ")
         ])

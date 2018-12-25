@@ -21,13 +21,11 @@ import {
   Button,
   List as MUIList,
   TextField,
-  Grid,
-  Checkbox
+  Grid
 } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import SlotListItem from "./SlotListItem";
 import SlotEntry from "./SlotEntry";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -47,16 +45,18 @@ import {
 import {
   CreateEntryDto,
   CreateSlotDto,
-  isValidCreateEntryDto
+  isValidCreateEntryDto,
+  dateToIsoString,
+  daysBeforeNow
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { Maybe } from "monet";
-import {
-  WithTranslation,
-  withTranslation
-} from "../../helpers/with-translation";
+import { isBefore, subDays, addDays, isAfter } from "date-fns";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { CheckboxInput } from "../../elements/CheckboxInput";
+import * as _ from "lodash";
 
-const lang = {
+const useTranslation = makeTranslationHook({
   en: {
     multiday: "Multiday",
     forSchool: "Educational",
@@ -90,24 +90,12 @@ const lang = {
     toLabel: "Bis",
     dateMustBeBiggerThanFrom: `Muss nach 'Von' sein`
   }
-};
+});
 
-/**
- * Thanks to [Vincent Billey](https://vincent.billey.me/pure-javascript-immutable-array#delete)!
- */
-const immutableDelete = (arr: any[], index: number) =>
-  arr.slice(0, index).concat(arr.slice(index + 1));
+const getToday = (): string => dateToIsoString(Date.now());
 
-const stripTime = (date: Date): Date => {
-  const result = new Date(date);
-  result.setHours(0, 0, 0, 0);
-  return result;
-};
-
-const oneDay: number = 24 * 60 * 60 * 1000;
-
-const nextDay = (d: Date) => new Date(+d + oneDay);
-const twoWeeksBefore = (d: Date) => new Date(+d - 14 * oneDay);
+const nextDay = (d: string | string | number) => dateToIsoString(addDays(d, 1));
+const twoWeeksBefore = (d: Date | string | number) => subDays(d, 14);
 
 interface CreateEntryOwnProps {
   onClose(): void;
@@ -115,7 +103,7 @@ interface CreateEntryOwnProps {
 }
 
 interface CreateEntryStateProps {
-  isParent: Maybe<boolean>;
+  isParent: boolean;
   children: Maybe<UserN[]>;
   teachers: UserN[];
   getUser(id: string): Maybe<UserN>;
@@ -126,7 +114,7 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   children: getChildren(state),
-  isParent: isParent(state),
+  isParent: isParent(state).some(),
   teachers: getTeachers(state),
   getUser: id => getUser(id)(state)
 });
@@ -145,287 +133,249 @@ type CreateEntryProps = CreateEntryOwnProps &
   CreateEntryDispatchProps &
   CreateEntryStateProps &
   RouteComponentProps<{}> &
-  WithTranslation<typeof lang.en> &
   InjectedProps;
 
 interface State {
   isRange: boolean;
-  date: Date;
-  dateEnd?: Date;
+  date: string;
+  dateEnd?: string;
   student?: string;
   slots: CreateSlotDto[];
   forSchool: boolean;
 }
 
-class CreateEntry extends React.Component<CreateEntryProps, State> {
-  state: State = {
-    student:
-      this.props.children.some().length > 0
-        ? this.props.children.some()[0].get("id")
-        : undefined,
-    isRange: false,
-    date: stripTime(new Date()),
-    dateEnd: undefined,
-    slots: [],
-    forSchool: false
-  };
+const CreateEntry: React.SFC<CreateEntryProps> = props => {
+  const { fullScreen, onClose, show, isParent, children, createEntry } = props;
+  const translation = useTranslation();
 
-  /**
-   * ## Action Handlers
-   */
-  handleSubmit = () =>
-    this.props.createEntry({
-      date: this.state.date,
-      dateEnd: this.state.dateEnd,
-      slots: this.state.slots,
-      forSchool: this.state.forSchool,
-      studentId: this.state.student
-    });
+  const [isRange, setIsRange] = React.useState(false);
+  const [forSchool, setForSchool] = React.useState(false);
+  const [beginDate, setBeginDate] = React.useState<string>(
+    dateToIsoString(Date.now())
+  );
+  const [endDate, setEndDate] = React.useState<string | undefined>(undefined);
+  const [slots, setSlots] = React.useState<CreateSlotDto[]>([]);
 
-  handleKeyPress: React.KeyboardEventHandler<{}> = event => {
-    if (event.key === "Enter" && this.inputValid()) {
-      this.handleSubmit();
-    }
-  };
+  const firstChildOfParent: string | undefined = children
+    .flatMap(c => Maybe.fromUndefined(c[0]))
+    .map(c => c.get("id"))
+    .orSome((undefined as unknown) as any);
 
-  /**
-   * ## Input Handlers
-   */
-  handleChangeBeginDate = (date: Date) => {
-    const { slots, isRange, dateEnd } = this.state;
-    const slotsWithoutSlotsThatAreTooEarly = isRange
-      ? slots.filter(s => s.date! >= date)
-      : slots;
-    const dateEndIsBeforeDate = +dateEnd! <= +date + oneDay;
-    if (dateEndIsBeforeDate) {
-      this.setState({
-        date,
-        dateEnd: nextDay(date),
-        slots: slotsWithoutSlotsThatAreTooEarly
+  const [studentId, setStudent] = React.useState<string | undefined>(
+    firstChildOfParent
+  );
+
+  const handleChangeIsRange = React.useCallback(
+    (v: boolean) => {
+      setSlots(slots =>
+        slots.map(s => ({
+          ...s,
+          date: v ? beginDate : undefined
+        }))
+      );
+
+      setIsRange(v);
+      setEndDate(endDate => {
+        if (!v) {
+          return undefined;
+        }
+        return _.isUndefined(endDate)
+          ? dateToIsoString(addDays(beginDate, 1))
+          : endDate;
       });
-    } else {
-      this.setState({
-        date,
-        slots: slotsWithoutSlotsThatAreTooEarly
+    },
+    [setIsRange, setEndDate, beginDate, setSlots]
+  );
+
+  const handleChangeBeginDate = React.useCallback(
+    (d: string) => {
+      if (!isRange) {
+        setBeginDate(d);
+        return;
+      }
+
+      const slotsWithoutSlotsThatAreTooEarly = slots.filter(
+        s => !isBefore(s.date!, d)
+      );
+      setSlots(slotsWithoutSlotsThatAreTooEarly);
+
+      const endDateIsBeforeDate = isBefore(endDate!, addDays(d, 1));
+      if (endDateIsBeforeDate || _.isUndefined(endDate)) {
+        setEndDate(dateToIsoString(addDays(d, 1)));
+      }
+
+      setBeginDate(d);
+    },
+    [setBeginDate, slots, setSlots, setEndDate, endDate, isRange]
+  );
+
+  const handleChangeEndDate = React.useCallback(
+    (d: string) => {
+      setSlots(slots => {
+        const slotsWithoutSlotsThatAreTooLate = slots.filter(
+          s => !isAfter(s.date!, d)
+        );
+        return slotsWithoutSlotsThatAreTooLate;
       });
-    }
-  };
 
-  handleChangeDateEnd = (dateEnd: Date) => {
-    const { slots, isRange } = this.state;
-    const slotsWithoutSlotsThatAreTooLate = isRange
-      ? slots.filter(s => s.date! <= dateEnd)
-      : slots;
-    this.setState({ dateEnd, slots: slotsWithoutSlotsThatAreTooLate });
-  };
+      const endDateIsBeforeBeginDate = isBefore(d, beginDate);
+      if (endDateIsBeforeBeginDate) {
+        setBeginDate(dateToIsoString(subDays(d, 1)));
+      }
 
-  handleChangeForSchool = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ forSchool: event.target.checked });
+      setEndDate(d);
+    },
+    [setEndDate, setSlots, beginDate, setBeginDate]
+  );
 
-  handleChangeIsRange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ isRange: event.target.checked });
-    if (event.target.checked === false) {
-      const withoutDate = this.state.slots.map(s => ({
-        ...s,
-        date: undefined
-      }));
-      this.setState({ slots: withoutDate, dateEnd: undefined });
-    } else {
-      const withDate = this.state.slots.map(s => ({
-        ...s,
-        date: this.state.date
-      }));
-      this.setState({ slots: withDate, dateEnd: this.state.date });
-    }
-  };
+  const handleRemoveSlot = React.useCallback(
+    (indexToRemove: number) => {
+      setSlots(s => s.filter((_, i) => i !== indexToRemove));
+    },
+    [setSlots]
+  );
 
-  handleAddSlot = (slot: CreateSlotDto) => {
-    if (this.state.slots.indexOf(slot) !== -1) return;
+  const handleAddSlot = React.useCallback(
+    (v: CreateSlotDto) => {
+      setSlots(s => [...s, v]);
+    },
+    [setSlots]
+  );
 
-    this.setState({ slots: [...this.state.slots, slot] });
-  };
+  const isEndDateValid = isRange
+    ? isAfter(endDate!, beginDate)
+    : _.isUndefined(endDate);
 
-  handleRemoveSlot = (index: number) =>
-    this.setState({ slots: immutableDelete(this.state.slots, index) });
+  const isValidInput = isValidCreateEntryDto({
+    forSchool,
+    slots,
+    studentId,
+    date: beginDate,
+    dateEnd: endDate
+  });
 
-  handleChangeStudent = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ student: event.target.value });
-
-  /**
-   * ## Validation
-   */
-  dateValid = (): boolean =>
-    // Less than 14 Days ago
-    +this.state.date > +this.minDate;
-
-  dateEndValid = (): boolean => {
-    const { isRange, dateEnd, date } = this.state;
-    if (!isRange) {
-      return true;
-    }
-
-    return !!dateEnd && dateEnd > date;
-  };
-
-  studentValid = (): boolean => {
-    const { isParent } = this.props;
-    const { student } = this.state;
-    if (!isParent.some()) {
-      return true;
-    }
-
-    return !!student;
-  };
-
-  inputValid = () => {
-    const { student, forSchool, date, dateEnd, slots } = this.state;
-
-    return (
-      isValidCreateEntryDto({
-        date,
-        dateEnd,
+  const handleSubmit = React.useCallback(
+    () => {
+      createEntry({
         forSchool,
         slots,
-        studentId: student
-      }) && this.studentValid()
-    );
-  };
+        studentId,
+        date: beginDate,
+        dateEnd: endDate
+      });
+    },
+    [createEntry, forSchool, slots, studentId, beginDate, endDate]
+  );
 
-  /**
-   * ## Data
-   */
-  minDate: Date = twoWeeksBefore(new Date());
-
-  render() {
-    const {
-      isParent,
-      fullScreen,
-      onClose,
-      show,
-      children,
-      translation
-    } = this.props;
-    const { isRange, student, forSchool, date, dateEnd, slots } = this.state;
-
-    return (
-      <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
-        <DialogTitle>{translation.newEntry}</DialogTitle>
-        <DialogContent>
-          <Grid container direction="column" spacing={40}>
-            <Grid item container direction="column">
-              <Grid item container direction="row">
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={isRange}
-                        onChange={this.handleChangeIsRange}
-                      />
-                    }
-                    label={translation.multiday}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={forSchool}
-                        onChange={this.handleChangeForSchool}
-                      />
-                    }
-                    label={translation.forSchool}
-                  />
-                </Grid>
+  return (
+    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+      <DialogTitle>{translation.newEntry}</DialogTitle>
+      <DialogContent>
+        <Grid container direction="column" spacing={40}>
+          <Grid item container direction="column">
+            <Grid item container direction="row">
+              <Grid item xs={6}>
+                <CheckboxInput
+                  value={isRange}
+                  onChange={handleChangeIsRange}
+                  label={translation.multiday}
+                />
               </Grid>
-              {isParent.some() && (
-                <Grid item>
-                  <TextField
-                    fullWidth
-                    select
-                    label={translation.child}
-                    value={student}
-                    onChange={this.handleChangeStudent}
-                    helperText={translation.selectChild}
-                  >
-                    {children.some().map(child => (
-                      <MenuItem key={child.get("id")} value={child.get("id")}>
-                        {child.get("displayname")}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-              )}
+              <Grid item xs={6}>
+                <CheckboxInput
+                  value={forSchool}
+                  onChange={setForSchool}
+                  label={translation.forSchool}
+                />
+              </Grid>
+            </Grid>
+            {isParent && (
               <Grid item>
-                <Grid container direction="row" spacing={24}>
+                <TextField
+                  fullWidth
+                  select
+                  label={translation.child}
+                  value={studentId}
+                  onChange={evt => setStudent(evt.target.value)}
+                  helperText={translation.selectChild}
+                >
+                  {children.some().map(child => (
+                    <MenuItem key={child.get("id")} value={child.get("id")}>
+                      {child.get("displayname")}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            )}
+            <Grid item>
+              <Grid container direction="row" spacing={24}>
+                <Grid item xs={6}>
+                  <DateInput
+                    label={translation.fromLabel}
+                    onChange={handleChangeBeginDate}
+                    minDate={daysBeforeNow(14)}
+                    value={beginDate}
+                  />
+                </Grid>
+                {isRange && (
                   <Grid item xs={6}>
                     <DateInput
-                      label={translation.fromLabel}
-                      isValid={this.dateValid}
-                      onChange={this.handleChangeBeginDate}
-                      minDate={this.minDate}
-                      value={date}
+                      label={translation.toLabel}
+                      isValid={() => isEndDateValid}
+                      onChange={handleChangeEndDate}
+                      minDate={addDays(beginDate, 1)}
+                      value={endDate!}
+                      minDateMessage={translation.dateMustBeBiggerThanFrom}
                     />
                   </Grid>
-                  {isRange && (
-                    <Grid item xs={6}>
-                      <DateInput
-                        label={translation.toLabel}
-                        isValid={this.dateEndValid}
-                        onChange={this.handleChangeDateEnd}
-                        minDate={nextDay(date)}
-                        value={dateEnd!}
-                        minDateMessage={translation.dateMustBeBiggerThanFrom}
-                      />
-                    </Grid>
-                  )}
-                </Grid>
+                )}
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">{translation.titles.slots}</Typography>
-              <Typography variant="caption">
-                {translation.addSlotsCaption}
-              </Typography>
-              <MUIList>
-                {slots.map((slot, index) => (
-                  <SlotListItem
-                    key={index}
-                    slot={slot}
-                    delete={() => this.handleRemoveSlot(index)}
-                  />
-                ))}
-              </MUIList>
-              <SlotEntry
-                onAdd={slot => this.handleAddSlot(slot)}
-                multiDay={isRange}
-                datePickerConfig={{
-                  min: date,
-                  max: dateEnd
-                }}
-                date={date}
-              />
-            </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="secondary">
-            {translation.cancel}
-          </Button>
-          <Button
-            onClick={() => {
-              this.handleSubmit();
-              onClose();
-            }}
-            disabled={!this.inputValid()}
-            color="primary"
-          >
-            {translation.ok}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}
+          <Grid item xs={12}>
+            <Typography variant="h6">{translation.titles.slots}</Typography>
+            <Typography variant="caption">
+              {translation.addSlotsCaption}
+            </Typography>
+            <MUIList>
+              {slots.map((slot, index) => (
+                <SlotListItem
+                  key={index}
+                  slot={slot}
+                  delete={() => handleRemoveSlot(index)}
+                />
+              ))}
+            </MUIList>
+            <SlotEntry
+              onAdd={handleAddSlot}
+              isMultiDay={isRange}
+              datePickerConfig={{
+                min: beginDate,
+                max: endDate
+              }}
+              defaultDate={beginDate}
+            />
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary">
+          {translation.cancel}
+        </Button>
+        <Button
+          onClick={() => {
+            handleSubmit();
+            onClose();
+          }}
+          disabled={!isValidInput}
+          color="primary"
+        >
+          {translation.ok}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default connect<
   CreateEntryStateProps,
@@ -435,8 +385,4 @@ export default connect<
 >(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withRouter(
-    withTranslation(lang)(withMobileDialog<CreateEntryProps>()(CreateEntry))
-  )
-);
+)(withRouter(withMobileDialog<CreateEntryProps>()(CreateEntry)));

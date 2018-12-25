@@ -1,5 +1,5 @@
 import { rolesArr, Roles } from "ente-types";
-import { IsIn, IsBoolean, IsOptional, IsDefined } from "class-validator";
+import { IsIn, IsOptional, IsDefined, IsISO8601 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
@@ -41,9 +41,9 @@ export class CreateUserDto {
   )
   graduationYear?: number;
 
-  @IsDefined()
-  @IsBoolean()
-  isAdult: boolean;
+  @IsOptional()
+  @IsISO8601()
+  birthday?: string;
 }
 
 export const createDefaultCreateUserDto = (): CreateUserDto => {
@@ -55,7 +55,7 @@ export const createDefaultCreateUserDto = (): CreateUserDto => {
   result.email = "";
   result.role = Roles.STUDENT;
   result.children = [];
-  result.isAdult = false;
+  result.birthday = undefined;
   result.graduationYear = 2019;
 
   return result;

@@ -8,40 +8,39 @@
 
 import parse from "./parser";
 import { Roles, CreateUserDto } from "ente-types";
-import { Success } from "monet";
 
 const sampleData = `
-username,displayname,email,password,role,isAdult,graduationYear,children
-schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+username,displayname,email,password,role,birthday,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,2100-04-02,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,Piet Vater,pvater@arcor.de,,parent,,,schüler
 leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataError = `
-username,displayname,email,password,role,isAdult,graduationYear,children
-schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+username,displayname,email,password,role,birthday,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,PVater,pvaterarcor.de,parent,,,,schüler
 leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataUnknownStudent = `
-username,displayname,email,password,role,isAdult,graduationYear,children
-schüler,S. Schüler,sschüler@email.com,,student,FALSE,2019,
+username,displayname,email,password,role,birthday,graduationYear,children
+schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,Piet Vater,pvater@arcor.de,,parent,,,schüler2
 leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const exampleImport = `
-username;displayname;email;password;role;isAdult;graduationYear;children
-norahparis;Norah Paris;test@test.com;p4sswort!;student;TRUE;2019;
-marcusparis;Marcus Paris;test@test.com;p4sswort!;student;FALSE;2021;
+username;displayname;email;password;role;birthday;graduationYear;children
+norahparis;Norah Paris;test@test.com;p4sswort!;student;2000-01-01;2019;
+marcusparis;Marcus Paris;test@test.com;p4sswort!;student;2100-01-01;2021;
 seymourparis;Seymour Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
 candaceparis;Candace Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
-montyabrams;Monty Abrams;test@test.com;p4sswort!;student;FALSE;2019;
-penabrams;Pen Abrams;test@test.com;p4sswort!;student;FALSE;2021;
+montyabrams;Monty Abrams;test@test.com;p4sswort!;student;2100-01-01;2019;
+penabrams;Pen Abrams;test@test.com;p4sswort!;student;2100-01-01;2021;
 hermanabrams;Herman Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
 claudabrams;Claud Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
 orvillekeighley;Orville Keighley;test@test.com;p4sswort!;teacher;;;
@@ -60,7 +59,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2019,
-        isAdult: true,
+        birthday: "2000-01-01",
         role: Roles.STUDENT
       },
       {
@@ -70,7 +69,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2021,
-        isAdult: false,
+        birthday: "2100-01-01",
         role: Roles.STUDENT
       },
       {
@@ -80,7 +79,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.PARENT
       },
       {
@@ -90,7 +89,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.PARENT
       },
       {
@@ -100,7 +99,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2019,
-        isAdult: false,
+        birthday: "2100-01-01",
         role: Roles.STUDENT
       },
       {
@@ -110,7 +109,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2021,
-        isAdult: false,
+        birthday: "2100-01-01",
         role: Roles.STUDENT
       },
       {
@@ -120,7 +119,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.PARENT
       },
       {
@@ -130,7 +129,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.PARENT
       },
       {
@@ -140,7 +139,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.TEACHER
       },
       {
@@ -150,7 +149,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: undefined,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.TEACHER
       },
       {
@@ -160,7 +159,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2019,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.MANAGER
       },
       {
@@ -170,7 +169,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         graduationYear: 2021,
-        isAdult: false,
+        birthday: undefined,
         role: Roles.MANAGER
       }
     ];
@@ -186,7 +185,7 @@ describe("parse", () => {
         email: "sschüler@email.com",
         children: [],
         role: Roles.STUDENT,
-        isAdult: false,
+        birthday: "2100-04-02",
         graduationYear: 2019,
         password: undefined
       },
@@ -196,7 +195,7 @@ describe("parse", () => {
         email: "blehrer@email.de",
         children: [],
         role: Roles.TEACHER,
-        isAdult: false,
+        birthday: undefined,
         graduationYear: undefined,
         password: undefined
       },
@@ -206,7 +205,7 @@ describe("parse", () => {
         email: "pvater@arcor.de",
         children: ["schüler"],
         role: Roles.PARENT,
-        isAdult: false,
+        birthday: undefined,
         graduationYear: undefined,
         password: undefined
       },
@@ -214,7 +213,7 @@ describe("parse", () => {
         username: "leiter",
         displayname: "l.leiter",
         email: "leiter@email.de",
-        isAdult: false,
+        birthday: undefined,
         role: Roles.MANAGER,
         children: [],
         graduationYear: 2019,

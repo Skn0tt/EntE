@@ -1,12 +1,12 @@
 import { Roles, rolesArr } from "ente-types";
 import {
-  IsBoolean,
   IsIn,
   IsUUID,
   IsArray,
   ValidateNested,
   IsOptional,
-  IsInt
+  IsInt,
+  IsISO8601
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
@@ -16,6 +16,9 @@ import {
 } from "../validators";
 import { Type } from "class-transformer";
 import { EmptyWhen } from "../helpers/empty-when";
+import { UndefinedWhen } from "../helpers/undefined-when";
+import { isBefore } from "date-fns";
+import { roleHasBirthday } from "../roles";
 
 export class UserDto {
   @IsUUID() id: string;
@@ -39,5 +42,11 @@ export class UserDto {
   @IsInt()
   graduationYear?: number;
 
-  @IsBoolean() isAdult: boolean;
+  @UndefinedWhen((u: UserDto) => u.role !== Roles.STUDENT)
+  @IsISO8601()
+  birthday?: string;
 }
+
+export const userIsAdult = (u: UserDto) => {
+  return roleHasBirthday(u.role) && isBefore(u.birthday!, Date.now());
+};

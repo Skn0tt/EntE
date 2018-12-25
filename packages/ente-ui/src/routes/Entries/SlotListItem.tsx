@@ -18,10 +18,11 @@ import { connect, MapStateToPropsParam } from "react-redux";
 import { AppState, getUser, UserN } from "../../redux";
 import { CreateSlotDto } from "ente-types";
 import { Maybe } from "monet";
+import { format } from "date-fns";
 
 const getText = (s: CreateSlotDto): string => {
   if (!!s.date) {
-    const day = s.date.toLocaleDateString("de");
+    const day = format(s.date, "PP");
     return `${day}, ${s.from} - ${s.to}`;
   }
 
