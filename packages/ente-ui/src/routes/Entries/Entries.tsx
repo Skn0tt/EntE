@@ -28,8 +28,10 @@ import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe } from "monet";
-import { getByLanguage } from "ente-types";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { format } from "date-fns";
+import * as deLocale from "date-fns/locale/de";
+import * as enLocale from "date-fns/locale/en-GB";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -42,7 +44,8 @@ const useTranslation = makeTranslationHook({
       parents: "Parents"
     },
     yes: "Yes",
-    no: "No"
+    no: "No",
+    locale: enLocale
   },
   de: {
     headers: {
@@ -54,7 +57,8 @@ const useTranslation = makeTranslationHook({
       parents: "Eltern"
     },
     yes: "Ja",
-    no: "Nein"
+    no: "Nein",
+    locale: deLocale
   }
 });
 
@@ -146,8 +150,8 @@ export const Entries: React.FunctionComponent<Props> = props => {
           getUser(entry.get("studentId"))
             .some()
             .get("displayname"),
-          entry.get("date").toLocaleDateString(),
-          entry.get("createdAt").toLocaleString(),
+          format(entry.get("date"), "PP", { locale: lang.locale }),
+          format(entry.get("createdAt"), "PPpp", { locale: lang.locale }),
           entry.get("forSchool") ? lang.yes : lang.no,
           entry.get("signedManager") ? lang.yes : lang.no,
           entry.get("signedParent") ? lang.yes : lang.no

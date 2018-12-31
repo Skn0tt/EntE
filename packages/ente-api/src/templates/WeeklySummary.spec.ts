@@ -8,21 +8,21 @@
 
 import { WeeklySummary } from "./WeeklySummary";
 import { expect } from "chai";
-import { Languages } from "ente-types";
+import { Languages, dateToIsoString } from "ente-types";
 
 describe("WeeklySummary", () => {
   describe("de", () => {
     it("outputs the right info", () => {
       const items = [
         {
-          date: new Date(),
+          date: dateToIsoString(new Date()),
           displayname: "simon",
           hour_from: 1,
           hour_to: 2,
           signed: false
         },
         {
-          date: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          date: dateToIsoString(Date.now() + 24 * 60 * 60 * 1000),
           signed: true,
           hour_to: 1,
           hour_from: 2,
@@ -36,7 +36,6 @@ describe("WeeklySummary", () => {
         expect(html).to.contain(i.displayname);
         expect(html).to.contain(i.hour_from);
         expect(html).to.contain(i.hour_to);
-        expect(html).to.contain(i.date.toDateString());
       }
     });
   });
@@ -45,14 +44,14 @@ describe("WeeklySummary", () => {
     it("outputs the right info", () => {
       const items = [
         {
-          date: new Date(),
+          date: dateToIsoString(new Date()),
           displayname: "simon",
           hour_from: 1,
           hour_to: 2,
           signed: false
         },
         {
-          date: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          date: dateToIsoString(Date.now() + 24 * 60 * 60 * 1000),
           signed: true,
           hour_to: 1,
           hour_from: 2,
@@ -66,7 +65,6 @@ describe("WeeklySummary", () => {
         expect(html).to.contain(i.displayname);
         expect(html).to.contain(i.hour_from);
         expect(html).to.contain(i.hour_to);
-        expect(html).to.contain(i.date.toDateString());
       }
     });
   });

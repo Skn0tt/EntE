@@ -1,5 +1,12 @@
 import { transformUsers, transformEntries, transformSlots } from "./api";
-import { UserDto, Roles, EntryDto, SlotDto, Languages } from "ente-types";
+import {
+  UserDto,
+  Roles,
+  EntryDto,
+  SlotDto,
+  Languages,
+  dateToIsoString
+} from "ente-types";
 
 const simon: UserDto = {
   displayname: "Simon",
@@ -33,7 +40,7 @@ const benni: UserDto = {
 };
 
 const slot: SlotDto = {
-  date: new Date(),
+  date: dateToIsoString(0),
   from: 0,
   id: "jkdas",
   signed: false,
@@ -44,15 +51,15 @@ const slot: SlotDto = {
 };
 
 const entry: EntryDto = {
-  createdAt: new Date(),
-  date: new Date(),
+  createdAt: new Date(0),
+  date: dateToIsoString(0),
   forSchool: true,
   id: "jkdas",
   signedManager: false,
   signedParent: false,
   slots: [slot],
   student: simon,
-  updatedAt: new Date()
+  updatedAt: new Date(0)
 };
 
 describe("transformUsers", () => {

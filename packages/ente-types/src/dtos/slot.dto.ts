@@ -4,7 +4,8 @@ import {
   IsDate,
   IsInt,
   IsBoolean,
-  IsOptional
+  IsOptional,
+  IsISO8601
 } from "class-validator";
 import { UserDto } from "./user.dto";
 import { Type } from "class-transformer";
@@ -21,7 +22,7 @@ export class SlotDto {
   @ValidateNested()
   student: UserDto;
 
-  @IsDate() date: Date;
+  @IsISO8601() date: string;
 
   @IsInt() from: number;
 

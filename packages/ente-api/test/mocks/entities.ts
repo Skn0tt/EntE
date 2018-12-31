@@ -4,7 +4,6 @@ import {
   Roles,
   CreateEntryDto,
   SlotDto,
-  dateToIsoString,
   Languages
 } from "ente-types";
 import { RequestContextUser } from "../../src/helpers/request-context";
@@ -55,7 +54,7 @@ const benBongo: UserDto & RequestContextUser = withGetDto({
 
 const slot: SlotDto = {
   id: "1cf900d1-2c1e-4178-904a-23e327f11d05",
-  date: new Date(),
+  date: "2018-12-26",
   from: 3,
   to: 4,
   teacher: benBongo,
@@ -66,7 +65,7 @@ const slot: SlotDto = {
 
 const entry: EntryDto = {
   id: "1cf900d1-2c1e-4178-903a-23e327f11d05",
-  date: new Date(),
+  date: "2018-12-26",
   createdAt: new Date(),
   updatedAt: new Date(),
   forSchool: false,

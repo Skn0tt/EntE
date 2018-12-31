@@ -3,7 +3,8 @@ import {
   IsDate,
   IsOptional,
   IsBoolean,
-  ValidateNested
+  ValidateNested,
+  IsISO8601
 } from "class-validator";
 import { DateIsAfter } from "../helpers/date-is-after";
 import { SlotDto } from "./slot.dto";
@@ -13,15 +14,13 @@ import { Type } from "class-transformer";
 export class EntryDto {
   @IsUUID("4") id: string;
 
-  @IsDate()
-  @Type(() => Date)
-  date: Date;
+  @IsISO8601()
+  date: string;
 
-  @Type(() => Date)
   @IsOptional()
-  @IsDate()
+  @IsISO8601()
   @DateIsAfter("date")
-  dateEnd?: Date;
+  dateEnd?: string;
 
   @IsBoolean() forSchool: boolean;
 

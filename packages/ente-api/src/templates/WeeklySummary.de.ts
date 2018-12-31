@@ -1,11 +1,13 @@
 import * as Handlebars from "handlebars";
 import moment = require("moment");
 import { WeeklySummaryOptions, WeeklySummaryRowData } from "./WeeklySummary";
+import * as deLocale from "date-fns/locale/de";
+import { format } from "date-fns";
 
 const tableRow = (data: WeeklySummaryRowData) => `
   <tr>
     <td>${data.displayname}</td>
-    <td>${data.date.toDateString()}</td>
+    <td>${format(data.date, "PP", { locale: deLocale })}</td>
     <td>${data.hour_from}</td>
     <td>${data.hour_to}</td>
     <td>${data.signed ? "Entschuldigt" : "Ausstehend"}</td>
