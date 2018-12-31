@@ -21,6 +21,7 @@ ShallowWrapper {
           "role": "student",
           "childrenIds": Array [],
           "graduationYear": undefined,
+          "language": "en",
         },
       ]
     }
@@ -2621,6 +2622,7 @@ ShallowWrapper {
           "role": "student",
           "childrenIds": Array [],
           "graduationYear": undefined,
+          "language": "en",
         },
       ]
     }

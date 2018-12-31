@@ -19,6 +19,7 @@ import { EmptyWhen } from "../helpers/empty-when";
 import { UndefinedWhen } from "../helpers/undefined-when";
 import { isBefore } from "date-fns";
 import { roleHasBirthday } from "../roles";
+import { languagesArr, Languages } from "../languages";
 
 export class UserDto {
   @IsUUID() id: string;
@@ -30,6 +31,8 @@ export class UserDto {
   @CustomStringValidator(isValidEmail) email: string;
 
   @IsIn(rolesArr) role: Roles;
+
+  @IsIn(languagesArr) language: Languages;
 
   @IsOptional()
   @IsArray()

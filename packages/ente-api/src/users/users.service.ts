@@ -11,7 +11,10 @@ import {
   UserDto,
   CreateUserDto,
   PatchUserDto,
-  isValidUuid
+  isValidUuid,
+  isValidPatchUserDto,
+  Languages,
+  languagesArr
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -47,6 +50,12 @@ export enum FindOneUserFailure {
 export enum DeleteUserFailure {
   UserNotFound,
   ForbiddenForRole
+}
+
+export enum SetLanguageFailure {
+  UserNotFound,
+  ForbiddenForUser,
+  IllegalLanguage
 }
 
 @Injectable()
@@ -255,13 +264,41 @@ export class UsersService implements OnModuleInit {
     return Success(created);
   }
 
+  async setLanguage(
+    id: string,
+    language: Languages,
+    requestingUser: RequestContextUser,
+    checkIfUserExists = true
+  ): Promise<Validation<SetLanguageFailure, true>> {
+    const isValidLanguage = languagesArr.includes(language);
+    if (!isValidLanguage) {
+      return Fail(SetLanguageFailure.IllegalLanguage);
+    }
+
+    const isAdmin = requestingUser.role === Roles.ADMIN;
+    const isRequestingUser = requestingUser.id === id;
+    if (!(isAdmin || isRequestingUser)) {
+      return Fail(SetLanguageFailure.ForbiddenForUser);
+    }
+
+    if (checkIfUserExists) {
+      const userExists = await this.userRepo.hasId(id);
+      if (!userExists) {
+        return Fail(SetLanguageFailure.UserNotFound);
+      }
+    }
+
+    await this.userRepo.setLanguage(id, language);
+
+    return Success<SetLanguageFailure, true>(true);
+  }
+
   async patchUser(
     id: string,
     patch: PatchUserDto,
     requestingUser: RequestContextUser
   ): Promise<Validation<PatchUserFailure, UserDto>> {
-    const dtoIsLegal =
-      (await validate(patch, { forbidNonWhitelisted: true })).length === 0;
+    const dtoIsLegal = isValidPatchUserDto(patch);
     if (!dtoIsLegal) {
       return Fail(PatchUserFailure.IllegalPatch);
     }
@@ -299,6 +336,11 @@ export class UsersService implements OnModuleInit {
     if (!!patch.graduationYear) {
       await this.userRepo.setYear(id, patch.graduationYear);
       user.some().graduationYear = patch.graduationYear;
+    }
+
+    if (!!patch.language) {
+      await this.userRepo.setLanguage(id, patch.language);
+      user.some().language = patch.language;
     }
 
     if (!!patch.children) {

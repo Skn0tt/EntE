@@ -49,7 +49,7 @@ const config: Partial<ReduxConfig> = {
     link.click();
   },
   middlewares: [],
-  defaultLanguage: getConfig().LANGUAGE
+  defaultLanguage: getConfig().DEFAULT_LANGUAGE
 };
 
 const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();

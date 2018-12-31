@@ -1,5 +1,7 @@
-import { Some, None, Maybe } from "monet";
+import { Maybe, None, Some } from "monet";
 import { ensureNotEnding } from "./ensure-not-ending";
+import { Languages } from "ente-types";
+import * as _ from "lodash";
 const pack = require("../../package.json");
 
 interface IConfig {
@@ -8,6 +10,7 @@ interface IConfig {
   DSN: Maybe<string>;
   signerBaseUrl: string;
   version: string;
+  defaultLanguage: Languages;
   mail: {
     address: string;
     sender: string;
@@ -36,7 +39,7 @@ interface IConfig {
   };
 }
 
-const config = (): IConfig => {
+const config = ((): Readonly<IConfig> => {
   const envVars = process.env;
   const {
     BASE_URL,
@@ -51,19 +54,19 @@ const config = (): IConfig => {
     SMTP_PASSWORD,
     SMTP_SENDER,
     SMTP_POOL,
-    SMTP_ADDRESS
+    SMTP_ADDRESS,
+    DEFAULT_LANGUAGE,
+    SENTRY_DSN
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL!),
     production: envVars.NODE_ENV === "production",
+    defaultLanguage: DEFAULT_LANGUAGE as Languages,
     cron: {
       enable: ENABLE_CRON_JOBS === "true",
       weeklySummary: CRON_WEEKLY_SUMMARY!
     },
-    DSN:
-      envVars.SENTRY_DSN !== "undefined"
-        ? Some(envVars.SENTRY_DSN!)
-        : None<string>(),
+    DSN: Maybe.fromUndefined(SENTRY_DSN).filter(s => s !== "<nil>"),
     version: pack.version,
     signerBaseUrl: envVars.SIGNER_BASEURL!,
     mail: {
@@ -73,7 +76,7 @@ const config = (): IConfig => {
       password: SMTP_PASSWORD!,
       sender: SMTP_SENDER!,
       username: SMTP_USERNAME!,
-      pool: SMTP_POOL === "FALSE" ? false : true
+      pool: SMTP_POOL === "false" ? false : true
     },
     db: {
       host: envVars.MYSQL_HOST!,
@@ -89,54 +92,46 @@ const config = (): IConfig => {
       prefix: REDIS_PREFIX || "ENTE_API_"
     }
   };
+})();
+
+const getRedisConfig = () => config.redis;
+
+const getDefaultLanguage = () => config.defaultLanguage;
+
+const isDevMode = () => !config.production;
+
+const isProduction = () => config.production;
+
+const getMysqlConfig = () => config.db;
+
+const getBaseUrl = () => config.baseUrl;
+
+const getSentryDsn = () => config.DSN;
+
+const getConfig = () => config;
+
+const isCronEnabled = () => config.cron.enable;
+
+const getWeeklySummaryCron = () => config.cron.weeklySummary;
+
+const getSignerBaseUrl = () => config.signerBaseUrl;
+
+const getVersion = () => config.version;
+
+const getMailConfig = () => config.mail;
+
+export const Config = {
+  getRedisConfig,
+  isDevMode,
+  isProduction,
+  getMailConfig,
+  getMysqlConfig,
+  getBaseUrl,
+  getSentryDsn,
+  getConfig,
+  isCronEnabled,
+  getWeeklySummaryCron,
+  getSignerBaseUrl,
+  getVersion,
+  getDefaultLanguage
 };
-
-export class Config {
-  static getRedisConfig() {
-    return this.getConfig().redis;
-  }
-
-  static isDevMode() {
-    return !this.getConfig().production;
-  }
-
-  static isProduction() {
-    return this.getConfig().production;
-  }
-
-  static getMysqlConfig() {
-    return this.getConfig().db;
-  }
-
-  static getBaseUrl() {
-    return this.getConfig().baseUrl;
-  }
-
-  static getSentryDsn() {
-    return this.getConfig().DSN;
-  }
-
-  static getConfig() {
-    return config();
-  }
-
-  static isCronEnabled() {
-    return this.getConfig().cron.enable;
-  }
-
-  static getWeeklySummaryCron() {
-    return this.getConfig().cron.weeklySummary;
-  }
-
-  static getSignerBaseUrl() {
-    return this.getConfig().signerBaseUrl;
-  }
-
-  static getVersion() {
-    return this.getConfig().version;
-  }
-
-  static getMailConfig() {
-    return this.getConfig().mail;
-  }
-}

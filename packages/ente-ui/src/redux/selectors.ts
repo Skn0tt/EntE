@@ -98,6 +98,11 @@ export const getUsername: Selector<Maybe<string>> = state => {
   return authState.map(s => s.get("username"));
 };
 
+export const getUserId: Selector<Maybe<string>> = state => {
+  const authState = getAuthState(state);
+  return authState.map(s => s.get("userId"));
+};
+
 /**
  * Data
  */
