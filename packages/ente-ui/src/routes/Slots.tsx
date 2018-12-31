@@ -27,6 +27,9 @@ import {
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { format } from "date-fns";
+import * as enLocale from "date-fns/locale/en-GB";
+import * as deLocale from "date-fns/locale/de";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -41,7 +44,8 @@ const useTranslation = makeTranslationHook({
     },
     deleted: "Deleted",
     yes: "Yes",
-    no: "No"
+    no: "No",
+    locale: enLocale
   },
   de: {
     headers: {
@@ -55,7 +59,8 @@ const useTranslation = makeTranslationHook({
     },
     deleted: "Gelöscht",
     yes: "Ja",
-    no: "Nein"
+    no: "Nein",
+    locale: deLocale
   }
 });
 
@@ -118,7 +123,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
         getUser(slot.get("studentId"))
           .some()
           .get("displayname"),
-        slot.get("date").toLocaleDateString(),
+        format(slot.get("date"), "PP", { locale: lang.locale }),
         "" + slot.get("from"),
         "" + slot.get("to"),
         slot.get("forSchool") ? lang.yes : lang.no,

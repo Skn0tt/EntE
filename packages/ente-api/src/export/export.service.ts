@@ -2,7 +2,7 @@ import { UserRepo } from "../db/user.repo";
 import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
-import { Roles } from "ente-types";
+import { Roles, dateToIsoString } from "ente-types";
 import { Fail, Validation, Success, None } from "monet";
 import { Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
@@ -78,8 +78,8 @@ export class ExportService {
         ],
         rows: entries.map(e => [
           e.id,
-          e.date.toISOString(),
-          !!e.dateEnd ? e.dateEnd.toISOString() : "",
+          dateToIsoString(e.date),
+          !!e.dateEnd ? dateToIsoString(e.dateEnd) : "",
           e.student.username,
           "" + e.forSchool,
           e.createdAt.toISOString(),
@@ -87,7 +87,7 @@ export class ExportService {
           "" + e.signedParent,
           ...e.slots.map(
             s =>
-              `${s.date.toISOString()}, ${
+              `${dateToIsoString(s.date)}, ${
                 !!s.teacher ? s.teacher.username : "N/A"
               }, ${s.from}, ${s.to}`
           )
@@ -98,7 +98,7 @@ export class ExportService {
         headers: ["id", "date", "teacher", "student", "from", "to", "signed"],
         rows: slots.map(s => [
           s.id,
-          s.date.toISOString(),
+          dateToIsoString(s.date),
           !!s.teacher ? s.teacher.username : "N/A",
           s.student.username,
           "" + s.from,

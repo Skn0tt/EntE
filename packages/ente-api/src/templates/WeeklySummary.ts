@@ -18,7 +18,7 @@ export interface WeeklySummaryOptions {
 
 export interface WeeklySummaryRowData {
   displayname: string;
-  date: Date;
+  date: string;
   hour_from: number;
   hour_to: number;
   signed: boolean;

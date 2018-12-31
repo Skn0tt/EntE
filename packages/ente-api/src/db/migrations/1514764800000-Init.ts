@@ -200,16 +200,16 @@ const userChildrenJoinTable = new Table({
 
 export class Init1514764800000 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
-    queryRunner.createTable(userTable, false, true);
-    queryRunner.createTable(userChildrenJoinTable, false, true);
-    queryRunner.createTable(entryTable, false, true);
-    queryRunner.createTable(slotTable, false, true);
+    await queryRunner.createTable(userTable, false, true);
+    await queryRunner.createTable(userChildrenJoinTable, false, true);
+    await queryRunner.createTable(entryTable, false, true);
+    await queryRunner.createTable(slotTable, false, true);
   }
 
   async down(queryRunner: QueryRunner) {
-    queryRunner.dropTable(slotTable, false, true);
-    queryRunner.dropTable(entryTable, false, true);
-    queryRunner.dropTable(userChildrenJoinTable, false, true);
-    queryRunner.dropTable(userTable, false, true);
+    await queryRunner.dropTable(slotTable, false, true);
+    await queryRunner.dropTable(entryTable, false, true);
+    await queryRunner.dropTable(userChildrenJoinTable, false, true);
+    await queryRunner.dropTable(userTable, false, true);
   }
 }

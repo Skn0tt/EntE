@@ -92,7 +92,7 @@ export class SlotRepo {
     const result = new SlotDto();
 
     result.id = slot._id;
-    result.date = new Date(slot.date || slot.entry.date);
+    result.date = !!slot.entry.dateEnd ? slot.date! : slot.entry.date;
     result.from = slot.hour_from;
     result.to = slot.hour_to;
     result.teacher =

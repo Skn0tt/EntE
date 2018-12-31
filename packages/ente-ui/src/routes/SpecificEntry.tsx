@@ -63,6 +63,9 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MailIcon from "@material-ui/icons/MailRounded";
+import { format } from "date-fns";
+import * as enLocale from "date-fns/locale/en-GB";
+import * as deLocale from "date-fns/locale/de";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -78,8 +81,12 @@ const useTranslation = makeTranslationHook({
     createdAt: "Created:",
     forSchool: "For School:",
     date: "Date:",
-    dateRange: (start: Date, end: Date) =>
-      `From ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`,
+    dateRange: (start: string, end: string) =>
+      `From ${format(start, "PP", { locale: enLocale })} to ${format(
+        end,
+        "PP",
+        { locale: enLocale }
+      )}`,
     slotsTable: {
       title: "Slots",
       date: "Date",
@@ -91,6 +98,11 @@ const useTranslation = makeTranslationHook({
     signed: {
       manager: "Manager",
       parents: "Parents"
+    },
+    locale: enLocale,
+    titles: {
+      info: "Information",
+      signed: "Signed"
     }
   },
   de: {
@@ -107,8 +119,12 @@ const useTranslation = makeTranslationHook({
     createdAt: "Erstellt:",
     forSchool: "Schulisch:",
     date: "Datum:",
-    dateRange: (start: Date, end: Date) =>
-      `Von ${start.toLocaleDateString()} bis ${end.toLocaleDateString()}`,
+    dateRange: (start: string, end: string) =>
+      `Von ${format(start, "PP", { locale: deLocale })} bis ${format(
+        end,
+        "PP",
+        { locale: deLocale }
+      )}`,
     slotsTable: {
       title: "Stunden",
       date: "Datum",
@@ -120,6 +136,11 @@ const useTranslation = makeTranslationHook({
     signed: {
       manager: "Stufenleiter",
       parents: "Eltern"
+    },
+    locale: deLocale,
+    titles: {
+      info: "Info",
+      signed: "Signiert"
     }
   }
 });
@@ -287,7 +308,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                 )}
 
                 <Grid item>
-                  <Typography variant="h6">Info</Typography>
+                  <Typography variant="h6">{lang.titles.info}</Typography>
                   <Typography variant="body1">
                     <i>{lang.id}</i> {entry.get("id")} <br />
                     <i>{lang.createdAt}</i>{" "}
@@ -317,7 +338,9 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                     <i>{lang.date}</i>{" "}
                     {!!entry.get("dateEnd")
                       ? lang.dateRange(entry.get("date"), entry.get("dateEnd")!)
-                      : entry.get("date").toLocaleDateString()}{" "}
+                      : format(entry.get("date"), "PP", {
+                          locale: lang.locale
+                        })}
                     <br />
                   </Typography>
                 </Grid>
@@ -338,7 +361,9 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                       {getSlots(entry.get("slotIds")).map(slot => (
                         <TableRow key={slot.get("id")}>
                           <TableCell>
-                            {slot.get("date").toLocaleDateString("de")}
+                            {format(slot.get("date"), "PP", {
+                              locale: lang.locale
+                            })}
                           </TableCell>
                           <TableCell>{slot.get("from")}</TableCell>
                           <TableCell>{slot.get("to")}</TableCell>
@@ -359,7 +384,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
 
                 {/* Signed */}
                 <Grid item>
-                  <Typography variant="h6">Signiert</Typography>
+                  <Typography variant="h6">{lang.titles.signed}</Typography>
                   <List>
                     {/* Admin */}
                     <ListItem>

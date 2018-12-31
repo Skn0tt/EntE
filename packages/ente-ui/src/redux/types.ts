@@ -7,7 +7,14 @@
  */
 
 import { Map, Record, Set } from "immutable";
-import { Roles, UserDto, EntryDto, SlotDto, Languages } from "ente-types";
+import {
+  Roles,
+  UserDto,
+  EntryDto,
+  SlotDto,
+  Languages,
+  dateToIsoString
+} from "ente-types";
 import { Action } from "redux";
 import { getConfig } from "./config";
 
@@ -73,8 +80,8 @@ export const roleHasGradYear = (r: Roles) =>
 export type EntryN = Record<EntryDtoNormalised>;
 export const EntryN = Record<EntryDtoNormalised>(
   {
-    createdAt: new Date(),
-    date: new Date(),
+    createdAt: new Date(0),
+    date: dateToIsoString(0),
     forSchool: false,
     id: "",
     signedManager: false,
@@ -91,7 +98,7 @@ export const EntryN = Record<EntryDtoNormalised>(
 export type SlotN = Record<SlotDtoNormalised>;
 export const SlotN = Record<SlotDtoNormalised>(
   {
-    date: new Date(),
+    date: dateToIsoString(0),
     from: 0,
     id: "",
     signed: false,

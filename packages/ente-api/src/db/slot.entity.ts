@@ -21,7 +21,7 @@ export class Slot {
   @PrimaryGeneratedColumn("uuid") readonly _id: string;
 
   @Column("date", { nullable: true })
-  readonly date: Date | null;
+  readonly date: string | null;
 
   @Column("int", { nullable: false })
   @IsInt()

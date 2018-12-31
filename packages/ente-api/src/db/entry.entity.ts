@@ -29,10 +29,10 @@ export class Entry {
    */
   @PrimaryGeneratedColumn("uuid") readonly _id: string;
 
-  @Column("datetime") readonly date: Date;
+  @Column("date") readonly date: string;
 
-  @Column("datetime", { nullable: true })
-  readonly dateEnd: Date | null;
+  @Column("date", { nullable: true })
+  readonly dateEnd: string | null;
 
   @Column("tinyint")
   @IsBoolean()
