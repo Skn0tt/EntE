@@ -5,7 +5,6 @@ import { SlotsService } from "./slots.service";
 import { Success } from "monet";
 import { mocks } from "../../test/mocks/entities";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
-import { RequestContextUser } from "../helpers/request-context";
 
 const slotsServiceMock: SlotsService = {
   async findAll() {

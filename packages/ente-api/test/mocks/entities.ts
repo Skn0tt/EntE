@@ -4,7 +4,8 @@ import {
   Roles,
   CreateEntryDto,
   SlotDto,
-  dateToIsoString
+  dateToIsoString,
+  Languages
 } from "ente-types";
 import { RequestContextUser } from "../../src/helpers/request-context";
 import { Some, Maybe } from "monet";
@@ -23,6 +24,7 @@ const admin: UserDto & RequestContextUser = withGetDto({
   email: "admin@gmail.com",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d05",
   birthday: undefined,
+  language: Languages.ENGLISH,
   role: Roles.ADMIN,
   username: "admin"
 });
@@ -34,6 +36,7 @@ const tomTallis: UserDto & RequestContextUser = withGetDto({
   email: "tom@tallis.de",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d05",
   birthday: "2000-02-01",
+  language: Languages.ENGLISH,
   role: Roles.STUDENT,
   username: "tomtallis"
 });
@@ -45,6 +48,7 @@ const benBongo: UserDto & RequestContextUser = withGetDto({
   email: "bongo@my-school.com",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d06",
   birthday: undefined,
+  language: Languages.ENGLISH,
   role: Roles.TEACHER,
   username: "benbongo"
 });

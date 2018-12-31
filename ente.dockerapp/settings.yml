@@ -1,32 +1,32 @@
 config:
   # baseUrl:
-  language: en
+  defaultLanguage: en
   instanceInfo:
-    en: ""
-    de: ""
+    en: ~
+    de: ~
   port: 80
   rotation_period:
     keys: 900
     ui: 300
 
 sentry: # Override when using Sentry
-  api: undefined
-  ui: undefined
+  api: ~
+  ui: ~
 
 # mysql:
-  # host:
-  # port:
-  # username:
-  # password:
-  # database:
+# host:
+# port:
+# username:
+# password:
+# database:
 
 # smtp:
-  # host:
-  # port:
-  # username:
-  # password:
-  # sender:
-  # address:
+# host:
+# port:
+# username:
+# password:
+# sender:
+# address:
 
 debug:
   traefik_dashboard_port: 8080

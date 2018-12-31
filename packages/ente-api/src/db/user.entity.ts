@@ -12,7 +12,9 @@ import {
   isValidUsername,
   isValidDisplayname,
   isValidEmail,
-  CustomStringValidator
+  CustomStringValidator,
+  Languages,
+  languagesArr
 } from "ente-types";
 import {
   Entity,
@@ -51,6 +53,10 @@ export class User {
   @Column("date", { nullable: true })
   @IsISO8601()
   birthday: string;
+
+  @Column("varchar", { nullable: false })
+  @IsIn(languagesArr)
+  language: Languages;
 
   @Column("varchar", { length: 80 })
   @IsIn(rolesArr)

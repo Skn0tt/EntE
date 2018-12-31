@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added: UI now persists language setting to server so that emails can be sent accordingly
 - Use birthday instead of "isAdult" field to determine wether user is adult
 - Added Email Button to Entry ([#222](https://gitlab.com/Skn0tt/EntE/issues/222))
 - Added Invitation Link ([#171](https://gitlab.com/Skn0tt/EntE/issues/171))

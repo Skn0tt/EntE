@@ -10,6 +10,7 @@ import {
 import { isValidPassword } from "../validators/auth";
 import { EmptyWhen } from "../helpers/empty-when";
 import { IsIntWhen } from "../helpers/is-int-when";
+import { languagesArr, Languages } from "../languages";
 
 export class CreateUserDto {
   @CustomStringValidator(isValidUsername, { message: "Illegal username" })
@@ -24,6 +25,10 @@ export class CreateUserDto {
 
   @CustomStringValidator(isValidEmail, { message: "Illegal email address" })
   email: string;
+
+  @IsOptional()
+  @IsIn(languagesArr)
+  language?: Languages;
 
   @IsDefined()
   @IsIn(rolesArr)

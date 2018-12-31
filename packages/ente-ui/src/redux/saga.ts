@@ -70,7 +70,8 @@ import {
   PATCH_FORSCHOOL_REQUEST,
   DELETE_USER_REQUEST,
   DELETE_ENTRY_REQUEST,
-  DOWNLOAD_EXCEL_EXPORT_REQUEST
+  DOWNLOAD_EXCEL_EXPORT_REQUEST,
+  SET_LANGUAGE
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -392,6 +393,16 @@ function* setPasswordSaga(action: Action<INewPassword>) {
   }
 }
 
+function* syncLanguageSaga(action: Action<Languages>) {
+  try {
+    const userId: Maybe<string> = yield select(selectors.getUserId);
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.setLanguage, userId.some(), action.payload!, token.some());
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<string>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -409,6 +420,7 @@ function* saga() {
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
   yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);
   yield takeEvery(DOWNLOAD_EXCEL_EXPORT_REQUEST, downloadExcelExportSaga);
+  yield takeEvery(SET_LANGUAGE, syncLanguageSaga);
   yield takeEvery<Action<CreateEntryDto>>(
     CREATE_ENTRY_REQUEST,
     createEntrySaga

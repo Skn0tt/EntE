@@ -6,6 +6,7 @@ import {
   isValidEmail,
   isValidUuidOrUsername
 } from "../validators";
+import { languagesArr, Languages } from "../languages";
 
 export class PatchUserDto {
   @IsOptional()
@@ -19,6 +20,10 @@ export class PatchUserDto {
   @IsOptional()
   @IsIn(rolesArr)
   role?: Roles;
+
+  @IsOptional()
+  @IsIn(languagesArr)
+  language?: Languages;
 
   @IsOptional()
   @CustomStringValidator(isValidUuidOrUsername, { each: true })

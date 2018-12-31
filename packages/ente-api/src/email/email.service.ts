@@ -3,7 +3,7 @@ import {
   WeeklySummaryRowData,
   WeeklySummary
 } from "../templates/WeeklySummary";
-import { UserDto, SlotDto, Languages } from "ente-types";
+import { UserDto, SlotDto } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { NodemailerService } from "../infrastructure/nodemailer.service";
 import { EmailTransportService } from "../infrastructure/email-transport.service";
@@ -22,18 +22,23 @@ export class EmailService {
   ) {}
 
   async dispatchSignRequest(link: string, recipients: UserDto[]) {
-    const { html, subject } = await SignRequest(link, Languages.GERMAN);
-    await this.emailTransport.sendMail({
-      recipients: recipients.map(r => r.email),
-      body: {
-        html
-      },
-      subject
-    });
-    this.logger.log(
-      `Successfully dispatched SignRequest to ${JSON.stringify(
-        recipients.map(r => [r.username, r.email])
-      )}`
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await SignRequest(link, recipient.language);
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched SignRequest to ${JSON.stringify([
+            recipient.username,
+            recipient.email
+          ])}`
+        );
+      })
     );
   }
 
@@ -42,7 +47,7 @@ export class EmailService {
       recipients.map(async recipient => {
         const { html, subject } = await SignedInformation(
           link,
-          Languages.GERMAN
+          recipient.language
         );
         await this.emailTransport.sendMail({
           recipients: [recipient.email],
@@ -52,9 +57,10 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched SignedInformation to ${JSON.stringify(
-            recipients.map(r => [r.username, r.email])
-          )}`
+          `Successfully dispatched SignedInformation to ${JSON.stringify([
+            recipient.username,
+            recipient.email
+          ])}`
         );
       })
     );
@@ -64,7 +70,7 @@ export class EmailService {
     const { subject, html } = await PasswordResetLink(
       link,
       user.username,
-      Languages.GERMAN
+      user.language
     );
     await this.emailTransport.sendMail({
       recipients: [user.email],
@@ -81,7 +87,7 @@ export class EmailService {
   }
 
   async dispatchInvitationLink(link: string, user: UserDto) {
-    const { subject, html } = await InvitationLink(link, Languages.GERMAN);
+    const { subject, html } = await InvitationLink(link, user.language);
     await this.emailTransport.sendMail({
       recipients: [user.email],
       body: {
@@ -99,7 +105,7 @@ export class EmailService {
   async dispatchPasswordResetSuccess(user: UserDto) {
     const { subject, html } = await PasswordResetSuccess(
       user.username,
-      Languages.GERMAN
+      user.language
     );
     await this.emailTransport.sendMail({
       recipients: [user.email],
@@ -123,7 +129,7 @@ export class EmailService {
       hour_to: s.to,
       signed: s.signed
     }));
-    const { html, subject } = await WeeklySummary(data, Languages.GERMAN);
+    const { html, subject } = await WeeklySummary(data, teacher.language);
     await this.emailTransport.sendMail({
       recipients: [teacher.email],
       body: {

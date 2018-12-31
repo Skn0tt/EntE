@@ -24,7 +24,8 @@ import {
   EntryDto,
   SlotDto,
   JwtTokenPayload,
-  PatchEntryDto
+  PatchEntryDto,
+  Languages
 } from "ente-types";
 import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
@@ -163,6 +164,7 @@ const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
     displayname: payload.displayname,
     username: payload.username,
     children: payload.childrenIds,
+    userId: payload.id,
     exp: new Date((payload as any).exp * 1000)
   });
 };
@@ -304,8 +306,17 @@ export const updateUser = async (
   return transformUsers(response);
 };
 
-const put = async <T, B = {}>(url: string, token: string, body?: B) => {
-  const response = await axios.put<T>(url, body, axiosStandardParams(token));
+const put = async <T, B = {}>(
+  url: string,
+  token: string,
+  body?: B,
+  config: AxiosRequestConfig = {}
+) => {
+  const response = await axios.put<T>(
+    url,
+    body,
+    _.merge(axiosStandardParams(token), config)
+  );
   return response.data;
 };
 
@@ -321,6 +332,24 @@ export const signEntry = async (
     }
   );
   return transformEntries(response);
+};
+
+export const setLanguage = async (
+  id: string,
+  language: Languages,
+  token: string
+): Promise<void> => {
+  await put<void, Languages>(
+    `${getBaseUrl()}/users/${id}/language?checkId=false`,
+    token,
+    language,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
 };
 
 export const unsignEntry = async (

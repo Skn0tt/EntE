@@ -188,7 +188,8 @@ const reducer = handleActions<AppState | undefined, any>(
     // ## LOGOUT
     [LOGOUT]: (state?: AppState): AppState =>
       new AppState({
-        pendingActions: state!.get("pendingActions")
+        pendingActions: state!.get("pendingActions"),
+        language: state!.get("language")
       }),
 
     // ## RESET_PASSWORD

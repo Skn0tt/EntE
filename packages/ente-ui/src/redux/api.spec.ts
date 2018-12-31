@@ -1,5 +1,5 @@
 import { transformUsers, transformEntries, transformSlots } from "./api";
-import { UserDto, Roles, EntryDto, SlotDto } from "ente-types";
+import { UserDto, Roles, EntryDto, SlotDto, Languages } from "ente-types";
 
 const simon: UserDto = {
   displayname: "Simon",
@@ -8,10 +8,12 @@ const simon: UserDto = {
   id: "abc",
   role: Roles.STUDENT,
   children: [],
-  username: "skn0tt"
+  username: "skn0tt",
+  language: Languages.ENGLISH
 };
 const susanne: UserDto = {
   displayname: "Susanne",
+  language: Languages.ENGLISH,
   children: [simon],
   email: "susanne@simonknott.de",
   id: "asdaj",
@@ -21,6 +23,7 @@ const susanne: UserDto = {
 };
 const benni: UserDto = {
   displayname: "Benni",
+  language: Languages.ENGLISH,
   children: [],
   email: "benni@simonknott.de",
   id: "asjd",

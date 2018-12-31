@@ -19,7 +19,7 @@ type Config = {
   SENTRY_DSN?: string;
   ROTATION_PERIOD: number;
   ALLOW_INSECURE: boolean;
-  LANGUAGE: Languages;
+  DEFAULT_LANGUAGE: Languages;
   INSTANCE_INFO_DE: Maybe<string>;
   INSTANCE_INFO_EN: Maybe<string>;
   VERSION: string;
@@ -75,7 +75,7 @@ const readConfig = (): Config => {
     INSTANCE_INFO_EN: instanceInfoEn,
     SENTRY_DSN: SENTRY_DSN !== "undefined" ? SENTRY_DSN : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
-    LANGUAGE: c.LANG,
+    DEFAULT_LANGUAGE: c.DEFAULT_LANGUAGE,
     VERSION: pack.version as string
   };
 };

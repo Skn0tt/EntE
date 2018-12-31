@@ -55,7 +55,8 @@ export const UserN = Record<UserDtoNormalised>(
     birthday: undefined,
     role: Roles.STUDENT,
     childrenIds: [],
-    graduationYear: undefined
+    graduationYear: undefined,
+    language: getConfig().defaultLanguage
   },
   "UserN"
 );
@@ -114,6 +115,7 @@ interface IAuthState {
   username: string;
   role: Roles;
   children: string[];
+  userId: string;
 }
 
 export type AuthState = Record<IAuthState>;
@@ -124,7 +126,8 @@ export const AuthState = Record<IAuthState>(
     exp: new Date(),
     role: Roles.STUDENT,
     username: "",
-    token: ""
+    token: "",
+    userId: ""
   },
   "AuthState"
 );

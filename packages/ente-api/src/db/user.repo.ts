@@ -9,7 +9,8 @@ import {
   isValidUuid,
   roleHasGraduationYear,
   roleHasChildren,
-  roleHasBirthday
+  roleHasBirthday,
+  Languages
 } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
@@ -17,6 +18,7 @@ import {
   PaginationInformation,
   withPagination
 } from "../helpers/pagination-info";
+import { Config } from "../helpers/config";
 
 interface UserAndPasswordHash {
   user: UserDto;
@@ -112,6 +114,8 @@ export class UserRepo {
   }
 
   async create(...users: CreateUserDtoWithHash[]): Promise<UserDto[]> {
+    const defaultLanguage = Config.getDefaultLanguage();
+
     return this.repo.manager.transaction(async manager => {
       const [parents, withoutChildren] = _.partition<CreateUserDtoWithHash>(
         users,
@@ -134,6 +138,7 @@ export class UserRepo {
               ),
               displayname: user.displayname,
               birthday: user.birthday,
+              language: user.language || defaultLanguage,
               password: hash,
               role: user.role,
               username: user.username,
@@ -181,6 +186,10 @@ export class UserRepo {
 
   async setEmail(id: string, email: string) {
     await this.repo.update(id, { email });
+  }
+
+  async setLanguage(id: string, language: Languages) {
+    await this.repo.update(id, { language });
   }
 
   async setYear(
@@ -255,7 +264,7 @@ export class UserRepo {
     );
   }
 
-  async hasIds(id: string): Promise<boolean> {
+  async hasId(id: string): Promise<boolean> {
     const amount = await this.repo.count({ where: { _id: id } });
     return amount !== 0;
   }
@@ -335,6 +344,7 @@ export class UserRepo {
     result.role = user.role;
     result.username = user.username;
     result.graduationYear = user.graduationYear;
+    result.language = user.language;
 
     return result;
   }

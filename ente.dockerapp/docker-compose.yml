@@ -1,7 +1,6 @@
-version: '3.6'
+version: "3.6"
 
 services:
-
   ui:
     image: registry.gitlab.com/skn0tt/ente/ui:${UI_TAG}
     restart: on-failure
@@ -12,7 +11,7 @@ services:
       SENTRY_DSN: ${sentry.ui}
       ROTATION_PERIOD: ${config.rotation_period.ui}
       ALLOW_INSECURE: ${debug.allow_http}
-      LANG: ${config.language}
+      DEFAULT_LANGUAGE: ${config.defaultLanguage}
       INSTANCE_INFO_DE: ${config.instanceInfo.de}
       INSTANCE_INFO_EN: ${config.instanceInfo.en}
       CONFIG_VARS: SENTRY_DSN,ROTATION_PERIOD,ALLOW_INSECURE,LANG,INSTANCE_INFO_DE,INSTANCE_INFO_EN
@@ -41,6 +40,7 @@ services:
       MYSQL_USERNAME: ${mysql.username}
       MYSQL_PASSWORD: ${mysql.password}
       MYSQL_TIMEZONE: ${mysql.timezone}
+      DEFAULT_LANGUAGE: ${config.defaultLanguage}
       SMTP_HOST: ${smtp.host}
       SMTP_PORT: ${smtp.port}
       SMTP_USERNAME: ${smtp.username}
@@ -92,4 +92,4 @@ networks:
   ente_bridge:
     driver: bridge
     driver_opts:
-        com.docker.network.bridge.name: ente_bridge
+      com.docker.network.bridge.name: ente_bridge
