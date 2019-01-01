@@ -14,7 +14,9 @@ import {
   isValidUuid,
   isValidPatchUserDto,
   Languages,
-  languagesArr
+  languagesArr,
+  TEACHING_ROLES,
+  roleIsTeaching
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -114,21 +116,23 @@ export class UsersService implements OnModuleInit {
         const children = await this.userRepo.findByIds(
           ...requestingUser.childrenIds
         );
-        const teachers = await this.userRepo.findByRole(Roles.TEACHER);
+        const teachingUsers = await this.userRepo.findByRoles(
+          ...TEACHING_ROLES
+        );
         return Success([
           ...children,
-          ...teachers,
+          ...teachingUsers,
           (await requestingUser.getDto()).some()
         ]);
 
       case Roles.STUDENT:
         return Success([
-          ...(await this.userRepo.findByRole(Roles.TEACHER)),
+          ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),
           (await requestingUser.getDto()).some()
         ]);
 
       case Roles.TEACHER:
-        return Fail(FindAllUsersFailure.ForbiddenForRole);
+        return Success([(await requestingUser.getDto()).some()]);
     }
   }
 
@@ -160,8 +164,14 @@ export class UsersService implements OnModuleInit {
 
         switch (_requestingUser.role) {
           // Already Checked for Parent above
-          case Roles.PARENT:
-            return Success(u);
+          case Roles.PARENT: {
+            const isChild = _requestingUser.childrenIds.includes(u.id);
+            const isTeaching = roleIsTeaching(u.role);
+
+            return isChild || isTeaching
+              ? Success(u)
+              : Fail(FindOneUserFailure.ForbiddenForUser);
+          }
 
           case Roles.MANAGER:
             const requestingUser = (await _requestingUser.getDto()).some();
@@ -174,11 +184,12 @@ export class UsersService implements OnModuleInit {
           case Roles.ADMIN:
             return Success(u);
 
-          case Roles.STUDENT:
-            const isTeacher = u.role === Roles.TEACHER;
-            return isTeacher
+          case Roles.STUDENT: {
+            const isTeaching = roleIsTeaching(u.role);
+            return isTeaching
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
+          }
         }
 
         throw new Error("Not reachable");
@@ -232,7 +243,7 @@ export class UsersService implements OnModuleInit {
     const [uuids, usernames] = _.partition(children, isValidUuid);
 
     const uuidsExist = await this.userRepo.hasUsersWithRole(
-      Roles.STUDENT,
+      [Roles.STUDENT],
       ...uuids
     );
     if (!uuidsExist) {
@@ -244,7 +255,7 @@ export class UsersService implements OnModuleInit {
       studentUsernamesToCreate
     );
     const usernamesNotFromCreationExist = await this.userRepo.hasUsersWithRole(
-      Roles.STUDENT,
+      [Roles.STUDENT],
       ...usernamesNotFromCreation
     );
     if (!usernamesNotFromCreationExist) {
@@ -345,7 +356,7 @@ export class UsersService implements OnModuleInit {
 
     if (!!patch.children) {
       const childrenExist = this.userRepo.hasUsersWithRole(
-        Roles.STUDENT,
+        [Roles.STUDENT],
         ...patch.children
       );
 

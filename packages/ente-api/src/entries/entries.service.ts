@@ -7,7 +7,8 @@ import {
   CreateEntryDto,
   PatchEntryDto,
   UserDto,
-  userIsAdult
+  userIsAdult,
+  TEACHING_ROLES
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -180,7 +181,7 @@ export class EntriesService {
     entry.studentId = entry.studentId || requestingUser.id;
 
     const teachersExist = await this.userRepo.hasUsersWithRole(
-      Roles.TEACHER,
+      TEACHING_ROLES,
       ...entry.slots.map(s => s.teacherId)
     );
     if (!teachersExist) {

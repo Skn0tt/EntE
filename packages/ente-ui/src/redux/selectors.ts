@@ -14,7 +14,8 @@ import {
   EntryN,
   SlotN,
   roleHasChildren,
-  AuthState
+  AuthState,
+  userIsTeaching
 } from "./types";
 import { createSelector } from "reselect";
 import { Roles, Languages } from "ente-types";
@@ -136,6 +137,11 @@ export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
 export const getTeachers = createSelector(
   [getUsers],
   users => users.filter(userIsTeacher)
+);
+
+export const getTeachingUsers = createSelector(
+  [getUsers],
+  users => users.filter(userIsTeaching)
 );
 
 export const getStudents = createSelector(

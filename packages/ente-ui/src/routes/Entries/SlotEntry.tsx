@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect, MapStateToPropsParam } from "react-redux";
 import { Grid, TextField, Button } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import { getTeachers, AppState, UserN } from "../../redux";
+import { AppState, UserN, getTeachingUsers } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
@@ -56,14 +56,14 @@ interface SlotEntryOwnProps {
 }
 
 interface SlotEntryStateProps {
-  teachers: UserN[];
+  teachingUsers: UserN[];
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotEntryStateProps,
   SlotEntryOwnProps,
   AppState
 > = state => ({
-  teachers: getTeachers(state)
+  teachingUsers: getTeachingUsers(state)
 });
 
 type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
@@ -71,7 +71,13 @@ type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
 class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
 const SlotEntry: React.FC<SlotEntryProps> = props => {
-  const { defaultDate, datePickerConfig, onAdd, isMultiDay, teachers } = props;
+  const {
+    defaultDate,
+    datePickerConfig,
+    onAdd,
+    isMultiDay,
+    teachingUsers: teachers
+  } = props;
   const translation = useTranslation();
 
   const [from, setFrom] = React.useState(1);

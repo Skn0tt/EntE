@@ -72,8 +72,12 @@ export class UserRepo {
   }
 
   async findByRole(role: Roles): Promise<UserDto[]> {
+    return this.findByRoles(role);
+  }
+
+  async findByRoles(...roles: Roles[]): Promise<UserDto[]> {
     const users = await this._userQueryWithChildren()
-      .where("user.role = :role", { role })
+      .where("user.role IN (:roles)", { roles })
       .getMany();
     return users.map(u => UserRepo.toDto(u));
   }
@@ -298,7 +302,7 @@ export class UserRepo {
     return needed === found;
   }
 
-  async hasUsersWithRole(role: Roles, ...ids: string[]) {
+  async hasUsersWithRole(roles: Roles[], ...ids: string[]) {
     if (ids.length === 0) {
       return true;
     }
@@ -307,7 +311,7 @@ export class UserRepo {
     const count = await this.repo
       .createQueryBuilder("user")
       .whereInIds(uniqueIds)
-      .andWhere("user.role = :role", { role })
+      .andWhere("user.role IN (:roles)", { roles })
       .getCount();
 
     return count === uniqueIds.length;

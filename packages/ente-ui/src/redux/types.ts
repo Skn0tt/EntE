@@ -13,6 +13,7 @@ import {
   EntryDto,
   SlotDto,
   Languages,
+  roleIsTeaching,
   dateToIsoString
 } from "ente-types";
 import { Action } from "redux";
@@ -72,6 +73,7 @@ export const userIsManager = (u: UserN) => u.get("role") === Roles.MANAGER;
 export const userIsParent = (u: UserN) => u.get("role") === Roles.PARENT;
 export const userIsStudent = (u: UserN) => u.get("role") === Roles.STUDENT;
 export const userIsTeacher = (u: UserN) => u.get("role") === Roles.TEACHER;
+export const userIsTeaching = (u: UserN) => roleIsTeaching(u.get("role"));
 export const userHasChildren = (u: UserN) => userIsParent(u);
 export const roleHasChildren = (r: Roles) => r === Roles.PARENT;
 export const roleHasGradYear = (r: Roles) =>
