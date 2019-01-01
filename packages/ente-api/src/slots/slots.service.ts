@@ -1,7 +1,13 @@
 import { Injectable, Inject, LoggerService } from "@nestjs/common";
 import { Validation, Fail, Success } from "monet";
 import { SlotRepo } from "../db/slot.repo";
-import { Roles, SlotDto, UserDto, daysBeforeNow } from "ente-types";
+import {
+  Roles,
+  SlotDto,
+  UserDto,
+  daysBeforeNow,
+  TEACHING_ROLES
+} from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
@@ -111,9 +117,9 @@ export class SlotsService {
 
   async dispatchWeeklySummary() {
     this.logger.log("Starting do dispatch the weekly summary.");
-    const teachers = await this.userRepo.findByRole(Roles.TEACHER);
+    const teachingUsers = await this.userRepo.findByRoles(...TEACHING_ROLES);
     await Promise.all(
-      teachers.map(async teacher => {
+      teachingUsers.map(async teacher => {
         const slots = await this.slotRepo.findHavingTeacherUpdatedSince(
           teacher.id,
           daysBeforeNow(14)

@@ -39,7 +39,6 @@ import {
   getChildren,
   isParent,
   getTeachers,
-  getUser,
   UserN
 } from "../../redux";
 import {
@@ -92,11 +91,6 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-const getToday = (): string => dateToIsoString(Date.now());
-
-const nextDay = (d: string | string | number) => dateToIsoString(addDays(d, 1));
-const twoWeeksBefore = (d: Date | string | number) => subDays(d, 14);
-
 interface CreateEntryOwnProps {
   onClose(): void;
   show: boolean;
@@ -105,8 +99,6 @@ interface CreateEntryOwnProps {
 interface CreateEntryStateProps {
   isParent: boolean;
   children: Maybe<UserN[]>;
-  teachers: UserN[];
-  getUser(id: string): Maybe<UserN>;
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateEntryStateProps,
@@ -114,9 +106,7 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   children: getChildren(state),
-  isParent: isParent(state).some(),
-  teachers: getTeachers(state),
-  getUser: id => getUser(id)(state)
+  isParent: isParent(state).some()
 });
 
 interface CreateEntryDispatchProps {

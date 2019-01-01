@@ -16,9 +16,13 @@ export enum Roles {
 
 export const rolesArr = Object.keys(Roles).map(key => (Roles as any)[key]);
 
+export const TEACHING_ROLES = [Roles.TEACHER, Roles.MANAGER];
+
 export const roleHasGraduationYear = (role: Roles) =>
   [Roles.STUDENT, Roles.MANAGER].includes(role);
+
 export const roleHasChildren = (role: Roles) => role === Roles.PARENT;
-export const roleTeaches = (role: Roles) =>
-  [Roles.MANAGER, Roles.TEACHER].includes(role);
+
+export const roleIsTeaching = (role: Roles) => TEACHING_ROLES.includes(role);
+
 export const roleHasBirthday = (role: Roles) => role === Roles.STUDENT;

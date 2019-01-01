@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Managers are now selectable as teachers so they no longer need an additional user account ([#162](https://gitlab.com/Skn0tt/EntE/issues/162))
 - Changed type of "date" and "dateEnd" in database to `date` (from `datetime`)
 - Added: UI now persists language setting to server so that emails can be sent accordingly
 - Use birthday instead of "isAdult" field to determine wether user is adult
