@@ -59,10 +59,8 @@ type ChildrenInputProps = ChildrenInputOwnProps &
   WithTranslation<typeof translation.en>;
 
 interface State {
-  selected: UserN;
+  selected?: UserN;
 }
-
-class SearchableDropdownUser extends SearchableDropdown<UserN> {}
 
 /**
  * # Component
@@ -85,14 +83,15 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
     }
   }
 
-  handleSelectChild = (u: UserN) =>
+  handleSelectChild = (u?: UserN) =>
     this.setState({
       selected: u
     });
+
   handleAdd = () =>
     this.props.onChange([
       ...(this.props.children as UserN[]),
-      this.state.selected
+      ...(!!this.state.selected ? [this.state.selected] : [])
     ]);
 
   handleDelete = (index: number) =>
@@ -125,7 +124,7 @@ export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
         {/* Add Children */}
         <Grid item container>
           <Grid item xs={11}>
-            <SearchableDropdownUser
+            <SearchableDropdown<UserN>
               items={students.filter(u => !includes(children)(u))}
               onChange={this.handleSelectChild}
               itemToString={i => i.get("displayname")}

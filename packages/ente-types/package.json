@@ -18,7 +18,7 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-    "class-transformer": "^0.1.10",
+    "class-transformer": "0.1.10",
     "class-validator": "^0.9.1",
     "date-fns": "^2.0.0-alpha.26"
   }

@@ -103,7 +103,7 @@ ShallowWrapper {
             item={true}
             xs={11}
           >
-            <SearchableDropdownUser
+            <SearchableDropdown
               helperText="Add children"
               includeItem={[Function]}
               itemToString={[Function]}
@@ -302,7 +302,7 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <SearchableDropdownUser
+              <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -351,7 +351,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <SearchableDropdownUser
+              "children": <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -501,7 +501,7 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <SearchableDropdownUser
+              <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -700,7 +700,7 @@ ShallowWrapper {
                 item={true}
                 xs={11}
               >
-                <SearchableDropdownUser
+                <SearchableDropdown
                   helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
@@ -749,7 +749,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <SearchableDropdownUser
+                "children": <SearchableDropdown
                   helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
@@ -969,7 +969,7 @@ ShallowWrapper {
             item={true}
             xs={11}
           >
-            <SearchableDropdownUser
+            <SearchableDropdown
               helperText="Add children"
               includeItem={[Function]}
               itemToString={[Function]}
@@ -1153,7 +1153,7 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <SearchableDropdownUser
+              <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -1187,7 +1187,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <SearchableDropdownUser
+              "children": <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -1309,7 +1309,7 @@ ShallowWrapper {
               item={true}
               xs={11}
             >
-              <SearchableDropdownUser
+              <SearchableDropdown
                 helperText="Add children"
                 includeItem={[Function]}
                 itemToString={[Function]}
@@ -1493,7 +1493,7 @@ ShallowWrapper {
                 item={true}
                 xs={11}
               >
-                <SearchableDropdownUser
+                <SearchableDropdown
                   helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}
@@ -1527,7 +1527,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <SearchableDropdownUser
+                "children": <SearchableDropdown
                   helperText="Add children"
                   includeItem={[Function]}
                   itemToString={[Function]}

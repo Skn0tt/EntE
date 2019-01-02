@@ -58,7 +58,7 @@ const lang = {
     password: "Passwort",
     passwordForgot: "Passwort Vergessen?",
     instanceInfo: INSTANCE_INFO_DE.orSome(
-      "Bitte melden sie sich an, um EntE zu nutzen."
+      "Bitte melden Sie sich an, um EntE zu nutzen."
     )
   }
 };

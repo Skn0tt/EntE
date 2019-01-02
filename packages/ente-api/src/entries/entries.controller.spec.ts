@@ -90,23 +90,6 @@ describe.only("Entries Controller", () => {
     });
   });
 
-  describe("setting forSchool", () => {
-    it("returns mocked entry", async () => {
-      const controller: EntriesController = module.get<EntriesController>(
-        EntriesController
-      );
-
-      const response = await controller.patch(
-        "id",
-        { forSchool: true },
-        {
-          user: mocks.users.admin
-        }
-      );
-      expect(response).toEqual(mocks.entries.entry);
-    });
-  });
-
   describe("creating Entry", () => {
     it("returns mocked entry", async () => {
       const controller: EntriesController = module.get<EntriesController>(

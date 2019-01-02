@@ -11,7 +11,7 @@ import { shallow } from "enzyme";
 import * as sinon from "sinon";
 import { TextInput } from "./TextInput";
 
-describe("TextInput", () => {
+describe.skip("TextInput", () => {
   const onChange = sinon.spy();
   const comp = shallow(
     <TextInput

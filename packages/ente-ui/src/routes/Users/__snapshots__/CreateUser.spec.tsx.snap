@@ -29,7 +29,7 @@ ShallowWrapper {
       Object {
         "close": "Schließen",
         "helpers": Object {
-          "chooseRoleOfUser": "Wählen sie die Rolle des Nutzers aus",
+          "chooseRoleOfUser": "Wählen Sie die Rolle des Nutzers aus",
         },
         "import": "Importieren",
         "passwordSpec": [Function],
@@ -145,7 +145,7 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Wählen sie die Rolle des Nutzers aus"
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
                     label="Rolle"
                     onChange={[Function]}
                     required={false}
@@ -321,7 +321,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -500,7 +500,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -638,7 +638,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -773,7 +773,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -1006,7 +1006,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -1080,7 +1080,7 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Wählen sie die Rolle des Nutzers aus",
+                        "helperText": "Wählen Sie die Rolle des Nutzers aus",
                         "label": "Rolle",
                         "onChange": [Function],
                         "required": false,
@@ -1408,7 +1408,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -1584,7 +1584,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -1763,7 +1763,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -1901,7 +1901,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -2036,7 +2036,7 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          helperText="Wählen Sie die Rolle des Nutzers aus"
                           label="Rolle"
                           onChange={[Function]}
                           required={false}
@@ -2269,7 +2269,7 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          helperText="Wählen Sie die Rolle des Nutzers aus"
                           label="Rolle"
                           onChange={[Function]}
                           required={false}
@@ -2343,7 +2343,7 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Wählen sie die Rolle des Nutzers aus",
+                          "helperText": "Wählen Sie die Rolle des Nutzers aus",
                           "label": "Rolle",
                           "onChange": [Function],
                           "required": false,
@@ -2630,7 +2630,7 @@ ShallowWrapper {
       Object {
         "close": "Schließen",
         "helpers": Object {
-          "chooseRoleOfUser": "Wählen sie die Rolle des Nutzers aus",
+          "chooseRoleOfUser": "Wählen Sie die Rolle des Nutzers aus",
         },
         "import": "Importieren",
         "passwordSpec": [Function],
@@ -2746,7 +2746,7 @@ ShallowWrapper {
                       }
                     }
                     fullWidth={true}
-                    helperText="Wählen sie die Rolle des Nutzers aus"
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
                     label="Rolle"
                     onChange={[Function]}
                     required={false}
@@ -2922,7 +2922,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -3101,7 +3101,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -3239,7 +3239,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -3374,7 +3374,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -3607,7 +3607,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -3681,7 +3681,7 @@ ShallowWrapper {
                           </option>,
                         ],
                         "fullWidth": true,
-                        "helperText": "Wählen sie die Rolle des Nutzers aus",
+                        "helperText": "Wählen Sie die Rolle des Nutzers aus",
                         "label": "Rolle",
                         "onChange": [Function],
                         "required": false,
@@ -4009,7 +4009,7 @@ ShallowWrapper {
                         }
                       }
                       fullWidth={true}
-                      helperText="Wählen sie die Rolle des Nutzers aus"
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
                       label="Rolle"
                       onChange={[Function]}
                       required={false}
@@ -4185,7 +4185,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -4364,7 +4364,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -4502,7 +4502,7 @@ ShallowWrapper {
                           }
                         }
                         fullWidth={true}
-                        helperText="Wählen sie die Rolle des Nutzers aus"
+                        helperText="Wählen Sie die Rolle des Nutzers aus"
                         label="Rolle"
                         onChange={[Function]}
                         required={false}
@@ -4637,7 +4637,7 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          helperText="Wählen Sie die Rolle des Nutzers aus"
                           label="Rolle"
                           onChange={[Function]}
                           required={false}
@@ -4870,7 +4870,7 @@ ShallowWrapper {
                             }
                           }
                           fullWidth={true}
-                          helperText="Wählen sie die Rolle des Nutzers aus"
+                          helperText="Wählen Sie die Rolle des Nutzers aus"
                           label="Rolle"
                           onChange={[Function]}
                           required={false}
@@ -4944,7 +4944,7 @@ ShallowWrapper {
                             </option>,
                           ],
                           "fullWidth": true,
-                          "helperText": "Wählen sie die Rolle des Nutzers aus",
+                          "helperText": "Wählen Sie die Rolle des Nutzers aus",
                           "label": "Rolle",
                           "onChange": [Function],
                           "required": false,

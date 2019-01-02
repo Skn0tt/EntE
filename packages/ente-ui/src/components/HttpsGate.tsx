@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const useTranslation = makeTranslationHook({
   en: "This connection is not encrypted. Please contact your Administrator.",
   de:
-    "Diese Verbindung ist nicht verschlüsselt. Bitte kontaktieren sie ihren Administrator."
+    "Diese Verbindung ist nicht verschlüsselt. Bitte kontaktieren Sie ihren Administrator."
 });
 
 const isSecure = location.protocol === "https:";

@@ -90,7 +90,7 @@ const useTranslation = makeTranslationHook({
       role: "Rolle",
       gradYear: "Abschluss-Jahrgang",
       areYouSureYouWannaDelete: (username: string) =>
-        `Sind sie sicher, dass sie den Nutzer "${username}" löschen möchten?`
+        `Sind Sie sicher, dass Sie den Nutzer "${username}" löschen möchten?`
     },
     ariaLabels: {
       delete: "Löschen"

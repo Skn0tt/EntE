@@ -31,7 +31,7 @@ import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
 import { getConfig } from "./config";
 
-const { baseUrl, onFileDownload } = getConfig();
+const { onFileDownload } = getConfig();
 
 const getBaseUrl = () => getConfig().baseUrl;
 
@@ -361,21 +361,6 @@ export const unsignEntry = async (
     token,
     {
       signed: false
-    }
-  );
-  return transformEntries(response);
-};
-
-export const patchForSchool = async (
-  id: string,
-  forSchool: boolean,
-  token: string
-): Promise<APIResponse> => {
-  const response = await patch<EntryDto, PatchEntryDto>(
-    `${getBaseUrl()}/entries/${id}`,
-    token,
-    {
-      forSchool
     }
   );
   return transformEntries(response);

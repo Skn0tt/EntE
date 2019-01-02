@@ -47,8 +47,8 @@ const useTranslation = makeTranslationHook({
     submit: "Importieren",
     title: "Importieren",
     close: "Schließen",
-    dropzone: "Legen sie eine .csv-Datei ab oder klicken sie hier.",
-    pleaseUploadCsvFile: "Bitte laden sie eine .csv-Datei hoch."
+    dropzone: "Legen Sie eine .csv-Datei ab oder klicken Sie hier.",
+    pleaseUploadCsvFile: "Bitte laden Sie eine .csv-Datei hoch."
   }
 });
 

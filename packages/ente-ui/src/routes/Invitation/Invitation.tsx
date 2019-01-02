@@ -39,14 +39,14 @@ const useTranslation = makeTranslationHook({
     body: ({ username }: { username: string }) => (
       <>
         EntE ist ein digitales System zur Verwaltung von Fehlzeiten in der
-        Schule. Weitere Informationen zur Benutzung finden sie in der{" "}
+        Schule. Weitere Informationen zur Benutzung finden Sie in der{" "}
         <a href="https://skn0tt.gitlab.io/EntE/docs" target="_blank">
           EntE-Dokumentation
         </a>
         .
         <br />
-        Ihr Benutzername ist <i>{username}</i>. Um EntE zu benutzen, klicken sie
-        den <i>OK</i>-Button an. Sie können sich dann mit dem Passwort, das sie
+        Ihr Benutzername ist <i>{username}</i>. Um EntE zu benutzen, klicken Sie
+        den <i>OK</i>-Button an. Sie können sich dann mit dem Passwort, das Sie
         gerade gesetzt haben, anmelden.
       </>
     )

@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { connect, MapStateToPropsParam } from "react-redux";
-import { Grid, TextField, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import { AppState, UserN, getTeachingUsers } from "../../redux";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
@@ -17,6 +17,8 @@ import { DateInput } from "../../elements/DateInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import * as _ from "lodash";
 import { isBefore, isAfter } from "date-fns";
+import { useFromToInput } from "../../helpers/use-from-to-input";
+import { HourFromToInput } from "../../elements/HourFromToInput";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -39,7 +41,7 @@ const useTranslation = makeTranslationHook({
       to: "Ende"
     },
     helpers: {
-      teacher: "Wählen sie den Lehrer aus."
+      teacher: "Wählen Sie den Lehrer aus."
     },
     add: "Hinzufügen"
   }
@@ -68,8 +70,6 @@ const mapStateToProps: MapStateToPropsParam<
 
 type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
 
-class SearchableDropdownUser extends SearchableDropdown<UserN> {}
-
 const SlotEntry: React.FC<SlotEntryProps> = props => {
   const {
     defaultDate,
@@ -80,18 +80,15 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
   } = props;
   const translation = useTranslation();
 
-  const [from, setFrom] = React.useState(1);
-  const [to, setTo] = React.useState(2);
+  const { from, to, setFrom, setTo } = useFromToInput(1, 2);
   const [date, setDate] = React.useState<string>(defaultDate);
   const [teacherId, setTeacherId] = React.useState<string | undefined>(
     undefined
   );
 
-  const isFromValid = from > 0 && from <= to;
-  const isToValid = to > 0 && to <= 12 && to >= from;
   const isTeacherValid = !!teacherId;
 
-  const isValid = isFromValid && isToValid && isTeacherValid;
+  const isValid = isTeacherValid;
 
   const handleSubmit = React.useCallback(
     () => {
@@ -108,12 +105,12 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
   return (
     <Grid container direction="row" spacing={16}>
       {/* Teacher */}
-      <Grid item xs={12} md={4}>
-        <SearchableDropdownUser
+      <Grid item xs={12} md={isMultiDay ? 4 : 7}>
+        <SearchableDropdown<UserN>
           label={translation.titles.teacher}
           helperText={translation.helpers.teacher}
           items={teachers}
-          onChange={t => setTeacherId(t.get("id"))}
+          onChange={t => setTeacherId(!!t ? t.get("id") : undefined)}
           includeItem={(item, searchTerm) =>
             item
               .get("displayname")
@@ -152,32 +149,11 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
         </Grid>
       )}
 
-      {/* From */}
-      <Grid item xs={1}>
-        <TextField
-          label={translation.titles.from}
-          fullWidth
-          value={from}
-          onChange={evt => setFrom(+evt.target.value)}
-          type="number"
-          error={!isFromValid}
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </Grid>
-
-      {/* To */}
-      <Grid item xs={1}>
-        <TextField
-          label={translation.titles.to}
-          fullWidth
-          value={to}
-          onChange={evt => setTo(+evt.target.value)}
-          error={!isToValid}
-          type="number"
-          InputLabelProps={{
-            shrink: true
+      <Grid item xs={2}>
+        <HourFromToInput
+          onChange={({ from, to }) => {
+            setFrom(from);
+            setTo(to);
           }}
         />
       </Grid>

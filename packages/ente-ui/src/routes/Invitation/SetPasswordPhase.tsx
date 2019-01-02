@@ -25,7 +25,7 @@ const useTranslation = makeTranslationHook({
     submit: "OK"
   },
   de: {
-    title: "Bitte setzen sie ihr Passwort.",
+    title: "Bitte setzen Sie ihr Passwort.",
     submit: "OK"
   }
 });

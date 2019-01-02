@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Some, None, Maybe } from "monet";
-import Slot from "./slot.entity";
+import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
 import { SlotDto } from "ente-types";
 import {
@@ -98,7 +98,7 @@ export class SlotRepo {
     result.teacher =
       slot.teacher === null ? null : UserRepo.toDto(slot.teacher);
     result.student = UserRepo.toDto(slot.entry.student);
-    result.forSchool = slot.entry.forSchool;
+    result.forSchool = !!slot.entry.reason;
     result.signed = !!slot.entry.signedManager && !!slot.entry.signedParent;
 
     return result;

@@ -38,9 +38,6 @@ import {
   updateUserSuccess,
   unsignEntryError,
   unsignEntrySuccess,
-  PatchForSchoolPayload,
-  patchForSchoolSuccess,
-  patchForSchoolError,
   INewPassword,
   deleteUserSuccess,
   deleteEntrySuccess,
@@ -67,7 +64,6 @@ import {
   CREATE_USERS_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
-  PATCH_FORSCHOOL_REQUEST,
   DELETE_USER_REQUEST,
   DELETE_ENTRY_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
@@ -283,23 +279,6 @@ function* createEntrySaga(action: Action<CreateEntryDto>) {
   }
 }
 
-function* patchForSchoolSaga(action: Action<PatchForSchoolPayload>) {
-  try {
-    const token: Maybe<string> = yield select(selectors.getToken);
-    const result = yield call(
-      api.patchForSchool,
-      action.payload!.id,
-      action.payload!.forSchool,
-      token.some()
-    );
-
-    yield put(patchForSchoolSuccess(action));
-    yield dispatchUpdates(result);
-  } catch (error) {
-    yield put(patchForSchoolError(error, action));
-  }
-}
-
 function* createUsersSaga(action: Action<CreateUserDto[]>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
@@ -411,7 +390,6 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
-  yield takeEvery(PATCH_FORSCHOOL_REQUEST, patchForSchoolSaga);
   yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);

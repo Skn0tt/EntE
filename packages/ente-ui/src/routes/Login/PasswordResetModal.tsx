@@ -17,8 +17,8 @@ const useTranslation = makeTranslationHook({
     title: "Passwort Zurücksetzen",
     username: "Benutzername",
     description:
-      "Geben sie ihren Benutzernamen ein, wir senden ihnen dann einen Verfizierungs-Link zu.",
-    inputValidUsername: "Bitte geben sie einen gültigen Benutzernamen ein."
+      "Geben Sie ihren Benutzernamen ein, wir senden ihnen dann einen Verfizierungs-Link zu.",
+    inputValidUsername: "Bitte geben Sie einen gültigen Benutzernamen ein."
   }
 });
 

@@ -70,7 +70,7 @@ export default {
     hero: {
       title: "EntE.",
       caption: "Digitales Entschuldigungsverfahren für Schulen.",
-      tryDemo: "Probieren sie die Demo aus!"
+      tryDemo: "Probieren Sie die Demo aus!"
     },
     savesTime: {
       title: "Spart Zeit und Geld",
@@ -87,7 +87,7 @@ export default {
         "Voller Zugriff auf den Quellcode ermöglicht die Anpassung an die eigenen Bedürfnisse."
     },
     digitize: {
-      title: "Digitalisieren sie ihre Verwaltung - Mehr Zeit zum Unterrichten",
+      title: "Digitalisieren Sie ihre Verwaltung - Mehr Zeit zum Unterrichten",
       caption: `
         Herkömmliche Entschuldigungsformulare kosten wertvolle Unterrichtszeit.
         EntE ermöglicht, ihre Unterrichtszeit von Verwaltung freizuhalten.`
@@ -95,18 +95,18 @@ export default {
     hosting: {
       title: "Selber Hosten oder Hosten lassen",
       caption: `
-        Für die volle Kontrolle können sie EntE auf ihrer eigenen Infrastruktur hosten.
-        Für gehostete Instanzen, <a href="mailto:ente@simonknott.de">setzen sie sich in Verbindung.</a>`
+        Für die volle Kontrolle können Sie EntE auf ihrer eigenen Infrastruktur hosten.
+        Für gehostete Instanzen, <a href="mailto:ente@simonknott.de">setzen Sie sich in Verbindung.</a>`
     },
     contribute: {
-      title: "Helfen sie mit!",
+      title: "Helfen Sie mit!",
       caption: `
         Hilfe ist immer willkommen.
-        Haben sie einen Feature-Vorschlag, einen Fehler gefunden oder möchten etwas anderes erwähnen? Zögern Sie nicht, ein Ticket auf <a target"_blank" href="https://gitlab.com/skn0tt/EntE/issues">GitLab</a> zu erstellen oder eine <a href="mailto:incoming+Skn0tt/EntE@incoming.gitlab.com">Email</a> zu schreiben!`
+        Haben Sie einen Feature-Vorschlag, einen Fehler gefunden oder möchten etwas anderes erwähnen? Zögern Sie nicht, ein Ticket auf <a target"_blank" href="https://gitlab.com/skn0tt/EntE/issues">GitLab</a> zu erstellen oder eine <a href="mailto:incoming+Skn0tt/EntE@incoming.gitlab.com">Email</a> zu schreiben!`
     },
     callToAction: {
       title: "Interessiert?",
-      emailHint: "Geben sie ihre Email-Addresse ein...",
+      emailHint: "Geben Sie ihre Email-Addresse ein...",
       scheduleDemo: "Demo vereinbaren!"
     },
     footer: {
@@ -115,7 +115,7 @@ export default {
     demoPopup: {
       title: "Sie möchten sich die Demo anschauen. Super!",
       text: `
-        Um die Demo zu sehen, besuchen sie <a target="_blank" href="https://bull.simonknott.de">bull.simonknott.de</a>.<br/>
+        Um die Demo zu sehen, besuchen Sie <a target="_blank" href="https://bull.simonknott.de">bull.simonknott.de</a>.<br/>
         Der Benutzername ist <i>admin</i>, das Passwort ist <i>root</i>.`,
       cancel: "Abbrechen",
       goTo: "Demo Anschauen"

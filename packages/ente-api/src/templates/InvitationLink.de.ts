@@ -16,7 +16,7 @@ const template = Handlebars.compile(`
         
         <mj-text>
           Sie wurden eingeladen, auf EntE die Fehlstunden ihrer Kinder zu verwalten.
-          Um EntE benutzen zu können, setzen sie bitte ihr Passwort mithilfe des folgenden Links.
+          Um EntE benutzen zu können, setzen Sie bitte ihr Passwort mithilfe des folgenden Links.
           
           <br /> <br />
           
@@ -24,8 +24,8 @@ const template = Handlebars.compile(`
 
           <br /> <br />
           Dieser Link ist für sieben Tage gültig.
-          Falls ihr Link schon abgelaufen ist, lesen sie in der <a href="https://skn0tt.gitlab.io/EntE/docs/">Dokumentation</a> nach,
-          wie sie ihr Benutzerkonto trotzdem aktivieren können.
+          Falls ihr Link schon abgelaufen ist, lesen Sie in der <a href="https://skn0tt.gitlab.io/EntE/docs/">Dokumentation</a> nach,
+          wie Sie ihr Benutzerkonto trotzdem aktivieren können.
         </mj-text>
       </mj-column>
     </mj-section>

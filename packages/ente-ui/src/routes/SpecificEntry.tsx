@@ -19,7 +19,6 @@ import {
   Table,
   List,
   Grid,
-  Checkbox,
   IconButton,
   Dialog,
   Typography,
@@ -36,7 +35,14 @@ import {
 } from "@material-ui/core";
 import SignedAvatar from "../elements/SignedAvatar";
 import LoadingIndicator from "../elements/LoadingIndicator";
-import { Roles } from "ente-types";
+import {
+  Roles,
+  ExamenPayload,
+  OtherPayload,
+  FieldTripPayload,
+  CompetitionPayload,
+  EntryReasonCategory
+} from "ente-types";
 import {
   AppState,
   getEntry,
@@ -46,7 +52,6 @@ import {
   getRole,
   getEntryRequest,
   unsignEntryRequest,
-  patchForSchoolRequest,
   signEntryRequest,
   UserN,
   EntryN,
@@ -79,8 +84,24 @@ const useTranslation = makeTranslationHook({
     student: "Student:",
     id: "ID:",
     createdAt: "Created:",
-    forSchool: "For School:",
+    forSchool: "Educational:",
+    reason: "Reason:",
     date: "Date:",
+    reasonPayloads: {
+      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload) =>
+        `Examen: ${v.from}-${v.to}, ${v.class}`,
+      [EntryReasonCategory.OTHER]: (v: OtherPayload) =>
+        `Other: ${v.description}`,
+      [EntryReasonCategory.FIELD_TRIP]: (
+        v: FieldTripPayload,
+        teacher: UserN | null
+      ) =>
+        `Field Trip: ${v.from}-${v.to}, ${
+          !!teacher ? teacher.get("displayname") : "Deleted"
+        }`,
+      [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
+        `Competition: ${v.from}-${v.to}, ${!!v.name}`
+    },
     dateRange: (start: string, end: string) =>
       `From ${format(start, "PP", { locale: enLocale })} to ${format(
         end,
@@ -111,13 +132,29 @@ const useTranslation = makeTranslationHook({
     delete: "Löschen",
     mail: "Mail",
     areYouSureToDelete:
-      "Sind sie sicher, dass sie diesen Eintrag löschen möchten?",
+      "Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?",
     yes: "Ja",
     no: "Nein",
     student: "Schüler:",
     id: "ID:",
     createdAt: "Erstellt:",
     forSchool: "Schulisch:",
+    reason: "Grund:",
+    reasonPayloads: {
+      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload) =>
+        `Klausur: ${v.from}-${v.to}, ${v.class}`,
+      [EntryReasonCategory.OTHER]: (v: OtherPayload) =>
+        `Sonstiges: ${v.description}`,
+      [EntryReasonCategory.FIELD_TRIP]: (
+        v: FieldTripPayload,
+        teacher: UserN | null
+      ) =>
+        `Exkursion: ${v.from}-${v.to}, ${
+          !!teacher ? teacher.get("displayname") : "Gelöscht"
+        }`,
+      [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
+        `Wettbewerb: ${v.from}-${v.to}, ${!!v.name}`
+    },
     date: "Datum:",
     dateRange: (start: string, end: string) =>
       `Von ${format(start, "PP", { locale: deLocale })} bis ${format(
@@ -205,7 +242,6 @@ interface DispatchProps {
   requestEntry(id: string): Action;
   signEntry(id: string): Action;
   unsignEntry(id: string): Action;
-  patchForSchool(id: string, forSchool: boolean): Action;
   deleteEntry: (id: string) => void;
 }
 
@@ -216,8 +252,6 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   requestEntry: id => dispatch(getEntryRequest(id)),
   signEntry: id => dispatch(signEntryRequest(id)),
   unsignEntry: id => dispatch(unsignEntryRequest(id)),
-  patchForSchool: (id, forSchool) =>
-    dispatch(patchForSchoolRequest({ id, forSchool })),
   deleteEntry: id => dispatch(deleteEntryRequest(id))
 });
 
@@ -234,7 +268,6 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
 
   const {
     role,
-    patchForSchool,
     fullScreen,
     getUser,
     getSlots,
@@ -314,21 +347,38 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                     <i>{lang.createdAt}</i>{" "}
                     {entry.get("createdAt").toLocaleString()} <br />
                     <i>{lang.forSchool}</i>{" "}
-                    {role.some() === Roles.MANAGER ? (
-                      <Checkbox
-                        checked={entry.get("forSchool")}
-                        onChange={() =>
-                          patchForSchool(
-                            entry.get("id"),
-                            !entry.get("forSchool")
-                          )
-                        }
-                      />
-                    ) : entry.get("forSchool") ? (
-                      lang.yes
-                    ) : (
-                      lang.no
-                    )}{" "}
+                    {entry.get("forSchool") ? lang.yes : lang.no} <br />
+                    {entry.get("forSchool") && (
+                      <>
+                        <i>{lang.reason}</i>{" "}
+                        {(() => {
+                          const { payload, category } = entry.get("reason")!;
+                          switch (category) {
+                            case EntryReasonCategory.COMPETITION:
+                              return lang.reasonPayloads[
+                                EntryReasonCategory.COMPETITION
+                              ](payload as CompetitionPayload);
+                            case EntryReasonCategory.EXAMEN:
+                              return lang.reasonPayloads[
+                                EntryReasonCategory.EXAMEN
+                              ](payload as ExamenPayload);
+                            case EntryReasonCategory.OTHER:
+                              return lang.reasonPayloads[
+                                EntryReasonCategory.OTHER
+                              ](payload as OtherPayload);
+                            case EntryReasonCategory.FIELD_TRIP:
+                              return lang.reasonPayloads[
+                                EntryReasonCategory.FIELD_TRIP
+                              ](
+                                payload as FieldTripPayload,
+                                getUser(
+                                  (payload as FieldTripPayload).teacherId || ""
+                                ).orSome(null as any)
+                              );
+                          }
+                        })()}
+                      </>
+                    )}
                     <br />
                     <i>{lang.student}</i>{" "}
                     {getUser(entry.get("studentId"))

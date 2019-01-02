@@ -56,9 +56,6 @@ import {
   UNSIGN_ENTRY_ERROR,
   UNSIGN_ENTRY_SUCCESS,
   UNSIGN_ENTRY_REQUEST,
-  PATCH_FORSCHOOL_REQUEST,
-  PATCH_FORSCHOOL_SUCCESS,
-  PATCH_FORSCHOOL_ERROR,
   DELETE_ENTRY_REQUEST,
   DELETE_ENTRY_ERROR,
   DELETE_ENTRY_SUCCESS,
@@ -140,22 +137,6 @@ export const downloadExcelExportSuccess = createMetaAction<Action<void>, void>(
 export const downloadExcelExportError = createMetaAction<Action<void>, Error>(
   DOWNLOAD_EXCEL_EXPORT_ERROR
 );
-
-export type PatchForSchoolPayload = {
-  id: string;
-  forSchool: boolean;
-};
-export const patchForSchoolRequest = createAction<PatchForSchoolPayload>(
-  PATCH_FORSCHOOL_REQUEST
-);
-export const patchForSchoolSuccess = createMetaAction<
-  Action<PatchForSchoolPayload>,
-  void
->(PATCH_FORSCHOOL_SUCCESS);
-export const patchForSchoolError = createMetaAction<
-  Action<PatchForSchoolPayload>,
-  Error
->(PATCH_FORSCHOOL_ERROR);
 
 export const updateUserRequest = createAction<[string, PatchUserDto]>(
   UPDATE_USER_REQUEST
