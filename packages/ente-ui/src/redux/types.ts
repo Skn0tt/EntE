@@ -86,6 +86,7 @@ export const EntryN = Record<EntryDtoNormalised>(
     date: dateToIsoString(0),
     forSchool: false,
     id: "",
+    reason: undefined,
     signedManager: false,
     signedParent: false,
     slots: [],

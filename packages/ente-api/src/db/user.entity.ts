@@ -25,8 +25,8 @@ import {
   OneToMany
 } from "typeorm";
 import { IsIn, IsInt, IsISO8601 } from "class-validator";
-import Entry from "./entry.entity";
-import Slot from "./slot.entity";
+import { Entry } from "./entry.entity";
+import { Slot } from "./slot.entity";
 
 /**
  * # User
@@ -88,5 +88,3 @@ export class User {
   @OneToMany(type => Slot, slot => slot.teacher)
   slots: Slot[];
 }
-
-export default User;

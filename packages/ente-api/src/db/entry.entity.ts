@@ -16,8 +16,9 @@ import {
   OneToMany
 } from "typeorm";
 import { IsBoolean } from "class-validator";
-import User from "./user.entity";
-import Slot from "./slot.entity";
+import { User } from "./user.entity";
+import { Slot } from "./slot.entity";
+import { EntryReason } from "./entry-reason.entity";
 
 /**
  * # Entry
@@ -34,9 +35,8 @@ export class Entry {
   @Column("date", { nullable: true })
   readonly dateEnd: string | null;
 
-  @Column("tinyint")
-  @IsBoolean()
-  forSchool: boolean = false;
+  @Column(type => EntryReason)
+  reason: EntryReason | null;
 
   @Column("tinyint", { nullable: false })
   @IsBoolean()
@@ -68,5 +68,3 @@ export class Entry {
 
   @UpdateDateColumn() readonly updatedAt: Date;
 }
-
-export default Entry;

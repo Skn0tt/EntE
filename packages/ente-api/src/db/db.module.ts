@@ -3,9 +3,9 @@ import { EntryRepo } from "./entry.repo";
 import { UserRepo } from "./user.repo";
 import { SlotRepo } from "./slot.repo";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import User from "./user.entity";
-import Slot from "./slot.entity";
-import Entry from "./entry.entity";
+import { User } from "./user.entity";
+import { Slot } from "./slot.entity";
+import { Entry } from "./entry.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Slot, Entry])],

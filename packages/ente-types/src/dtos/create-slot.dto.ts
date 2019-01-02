@@ -1,29 +1,28 @@
 import {
-  IsDate,
-  IsNumber,
-  Min,
+  IsInt,
   Max,
+  Min,
   IsUUID,
   IsOptional,
   IsISO8601
 } from "class-validator";
-import { CompareToProperty } from "../helpers/compare-to-property";
+import { CompareToProperty } from "../helpers";
 
 export class CreateSlotDto {
-  @IsOptional()
-  @IsISO8601()
-  date?: string;
-
-  @IsNumber()
+  @IsInt()
   @Min(1)
   @Max(13)
   from: number;
 
-  @IsNumber()
+  @IsInt()
   @Min(1)
   @Max(13)
   @CompareToProperty("from", (to, from) => to >= from)
   to: number;
 
   @IsUUID() teacherId: string;
+
+  @IsOptional()
+  @IsISO8601()
+  date?: string;
 }

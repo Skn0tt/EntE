@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Repository, Brackets } from "typeorm";
-import User from "./user.entity";
+import { User } from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
 import {
   Roles,

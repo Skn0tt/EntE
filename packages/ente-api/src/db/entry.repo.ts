@@ -2,16 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Maybe, Some, None } from "monet";
-import Entry from "./entry.entity";
-import User from "./user.entity";
-import Slot from "./slot.entity";
+import { Entry } from "./entry.entity";
+import { User } from "./user.entity";
+import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
 import { SlotRepo } from "./slot.repo";
-import { EntryDto, CreateEntryDto } from "ente-types";
+import { EntryDto, CreateEntryDto, dateToIsoString } from "ente-types";
 import {
   PaginationInformation,
   withPagination
 } from "../helpers/pagination-info";
+import { EntryReasonRepo } from "./entry-reason.repo";
 
 @Injectable()
 export class EntryRepo {
@@ -23,6 +24,7 @@ export class EntryRepo {
     this.repo
       .createQueryBuilder("entry")
       .leftJoinAndSelect("entry.student", "student")
+      .leftJoinAndSelect("entry.reason.teacher", "reasonTeacher")
       .leftJoinAndSelect("entry.slots", "slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
       .leftJoinAndSelect("slot.entry", "slotEntry")
@@ -70,56 +72,49 @@ export class EntryRepo {
     dto: CreateEntryDto,
     config: { signedByParent: boolean } = { signedByParent: false }
   ): Promise<EntryDto> {
-    const entry = await this.repo.manager.transaction(async (manager): Promise<
-      Entry
-    > => {
-      const [student] = await manager.findByIds(User, [dto.studentId], {
-        relations: ["children"]
-      });
+    const entry = await this.repo.manager.transaction(
+      async (manager): Promise<Entry> => {
+        const [student] = await manager.findByIds(User, [dto.studentId], {
+          relations: ["children"]
+        });
 
-      const isMultiDayEntry = !!dto.dateEnd;
+        const isMultiDayEntry = !!dto.dateEnd;
 
-      const newEntry = await manager.create(Entry, {
-        student,
-        signedParent: config.signedByParent,
-        date: dto.date,
-        dateEnd: dto.dateEnd,
-        forSchool: dto.forSchool,
-        slots: await Promise.all(
-          dto.slots.map(async s => {
-            const [teacher] = await manager.findByIds(User, [s.teacherId], {
-              relations: ["children"]
-            });
-            return await manager.create(Slot, {
-              date: isMultiDayEntry ? new Date(s.date!) : null,
-              hour_from: s.from,
-              hour_to: s.to,
-              teacher
-            });
-          })
-        )
-      });
+        const newEntry = await manager.create(Entry, {
+          student,
+          reason: !!dto.reason
+            ? EntryReasonRepo.fromCreationDto(dto.reason)
+            : null,
+          signedParent: config.signedByParent,
+          date: dto.date,
+          dateEnd: dto.dateEnd,
+          slots: await Promise.all(
+            dto.slots.map(async s => {
+              const [teacher] = await manager.findByIds(User, [s.teacherId], {
+                relations: ["children"]
+              });
+              return await manager.create(Slot, {
+                date: isMultiDayEntry ? dateToIsoString(s.date!) : null,
+                hour_from: s.from,
+                hour_to: s.to,
+                teacher
+              });
+            })
+          )
+        });
 
-      newEntry.slots.forEach((_ignored, i) => {
-        newEntry.slots[i].entry = newEntry;
-      });
+        newEntry.slots.forEach((_ignored, i) => {
+          newEntry.slots[i].entry = newEntry;
+        });
 
-      await manager.save(Entry, newEntry);
-      await manager.save(Slot, newEntry.slots);
+        await manager.save(Entry, newEntry);
+        await manager.save(Slot, newEntry.slots);
 
-      return newEntry;
-    });
+        return newEntry;
+      }
+    );
 
     return EntryRepo.toDto(entry);
-  }
-
-  async setForSchool(id: string, value: boolean) {
-    await this.repo
-      .createQueryBuilder("entry")
-      .update()
-      .set({ forSchool: value })
-      .where(" entry._id = :id", { id })
-      .execute();
   }
 
   async setSignedManager(id: string, value: boolean) {
@@ -144,9 +139,12 @@ export class EntryRepo {
     result.student = UserRepo.toDto(entry.student);
     result.createdAt = entry.createdAt;
     result.updatedAt = entry.updatedAt;
-    result.forSchool = !!entry.forSchool;
     result.signedManager = !!entry.signedManager;
     result.signedParent = !!entry.signedParent;
+    result.forSchool = !!entry.reason;
+    result.reason = !!entry.reason
+      ? EntryReasonRepo.toDto(entry.reason)
+      : undefined;
 
     return result;
   }

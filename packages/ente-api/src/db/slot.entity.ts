@@ -7,8 +7,8 @@
  */
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
 import { IsInt } from "class-validator";
-import Entry from "./entry.entity";
-import User from "./user.entity";
+import { Entry } from "./entry.entity";
+import { User } from "./user.entity";
 
 /**
  * # Slot
@@ -46,5 +46,3 @@ export class Slot {
   })
   entry: Entry;
 }
-
-export default Slot;

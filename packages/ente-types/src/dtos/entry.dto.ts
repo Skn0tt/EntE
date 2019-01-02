@@ -10,6 +10,8 @@ import { DateIsAfter } from "../helpers/date-is-after";
 import { SlotDto } from "./slot.dto";
 import { UserDto } from "./user.dto";
 import { Type } from "class-transformer";
+import { UndefinedWhen } from "../helpers/undefined-when";
+import { EntryReasonDto } from "./entry-reason.dto";
 
 export class EntryDto {
   @IsUUID("4") id: string;
@@ -23,6 +25,12 @@ export class EntryDto {
   dateEnd?: string;
 
   @IsBoolean() forSchool: boolean;
+
+  @UndefinedWhen(s => s.forSchool === false)
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => EntryReasonDto)
+  reason?: EntryReasonDto;
 
   @IsBoolean() signedManager: boolean;
 

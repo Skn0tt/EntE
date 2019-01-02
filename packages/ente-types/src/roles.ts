@@ -1,3 +1,5 @@
+import { enumToArray } from "./helpers/enum-to-array";
+
 /**
  * EntE
  * (c) 2017-present, Simon Knott <info@simonknott.de>
@@ -14,7 +16,7 @@ export enum Roles {
   MANAGER = "manager"
 }
 
-export const rolesArr = Object.keys(Roles).map(key => (Roles as any)[key]);
+export const rolesArr = enumToArray(Roles);
 
 export const TEACHING_ROLES = [Roles.TEACHER, Roles.MANAGER];
 

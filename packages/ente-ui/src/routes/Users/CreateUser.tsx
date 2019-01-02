@@ -87,7 +87,7 @@ export const lang = {
       birthday: "Geburtstag"
     },
     helpers: {
-      chooseRoleOfUser: "Wählen sie die Rolle des Nutzers aus"
+      chooseRoleOfUser: "Wählen Sie die Rolle des Nutzers aus"
     },
     submit: "Erstellen",
     close: "Schließen",

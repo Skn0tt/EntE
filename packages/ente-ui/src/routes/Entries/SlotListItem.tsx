@@ -31,7 +31,7 @@ const getText = (s: CreateSlotDto): string => {
 
 interface OwnProps {
   slot: CreateSlotDto;
-  delete(): void;
+  onRemove(): void;
 }
 
 interface StateProps {
@@ -49,7 +49,7 @@ const mapStateToProps: MapStateToPropsParam<
 type SlotListItemProps = OwnProps & StateProps;
 
 const SlotListItem: React.SFC<SlotListItemProps> = props => {
-  const { slot, getUser } = props;
+  const { slot, getUser, onRemove } = props;
 
   return (
     <ListItem>
@@ -60,7 +60,7 @@ const SlotListItem: React.SFC<SlotListItemProps> = props => {
         secondary={getText(slot)}
       />
       <ListItemSecondaryAction>
-        <IconButton aria-label="Delete" onClick={props.delete}>
+        <IconButton aria-label="Delete" onClick={onRemove}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

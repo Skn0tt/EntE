@@ -38,7 +38,6 @@ import {
   AppState,
   getChildren,
   isParent,
-  getTeachers,
   UserN
 } from "../../redux";
 import {
@@ -46,7 +45,8 @@ import {
   CreateSlotDto,
   isValidCreateEntryDto,
   dateToIsoString,
-  daysBeforeNow
+  daysBeforeNow,
+  EntryReasonDto
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { Maybe } from "monet";
@@ -54,6 +54,8 @@ import { isBefore, subDays, addDays, isAfter } from "date-fns";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { CheckboxInput } from "../../elements/CheckboxInput";
 import * as _ from "lodash";
+import { EntryReasonInput } from "./EntryReasonInput";
+import { CreateSlotList } from "./CreateSlotList";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -75,9 +77,9 @@ const useTranslation = makeTranslationHook({
   de: {
     multiday: "Mehrtägig",
     forSchool: "Schulisch",
-    selectChild: "Wählen sie das betroffene Kind aus.",
-    addSlotsCaption: `Fügen sie die Stunden hinzu, die sie entschuldigen möchten.
-    Erstellen sie dafür für jede Stunde eine Zeile.`,
+    selectChild: "Wählen Sie das betroffene Kind aus.",
+    addSlotsCaption: `Fügen Sie die Stunden hinzu, die Sie entschuldigen möchten.
+    Erstellen Sie dafür für jede Stunde eine Zeile.`,
     titles: {
       slots: "Stunden"
     },
@@ -145,6 +147,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
   const [endDate, setEndDate] = React.useState<string | undefined>(undefined);
   const [slots, setSlots] = React.useState<CreateSlotDto[]>([]);
+  const [reason, setReason] = React.useState<EntryReasonDto | undefined>(
+    undefined
+  );
 
   const firstChildOfParent: string | undefined = children
     .flatMap(c => Maybe.fromUndefined(c[0]))
@@ -219,10 +224,20 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
 
   const handleRemoveSlot = React.useCallback(
-    (indexToRemove: number) => {
-      setSlots(s => s.filter((_, i) => i !== indexToRemove));
+    (slot: CreateSlotDto) => {
+      setSlots(s => s.filter(v => v !== slot));
     },
     [setSlots]
+  );
+
+  const handleChangeForSchool = React.useCallback(
+    (f: boolean) => {
+      setForSchool(f);
+      if (f === false) {
+        setReason(undefined);
+      }
+    },
+    [setForSchool, setReason]
   );
 
   const handleAddSlot = React.useCallback(
@@ -236,34 +251,34 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     ? isAfter(endDate!, beginDate)
     : _.isUndefined(endDate);
 
-  const isValidInput = isValidCreateEntryDto({
-    forSchool,
-    slots,
-    studentId,
-    date: beginDate,
-    dateEnd: endDate
-  });
+  const result = React.useMemo(
+    () => ({
+      forSchool,
+      slots,
+      studentId,
+      reason,
+      date: beginDate,
+      dateEnd: endDate
+    }),
+    [forSchool, slots, studentId, reason, beginDate, endDate]
+  );
+
+  const isValidInput = isValidCreateEntryDto(result);
 
   const handleSubmit = React.useCallback(
     () => {
-      createEntry({
-        forSchool,
-        slots,
-        studentId,
-        date: beginDate,
-        dateEnd: endDate
-      });
+      createEntry(result);
     },
-    [createEntry, forSchool, slots, studentId, beginDate, endDate]
+    [createEntry, result]
   );
 
   return (
     <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
       <DialogTitle>{translation.newEntry}</DialogTitle>
       <DialogContent>
-        <Grid container direction="column" spacing={40}>
-          <Grid item container direction="column">
-            <Grid item container direction="row">
+        <Grid container direction="column" spacing={32}>
+          <Grid item>
+            <Grid container direction="row">
               <Grid item xs={6}>
                 <CheckboxInput
                   value={isRange}
@@ -274,77 +289,76 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
               <Grid item xs={6}>
                 <CheckboxInput
                   value={forSchool}
-                  onChange={setForSchool}
+                  onChange={handleChangeForSchool}
                   label={translation.forSchool}
                 />
               </Grid>
             </Grid>
-            {isParent && (
-              <Grid item>
-                <TextField
-                  fullWidth
-                  select
-                  label={translation.child}
-                  value={studentId}
-                  onChange={evt => setStudent(evt.target.value)}
-                  helperText={translation.selectChild}
-                >
-                  {children.some().map(child => (
-                    <MenuItem key={child.get("id")} value={child.get("id")}>
-                      {child.get("displayname")}
-                    </MenuItem>
-                  ))}
-                </TextField>
+          </Grid>
+          {isParent && (
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                select
+                label={translation.child}
+                value={studentId}
+                onChange={evt => setStudent(evt.target.value)}
+                helperText={translation.selectChild}
+              >
+                {children.some().map(child => (
+                  <MenuItem key={child.get("id")} value={child.get("id")}>
+                    {child.get("displayname")}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          )}
+          <Grid item xs={12}>
+            <Grid container direction="row" spacing={24}>
+              <Grid item xs={6}>
+                <DateInput
+                  label={translation.fromLabel}
+                  onChange={handleChangeBeginDate}
+                  minDate={daysBeforeNow(14)}
+                  value={beginDate}
+                />
               </Grid>
-            )}
-            <Grid item>
-              <Grid container direction="row" spacing={24}>
+              {isRange && (
                 <Grid item xs={6}>
                   <DateInput
-                    label={translation.fromLabel}
-                    onChange={handleChangeBeginDate}
-                    minDate={daysBeforeNow(14)}
-                    value={beginDate}
+                    label={translation.toLabel}
+                    isValid={() => isEndDateValid}
+                    onChange={handleChangeEndDate}
+                    minDate={addDays(beginDate, 1)}
+                    value={endDate!}
+                    minDateMessage={translation.dateMustBeBiggerThanFrom}
                   />
                 </Grid>
-                {isRange && (
-                  <Grid item xs={6}>
-                    <DateInput
-                      label={translation.toLabel}
-                      isValid={() => isEndDateValid}
-                      onChange={handleChangeEndDate}
-                      minDate={addDays(beginDate, 1)}
-                      value={endDate!}
-                      minDateMessage={translation.dateMustBeBiggerThanFrom}
-                    />
-                  </Grid>
-                )}
-              </Grid>
+              )}
             </Grid>
           </Grid>
+          {forSchool && (
+            <Grid item xs={12}>
+              <EntryReasonInput onChange={setReason} isRange={isRange} />
+            </Grid>
+          )}
           <Grid item xs={12}>
-            <Typography variant="h6">{translation.titles.slots}</Typography>
-            <Typography variant="caption">
-              {translation.addSlotsCaption}
-            </Typography>
-            <MUIList>
-              {slots.map((slot, index) => (
-                <SlotListItem
-                  key={index}
-                  slot={slot}
-                  delete={() => handleRemoveSlot(index)}
-                />
-              ))}
-            </MUIList>
-            <SlotEntry
-              onAdd={handleAddSlot}
-              isMultiDay={isRange}
-              datePickerConfig={{
-                min: beginDate,
-                max: endDate
-              }}
-              defaultDate={beginDate}
-            />
+            <Grid container direction="column" spacing={8}>
+              <Typography variant="h6">{translation.titles.slots}</Typography>
+              <Typography variant="caption">
+                {translation.addSlotsCaption}
+              </Typography>
+              <CreateSlotList slots={slots} onRemove={handleRemoveSlot} />
+              <SlotEntry
+                onAdd={handleAddSlot}
+                isMultiDay={isRange}
+                datePickerConfig={{
+                  min: beginDate,
+                  max: endDate
+                }}
+                defaultDate={beginDate}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>

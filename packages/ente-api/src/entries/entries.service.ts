@@ -238,23 +238,6 @@ export class EntriesService {
 
     const requestingUser = (await _requestingUser.getDto()).some();
 
-    if (!_.isUndefined(patch.forSchool)) {
-      const userIsManager = requestingUser.role === Roles.MANAGER;
-      if (!userIsManager) {
-        return Fail(PatchEntryFailure.ForbiddenForRole);
-      }
-
-      const entryBelongsManager =
-        entry.some().student.graduationYear === requestingUser.graduationYear;
-      if (!entryBelongsManager) {
-        return Fail(PatchEntryFailure.ForbiddenForUser);
-      }
-
-      await this.entryRepo.setForSchool(id, patch.forSchool);
-
-      entry.some().forSchool = patch.forSchool;
-    }
-
     if (!_.isUndefined(patch.signed)) {
       const userIsManager = requestingUser.role === Roles.MANAGER;
       if (userIsManager) {
