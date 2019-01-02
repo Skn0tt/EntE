@@ -340,7 +340,7 @@ export const setLanguage = async (
   token: string
 ): Promise<void> => {
   await put<void, Languages>(
-    `${getBaseUrl()}/users/${id}/language?checkId=false`,
+    `${getBaseUrl()}/users/${id}/language`,
     token,
     language,
     {

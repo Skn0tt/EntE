@@ -44,6 +44,10 @@ export enum UpdateUserFailure {
   UserWrongRole
 }
 
+export enum SetLanguageFailure {
+  UserNotFound
+}
+
 @Injectable()
 export class UserRepo {
   constructor(
@@ -192,8 +196,16 @@ export class UserRepo {
     await this.repo.update(id, { email });
   }
 
-  async setLanguage(id: string, language: Languages) {
-    await this.repo.update(id, { language });
+  async setLanguage(
+    id: string,
+    language: Languages
+  ): Promise<Validation<SetLanguageFailure, true>> {
+    const result = await this.repo.update(id, { language });
+    const { changedRows } = result.raw;
+
+    return changedRows !== 0
+      ? Success<SetLanguageFailure, true>(true)
+      : Fail<SetLanguageFailure, true>(SetLanguageFailure.UserNotFound);
   }
 
   async setYear(

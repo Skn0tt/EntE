@@ -278,8 +278,7 @@ export class UsersService implements OnModuleInit {
   async setLanguage(
     id: string,
     language: Languages,
-    requestingUser: RequestContextUser,
-    checkIfUserExists = true
+    requestingUser: RequestContextUser
   ): Promise<Validation<SetLanguageFailure, true>> {
     const isValidLanguage = languagesArr.includes(language);
     if (!isValidLanguage) {
@@ -292,16 +291,12 @@ export class UsersService implements OnModuleInit {
       return Fail(SetLanguageFailure.ForbiddenForUser);
     }
 
-    if (checkIfUserExists) {
-      const userExists = await this.userRepo.hasId(id);
-      if (!userExists) {
-        return Fail(SetLanguageFailure.UserNotFound);
-      }
-    }
+    const result = await this.userRepo.setLanguage(id, language);
 
-    await this.userRepo.setLanguage(id, language);
-
-    return Success<SetLanguageFailure, true>(true);
+    return result.cata<Validation<SetLanguageFailure, true>>(
+      () => Fail(SetLanguageFailure.UserNotFound),
+      () => Success<SetLanguageFailure, true>(true)
+    );
   }
 
   async patchUser(

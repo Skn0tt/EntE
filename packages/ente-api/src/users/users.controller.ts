@@ -138,14 +138,12 @@ export class UsersController {
   async setLanguage(
     @Param("id") id: string,
     @Body() language: string,
-    @Query("checkId") checkId = "true",
     @Ctx() ctx: RequestContext
   ) {
     const result = await this.usersService.setLanguage(
       id,
       language as Languages,
-      ctx.user,
-      checkId !== "false"
+      ctx.user
     );
 
     return result.cata(
