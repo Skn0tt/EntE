@@ -63,7 +63,10 @@ import {
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_ERROR,
   DOWNLOAD_EXCEL_EXPORT_SUCCESS,
-  SET_LANGUAGE
+  SET_LANGUAGE,
+  IMPORT_USERS_REQUEST,
+  IMPORT_USERS_ERROR,
+  IMPORT_USERS_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -76,6 +79,7 @@ import {
 import * as _ from "lodash";
 import { Languages } from "ente-types";
 import { Map } from "immutable";
+import { ImportUsersSuccessPayload } from "./actions";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -194,6 +198,31 @@ const reducer = handleActions<AppState | undefined, any>(
       RESET_PASSWORD_REQUEST,
       RESET_PASSWORD_ERROR,
       RESET_PASSWORD_SUCCESS
+    ),
+
+    // ## IMPORT_USERS
+    ...asyncReducersFull(
+      IMPORT_USERS_REQUEST,
+      IMPORT_USERS_ERROR,
+      IMPORT_USERS_SUCCESS,
+      (state: AppState, action: Action<ImportUsersSuccessPayload>) => {
+        const { newState } = action.payload!;
+
+        if (_.isUndefined(newState)) {
+          return state;
+        }
+
+        const usersById = _.keyBy(newState.users, (u: UserN) => u.get("id"));
+        const slotsById = _.keyBy(newState.slots, (s: SlotN) => s.get("id"));
+        const entriesById = _.keyBy(newState.entries, (e: EntryN) =>
+          e.get("id")
+        );
+
+        return state
+          .set("entriesMap", Map(entriesById))
+          .set("usersMap", Map(usersById))
+          .set("slotsMap", Map(slotsById));
+      }
     ),
 
     // ## SET_PASSWORD

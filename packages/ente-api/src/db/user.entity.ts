@@ -52,7 +52,7 @@ export class User {
 
   @Column("date", { nullable: true })
   @IsISO8601()
-  birthday: string;
+  birthday: string | null;
 
   @Column("varchar", { nullable: false })
   @IsIn(languagesArr)
@@ -64,7 +64,7 @@ export class User {
 
   @Column("smallint", { nullable: true })
   @IsInt()
-  graduationYear?: number;
+  graduationYear: number | null;
 
   /**
    * ## Password

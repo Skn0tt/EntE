@@ -17,6 +17,7 @@ import { ExportModule } from "./export/export.module";
 import { migrations } from "./db/migrations";
 import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 import { DevModule } from "./dev/dev.module";
+import { InstanceModule } from "./instance/instance.module";
 
 const {
   database,
@@ -52,6 +53,7 @@ const isDevMode = Config.isDevMode();
     UsersModule,
     TokenModule,
     StatusModule,
+    InstanceModule,
     ExportModule,
     ...(isDevMode ? [DevModule] : [])
   ],
