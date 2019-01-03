@@ -60,8 +60,1221 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "children": Array [
-        <WithStyles(Dialog)
+      "children": <WithStyles(Dialog)
+        fullScreen={true}
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(DialogTitle)>
+          Neuer Nutzer
+        </WithStyles(DialogTitle)>
+        <WithStyles(DialogContent)>
+          <form
+            onKeyPress={[Function]}
+          >
+            <WithStyles(Grid)
+              container={true}
+              direction="row"
+            >
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Nutzername"
+                  onChange={[Function]}
+                  required={true}
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Displayname"
+                  onChange={[Function]}
+                  required={true}
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Email"
+                  onChange={[Function]}
+                  required={true}
+                  type="email"
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  label="Passwort"
+                  onChange={[Function]}
+                  type="password"
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Typography)
+                variant="body1"
+              >
+                <de />
+              </WithStyles(Typography)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <TextField
+                  SelectProps={
+                    Object {
+                      "native": true,
+                    }
+                  }
+                  fullWidth={true}
+                  helperText="Wählen Sie die Rolle des Nutzers aus"
+                  label="Rolle"
+                  onChange={[Function]}
+                  required={false}
+                  select={true}
+                  value="student"
+                  variant="standard"
+                >
+                  <option
+                    value="parent"
+                  >
+                    parent
+                  </option>
+                  <option
+                    value="student"
+                  >
+                    student
+                  </option>
+                  <option
+                    value="teacher"
+                  >
+                    teacher
+                  </option>
+                  <option
+                    value="admin"
+                  >
+                    admin
+                  </option>
+                  <option
+                    value="manager"
+                  >
+                    manager
+                  </option>
+                </TextField>
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  amount={5}
+                  label="Abschluss-Jahrgang"
+                  onChange={[Function]}
+                  value={2019}
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  isValid={[Function]}
+                  label="Geburtstag"
+                  maxDate={946681200000}
+                  onChange={[Function]}
+                />
+              </WithStyles(Grid)>
+            </WithStyles(Grid)>
+          </form>
+        </WithStyles(DialogContent)>
+        <WithStyles(DialogActions)>
+          <WithStyles(Button)
+            className="close"
+            color="secondary"
+            onClick={[Function]}
+          >
+            Schließen
+          </WithStyles(Button)>
+          <WithStyles(Button)
+            color="primary"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Erstellen
+          </WithStyles(Button)>
+        </WithStyles(DialogActions)>
+      </WithStyles(Dialog)>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <WithStyles(DialogTitle)>
+            Neuer Nutzer
+          </WithStyles(DialogTitle)>,
+          <WithStyles(DialogContent)>
+            <form
+              onKeyPress={[Function]}
+            >
+              <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
+            </form>
+          </WithStyles(DialogContent)>,
+          <WithStyles(DialogActions)>
+            <WithStyles(Button)
+              className="close"
+              color="secondary"
+              onClick={[Function]}
+            >
+              Schließen
+            </WithStyles(Button)>
+            <WithStyles(Button)
+              color="primary"
+              disabled={true}
+              onClick={[Function]}
+            >
+              Erstellen
+            </WithStyles(Button)>
+          </WithStyles(DialogActions)>,
+        ],
+        "fullScreen": true,
+        "onClose": [Function],
+        "open": false,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": "Neuer Nutzer",
+          },
+          "ref": null,
+          "rendered": "Neuer Nutzer",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <form
+              onKeyPress={[Function]}
+            >
+              <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
+            </form>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>,
+              "onKeyPress": [Function],
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <de />
+                  </WithStyles(Typography)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <TextField
+                      SelectProps={
+                        Object {
+                          "native": true,
+                        }
+                      }
+                      fullWidth={true}
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
+                      label="Rolle"
+                      onChange={[Function]}
+                      required={false}
+                      select={true}
+                      value="student"
+                      variant="standard"
+                    >
+                      <option
+                        value="parent"
+                      >
+                        parent
+                      </option>
+                      <option
+                        value="student"
+                      >
+                        student
+                      </option>
+                      <option
+                        value="teacher"
+                      >
+                        teacher
+                      </option>
+                      <option
+                        value="admin"
+                      >
+                        admin
+                      </option>
+                      <option
+                        value="manager"
+                      >
+                        manager
+                      </option>
+                    </TextField>
+                  </WithStyles(Grid)>,
+                  false,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={2019}
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      isValid={[Function]}
+                      label="Geburtstag"
+                      maxDate={946681200000}
+                      onChange={[Function]}
+                    />
+                  </WithStyles(Grid)>,
+                ],
+                "container": true,
+                "direction": "row",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Nutzername",
+                      "onChange": [Function],
+                      "required": true,
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Displayname",
+                      "onChange": [Function],
+                      "required": true,
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Email",
+                      "onChange": [Function],
+                      "required": true,
+                      "type": "email",
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Passwort",
+                      "onChange": [Function],
+                      "type": "password",
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <de />,
+                    "variant": "body1",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <TextField
+                      SelectProps={
+                        Object {
+                          "native": true,
+                        }
+                      }
+                      fullWidth={true}
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
+                      label="Rolle"
+                      onChange={[Function]}
+                      required={false}
+                      select={true}
+                      value="student"
+                      variant="standard"
+                    >
+                      <option
+                        value="parent"
+                      >
+                        parent
+                      </option>
+                      <option
+                        value="student"
+                      >
+                        student
+                      </option>
+                      <option
+                        value="teacher"
+                      >
+                        teacher
+                      </option>
+                      <option
+                        value="admin"
+                      >
+                        admin
+                      </option>
+                      <option
+                        value="manager"
+                      >
+                        manager
+                      </option>
+                    </TextField>,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "SelectProps": Object {
+                        "native": true,
+                      },
+                      "children": Array [
+                        <option
+                          value="parent"
+                        >
+                          parent
+                        </option>,
+                        <option
+                          value="student"
+                        >
+                          student
+                        </option>,
+                        <option
+                          value="teacher"
+                        >
+                          teacher
+                        </option>,
+                        <option
+                          value="admin"
+                        >
+                          admin
+                        </option>,
+                        <option
+                          value="manager"
+                        >
+                          manager
+                        </option>,
+                      ],
+                      "fullWidth": true,
+                      "helperText": "Wählen Sie die Rolle des Nutzers aus",
+                      "label": "Rolle",
+                      "onChange": [Function],
+                      "required": false,
+                      "select": true,
+                      "value": "student",
+                      "variant": "standard",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": "parent",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "parent",
+                          "value": "parent",
+                        },
+                        "ref": null,
+                        "rendered": "parent",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "student",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "student",
+                          "value": "student",
+                        },
+                        "ref": null,
+                        "rendered": "student",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "teacher",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "teacher",
+                          "value": "teacher",
+                        },
+                        "ref": null,
+                        "rendered": "teacher",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "admin",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "admin",
+                          "value": "admin",
+                        },
+                        "ref": null,
+                        "rendered": "admin",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "manager",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "manager",
+                          "value": "manager",
+                        },
+                        "ref": null,
+                        "rendered": "manager",
+                        "type": "option",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                false,
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={2019}
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "amount": 5,
+                      "label": "Abschluss-Jahrgang",
+                      "onChange": [Function],
+                      "value": 2019,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      isValid={[Function]}
+                      label="Geburtstag"
+                      maxDate={946681200000}
+                      onChange={[Function]}
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "isValid": [Function],
+                      "label": "Geburtstag",
+                      "maxDate": 946681200000,
+                      "onChange": [Function],
+                      "value": undefined,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": "form",
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <WithStyles(Button)
+                className="close"
+                color="secondary"
+                onClick={[Function]}
+              >
+                Schließen
+              </WithStyles(Button)>,
+              <WithStyles(Button)
+                color="primary"
+                disabled={true}
+                onClick={[Function]}
+              >
+                Erstellen
+              </WithStyles(Button)>,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "Schließen",
+                "className": "close",
+                "color": "secondary",
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "Schließen",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "Erstellen",
+                "color": "primary",
+                "disabled": true,
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "Erstellen",
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <WithStyles(Dialog)
           fullScreen={true}
           onClose={[Function]}
           open={false}
@@ -207,11 +1420,6 @@ ShallowWrapper {
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
             <WithStyles(Button)
-              onClick={[Function]}
-            >
-              Importieren
-            </WithStyles(Button)>
-            <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
@@ -227,16 +1435,9 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
-          onClose={[Function]}
-          onImport={[Function]}
-          show={false}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
+      },
+      "ref": null,
+      "rendered": Object {
         "instance": null,
         "key": undefined,
         "nodeType": "class",
@@ -382,11 +1583,6 @@ ShallowWrapper {
               </form>
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
-              <WithStyles(Button)
-                onClick={[Function]}
-              >
-                Importieren
-              </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
@@ -1233,11 +2429,6 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <WithStyles(Button)
-                  onClick={[Function]}
-                >
-                  Importieren
-                </WithStyles(Button)>,
-                <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
@@ -1255,18 +2446,6 @@ ShallowWrapper {
             },
             "ref": null,
             "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "Importieren",
-                  "onClick": [Function],
-                },
-                "ref": null,
-                "rendered": "Importieren",
-                "type": [Function],
-              },
               Object {
                 "instance": null,
                 "key": undefined,
@@ -1301,1283 +2480,6 @@ ShallowWrapper {
         ],
         "type": [Function],
       },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "onClose": [Function],
-          "onImport": [Function],
-          "show": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": Symbol(react.fragment),
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": Array [
-          <WithStyles(Dialog)
-            fullScreen={true}
-            onClose={[Function]}
-            open={false}
-          >
-            <WithStyles(DialogTitle)>
-              Neuer Nutzer
-            </WithStyles(DialogTitle)>
-            <WithStyles(DialogContent)>
-              <form
-                onKeyPress={[Function]}
-              >
-                <WithStyles(Grid)
-                  container={true}
-                  direction="row"
-                >
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Nutzername"
-                      onChange={[Function]}
-                      required={true}
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Displayname"
-                      onChange={[Function]}
-                      required={true}
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Email"
-                      onChange={[Function]}
-                      required={true}
-                      type="email"
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Passwort"
-                      onChange={[Function]}
-                      type="password"
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Typography)
-                    variant="body1"
-                  >
-                    <de />
-                  </WithStyles(Typography)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <TextField
-                      SelectProps={
-                        Object {
-                          "native": true,
-                        }
-                      }
-                      fullWidth={true}
-                      helperText="Wählen Sie die Rolle des Nutzers aus"
-                      label="Rolle"
-                      onChange={[Function]}
-                      required={false}
-                      select={true}
-                      value="student"
-                      variant="standard"
-                    >
-                      <option
-                        value="parent"
-                      >
-                        parent
-                      </option>
-                      <option
-                        value="student"
-                      >
-                        student
-                      </option>
-                      <option
-                        value="teacher"
-                      >
-                        teacher
-                      </option>
-                      <option
-                        value="admin"
-                      >
-                        admin
-                      </option>
-                      <option
-                        value="manager"
-                      >
-                        manager
-                      </option>
-                    </TextField>
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
-                      onChange={[Function]}
-                      value={2019}
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      isValid={[Function]}
-                      label="Geburtstag"
-                      maxDate={946681200000}
-                      onChange={[Function]}
-                    />
-                  </WithStyles(Grid)>
-                </WithStyles(Grid)>
-              </form>
-            </WithStyles(DialogContent)>
-            <WithStyles(DialogActions)>
-              <WithStyles(Button)
-                onClick={[Function]}
-              >
-                Importieren
-              </WithStyles(Button)>
-              <WithStyles(Button)
-                className="close"
-                color="secondary"
-                onClick={[Function]}
-              >
-                Schließen
-              </WithStyles(Button)>
-              <WithStyles(Button)
-                color="primary"
-                disabled={true}
-                onClick={[Function]}
-              >
-                Erstellen
-              </WithStyles(Button)>
-            </WithStyles(DialogActions)>
-          </WithStyles(Dialog)>,
-          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
-            onClose={[Function]}
-            onImport={[Function]}
-            show={false}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <WithStyles(DialogTitle)>
-                Neuer Nutzer
-              </WithStyles(DialogTitle)>,
-              <WithStyles(DialogContent)>
-                <form
-                  onKeyPress={[Function]}
-                >
-                  <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>
-                </form>
-              </WithStyles(DialogContent)>,
-              <WithStyles(DialogActions)>
-                <WithStyles(Button)
-                  onClick={[Function]}
-                >
-                  Importieren
-                </WithStyles(Button)>
-                <WithStyles(Button)
-                  className="close"
-                  color="secondary"
-                  onClick={[Function]}
-                >
-                  Schließen
-                </WithStyles(Button)>
-                <WithStyles(Button)
-                  color="primary"
-                  disabled={true}
-                  onClick={[Function]}
-                >
-                  Erstellen
-                </WithStyles(Button)>
-              </WithStyles(DialogActions)>,
-            ],
-            "fullScreen": true,
-            "onClose": [Function],
-            "open": false,
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "Neuer Nutzer",
-              },
-              "ref": null,
-              "rendered": "Neuer Nutzer",
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <form
-                  onKeyPress={[Function]}
-                >
-                  <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>
-                </form>,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>,
-                  "onKeyPress": [Function],
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": Array [
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Nutzername"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Displayname"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Email"
-                          onChange={[Function]}
-                          required={true}
-                          type="email"
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Passwort"
-                          onChange={[Function]}
-                          type="password"
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Typography)
-                        variant="body1"
-                      >
-                        <de />
-                      </WithStyles(Typography)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          SelectProps={
-                            Object {
-                              "native": true,
-                            }
-                          }
-                          fullWidth={true}
-                          helperText="Wählen Sie die Rolle des Nutzers aus"
-                          label="Rolle"
-                          onChange={[Function]}
-                          required={false}
-                          select={true}
-                          value="student"
-                          variant="standard"
-                        >
-                          <option
-                            value="parent"
-                          >
-                            parent
-                          </option>
-                          <option
-                            value="student"
-                          >
-                            student
-                          </option>
-                          <option
-                            value="teacher"
-                          >
-                            teacher
-                          </option>
-                          <option
-                            value="admin"
-                          >
-                            admin
-                          </option>
-                          <option
-                            value="manager"
-                          >
-                            manager
-                          </option>
-                        </TextField>
-                      </WithStyles(Grid)>,
-                      false,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          amount={5}
-                          label="Abschluss-Jahrgang"
-                          onChange={[Function]}
-                          value={2019}
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          isValid={[Function]}
-                          label="Geburtstag"
-                          maxDate={946681200000}
-                          onChange={[Function]}
-                        />
-                      </WithStyles(Grid)>,
-                    ],
-                    "container": true,
-                    "direction": "row",
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Nutzername"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Nutzername",
-                          "onChange": [Function],
-                          "required": true,
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Displayname"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Displayname",
-                          "onChange": [Function],
-                          "required": true,
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Email"
-                          onChange={[Function]}
-                          required={true}
-                          type="email"
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Email",
-                          "onChange": [Function],
-                          "required": true,
-                          "type": "email",
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Passwort"
-                          onChange={[Function]}
-                          type="password"
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Passwort",
-                          "onChange": [Function],
-                          "type": "password",
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <de />,
-                        "variant": "body1",
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {},
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <TextField
-                          SelectProps={
-                            Object {
-                              "native": true,
-                            }
-                          }
-                          fullWidth={true}
-                          helperText="Wählen Sie die Rolle des Nutzers aus"
-                          label="Rolle"
-                          onChange={[Function]}
-                          required={false}
-                          select={true}
-                          value="student"
-                          variant="standard"
-                        >
-                          <option
-                            value="parent"
-                          >
-                            parent
-                          </option>
-                          <option
-                            value="student"
-                          >
-                            student
-                          </option>
-                          <option
-                            value="teacher"
-                          >
-                            teacher
-                          </option>
-                          <option
-                            value="admin"
-                          >
-                            admin
-                          </option>
-                          <option
-                            value="manager"
-                          >
-                            manager
-                          </option>
-                        </TextField>,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "SelectProps": Object {
-                            "native": true,
-                          },
-                          "children": Array [
-                            <option
-                              value="parent"
-                            >
-                              parent
-                            </option>,
-                            <option
-                              value="student"
-                            >
-                              student
-                            </option>,
-                            <option
-                              value="teacher"
-                            >
-                              teacher
-                            </option>,
-                            <option
-                              value="admin"
-                            >
-                              admin
-                            </option>,
-                            <option
-                              value="manager"
-                            >
-                              manager
-                            </option>,
-                          ],
-                          "fullWidth": true,
-                          "helperText": "Wählen Sie die Rolle des Nutzers aus",
-                          "label": "Rolle",
-                          "onChange": [Function],
-                          "required": false,
-                          "select": true,
-                          "value": "student",
-                          "variant": "standard",
-                        },
-                        "ref": null,
-                        "rendered": Array [
-                          Object {
-                            "instance": null,
-                            "key": "parent",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "parent",
-                              "value": "parent",
-                            },
-                            "ref": null,
-                            "rendered": "parent",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "student",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "student",
-                              "value": "student",
-                            },
-                            "ref": null,
-                            "rendered": "student",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "teacher",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "teacher",
-                              "value": "teacher",
-                            },
-                            "ref": null,
-                            "rendered": "teacher",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "admin",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "admin",
-                              "value": "admin",
-                            },
-                            "ref": null,
-                            "rendered": "admin",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "manager",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "manager",
-                              "value": "manager",
-                            },
-                            "ref": null,
-                            "rendered": "manager",
-                            "type": "option",
-                          },
-                        ],
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    false,
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          amount={5}
-                          label="Abschluss-Jahrgang"
-                          onChange={[Function]}
-                          value={2019}
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "amount": 5,
-                          "label": "Abschluss-Jahrgang",
-                          "onChange": [Function],
-                          "value": 2019,
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          isValid={[Function]}
-                          label="Geburtstag"
-                          maxDate={946681200000}
-                          onChange={[Function]}
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "isValid": [Function],
-                          "label": "Geburtstag",
-                          "maxDate": 946681200000,
-                          "onChange": [Function],
-                          "value": undefined,
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                  ],
-                  "type": [Function],
-                },
-                "type": "form",
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <WithStyles(Button)
-                    onClick={[Function]}
-                  >
-                    Importieren
-                  </WithStyles(Button)>,
-                  <WithStyles(Button)
-                    className="close"
-                    color="secondary"
-                    onClick={[Function]}
-                  >
-                    Schließen
-                  </WithStyles(Button)>,
-                  <WithStyles(Button)
-                    color="primary"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    Erstellen
-                  </WithStyles(Button)>,
-                ],
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Importieren",
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Importieren",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Schließen",
-                    "className": "close",
-                    "color": "secondary",
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Schließen",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Erstellen",
-                    "color": "primary",
-                    "disabled": true,
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Erstellen",
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "onClose": [Function],
-            "onImport": [Function],
-            "show": false,
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
       "type": Symbol(react.fragment),
     },
   ],
@@ -2661,8 +2563,1221 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "children": Array [
-        <WithStyles(Dialog)
+      "children": <WithStyles(Dialog)
+        fullScreen={true}
+        onClose={[Function]}
+        open={true}
+      >
+        <WithStyles(DialogTitle)>
+          Neuer Nutzer
+        </WithStyles(DialogTitle)>
+        <WithStyles(DialogContent)>
+          <form
+            onKeyPress={[Function]}
+          >
+            <WithStyles(Grid)
+              container={true}
+              direction="row"
+            >
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Nutzername"
+                  onChange={[Function]}
+                  required={true}
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Displayname"
+                  onChange={[Function]}
+                  required={true}
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                lg={6}
+                xs={12}
+              >
+                <Unknown
+                  label="Email"
+                  onChange={[Function]}
+                  required={true}
+                  type="email"
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  label="Passwort"
+                  onChange={[Function]}
+                  type="password"
+                  validator={[Function]}
+                  value=""
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Typography)
+                variant="body1"
+              >
+                <de />
+              </WithStyles(Typography)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <TextField
+                  SelectProps={
+                    Object {
+                      "native": true,
+                    }
+                  }
+                  fullWidth={true}
+                  helperText="Wählen Sie die Rolle des Nutzers aus"
+                  label="Rolle"
+                  onChange={[Function]}
+                  required={false}
+                  select={true}
+                  value="student"
+                  variant="standard"
+                >
+                  <option
+                    value="parent"
+                  >
+                    parent
+                  </option>
+                  <option
+                    value="student"
+                  >
+                    student
+                  </option>
+                  <option
+                    value="teacher"
+                  >
+                    teacher
+                  </option>
+                  <option
+                    value="admin"
+                  >
+                    admin
+                  </option>
+                  <option
+                    value="manager"
+                  >
+                    manager
+                  </option>
+                </TextField>
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  amount={5}
+                  label="Abschluss-Jahrgang"
+                  onChange={[Function]}
+                  value={2019}
+                />
+              </WithStyles(Grid)>
+              <WithStyles(Grid)
+                item={true}
+                xs={12}
+              >
+                <Unknown
+                  isValid={[Function]}
+                  label="Geburtstag"
+                  maxDate={946681200000}
+                  onChange={[Function]}
+                />
+              </WithStyles(Grid)>
+            </WithStyles(Grid)>
+          </form>
+        </WithStyles(DialogContent)>
+        <WithStyles(DialogActions)>
+          <WithStyles(Button)
+            className="close"
+            color="secondary"
+            onClick={[Function]}
+          >
+            Schließen
+          </WithStyles(Button)>
+          <WithStyles(Button)
+            color="primary"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Erstellen
+          </WithStyles(Button)>
+        </WithStyles(DialogActions)>
+      </WithStyles(Dialog)>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <WithStyles(DialogTitle)>
+            Neuer Nutzer
+          </WithStyles(DialogTitle)>,
+          <WithStyles(DialogContent)>
+            <form
+              onKeyPress={[Function]}
+            >
+              <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
+            </form>
+          </WithStyles(DialogContent)>,
+          <WithStyles(DialogActions)>
+            <WithStyles(Button)
+              className="close"
+              color="secondary"
+              onClick={[Function]}
+            >
+              Schließen
+            </WithStyles(Button)>
+            <WithStyles(Button)
+              color="primary"
+              disabled={true}
+              onClick={[Function]}
+            >
+              Erstellen
+            </WithStyles(Button)>
+          </WithStyles(DialogActions)>,
+        ],
+        "fullScreen": true,
+        "onClose": [Function],
+        "open": true,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": "Neuer Nutzer",
+          },
+          "ref": null,
+          "rendered": "Neuer Nutzer",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <form
+              onKeyPress={[Function]}
+            >
+              <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>
+            </form>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <WithStyles(Grid)
+                container={true}
+                direction="row"
+              >
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Nutzername"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Displayname"
+                    onChange={[Function]}
+                    required={true}
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  lg={6}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    label="Passwort"
+                    onChange={[Function]}
+                    type="password"
+                    validator={[Function]}
+                    value=""
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Typography)
+                  variant="body1"
+                >
+                  <de />
+                </WithStyles(Typography)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <TextField
+                    SelectProps={
+                      Object {
+                        "native": true,
+                      }
+                    }
+                    fullWidth={true}
+                    helperText="Wählen Sie die Rolle des Nutzers aus"
+                    label="Rolle"
+                    onChange={[Function]}
+                    required={false}
+                    select={true}
+                    value="student"
+                    variant="standard"
+                  >
+                    <option
+                      value="parent"
+                    >
+                      parent
+                    </option>
+                    <option
+                      value="student"
+                    >
+                      student
+                    </option>
+                    <option
+                      value="teacher"
+                    >
+                      teacher
+                    </option>
+                    <option
+                      value="admin"
+                    >
+                      admin
+                    </option>
+                    <option
+                      value="manager"
+                    >
+                      manager
+                    </option>
+                  </TextField>
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    amount={5}
+                    label="Abschluss-Jahrgang"
+                    onChange={[Function]}
+                    value={2019}
+                  />
+                </WithStyles(Grid)>
+                <WithStyles(Grid)
+                  item={true}
+                  xs={12}
+                >
+                  <Unknown
+                    isValid={[Function]}
+                    label="Geburtstag"
+                    maxDate={946681200000}
+                    onChange={[Function]}
+                  />
+                </WithStyles(Grid)>
+              </WithStyles(Grid)>,
+              "onKeyPress": [Function],
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    lg={6}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Typography)
+                    variant="body1"
+                  >
+                    <de />
+                  </WithStyles(Typography)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <TextField
+                      SelectProps={
+                        Object {
+                          "native": true,
+                        }
+                      }
+                      fullWidth={true}
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
+                      label="Rolle"
+                      onChange={[Function]}
+                      required={false}
+                      select={true}
+                      value="student"
+                      variant="standard"
+                    >
+                      <option
+                        value="parent"
+                      >
+                        parent
+                      </option>
+                      <option
+                        value="student"
+                      >
+                        student
+                      </option>
+                      <option
+                        value="teacher"
+                      >
+                        teacher
+                      </option>
+                      <option
+                        value="admin"
+                      >
+                        admin
+                      </option>
+                      <option
+                        value="manager"
+                      >
+                        manager
+                      </option>
+                    </TextField>
+                  </WithStyles(Grid)>,
+                  false,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={2019}
+                    />
+                  </WithStyles(Grid)>,
+                  <WithStyles(Grid)
+                    item={true}
+                    xs={12}
+                  >
+                    <Unknown
+                      isValid={[Function]}
+                      label="Geburtstag"
+                      maxDate={946681200000}
+                      onChange={[Function]}
+                    />
+                  </WithStyles(Grid)>,
+                ],
+                "container": true,
+                "direction": "row",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Nutzername"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Nutzername",
+                      "onChange": [Function],
+                      "required": true,
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Displayname"
+                      onChange={[Function]}
+                      required={true}
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Displayname",
+                      "onChange": [Function],
+                      "required": true,
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Email"
+                      onChange={[Function]}
+                      required={true}
+                      type="email"
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "lg": 6,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Email",
+                      "onChange": [Function],
+                      "required": true,
+                      "type": "email",
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      label="Passwort"
+                      onChange={[Function]}
+                      type="password"
+                      validator={[Function]}
+                      value=""
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "label": "Passwort",
+                      "onChange": [Function],
+                      "type": "password",
+                      "validator": [Function],
+                      "value": "",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <de />,
+                    "variant": "body1",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <TextField
+                      SelectProps={
+                        Object {
+                          "native": true,
+                        }
+                      }
+                      fullWidth={true}
+                      helperText="Wählen Sie die Rolle des Nutzers aus"
+                      label="Rolle"
+                      onChange={[Function]}
+                      required={false}
+                      select={true}
+                      value="student"
+                      variant="standard"
+                    >
+                      <option
+                        value="parent"
+                      >
+                        parent
+                      </option>
+                      <option
+                        value="student"
+                      >
+                        student
+                      </option>
+                      <option
+                        value="teacher"
+                      >
+                        teacher
+                      </option>
+                      <option
+                        value="admin"
+                      >
+                        admin
+                      </option>
+                      <option
+                        value="manager"
+                      >
+                        manager
+                      </option>
+                    </TextField>,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "SelectProps": Object {
+                        "native": true,
+                      },
+                      "children": Array [
+                        <option
+                          value="parent"
+                        >
+                          parent
+                        </option>,
+                        <option
+                          value="student"
+                        >
+                          student
+                        </option>,
+                        <option
+                          value="teacher"
+                        >
+                          teacher
+                        </option>,
+                        <option
+                          value="admin"
+                        >
+                          admin
+                        </option>,
+                        <option
+                          value="manager"
+                        >
+                          manager
+                        </option>,
+                      ],
+                      "fullWidth": true,
+                      "helperText": "Wählen Sie die Rolle des Nutzers aus",
+                      "label": "Rolle",
+                      "onChange": [Function],
+                      "required": false,
+                      "select": true,
+                      "value": "student",
+                      "variant": "standard",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": "parent",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "parent",
+                          "value": "parent",
+                        },
+                        "ref": null,
+                        "rendered": "parent",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "student",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "student",
+                          "value": "student",
+                        },
+                        "ref": null,
+                        "rendered": "student",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "teacher",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "teacher",
+                          "value": "teacher",
+                        },
+                        "ref": null,
+                        "rendered": "teacher",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "admin",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "admin",
+                          "value": "admin",
+                        },
+                        "ref": null,
+                        "rendered": "admin",
+                        "type": "option",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "manager",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "manager",
+                          "value": "manager",
+                        },
+                        "ref": null,
+                        "rendered": "manager",
+                        "type": "option",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                false,
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      amount={5}
+                      label="Abschluss-Jahrgang"
+                      onChange={[Function]}
+                      value={2019}
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "amount": 5,
+                      "label": "Abschluss-Jahrgang",
+                      "onChange": [Function],
+                      "value": 2019,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Unknown
+                      isValid={[Function]}
+                      label="Geburtstag"
+                      maxDate={946681200000}
+                      onChange={[Function]}
+                    />,
+                    "item": true,
+                    "xs": 12,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "isValid": [Function],
+                      "label": "Geburtstag",
+                      "maxDate": 946681200000,
+                      "onChange": [Function],
+                      "value": undefined,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": "form",
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <WithStyles(Button)
+                className="close"
+                color="secondary"
+                onClick={[Function]}
+              >
+                Schließen
+              </WithStyles(Button)>,
+              <WithStyles(Button)
+                color="primary"
+                disabled={true}
+                onClick={[Function]}
+              >
+                Erstellen
+              </WithStyles(Button)>,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "Schließen",
+                "className": "close",
+                "color": "secondary",
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "Schließen",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "Erstellen",
+                "color": "primary",
+                "disabled": true,
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "Erstellen",
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <WithStyles(Dialog)
           fullScreen={true}
           onClose={[Function]}
           open={true}
@@ -2808,11 +3923,6 @@ ShallowWrapper {
           </WithStyles(DialogContent)>
           <WithStyles(DialogActions)>
             <WithStyles(Button)
-              onClick={[Function]}
-            >
-              Importieren
-            </WithStyles(Button)>
-            <WithStyles(Button)
               className="close"
               color="secondary"
               onClick={[Function]}
@@ -2828,16 +3938,9 @@ ShallowWrapper {
             </WithStyles(Button)>
           </WithStyles(DialogActions)>
         </WithStyles(Dialog)>,
-        <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
-          onClose={[Function]}
-          onImport={[Function]}
-          show={false}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
+      },
+      "ref": null,
+      "rendered": Object {
         "instance": null,
         "key": undefined,
         "nodeType": "class",
@@ -2983,11 +4086,6 @@ ShallowWrapper {
               </form>
             </WithStyles(DialogContent)>,
             <WithStyles(DialogActions)>
-              <WithStyles(Button)
-                onClick={[Function]}
-              >
-                Importieren
-              </WithStyles(Button)>
               <WithStyles(Button)
                 className="close"
                 color="secondary"
@@ -3834,11 +4932,6 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <WithStyles(Button)
-                  onClick={[Function]}
-                >
-                  Importieren
-                </WithStyles(Button)>,
-                <WithStyles(Button)
                   className="close"
                   color="secondary"
                   onClick={[Function]}
@@ -3856,18 +4949,6 @@ ShallowWrapper {
             },
             "ref": null,
             "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": "Importieren",
-                  "onClick": [Function],
-                },
-                "ref": null,
-                "rendered": "Importieren",
-                "type": [Function],
-              },
               Object {
                 "instance": null,
                 "key": undefined,
@@ -3902,1283 +4983,6 @@ ShallowWrapper {
         ],
         "type": [Function],
       },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "onClose": [Function],
-          "onImport": [Function],
-          "show": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": Symbol(react.fragment),
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": Array [
-          <WithStyles(Dialog)
-            fullScreen={true}
-            onClose={[Function]}
-            open={true}
-          >
-            <WithStyles(DialogTitle)>
-              Neuer Nutzer
-            </WithStyles(DialogTitle)>
-            <WithStyles(DialogContent)>
-              <form
-                onKeyPress={[Function]}
-              >
-                <WithStyles(Grid)
-                  container={true}
-                  direction="row"
-                >
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Nutzername"
-                      onChange={[Function]}
-                      required={true}
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Displayname"
-                      onChange={[Function]}
-                      required={true}
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    lg={6}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Email"
-                      onChange={[Function]}
-                      required={true}
-                      type="email"
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      label="Passwort"
-                      onChange={[Function]}
-                      type="password"
-                      validator={[Function]}
-                      value=""
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Typography)
-                    variant="body1"
-                  >
-                    <de />
-                  </WithStyles(Typography)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <TextField
-                      SelectProps={
-                        Object {
-                          "native": true,
-                        }
-                      }
-                      fullWidth={true}
-                      helperText="Wählen Sie die Rolle des Nutzers aus"
-                      label="Rolle"
-                      onChange={[Function]}
-                      required={false}
-                      select={true}
-                      value="student"
-                      variant="standard"
-                    >
-                      <option
-                        value="parent"
-                      >
-                        parent
-                      </option>
-                      <option
-                        value="student"
-                      >
-                        student
-                      </option>
-                      <option
-                        value="teacher"
-                      >
-                        teacher
-                      </option>
-                      <option
-                        value="admin"
-                      >
-                        admin
-                      </option>
-                      <option
-                        value="manager"
-                      >
-                        manager
-                      </option>
-                    </TextField>
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
-                      onChange={[Function]}
-                      value={2019}
-                    />
-                  </WithStyles(Grid)>
-                  <WithStyles(Grid)
-                    item={true}
-                    xs={12}
-                  >
-                    <Unknown
-                      isValid={[Function]}
-                      label="Geburtstag"
-                      maxDate={946681200000}
-                      onChange={[Function]}
-                    />
-                  </WithStyles(Grid)>
-                </WithStyles(Grid)>
-              </form>
-            </WithStyles(DialogContent)>
-            <WithStyles(DialogActions)>
-              <WithStyles(Button)
-                onClick={[Function]}
-              >
-                Importieren
-              </WithStyles(Button)>
-              <WithStyles(Button)
-                className="close"
-                color="secondary"
-                onClick={[Function]}
-              >
-                Schließen
-              </WithStyles(Button)>
-              <WithStyles(Button)
-                color="primary"
-                disabled={true}
-                onClick={[Function]}
-              >
-                Erstellen
-              </WithStyles(Button)>
-            </WithStyles(DialogActions)>
-          </WithStyles(Dialog)>,
-          <Connect(WithStyles(WithTheme(WithWidth(WithMobileDialog))))
-            onClose={[Function]}
-            onImport={[Function]}
-            show={false}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <WithStyles(DialogTitle)>
-                Neuer Nutzer
-              </WithStyles(DialogTitle)>,
-              <WithStyles(DialogContent)>
-                <form
-                  onKeyPress={[Function]}
-                >
-                  <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>
-                </form>
-              </WithStyles(DialogContent)>,
-              <WithStyles(DialogActions)>
-                <WithStyles(Button)
-                  onClick={[Function]}
-                >
-                  Importieren
-                </WithStyles(Button)>
-                <WithStyles(Button)
-                  className="close"
-                  color="secondary"
-                  onClick={[Function]}
-                >
-                  Schließen
-                </WithStyles(Button)>
-                <WithStyles(Button)
-                  color="primary"
-                  disabled={true}
-                  onClick={[Function]}
-                >
-                  Erstellen
-                </WithStyles(Button)>
-              </WithStyles(DialogActions)>,
-            ],
-            "fullScreen": true,
-            "onClose": [Function],
-            "open": true,
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "Neuer Nutzer",
-              },
-              "ref": null,
-              "rendered": "Neuer Nutzer",
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <form
-                  onKeyPress={[Function]}
-                >
-                  <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>
-                </form>,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": <WithStyles(Grid)
-                    container={true}
-                    direction="row"
-                  >
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Nutzername"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Displayname"
-                        onChange={[Function]}
-                        required={true}
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      lg={6}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Email"
-                        onChange={[Function]}
-                        required={true}
-                        type="email"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        label="Passwort"
-                        onChange={[Function]}
-                        type="password"
-                        validator={[Function]}
-                        value=""
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Typography)
-                      variant="body1"
-                    >
-                      <de />
-                    </WithStyles(Typography)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <TextField
-                        SelectProps={
-                          Object {
-                            "native": true,
-                          }
-                        }
-                        fullWidth={true}
-                        helperText="Wählen Sie die Rolle des Nutzers aus"
-                        label="Rolle"
-                        onChange={[Function]}
-                        required={false}
-                        select={true}
-                        value="student"
-                        variant="standard"
-                      >
-                        <option
-                          value="parent"
-                        >
-                          parent
-                        </option>
-                        <option
-                          value="student"
-                        >
-                          student
-                        </option>
-                        <option
-                          value="teacher"
-                        >
-                          teacher
-                        </option>
-                        <option
-                          value="admin"
-                        >
-                          admin
-                        </option>
-                        <option
-                          value="manager"
-                        >
-                          manager
-                        </option>
-                      </TextField>
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
-                        onChange={[Function]}
-                        value={2019}
-                      />
-                    </WithStyles(Grid)>
-                    <WithStyles(Grid)
-                      item={true}
-                      xs={12}
-                    >
-                      <Unknown
-                        isValid={[Function]}
-                        label="Geburtstag"
-                        maxDate={946681200000}
-                        onChange={[Function]}
-                      />
-                    </WithStyles(Grid)>
-                  </WithStyles(Grid)>,
-                  "onKeyPress": [Function],
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": Array [
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Nutzername"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Displayname"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        lg={6}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Email"
-                          onChange={[Function]}
-                          required={true}
-                          type="email"
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          label="Passwort"
-                          onChange={[Function]}
-                          type="password"
-                          validator={[Function]}
-                          value=""
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Typography)
-                        variant="body1"
-                      >
-                        <de />
-                      </WithStyles(Typography)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <TextField
-                          SelectProps={
-                            Object {
-                              "native": true,
-                            }
-                          }
-                          fullWidth={true}
-                          helperText="Wählen Sie die Rolle des Nutzers aus"
-                          label="Rolle"
-                          onChange={[Function]}
-                          required={false}
-                          select={true}
-                          value="student"
-                          variant="standard"
-                        >
-                          <option
-                            value="parent"
-                          >
-                            parent
-                          </option>
-                          <option
-                            value="student"
-                          >
-                            student
-                          </option>
-                          <option
-                            value="teacher"
-                          >
-                            teacher
-                          </option>
-                          <option
-                            value="admin"
-                          >
-                            admin
-                          </option>
-                          <option
-                            value="manager"
-                          >
-                            manager
-                          </option>
-                        </TextField>
-                      </WithStyles(Grid)>,
-                      false,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          amount={5}
-                          label="Abschluss-Jahrgang"
-                          onChange={[Function]}
-                          value={2019}
-                        />
-                      </WithStyles(Grid)>,
-                      <WithStyles(Grid)
-                        item={true}
-                        xs={12}
-                      >
-                        <Unknown
-                          isValid={[Function]}
-                          label="Geburtstag"
-                          maxDate={946681200000}
-                          onChange={[Function]}
-                        />
-                      </WithStyles(Grid)>,
-                    ],
-                    "container": true,
-                    "direction": "row",
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Nutzername"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Nutzername",
-                          "onChange": [Function],
-                          "required": true,
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Displayname"
-                          onChange={[Function]}
-                          required={true}
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Displayname",
-                          "onChange": [Function],
-                          "required": true,
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Email"
-                          onChange={[Function]}
-                          required={true}
-                          type="email"
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "lg": 6,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Email",
-                          "onChange": [Function],
-                          "required": true,
-                          "type": "email",
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          label="Passwort"
-                          onChange={[Function]}
-                          type="password"
-                          validator={[Function]}
-                          value=""
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "label": "Passwort",
-                          "onChange": [Function],
-                          "type": "password",
-                          "validator": [Function],
-                          "value": "",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <de />,
-                        "variant": "body1",
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {},
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <TextField
-                          SelectProps={
-                            Object {
-                              "native": true,
-                            }
-                          }
-                          fullWidth={true}
-                          helperText="Wählen Sie die Rolle des Nutzers aus"
-                          label="Rolle"
-                          onChange={[Function]}
-                          required={false}
-                          select={true}
-                          value="student"
-                          variant="standard"
-                        >
-                          <option
-                            value="parent"
-                          >
-                            parent
-                          </option>
-                          <option
-                            value="student"
-                          >
-                            student
-                          </option>
-                          <option
-                            value="teacher"
-                          >
-                            teacher
-                          </option>
-                          <option
-                            value="admin"
-                          >
-                            admin
-                          </option>
-                          <option
-                            value="manager"
-                          >
-                            manager
-                          </option>
-                        </TextField>,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "SelectProps": Object {
-                            "native": true,
-                          },
-                          "children": Array [
-                            <option
-                              value="parent"
-                            >
-                              parent
-                            </option>,
-                            <option
-                              value="student"
-                            >
-                              student
-                            </option>,
-                            <option
-                              value="teacher"
-                            >
-                              teacher
-                            </option>,
-                            <option
-                              value="admin"
-                            >
-                              admin
-                            </option>,
-                            <option
-                              value="manager"
-                            >
-                              manager
-                            </option>,
-                          ],
-                          "fullWidth": true,
-                          "helperText": "Wählen Sie die Rolle des Nutzers aus",
-                          "label": "Rolle",
-                          "onChange": [Function],
-                          "required": false,
-                          "select": true,
-                          "value": "student",
-                          "variant": "standard",
-                        },
-                        "ref": null,
-                        "rendered": Array [
-                          Object {
-                            "instance": null,
-                            "key": "parent",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "parent",
-                              "value": "parent",
-                            },
-                            "ref": null,
-                            "rendered": "parent",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "student",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "student",
-                              "value": "student",
-                            },
-                            "ref": null,
-                            "rendered": "student",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "teacher",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "teacher",
-                              "value": "teacher",
-                            },
-                            "ref": null,
-                            "rendered": "teacher",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "admin",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "admin",
-                              "value": "admin",
-                            },
-                            "ref": null,
-                            "rendered": "admin",
-                            "type": "option",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": "manager",
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "manager",
-                              "value": "manager",
-                            },
-                            "ref": null,
-                            "rendered": "manager",
-                            "type": "option",
-                          },
-                        ],
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    false,
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          amount={5}
-                          label="Abschluss-Jahrgang"
-                          onChange={[Function]}
-                          value={2019}
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "amount": 5,
-                          "label": "Abschluss-Jahrgang",
-                          "onChange": [Function],
-                          "value": 2019,
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Unknown
-                          isValid={[Function]}
-                          label="Geburtstag"
-                          maxDate={946681200000}
-                          onChange={[Function]}
-                        />,
-                        "item": true,
-                        "xs": 12,
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "isValid": [Function],
-                          "label": "Geburtstag",
-                          "maxDate": 946681200000,
-                          "onChange": [Function],
-                          "value": undefined,
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                  ],
-                  "type": [Function],
-                },
-                "type": "form",
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": Array [
-                  <WithStyles(Button)
-                    onClick={[Function]}
-                  >
-                    Importieren
-                  </WithStyles(Button)>,
-                  <WithStyles(Button)
-                    className="close"
-                    color="secondary"
-                    onClick={[Function]}
-                  >
-                    Schließen
-                  </WithStyles(Button)>,
-                  <WithStyles(Button)
-                    color="primary"
-                    disabled={true}
-                    onClick={[Function]}
-                  >
-                    Erstellen
-                  </WithStyles(Button)>,
-                ],
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Importieren",
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Importieren",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Schließen",
-                    "className": "close",
-                    "color": "secondary",
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Schließen",
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": "Erstellen",
-                    "color": "primary",
-                    "disabled": true,
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Erstellen",
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "onClose": [Function],
-            "onImport": [Function],
-            "show": false,
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
       "type": Symbol(react.fragment),
     },
   ],

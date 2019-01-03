@@ -129,6 +129,13 @@ export class EntryRepo {
     await this.repo.delete({ _id: id });
   }
 
+  async deleteAll() {
+    await this.repo
+      .createQueryBuilder()
+      .delete()
+      .execute();
+  }
+
   static toDto(entry: Entry): EntryDto {
     const result = new EntryDto();
 

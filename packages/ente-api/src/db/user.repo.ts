@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository, Brackets } from "typeorm";
+import { Repository, Brackets, In, Not } from "typeorm";
 import { User } from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
 import {
@@ -19,6 +19,7 @@ import {
   withPagination
 } from "../helpers/pagination-info";
 import { Config } from "../helpers/config";
+import { hashPasswordsOfUsers } from "../helpers/password-hash";
 
 interface UserAndPasswordHash {
   user: UserDto;
@@ -30,7 +31,7 @@ interface UserWithRole {
   role: Roles;
 }
 
-interface CreateUserDtoWithHash {
+export interface CreateUserDtoWithHash {
   user: CreateUserDto;
   hash?: string;
 }
@@ -46,6 +47,10 @@ export enum UpdateUserFailure {
 
 export enum SetLanguageFailure {
   UserNotFound
+}
+
+export enum ImportUsersFailure {
+  UsersNotFound
 }
 
 @Injectable()
@@ -121,6 +126,11 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
+  async hashPasswordAndCreate(...users: CreateUserDto[]) {
+    const withHash = await hashPasswordsOfUsers(...users);
+    return await this.create(...withHash);
+  }
+
   async create(...users: CreateUserDtoWithHash[]): Promise<UserDto[]> {
     const defaultLanguage = Config.getDefaultLanguage();
 
@@ -165,6 +175,72 @@ export class UserRepo {
 
       return result.map(u => UserRepo.toDto(u));
     });
+  }
+
+  async import(
+    dtos: CreateUserDto[],
+    deleteOthers: boolean
+  ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
+    const usernames = dtos.map(d => d.username);
+
+    const allChildren = _.uniq(_.flatten(dtos.map(u => u.children)));
+    const childrenNotInDtos = allChildren.filter(
+      name => !usernames.includes(name)
+    );
+    const allChildrenExist = await this.hasUsersWithRole(
+      [Roles.STUDENT],
+      ...childrenNotInDtos
+    );
+    if (!allChildrenExist) {
+      return Fail(ImportUsersFailure.UsersNotFound);
+    }
+
+    const usersWhoAlreadyExist = await this.repo.find({
+      where: { username: In(usernames) }
+    });
+    const usernamesThatAlreadyExist = usersWhoAlreadyExist.map(u => u.username);
+
+    const [dtosToUpdate, dtosToCreate] = _.partition(dtos, (s: CreateUserDto) =>
+      usernamesThatAlreadyExist.includes(s.username)
+    );
+
+    const createdUsers = await this.hashPasswordAndCreate(...dtosToCreate);
+
+    const updatedUsers = await Promise.all(
+      dtosToUpdate.map(async dto => {
+        const user = (await this.repo.findOne({ username: dto.username }))!;
+
+        const childrenOfUser = await Promise.all(
+          dto.children.map(
+            async username =>
+              (await this.repo.findOne({
+                where: { username: username }
+              }))!
+          )
+        );
+
+        user.children = childrenOfUser;
+        user.birthday = dto.birthday || null;
+        user.displayname = dto.displayname;
+        user.email = dto.email;
+        user.graduationYear = dto.graduationYear || null;
+        if (!!dto.language) {
+          user.language = dto.language;
+        }
+
+        await this.repo.save(user);
+
+        return UserRepo.toDto(user);
+      })
+    );
+
+    if (deleteOthers) {
+      await this.repo.delete({
+        username: Not(In([...usernames, ...childrenNotInDtos, "admin"]))
+      });
+    }
+
+    return Success([...createdUsers, ...updatedUsers]);
   }
 
   async setDisplayName(id: string, displayname: string) {
@@ -356,10 +432,10 @@ export class UserRepo {
         : [];
     result.displayname = user.displayname;
     result.email = user.email;
-    result.birthday = user.birthday;
+    result.birthday = user.birthday || undefined;
     result.role = user.role;
     result.username = user.username;
-    result.graduationYear = user.graduationYear;
+    result.graduationYear = user.graduationYear || undefined;
     result.language = user.language;
 
     return result;

@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { createAction, Action } from "redux-actions";
+import { createAction, Action, ActionMeta } from "redux-actions";
 
 import {
   CREATE_ENTRY_REQUEST,
@@ -65,9 +65,18 @@ import {
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_SUCCESS,
   DOWNLOAD_EXCEL_EXPORT_ERROR,
-  SET_LANGUAGE
+  SET_LANGUAGE,
+  IMPORT_USERS_REQUEST,
+  IMPORT_USERS_SUCCESS,
+  IMPORT_USERS_ERROR
 } from "./constants";
-import { APIResponse, AuthState, BasicCredentials } from "./types";
+import {
+  APIResponse,
+  AuthState,
+  BasicCredentials,
+  EntryN,
+  UserN
+} from "./types";
 import {
   CreateUserDto,
   CreateEntryDto,
@@ -262,5 +271,27 @@ export const setPasswordError = createMetaAction<Action<INewPassword>, Error>(
 export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 
 export const setLanguage = createAction<Languages>(SET_LANGUAGE);
+
+export interface ImportUsersRequestPayload {
+  dtos: CreateUserDto[];
+  deleteEntries: boolean;
+  deleteUsers: boolean;
+}
+
+export interface ImportUsersSuccessPayload {
+  newState?: APIResponse;
+}
+
+export const importUsersRequest = createAction<ImportUsersRequestPayload>(
+  IMPORT_USERS_REQUEST
+);
+export const importUsersSuccess = createMetaAction<
+  ImportUsersRequestPayload,
+  ImportUsersSuccessPayload
+>(IMPORT_USERS_SUCCESS);
+export const importUsersError = createMetaAction<
+  Action<ImportUsersRequestPayload>,
+  Error
+>(IMPORT_USERS_ERROR);
 
 export const logout = createAction(LOGOUT);

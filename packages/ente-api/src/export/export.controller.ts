@@ -20,11 +20,6 @@ export class ExportController {
   ) {}
 
   @Get("excel")
-  @Header("Content-Disposition", "attachment; filename=export.xlsx")
-  @Header(
-    "Content-Type",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  )
   async getExcelExport(@Ctx() ctx: RequestContext, @Res() res: Response) {
     const result = await this.exportService.getExcelExport(ctx.user);
 
@@ -36,8 +31,15 @@ export class ExportController {
         }
       },
       b => {
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=export.xlsx"
+        );
+        res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
         res.send(b);
-        res.end();
       }
     );
   }

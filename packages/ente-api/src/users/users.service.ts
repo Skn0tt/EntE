@@ -20,7 +20,7 @@ import {
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
-import { hashPassword } from "../helpers/password-hash";
+import { hashPasswordsOfUsers } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
@@ -198,12 +198,7 @@ export class UsersService implements OnModuleInit {
   }
 
   private async _createUsers(...users: CreateUserDto[]) {
-    const withHash = await Promise.all(
-      users.map(async u => ({
-        user: u,
-        hash: !!u.password ? await hashPassword(u.password) : undefined
-      }))
-    );
+    const withHash = await hashPasswordsOfUsers(...users);
     const created = await this.userRepo.create(...withHash);
 
     const usersWithoutPassword = created.filter(created => {

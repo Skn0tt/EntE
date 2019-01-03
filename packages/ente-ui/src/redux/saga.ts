@@ -46,7 +46,12 @@ import {
   downloadExcelExportSuccess,
   downloadExcelExportError,
   setPasswordSuccess,
-  setPasswordError
+  setPasswordError,
+  ImportUsersRequestPayload,
+  importUsersSuccess,
+  ImportUsersSuccessPayload,
+  updateUserError,
+  importUsersError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -67,7 +72,8 @@ import {
   DELETE_USER_REQUEST,
   DELETE_ENTRY_REQUEST,
   DOWNLOAD_EXCEL_EXPORT_REQUEST,
-  SET_LANGUAGE
+  SET_LANGUAGE,
+  IMPORT_USERS_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -295,6 +301,43 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
   }
 }
 
+function* importUsersSaga(action: Action<ImportUsersRequestPayload>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+
+    const { deleteEntries, deleteUsers, dtos } = action.payload!;
+
+    const responses: APIResponse[] = [];
+
+    const createdUsers: APIResponse = yield call(
+      api.importUsers,
+      token.some(),
+      dtos,
+      { deleteUsers, deleteEntries }
+    );
+
+    responses.push(createdUsers);
+
+    const allEntries: APIResponse = yield call(api.getEntries, token.some());
+    responses.push(allEntries);
+
+    const allUsers: APIResponse = yield call(api.getUsers, token.some());
+    responses.push(allUsers);
+
+    const result: ImportUsersSuccessPayload = {
+      newState: api.mergeAPIResponses(...responses)
+    };
+
+    yield put(importUsersSuccess(result, action));
+
+    return;
+  } catch (error) {
+    const ex: Error = error;
+    addMessages(ex.message);
+    yield put(importUsersError(ex, action));
+  }
+}
+
 function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
@@ -308,7 +351,7 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
     yield put(updateUserSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    yield put(createUsersError(error, action));
+    yield put(updateUserError(error, action));
   }
 }
 
@@ -399,6 +442,7 @@ function* saga() {
   yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);
   yield takeEvery(DOWNLOAD_EXCEL_EXPORT_REQUEST, downloadExcelExportSaga);
   yield takeEvery(SET_LANGUAGE, syncLanguageSaga);
+  yield takeEvery(IMPORT_USERS_REQUEST, importUsersSaga);
   yield takeEvery<Action<CreateEntryDto>>(
     CREATE_ENTRY_REQUEST,
     createEntrySaga

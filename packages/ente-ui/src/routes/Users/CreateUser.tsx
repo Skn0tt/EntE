@@ -21,7 +21,7 @@ import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
 import { Action } from "redux";
-import ImportUsers from "./ImportUsers";
+import ImportUsers from "../ImportUsers";
 import {
   Roles,
   CreateUserDto,
@@ -106,7 +106,6 @@ interface OwnProps {
 
 interface CreateUserState {
   create: CreateUserDto;
-  showImportUsers: boolean;
 }
 
 interface CreateUserStateProps {
@@ -150,8 +149,7 @@ export class CreateUser extends React.Component<
    * # Intialization
    */
   state: Readonly<CreateUserState> = {
-    create: createDefaultCreateUserDto(),
-    showImportUsers: false
+    create: createDefaultCreateUserDto()
   };
 
   /**
@@ -161,9 +159,6 @@ export class CreateUser extends React.Component<
 
   handleClose = () => this.props.onClose();
 
-  handleShowImport = () => this.setState({ showImportUsers: true });
-  handleCloseImport = () => this.setState({ showImportUsers: false });
-
   handleSubmit = () => {
     return this.props.createUsers(this.state.create);
   };
@@ -172,12 +167,6 @@ export class CreateUser extends React.Component<
     if (event.key === "Enter" && this.inputValid()) {
       this.handleSubmit();
     }
-  };
-
-  handleImport = (u: CreateUserDto[]) => {
-    this.props.createUsers(...u);
-    this.handleCloseImport();
-    this.handleClose();
   };
 
   /**
@@ -239,7 +228,7 @@ export class CreateUser extends React.Component<
 
   render() {
     const { show, fullScreen, getUser, students, translation } = this.props;
-    const { create, showImportUsers } = this.state;
+    const { create } = this.state;
 
     return (
       <>
@@ -344,9 +333,6 @@ export class CreateUser extends React.Component<
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleShowImport}>
-              {translation.import}
-            </Button>
             <Button
               onClick={this.handleClose}
               color="secondary"
@@ -366,11 +352,6 @@ export class CreateUser extends React.Component<
             </Button>
           </DialogActions>
         </Dialog>
-        <ImportUsers
-          onClose={this.handleCloseImport}
-          show={showImportUsers}
-          onImport={this.handleImport}
-        />
       </>
     );
   }

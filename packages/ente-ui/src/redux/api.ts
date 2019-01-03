@@ -31,8 +31,6 @@ import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
 import { getConfig } from "./config";
 
-const { onFileDownload } = getConfig();
-
 const getBaseUrl = () => getConfig().baseUrl;
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
@@ -62,7 +60,7 @@ const get = async <T>(url: string, token: string) => {
   return response.data;
 };
 
-const mergeAPIResponses = (...values: APIResponse[]): APIResponse => {
+export const mergeAPIResponses = (...values: APIResponse[]): APIResponse => {
   const entries = _.concat([], ...values.map(v => v.entries));
   const users = _.concat([], ...values.map(v => v.users));
   const slots = _.concat([], ...values.map(v => v.slots));
@@ -212,7 +210,7 @@ export const downloadExcelExport = async (token: string): Promise<void> => {
     ...axiosTokenParams(token),
     responseType: "blob"
   });
-  onFileDownload(response.data, "export.xlsx");
+  getConfig().onFileDownload(response.data, "export.xlsx");
 };
 
 export const getEntry = async (
@@ -382,4 +380,20 @@ export const setPassword = async (token: string, newPassword: string) => {
     }
   );
   return result.data;
+};
+
+export const importUsers = async (
+  token: string,
+  dtos: CreateUserDto[],
+  {
+    deleteEntries,
+    deleteUsers
+  }: { deleteUsers: boolean; deleteEntries: boolean }
+) => {
+  const result = await post<UserDto[]>(
+    `${getBaseUrl()}/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}`,
+    token,
+    dtos
+  );
+  return transformUsers(...result);
 };

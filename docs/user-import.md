@@ -73,6 +73,7 @@ To create this `.csv` file, you can use the provided [template](https://gitlab.c
 
 ## How to import the CSV file
 
-Go to "Users", click on the "Create"-Button and now click on "Import" in the bottom row.
+Go to "Admin" and click on the "Import Users" button.
+Fill out the options.
 Drag'n'drop your `.csv` file into the dropzone or click on it to open a file dialog.
 Click on the "Submit"-Button to invoke the import.
