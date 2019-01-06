@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-patch:
+## [v0.13.1] - 2019-01-07
 
 - Fixed: "forSchool" is now set properly
+
+## [v0.13.0] - 2019-01-06
 
 - Reworked Import Feature, it now can clean up old data
 - scholar entries now need to have reason set ([#221](https://gitlab.com/Skn0tt/EntE/issues/221))
