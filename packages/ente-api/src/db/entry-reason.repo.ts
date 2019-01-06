@@ -48,7 +48,7 @@ export class EntryReasonRepo {
   }
 
   static toDto(v: EntryReason): EntryReasonDto | null {
-    if (!!v.category) {
+    if (!v.category) {
       return null;
     }
 
