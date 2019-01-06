@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v0.13.1] - 2019-01-07
+## [v0.13.2] - 2019-01-07
 
 - Fixed: "forSchool" is now really set properly
 
