@@ -36,7 +36,7 @@ export class Entry {
   readonly dateEnd: string | null;
 
   @Column(type => EntryReason)
-  reason: EntryReason | null;
+  reason: EntryReason;
 
   @Column("tinyint", { nullable: false })
   @IsBoolean()

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+patch:
+
+- Fixed: "forSchool" is now set properly
+
 - Reworked Import Feature, it now can clean up old data
 - scholar entries now need to have reason set ([#221](https://gitlab.com/Skn0tt/EntE/issues/221))
 - Managers are now selectable as teachers so they no longer need an additional user account ([#162](https://gitlab.com/Skn0tt/EntE/issues/162))

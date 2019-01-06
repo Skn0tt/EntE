@@ -47,12 +47,16 @@ export class EntryReasonRepo {
     return result;
   }
 
-  static toDto(v: EntryReason): EntryReasonDto {
+  static toDto(v: EntryReason): EntryReasonDto | null {
+    if (!!v.category) {
+      return null;
+    }
+
     const result = new EntryReasonDto();
 
-    result.category = v.category;
+    result.category = v.category!;
 
-    switch (v.category) {
+    switch (v.category!) {
       case EntryReasonCategory.COMPETITION: {
         const payload: CompetitionPayload = {
           from: v.from!,

@@ -10,20 +10,20 @@ import { User } from "./user.entity";
 export class EntryReason {
   @Column("varchar", { nullable: true })
   @IsIn(entryReasonCategoryArray)
-  category: EntryReasonCategory;
+  category: EntryReasonCategory | null;
 
   @Column("smallint", { nullable: true })
-  from?: number;
+  from: number | null;
 
   @Column("smallint", { nullable: true })
-  to?: number;
+  to: number | null;
 
   @Column("varchar", { nullable: true })
-  description?: string;
+  description: string | null;
 
   @ManyToOne(type => User, {
     nullable: true,
     onDelete: "SET NULL"
   })
-  teacher?: User;
+  teacher: User | null;
 }
