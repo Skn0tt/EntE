@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed: ServiceWorker is now delivered with `Cache-Control: no-cache` to speed up update process
+
 ## [v0.13.3] - 2019-01-07
 
 - Fixed: UI correctly receives DEFAULT_LANGUAGE parameter

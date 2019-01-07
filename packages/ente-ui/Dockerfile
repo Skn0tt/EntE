@@ -19,6 +19,9 @@ FROM skn0tt/nginx-spa:v0.1.0
 RUN apt-get update; apt-get -y install curl;
 
 # Copy over static content
+
+COPY packages/ente-ui/nginx.conf /etc/nginx/conf.d/default.template
+
 COPY --from=build /usr/src/app/packages/ente-ui/dist /app/
 
 HEALTHCHECK CMD curl --fail -A "healthcheck" http://localhost || exit 1
