@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: UI correctly receives DEFAULT_LANGUAGE parameter
+
 ## [v0.13.2] - 2019-01-07
 
 - Fixed: "forSchool" is now really set properly
