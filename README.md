@@ -8,7 +8,7 @@ Digital Excuse Workflow for Schools.
 * [About](README.md#About)
 * [Documentation](https://skn0tt.gitlab.io/EntE/docs/index.html)
 * [Contributing](https://skn0tt.gitlab.io/EntE/docs/contributing)
-* [Whitepaper (German)](paper/src/Paper.md)
+* [Whitepaper (German)](assets/paper/src/Paper.md)
 * [Demo Instance](https://bull.simonknott.de)
 
 ## Get Started
