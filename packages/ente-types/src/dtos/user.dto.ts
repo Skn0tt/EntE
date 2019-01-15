@@ -15,8 +15,6 @@ import {
   isValidEmail
 } from "../validators";
 import { Type } from "class-transformer";
-import { EmptyWhen } from "../helpers/empty-when";
-import { UndefinedWhen } from "../helpers/undefined-when";
 import { isBefore } from "date-fns";
 import { roleHasBirthday } from "../roles";
 import { languagesArr, Languages } from "../languages";
@@ -36,7 +34,6 @@ export class UserDto {
 
   @IsOptional()
   @IsArray()
-  @EmptyWhen((u: UserDto) => u.role !== Roles.PARENT)
   @ValidateNested({ each: true })
   @Type(() => UserDto)
   children: UserDto[];
@@ -45,7 +42,6 @@ export class UserDto {
   @IsInt()
   graduationYear?: number;
 
-  @UndefinedWhen((u: UserDto) => u.role !== Roles.STUDENT)
   @IsISO8601()
   birthday?: string;
 }

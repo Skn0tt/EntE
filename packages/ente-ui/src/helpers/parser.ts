@@ -8,7 +8,7 @@
 
 import { parse as papaparse, ParseResult } from "papaparse";
 import * as _ from "lodash";
-import { CreateUserDto, isValidCreateUserDtoWithErrors } from "ente-types";
+import { CreateUserDto, CreateUserDtoValidator } from "ente-types";
 import { Validation, Success, Fail } from "monet";
 import { ValidationError } from "class-validator";
 
@@ -44,7 +44,7 @@ const parseCSV = async (
     return res;
   });
 
-  const validations = result.map(isValidCreateUserDtoWithErrors);
+  const validations = result.map(CreateUserDtoValidator.validateWithErrors);
   validations.forEach(validation => {
     validation.forEachFail(fail => {
       errors.push(...fail);

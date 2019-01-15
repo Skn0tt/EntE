@@ -10,6 +10,5 @@ export * from "./roles";
 export * from "./dtos";
 export * from "./helpers";
 export * from "./validators";
-export * from "./validate-dtos";
 export * from "./languages";
 export * from "./date-to-iso-string";

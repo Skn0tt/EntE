@@ -195,9 +195,8 @@ ShallowWrapper {
                 xs={12}
               >
                 <Unknown
-                  isValid={[Function]}
                   label="Geburtstag"
-                  maxDate={946681200000}
+                  maxDate="1999-12-31"
                   onChange={[Function]}
                 />
               </WithStyles(Grid)>
@@ -359,9 +358,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -533,9 +531,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -671,9 +668,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -807,9 +803,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>,
@@ -1175,9 +1170,8 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />,
                     "item": true,
@@ -1189,9 +1183,8 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "isValid": [Function],
                       "label": "Geburtstag",
-                      "maxDate": 946681200000,
+                      "maxDate": "1999-12-31",
                       "onChange": [Function],
                       "value": undefined,
                     },
@@ -1409,9 +1402,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -1573,9 +1565,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -1747,9 +1738,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -1885,9 +1875,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -2021,9 +2010,8 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        isValid={[Function]}
                         label="Geburtstag"
-                        maxDate={946681200000}
+                        maxDate="1999-12-31"
                         onChange={[Function]}
                       />
                     </WithStyles(Grid)>,
@@ -2389,9 +2377,8 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        isValid={[Function]}
                         label="Geburtstag"
-                        maxDate={946681200000}
+                        maxDate="1999-12-31"
                         onChange={[Function]}
                       />,
                       "item": true,
@@ -2403,9 +2390,8 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "isValid": [Function],
                         "label": "Geburtstag",
-                        "maxDate": 946681200000,
+                        "maxDate": "1999-12-31",
                         "onChange": [Function],
                         "value": undefined,
                       },
@@ -2698,9 +2684,8 @@ ShallowWrapper {
                 xs={12}
               >
                 <Unknown
-                  isValid={[Function]}
                   label="Geburtstag"
-                  maxDate={946681200000}
+                  maxDate="1999-12-31"
                   onChange={[Function]}
                 />
               </WithStyles(Grid)>
@@ -2862,9 +2847,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -3036,9 +3020,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -3174,9 +3157,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -3310,9 +3292,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>,
@@ -3678,9 +3659,8 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />,
                     "item": true,
@@ -3692,9 +3672,8 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "isValid": [Function],
                       "label": "Geburtstag",
-                      "maxDate": 946681200000,
+                      "maxDate": "1999-12-31",
                       "onChange": [Function],
                       "value": undefined,
                     },
@@ -3912,9 +3891,8 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    isValid={[Function]}
                     label="Geburtstag"
-                    maxDate={946681200000}
+                    maxDate="1999-12-31"
                     onChange={[Function]}
                   />
                 </WithStyles(Grid)>
@@ -4076,9 +4054,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -4250,9 +4227,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -4388,9 +4364,8 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      isValid={[Function]}
                       label="Geburtstag"
-                      maxDate={946681200000}
+                      maxDate="1999-12-31"
                       onChange={[Function]}
                     />
                   </WithStyles(Grid)>
@@ -4524,9 +4499,8 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        isValid={[Function]}
                         label="Geburtstag"
-                        maxDate={946681200000}
+                        maxDate="1999-12-31"
                         onChange={[Function]}
                       />
                     </WithStyles(Grid)>,
@@ -4892,9 +4866,8 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        isValid={[Function]}
                         label="Geburtstag"
-                        maxDate={946681200000}
+                        maxDate="1999-12-31"
                         onChange={[Function]}
                       />,
                       "item": true,
@@ -4906,9 +4879,8 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "isValid": [Function],
                         "label": "Geburtstag",
-                        "maxDate": 946681200000,
+                        "maxDate": "1999-12-31",
                         "onChange": [Function],
                         "value": undefined,
                       },

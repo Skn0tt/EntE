@@ -8,3 +8,8 @@ export * from "./patch-user.dto";
 export * from "./user.dto";
 export * from "./patch-entry.dto";
 export * from "./entry-reason.dto";
+export * from "./create-entry-dto.validator";
+export * from "./create-slot-dto.validator";
+export * from "./create-user-dto.validator";
+export * from "./patch-user-dto.validator";
+export * from "./entry-reason-dto.validator";

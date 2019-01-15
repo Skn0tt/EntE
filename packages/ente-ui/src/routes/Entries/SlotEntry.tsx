@@ -16,7 +16,6 @@ import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import * as _ from "lodash";
-import { isBefore, isAfter } from "date-fns";
 import { useFromToInput } from "../../helpers/use-from-to-input";
 import { HourFromToInput } from "../../elements/HourFromToInput";
 
@@ -51,8 +50,8 @@ interface SlotEntryOwnProps {
   onAdd(slot: CreateSlotDto): void;
   isMultiDay: boolean;
   datePickerConfig?: {
-    min?: string;
-    max?: string;
+    min: string;
+    max: string;
   };
   defaultDate: string;
 }
@@ -129,21 +128,6 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
             minDate={!!datePickerConfig ? datePickerConfig.min : undefined}
             maxDate={!!datePickerConfig ? datePickerConfig.max : undefined}
             label={translation.titles.day}
-            isValid={v => {
-              if (!!datePickerConfig) {
-                if (!!datePickerConfig.min) {
-                  if (isBefore(v, datePickerConfig.min)) {
-                    return false;
-                  }
-                }
-                if (!!datePickerConfig.max) {
-                  if (isAfter(v, datePickerConfig.max)) {
-                    return false;
-                  }
-                }
-              }
-              return true;
-            }}
             value={date!}
           />
         </Grid>

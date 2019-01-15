@@ -6,7 +6,6 @@ import {
   IsOptional,
   IsISO8601
 } from "class-validator";
-import { CompareToProperty } from "../helpers";
 
 export class CreateSlotDto {
   @IsInt()
@@ -17,7 +16,6 @@ export class CreateSlotDto {
   @IsInt()
   @Min(1)
   @Max(13)
-  @CompareToProperty("from", (to, from) => to >= from)
   to: number;
 
   @IsUUID() teacherId: string;

@@ -51,9 +51,8 @@ import {
   PatchUserDto,
   isValidDisplayname,
   isValidEmail,
-  isValidPatchUserDto,
   roleHasBirthday,
-  isValidPatchUserDtoWithErrors
+  PatchUserDtoValidator
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
@@ -313,7 +312,7 @@ export const SpecificUser: React.FunctionComponent<
               size="small"
               color="primary"
               onClick={onSubmit}
-              disabled={!isValidPatchUserDto(patch)}
+              disabled={!PatchUserDtoValidator.validate(patch)}
             >
               {lang.submit}
             </Button>

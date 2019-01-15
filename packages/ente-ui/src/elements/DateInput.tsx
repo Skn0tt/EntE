@@ -1,7 +1,8 @@
 import * as React from "react";
 import { DatePicker } from "material-ui-pickers";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { format } from "date-fns";
+import { isBefore, isAfter } from "date-fns";
+import { dateToIsoString } from "ente-types";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -18,8 +19,8 @@ interface DateInputProps {
   value: string;
   onChange: (d: string) => void;
   isValid?: (d: string) => boolean;
-  minDate?: string | number | Date;
-  maxDate?: string | number | Date;
+  minDate?: string;
+  maxDate?: string;
   label: string;
   maxDateMessage?: string;
   minDateMessage?: string;
@@ -40,12 +41,39 @@ export const DateInput: React.FC<DateInputProps> = props => {
   const lang = useTranslation();
 
   const handleOnChange = React.useCallback(
-    (d: Date) => {
-      const s = format(d, "yyyy-MM-dd");
+    (d: Date | number | string) => {
+      const s = dateToIsoString(d);
       onChange(s);
     },
     [onChange]
   );
+
+  const dateIsNotBeforeMinDate = !minDate || !isBefore(value, minDate);
+  const dateIsNotAfterMaxDate = !maxDate || !isAfter(value, maxDate);
+
+  React.useEffect(
+    () => {
+      if (!dateIsNotBeforeMinDate) {
+        handleOnChange(minDate!);
+        return;
+      }
+
+      if (!dateIsNotAfterMaxDate) {
+        handleOnChange(maxDate!);
+        return;
+      }
+    },
+    [
+      dateIsNotBeforeMinDate,
+      dateIsNotAfterMaxDate,
+      handleOnChange,
+      minDate,
+      maxDate
+    ]
+  );
+
+  const valueIsValid =
+    dateIsNotBeforeMinDate && dateIsNotAfterMaxDate && isValid(value);
 
   return (
     <DatePicker
@@ -56,7 +84,7 @@ export const DateInput: React.FC<DateInputProps> = props => {
       maxDate={maxDate}
       autoOk
       fullWidth
-      error={!isValid(value)}
+      error={!valueIsValid}
       minDateMessage={minDateMessage || lang.minDateMessage}
       maxDateMessage={maxDateMessage || lang.maxDateMessage}
     />

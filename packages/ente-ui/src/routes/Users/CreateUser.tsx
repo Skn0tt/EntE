@@ -21,7 +21,6 @@ import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
 import { Action } from "redux";
-import ImportUsers from "../ImportUsers";
 import {
   Roles,
   CreateUserDto,
@@ -30,8 +29,9 @@ import {
   isValidEmail,
   isValidPassword,
   createDefaultCreateUserDto,
-  isValidCreateUserDto,
-  roleHasBirthday
+  roleHasBirthday,
+  CreateUserDtoValidator,
+  dateToIsoString
 } from "ente-types";
 import {
   getStudents,
@@ -224,7 +224,8 @@ export class CreateUser extends React.Component<
     isValidPassword(this.state.create.password);
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
-  inputValid = (): boolean => isValidCreateUserDto(this.state.create);
+  inputValid = (): boolean =>
+    CreateUserDtoValidator.validate(this.state.create);
 
   render() {
     const { show, fullScreen, getUser, students, translation } = this.props;
@@ -322,10 +323,9 @@ export class CreateUser extends React.Component<
                   <Grid item xs={12}>
                     <DateInput
                       value={create.birthday!}
-                      isValid={_ => true}
                       label={translation.titles.birthday}
                       onChange={this.handleChangeBirthday}
-                      maxDate={Date.now()}
+                      maxDate={dateToIsoString(new Date())}
                     />
                   </Grid>
                 )}
