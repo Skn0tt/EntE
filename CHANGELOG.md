@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.14.0] - 2019-01-15
+
 - Changed: 14-day limit is now counted from end of entries ([#228](https://gitlab.com/Skn0tt/EntE/issues/228))
 - Changed: ServiceWorker is now delivered with `Cache-Control: no-cache` to speed up update process
 
