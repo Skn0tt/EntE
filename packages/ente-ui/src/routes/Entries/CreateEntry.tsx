@@ -16,17 +16,10 @@ import {
 import { Action } from "redux";
 
 import { withRouter, RouteComponentProps } from "react-router";
-import {
-  Dialog,
-  Button,
-  List as MUIList,
-  TextField,
-  Grid
-} from "@material-ui/core";
+import { Dialog, Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import SlotListItem from "./SlotListItem";
 import SlotEntry from "./SlotEntry";
 import MenuItem from "@material-ui/core/MenuItem";
 import withMobileDialog, {
@@ -43,10 +36,10 @@ import {
 import {
   CreateEntryDto,
   CreateSlotDto,
-  isValidCreateEntryDto,
   dateToIsoString,
   daysBeforeNow,
-  EntryReasonDto
+  EntryReasonDto,
+  CreateEntryDtoValidator
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { Maybe } from "monet";
@@ -126,15 +119,6 @@ type CreateEntryProps = CreateEntryOwnProps &
   CreateEntryStateProps &
   RouteComponentProps<{}> &
   InjectedProps;
-
-interface State {
-  isRange: boolean;
-  date: string;
-  dateEnd?: string;
-  student?: string;
-  slots: CreateSlotDto[];
-  forSchool: boolean;
-}
 
 const CreateEntry: React.SFC<CreateEntryProps> = props => {
   const { fullScreen, onClose, show, isParent, children, createEntry } = props;
@@ -263,7 +247,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [forSchool, slots, studentId, reason, beginDate, endDate]
   );
 
-  const isValidInput = isValidCreateEntryDto(result);
+  const isValidInput = CreateEntryDtoValidator.validate(result);
 
   const handleSubmit = React.useCallback(
     () => {
@@ -319,7 +303,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                 <DateInput
                   label={translation.fromLabel}
                   onChange={handleChangeBeginDate}
-                  minDate={daysBeforeNow(14)}
+                  minDate={
+                    isRange ? undefined : dateToIsoString(daysBeforeNow(14))
+                  }
                   value={beginDate}
                 />
               </Grid>
@@ -329,7 +315,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                     label={translation.toLabel}
                     isValid={() => isEndDateValid}
                     onChange={handleChangeEndDate}
-                    minDate={addDays(beginDate, 1)}
+                    minDate={dateToIsoString(daysBeforeNow(14))}
                     value={endDate!}
                     minDateMessage={translation.dateMustBeBiggerThanFrom}
                   />
@@ -353,8 +339,8 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                 onAdd={handleAddSlot}
                 isMultiDay={isRange}
                 datePickerConfig={{
-                  min: beginDate,
-                  max: endDate
+                  min: beginDate!,
+                  max: endDate!
                 }}
                 defaultDate={beginDate}
               />

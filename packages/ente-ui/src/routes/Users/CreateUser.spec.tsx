@@ -15,7 +15,7 @@ import * as mockdate from "mockdate";
 
 describe("CreateUser", () => {
   beforeAll(() => {
-    mockdate.set(946681200000);
+    mockdate.set(946681200000, 0);
   });
 
   afterAll(() => {

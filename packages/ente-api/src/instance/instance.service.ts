@@ -3,7 +3,7 @@ import {
   UserDto,
   CreateUserDto,
   Roles,
-  isValidCreateUserDto
+  CreateUserDtoValidator
 } from "ente-types";
 import { RequestContextUser } from "../helpers/request-context";
 import { Fail, Validation, Success } from "monet";
@@ -38,7 +38,7 @@ export class InstanceService {
       return Fail(ImportUsersFailure.ForbiddenForRole);
     }
 
-    const areValidDtos = dtos.every(isValidCreateUserDto);
+    const areValidDtos = dtos.every(CreateUserDtoValidator.validate);
     if (!areValidDtos) {
       return Fail(ImportUsersFailure.IllegalDtos);
     }

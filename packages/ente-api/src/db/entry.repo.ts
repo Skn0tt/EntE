@@ -84,7 +84,7 @@ export class EntryRepo {
           student,
           reason: !!dto.reason
             ? EntryReasonRepo.fromCreationDto(dto.reason)
-            : null,
+            : undefined,
           signedParent: config.signedByParent,
           date: dto.date,
           dateEnd: dto.dateEnd,

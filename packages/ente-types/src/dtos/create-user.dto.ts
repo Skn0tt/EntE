@@ -1,5 +1,5 @@
 import { rolesArr, Roles } from "ente-types";
-import { IsIn, IsOptional, IsDefined, IsISO8601 } from "class-validator";
+import { IsIn, IsOptional, IsDefined, IsISO8601, IsInt } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
@@ -8,8 +8,6 @@ import {
   isValidUuidOrUsername
 } from "../validators/user";
 import { isValidPassword } from "../validators/auth";
-import { EmptyWhen } from "../helpers/empty-when";
-import { IsIntWhen } from "../helpers/is-int-when";
 import { languagesArr, Languages } from "../languages";
 
 export class CreateUserDto {
@@ -34,16 +32,11 @@ export class CreateUserDto {
   @IsIn(rolesArr)
   role: Roles;
 
-  @EmptyWhen((u: CreateUserDto) => u.role !== Roles.PARENT, {
-    message: "Only parents are allowed to have children."
-  })
   @CustomStringValidator(isValidUuidOrUsername, { each: true })
   children: string[];
 
-  @IsIntWhen(
-    (u: CreateUserDto) => [Roles.STUDENT, Roles.MANAGER].includes(u.role),
-    { message: "Students and Managers need to have a graduationYear set." }
-  )
+  @IsOptional()
+  @IsInt()
   graduationYear?: number;
 
   @IsOptional()

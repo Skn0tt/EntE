@@ -12,11 +12,11 @@ import {
   CreateUserDto,
   PatchUserDto,
   isValidUuid,
-  isValidPatchUserDto,
   Languages,
   languagesArr,
   TEACHING_ROLES,
-  roleIsTeaching
+  roleIsTeaching,
+  PatchUserDtoValidator
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -299,7 +299,7 @@ export class UsersService implements OnModuleInit {
     patch: PatchUserDto,
     requestingUser: RequestContextUser
   ): Promise<Validation<PatchUserFailure, UserDto>> {
-    const dtoIsLegal = isValidPatchUserDto(patch);
+    const dtoIsLegal = PatchUserDtoValidator.validate(patch);
     if (!dtoIsLegal) {
       return Fail(PatchUserFailure.IllegalPatch);
     }
