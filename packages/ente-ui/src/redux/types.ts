@@ -84,6 +84,7 @@ export const EntryN = Record<EntryDtoNormalised>(
   {
     createdAt: new Date(0),
     date: dateToIsoString(0),
+    dateEnd: undefined,
     forSchool: false,
     id: "",
     reason: undefined,
