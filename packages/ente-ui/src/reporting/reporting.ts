@@ -131,3 +131,9 @@ export const hoursByWeekdayAndTime = (
 
   return result;
 };
+
+export const Reporting = {
+  summarize,
+  hoursByWeekdayAndTime,
+  slotsByTeacher
+};
