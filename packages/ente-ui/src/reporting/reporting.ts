@@ -80,7 +80,7 @@ export const summarize = (entries: EntryN[]): EntrySummary => {
       excused: absentSlotsExcused,
       unexcused: absentSlotsUnexcused
     },
-    slotsPerDay: absentSlotsTotal / absentDaysTotal
+    slotsPerDay: absentSlotsTotal / absentDaysTotal || 0
   };
 };
 

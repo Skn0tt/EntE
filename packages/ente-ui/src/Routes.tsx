@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Switch, Route, Redirect, withRouter } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import { Roles } from "ente-types";
 import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";
@@ -17,6 +17,7 @@ import SpecificEntry from "./routes/SpecificEntry";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
+import StudentReport from "./routes/StudentReport";
 
 const AdminRoutes: React.SFC = () => (
   <>
@@ -30,6 +31,7 @@ const AdminRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/users/:studentId/report" component={StudentReport} />
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
@@ -70,6 +72,7 @@ const ManagerRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/users/:studentId/report" component={StudentReport} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>
