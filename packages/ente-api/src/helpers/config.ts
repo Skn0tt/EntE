@@ -1,4 +1,4 @@
-import { Maybe, None, Some } from "monet";
+import { Maybe } from "monet";
 import { ensureNotEnding } from "./ensure-not-ending";
 import { Languages } from "ente-types";
 import * as _ from "lodash";
@@ -10,7 +10,6 @@ interface IConfig {
   DSN: Maybe<string>;
   signerBaseUrl: string;
   version: string;
-  defaultLanguage: Languages;
   mail: {
     address: string;
     sender: string;
@@ -61,7 +60,6 @@ const config = ((): Readonly<IConfig> => {
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL!),
     production: envVars.NODE_ENV === "production",
-    defaultLanguage: DEFAULT_LANGUAGE as Languages,
     cron: {
       enable: ENABLE_CRON_JOBS === "true",
       weeklySummary: CRON_WEEKLY_SUMMARY!
@@ -89,14 +87,12 @@ const config = ((): Readonly<IConfig> => {
     redis: {
       host: REDIS_HOST!,
       port: +REDIS_PORT!,
-      prefix: REDIS_PREFIX || "ENTE_API_"
+      prefix: REDIS_PREFIX || "ENTE_API__"
     }
   };
 })();
 
 const getRedisConfig = () => config.redis;
-
-const getDefaultLanguage = () => config.defaultLanguage;
 
 const isDevMode = () => !config.production;
 
@@ -132,6 +128,5 @@ export const Config = {
   isCronEnabled,
   getWeeklySummaryCron,
   getSignerBaseUrl,
-  getVersion,
-  getDefaultLanguage
+  getVersion
 };

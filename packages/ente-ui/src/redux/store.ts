@@ -16,7 +16,15 @@ import {
   createTransform
 } from "./redux-persist-immutable";
 import saga from "./saga";
-import { AppState, IAppState, UserN, SlotN, AuthState, EntryN } from "./types";
+import {
+  AppState,
+  IAppState,
+  UserN,
+  SlotN,
+  AuthState,
+  EntryN,
+  InstanceConfigN
+} from "./types";
 import * as _ from "lodash";
 import { getConfig } from "./config";
 
@@ -37,7 +45,7 @@ const startPersistance = (store: Store) => {
       {
         storage: getConfig().storage,
         transforms: [removeUnneededTransform],
-        records: [UserN, SlotN, AuthState, AppState, EntryN]
+        records: [UserN, SlotN, AuthState, AppState, EntryN, InstanceConfigN]
       },
       () => resolve(persistor)
     );

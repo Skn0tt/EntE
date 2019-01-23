@@ -13,7 +13,7 @@ TAG="$TAG" ../../scripts/dev/start.sh > logs.txt &
 
 echo "### Sleeping 60 seconds to wait for containers be reachable ###"
 
-sleep 60
+sleep 90
 
 echo "### Done sleeping ###"
 

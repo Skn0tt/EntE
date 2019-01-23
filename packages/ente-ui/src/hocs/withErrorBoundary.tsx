@@ -26,7 +26,7 @@ export const withErrorBoundary = (
   CustomErrorScreen?: CustomErrorScreenComponentType
 ) => <P extends object>(Component: React.ComponentType<P>) =>
   withLanguage(
-    class WithErrorBoundary extends React.Component<
+    class WithErrorBoundary extends React.PureComponent<
       P & WithLanguage,
       WithErrorBoundaryState
     > {

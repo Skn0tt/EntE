@@ -24,6 +24,7 @@ import * as config from "./config";
 import { Maybe } from "monet";
 import withErrorBoundary from "./hocs/withErrorBoundary";
 import Invitation from "./routes/Invitation/Invitation";
+import InstanceConfigGate from "./components/InstanceConfigGate";
 
 const { ROTATION_PERIOD } = config.get();
 
@@ -42,22 +43,24 @@ const App: React.FunctionComponent<AppProps> = props => {
   const { authValid, role } = props;
 
   return (
-    <BrowserRouter>
-      <>
-        <MessageStream />
-        <AuthService period={ROTATION_PERIOD} />
-        <Switch>
-          <Route path="/passwordReset/:token" component={PasswordReset} />
-          <Route path="/invitation/:token" component={Invitation} />
-          <Route path="/login" component={Login} />
-          <AuthenticatedRoute isLoggedIn={authValid}>
-            <Drawer>
-              <Routes role={role.orSome(Roles.STUDENT)} />
-            </Drawer>
-          </AuthenticatedRoute>
-        </Switch>
-      </>
-    </BrowserRouter>
+    <InstanceConfigGate>
+      <BrowserRouter>
+        <>
+          <MessageStream />
+          <AuthService period={ROTATION_PERIOD} />
+          <Switch>
+            <Route path="/passwordReset/:token" component={PasswordReset} />
+            <Route path="/invitation/:token" component={Invitation} />
+            <Route path="/login" component={Login} />
+            <AuthenticatedRoute isLoggedIn={authValid}>
+              <Drawer>
+                <Routes role={role.orSome(Roles.STUDENT)} />
+              </Drawer>
+            </AuthenticatedRoute>
+          </Switch>
+        </>
+      </BrowserRouter>
+    </InstanceConfigGate>
   );
 };
 

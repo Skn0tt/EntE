@@ -13,3 +13,4 @@ export * from "./create-slot-dto.validator";
 export * from "./create-user-dto.validator";
 export * from "./patch-user-dto.validator";
 export * from "./entry-reason-dto.validator";
+export * from "./instance-config.dto";

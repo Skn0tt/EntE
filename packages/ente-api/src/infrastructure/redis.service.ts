@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import * as redis from "redis";
 import { Maybe, Some, None } from "monet";
 import { Config } from "../helpers/config";
+import * as _ from "lodash";
 
 @Injectable()
 export class RedisService {
@@ -15,7 +16,7 @@ export class RedisService {
   }
 
   set = (key: string, value: string) =>
-    new Promise((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       this.client.set(this.prefixedKey(key), value, err => {
         if (!!err) {
           reject(err);
@@ -25,7 +26,7 @@ export class RedisService {
     });
 
   setWithExpiry = (key: string, value: string, expiryInMilliSeconds: number) =>
-    new Promise((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       this.client.set(
         this.prefixedKey(key),
         value,
@@ -40,13 +41,35 @@ export class RedisService {
       );
     });
 
-  get = (key: string) =>
-    new Promise<Maybe<string>>((resolve, reject) => {
+  setIfNotExists = (key: string, value: string) =>
+    new Promise<void>((resolve, reject) => {
+      this.client.setnx(this.prefixedKey(key), value, err => {
+        if (!!err) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
+
+  get = <T extends string>(key: string) =>
+    new Promise<Maybe<T>>((resolve, reject) => {
       this.client.get(this.prefixedKey(key), (err, result) => {
         if (!!err) {
           reject(err);
         }
-        resolve(!!result ? Some(result) : None());
+        resolve(!!result ? Some(result as T) : None());
+      });
+    });
+
+  getMultiple = <T extends string>(...keys: T[]) =>
+    new Promise<Record<T, string | null>>((resolve, reject) => {
+      this.client.mget(...keys.map(this.prefixedKey), (error, values) => {
+        if (!!error) {
+          return reject(error);
+        }
+
+        const result = _.zipObject(keys, values);
+        return resolve(result);
       });
     });
 

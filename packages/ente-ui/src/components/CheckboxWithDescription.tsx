@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { CheckboxInput } from "../elements/CheckboxInput";
+import { Description } from "./Description";
 
 interface CheckboxWithDescriptionProps {
   value?: boolean;
@@ -17,9 +18,7 @@ export const CheckboxWithDescription: React.FC<
   return (
     <Grid container direction="row" justify="space-between">
       <Grid xs={11}>
-        <Typography variant="body1">{title}</Typography>
-
-        <Typography variant="body2">{caption}</Typography>
+        <Description title={title}>{caption}</Description>
       </Grid>
 
       <Grid xs={1} alignItems="flex-end">

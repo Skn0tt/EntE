@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { Map, Record, Set } from "immutable";
+import { Map, Record as ImmutableRecord, Set } from "immutable";
 import {
   Roles,
   UserDto,
@@ -14,10 +14,11 @@ import {
   SlotDto,
   Languages,
   roleIsTeaching,
-  dateToIsoString
+  dateToIsoString,
+  DEFAULT_LANGUAGE
 } from "ente-types";
 import { Action } from "redux";
-import { getConfig } from "./config";
+import { Maybe, None } from "monet";
 
 export interface BasicCredentials {
   username: string;
@@ -52,8 +53,22 @@ class SlotDtoNormalised extends SlotDto {
   teacherId: string | null;
 }
 
-export type UserN = Record<UserDtoNormalised>;
-export const UserN = Record<UserDtoNormalised>(
+interface InstanceConfigRecord {
+  defaultLanguage: Languages;
+  loginBanners: Map<Languages, string>;
+}
+
+export type InstanceConfigN = ImmutableRecord<InstanceConfigRecord>;
+export const InstanceConfigN = ImmutableRecord<InstanceConfigRecord>(
+  {
+    defaultLanguage: DEFAULT_LANGUAGE,
+    loginBanners: Map()
+  },
+  "InstanceConfigN"
+);
+
+export type UserN = ImmutableRecord<UserDtoNormalised>;
+export const UserN = ImmutableRecord<UserDtoNormalised>(
   {
     id: "",
     username: "",
@@ -64,7 +79,7 @@ export const UserN = Record<UserDtoNormalised>(
     role: Roles.STUDENT,
     childrenIds: [],
     graduationYear: undefined,
-    language: getConfig().defaultLanguage
+    language: DEFAULT_LANGUAGE
   },
   "UserN"
 );
@@ -79,8 +94,8 @@ export const roleHasChildren = (r: Roles) => r === Roles.PARENT;
 export const roleHasGradYear = (r: Roles) =>
   [Roles.MANAGER, Roles.STUDENT].includes(r);
 
-export type EntryN = Record<EntryDtoNormalised>;
-export const EntryN = Record<EntryDtoNormalised>(
+export type EntryN = ImmutableRecord<EntryDtoNormalised>;
+export const EntryN = ImmutableRecord<EntryDtoNormalised>(
   {
     createdAt: new Date(0),
     date: dateToIsoString(0),
@@ -99,8 +114,8 @@ export const EntryN = Record<EntryDtoNormalised>(
   "EntryN"
 );
 
-export type SlotN = Record<SlotDtoNormalised>;
-export const SlotN = Record<SlotDtoNormalised>(
+export type SlotN = ImmutableRecord<SlotDtoNormalised>;
+export const SlotN = ImmutableRecord<SlotDtoNormalised>(
   {
     date: dateToIsoString(0),
     from: 0,
@@ -129,8 +144,8 @@ interface IAuthState {
   userId: string;
 }
 
-export type AuthState = Record<IAuthState>;
-export const AuthState = Record<IAuthState>(
+export type AuthState = ImmutableRecord<IAuthState>;
+export const AuthState = ImmutableRecord<IAuthState>(
   {
     children: [],
     displayname: "",
@@ -153,18 +168,20 @@ export interface IAppState {
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
   auth: AuthState | null;
-  language: Languages;
+  instanceConfig: InstanceConfigN | null;
+  language: Languages | null;
   pendingActions: PendingActions;
 }
 
-export type AppState = Record<IAppState>;
-export const AppState = Record<IAppState>(
+export type AppState = ImmutableRecord<IAppState>;
+export const AppState = ImmutableRecord<IAppState>(
   {
     entriesMap: Map<string, EntryN>(),
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
     auth: null,
-    language: getConfig().defaultLanguage,
+    instanceConfig: null,
+    language: null,
     pendingActions: Set<Action>()
   },
   "AppState"

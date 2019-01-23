@@ -7,9 +7,8 @@
  */
 import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
-import { Some, None, Maybe } from "monet";
+import { Some, None } from "monet";
 import * as _ from "lodash";
-import { Languages } from "ente-types";
 const pack = require("../package.json");
 
 const SECOND = 1000;
@@ -19,9 +18,6 @@ type Config = {
   SENTRY_DSN?: string;
   ROTATION_PERIOD: number;
   ALLOW_INSECURE: boolean;
-  DEFAULT_LANGUAGE: Languages;
-  INSTANCE_INFO_DE: Maybe<string>;
-  INSTANCE_INFO_EN: Maybe<string>;
   VERSION: string;
 };
 
@@ -71,11 +67,8 @@ const readConfig = (): Config => {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
       ? c.ROTATION_PERIOD * 1000
       : 5 * MINUTE,
-    INSTANCE_INFO_DE: instanceInfoDe,
-    INSTANCE_INFO_EN: instanceInfoEn,
     SENTRY_DSN: SENTRY_DSN !== "undefined" ? SENTRY_DSN : undefined,
     ALLOW_INSECURE: c.ALLOW_INSECURE === "true",
-    DEFAULT_LANGUAGE: c.DEFAULT_LANGUAGE,
     VERSION: pack.version as string
   };
 };

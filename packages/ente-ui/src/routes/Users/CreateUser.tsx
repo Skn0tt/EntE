@@ -141,7 +141,7 @@ type CreateUserProps = OwnProps &
 /**
  * # Component
  */
-export class CreateUser extends React.Component<
+export class CreateUser extends React.PureComponent<
   CreateUserProps,
   CreateUserState
 > {
