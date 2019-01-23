@@ -212,7 +212,7 @@ export const SpecificUser: React.FunctionComponent<
           }}
           text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
         />
-        <Dialog open onClose={onGoBack} fullScreen={fullScreen}>
+        <Dialog open onClose={onGoBack} fullScreen={fullScreen} scroll="body">
           {!!user ? (
             <>
               <DialogTitle>

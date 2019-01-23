@@ -2,7 +2,16 @@ import * as React from "react";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { Weekday } from "../../reporting/reporting";
-import { XYPlot, HeatmapSeries, MarkSeries, XAxis, YAxis } from "react-vis";
+import {
+  XYPlot,
+  HeatmapSeries,
+  MarkSeries,
+  XAxis,
+  YAxis,
+  makeVisFlexible
+} from "react-vis";
+
+const FlexibleXYPlot = makeVisFlexible(XYPlot);
 
 const defaultDay = _.fromPairs(_.times(12, hour => [hour + 1, 0]));
 
@@ -72,7 +81,7 @@ export const HoursByWeekdayAndTimeChart: React.FC<
   );
 
   return (
-    <XYPlot width={500} height={250} xType="ordinal" yType="ordinal">
+    <FlexibleXYPlot height={250} xType="ordinal" yType="ordinal">
       <XAxis />
       <YAxis />
       {variant === "scatterplot" ? (
@@ -83,6 +92,6 @@ export const HoursByWeekdayAndTimeChart: React.FC<
           data={transformedData.map(d => ({ ...d, color: d.size }))}
         />
       )}
-    </XYPlot>
+    </FlexibleXYPlot>
   );
 };

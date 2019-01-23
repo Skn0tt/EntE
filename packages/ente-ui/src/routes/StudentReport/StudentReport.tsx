@@ -6,7 +6,8 @@ import {
   AppState,
   getUser,
   getEntries,
-  getSlots
+  getSlots,
+  getRole
 } from "../../redux";
 import { Maybe } from "monet";
 import { Reporting } from "../../reporting/reporting";
@@ -29,28 +30,38 @@ import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
 import { withPrintButton, usePrintButton } from "ente-ui/src/hocs/withPrint";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
+import { Roles } from "ente-types";
 
 const useStyles = makeStyles({
   mailButton: {
     position: "absolute",
     top: 0,
-    right: 0
+    right: 32
   },
   printButton: {
     position: "absolute",
     top: 0,
-    right: 32
+    right: 0
+  },
+  heading: {
+    paddingBottom: 24
   }
 });
 
 const useTranslation = makeTranslationHook({
   en: {
     close: "Close",
-    absenceReport: "Absence Report"
+    absenceReport: "Absence Report",
+    absentHoursByTime: "Absent hours by time",
+    absentHoursByTeacher: "Absent hours by teacher",
+    summary: "Summary"
   },
   de: {
     close: "Schließen",
-    absenceReport: "Fehlstundenbericht"
+    absenceReport: "Fehlstundenbericht",
+    absentHoursByTime: "Fehlstunden nach Schulstunde",
+    absentHoursByTeacher: "Fehlstunden nach Lehrer",
+    summary: "Zusammenfassung"
   }
 });
 
@@ -65,6 +76,7 @@ interface StudentReportStateProps {
   student: Maybe<UserN>;
   entries: EntryN[];
   slots: SlotN[];
+  role: Roles;
 }
 const mapStateToProps: MapStateToPropsParam<
   StudentReportStateProps,
@@ -79,7 +91,10 @@ const mapStateToProps: MapStateToPropsParam<
   );
   const slots = getSlots(state).filter(f => f.get("studentId") === studentId);
 
+  const role = getRole(state).some();
+
   return {
+    role,
     student,
     entries,
     slots
@@ -89,7 +104,7 @@ const mapStateToProps: MapStateToPropsParam<
 type StudentReportPropsConnected = StudentReportProps & StudentReportStateProps;
 
 const StudentReport: React.FC<StudentReportPropsConnected> = props => {
-  const { entries, student, slots, onClose } = props;
+  const { entries, student, slots, onClose, role } = props;
 
   const classes = useStyles(props);
   const translation = useTranslation();
@@ -129,30 +144,43 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     <div>
       <DialogTitle>
         <Typography variant="overline">{translation.absenceReport}</Typography>
-        <Typography variant="h4">
+        <Typography variant="h5">
           {student.some().get("displayname")}
         </Typography>
+        {role === Roles.MANAGER && (
+          <IconButton
+            href={`mailto:${student.map(s => s.get("email")).orSome("")}`}
+            className={classes.mailButton}
+          >
+            <MailIcon fontSize="default" color="action" />
+          </IconButton>
+        )}
         <div className={classes.printButton}>{printButton}</div>
-        <IconButton
-          href={`mailto:${student.map(s => s.get("email")).orSome("")}`}
-          className={classes.mailButton}
-        >
-          <MailIcon fontSize="default" color="action" />
-        </IconButton>
       </DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={24}>
           <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.summary}
+            </Typography>
             <SummaryTable data={summary} />
           </Grid>
 
           <Divider />
 
           <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.absentHoursByTeacher}
+            </Typography>
             <SlotsByTeacherChart data={slotsByTeacherWithAmount} />
           </Grid>
 
+          <Divider />
+
           <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.absentHoursByTime}
+            </Typography>
             <HoursByWeekdayAndTimeChart
               variant="scatterplot"
               data={hoursByWeekdayAndTime}

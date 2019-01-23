@@ -2,7 +2,15 @@ import * as React from "react";
 import { UserN, AppState, getUser } from "../../redux";
 import { connect, MapStateToPropsParam } from "react-redux";
 import * as _ from "lodash";
-import { XYPlot, VerticalBarSeries, YAxis, XAxis } from "react-vis";
+import {
+  XYPlot,
+  VerticalBarSeries,
+  YAxis,
+  XAxis,
+  makeVisFlexible
+} from "react-vis";
+
+const FlexibleXYPlot = makeVisFlexible(XYPlot);
 
 interface SlotsByTeacherChartOwnProps {
   data: Record<string, number>;
@@ -35,7 +43,7 @@ const SlotsByTeacherChart: React.FC<SlotsByTeacherChartProps> = props => {
   const { dataWithTeachers } = props;
 
   return (
-    <XYPlot height={250} width={500} yType="linear" xType="ordinal">
+    <FlexibleXYPlot height={250} yType="linear" xType="ordinal">
       <YAxis />
       <XAxis />
       <VerticalBarSeries
@@ -46,7 +54,7 @@ const SlotsByTeacherChart: React.FC<SlotsByTeacherChartProps> = props => {
           y: v.amount
         }))}
       />
-    </XYPlot>
+    </FlexibleXYPlot>
   );
 };
 

@@ -26,7 +26,13 @@ const StudentReportRoute: React.FC<StudentReportProps> = props => {
   );
 
   return (
-    <Dialog open fullScreen={fullScreen} onClose={handleOnClose} scroll="paper">
+    <Dialog
+      open
+      fullScreen={fullScreen}
+      onClose={handleOnClose}
+      scroll="body"
+      maxWidth="md"
+    >
       <StudentReport studentId={studentId} onClose={handleOnClose} />
     </Dialog>
   );

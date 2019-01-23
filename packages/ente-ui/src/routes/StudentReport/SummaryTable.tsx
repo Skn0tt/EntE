@@ -25,7 +25,7 @@ const useTranslation = makeTranslationHook({
     total: "gesamt",
     unexcused: "unentschuldigt",
     entries: "Einträge",
-    absentDays: "Abwesenheitstage",
+    absentDays: "Fehltage",
     absentHours: "Fehlstunden",
     hourRate: "Stundenrate",
     hourRateTooltip: "Fehlstunden pro Abwesenheitstag"
@@ -43,36 +43,36 @@ export const SummaryTable: React.FC<SummaryTableProps> = props => {
 
   return (
     <Paper elevation={2}>
-      <Table>
+      <Table padding="dense">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell align="right">{translation.total}</TableCell>
-            <TableCell align="right">{translation.unexcused}</TableCell>
+            <TableCell>{translation.total}</TableCell>
+            <TableCell>{translation.unexcused}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell align="left">{translation.entries}</TableCell>
-            <TableCell align="right">{data.entries.total}</TableCell>
-            <TableCell align="right">{data.entries.unexcused}</TableCell>
+            <TableCell>{translation.entries}</TableCell>
+            <TableCell>{data.entries.total}</TableCell>
+            <TableCell>{data.entries.unexcused}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="left">{translation.absentDays}</TableCell>
-            <TableCell align="right">{data.absentDays.unexcused}</TableCell>
-            <TableCell align="right">{data.absentDays.unexcused}</TableCell>
+            <TableCell>{translation.absentDays}</TableCell>
+            <TableCell>{data.absentDays.unexcused}</TableCell>
+            <TableCell>{data.absentDays.unexcused}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="left">{translation.absentHours}</TableCell>
-            <TableCell align="right">{data.absentSlots.unexcused}</TableCell>
-            <TableCell align="right">{data.absentSlots.unexcused}</TableCell>
+            <TableCell>{translation.absentHours}</TableCell>
+            <TableCell>{data.absentSlots.unexcused}</TableCell>
+            <TableCell>{data.absentSlots.unexcused}</TableCell>
           </TableRow>
           <TableRow>
             <Tooltip title={translation.hourRateTooltip} placement="right">
-              <TableCell align="left">{translation.hourRate}</TableCell>
+              <TableCell>{translation.hourRate}</TableCell>
             </Tooltip>
-            <TableCell align="right">{data.slotsPerDay.toFixed(2)}</TableCell>
-            <TableCell align="right" />
+            <TableCell>{data.slotsPerDay.toFixed(2)}</TableCell>
+            <TableCell />
           </TableRow>
         </TableBody>
       </Table>

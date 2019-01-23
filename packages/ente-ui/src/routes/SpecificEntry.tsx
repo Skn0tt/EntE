@@ -315,7 +315,13 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
           show={showDelete}
           text={lang.areYouSureToDelete}
         />
-        <Dialog open fullScreen={fullScreen} onClose={onClose} fullWidth>
+        <Dialog
+          open
+          fullScreen={fullScreen}
+          onClose={onClose}
+          fullWidth
+          scroll="body"
+        >
           <DialogContent>
             {!!entry ? (
               <Grid container direction="column" spacing={24}>
@@ -377,9 +383,9 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                               );
                           }
                         })()}
+                        <br />
                       </>
                     )}
-                    <br />
                     <i>{lang.student}</i>{" "}
                     {getUser(entry.get("studentId"))
                       .some()
