@@ -66,7 +66,16 @@ import {
   SET_LANGUAGE,
   IMPORT_USERS_REQUEST,
   IMPORT_USERS_ERROR,
-  IMPORT_USERS_SUCCESS
+  IMPORT_USERS_SUCCESS,
+  FETCH_INSTANCE_CONFIG_REQUEST,
+  FETCH_INSTANCE_CONFIG_ERROR,
+  FETCH_INSTANCE_CONFIG_SUCCESS,
+  SET_DEFAULT_LANGUAGE_REQUEST,
+  SET_DEFAULT_LANGUAGE_ERROR,
+  SET_DEFAULT_LANGUAGE_SUCCESS,
+  SET_LOGIN_BANNER_REQUEST,
+  SET_LOGIN_BANNER_ERROR,
+  SET_LOGIN_BANNER_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -74,12 +83,17 @@ import {
   APIResponse,
   UserN,
   SlotN,
-  EntryN
+  EntryN,
+  InstanceConfigN
 } from "./types";
 import * as _ from "lodash";
 import { Languages } from "ente-types";
 import { Map } from "immutable";
-import { ImportUsersSuccessPayload } from "./actions";
+import {
+  ImportUsersSuccessPayload,
+  FetchInstanceConfigSuccessPayload,
+  SetLoginBannerSuccessPayload
+} from "./actions";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -367,6 +381,46 @@ const reducer = handleActions<AppState | undefined, any>(
       CREATE_USERS_SUCCESS
     ),
 
+    // ## FETCH_INSTANCE_CONFIG
+    ...asyncReducersFull(
+      FETCH_INSTANCE_CONFIG_REQUEST,
+      FETCH_INSTANCE_CONFIG_ERROR,
+      FETCH_INSTANCE_CONFIG_SUCCESS,
+      (state: AppState, action: Action<FetchInstanceConfigSuccessPayload>) => {
+        const { payload } = action;
+        const { defaultLanguage, loginBanners } = payload!;
+        const instanceConfigN = new InstanceConfigN({
+          defaultLanguage,
+          loginBanners: Map(loginBanners as any)
+        });
+        return state
+          .update("language", l => l || defaultLanguage)
+          .set("instanceConfig", instanceConfigN);
+      }
+    ),
+
+    // ## SET_DEFAULT_LANGUAGE
+    ...asyncReducersFull(
+      SET_DEFAULT_LANGUAGE_REQUEST,
+      SET_DEFAULT_LANGUAGE_ERROR,
+      SET_DEFAULT_LANGUAGE_SUCCESS,
+      (state: AppState, action: Action<Languages>) => {
+        const { payload } = action;
+        return state.setIn(["instanceConfig", "defaultLanguage"], payload);
+      }
+    ),
+
+    // ## SET_LOGIN_BANNER
+    ...asyncReducersFull(
+      SET_LOGIN_BANNER_REQUEST,
+      SET_LOGIN_BANNER_ERROR,
+      SET_LOGIN_BANNER_SUCCESS,
+      (state: AppState, action: Action<SetLoginBannerSuccessPayload>) => {
+        const { language, text } = action.payload!;
+        return state.setIn(["instanceConfig", "loginBanners", language], text);
+      }
+    ),
+
     /**
      * # UPDATE
      */
@@ -381,6 +435,6 @@ const reducer = handleActions<AppState | undefined, any>(
       state!.set("language", action.payload!)
   },
   initialState
-); // tslint:disable-line:align
+);
 
 export default reducer;

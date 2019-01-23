@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Switch, Route, Redirect, withRouter } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import { Roles } from "ente-types";
 import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";

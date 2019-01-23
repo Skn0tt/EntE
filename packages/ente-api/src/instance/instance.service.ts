@@ -12,6 +12,7 @@ import {
   ImportUsersFailure as DbImportUsersFailure
 } from "../db/user.repo";
 import { EntryRepo } from "../db/entry.repo";
+import { InstanceConfigService } from "../instance-config/instance-config.service";
 
 export enum ImportUsersFailure {
   ForbiddenForRole,
@@ -23,7 +24,9 @@ export enum ImportUsersFailure {
 export class InstanceService {
   constructor(
     @Inject(UserRepo) private readonly usersRepo: UserRepo,
-    @Inject(EntryRepo) private readonly entriesRepo: EntryRepo
+    @Inject(EntryRepo) private readonly entriesRepo: EntryRepo,
+    @Inject(InstanceConfigService)
+    private readonly instanceConfigService: InstanceConfigService
   ) {}
 
   async importUsers(
@@ -32,6 +35,8 @@ export class InstanceService {
     deleteEntries: boolean,
     deleteOthers: boolean
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
+    const defaultLanguage = await this.instanceConfigService.getDefaultLanguage();
+
     const { role } = requestingUser;
     const isAdmin = role === Roles.ADMIN;
     if (!isAdmin) {
@@ -43,7 +48,11 @@ export class InstanceService {
       return Fail(ImportUsersFailure.IllegalDtos);
     }
 
-    const importedUsers = await this.usersRepo.import(dtos, deleteOthers);
+    const importedUsers = await this.usersRepo.import(
+      dtos,
+      deleteOthers,
+      defaultLanguage
+    );
     return await importedUsers.cata<
       Promise<Validation<ImportUsersFailure, UserDto[]>>
     >(

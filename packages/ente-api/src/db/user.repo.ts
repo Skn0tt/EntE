@@ -18,7 +18,6 @@ import {
   PaginationInformation,
   withPagination
 } from "../helpers/pagination-info";
-import { Config } from "../helpers/config";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";
 
 interface UserAndPasswordHash {
@@ -126,14 +125,18 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
-  async hashPasswordAndCreate(...users: CreateUserDto[]) {
+  async hashPasswordAndCreate(
+    defaultLanguage: Languages,
+    ...users: CreateUserDto[]
+  ) {
     const withHash = await hashPasswordsOfUsers(...users);
-    return await this.create(...withHash);
+    return await this.create(defaultLanguage, ...withHash);
   }
 
-  async create(...users: CreateUserDtoWithHash[]): Promise<UserDto[]> {
-    const defaultLanguage = Config.getDefaultLanguage();
-
+  async create(
+    defaultLanguage: Languages,
+    ...users: CreateUserDtoWithHash[]
+  ): Promise<UserDto[]> {
     return this.repo.manager.transaction(async manager => {
       const [parents, withoutChildren] = _.partition<CreateUserDtoWithHash>(
         users,
@@ -179,7 +182,8 @@ export class UserRepo {
 
   async import(
     dtos: CreateUserDto[],
-    deleteOthers: boolean
+    deleteOthers: boolean,
+    defaultLanguage: Languages
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
     const usernames = dtos.map(d => d.username);
 
@@ -204,7 +208,10 @@ export class UserRepo {
       usernamesThatAlreadyExist.includes(s.username)
     );
 
-    const createdUsers = await this.hashPasswordAndCreate(...dtosToCreate);
+    const createdUsers = await this.hashPasswordAndCreate(
+      defaultLanguage,
+      ...dtosToCreate
+    );
 
     const updatedUsers = await Promise.all(
       dtosToUpdate.map(async dto => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextField, Grid } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import * as _ from "lodash";
 
 interface DropdownInputProps<T> {
@@ -7,9 +7,10 @@ interface DropdownInputProps<T> {
   options: T[];
   value: T;
   getOptionLabel: (v: T) => string;
-  getOptionKey: (v: T) => string;
-  fullWidth: boolean;
-  label: string;
+  getOptionKey?: (v: T) => string;
+  fullWidth?: boolean;
+  label?: string;
+  variant?: "standard" | "filled" | "outlined";
 }
 
 // tslint:disable-next-line:function-name
@@ -19,9 +20,10 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
     options,
     getOptionLabel,
     value,
-    getOptionKey,
+    getOptionKey = (i: T): string => "" + i,
     fullWidth,
-    label
+    label,
+    variant
   } = props;
 
   const lookup = React.useMemo(
@@ -42,21 +44,20 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
   );
 
   return (
-    <Grid>
-      <TextField
-        select
-        value={getOptionKey(value)}
-        onChange={handleChange}
-        fullWidth={fullWidth}
-        label={label}
-        SelectProps={{ native: true }}
-      >
-        {options.map(option => (
-          <option key={getOptionKey(option)} value={getOptionKey(option)}>
-            {getOptionLabel(option)}
-          </option>
-        ))}
-      </TextField>
-    </Grid>
+    <TextField
+      select
+      variant={variant as any}
+      value={getOptionKey(value)}
+      onChange={handleChange}
+      fullWidth={fullWidth}
+      label={label}
+      SelectProps={{ native: true }}
+    >
+      {options.map(option => (
+        <option key={getOptionKey(option)} value={getOptionKey(option)}>
+          {getOptionLabel(option)}
+        </option>
+      ))}
+    </TextField>
   );
 }

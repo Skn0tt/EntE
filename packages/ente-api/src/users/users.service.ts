@@ -25,6 +25,7 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
+import { InstanceConfigService } from "../instance-config/instance-config.service";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -66,7 +67,9 @@ export class UsersService implements OnModuleInit {
     @Inject(UserRepo) private readonly userRepo: UserRepo,
     @Inject(PasswordResetService)
     private readonly passwordResetService: PasswordResetService,
-    @Inject(WinstonLoggerService) private readonly logger: LoggerService
+    @Inject(WinstonLoggerService) private readonly logger: LoggerService,
+    @Inject(InstanceConfigService)
+    private readonly instanceConfigService: InstanceConfigService
   ) {}
 
   async onModuleInit() {
@@ -198,8 +201,10 @@ export class UsersService implements OnModuleInit {
   }
 
   private async _createUsers(...users: CreateUserDto[]) {
+    const defaultLanguage = await this.instanceConfigService.getDefaultLanguage();
+
     const withHash = await hashPasswordsOfUsers(...users);
-    const created = await this.userRepo.create(...withHash);
+    const created = await this.userRepo.create(defaultLanguage, ...withHash);
 
     const usersWithoutPassword = created.filter(created => {
       const hasPasswordSet = !!users.find(u => created.username === u.username)!
