@@ -20,7 +20,7 @@ const StudentReportRoute: React.FC<StudentReportProps> = props => {
 
   const handleOnClose = React.useCallback(
     () => {
-      history.push("/users");
+      history.goBack();
     },
     [history]
   );
