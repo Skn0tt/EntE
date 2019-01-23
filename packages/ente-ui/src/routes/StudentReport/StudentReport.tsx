@@ -40,6 +40,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Roles } from "ente-types";
 import { NotFound } from "../NotFound";
 import LoadingIndicator from "../../elements/LoadingIndicator";
+import EntriesTable from "./EntriesTable";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -63,14 +64,16 @@ const useTranslation = makeTranslationHook({
     absenceReport: "Absence Report",
     absentHoursByTime: "Absent hours by time",
     absentHoursByTeacher: "Absent hours by teacher",
-    summary: "Summary"
+    summary: "Summary",
+    entries: "Entries"
   },
   de: {
     close: "Schließen",
     absenceReport: "Fehlstundenbericht",
     absentHoursByTime: "Fehlstunden nach Schulstunde",
     absentHoursByTeacher: "Fehlstunden nach Lehrer",
-    summary: "Zusammenfassung"
+    summary: "Zusammenfassung",
+    entries: "Einträge"
   }
 });
 
@@ -236,6 +239,13 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
                 variant="scatterplot"
                 data={hoursByWeekdayAndTime}
               />
+            </Grid>
+
+            <Grid item>
+              <Typography variant="h6" className={classes.heading}>
+                {translation.entries}
+              </Typography>
+              <EntriesTable entries={entries} />
             </Grid>
           </Grid>
         </DialogContent>

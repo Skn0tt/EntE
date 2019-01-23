@@ -107,6 +107,10 @@ export const hoursOfSlot = (slot: SlotN): number[] => {
   return fillRange(from, to);
 };
 
+export const getLengthOfSlot = (slot: SlotN): number => {
+  return slot.get("to") - slot.get("from") + 1;
+};
+
 export const hoursByWeekdayAndTime = (
   slots: SlotN[]
 ): Record<Weekday, Record<number, number>> => {
