@@ -1,5 +1,5 @@
 import * as React from "react";
-import { EntrySummary } from "../reporting/reporting";
+import { EntrySummary } from "../../reporting/reporting";
 import {
   Paper,
   TableHead,
@@ -9,7 +9,7 @@ import {
   Table,
   Tooltip
 } from "@material-ui/core";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
 const useTranslation = makeTranslationHook({
   en: {

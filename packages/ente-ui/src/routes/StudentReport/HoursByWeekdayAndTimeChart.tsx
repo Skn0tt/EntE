@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as _ from "lodash";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { Weekday } from "../reporting/reporting";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { Weekday } from "../../reporting/reporting";
 import { XYPlot, HeatmapSeries, MarkSeries, XAxis, YAxis } from "react-vis";
 
 const defaultDay = _.fromPairs(_.times(12, hour => [hour + 1, 0]));

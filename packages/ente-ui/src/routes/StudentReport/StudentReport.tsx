@@ -7,10 +7,10 @@ import {
   getUser,
   getEntries,
   getSlots
-} from "../redux";
+} from "../../redux";
 import { Maybe } from "monet";
 import { RouteComponentProps, withRouter } from "react-router";
-import { Reporting } from "../reporting/reporting";
+import { Reporting } from "../../reporting/reporting";
 import { connect, MapStateToPropsParam } from "react-redux";
 import {
   Dialog,
@@ -24,7 +24,7 @@ import {
   Grid
 } from "@material-ui/core";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SlotsByTeacherChart from "./SlotsByTeacherChart";
 import * as _ from "lodash";
 import { SummaryTable } from "./SummaryTable";

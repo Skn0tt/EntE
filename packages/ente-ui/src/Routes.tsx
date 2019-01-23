@@ -17,7 +17,7 @@ import SpecificEntry from "./routes/SpecificEntry";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
-import StudentReport from "./routes/StudentReport";
+import StudentReport from "./routes/StudentReport/StudentReport";
 
 const AdminRoutes: React.SFC = () => (
   <>

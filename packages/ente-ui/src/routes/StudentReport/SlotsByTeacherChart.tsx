@@ -1,8 +1,7 @@
 import * as React from "react";
-import { UserN, AppState, getUser } from "../redux";
+import { UserN, AppState, getUser } from "../../redux";
 import { connect, MapStateToPropsParam } from "react-redux";
 import * as _ from "lodash";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { XYPlot, VerticalBarSeries, YAxis, XAxis } from "react-vis";
 
 interface SlotsByTeacherChartOwnProps {
