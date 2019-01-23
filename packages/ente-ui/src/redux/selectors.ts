@@ -15,13 +15,15 @@ import {
   SlotN,
   roleHasChildren,
   AuthState,
-  userIsTeaching
+  userIsTeaching,
+  InstanceConfigN
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, Languages } from "ente-types";
+import { Roles, Languages, DEFAULT_LANGUAGE } from "ente-types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Action } from "redux";
+import { Map } from "immutable";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -149,4 +151,37 @@ export const getStudents = createSelector(
   users => users.filter(userIsStudent)
 );
 
-export const getLanguage: Selector<Languages> = state => state.get("language");
+export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
+  Maybe.fromNull(state.get("instanceConfig"));
+
+export const getLanguage: Selector<Maybe<Languages>> = state =>
+  Maybe.fromNull(state.get("language"));
+
+export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
+  const instanceConfig = getInstanceConfig(state);
+  return instanceConfig.map(i => i.get("defaultLanguage"));
+};
+
+export const getLoginBanners: Selector<
+  Maybe<Map<Languages, string>>
+> = state => {
+  const instanceConfig = getInstanceConfig(state);
+  return instanceConfig.map(i => i.get("loginBanners"));
+};
+
+export const isInstanceConfigPresent: Selector<boolean> = state =>
+  getLoginBanners(state).isSome();
+
+export const getLoginBannerForLanguage = (
+  language: Languages
+): Selector<Maybe<string>> => state =>
+  getLoginBanners(state).flatMap(loginBanners => {
+    return Maybe.fromFalsy(loginBanners.get(language));
+  });
+
+export const getCurrentLoginBanner: Selector<Maybe<string>> = state => {
+  const currentLanguage = getLanguage(state);
+  const lang = currentLanguage.orSome(DEFAULT_LANGUAGE);
+  const result = getLoginBannerForLanguage(lang)(state);
+  return result;
+};

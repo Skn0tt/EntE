@@ -33,6 +33,7 @@ import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
 import { StoreContext } from "./helpers/store-context";
+import InstanceConfigGate from "./components/InstanceConfigGate";
 
 installMuiStyles();
 
@@ -48,8 +49,7 @@ const config: Partial<ReduxConfig> = {
     document.body.appendChild(link);
     link.click();
   },
-  middlewares: [],
-  defaultLanguage: getConfig().DEFAULT_LANGUAGE
+  middlewares: []
 };
 
 const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();

@@ -4,9 +4,10 @@ import { UsersService } from "./users.service";
 import { AuthModule } from "../auth/auth.module";
 import { PasswordResetModule } from "../password-reset/password-reset.module";
 import { DbModule } from "../db/db.module";
+import { InstanceConfigModule } from "../instance-config/instance-config.module";
 
 @Module({
-  imports: [DbModule, AuthModule, PasswordResetModule],
+  imports: [DbModule, AuthModule, PasswordResetModule, InstanceConfigModule],
   providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService]

@@ -7,7 +7,11 @@
  */
 
 import * as React from "react";
-import { connect, MapDispatchToPropsParam } from "react-redux";
+import {
+  connect,
+  MapDispatchToPropsParam,
+  MapStateToPropsParam
+} from "react-redux";
 import { Action } from "redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router";
 import {
@@ -29,18 +33,17 @@ import {
   BasicCredentials,
   GET_TOKEN_REQUEST,
   isTypePending,
-  RESET_PASSWORD_REQUEST
+  RESET_PASSWORD_REQUEST,
+  getCurrentLoginBanner
 } from "../../redux";
 import { withErrorBoundary } from "../../hocs/withErrorBoundary";
-import * as config from "../../config";
 import { PasswordResetModal } from "./PasswordResetModal";
 import {
   WithTranslation,
   withTranslation
 } from "../../helpers/with-translation";
 import * as querystring from "query-string";
-
-const { INSTANCE_INFO_DE, INSTANCE_INFO_EN } = config.get();
+import { Maybe } from "monet";
 
 const lang = {
   en: {
@@ -49,7 +52,7 @@ const lang = {
     username: "Username",
     password: "Password",
     passwordForgot: "Forgot Password?",
-    instanceInfo: INSTANCE_INFO_EN.orSome("In order to use EntE, log in.")
+    defaultBanner: "In order to use EntE, log in."
   },
   de: {
     title: "Anmelden",
@@ -57,9 +60,7 @@ const lang = {
     username: "Benutzername",
     password: "Passwort",
     passwordForgot: "Passwort Vergessen?",
-    instanceInfo: INSTANCE_INFO_DE.orSome(
-      "Bitte melden Sie sich an, um EntE zu nutzen."
-    )
+    defaultBanner: "Bitte melden Sie sich an, um EntE zu nutzen."
   }
 };
 
@@ -73,11 +74,17 @@ interface LoginStateProps {
   authValid: boolean;
   loginPending: boolean;
   passwordResetPending: boolean;
+  loginBanner: Maybe<string>;
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps: MapStateToPropsParam<
+  LoginStateProps,
+  LoginOwnProps,
+  AppState
+> = state => ({
   authValid: isAuthValid(state),
   loginPending: isTypePending(state)(GET_TOKEN_REQUEST),
-  passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST)
+  passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST),
+  loginBanner: getCurrentLoginBanner(state)
 });
 
 interface LoginDispatchProps {
@@ -106,8 +113,8 @@ interface State {
   showPasswordResetModal: boolean;
 }
 
-class Login extends React.Component<LoginProps, State> {
-  state: State = {
+class Login extends React.PureComponent<LoginProps, State> {
+  state: Readonly<State> = {
     username: this.initialUsername,
     password: "",
     showPasswordResetModal: false
@@ -157,7 +164,8 @@ class Login extends React.Component<LoginProps, State> {
       fullScreen,
       loginPending,
       passwordResetPending,
-      translation: lang
+      translation: lang,
+      loginBanner
     } = this.props;
     const { showPasswordResetModal, username } = this.state;
     const { from } = location.state || {
@@ -180,7 +188,9 @@ class Login extends React.Component<LoginProps, State> {
           <DialogContent>
             <DialogContentText
               dangerouslySetInnerHTML={{
-                __html: lang.instanceInfo.replace("\n", "<br />")
+                __html: loginBanner
+                  .orSome(lang.defaultBanner)
+                  .replace(/(?:\r\n|\r|\n)/g, "<br />")
               }}
             />
             <Grid container direction="column">

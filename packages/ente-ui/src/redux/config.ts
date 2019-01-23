@@ -1,5 +1,4 @@
 import { Middleware } from "redux";
-import { Languages } from "ente-types";
 import { asyncLocalStorage } from "redux-persist/storages";
 
 export type ReduxConfig = {
@@ -8,15 +7,13 @@ export type ReduxConfig = {
   onSagaError?: (err: Error) => void;
   onFileDownload: (file: Blob, filename: string) => void;
   storage: any;
-  defaultLanguage: Languages;
 };
 
 const defaultConfig: ReduxConfig = {
   storage: asyncLocalStorage,
   baseUrl: "",
   middlewares: [],
-  onFileDownload: () => {},
-  defaultLanguage: Languages.ENGLISH
+  onFileDownload: () => {}
 };
 
 let config: ReduxConfig = defaultConfig;

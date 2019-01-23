@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { createAction, Action, ActionMeta } from "redux-actions";
+import { createAction, Action } from "redux-actions";
 
 import {
   CREATE_ENTRY_REQUEST,
@@ -68,20 +68,24 @@ import {
   SET_LANGUAGE,
   IMPORT_USERS_REQUEST,
   IMPORT_USERS_SUCCESS,
-  IMPORT_USERS_ERROR
+  IMPORT_USERS_ERROR,
+  FETCH_INSTANCE_CONFIG_REQUEST,
+  FETCH_INSTANCE_CONFIG_SUCCESS,
+  FETCH_INSTANCE_CONFIG_ERROR,
+  SET_LOGIN_BANNER_REQUEST,
+  SET_LOGIN_BANNER_SUCCESS,
+  SET_LOGIN_BANNER_ERROR,
+  SET_DEFAULT_LANGUAGE_REQUEST,
+  SET_DEFAULT_LANGUAGE_SUCCESS,
+  SET_DEFAULT_LANGUAGE_ERROR
 } from "./constants";
-import {
-  APIResponse,
-  AuthState,
-  BasicCredentials,
-  EntryN,
-  UserN
-} from "./types";
+import { APIResponse, AuthState, BasicCredentials } from "./types";
 import {
   CreateUserDto,
   CreateEntryDto,
   PatchUserDto,
-  Languages
+  Languages,
+  InstanceConfigDto
 } from "ente-types";
 import * as _ from "lodash";
 
@@ -295,3 +299,46 @@ export const importUsersError = createMetaAction<
 >(IMPORT_USERS_ERROR);
 
 export const logout = createAction(LOGOUT);
+
+export type FetchInstanceConfigSuccessPayload = InstanceConfigDto;
+
+export const fetchInstanceConfigRequest = createAction(
+  FETCH_INSTANCE_CONFIG_REQUEST
+);
+export const fetchInstanceConfigSuccess = createMetaAction<
+  void,
+  FetchInstanceConfigSuccessPayload
+>(FETCH_INSTANCE_CONFIG_SUCCESS);
+export const fetchInstanceConfigError = createMetaAction<void, Error>(
+  FETCH_INSTANCE_CONFIG_ERROR
+);
+
+export interface SetLoginBannerRequestPayload {
+  language: Languages;
+  text: string | null;
+}
+
+export type SetLoginBannerSuccessPayload = SetLoginBannerRequestPayload;
+
+export const setLoginBannerRequest = createAction<SetLoginBannerRequestPayload>(
+  SET_LOGIN_BANNER_REQUEST
+);
+export const setLoginBannerSuccess = createMetaAction<
+  void,
+  SetLoginBannerSuccessPayload
+>(SET_LOGIN_BANNER_SUCCESS);
+export const setLoginBannerError = createMetaAction<void, Error>(
+  SET_LOGIN_BANNER_ERROR
+);
+
+export const setDefaultLanguageRequest = createAction<Languages>(
+  SET_DEFAULT_LANGUAGE_REQUEST
+);
+export const setDefaultLanguageSuccess = createMetaAction<
+  Action<Languages>,
+  Languages
+>(SET_DEFAULT_LANGUAGE_SUCCESS);
+export const setDefaultLanguageError = createMetaAction<
+  Action<Languages>,
+  Error
+>(SET_DEFAULT_LANGUAGE_ERROR);

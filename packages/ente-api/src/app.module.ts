@@ -18,6 +18,7 @@ import { migrations } from "./db/migrations";
 import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 import { DevModule } from "./dev/dev.module";
 import { InstanceModule } from "./instance/instance.module";
+import { InstanceConfigModule } from "./instance-config/instance-config.module";
 
 const {
   database,
@@ -47,6 +48,7 @@ const isDevMode = Config.isDevMode();
       logger: new CustomTypeOrmLogger(),
       logging: "all"
     }),
+    InstanceConfigModule,
     SlotsModule,
     EntriesModule,
     PasswordResetModule,

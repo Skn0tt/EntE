@@ -65,7 +65,10 @@ interface State {
 /**
  * # Component
  */
-export class ChildrenInput extends React.Component<ChildrenInputProps, State> {
+export class ChildrenInput extends React.PureComponent<
+  ChildrenInputProps,
+  State
+> {
   state: State = {
     selected: this.props.students.filter(
       u => !includes(this.props.children)(u)

@@ -5,7 +5,7 @@ import { None, Some, Maybe } from "monet";
 import { Route } from "react-router";
 import { History } from "history";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { Languages } from "ente-types";
+import { Languages, DEFAULT_LANGUAGE } from "ente-types";
 import {
   MapStateToPropsParam,
   MapDispatchToPropsParam,
@@ -35,7 +35,7 @@ const mapStateToProps: MapStateToPropsParam<
   SettingsMenuOwnProps,
   AppState
 > = state => ({
-  language: getLanguage(state)
+  language: getLanguage(state).orSome(DEFAULT_LANGUAGE)
 });
 
 interface SettingsMenuDispatchProps {

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed: configuration of login banners and default language now can be done in the UI
+
 ## [v0.14.0] - 2019-01-15
 
 - Changed: 14-day limit is now counted from end of entries ([#228](https://gitlab.com/Skn0tt/EntE/issues/228))

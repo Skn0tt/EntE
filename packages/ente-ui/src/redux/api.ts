@@ -25,7 +25,8 @@ import {
   SlotDto,
   JwtTokenPayload,
   PatchEntryDto,
-  Languages
+  Languages,
+  InstanceConfigDto
 } from "ente-types";
 import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
@@ -396,4 +397,47 @@ export const importUsers = async (
     dtos
   );
   return transformUsers(...result);
+};
+
+export const fetchInstanceConfig = async (): Promise<InstanceConfigDto> => {
+  const response = await axios.get<InstanceConfigDto>(
+    `${getBaseUrl()}/instanceConfig`
+  );
+  const { data } = response;
+  return data;
+};
+
+export const setLoginBanner = async (
+  language: Languages,
+  text: string | null,
+  token: string
+): Promise<void> => {
+  const response = await put(
+    `${getBaseUrl()}/instanceConfig/loginBanners/${language}`,
+    token,
+    text,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
+};
+
+export const setDefaultLanguage = async (
+  language: Languages,
+  token: string
+): Promise<void> => {
+  const response = await put(
+    `${getBaseUrl()}/instanceConfig/defaultLanguage`,
+    token,
+    language,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
 };
