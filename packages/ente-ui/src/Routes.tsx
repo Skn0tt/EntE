@@ -17,7 +17,7 @@ import SpecificEntry from "./routes/SpecificEntry";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
-import StudentReport from "./routes/StudentReport/StudentReport";
+import StudentReportRoute from "./routes/StudentReport/StudentReportRoute";
 
 const AdminRoutes: React.SFC = () => (
   <>
@@ -31,7 +31,7 @@ const AdminRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/users/:studentId/report" component={StudentReport} />
+      <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
@@ -72,7 +72,7 @@ const ManagerRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/users/:studentId/report" component={StudentReport} />
+      <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>

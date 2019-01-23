@@ -9,26 +9,39 @@ import {
   getSlots
 } from "../../redux";
 import { Maybe } from "monet";
-import { RouteComponentProps, withRouter } from "react-router";
 import { Reporting } from "../../reporting/reporting";
 import { connect, MapStateToPropsParam } from "react-redux";
 import {
-  Dialog,
-  withMobileDialog,
   DialogContent,
   DialogActions,
   Button,
   DialogTitle,
   Typography,
   Divider,
-  Grid
+  Grid,
+  IconButton
 } from "@material-ui/core";
-import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SlotsByTeacherChart from "./SlotsByTeacherChart";
 import * as _ from "lodash";
 import { SummaryTable } from "./SummaryTable";
 import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
+import { withPrintButton, usePrintButton } from "ente-ui/src/hocs/withPrint";
+import MailIcon from "@material-ui/icons/Mail";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  mailButton: {
+    position: "absolute",
+    top: 0,
+    right: 0
+  },
+  printButton: {
+    position: "absolute",
+    top: 0,
+    right: 32
+  }
+});
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -41,15 +54,12 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface StudentReportOwnProps {}
-
-interface StudentReportRouteParams {
+interface StudentReportOwnProps {
   studentId: string;
+  onClose: () => void;
 }
 
-type StudentReportProps = StudentReportOwnProps &
-  RouteComponentProps<StudentReportRouteParams> &
-  InjectedProps;
+type StudentReportProps = StudentReportOwnProps;
 
 interface StudentReportStateProps {
   student: Maybe<UserN>;
@@ -61,7 +71,7 @@ const mapStateToProps: MapStateToPropsParam<
   StudentReportProps,
   AppState
 > = (state, props) => {
-  const { studentId } = props.match.params;
+  const { studentId } = props;
 
   const student = getUser(studentId)(state);
   const entries = getEntries(state).filter(
@@ -79,9 +89,11 @@ const mapStateToProps: MapStateToPropsParam<
 type StudentReportPropsConnected = StudentReportProps & StudentReportStateProps;
 
 const StudentReport: React.FC<StudentReportPropsConnected> = props => {
-  const { entries, student, slots, fullScreen, history } = props;
+  const { entries, student, slots, onClose } = props;
 
+  const classes = useStyles(props);
   const translation = useTranslation();
+  const printButton = usePrintButton();
 
   const entriesNotForSchool = React.useMemo(
     () => entries.filter(e => !e.get("forSchool")),
@@ -113,20 +125,20 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slotsNotForSchool]
   );
 
-  const handleOnClose = React.useCallback(
-    () => {
-      history.push("/users");
-    },
-    [history]
-  );
-
   return (
-    <Dialog open fullScreen={fullScreen} onClose={handleOnClose} scroll="paper">
+    <div>
       <DialogTitle>
         <Typography variant="overline">{translation.absenceReport}</Typography>
         <Typography variant="h4">
           {student.some().get("displayname")}
         </Typography>
+        <div className={classes.printButton}>{printButton}</div>
+        <IconButton
+          href={`mailto:${student.map(s => s.get("email")).orSome("")}`}
+          className={classes.mailButton}
+        >
+          <MailIcon fontSize="default" color="action" />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={24}>
@@ -149,14 +161,12 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button size="small" color="primary" onClick={handleOnClose}>
+        <Button size="small" color="primary" onClick={onClose}>
           {translation.close}
         </Button>
       </DialogActions>
-    </Dialog>
+    </div>
   );
 };
 
-export default withMobileDialog()(
-  withRouter(connect(mapStateToProps)(StudentReport))
-);
+export default withPrintButton(connect(mapStateToProps)(StudentReport));
