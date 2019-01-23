@@ -127,9 +127,11 @@ export const getUsers: Selector<UserN[]> = state =>
     .toArray()
     .map(([_, value]) => value);
 
+export const getSlotsMap: Selector<Map<string, SlotN>> = state =>
+  state.get("slotsMap");
+
 export const getSlots: Selector<SlotN[]> = state =>
-  state
-    .get("slotsMap")
+  getSlotsMap(state)
     .toArray()
     .map(([_, value]) => value);
 

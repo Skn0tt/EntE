@@ -10,7 +10,8 @@ import {
   getRole,
   getEntriesRequest,
   getUserRequest,
-  isLoading
+  isLoading,
+  getSlotsMap
 } from "../../redux";
 import { Maybe } from "monet";
 import { Reporting } from "../../reporting/reporting";
@@ -41,6 +42,7 @@ import { Roles } from "ente-types";
 import { NotFound } from "../NotFound";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import EntriesTable from "./EntriesTable";
+import { Map } from "immutable";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -88,6 +90,7 @@ interface StudentReportStateProps {
   student: Maybe<UserN>;
   entries: EntryN[];
   slots: SlotN[];
+  slotsMap: Map<string, SlotN>;
   role: Roles;
   isLoading: boolean;
 }
@@ -102,6 +105,7 @@ const mapStateToProps: MapStateToPropsParam<
   const entries = getEntries(state).filter(
     f => f.get("studentId") === studentId
   );
+  const slotsMap = getSlotsMap(state);
   const slots = getSlots(state).filter(f => f.get("studentId") === studentId);
 
   const role = getRole(state).some();
@@ -113,6 +117,7 @@ const mapStateToProps: MapStateToPropsParam<
     student,
     entries,
     slots,
+    slotsMap,
     isLoading: loading
   };
 };
@@ -143,7 +148,8 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     fetchEntries,
     studentId,
     fetchStudent,
-    isLoading
+    isLoading,
+    slotsMap
   } = props;
 
   const classes = useStyles(props);
@@ -173,18 +179,13 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
   );
 
   const summary = React.useMemo(
-    () => Reporting.summarize(entriesNotForSchool),
+    () => Reporting.summarize(entriesNotForSchool, slotsMap),
     [entriesNotForSchool]
   );
 
-  const slotsByTeacher = React.useMemo(
-    () => Reporting.slotsByTeacher(slotsNotForSchool),
+  const absentHoursByTeacher = React.useMemo(
+    () => Reporting.absentHoursByTeacher(slotsNotForSchool),
     [slotsNotForSchool]
-  );
-
-  const slotsByTeacherWithAmount = React.useMemo(
-    () => _.mapValues(slotsByTeacher, v => v.length),
-    [slotsByTeacher]
   );
 
   const hoursByWeekdayAndTime = React.useMemo(
@@ -226,7 +227,7 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
               <Typography variant="h6" className={classes.heading}>
                 {translation.absentHoursByTeacher}
               </Typography>
-              <SlotsByTeacherChart data={slotsByTeacherWithAmount} />
+              <SlotsByTeacherChart data={absentHoursByTeacher} />
             </Grid>
 
             <Divider />

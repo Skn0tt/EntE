@@ -2,6 +2,7 @@ import { SlotN, EntryN } from "../redux/";
 import * as _ from "lodash";
 import { getDay, differenceInCalendarDays } from "date-fns";
 import { fillRange } from "../helpers/fillRange";
+import { Map } from "immutable";
 
 export enum Weekday {
   MONDAY = 1,
@@ -41,7 +42,10 @@ export const getLengthOfEntry = (entry: EntryN): number => {
 const isExcused = (entry: EntryN): boolean =>
   entry.get("signedParent") && entry.get("signedManager");
 
-export const summarize = (entries: EntryN[]): EntrySummary => {
+export const summarize = (
+  entries: EntryN[],
+  slots: Map<string, SlotN>
+): EntrySummary => {
   const excusedEntries = entries.filter(isExcused);
 
   const cumulateLength = (entries: EntryN[]) => {
@@ -56,7 +60,10 @@ export const summarize = (entries: EntryN[]): EntrySummary => {
 
   const cumulateSlots = (entries: EntryN[]) => {
     return _.sumBy(entries, entry => {
-      return entry.get("slotIds").length;
+      return _.sumBy(
+        entry.get("slotIds").map(s => slots.get(s)!),
+        getLengthOfSlot
+      );
     });
   };
 
@@ -87,6 +94,14 @@ export const summarize = (entries: EntryN[]): EntrySummary => {
 export const slotsByTeacher = (slots: SlotN[]): Record<string, SlotN[]> => {
   const result = _.groupBy(slots, (slot: SlotN) => slot.get("teacherId"));
   return result;
+};
+
+export const absentHoursByTeacher = (
+  slots: SlotN[]
+): Record<string, number> => {
+  return _.mapValues(slotsByTeacher(slots), slots =>
+    _.sumBy(slots, getLengthOfSlot)
+  );
 };
 
 export const weekdayOfSlot = (slot: SlotN): Weekday => {
@@ -139,5 +154,6 @@ export const hoursByWeekdayAndTime = (
 export const Reporting = {
   summarize,
   hoursByWeekdayAndTime,
+  absentHoursByTeacher,
   slotsByTeacher
 };
