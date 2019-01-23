@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed bug where signature state of slots was not displayed correctly
 - Changed: configuration of login banners and default language now can be done in the UI
 
 ## [v0.14.0] - 2019-01-15
