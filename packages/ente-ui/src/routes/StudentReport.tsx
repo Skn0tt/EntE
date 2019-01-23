@@ -20,41 +20,24 @@ import {
   Button,
   DialogTitle,
   Typography,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
   Divider,
-  Tooltip,
   Grid
 } from "@material-ui/core";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import SlotsByTeacherChart from "./SlotsByTeacherChart";
+import * as _ from "lodash";
+import { SummaryTable } from "./SummaryTable";
+import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
 
 const useTranslation = makeTranslationHook({
   en: {
     close: "Close",
-    absenceReport: "Absence Report",
-    total: "total",
-    unexcused: "unexcused",
-    entries: "Entries",
-    absentDays: "Absent Days",
-    absentHours: "Absent Hours",
-    hourRate: "Hourrate",
-    hourRateTooltip: "Absent Hours per Absent Day"
+    absenceReport: "Absence Report"
   },
   de: {
     close: "Schließen",
-    absenceReport: "Fehlstundenbericht",
-    total: "gesamt",
-    unexcused: "unentschuldigt",
-    entries: "Einträge",
-    absentDays: "Abwesenheitstage",
-    absentHours: "Fehlstunden",
-    hourRate: "Stundenrate",
-    hourRateTooltip: "Fehlstunden pro Abwesenheitstag"
+    absenceReport: "Fehlstundenbericht"
   }
 });
 
@@ -120,6 +103,11 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slotsNotForSchool]
   );
 
+  const slotsByTeacherWithAmount = React.useMemo(
+    () => _.mapValues(slotsByTeacher, v => v.length),
+    [slotsByTeacher]
+  );
+
   const hoursByWeekdayAndTime = React.useMemo(
     () => Reporting.hoursByWeekdayAndTime(slotsNotForSchool),
     [slotsNotForSchool]
@@ -143,63 +131,21 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
       <DialogContent>
         <Grid container direction="column" spacing={24}>
           <Grid item>
-            <Paper elevation={2}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell />
-                    <TableCell align="right">{translation.total}</TableCell>
-                    <TableCell align="right">{translation.unexcused}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="left">{translation.entries}</TableCell>
-                    <TableCell align="right">{summary.entries.total}</TableCell>
-                    <TableCell align="right">
-                      {summary.entries.unexcused}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="left">{translation.absentDays}</TableCell>
-                    <TableCell align="right">
-                      {summary.absentDays.unexcused}
-                    </TableCell>
-                    <TableCell align="right">
-                      {summary.absentDays.unexcused}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell align="left">
-                      {translation.absentHours}
-                    </TableCell>
-                    <TableCell align="right">
-                      {summary.absentSlots.unexcused}
-                    </TableCell>
-                    <TableCell align="right">
-                      {summary.absentSlots.unexcused}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <Tooltip
-                      title={translation.hourRateTooltip}
-                      placement="right"
-                    >
-                      <TableCell align="left">{translation.hourRate}</TableCell>
-                    </Tooltip>
-                    <TableCell align="right">
-                      {summary.slotsPerDay.toFixed(2)}
-                    </TableCell>
-                    <TableCell align="right" />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
+            <SummaryTable data={summary} />
           </Grid>
 
           <Divider />
 
-          <Grid item />
+          <Grid item>
+            <SlotsByTeacherChart data={slotsByTeacherWithAmount} />
+          </Grid>
+
+          <Grid item>
+            <HoursByWeekdayAndTimeChart
+              variant="scatterplot"
+              data={hoursByWeekdayAndTime}
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

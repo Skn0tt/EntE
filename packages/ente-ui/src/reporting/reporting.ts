@@ -19,7 +19,7 @@ interface TotalAndUnexcused {
   excused: number;
 }
 
-interface EntrySummary {
+export interface EntrySummary {
   entries: TotalAndUnexcused;
   absentDays: TotalAndUnexcused;
   absentSlots: TotalAndUnexcused;
