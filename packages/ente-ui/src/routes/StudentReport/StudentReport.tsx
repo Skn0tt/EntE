@@ -7,11 +7,18 @@ import {
   getUser,
   getEntries,
   getSlots,
-  getRole
+  getRole,
+  getEntriesRequest,
+  getUserRequest,
+  isLoading
 } from "../../redux";
 import { Maybe } from "monet";
 import { Reporting } from "../../reporting/reporting";
-import { connect, MapStateToPropsParam } from "react-redux";
+import {
+  connect,
+  MapStateToPropsParam,
+  MapDispatchToPropsParam
+} from "react-redux";
 import {
   DialogContent,
   DialogActions,
@@ -27,10 +34,12 @@ import SlotsByTeacherChart from "./SlotsByTeacherChart";
 import * as _ from "lodash";
 import { SummaryTable } from "./SummaryTable";
 import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
-import { withPrintButton, usePrintButton } from "ente-ui/src/hocs/withPrint";
+import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
 import { Roles } from "ente-types";
+import { NotFound } from "../NotFound";
+import LoadingIndicator from "../../elements/LoadingIndicator";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -77,6 +86,7 @@ interface StudentReportStateProps {
   entries: EntryN[];
   slots: SlotN[];
   role: Roles;
+  isLoading: boolean;
 }
 const mapStateToProps: MapStateToPropsParam<
   StudentReportStateProps,
@@ -93,22 +103,61 @@ const mapStateToProps: MapStateToPropsParam<
 
   const role = getRole(state).some();
 
+  const loading = isLoading(state);
+
   return {
     role,
     student,
     entries,
-    slots
+    slots,
+    isLoading: loading
   };
 };
 
-type StudentReportPropsConnected = StudentReportProps & StudentReportStateProps;
+interface StudentReportDispatchProps {
+  fetchEntries: () => void;
+  fetchStudent: (id: string) => void;
+}
+const mapDispatchToProps: MapDispatchToPropsParam<
+  StudentReportDispatchProps,
+  StudentReportOwnProps
+> = dispatch => ({
+  fetchEntries: () => dispatch(getEntriesRequest()),
+  fetchStudent: id => dispatch(getUserRequest(id))
+});
+
+type StudentReportPropsConnected = StudentReportProps &
+  StudentReportStateProps &
+  StudentReportDispatchProps;
 
 const StudentReport: React.FC<StudentReportPropsConnected> = props => {
-  const { entries, student, slots, onClose, role } = props;
+  const {
+    entries,
+    student,
+    slots,
+    onClose,
+    role,
+    fetchEntries,
+    studentId,
+    fetchStudent,
+    isLoading
+  } = props;
 
   const classes = useStyles(props);
   const translation = useTranslation();
   const printButton = usePrintButton();
+
+  React.useEffect(() => {
+    if (entries.length === 0) {
+      fetchEntries();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (student.isNone()) {
+      fetchStudent(studentId);
+    }
+  }, []);
 
   const entriesNotForSchool = React.useMemo(
     () => entries.filter(e => !e.get("forSchool")),
@@ -140,61 +189,69 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slotsNotForSchool]
   );
 
-  return (
-    <div>
-      <DialogTitle>
-        <Typography variant="overline">{translation.absenceReport}</Typography>
-        <Typography variant="h5">
-          {student.some().get("displayname")}
-        </Typography>
-        {role === Roles.MANAGER && (
-          <IconButton
-            href={`mailto:${student.map(s => s.get("email")).orSome("")}`}
-            className={classes.mailButton}
-          >
-            <MailIcon fontSize="default" color="action" />
-          </IconButton>
-        )}
-        <div className={classes.printButton}>{printButton}</div>
-      </DialogTitle>
-      <DialogContent>
-        <Grid container direction="column" spacing={24}>
-          <Grid item>
-            <Typography variant="h6" className={classes.heading}>
-              {translation.summary}
-            </Typography>
-            <SummaryTable data={summary} />
+  return student.cata(
+    () => (isLoading ? <LoadingIndicator /> : <NotFound />),
+    student => (
+      <div>
+        <DialogTitle>
+          <Typography variant="overline">
+            {translation.absenceReport}
+          </Typography>
+          <Typography variant="h5">{student.get("displayname")}</Typography>
+          {role === Roles.MANAGER && (
+            <IconButton
+              href={`mailto:${student.get("email")}`}
+              className={classes.mailButton}
+            >
+              <MailIcon fontSize="default" color="action" />
+            </IconButton>
+          )}
+          <div className={classes.printButton}>{printButton}</div>
+        </DialogTitle>
+        <DialogContent>
+          <Grid container direction="column" spacing={24}>
+            <Grid item>
+              <Typography variant="h6" className={classes.heading}>
+                {translation.summary}
+              </Typography>
+              <SummaryTable data={summary} />
+            </Grid>
+
+            <Divider />
+
+            <Grid item>
+              <Typography variant="h6" className={classes.heading}>
+                {translation.absentHoursByTeacher}
+              </Typography>
+              <SlotsByTeacherChart data={slotsByTeacherWithAmount} />
+            </Grid>
+
+            <Divider />
+
+            <Grid item>
+              <Typography variant="h6" className={classes.heading}>
+                {translation.absentHoursByTime}
+              </Typography>
+              <HoursByWeekdayAndTimeChart
+                variant="scatterplot"
+                data={hoursByWeekdayAndTime}
+              />
+            </Grid>
           </Grid>
-
-          <Divider />
-
-          <Grid item>
-            <Typography variant="h6" className={classes.heading}>
-              {translation.absentHoursByTeacher}
-            </Typography>
-            <SlotsByTeacherChart data={slotsByTeacherWithAmount} />
-          </Grid>
-
-          <Divider />
-
-          <Grid item>
-            <Typography variant="h6" className={classes.heading}>
-              {translation.absentHoursByTime}
-            </Typography>
-            <HoursByWeekdayAndTimeChart
-              variant="scatterplot"
-              data={hoursByWeekdayAndTime}
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button size="small" color="primary" onClick={onClose}>
-          {translation.close}
-        </Button>
-      </DialogActions>
-    </div>
+        </DialogContent>
+        <DialogActions>
+          <Button size="small" color="primary" onClick={onClose}>
+            {translation.close}
+          </Button>
+        </DialogActions>
+      </div>
+    )
   );
 };
 
-export default withPrintButton(connect(mapStateToProps)(StudentReport));
+export default withPrintButton(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(StudentReport)
+);
