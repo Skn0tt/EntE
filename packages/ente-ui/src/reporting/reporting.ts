@@ -46,30 +46,25 @@ export const summarize = (
   entries: EntryN[],
   slots: Map<string, SlotN>
 ): EntrySummary => {
-  const excusedEntries = entries.filter(isExcused);
+  const slotsOfEntries = _.flatMap(entries, entry =>
+    entry.get("slotIds").map(id => slots.get(id)!)
+  );
 
-  const cumulateLength = (entries: EntryN[]) => {
-    return _.sumBy(entries, entry => {
-      return getLengthOfEntry(entry);
-    });
-  };
+  const slotsByUniqueDate = _.uniqBy(slotsOfEntries, s => s.get("date"));
 
-  const absentDaysTotal = cumulateLength(entries);
-  const absentDaysExcused = cumulateLength(excusedEntries);
+  const absentDaysTotal = slotsByUniqueDate.length;
+  const absentDaysExcused = slotsByUniqueDate.filter(s => s.get("signed"))
+    .length;
   const absentDaysUnexcused = absentDaysTotal - absentDaysExcused;
 
-  const cumulateSlots = (entries: EntryN[]) => {
-    return _.sumBy(entries, entry => {
-      return _.sumBy(
-        entry.get("slotIds").map(s => slots.get(s)!),
-        getLengthOfSlot
-      );
-    });
-  };
-
-  const absentSlotsTotal = cumulateSlots(entries);
-  const absentSlotsExcused = cumulateSlots(excusedEntries);
+  const absentSlotsTotal = _.sumBy(slotsOfEntries, getLengthOfSlot);
+  const absentSlotsExcused = _.sumBy(
+    slotsOfEntries.filter(f => f.get("signed")),
+    getLengthOfSlot
+  );
   const absentSlotsUnexcused = absentSlotsTotal - absentSlotsExcused;
+
+  const excusedEntries = entries.filter(isExcused);
 
   return {
     entries: {

@@ -11,6 +11,7 @@ interface DropdownInputProps<T> {
   fullWidth?: boolean;
   label?: string;
   variant?: "standard" | "filled" | "outlined";
+  margin?: "dense" | "normal" | "none";
 }
 
 // tslint:disable-next-line:function-name
@@ -23,7 +24,8 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
     getOptionKey = (i: T): string => "" + i,
     fullWidth,
     label,
-    variant
+    variant,
+    margin
   } = props;
 
   const lookup = React.useMemo(
@@ -50,6 +52,7 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
       value={getOptionKey(value)}
       onChange={handleChange}
       fullWidth={fullWidth}
+      margin={margin}
       label={label}
       SelectProps={{ native: true }}
     >

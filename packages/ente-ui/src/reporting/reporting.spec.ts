@@ -3,9 +3,11 @@ import {
   weekdayOfSlot,
   hoursByWeekdayAndTime,
   getLengthOfEntry,
-  Weekday
+  Weekday,
+  Reporting
 } from "./reporting";
 import { SlotN, EntryN } from "../redux";
+import { Map } from "immutable";
 
 describe("hoursOfSlot", () => {
   it("returns correct hours", () => {
@@ -101,6 +103,72 @@ describe("getLengthOfEntry", () => {
           })
         )
       ).toBe(3);
+    });
+  });
+});
+
+describe("summarize", () => {
+  describe("when given two entries with different date", () => {
+    it("counts them as two absent days", () => {
+      const entries = [
+        new EntryN({
+          date: "2000-01-01",
+          slotIds: ["a"]
+        }),
+        new EntryN({
+          date: "2000-01-02",
+          slotIds: ["b"]
+        })
+      ];
+
+      const slots = Map({
+        a: new SlotN({
+          date: "2000-01-01",
+          from: 0,
+          to: 0
+        }),
+        b: new SlotN({
+          date: "2000-01-02",
+          from: 1,
+          to: 1
+        })
+      });
+
+      const result = Reporting.summarize(entries, slots);
+      expect(result.absentDays.total).toBe(2);
+      expect(result.absentSlots.total).toBe(2);
+    });
+  });
+
+  describe("when given two entries with same date", () => {
+    it("counts them as one absent day", () => {
+      const entries = [
+        new EntryN({
+          date: "2000-01-01",
+          slotIds: ["a"]
+        }),
+        new EntryN({
+          date: "2000-01-01",
+          slotIds: ["b"]
+        })
+      ];
+
+      const slots = Map({
+        a: new SlotN({
+          date: "2000-01-01",
+          from: 0,
+          to: 0
+        }),
+        b: new SlotN({
+          date: "2000-01-01",
+          from: 1,
+          to: 1
+        })
+      });
+
+      const result = Reporting.summarize(entries, slots);
+      expect(result.absentDays.total).toBe(1);
+      expect(result.absentSlots.total).toBe(2);
     });
   });
 });
