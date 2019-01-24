@@ -19,6 +19,7 @@ import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 import { DevModule } from "./dev/dev.module";
 import { InstanceModule } from "./instance/instance.module";
 import { InstanceConfigModule } from "./instance-config/instance-config.module";
+import { LoginModule } from "./login/login.module";
 
 const {
   database,
@@ -56,6 +57,7 @@ const isDevMode = Config.isDevMode();
     TokenModule,
     StatusModule,
     InstanceModule,
+    LoginModule,
     ExportModule,
     ...(isDevMode ? [DevModule] : [])
   ],
