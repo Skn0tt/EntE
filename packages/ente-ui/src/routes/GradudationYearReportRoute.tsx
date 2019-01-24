@@ -34,12 +34,12 @@ const useTranslation = makeTranslationHook({
   en: {
     headers: {
       name: "Name",
-      absentDays: "Absent Days",
-      absentHours: "Absent Hours",
-      unexcusedAbsentHours: "Unexcused Absent Hours",
-      hourRate: "Hourrate"
+      absentDays: "Absent days",
+      absentHours: "Absent hours",
+      unexcusedAbsentHours: "Unexcused absent hours",
+      hourRate: "Hour rate"
     },
-    year: "Graduation Year"
+    year: "Graduation year"
   },
   de: {
     headers: {
@@ -115,7 +115,8 @@ const GraduationYearReportRoute: React.FC<
   } = props;
   const year = Maybe.fromFalsy(Number(match.params.year))
     .filter(v => existingGradYears.includes(v))
-    .orElse(ownGradYear);
+    .orElse(ownGradYear)
+    .orElse(Maybe.fromUndefined(existingGradYears[0]));
 
   const usersOfGradYear = React.useMemo(
     () => year.map(getUsersOfGraduationYear),
