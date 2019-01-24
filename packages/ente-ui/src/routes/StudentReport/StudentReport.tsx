@@ -28,7 +28,13 @@ import {
   Typography,
   Divider,
   Grid,
-  IconButton
+  IconButton,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormGroup
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SlotsByTeacherChart from "./SlotsByTeacherChart";
@@ -67,7 +73,12 @@ const useTranslation = makeTranslationHook({
     absentHoursByTime: "Absent hours by time",
     absentHoursByTeacher: "Absent hours by teacher",
     summary: "Summary",
-    entries: "Entries"
+    entries: "Entries",
+    modes: {
+      educational: "Educational",
+      not_educational: "Not educational",
+      all: "All"
+    }
   },
   de: {
     close: "Schließen",
@@ -75,7 +86,12 @@ const useTranslation = makeTranslationHook({
     absentHoursByTime: "Fehlstunden nach Schulstunde",
     absentHoursByTeacher: "Fehlstunden nach Lehrer",
     summary: "Zusammenfassung",
-    entries: "Einträge"
+    entries: "Einträge",
+    modes: {
+      educational: "Schulisch",
+      not_educational: "Nicht Schulisch",
+      all: "Alles"
+    }
   }
 });
 
@@ -134,6 +150,8 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   fetchStudent: id => dispatch(getUserRequest(id))
 });
 
+type Mode = "all" | "educational" | "not_educational";
+
 type StudentReportPropsConnected = StudentReportProps &
   StudentReportStateProps &
   StudentReportDispatchProps;
@@ -156,6 +174,15 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
   const translation = useTranslation();
   const printButton = usePrintButton();
 
+  const [mode, setMode] = React.useState<Mode>("not_educational");
+
+  const handleModeChanged = React.useCallback(
+    (_, value: string) => {
+      setMode(value as Mode);
+    },
+    [setMode]
+  );
+
   React.useEffect(() => {
     if (entries.length === 0) {
       fetchEntries();
@@ -168,9 +195,19 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     }
   }, []);
 
+  const entriesForSchool = React.useMemo(
+    () => entries.filter(e => e.get("forSchool")),
+    [entries]
+  );
+
   const entriesNotForSchool = React.useMemo(
     () => entries.filter(e => !e.get("forSchool")),
     [entries]
+  );
+
+  const slotsForSchool = React.useMemo(
+    () => slots.filter(e => e.get("forSchool")),
+    [slots]
   );
 
   const slotsNotForSchool = React.useMemo(
@@ -178,19 +215,31 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slots]
   );
 
+  const entriesToUse = {
+    all: entries,
+    educational: entriesForSchool,
+    not_educational: entriesNotForSchool
+  }[mode];
+
+  const slotsToUse = {
+    all: slots,
+    educational: slotsForSchool,
+    not_educational: slotsNotForSchool
+  }[mode];
+
   const summary = React.useMemo(
-    () => Reporting.summarize(entriesNotForSchool, slotsMap),
-    [entriesNotForSchool]
+    () => Reporting.summarize(entriesToUse, slotsMap),
+    [entriesToUse]
   );
 
   const absentHoursByTeacher = React.useMemo(
-    () => Reporting.absentHoursByTeacher(slotsNotForSchool),
-    [slotsNotForSchool]
+    () => Reporting.absentHoursByTeacher(slotsToUse),
+    [slotsToUse]
   );
 
   const hoursByWeekdayAndTime = React.useMemo(
-    () => Reporting.hoursByWeekdayAndTime(slotsNotForSchool),
-    [slotsNotForSchool]
+    () => Reporting.hoursByWeekdayAndTime(slotsToUse),
+    [slotsToUse]
   );
 
   return student.cata(
@@ -214,6 +263,28 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
         </DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={24}>
+            <Grid item>
+              <FormControl>
+                <RadioGroup row value={mode} onChange={handleModeChanged}>
+                  <FormControlLabel
+                    value="not_educational"
+                    control={<Radio />}
+                    label={translation.modes.not_educational}
+                  />
+                  <FormControlLabel
+                    value="educational"
+                    control={<Radio />}
+                    label={translation.modes.educational}
+                  />
+                  <FormControlLabel
+                    value="all"
+                    control={<Radio />}
+                    label={translation.modes.all}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+
             <Grid item>
               <Typography variant="h6" className={classes.heading}>
                 {translation.summary}

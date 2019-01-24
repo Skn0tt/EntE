@@ -16,7 +16,7 @@ import SignedAvatar from "../../elements/SignedAvatar";
 import { format } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
-import { hoursOfSlot, getLengthOfSlot } from "../../reporting/reporting";
+import { getLengthOfSlot } from "../../reporting/reporting";
 import * as _ from "lodash";
 
 const useTranslation = makeTranslationHook({
