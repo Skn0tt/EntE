@@ -1,4 +1,4 @@
-import { transformUsers, transformEntries, transformSlots } from "./api";
+import { normalizeUsers, normalizeEntries, normalizeSlots } from "./api";
 import {
   UserDto,
   Roles,
@@ -62,10 +62,10 @@ const entry: EntryDto = {
   updatedAt: new Date(0)
 };
 
-describe("transformUsers", () => {
+describe("normalizeUsers", () => {
   describe("when given empty array", () => {
     it("returns an empty APIResponse", () => {
-      const result = transformUsers();
+      const result = normalizeUsers();
       expect(result.entries).toHaveLength(0);
       expect(result.users).toHaveLength(0);
       expect(result.slots).toHaveLength(0);
@@ -74,7 +74,7 @@ describe("transformUsers", () => {
 
   describe("when given values", () => {
     it("returns the normalised values", () => {
-      const result = transformUsers(susanne);
+      const result = normalizeUsers(susanne);
       expect(result.entries).toHaveLength(0);
       expect(result.users).toHaveLength(2);
       expect(result.slots).toHaveLength(0);
@@ -82,10 +82,10 @@ describe("transformUsers", () => {
   });
 });
 
-describe("transformEntries", () => {
+describe("normalizeEntries", () => {
   describe("when given empty array", () => {
     it("returns empty response", () => {
-      const result = transformEntries();
+      const result = normalizeEntries();
       expect(result.entries).toHaveLength(0);
       expect(result.users).toHaveLength(0);
       expect(result.slots).toHaveLength(0);
@@ -94,7 +94,7 @@ describe("transformEntries", () => {
 
   describe("when given values array", () => {
     it("returns normalised response", () => {
-      const result = transformEntries(entry);
+      const result = normalizeEntries(entry);
       expect(result.entries).toHaveLength(1);
       expect(result.users).toHaveLength(2);
       expect(result.slots).toHaveLength(1);
@@ -102,10 +102,10 @@ describe("transformEntries", () => {
   });
 });
 
-describe("transformSlots", () => {
+describe("normalizeSlots", () => {
   describe("when given empty array", () => {
     it("returns empty response", () => {
-      const result = transformSlots();
+      const result = normalizeSlots();
       expect(result.entries).toHaveLength(0);
       expect(result.users).toHaveLength(0);
       expect(result.slots).toHaveLength(0);
@@ -114,7 +114,7 @@ describe("transformSlots", () => {
 
   describe("when given values array", () => {
     it("returns normalised response", () => {
-      const result = transformSlots(slot);
+      const result = normalizeSlots(slot);
       expect(result.entries).toHaveLength(0);
       expect(result.users).toHaveLength(2);
       expect(result.slots).toHaveLength(1);

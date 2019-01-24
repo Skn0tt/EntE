@@ -27,14 +27,13 @@ import {
   signEntrySuccess,
   resetPasswordError,
   resetPasswordSuccess,
-  getTokenSuccess,
+  loginSuccess,
   refreshTokenSuccess,
-  getTokenError,
+  loginError,
   refreshTokenError,
   logout,
   getNeededUsersSuccess,
   getNeededUsersError,
-  getNeededUsersRequest,
   updateUserSuccess,
   unsignEntryError,
   unsignEntrySuccess,
@@ -73,7 +72,7 @@ import {
   RESET_PASSWORD_REQUEST,
   SET_PASSWORD_REQUEST,
   REFRESH_TOKEN_REQUEST,
-  GET_TOKEN_REQUEST,
+  LOGIN_REQUEST,
   CREATE_USERS_REQUEST,
   GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
@@ -94,7 +93,6 @@ import {
   CreateEntryDto,
   CreateUserDto,
   PatchUserDto,
-  Roles,
   getByLanguage,
   Languages,
   DEFAULT_LANGUAGE
@@ -138,22 +136,19 @@ function* getLanguage() {
   return language.orSome(DEFAULT_LANGUAGE);
 }
 
-function* getTokenSaga(action: Action<BasicCredentials>) {
+function* loginSaga(action: Action<BasicCredentials>) {
   try {
-    const authState: AuthState = yield call(api.getToken, action.payload!);
+    const { apiResponse, authState }: api.LoginInfo = yield call(
+      api.login,
+      action.payload!
+    );
 
-    yield put(getTokenSuccess(authState, action));
-
-    const isTeacher = authState.get("role") === Roles.TEACHER;
-
-    if (!isTeacher) {
-      yield put(getNeededUsersRequest());
-    }
+    yield dispatchUpdates(apiResponse);
+    yield put(loginSuccess(authState, action));
   } catch (error) {
     const language: Languages = yield getLanguage();
     addMessages(translation(language).invalidCredentials);
-    yield put(getTokenError(error, action));
-    yield put(logout());
+    yield put(loginError(error, action));
   }
 }
 
@@ -497,7 +492,7 @@ function* saga() {
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
   yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
-  yield takeEvery(GET_TOKEN_REQUEST, getTokenSaga);
+  yield takeEvery(LOGIN_REQUEST, loginSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery(GET_NEEDED_USERS_REQUEST, getNeededUsersSaga);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);

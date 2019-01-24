@@ -26,7 +26,8 @@ import {
   JwtTokenPayload,
   PatchEntryDto,
   Languages,
-  InstanceConfigDto
+  InstanceConfigDto,
+  LoginDto
 } from "ente-types";
 import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
@@ -79,7 +80,7 @@ const emptyAPIResponse = (): APIResponse => ({
   users: []
 });
 
-export const transformUsers = (...users: UserDto[]): APIResponse => {
+export const normalizeUsers = (...users: UserDto[]): APIResponse => {
   let result = emptyAPIResponse();
 
   users.forEach(user => {
@@ -93,14 +94,14 @@ export const transformUsers = (...users: UserDto[]): APIResponse => {
     });
     result.users.push(normalised);
 
-    const childrenResponse = transformUsers(...children);
+    const childrenResponse = normalizeUsers(...children);
     result = mergeAPIResponses(result, childrenResponse);
   });
 
   return result;
 };
 
-export const transformEntries = (...entries: EntryDto[]): APIResponse => {
+export const normalizeEntries = (...entries: EntryDto[]): APIResponse => {
   let result = emptyAPIResponse();
 
   entries.forEach(entry => {
@@ -115,8 +116,8 @@ export const transformEntries = (...entries: EntryDto[]): APIResponse => {
 
     result.entries.push(normalised);
 
-    const slotResponse = transformSlots(...slots);
-    const studentResponse = transformUsers(student);
+    const slotResponse = normalizeSlots(...slots);
+    const studentResponse = normalizeUsers(student);
 
     result = mergeAPIResponses(result, slotResponse, studentResponse);
   });
@@ -124,7 +125,7 @@ export const transformEntries = (...entries: EntryDto[]): APIResponse => {
   return result;
 };
 
-export const transformSlots = (...slots: SlotDto[]): APIResponse => {
+export const normalizeSlots = (...slots: SlotDto[]): APIResponse => {
   let result = emptyAPIResponse();
 
   slots.forEach(slot => {
@@ -141,8 +142,8 @@ export const transformSlots = (...slots: SlotDto[]): APIResponse => {
 
     const userResponse =
       teacher === null
-        ? transformUsers(student)
-        : transformUsers(student, teacher);
+        ? normalizeUsers(student)
+        : normalizeUsers(student, teacher);
     result = mergeAPIResponses(result, userResponse);
   });
 
@@ -156,7 +157,8 @@ export const getTokenPayload = (token: string): JwtTokenPayload => {
   return decodedPayload;
 };
 
-const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
+const getAuthState = (token: string): AuthState => {
+  const payload = getTokenPayload(token);
   return new AuthState({
     token,
     role: payload.role,
@@ -168,14 +170,28 @@ const getAuthState = (token: string, payload: JwtTokenPayload): AuthState => {
   });
 };
 
-export const getToken = async (auth: BasicCredentials): Promise<AuthState> => {
-  const response = await axios.get<string>(`${getBaseUrl()}/token`, {
+export interface LoginInfo {
+  authState: AuthState;
+  apiResponse: APIResponse;
+}
+
+export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
+  const response = await axios.get<LoginDto>(`${getBaseUrl()}/login`, {
     auth
   });
 
-  const tokenPayload = getTokenPayload(response.data);
+  const { token, oneSelf, neededUsers, onesEntries } = response.data;
+  const authState = getAuthState(token);
 
-  return getAuthState(response.data, tokenPayload);
+  const apiResponse = mergeAPIResponses(
+    normalizeUsers(...neededUsers, oneSelf),
+    normalizeEntries(...onesEntries)
+  );
+
+  return {
+    authState,
+    apiResponse
+  };
 };
 
 export const refreshToken = async (token: string): Promise<AuthState> => {
@@ -185,9 +201,7 @@ export const refreshToken = async (token: string): Promise<AuthState> => {
       axiosTokenParams(token)
     );
 
-    const tokenPayload = getTokenPayload(result.data);
-
-    return getAuthState(result.data, tokenPayload);
+    return getAuthState(result.data);
   } catch (error) {
     throw error;
   }
@@ -198,12 +212,12 @@ export const getChildren = async (token: string): Promise<APIResponse> => {
     `${getBaseUrl()}/users?filter=children`,
     token
   );
-  return transformUsers(...data);
+  return normalizeUsers(...data);
 };
 
 export const getNeededUsers = async (token: string): Promise<APIResponse> => {
   const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
-  return transformUsers(...data);
+  return normalizeUsers(...data);
 };
 
 export const downloadExcelExport = async (token: string): Promise<void> => {
@@ -219,17 +233,17 @@ export const getEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const data = await get<EntryDto>(`${getBaseUrl()}/entries/${id}`, token);
-  return transformEntries(data);
+  return normalizeEntries(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
   const data = await get<EntryDto[]>(`${getBaseUrl()}/entries`, token);
-  return transformEntries(...data);
+  return normalizeEntries(...data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
   const data = await get<SlotDto[]>(`${getBaseUrl()}/slots`, token);
-  return transformSlots(...data);
+  return normalizeSlots(...data);
 };
 
 export const getUser = async (
@@ -237,7 +251,7 @@ export const getUser = async (
   token: string
 ): Promise<APIResponse> => {
   const data = await get<UserDto>(`${getBaseUrl()}/users/${id}`, token);
-  return transformUsers(data);
+  return normalizeUsers(data);
 };
 
 const _delete = async <T>(url: string, token: string) => {
@@ -255,7 +269,7 @@ export const deleteEntry = async (id: string, token: string) => {
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
   const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
-  return transformUsers(...data);
+  return normalizeUsers(...data);
 };
 
 const post = async <T>(url: string, token: string, body?: {}) => {
@@ -272,7 +286,7 @@ export const createEntry = async (
     token,
     entry
   );
-  return transformEntries(response);
+  return normalizeEntries(response);
 };
 
 export const createUsers = async (
@@ -284,7 +298,7 @@ export const createUsers = async (
     token,
     users
   );
-  return transformUsers(...response);
+  return normalizeUsers(...response);
 };
 
 const patch = async <T, B = {}>(url: string, token: string, body?: B) => {
@@ -302,7 +316,7 @@ export const updateUser = async (
     token,
     user
   );
-  return transformUsers(response);
+  return normalizeUsers(response);
 };
 
 const put = async <T, B = {}>(
@@ -330,7 +344,7 @@ export const signEntry = async (
       signed: true
     }
   );
-  return transformEntries(response);
+  return normalizeEntries(response);
 };
 
 export const setLanguage = async (
@@ -362,7 +376,7 @@ export const unsignEntry = async (
       signed: false
     }
   );
-  return transformEntries(response);
+  return normalizeEntries(response);
 };
 
 export const resetPassword = async (username: string): Promise<string> => {
@@ -396,7 +410,7 @@ export const importUsers = async (
     token,
     dtos
   );
-  return transformUsers(...result);
+  return normalizeUsers(...result);
 };
 
 export const fetchInstanceConfig = async (): Promise<InstanceConfigDto> => {

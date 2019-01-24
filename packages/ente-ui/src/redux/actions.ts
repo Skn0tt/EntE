@@ -41,9 +41,9 @@ import {
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_SUCCESS,
   SET_PASSWORD_ERROR,
-  GET_TOKEN_REQUEST,
-  GET_TOKEN_SUCCESS,
-  GET_TOKEN_ERROR,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_ERROR,
@@ -227,15 +227,13 @@ export const deleteEntryError = createMetaAction<Action<string>, Error>(
   DELETE_ENTRY_ERROR
 );
 
-export const getTokenRequest = createAction<BasicCredentials>(
-  GET_TOKEN_REQUEST
-);
-export const getTokenSuccess = createMetaAction<
+export const loginRequest = createAction<BasicCredentials>(LOGIN_REQUEST);
+export const loginSuccess = createMetaAction<
   Action<BasicCredentials>,
   AuthState
->(GET_TOKEN_SUCCESS);
-export const getTokenError = createMetaAction<Action<BasicCredentials>, Error>(
-  GET_TOKEN_ERROR
+>(LOGIN_SUCCESS);
+export const loginError = createMetaAction<Action<BasicCredentials>, Error>(
+  LOGIN_ERROR
 );
 
 export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);

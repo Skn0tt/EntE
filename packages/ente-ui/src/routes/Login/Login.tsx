@@ -28,10 +28,10 @@ import withMobileDialog from "@material-ui/core/withMobileDialog";
 import {
   AppState,
   isAuthValid,
-  getTokenRequest,
+  loginRequest,
   resetPasswordRequest,
   BasicCredentials,
-  GET_TOKEN_REQUEST,
+  LOGIN_REQUEST,
   isTypePending,
   RESET_PASSWORD_REQUEST,
   getCurrentLoginBanner
@@ -82,7 +82,7 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   authValid: isAuthValid(state),
-  loginPending: isTypePending(state)(GET_TOKEN_REQUEST),
+  loginPending: isTypePending(state)(LOGIN_REQUEST),
   passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST),
   loginBanner: getCurrentLoginBanner(state)
 });
@@ -95,7 +95,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   LoginDispatchProps,
   LoginOwnProps
 > = dispatch => ({
-  checkAuth: (auth: BasicCredentials) => dispatch(getTokenRequest(auth)),
+  checkAuth: (auth: BasicCredentials) => dispatch(loginRequest(auth)),
   triggerPasswordReset: (username: string) =>
     dispatch(resetPasswordRequest(username))
 });
