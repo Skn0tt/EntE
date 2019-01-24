@@ -13,7 +13,7 @@ import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";
 import Users from "./routes/Users";
 import SpecificUser from "./routes/SpecificUser";
-import SpecificEntry from "./routes/SpecificEntry";
+import SpecificEntry from "./routes/SpecificEntry/SpecificEntryRoute";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
