@@ -13,8 +13,8 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
 const useTranslation = makeTranslationHook({
   en: {
-    total: "total",
-    unexcused: "unexcused",
+    total: "Total",
+    unexcused: "Unexcused",
     entries: "Entries",
     absentDays: "Absent Days",
     absentHours: "Absent Hours",
@@ -22,8 +22,8 @@ const useTranslation = makeTranslationHook({
     hourRateTooltip: "Absent Hours per Absent Day"
   },
   de: {
-    total: "gesamt",
-    unexcused: "unentschuldigt",
+    total: "Gesamt",
+    unexcused: "Unentschuldigt",
     entries: "Einträge",
     absentDays: "Fehltage",
     absentHours: "Fehlstunden",

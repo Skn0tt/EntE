@@ -26,8 +26,8 @@ const useTranslation = makeTranslationHook({
     signed: "Signed",
     yes: "Yes",
     no: "No",
-    signedParent: "Signed by Parent",
-    signedManager: "Signed by Manager",
+    signedParent: "Signed by parent",
+    signedManager: "Signed by manager",
     locale: enLocale,
     length: "Length",
     lengthF: (n: number) => n + " hours"

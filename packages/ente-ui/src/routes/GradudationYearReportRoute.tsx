@@ -10,7 +10,8 @@ import {
   getUser,
   getUsers,
   getEntries,
-  getSlotsMap
+  getSlotsMap,
+  getOneSelvesGraduationYear
 } from "../redux";
 import { MapStateToPropsParam, connect } from "react-redux";
 import Table from "../components/Table";
@@ -73,7 +74,7 @@ const mapStateToProps: MapStateToPropsParam<
 > = state => {
   return {
     ownRole: getRole(state).some(),
-    ownGradYear: None(),
+    ownGradYear: getOneSelvesGraduationYear(state),
     existingGradYears: _.uniq(
       getUsers(state).map(u => u.get("graduationYear")!)
     )
