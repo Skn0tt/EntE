@@ -12,6 +12,7 @@ import WatchLater from "@material-ui/icons/WatchLater";
 import InsertDriveFile from "@material-ui/icons/InsertDriveFile";
 import Person from "@material-ui/icons/Person";
 import Settings from "@material-ui/icons/Settings";
+import School from "@material-ui/icons/School";
 import { Route } from "react-router-dom";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
@@ -20,13 +21,17 @@ const useTranslation = makeTranslationHook({
     slots: "Slots",
     users: "Users",
     entries: "Entries",
-    admin: "Admin"
+    admin: "Admin",
+    graduationYear: "Grad Year",
+    graduationYears: "Grad Years"
   },
   de: {
     slots: "Stunden",
     users: "Nutzer",
     entries: "Einträge",
-    admin: "Admin"
+    admin: "Admin",
+    graduationYear: "Jahrgangsstufe",
+    graduationYears: "Jahrgangsstufen"
   }
 });
 
@@ -97,6 +102,24 @@ const Admin: React.SFC = () => {
   );
 };
 
+const GraduationYear: React.SFC<{ plural?: boolean }> = ({ plural }) => {
+  const lang = useTranslation();
+  return (
+    <Route
+      render={({ history }) => (
+        <ListItem button onClick={() => history.push("/graduationYears")}>
+          <ListItemIcon>
+            <School />
+          </ListItemIcon>
+          <ListItemText
+            primary={plural ? lang.graduationYears : lang.graduationYear}
+          />
+        </ListItem>
+      )}
+    />
+  );
+};
+
 /**
  * # Composed
  */
@@ -104,6 +127,7 @@ export const AdminItems: React.SFC = () => (
   <>
     <Entries />
     <Slots />
+    <GraduationYear plural />
     <Users />
     <Admin />
   </>
@@ -130,6 +154,7 @@ export const ParentItems: React.SFC = () => (
 export const ManagerItems: React.SFC = () => (
   <>
     <Entries />
+    <GraduationYear />
     <Slots />
   </>
 );

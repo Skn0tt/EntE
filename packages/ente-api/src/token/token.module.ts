@@ -6,6 +6,7 @@ import { InfrastructureModule } from "../infrastructure/infrastructure.module";
 @Module({
   imports: [InfrastructureModule],
   providers: [TokenService],
-  controllers: [TokenController]
+  controllers: [TokenController],
+  exports: [TokenService]
 })
 export class TokenModule {}

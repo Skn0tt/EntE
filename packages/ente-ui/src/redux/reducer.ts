@@ -31,9 +31,9 @@ import {
   SET_PASSWORD_REQUEST,
   SET_PASSWORD_ERROR,
   SET_PASSWORD_SUCCESS,
-  GET_TOKEN_REQUEST,
-  GET_TOKEN_ERROR,
-  GET_TOKEN_SUCCESS,
+  LOGIN_REQUEST,
+  LOGIN_ERROR,
+  LOGIN_SUCCESS,
   REFRESH_TOKEN_ERROR,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_REQUEST,
@@ -185,9 +185,9 @@ const reducer = handleActions<AppState | undefined, any>(
      */
     // ## GET_TOKEN
     ...asyncReducersFullWithoutMetaPayload(
-      GET_TOKEN_REQUEST,
-      GET_TOKEN_ERROR,
-      GET_TOKEN_SUCCESS,
+      LOGIN_REQUEST,
+      LOGIN_ERROR,
+      LOGIN_SUCCESS,
       (state, action: Action<AuthState>) => state.set("auth", action.payload!)
     ),
 

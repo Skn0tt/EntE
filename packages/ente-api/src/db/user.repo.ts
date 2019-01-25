@@ -90,7 +90,7 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
-  async _findById(id: string): Promise<Maybe<User>> {
+  private async _findById(id: string): Promise<Maybe<User>> {
     const result = await this._userQueryWithChildren()
       .whereInIds(id)
       .getOne();

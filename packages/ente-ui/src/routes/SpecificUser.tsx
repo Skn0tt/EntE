@@ -59,6 +59,7 @@ import { YearPicker } from "../elements/YearPicker";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { DateInput } from "../elements/DateInput";
+import { Link } from "react-router-dom";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -76,7 +77,8 @@ const useTranslation = makeTranslationHook({
     },
     ariaLabels: {
       delete: "Delete"
-    }
+    },
+    openReport: "Open Report"
   },
   de: {
     submit: "OK",
@@ -93,7 +95,8 @@ const useTranslation = makeTranslationHook({
     },
     ariaLabels: {
       delete: "Löschen"
-    }
+    },
+    openReport: "Bericht öffnen"
   }
 });
 
@@ -212,7 +215,7 @@ export const SpecificUser: React.FunctionComponent<
           }}
           text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
         />
-        <Dialog open onClose={onGoBack} fullScreen={fullScreen}>
+        <Dialog open onClose={onGoBack} fullScreen={fullScreen} scroll="body">
           {!!user ? (
             <>
               <DialogTitle>
@@ -305,9 +308,21 @@ export const SpecificUser: React.FunctionComponent<
             loading && <LoadingIndicator />
           )}
           <DialogActions>
+            <Button
+              size="small"
+              color="default"
+              {...{
+                to: `${userId}/report`,
+                component: Link
+              } as any}
+            >
+              {lang.openReport}
+            </Button>
+
             <Button size="small" color="secondary" onClick={onClose}>
               {lang.close}
             </Button>
+
             <Button
               size="small"
               color="primary"

@@ -13,10 +13,12 @@ import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";
 import Users from "./routes/Users";
 import SpecificUser from "./routes/SpecificUser";
-import SpecificEntry from "./routes/SpecificEntry";
+import SpecificEntry from "./routes/SpecificEntry/SpecificEntryRoute";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
+import StudentReportRoute from "./routes/StudentReport/StudentReportRoute";
+import GradudationYearReportRoute from "./routes/GradudationYearReportRoute";
 
 const AdminRoutes: React.SFC = () => (
   <>
@@ -27,9 +29,15 @@ const AdminRoutes: React.SFC = () => (
       <Route path="/slots" component={Slots} />
       <Route path="/admin" component={AdminRoute} />
       <Route path="/about" component={AboutRoute} />
+      <Route
+        path="/graduationYears/:year"
+        component={GradudationYearReportRoute}
+      />
+      <Route path="/graduationYears" component={GradudationYearReportRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/users/:userId" component={SpecificUser} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
@@ -67,9 +75,15 @@ const ManagerRoutes: React.SFC = () => (
       <Route path="/entries" component={Entries} />
       <Route path="/slots" component={Slots} />
       <Route path="/about" component={AboutRoute} />
+      <Route
+        path="/graduationYears/:year"
+        component={GradudationYearReportRoute}
+      />
+      <Route path="/graduationYears" component={GradudationYearReportRoute} />
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>

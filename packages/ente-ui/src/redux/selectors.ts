@@ -106,6 +106,16 @@ export const getUserId: Selector<Maybe<string>> = state => {
   return authState.map(s => s.get("userId"));
 };
 
+export const getOneSelf: Selector<Maybe<UserN>> = state => {
+  const userId = getUserId(state);
+  return userId.flatMap(id => getUser(id)(state));
+};
+
+export const getOneSelvesGraduationYear: Selector<Maybe<number>> = state => {
+  const oneSelf = getOneSelf(state);
+  return oneSelf.flatMap(u => Maybe.fromFalsy(u.get("graduationYear")));
+};
+
 /**
  * Data
  */
@@ -127,9 +137,11 @@ export const getUsers: Selector<UserN[]> = state =>
     .toArray()
     .map(([_, value]) => value);
 
+export const getSlotsMap: Selector<Map<string, SlotN>> = state =>
+  state.get("slotsMap");
+
 export const getSlots: Selector<SlotN[]> = state =>
-  state
-    .get("slotsMap")
+  getSlotsMap(state)
     .toArray()
     .map(([_, value]) => value);
 
