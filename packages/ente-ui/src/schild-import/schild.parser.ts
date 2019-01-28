@@ -136,7 +136,12 @@ const parseInput = (input: any[]) => {
 };
 
 export const parse = (input: string) => {
-  const result = Papa.parse(input, { header: true });
+  const trimmedInput = input.trim();
+  const result = Papa.parse(trimmedInput, { header: true });
   const users = parseInput(result.data);
   return users;
+};
+
+export const SchildParser = {
+  parse
 };

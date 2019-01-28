@@ -1,40 +1,13 @@
 import * as React from "react";
 import { Maybe, Some, None } from "monet";
 import { CreateUserDto } from "ente-types";
-import Dropzone from "react-dropzone";
 import { parseCSVFromFile } from "../../helpers/parser";
 import { AppState, getStudents } from "ente-ui/src/redux";
 import { MapStateToPropsParam, connect } from "react-redux";
 import { ValidationError } from "class-validator";
-import { Theme, Typography, Grid } from "@material-ui/core";
-import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
-import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { Grid } from "@material-ui/core";
 import ErrorDisplay from "./ErrorDisplay";
-
-const useTranslation = makeTranslationHook({
-  en: {
-    dropzone: "Drop a .csv file or click here."
-  },
-  de: {
-    dropzone: "Legen Sie eine .csv-Datei ab oder klicken Sie hier."
-  }
-});
-
-const styles = (theme: Theme) =>
-  createStyles({
-    dropzone: {
-      minHeight: 24,
-      border: `1px solid ${theme.palette.grey[300]}`,
-      borderRadius: theme.spacing.unit,
-      padding: theme.spacing.unit * 2,
-      boxSizing: "border-box"
-    }
-  });
-
-const readFile = async (f: File) => {
-  const response = new Response(f);
-  return await response.text();
-};
+import ImportDropzone from "./ImportDropzone";
 
 interface CsvImportMethodOwnProps {
   onImport: (u: Maybe<CreateUserDto[]>) => void;
@@ -51,28 +24,17 @@ const mapStateToProps: MapStateToPropsParam<
   usernames: getStudents(state).map(u => u.get("username"))
 });
 
-type CsvImportMethodProps = CsvImportMethodOwnProps &
-  CsvImportMethodStateProps &
-  WithStyles<"dropzone">;
+type CsvImportMethodProps = CsvImportMethodOwnProps & CsvImportMethodStateProps;
 
 const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
-  const { onImport, usernames, classes } = props;
-
-  const translation = useTranslation();
+  const { onImport, usernames } = props;
 
   const [errors, setErrors] = React.useState<
     Maybe<(ValidationError | string)[]>
   >(None());
 
   const handleDrop = React.useCallback(
-    async (accepted: File[]) => {
-      const [file] = accepted;
-
-      if (!file) {
-        return;
-      }
-
-      const input = await readFile(file);
+    async (input: string) => {
       const result = await parseCSVFromFile(input, usernames);
       result.forEach(success => {
         onImport(Some(success));
@@ -89,13 +51,7 @@ const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Dropzone
-          onDrop={handleDrop}
-          className={classes.dropzone}
-          accept=".csv"
-        >
-          <Typography variant="body1">{translation.dropzone}</Typography>
-        </Dropzone>
+        <ImportDropzone onDrop={handleDrop} accept=".csv" />
       </Grid>
       {errors
         .map(errors => (
@@ -108,4 +64,4 @@ const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
   );
 };
 
-export default connect(mapStateToProps)(withStyles(styles)(CsvImportMethod));
+export default connect(mapStateToProps)(CsvImportMethod);

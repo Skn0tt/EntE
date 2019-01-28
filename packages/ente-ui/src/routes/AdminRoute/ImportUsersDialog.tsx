@@ -32,6 +32,8 @@ import { UserTable } from "../Users/UserTable";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { CheckboxWithDescription } from "../../components/CheckboxWithDescription";
 import CsvImportMethod from "./CsvImportMethod";
+import { DropdownInput } from "ente-ui/src/elements/DropdownInput";
+import { SchiLDImportMethod } from "./SchiLDImportMethod";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -45,6 +47,11 @@ const useTranslation = makeTranslationHook({
       caption:
         "Delete all entries and the corresponding slots, for example at the start of a term."
     },
+    importMethods: {
+      schild: "SchiLD",
+      csv: "CSV"
+    },
+    importMethodLabel: "Format",
     deleteUsers: {
       title: "Delete all users",
       caption:
@@ -68,6 +75,11 @@ const useTranslation = makeTranslationHook({
       title: "Alle Einträge löschen",
       caption:
         "Alle bestehenden Einträge sowie die zugehörigen Stunden löschen, zum Beispiel am Schuljahresbeginn."
+    },
+    importMethodLabel: "Datenformat",
+    importMethods: {
+      schild: "SchiLD",
+      csv: "CSV"
     },
     deleteUsers: {
       title: "Alle Nutzer löschen",
@@ -96,6 +108,9 @@ const toUserN = (u: CreateUserDto): UserN => {
     role: u.role
   });
 };
+
+const importMethods: ImportMethod[] = ["csv", "schild"];
+type ImportMethod = "csv" | "schild";
 
 /**
  * # Component Types
@@ -140,6 +155,7 @@ const ImportUsersDialog: React.FunctionComponent<
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
+  const [importMethod, setImportMethod] = React.useState<ImportMethod>("csv");
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
 
   const handleSubmit = React.useCallback(
@@ -178,7 +194,21 @@ const ImportUsersDialog: React.FunctionComponent<
             </Grid>
           </Grid>
 
-          <CsvImportMethod onImport={setUsers} />
+          <Grid item xs={12}>
+            <DropdownInput
+              options={importMethods}
+              fullWidth
+              label={translation.importMethodLabel}
+              getOptionLabel={k => translation.importMethods[k]}
+              value={importMethod}
+              onChange={setImportMethod}
+            />
+          </Grid>
+
+          {importMethod === "csv" && <CsvImportMethod onImport={setUsers} />}
+          {importMethod === "schild" && (
+            <SchiLDImportMethod onImport={setUsers} />
+          )}
 
           {users
             .map(users => (
