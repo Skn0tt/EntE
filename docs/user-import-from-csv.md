@@ -1,4 +1,4 @@
-# User Import
+# User import from CSV files
 
 Creating all users by hand can be cumbersome.
 To make onboarding easier, you can import users from a `.csv` file.
@@ -75,5 +75,6 @@ To create this `.csv` file, you can use the provided [template](https://gitlab.c
 
 Go to "Admin" and click on the "Import Users" button.
 Fill out the options.
+Select "CSV" as your import method.
 Drag'n'drop your `.csv` file into the dropzone or click on it to open a file dialog.
 Click on the "Submit"-Button to invoke the import.
