@@ -68,7 +68,7 @@ import MailIcon from "@material-ui/icons/MailRounded";
 import { format } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
-import { withPrintButton, usePrintButton } from "ente-ui/src/hocs/withPrint";
+import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 
 const useTranslation = makeTranslationHook({
   en: {

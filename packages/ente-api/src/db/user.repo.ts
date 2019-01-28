@@ -183,6 +183,7 @@ export class UserRepo {
   async import(
     dtos: CreateUserDto[],
     deleteOthers: boolean,
+    deleteUnreferencedStudentsAndParents: boolean,
     defaultLanguage: Languages
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
     const usernames = dtos.map(d => d.username);
@@ -244,6 +245,13 @@ export class UserRepo {
     if (deleteOthers) {
       await this.repo.delete({
         username: Not(In([...usernames, ...childrenNotInDtos, "admin"]))
+      });
+    }
+
+    if (deleteUnreferencedStudentsAndParents) {
+      await this.repo.delete({
+        username: Not(In([...usernames, ...childrenNotInDtos, "admin"])),
+        role: In([Roles.STUDENT, Roles.PARENT])
       });
     }
 

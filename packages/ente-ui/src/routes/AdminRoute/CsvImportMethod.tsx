@@ -2,7 +2,7 @@ import * as React from "react";
 import { Maybe, Some, None } from "monet";
 import { CreateUserDto } from "ente-types";
 import { parseCSVFromFile } from "../../helpers/parser";
-import { AppState, getStudents } from "ente-ui/src/redux";
+import { AppState, getStudents } from "../../redux";
 import { MapStateToPropsParam, connect } from "react-redux";
 import { ValidationError } from "class-validator";
 import { Grid } from "@material-ui/core";

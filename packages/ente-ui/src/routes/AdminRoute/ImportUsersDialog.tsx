@@ -32,7 +32,7 @@ import { UserTable } from "../Users/UserTable";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { CheckboxWithDescription } from "../../components/CheckboxWithDescription";
 import CsvImportMethod from "./CsvImportMethod";
-import { DropdownInput } from "ente-ui/src/elements/DropdownInput";
+import { DropdownInput } from "../../elements/DropdownInput";
 import { SchiLDImportMethod } from "./SchiLDImportMethod";
 
 const useTranslation = makeTranslationHook({
@@ -55,7 +55,12 @@ const useTranslation = makeTranslationHook({
     deleteUsers: {
       title: "Delete all users",
       caption:
-        "Delete all users that are not contained nor referenced by the import, for example at the start of a term."
+        "Delete all users that are not contained nor referenced by the import."
+    },
+    deleteStudentsAndParents: {
+      title: "Delete students and parents",
+      caption:
+        "Delete students and parents that are neither contained nor referenced by the import, for example at the start of a term."
     },
     description: `
       Users whose usernames are already present in the database are updated using the data from the import.
@@ -84,7 +89,12 @@ const useTranslation = makeTranslationHook({
     deleteUsers: {
       title: "Alle Nutzer löschen",
       caption:
-        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn."
+        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden. Nützlich, um den Server zurückzusetzen."
+    },
+    deleteStudentsAndParents: {
+      title: "Schüler und Eltern löschen",
+      caption:
+        "Schüler und Eltern löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn."
     },
     description: `
       Nutzer, deren Nutzernamen schon in der Datenbank enthalten sind, werden mit den Daten aus dem Import aktualisiert.
@@ -131,15 +141,23 @@ interface ImportUsersDialogDispatchProps {
   importUsers: (
     dtos: CreateUserDto[],
     deleteEntries: boolean,
-    deleteUsers: boolean
+    deleteUsers: boolean,
+    deleteStudentsAndParents: boolean
   ) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   ImportUsersDialogDispatchProps,
   ImportUsersDialogOwnProps
 > = dispatch => ({
-  importUsers: (dtos, deleteEntries, deleteUsers) =>
-    dispatch(importUsersRequest({ dtos, deleteEntries, deleteUsers }))
+  importUsers: (dtos, deleteEntries, deleteUsers, deleteStudentsAndParents) =>
+    dispatch(
+      importUsersRequest({
+        dtos,
+        deleteEntries,
+        deleteUsers,
+        deleteStudentsAndParents
+      })
+    )
 });
 
 type ImportUsersDialogProps = ImportUsersDialogOwnProps &
@@ -155,14 +173,20 @@ const ImportUsersDialog: React.FunctionComponent<
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
+  const [
+    deleteStudentsAndParents,
+    setDeleteStudentsAndParents
+  ] = React.useState(false);
   const [importMethod, setImportMethod] = React.useState<ImportMethod>("csv");
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
 
   const handleSubmit = React.useCallback(
     () => {
-      users.forEach(dtos => importUsers(dtos, deleteEntries, deleteUsers));
+      users.forEach(dtos =>
+        importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
+      );
     },
-    [users, importUsers, deleteEntries, deleteUsers]
+    [users, importUsers, deleteEntries, deleteUsers, deleteStudentsAndParents]
   );
 
   const inputIsValid = users.isSome();
@@ -182,6 +206,13 @@ const ImportUsersDialog: React.FunctionComponent<
                   title={translation.deleteUsers.title}
                   caption={translation.deleteUsers.caption}
                   onChange={setDeleteUsers}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CheckboxWithDescription
+                  title={translation.deleteStudentsAndParents.title}
+                  caption={translation.deleteStudentsAndParents.caption}
+                  onChange={setDeleteStudentsAndParents}
                 />
               </Grid>
               <Grid item xs={12}>

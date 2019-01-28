@@ -2,7 +2,7 @@ import * as React from "react";
 import { Maybe, Some, None } from "monet";
 import { CreateUserDto } from "ente-types";
 import ImportDropzone from "./ImportDropzone";
-import { SchildParser } from "ente-ui/src/schild-import/schild.parser";
+import { SchildParser } from "../../schild-import/schild.parser";
 
 interface SchiLDImportMethodOwnProps {
   onImport: (u: Maybe<CreateUserDto[]>) => void;
@@ -19,7 +19,6 @@ export const SchiLDImportMethod: React.FC<SchiLDImportMethodProps> = props => {
         const result = SchildParser.parse(input);
         onImport(Some(result));
       } catch (error) {
-        console.log(error);
         onImport(None());
       }
     },
