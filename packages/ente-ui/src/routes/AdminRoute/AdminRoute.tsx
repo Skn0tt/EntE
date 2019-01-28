@@ -13,7 +13,7 @@ import ImportExportIcon from "@material-ui/icons/ImportExport";
 import { downloadExcelExportRequest } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import ImportUsers from "../ImportUsers";
+import ImportUsersDialog from "./ImportUsersDialog";
 import LoginBannerEditor from "./LoginBannerEditor";
 import { Languages } from "ente-types";
 import DefaultLanguageUpdater from "./DefaultLanguageUpdater";
@@ -85,7 +85,10 @@ const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
 
   return (
     <>
-      <ImportUsers show={showImportUsers} onClose={handleOnCloseImportUsers} />
+      <ImportUsersDialog
+        show={showImportUsers}
+        onClose={handleOnCloseImportUsers}
+      />
       <Grid
         container
         direction="column"

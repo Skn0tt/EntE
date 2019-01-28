@@ -33,13 +33,13 @@ import {
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
-import { parseCSVFromFile } from "../helpers/parser";
-import { AppState, getStudents, UserN, importUsersRequest } from "../redux";
+import { parseCSVFromFile } from "../../helpers/parser";
+import { AppState, getStudents, UserN, importUsersRequest } from "../../redux";
 import * as _ from "lodash";
-import ErrorDisplay from "./Users/ErrorDisplay";
-import { UserTable } from "./Users/UserTable";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { CheckboxWithDescription } from "../components/CheckboxWithDescription";
+import ErrorDisplay from "../Users/ErrorDisplay";
+import { UserTable } from "../Users/UserTable";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { CheckboxWithDescription } from "../../components/CheckboxWithDescription";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -113,23 +113,23 @@ const readFile = async (f: File) => {
 /**
  * # Component Types
  */
-interface ImportUsersOwnProps {
+interface ImportUsersDialogOwnProps {
   onClose(): void;
   show: boolean;
 }
 
-interface ImportUsersStateProps {
+interface ImportUsersDialogStateProps {
   usernames: string[];
 }
 const mapStateToProps: MapStateToPropsParam<
-  ImportUsersStateProps,
-  ImportUsersOwnProps,
+  ImportUsersDialogStateProps,
+  ImportUsersDialogOwnProps,
   AppState
 > = state => ({
   usernames: getStudents(state).map(u => u.get("username"))
 });
 
-interface ImportUsersDispatchProps {
+interface ImportUsersDialogDispatchProps {
   importUsers: (
     dtos: CreateUserDto[],
     deleteEntries: boolean,
@@ -137,20 +137,22 @@ interface ImportUsersDispatchProps {
   ) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
-  ImportUsersDispatchProps,
-  ImportUsersOwnProps
+  ImportUsersDialogDispatchProps,
+  ImportUsersDialogOwnProps
 > = dispatch => ({
   importUsers: (dtos, deleteEntries, deleteUsers) =>
     dispatch(importUsersRequest({ dtos, deleteEntries, deleteUsers }))
 });
 
-type ImportUsersProps = ImportUsersOwnProps &
-  ImportUsersStateProps &
-  ImportUsersDispatchProps &
+type ImportUsersDialogProps = ImportUsersDialogOwnProps &
+  ImportUsersDialogStateProps &
+  ImportUsersDialogDispatchProps &
   WithStyles<"dropzone"> &
   InjectedProps;
 
-const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
+const ImportUsersDialog: React.FunctionComponent<
+  ImportUsersDialogProps
+> = props => {
   const { fullScreen, show, classes, onClose, usernames, importUsers } = props;
   const translation = useTranslation();
 
@@ -269,11 +271,15 @@ const styles = (theme: Theme) =>
   });
 
 export default connect<
-  ImportUsersStateProps,
-  ImportUsersDispatchProps,
-  ImportUsersOwnProps,
+  ImportUsersDialogStateProps,
+  ImportUsersDialogDispatchProps,
+  ImportUsersDialogOwnProps,
   AppState
 >(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withMobileDialog<ImportUsersProps>()(ImportUsers)));
+)(
+  withStyles(styles)(
+    withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog)
+  )
+);
