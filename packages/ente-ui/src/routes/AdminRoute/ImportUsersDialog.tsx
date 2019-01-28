@@ -8,13 +8,8 @@
 
 import {
   Button,
-  createStyles,
   Dialog,
   Grid,
-  Theme,
-  Typography,
-  withStyles,
-  WithStyles,
   DialogTitle,
   DialogContent,
   DialogContentText
@@ -23,23 +18,20 @@ import DialogActions from "@material-ui/core/DialogActions";
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
-import { ValidationError } from "class-validator";
 import { CreateUserDto } from "ente-types";
-import { Maybe, None, Some } from "monet";
+import { Maybe, None } from "monet";
 import * as React from "react";
-import Dropzone from "react-dropzone";
 import {
   connect,
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
-import { parseCSVFromFile } from "../../helpers/parser";
-import { AppState, getStudents, UserN, importUsersRequest } from "../../redux";
+import { AppState, UserN, importUsersRequest } from "../../redux";
 import * as _ from "lodash";
-import ErrorDisplay from "../Users/ErrorDisplay";
 import { UserTable } from "../Users/UserTable";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { CheckboxWithDescription } from "../../components/CheckboxWithDescription";
+import CsvImportMethod from "./CsvImportMethod";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -87,7 +79,7 @@ const useTranslation = makeTranslationHook({
       Neue Nutzer werden erstellt.
       Enthalten die Import-Daten eines neuen Nutzers kein Passwort, so erhält er eine Einladungs-Email.
 
-      Achtung: Damit die Aktualisierung fehlerlos funktionieren kann, muss die Vergabe der Nutzernamen identisch zum letzten Import sein.
+      Achtung: Damit die Aktualisierung fehlerfrei funktionieren kann, muss die Vergabe der Nutzernamen identisch zum letzten Import sein.
     `.trim()
   }
 });
@@ -105,11 +97,6 @@ const toUserN = (u: CreateUserDto): UserN => {
   });
 };
 
-const readFile = async (f: File) => {
-  const response = new Response(f);
-  return await response.text();
-};
-
 /**
  * # Component Types
  */
@@ -118,16 +105,12 @@ interface ImportUsersDialogOwnProps {
   show: boolean;
 }
 
-interface ImportUsersDialogStateProps {
-  usernames: string[];
-}
+interface ImportUsersDialogStateProps {}
 const mapStateToProps: MapStateToPropsParam<
   ImportUsersDialogStateProps,
   ImportUsersDialogOwnProps,
   AppState
-> = state => ({
-  usernames: getStudents(state).map(u => u.get("username"))
-});
+> = state => ({});
 
 interface ImportUsersDialogDispatchProps {
   importUsers: (
@@ -147,21 +130,17 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 type ImportUsersDialogProps = ImportUsersDialogOwnProps &
   ImportUsersDialogStateProps &
   ImportUsersDialogDispatchProps &
-  WithStyles<"dropzone"> &
   InjectedProps;
 
 const ImportUsersDialog: React.FunctionComponent<
   ImportUsersDialogProps
 > = props => {
-  const { fullScreen, show, classes, onClose, usernames, importUsers } = props;
+  const { fullScreen, show, onClose, importUsers } = props;
   const translation = useTranslation();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
-  const [errors, setErrors] = React.useState<
-    Maybe<(ValidationError | string)[]>
-  >(None());
 
   const handleSubmit = React.useCallback(
     () => {
@@ -169,25 +148,6 @@ const ImportUsersDialog: React.FunctionComponent<
     },
     [users, importUsers, deleteEntries, deleteUsers]
   );
-
-  const onDrop = async (accepted: File[]) => {
-    const [file] = accepted;
-
-    if (!file) {
-      return;
-    }
-
-    const input = await readFile(file);
-    const result = await parseCSVFromFile(input, usernames);
-    result.forEach(success => {
-      setUsers(Some(success));
-      setErrors(None());
-    });
-    result.forEachFail(fail => {
-      setUsers(None());
-      setErrors(Some(fail));
-    });
-  };
 
   const inputIsValid = users.isSome();
 
@@ -217,26 +177,13 @@ const ImportUsersDialog: React.FunctionComponent<
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Dropzone
-              onDrop={onDrop}
-              className={classes.dropzone}
-              accept=".csv"
-            >
-              <Typography variant="body1">{translation.dropzone}</Typography>
-            </Dropzone>
-          </Grid>
+
+          <CsvImportMethod onImport={setUsers} />
+
           {users
             .map(users => (
               <Grid item xs={12}>
                 <UserTable users={users.map(toUserN)} />
-              </Grid>
-            ))
-            .orSome(<></>)}
-          {errors
-            .map(errors => (
-              <Grid item xs={12}>
-                <ErrorDisplay errors={errors} />
               </Grid>
             ))
             .orSome(<></>)}
@@ -259,17 +206,6 @@ const ImportUsersDialog: React.FunctionComponent<
   );
 };
 
-const styles = (theme: Theme) =>
-  createStyles({
-    dropzone: {
-      minHeight: 24,
-      border: `1px solid ${theme.palette.grey[300]}`,
-      borderRadius: theme.spacing.unit,
-      padding: theme.spacing.unit * 2,
-      boxSizing: "border-box"
-    }
-  });
-
 export default connect<
   ImportUsersDialogStateProps,
   ImportUsersDialogDispatchProps,
@@ -278,8 +214,4 @@ export default connect<
 >(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withStyles(styles)(
-    withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog)
-  )
-);
+)(withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog));
