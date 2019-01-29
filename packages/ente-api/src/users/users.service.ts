@@ -73,31 +73,27 @@ export class UsersService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const adminUserExists = await this.userRepo.findByUsername("admin");
-    adminUserExists.cata(
-      async () => {
-        this.logger.log("No admin user found. Creating one.");
+    const admins = await this.userRepo.findByRole(Roles.ADMIN);
+    const noAdminFound = admins.length === 0;
+    if (noAdminFound) {
+      this.logger.log("No admin user found. Creating one.");
 
-        const admin = {
-          children: [],
-          role: Roles.ADMIN,
-          displayname: "Administrator",
-          birthday: undefined,
-          password: "root",
-          username: "admin",
-          email: "admin@ente.de"
-        };
+      const admin = {
+        children: [],
+        role: Roles.ADMIN,
+        displayname: "Administrator",
+        birthday: undefined,
+        password: "root",
+        username: "admin",
+        email: "admin@ente.de"
+      };
 
-        const [created] = await this._createUsers(admin);
+      const [created] = await this._createUsers(admin);
 
-        this.logger.log(
-          `Created admin user. Credentials: ${created.username}:${
-            admin.password
-          }`
-        );
-      },
-      async user => {}
-    );
+      this.logger.log(
+        `Created admin user. Credentials: ${created.username}:${admin.password}`
+      );
+    }
   }
 
   async findAll(
