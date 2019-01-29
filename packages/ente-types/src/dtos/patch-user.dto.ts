@@ -4,11 +4,16 @@ import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidDisplayname,
   isValidEmail,
-  isValidUuidOrUsername
+  isValidUuidOrUsername,
+  isValidUsername
 } from "../validators";
 import { languagesArr, Languages } from "../languages";
 
 export class PatchUserDto {
+  @IsOptional()
+  @CustomStringValidator(isValidUsername)
+  username?: string;
+
   @IsOptional()
   @CustomStringValidator(isValidDisplayname)
   displayname?: string;

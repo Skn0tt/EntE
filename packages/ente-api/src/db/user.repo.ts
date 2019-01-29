@@ -262,6 +262,10 @@ export class UserRepo {
     await this.repo.update(id, { displayname });
   }
 
+  async setUsername(id: string, username: string) {
+    await this.repo.update(id, { username });
+  }
+
   async setBirthday(
     id: string,
     birthday: string

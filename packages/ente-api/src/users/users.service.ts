@@ -324,6 +324,11 @@ export class UsersService implements OnModuleInit {
       user.some().displayname = patch.displayname;
     }
 
+    if (!!patch.username) {
+      await this.userRepo.setUsername(id, patch.username);
+      user.some().username = patch.username;
+    }
+
     if (!!patch.birthday) {
       await this.userRepo.setBirthday(id, patch.birthday);
       user.some().birthday = patch.birthday;
