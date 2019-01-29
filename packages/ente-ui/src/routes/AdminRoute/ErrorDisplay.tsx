@@ -25,7 +25,9 @@ const ErrorDisplay: React.SFC<ErrorDisplayProps> = props => {
 
   return (
     <Typography variant="body1" className={classes.error}>
-      {errors.map(e => <p>{typeof e === "string" ? e : errorToString(e)}</p>)}
+      {errors.map(e => (
+        <p>{typeof e === "string" ? e : errorToString(e)}</p>
+      ))}
     </Typography>
   );
 };

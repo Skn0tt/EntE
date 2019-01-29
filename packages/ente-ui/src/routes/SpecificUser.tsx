@@ -52,7 +52,8 @@ import {
   isValidDisplayname,
   isValidEmail,
   roleHasBirthday,
-  PatchUserDtoValidator
+  PatchUserDtoValidator,
+  isValidUsername
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
@@ -69,6 +70,7 @@ const useTranslation = makeTranslationHook({
       email: "Email",
       displayname: "Displayname",
       birthday: "Birthday",
+      username: "Username",
       id: "ID",
       role: "Role",
       gradYear: "Graduation Year",
@@ -87,6 +89,7 @@ const useTranslation = makeTranslationHook({
       email: "Email",
       displayname: "Displayname",
       birthday: "Geburtstag",
+      username: "Benutzername",
       id: "ID",
       role: "Rolle",
       gradYear: "Abschluss-Jahrgang",
@@ -235,6 +238,16 @@ export const SpecificUser: React.FunctionComponent<
                       {lang.titles.id}: {user.get("id")} <br />
                       {lang.titles.role}: {user.get("role")} <br />
                     </DialogContentText>
+                  </Grid>
+
+                  {/* Displayname */}
+                  <Grid item xs={12}>
+                    <TextInput
+                      title={lang.titles.username}
+                      value={patch.username || user.get("username")}
+                      onChange={updatePatch("username")}
+                      validator={isValidUsername}
+                    />
                   </Grid>
 
                   {/* Displayname */}

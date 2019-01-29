@@ -183,6 +183,7 @@ export class UserRepo {
   async import(
     dtos: CreateUserDto[],
     deleteOthers: boolean,
+    deleteUnreferencedStudentsAndParents: boolean,
     defaultLanguage: Languages
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
     const usernames = dtos.map(d => d.username);
@@ -247,11 +248,22 @@ export class UserRepo {
       });
     }
 
+    if (deleteUnreferencedStudentsAndParents) {
+      await this.repo.delete({
+        username: Not(In([...usernames, ...childrenNotInDtos, "admin"])),
+        role: In([Roles.STUDENT, Roles.PARENT])
+      });
+    }
+
     return Success([...createdUsers, ...updatedUsers]);
   }
 
   async setDisplayName(id: string, displayname: string) {
     await this.repo.update(id, { displayname });
+  }
+
+  async setUsername(id: string, username: string) {
+    await this.repo.update(id, { username });
   }
 
   async setBirthday(

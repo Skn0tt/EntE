@@ -317,7 +317,12 @@ function* importUsersSaga(action: Action<ImportUsersRequestPayload>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
 
-    const { deleteEntries, deleteUsers, dtos } = action.payload!;
+    const {
+      deleteEntries,
+      deleteUsers,
+      deleteStudentsAndParents,
+      dtos
+    } = action.payload!;
 
     const responses: APIResponse[] = [];
 
@@ -325,7 +330,7 @@ function* importUsersSaga(action: Action<ImportUsersRequestPayload>) {
       api.importUsers,
       token.some(),
       dtos,
-      { deleteUsers, deleteEntries }
+      { deleteUsers, deleteEntries, deleteStudentsAndParents }
     );
 
     responses.push(createdUsers);

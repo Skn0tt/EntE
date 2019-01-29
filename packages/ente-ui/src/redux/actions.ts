@@ -278,6 +278,7 @@ export interface ImportUsersRequestPayload {
   dtos: CreateUserDto[];
   deleteEntries: boolean;
   deleteUsers: boolean;
+  deleteStudentsAndParents: boolean;
 }
 
 export interface ImportUsersSuccessPayload {

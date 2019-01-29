@@ -33,7 +33,8 @@ export class InstanceService {
     dtos: CreateUserDto[],
     requestingUser: RequestContextUser,
     deleteEntries: boolean,
-    deleteOthers: boolean
+    deleteOthers: boolean,
+    deleteStudentsAndParents: boolean
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
     const defaultLanguage = await this.instanceConfigService.getDefaultLanguage();
 
@@ -51,6 +52,7 @@ export class InstanceService {
     const importedUsers = await this.usersRepo.import(
       dtos,
       deleteOthers,
+      deleteStudentsAndParents,
       defaultLanguage
     );
     return await importedUsers.cata<

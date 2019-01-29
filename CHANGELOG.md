@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Added: Detailed reports on students and years, including diagrams to assess patterns in absences
+- Changed: Users can now be renamed
+- Added possibility to import SchiLD files
 - Fixed bug where signature state of slots was not displayed correctly
 - Changed: Reworked login flow to immediately return needed entities. This saves some round-trip at login.
 

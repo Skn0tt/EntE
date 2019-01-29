@@ -1,0 +1,12 @@
+SCHILD-NRW-TEXTEXPORTVORLAGE
+ENTE
+Schueler
+;
+"
+Ja
+Nein
+FALSE
+TRUE
+
+Vorname;Nachname;vorauss. Abschlussdatum;Jahrgang;Erzieher 1: Anrede;Erzieher 1: Vorname;Erzieher 1: Nachname;Erzieher 2: Anrede;Erzieher 2: Vorname;Erzieher 2: Nachname;Erzieher: E-Mail;E-Mail (privat);Geburtsdatum;
+3

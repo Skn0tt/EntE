@@ -40,7 +40,7 @@ export class User {
 
   @Column("varchar", { length: 80, unique: true })
   @CustomStringValidator(isValidUsername)
-  readonly username: string;
+  username: string;
 
   @Column("varchar", { length: 80 })
   @CustomStringValidator(isValidDisplayname)

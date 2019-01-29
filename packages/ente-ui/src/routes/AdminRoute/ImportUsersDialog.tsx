@@ -8,13 +8,8 @@
 
 import {
   Button,
-  createStyles,
   Dialog,
   Grid,
-  Theme,
-  Typography,
-  withStyles,
-  WithStyles,
   DialogTitle,
   DialogContent,
   DialogContentText
@@ -23,23 +18,22 @@ import DialogActions from "@material-ui/core/DialogActions";
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
-import { ValidationError } from "class-validator";
 import { CreateUserDto } from "ente-types";
-import { Maybe, None, Some } from "monet";
+import { Maybe, None } from "monet";
 import * as React from "react";
-import Dropzone from "react-dropzone";
 import {
   connect,
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
-import { parseCSVFromFile } from "../helpers/parser";
-import { AppState, getStudents, UserN, importUsersRequest } from "../redux";
+import { AppState, UserN, importUsersRequest } from "../../redux";
 import * as _ from "lodash";
-import ErrorDisplay from "./Users/ErrorDisplay";
-import { UserTable } from "./Users/UserTable";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { CheckboxWithDescription } from "../components/CheckboxWithDescription";
+import { UserTable } from "../Users/UserTable";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { CheckboxWithDescription } from "../../components/CheckboxWithDescription";
+import CsvImportMethod from "./CsvImportMethod";
+import { DropdownInput } from "../../elements/DropdownInput";
+import { SchiLDImportMethod } from "./SchiLDImportMethod";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -53,10 +47,20 @@ const useTranslation = makeTranslationHook({
       caption:
         "Delete all entries and the corresponding slots, for example at the start of a term."
     },
+    importMethods: {
+      schild: "SchiLD",
+      csv: "CSV"
+    },
+    importMethodLabel: "Format",
     deleteUsers: {
       title: "Delete all users",
       caption:
-        "Delete all users that are not contained nor referenced by the import, for example at the start of a term."
+        "Delete all users that are not contained nor referenced by the import."
+    },
+    deleteStudentsAndParents: {
+      title: "Delete students and parents",
+      caption:
+        "Delete students and parents that are neither contained nor referenced by the import, for example at the start of a term."
     },
     description: `
       Users whose usernames are already present in the database are updated using the data from the import.
@@ -77,17 +81,27 @@ const useTranslation = makeTranslationHook({
       caption:
         "Alle bestehenden Einträge sowie die zugehörigen Stunden löschen, zum Beispiel am Schuljahresbeginn."
     },
+    importMethodLabel: "Datenformat",
+    importMethods: {
+      schild: "SchiLD",
+      csv: "CSV"
+    },
     deleteUsers: {
       title: "Alle Nutzer löschen",
       caption:
-        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn."
+        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden. Nützlich, um den Server zurückzusetzen."
+    },
+    deleteStudentsAndParents: {
+      title: "Schüler und Eltern löschen",
+      caption:
+        "Schüler und Eltern löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn."
     },
     description: `
       Nutzer, deren Nutzernamen schon in der Datenbank enthalten sind, werden mit den Daten aus dem Import aktualisiert.
       Neue Nutzer werden erstellt.
       Enthalten die Import-Daten eines neuen Nutzers kein Passwort, so erhält er eine Einladungs-Email.
 
-      Achtung: Damit die Aktualisierung fehlerlos funktionieren kann, muss die Vergabe der Nutzernamen identisch zum letzten Import sein.
+      Achtung: Damit die Aktualisierung fehlerfrei funktionieren kann, muss die Vergabe der Nutzernamen identisch zum letzten Import sein.
     `.trim()
   }
 });
@@ -105,87 +119,75 @@ const toUserN = (u: CreateUserDto): UserN => {
   });
 };
 
-const readFile = async (f: File) => {
-  const response = new Response(f);
-  return await response.text();
-};
+const importMethods: ImportMethod[] = ["csv", "schild"];
+type ImportMethod = "csv" | "schild";
 
 /**
  * # Component Types
  */
-interface ImportUsersOwnProps {
+interface ImportUsersDialogOwnProps {
   onClose(): void;
   show: boolean;
 }
 
-interface ImportUsersStateProps {
-  usernames: string[];
-}
+interface ImportUsersDialogStateProps {}
 const mapStateToProps: MapStateToPropsParam<
-  ImportUsersStateProps,
-  ImportUsersOwnProps,
+  ImportUsersDialogStateProps,
+  ImportUsersDialogOwnProps,
   AppState
-> = state => ({
-  usernames: getStudents(state).map(u => u.get("username"))
-});
+> = state => ({});
 
-interface ImportUsersDispatchProps {
+interface ImportUsersDialogDispatchProps {
   importUsers: (
     dtos: CreateUserDto[],
     deleteEntries: boolean,
-    deleteUsers: boolean
+    deleteUsers: boolean,
+    deleteStudentsAndParents: boolean
   ) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
-  ImportUsersDispatchProps,
-  ImportUsersOwnProps
+  ImportUsersDialogDispatchProps,
+  ImportUsersDialogOwnProps
 > = dispatch => ({
-  importUsers: (dtos, deleteEntries, deleteUsers) =>
-    dispatch(importUsersRequest({ dtos, deleteEntries, deleteUsers }))
+  importUsers: (dtos, deleteEntries, deleteUsers, deleteStudentsAndParents) =>
+    dispatch(
+      importUsersRequest({
+        dtos,
+        deleteEntries,
+        deleteUsers,
+        deleteStudentsAndParents
+      })
+    )
 });
 
-type ImportUsersProps = ImportUsersOwnProps &
-  ImportUsersStateProps &
-  ImportUsersDispatchProps &
-  WithStyles<"dropzone"> &
+type ImportUsersDialogProps = ImportUsersDialogOwnProps &
+  ImportUsersDialogStateProps &
+  ImportUsersDialogDispatchProps &
   InjectedProps;
 
-const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
-  const { fullScreen, show, classes, onClose, usernames, importUsers } = props;
+const ImportUsersDialog: React.FunctionComponent<
+  ImportUsersDialogProps
+> = props => {
+  const { fullScreen, show, onClose, importUsers } = props;
   const translation = useTranslation();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
+  const [
+    deleteStudentsAndParents,
+    setDeleteStudentsAndParents
+  ] = React.useState(false);
+  const [importMethod, setImportMethod] = React.useState<ImportMethod>("csv");
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
-  const [errors, setErrors] = React.useState<
-    Maybe<(ValidationError | string)[]>
-  >(None());
 
   const handleSubmit = React.useCallback(
     () => {
-      users.forEach(dtos => importUsers(dtos, deleteEntries, deleteUsers));
+      users.forEach(dtos =>
+        importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
+      );
     },
-    [users, importUsers, deleteEntries, deleteUsers]
+    [users, importUsers, deleteEntries, deleteUsers, deleteStudentsAndParents]
   );
-
-  const onDrop = async (accepted: File[]) => {
-    const [file] = accepted;
-
-    if (!file) {
-      return;
-    }
-
-    const input = await readFile(file);
-    const result = await parseCSVFromFile(input, usernames);
-    result.forEach(success => {
-      setUsers(Some(success));
-      setErrors(None());
-    });
-    result.forEachFail(fail => {
-      setUsers(None());
-      setErrors(Some(fail));
-    });
-  };
 
   const inputIsValid = users.isSome();
 
@@ -208,6 +210,13 @@ const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
               </Grid>
               <Grid item xs={12}>
                 <CheckboxWithDescription
+                  title={translation.deleteStudentsAndParents.title}
+                  caption={translation.deleteStudentsAndParents.caption}
+                  onChange={setDeleteStudentsAndParents}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CheckboxWithDescription
                   title={translation.deleteEntries.title}
                   caption={translation.deleteEntries.caption}
                   onChange={setDeleteEntries}
@@ -215,26 +224,27 @@ const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item xs={12}>
-            <Dropzone
-              onDrop={onDrop}
-              className={classes.dropzone}
-              accept=".csv"
-            >
-              <Typography variant="body1">{translation.dropzone}</Typography>
-            </Dropzone>
+            <DropdownInput
+              options={importMethods}
+              fullWidth
+              label={translation.importMethodLabel}
+              getOptionLabel={k => translation.importMethods[k]}
+              value={importMethod}
+              onChange={setImportMethod}
+            />
           </Grid>
+
+          {importMethod === "csv" && <CsvImportMethod onImport={setUsers} />}
+          {importMethod === "schild" && (
+            <SchiLDImportMethod onImport={setUsers} />
+          )}
+
           {users
             .map(users => (
               <Grid item xs={12}>
                 <UserTable users={users.map(toUserN)} />
-              </Grid>
-            ))
-            .orSome(<></>)}
-          {errors
-            .map(errors => (
-              <Grid item xs={12}>
-                <ErrorDisplay errors={errors} />
               </Grid>
             ))
             .orSome(<></>)}
@@ -257,23 +267,12 @@ const ImportUsers: React.FunctionComponent<ImportUsersProps> = props => {
   );
 };
 
-const styles = (theme: Theme) =>
-  createStyles({
-    dropzone: {
-      minHeight: 24,
-      border: `1px solid ${theme.palette.grey[300]}`,
-      borderRadius: theme.spacing.unit,
-      padding: theme.spacing.unit * 2,
-      boxSizing: "border-box"
-    }
-  });
-
 export default connect<
-  ImportUsersStateProps,
-  ImportUsersDispatchProps,
-  ImportUsersOwnProps,
+  ImportUsersDialogStateProps,
+  ImportUsersDialogDispatchProps,
+  ImportUsersDialogOwnProps,
   AppState
 >(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withMobileDialog<ImportUsersProps>()(ImportUsers)));
+)(withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog));

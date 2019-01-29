@@ -402,11 +402,16 @@ export const importUsers = async (
   dtos: CreateUserDto[],
   {
     deleteEntries,
-    deleteUsers
-  }: { deleteUsers: boolean; deleteEntries: boolean }
+    deleteUsers,
+    deleteStudentsAndParents
+  }: {
+    deleteUsers: boolean;
+    deleteEntries: boolean;
+    deleteStudentsAndParents: boolean;
+  }
 ) => {
   const result = await post<UserDto[]>(
-    `${getBaseUrl()}/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}`,
+    `${getBaseUrl()}/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}&deleteStudentsAndParents=${deleteStudentsAndParents}`,
     token,
     dtos
   );

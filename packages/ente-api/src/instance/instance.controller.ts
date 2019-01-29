@@ -31,15 +31,18 @@ export class InstanceController {
     users: CreateUserDto[],
     @Ctx() requestContext: RequestContext,
     @Query("deleteEntries") _deleteEntries: string,
-    @Query("deleteUsers") _deleteUsers: string
+    @Query("deleteUsers") _deleteUsers: string,
+    @Query("deleteStudentsAndParents") _deleteStudentsAndParents: string
   ) {
     const deleteEntries = _deleteEntries === "true";
     const deleteUsers = _deleteUsers === "true";
+    const deleteStudentsAndParents = _deleteStudentsAndParents === "true";
     const result = await this.instanceService.importUsers(
       users,
       requestContext.user,
       deleteEntries,
-      deleteUsers
+      deleteUsers,
+      deleteStudentsAndParents
     );
     return result.cata(
       fail => {
