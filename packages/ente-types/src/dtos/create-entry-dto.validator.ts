@@ -31,7 +31,7 @@ export const CreateEntryDtoValidator = makeDtoValidator(
       const reasonIsSet = !!dto.reason;
       if (!reasonIsSet) {
         errors.push("If `forSchool` is true, `reason` must be set");
-
+      } else {
         const reasonValidation = EntryReasonDtoValidator.validateWithErrors(
           dto.reason!
         );
