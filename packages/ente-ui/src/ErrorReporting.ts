@@ -3,7 +3,18 @@ import { None, Maybe, Some } from "monet";
 
 let client: Maybe<Sentry.BrowserClient> = None();
 
-const report = (error: any) => client.forEach(c => c.captureException(error));
+type EventId = string;
+
+const report = async (error: any): Promise<Maybe<EventId>> => {
+  return await client.cata(
+    async () => None<string>(),
+    async client => {
+      const response = await client.captureException(error);
+      const event = Maybe.fromUndefined(response.event);
+      return event.flatMap(e => Maybe.fromUndefined(e.event_id));
+    }
+  );
+};
 
 const supplySentryClient = (c: Sentry.BrowserClient) => {
   client = Some(c);
@@ -11,7 +22,8 @@ const supplySentryClient = (c: Sentry.BrowserClient) => {
 
 const isActive = () => client.isSome();
 
-const showReportDialog = () => client.forEach(c => c.showReportDialog());
+const showReportDialog = (eventId: string) =>
+  client.forEach(c => c.showReportDialog({ eventId }));
 
 export const ErrorReporting = {
   report,

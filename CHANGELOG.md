@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Sentry error reporting now gets passed the event_id
 - Fixed: importing users can not remove admin users
 
 ## [v0.16.0] - 2019-01-29
