@@ -32,6 +32,16 @@ describe("weekdayOfSlot", () => {
       expect(weekday).toBe(Weekday.MONDAY);
     });
   });
+  describe("when given a sunday", () => {
+    it("returns Weekday.Sunday", () => {
+      const weekday = weekdayOfSlot(
+        new SlotN({
+          date: "2019-01-20"
+        })
+      );
+      expect(weekday).toBe(Weekday.SUNDAY);
+    });
+  });
 });
 
 describe("hoursByWeekdayAndTime", () => {

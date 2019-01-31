@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: crash when computing report with sunday entries
+
 ## [v0.16.0] - 2019-01-29
 
 - Added: Detailed reports on students and years, including diagrams to assess patterns in absences
