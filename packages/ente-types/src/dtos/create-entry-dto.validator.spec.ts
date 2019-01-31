@@ -260,5 +260,22 @@ describe("CreateEntryDtoValidator", () => {
         })
       ).to.be.false;
     });
+
+    describe("reason missing", () => {
+      const result = CreateEntryDtoValidator.validate({
+        date: daysBeforeNow(10),
+        forSchool: true,
+        slots: [
+          {
+            from: 1,
+            to: 2,
+            teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
+          }
+        ]
+      });
+      it("returns false", () => {
+        expect(result).to.be.false;
+      });
+    });
   });
 });
