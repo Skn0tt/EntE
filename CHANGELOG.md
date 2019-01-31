@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed: importing users can not remove admin users
+- Fixed: crash when computing report with sunday entries
 
 ## [v0.16.0] - 2019-01-29
 

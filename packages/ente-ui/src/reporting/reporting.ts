@@ -5,13 +5,13 @@ import { fillRange } from "../helpers/fillRange";
 import { Map } from "immutable";
 
 export enum Weekday {
+  SUNDAY = 0,
   MONDAY = 1,
   TUESDAY = 2,
   WEDNESDAY = 3,
   THURSDAY = 4,
   FRIDAY = 5,
-  SATURDAY = 6,
-  SUNDAY = 7
+  SATURDAY = 6
 }
 
 interface TotalAndUnexcused {
