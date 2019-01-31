@@ -244,13 +244,14 @@ export class UserRepo {
 
     if (deleteOthers) {
       await this.repo.delete({
-        username: Not(In([...usernames, ...childrenNotInDtos, "admin"]))
+        username: Not(In([...usernames, ...childrenNotInDtos])),
+        role: Not(Roles.ADMIN)
       });
     }
 
     if (deleteUnreferencedStudentsAndParents) {
       await this.repo.delete({
-        username: Not(In([...usernames, ...childrenNotInDtos, "admin"])),
+        username: Not(In([...usernames, ...childrenNotInDtos])),
         role: In([Roles.STUDENT, Roles.PARENT])
       });
     }
