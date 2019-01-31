@@ -2,6 +2,7 @@ import * as React from "react";
 import { ErrorReporting } from "../ErrorReporting";
 import { getByLanguage } from "ente-types";
 import { withLanguage, WithLanguage } from "../helpers/with-language";
+import { Maybe, None } from "monet";
 
 const lang = getByLanguage({
   de: {
@@ -16,6 +17,7 @@ const lang = getByLanguage({
 
 interface WithErrorBoundaryState {
   error: Error | null;
+  eventId: Maybe<string>;
 }
 
 type CustomErrorScreenComponentType<T = {}> = React.ComponentType<
@@ -31,18 +33,26 @@ export const withErrorBoundary = (
       WithErrorBoundaryState
     > {
       state: WithErrorBoundaryState = {
-        error: null
+        error: null,
+        eventId: None()
       };
 
-      componentDidCatch(error: Error, info: React.ErrorInfo) {
+      async componentDidCatch(error: Error, info: React.ErrorInfo) {
         console.error(error);
-        ErrorReporting.report(error);
         this.setState({ error });
+
+        const eventId = await ErrorReporting.report(error);
+        this.setState({ eventId });
       }
+
+      handleShowReportDialog = () => {
+        const { eventId } = this.state;
+        eventId.forEach(id => ErrorReporting.showReportDialog(id));
+      };
 
       render() {
         const { language } = this.props;
-        const { error } = this.state;
+        const { error, eventId } = this.state;
 
         if (!!error) {
           if (!!CustomErrorScreen) {
@@ -53,9 +63,11 @@ export const withErrorBoundary = (
             return (
               <>
                 <p id="error">{lang(language).anErrorOccured(error.message)}</p>
-                <button onClick={ErrorReporting.showReportDialog}>
-                  {lang(language).reportFeedback}
-                </button>
+                {eventId.isSome() && (
+                  <button onClick={this.handleShowReportDialog}>
+                    {lang(language).reportFeedback}
+                  </button>
+                )}
               </>
             );
           }
