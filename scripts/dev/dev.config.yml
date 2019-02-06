@@ -15,10 +15,6 @@ smtp:
   username: "ignoredbymailhog"
 
 config:
-  instanceInfo:
-    de: "Hallo%20Welt,%20dies%20ist%20ein%20Test-Server."
-    en: "Hello%20world,%20this%20is%20a%20test-server."
-  language: de
   baseUrl: http://localhost
 
 debug:
