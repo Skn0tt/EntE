@@ -7,7 +7,6 @@
  */
 import * as cookie from "./cookie";
 import * as localStorage from "./localStorage";
-import { Some, None } from "monet";
 import * as _ from "lodash";
 const pack = require("../package.json");
 
@@ -24,8 +23,6 @@ type Config = {
 const CONFIG_COOKIE = "_config";
 const LOCAL_STORAGE_CONFIG_KEY = "CONFIG";
 
-const fromUriEncoding = (s: string) => decodeURIComponent(s);
-
 const getConfig = (): any => {
   const c = cookie
     .get(CONFIG_COOKIE)
@@ -36,32 +33,10 @@ const getConfig = (): any => {
   return JSON.parse(c);
 };
 
-const NULL_VALUES = ["<Nil>", "<nil>", ""];
-
-const isSet = (s?: string): boolean => {
-  if (_.isUndefined(s)) {
-    return false;
-  }
-  if (NULL_VALUES.includes(s)) {
-    return false;
-  }
-
-  return true;
-};
-
 const readConfig = (): Config => {
   const c = getConfig();
 
   const { SENTRY_DSN } = c;
-
-  const instanceInfoDe = (isSet(c.INSTANCE_INFO_DE)
-    ? Some(c.INSTANCE_INFO_DE)
-    : None()
-  ).map(fromUriEncoding);
-  const instanceInfoEn = (isSet(c.INSTANCE_INFO_EN)
-    ? Some(c.INSTANCE_INFO_EN)
-    : None()
-  ).map(fromUriEncoding);
 
   return {
     ROTATION_PERIOD: !!c.ROTATION_PERIOD
