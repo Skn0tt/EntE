@@ -33,7 +33,6 @@ import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
 import { StoreContext } from "./helpers/store-context";
-import InstanceConfigGate from "./components/InstanceConfigGate";
 
 installMuiStyles();
 
