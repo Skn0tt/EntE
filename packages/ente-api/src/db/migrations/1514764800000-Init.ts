@@ -62,7 +62,6 @@ const entryTable = new Table({
       name: "student_id",
       type: "varchar",
       isNullable: false,
-      default: "current_timestamp()"
     })
   ],
   foreignKeys: [
