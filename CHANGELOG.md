@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Bug in 1st Migration where a wrong default value was given
+
+## [Unreleased]
+
 - Fixed: Weird layout on reloading page (udpated dependency to latest version)
 - Fixed: Sentry error reporting now gets passed the event_id
 - Fixed: importing users can not remove admin users
