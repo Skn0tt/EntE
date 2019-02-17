@@ -1,6 +1,6 @@
 # User import from SchiLD file
 
-If you school uses the SchiLD administration tool, you can import your students and parents using a special SchiLD import method.
+If your school uses the SchiLD administration tool, you can import your student and parent data using a special SchiLD import method.
 
 ## How to create the SchiLD file
 
@@ -8,8 +8,8 @@ Use the [provided export template](https://gitlab.com/Skn0tt/EntE/raw/master/doc
 
 ## How to import the SchiLD file
 
-Go to "Admin" and click on the "Import Users" button.
-Fill out the options.
-Select "SchiLD" as your import method.
-Drag'n'drop your exported file into the dropzone or click on it to open a file dialog.
-Click on the "Submit"-Button to invoke the import.
+1. Go to "Admin" and click on the "Import Users" button.
+2. Fill out the options.
+3. Select "SchiLD" as your import method.
+4. Drag'n'drop your exported file into the dropzone or click on it to open a file dialog.
+5. Click on the "Submit"-Button to invoke the import.
