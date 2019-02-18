@@ -13,6 +13,7 @@ import {
 } from "../db/user.repo";
 import { EntryRepo } from "../db/entry.repo";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
+import { PasswordResetService } from "../password-reset/password-reset.service";
 
 export enum ImportUsersFailure {
   ForbiddenForRole,
@@ -26,7 +27,9 @@ export class InstanceService {
     @Inject(UserRepo) private readonly usersRepo: UserRepo,
     @Inject(EntryRepo) private readonly entriesRepo: EntryRepo,
     @Inject(InstanceConfigService)
-    private readonly instanceConfigService: InstanceConfigService
+    private readonly instanceConfigService: InstanceConfigService,
+    @Inject(PasswordResetService)
+    private readonly passwordResetService: PasswordResetService
   ) {}
 
   async importUsers(
@@ -65,11 +68,19 @@ export class InstanceService {
         }
       },
       async importedUsers => {
+        const { created, updated } = importedUsers;
+
+        await Promise.all(
+          created.map(async user => {
+            await this.passwordResetService.invokeInvitationRoutine(user);
+          })
+        );
+
         if (deleteEntries) {
           await this.entriesRepo.deleteAll();
         }
 
-        return Success(importedUsers);
+        return Success([...created, ...updated]);
       }
     );
   }

@@ -185,7 +185,9 @@ export class UserRepo {
     deleteOthers: boolean,
     deleteUnreferencedStudentsAndParents: boolean,
     defaultLanguage: Languages
-  ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
+  ): Promise<
+    Validation<ImportUsersFailure, { created: UserDto[]; updated: UserDto[] }>
+  > {
     const usernames = dtos.map(d => d.username);
 
     const allChildren = _.uniq(_.flatten(dtos.map(u => u.children)));
@@ -256,7 +258,7 @@ export class UserRepo {
       });
     }
 
-    return Success([...createdUsers, ...updatedUsers]);
+    return Success({ created: createdUsers, updated: updatedUsers });
   }
 
   async setDisplayName(id: string, displayname: string) {
