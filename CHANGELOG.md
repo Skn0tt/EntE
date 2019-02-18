@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Only show "Show Report" button on students
+
 ## [v0.17.1] - 2019-02-18
 
 - Changed: Invoke invitation routine for created users on import
