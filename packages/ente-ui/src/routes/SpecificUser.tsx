@@ -321,16 +321,18 @@ export const SpecificUser: React.FunctionComponent<
             loading && <LoadingIndicator />
           )}
           <DialogActions>
-            <Button
-              size="small"
-              color="default"
-              {...{
-                to: `${userId}/report`,
-                component: Link
-              } as any}
-            >
-              {lang.openReport}
-            </Button>
+            {user.get("role") === "student" && (
+              <Button
+                size="small"
+                color="default"
+                {...{
+                  to: `${userId}/report`,
+                  component: Link
+                } as any}
+              >
+                {lang.openReport}
+              </Button>
+            )}
 
             <Button size="small" color="secondary" onClick={onClose}>
               {lang.close}
