@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.17.1] - 2019-02-18
+
 - Changed: Invoke invitation routine for created users on import
 - Fixed: Bug in 1st Migration where a wrong default value was given
 
