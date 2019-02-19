@@ -44,6 +44,7 @@ const isDevMode = Config.isDevMode();
       host,
       database,
       timezone,
+      dateStrings: ["DATE"],
       entities: [User, Slot, Entry],
       synchronize: false,
       logger: new CustomTypeOrmLogger(),
