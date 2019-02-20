@@ -5,13 +5,13 @@ import { fillRange } from "../helpers/fillRange";
 import { Map } from "immutable";
 
 export enum Weekday {
-  SUNDAY = 0,
   MONDAY = 1,
   TUESDAY = 2,
   WEDNESDAY = 3,
   THURSDAY = 4,
   FRIDAY = 5,
-  SATURDAY = 6
+  SATURDAY = 6,
+  SUNDAY = 7
 }
 
 interface TotalAndUnexcused {
@@ -101,7 +101,7 @@ export const absentHoursByTeacher = (
 
 export const weekdayOfSlot = (slot: SlotN): Weekday => {
   const timestamp = slot.get("date");
-  const weekday = getDay(timestamp);
+  const weekday = getDay(timestamp) + 1; // ISO 8601: Monday is start of the week;
   return weekday;
 };
 

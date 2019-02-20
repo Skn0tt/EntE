@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Sunday is now 7th day of the week (see ISO 8601). This fixes a gnarly crash on the reports page
+
 ## [v0.17.2] - 2019-02-19
 
 - Fixed: Wrong entry dates for databases in a different timezone (exclude "DATE" type from `mysql` parsing in order to circumvent https://github.com/mysqljs/mysql/issues/1374)
