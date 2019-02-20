@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed: Only send invitation emails to users without password specified (on import)
+
 ## [v0.17.2] - 2019-02-19
 
 - Fixed: Wrong entry dates for databases in a different timezone (exclude "DATE" type from `mysql` parsing in order to circumvent https://github.com/mysqljs/mysql/issues/1374)
