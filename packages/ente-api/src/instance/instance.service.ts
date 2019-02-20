@@ -14,6 +14,7 @@ import {
 import { EntryRepo } from "../db/entry.repo";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
 import { PasswordResetService } from "../password-reset/password-reset.service";
+import * as _ from "lodash";
 
 export enum ImportUsersFailure {
   ForbiddenForRole,
@@ -58,6 +59,9 @@ export class InstanceService {
       deleteStudentsAndParents,
       defaultLanguage
     );
+
+    const dtosByUsername = _.keyBy(dtos, (dto: CreateUserDto) => dto.username);
+
     return await importedUsers.cata<
       Promise<Validation<ImportUsersFailure, UserDto[]>>
     >(
@@ -70,8 +74,15 @@ export class InstanceService {
       async importedUsers => {
         const { created, updated } = importedUsers;
 
+        const createdWithoutPassword = created.filter(user => {
+          const { username } = user;
+
+          const dto = dtosByUsername[username];
+          return !!dto && !_.isString(dto.password);
+        });
+
         await Promise.all(
-          created.map(async user => {
+          createdWithoutPassword.map(async user => {
             await this.passwordResetService.invokeInvitationRoutine(user);
           })
         );
