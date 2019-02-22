@@ -4,7 +4,8 @@ import {
   hoursByWeekdayAndTime,
   getLengthOfEntry,
   Weekday,
-  Reporting
+  Reporting,
+  weekdayOfDate
 } from "./reporting";
 import { SlotN, EntryN } from "../redux";
 import { Map } from "immutable";
@@ -18,6 +19,29 @@ describe("hoursOfSlot", () => {
       })
     );
     expect(result).toEqual([1, 2, 3]);
+  });
+});
+
+describe("weekdayOfDate", () => {
+  describe("passing a monday", () => {
+    it("returns Weekday.Monday", () => {
+      expect(weekdayOfDate("2019-01-21")).toBe(Weekday.MONDAY);
+    });
+  });
+  describe("passing a tuesday", () => {
+    it("returns Weekday.Tuesday", () => {
+      expect(weekdayOfDate("2019-01-22")).toBe(Weekday.TUESDAY);
+    });
+  });
+  describe("passing a friday", () => {
+    it("returns Weekday.Friday", () => {
+      expect(weekdayOfDate("2019-01-25")).toBe(Weekday.FRIDAY);
+    });
+  });
+  describe("passing a Sunday", () => {
+    it("returns Weekday.Sunday", () => {
+      expect(weekdayOfDate("2019-01-27")).toBe(Weekday.SUNDAY);
+    });
   });
 });
 

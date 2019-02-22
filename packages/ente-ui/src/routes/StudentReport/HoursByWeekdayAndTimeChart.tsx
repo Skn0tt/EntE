@@ -24,24 +24,24 @@ const defaultWeek = _.fromPairs(
 const useTranslation = makeTranslationHook({
   en: {
     days: {
-      [Weekday.MONDAY]: "Monday",
-      [Weekday.TUESDAY]: "Tuesday",
-      [Weekday.WEDNESDAY]: "Wednesday",
-      [Weekday.THURSDAY]: "Thursday",
-      [Weekday.FRIDAY]: "Friday",
-      [Weekday.SATURDAY]: "Saturday",
-      [Weekday.SUNDAY]: "Sunday"
+      [Weekday.MONDAY]: "Mo",
+      [Weekday.TUESDAY]: "Tu",
+      [Weekday.WEDNESDAY]: "We",
+      [Weekday.THURSDAY]: "Thu",
+      [Weekday.FRIDAY]: "Fri",
+      [Weekday.SATURDAY]: "Sat",
+      [Weekday.SUNDAY]: "Sun"
     } as Record<string, string>
   },
   de: {
     days: {
-      [Weekday.MONDAY]: "Montag",
-      [Weekday.TUESDAY]: "Dienstag",
-      [Weekday.WEDNESDAY]: "Mittwoch",
-      [Weekday.THURSDAY]: "Donnerstag",
-      [Weekday.FRIDAY]: "Freitag",
-      [Weekday.SATURDAY]: "Samstag",
-      [Weekday.SUNDAY]: "Sonntag"
+      [Weekday.MONDAY]: "Mo",
+      [Weekday.TUESDAY]: "Di",
+      [Weekday.WEDNESDAY]: "Mi",
+      [Weekday.THURSDAY]: "Do",
+      [Weekday.FRIDAY]: "Fr",
+      [Weekday.SATURDAY]: "Sa",
+      [Weekday.SUNDAY]: "So"
     } as Record<string, string>
   }
 });
@@ -66,11 +66,9 @@ export const HoursByWeekdayAndTimeChart: React.FC<
   const transformedData = React.useMemo(
     () => {
       return _.flatMap(dataWithDefaultDays, (values, weekday) => {
-        const weekdayString = translation.days[weekday];
-
         return _.flatMap(values, (amount, hour) => {
           return {
-            x: weekdayString.slice(0, 2),
+            x: translation.days[weekday],
             y: +hour,
             size: +amount
           };
