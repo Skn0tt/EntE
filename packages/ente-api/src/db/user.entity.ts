@@ -77,14 +77,14 @@ export class User {
    */
   @ManyToMany(type => User, user => user.parents)
   @JoinTable()
-  children: User[];
+  children?: User[];
 
   @ManyToMany(type => User, user => user.children)
-  parents: User[];
+  parents?: User[];
 
   @OneToMany(type => Entry, entry => entry.student)
-  entries: Entry[];
+  entries?: Entry[];
 
   @OneToMany(type => Slot, slot => slot.teacher)
-  slots: Slot[];
+  slots?: Slot[];
 }

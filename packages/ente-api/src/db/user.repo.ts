@@ -437,7 +437,7 @@ export class UserRepo {
       return None();
     }
 
-    return Some(user.parents.map(p => UserRepo.toDto(p)));
+    return Some(user.parents!.map(p => UserRepo.toDto(p)));
   }
 
   async delete(id: string) {
@@ -446,18 +446,25 @@ export class UserRepo {
 
   static toDto(user: User): UserDto {
     const result = new UserDto();
+
     result.id = user._id;
 
-    result.children =
-      user.role === Roles.PARENT
-        ? user.children.map(c => UserRepo.toDto(c))
-        : [];
+    result.children = (() => {
+      if (user.role === Roles.PARENT) {
+        return user.children!.map(c => UserRepo.toDto(c));
+      } else {
+        return [];
+      }
+    })();
+
     result.displayname = user.displayname;
     result.email = user.email;
-    result.birthday = user.birthday || undefined;
+    result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;
     result.role = user.role;
     result.username = user.username;
-    result.graduationYear = user.graduationYear || undefined;
+    result.graduationYear = roleHasGraduationYear(user.role)
+      ? user.graduationYear!
+      : undefined;
     result.language = user.language;
 
     return result;

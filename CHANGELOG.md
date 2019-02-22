@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Fatal bug that prohibited login ([#247](https://gitlab.com/Skn0tt/EntE/issues/247))
 - Changed: Only send invitation emails to users without password specified (on import)
 
 ## [v0.17.2] - 2019-02-19
