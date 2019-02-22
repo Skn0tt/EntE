@@ -99,10 +99,22 @@ export const absentHoursByTeacher = (
   );
 };
 
+export const weekdayOfDate = (date: string): Weekday => {
+  const weekday = getDay(date);
+
+  const isSunday = weekday === 0;
+
+  if (isSunday) {
+    // ISO 8601: Monday is start of the week;
+    return Weekday.SUNDAY;
+  }
+
+  return weekday;
+};
+
 export const weekdayOfSlot = (slot: SlotN): Weekday => {
   const timestamp = slot.get("date");
-  const weekday = getDay(timestamp) + 1; // ISO 8601: Monday is start of the week;
-  return weekday;
+  return weekdayOfDate(timestamp);
 };
 
 export const slotsByWeekDay = (slots: SlotN[]): Record<Weekday, SlotN[]> => {
