@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.17.3] - 2019-02-22
+
 - Fixed: Fatal bug that prohibited login ([#247](https://gitlab.com/Skn0tt/EntE/issues/247))
 - Changed: Only send invitation emails to users without password specified (on import)
 - Fixed: Sunday is now 7th day of the week (see ISO 8601). This fixes a gnarly crash on the reports page
