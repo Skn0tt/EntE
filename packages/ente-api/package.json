@@ -12,7 +12,6 @@
   },
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "start:watch": "nodemon --watch '../../packages/**/src/**/*.ts' --exec 'yarn start'",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -67,7 +66,6 @@
     "@types/redis": "^2.8.7",
     "@types/supertest": "^2.0.5",
     "jest": "^23.5.0",
-    "nodemon": "^1.18.7",
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
     "supertest": "^3.1.0",
