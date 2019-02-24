@@ -185,8 +185,16 @@ const ImportUsersDialog: React.FunctionComponent<
       users.forEach(dtos =>
         importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
       );
+      onClose();
     },
-    [users, importUsers, deleteEntries, deleteUsers, deleteStudentsAndParents]
+    [
+      users,
+      importUsers,
+      deleteEntries,
+      deleteUsers,
+      deleteStudentsAndParents,
+      onClose
+    ]
   );
 
   const inputIsValid = users.isSome();
