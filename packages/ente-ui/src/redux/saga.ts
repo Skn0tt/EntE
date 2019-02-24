@@ -93,9 +93,7 @@ import {
   CreateEntryDto,
   CreateUserDto,
   PatchUserDto,
-  getByLanguage,
-  Languages,
-  DEFAULT_LANGUAGE
+  Languages
 } from "ente-types";
 import { Maybe } from "monet";
 import { getConfig } from "./config";

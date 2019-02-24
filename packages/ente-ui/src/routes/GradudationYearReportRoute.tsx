@@ -20,10 +20,10 @@ import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { Map } from "immutable";
 import { Reporting } from "../reporting/reporting";
 import { RouteComponentProps } from "react-router";
-import { NotFound } from "./NotFound";
 import { DropdownInput } from "../elements/DropdownInput";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { Center } from "../components/Center";
 
 const useStyles = makeStyles({
   padding: {
@@ -40,7 +40,8 @@ const useTranslation = makeTranslationHook({
       unexcusedAbsentHours: "Unexcused absent hours",
       hourRate: "Hour rate"
     },
-    year: "Graduation year"
+    year: "Graduation year",
+    noUsers: "No users found."
   },
   de: {
     headers: {
@@ -50,7 +51,8 @@ const useTranslation = makeTranslationHook({
       unexcusedAbsentHours: "Unentschuldigte Fehlstunden",
       hourRate: "Stundenrate"
     },
-    year: "Jahrgangsstufe"
+    year: "Jahrgangsstufe",
+    noUsers: "Keine Nutzer*innen gefunden."
   }
 });
 
@@ -139,7 +141,11 @@ const GraduationYearReportRoute: React.FC<
   );
 
   return usersOfGradYear.cata(
-    () => <NotFound />,
+    () => (
+      <Center>
+        <Typography>{translation.noUsers}</Typography>
+      </Center>
+    ),
     users => (
       <Grid container direction="column" spacing={16}>
         {ownRole === Roles.ADMIN && (
