@@ -13,6 +13,8 @@ import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
 import { EntryDeletedNotification } from "../templates/EntryDeletedNotification";
 import { SignRequest } from "../templates/SignRequest";
 import { InvitationLink } from "../templates/InvitationLink";
+import { ManagerSignedInformation } from "../templates/ManagerSignedInformation";
+import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformation";
 
 @Injectable()
 export class EmailService {
@@ -62,6 +64,55 @@ export class EmailService {
             recipient.username,
             recipient.email
           ])}`
+        );
+      })
+    );
+  }
+
+  async dispatchManagerSignedInformation(link: string, recipients: UserDto[]) {
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await ManagerSignedInformation(
+          link,
+          recipient.language
+        );
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched ManagerSignedInformation to ${JSON.stringify(
+            [recipient.username, recipient.email]
+          )}`
+        );
+      })
+    );
+  }
+
+  async dispatchManagerUnsignedInformation(
+    link: string,
+    recipients: UserDto[]
+  ) {
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await ManagerUnsignedInformation(
+          link,
+          recipient.language
+        );
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched ManagerUnsignedInformation to ${JSON.stringify(
+            [recipient.username, recipient.email]
+          )}`
         );
       })
     );

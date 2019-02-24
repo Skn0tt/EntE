@@ -247,11 +247,37 @@ export class EntriesService {
           return Fail(PatchEntryFailure.ForbiddenForUser);
         }
 
-        await this.entryRepo.setSignedManager(id, patch.signed);
-        entry.some().signedManager = patch.signed;
+        await this.entryRepo.setSignedManager(id, patch.signed!);
+        entry.some().signedManager = patch.signed!;
+
+        const dispatchSignedInfoEmail = async (signed: boolean) => {
+          const entryStudent = entry.some().student;
+          const parentsOfStudent = userIsAdult(entryStudent)
+            ? []
+            : (await this.userRepo.getParentsOfUser(entryStudent.id)).some();
+
+          const recipients = [entryStudent, ...parentsOfStudent];
+
+          const link = this.getSigningLinkForEntry(entry.some());
+
+          if (signed) {
+            await this.emailService.dispatchManagerSignedInformation(
+              link,
+              recipients
+            );
+          } else {
+            await this.emailService.dispatchManagerUnsignedInformation(
+              link,
+              recipients
+            );
+          }
+        };
+
+        await dispatchSignedInfoEmail(patch.signed!);
       } else {
-        const isTrue = patch.signed === true;
-        if (!isTrue) {
+        const isTrueBecauseOnlyManagersCanRemoveSignature =
+          patch.signed === true;
+        if (!isTrueBecauseOnlyManagersCanRemoveSignature) {
           return Fail(PatchEntryFailure.IllegalPatch);
         }
 
