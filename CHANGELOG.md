@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added: Excel export now contains a JSON field about the entry reason
 - Changed: Close the import dialog after importing
 - Changed: When an entry is signed/unsigned, EntE now sends students and parents a notification email
 - Changed: When an entry is deleted, EntE now sends you a notification email

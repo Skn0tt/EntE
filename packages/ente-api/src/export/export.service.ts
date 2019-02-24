@@ -3,7 +3,7 @@ import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
 import { Roles, dateToIsoString } from "ente-types";
-import { Fail, Validation, Success, None } from "monet";
+import { Fail, Validation, Success, None, Maybe } from "monet";
 import { Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 
@@ -72,6 +72,7 @@ export class ExportService {
           "username",
           "forSchool",
           "createdAt",
+          "reason",
           "signedManager",
           "signedParent",
           "slots..."
@@ -83,6 +84,7 @@ export class ExportService {
           e.student.username,
           "" + e.forSchool,
           e.createdAt.toISOString(),
+          !!e.reason ? JSON.stringify(e.reason) : "",
           "" + e.signedManager,
           "" + e.signedParent,
           ...e.slots.map(
