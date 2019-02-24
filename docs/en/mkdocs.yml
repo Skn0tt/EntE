@@ -1,7 +1,7 @@
 site_name: EntE
-site_url_de: https://skn0tt.gitlab.io/ente/docs/de/
-site_url_en: https://skn0tt.gitlab.io/ente/docs/
-site_url: https://skn0tt.gitlab.io/ente/docs/
+site_url_de: https://skn0tt.gitlab.io/EntE/docs/de/
+site_url_en: https://skn0tt.gitlab.io/EntE/docs/
+site_url: https://skn0tt.gitlab.io/EntE/docs/
 repo_url: https://gitlab.com/skn0tt/EntE/
 repo_name: Gitlab
 use_directory_urls: false
