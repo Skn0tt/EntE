@@ -6,10 +6,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Slot } from "./slot.entity";
 import { Entry } from "./entry.entity";
+import { KeyValueStore } from "./keyvaluestore.entity";
+import { KeyValueStoreRepo } from "./keyvaluestore.repo";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Slot, Entry])],
-  providers: [EntryRepo, UserRepo, SlotRepo],
-  exports: [EntryRepo, UserRepo, SlotRepo]
+  imports: [TypeOrmModule.forFeature([User, Slot, Entry, KeyValueStore])],
+  providers: [EntryRepo, UserRepo, SlotRepo, KeyValueStoreRepo],
+  exports: [EntryRepo, UserRepo, SlotRepo, KeyValueStoreRepo]
 })
 export class DbModule {}

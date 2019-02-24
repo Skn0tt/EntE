@@ -32,7 +32,7 @@ export class InstanceConfigController {
   }
 
   @Get("loginBanners")
-  async getLoginBanners(): Promise<Record<Languages, string | undefined>> {
+  async getLoginBanners(): Promise<Record<Languages, string | null>> {
     return await this.instanceConfigService.getLoginBanners();
   }
 

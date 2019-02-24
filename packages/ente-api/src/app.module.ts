@@ -20,6 +20,7 @@ import { DevModule } from "./dev/dev.module";
 import { InstanceModule } from "./instance/instance.module";
 import { InstanceConfigModule } from "./instance-config/instance-config.module";
 import { LoginModule } from "./login/login.module";
+import { KeyValueStore } from "./db/keyvaluestore.entity";
 
 const {
   database,
@@ -45,7 +46,7 @@ const isDevMode = Config.isDevMode();
       database,
       timezone,
       dateStrings: ["DATE"],
-      entities: [User, Slot, Entry],
+      entities: [User, Slot, Entry, KeyValueStore],
       synchronize: false,
       logger: new CustomTypeOrmLogger(),
       logging: "all"
