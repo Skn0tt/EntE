@@ -50,49 +50,34 @@
         }
       </style>
       <script>
-        const baseUrl = "{{ config.site_url }}";
+        const baseUrlEnglish = "{{ config.site_url_en }}";
+        const baseUrlGerman = "{{ config.site_url_de }}";
+
+        const currentLanguage = "{{ config.theme.language }}";
+        const currentBaseUrl =
+          currentLanguage === "de" ? baseUrlGerman : baseUrlEnglish;
 
         function getPath() {
           const href = window.location.href;
-          const path = href.replace(baseUrl, "");
+          const path = href.replace(currentBaseUrl, "");
           return path;
         }
 
-        function getLanguage() {
-          const lang = getPath().split("/")[0];
-          if (lang.length === 0 || lang.length > 2) {
-            return "en";
-          }
-          return lang;
-        }
+        const currentPath = getPath();
 
-        const currentLang = getLanguage();
-
-        function getLanguagePrefix(lang) {
-          if (lang === "en") {
-            return "";
+        function getPathForLanguage(lang) {
+          if (lang === "de") {
+            return `${baseUrlGerman}${currentPath}`;
           }
-          return `/${lang}`;
-        }
 
-        function updatePathname(pathname, lang) {
-          if (currentLang !== "en") {
-            const parts = pathname.split("/");
-            parts.shift();
-            parts.shift();
-            pathname = `/${parts.join("/")}`;
-          }
-          return `${getLanguagePrefix(lang)}${pathname}`;
+          return `${baseUrlEnglish}${currentPath}`;
         }
 
         function setLanguage(sel) {
-          if (sel.value === currentLang) {
+          if (sel.value === currentLanguage) {
             return;
           }
-          window.location.pathname = updatePathname(
-            window.location.pathname,
-            sel.value
-          );
+          window.location.href = getPathForLanguage(sel.value);
         }
       </script>
 
@@ -119,7 +104,7 @@
         const options = sel.options;
         for (let i = 0; i < options.length; i++) {
           const option = options[i];
-          if (option.value === currentLang) {
+          if (option.value === currentLanguage) {
             sel.selectedIndex = i;
           }
         }
