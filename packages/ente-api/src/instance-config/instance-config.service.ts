@@ -10,6 +10,7 @@ import {
 import * as _ from "lodash";
 import { Maybe, Validation, Success, Fail } from "monet";
 import { RequestContextUser } from "../helpers/request-context";
+import { KeyValueStoreRepo } from "../db/keyvaluestore.repo";
 
 export enum SetInstanceConfigValueFail {
   ForbiddenForRole
@@ -23,19 +24,47 @@ const INSTANCE_CONFIG_REDIS_KEYS = {
 @Injectable()
 export class InstanceConfigService implements OnModuleInit {
   constructor(
+    @Inject(KeyValueStoreRepo)
+    private readonly keyValueStoreRepo: KeyValueStoreRepo,
     @Inject(RedisService)
     private readonly redisService: RedisService
   ) {}
 
   async onModuleInit() {
-    await this.redisService.setIfNotExists(
+    // TODO: Remove in next release, this is to migrate data from redis to sql
+
+    const defaultLanguage = await this.redisService.get(
+      INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE
+    );
+    if (defaultLanguage.isSome()) {
+      this.keyValueStoreRepo.set(
+        INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
+        defaultLanguage.some()
+      );
+    }
+
+    for (const language of languagesArr) {
+      const banner = await this.redisService.get(
+        INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language)
+      );
+      if (banner.isSome()) {
+        this.keyValueStoreRepo.set(
+          INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language),
+          banner.some()
+        );
+      }
+    }
+
+    //
+
+    await this.keyValueStoreRepo.setIfNotExists(
       INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
       DEFAULT_LANGUAGE
     );
   }
 
   async getInstanceConfig(): Promise<InstanceConfigDto> {
-    const values = await this.redisService.getMultiple(
+    const values = await this.keyValueStoreRepo.getMultiple(
       INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
       ...languagesArr.map(INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER)
     );
@@ -43,41 +72,42 @@ export class InstanceConfigService implements OnModuleInit {
     const loginBanners = _.fromPairs(
       languagesArr.map(language => {
         const value = values[INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language)];
-        return [language, value] as [Languages, string | null];
+        return [language, value.orNull()] as [Languages, string | null];
       })
     ) as Record<Languages, string | null>;
 
+    const defaultLanguage = (values[
+      INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE
+    ] as Maybe<Languages>).orSome(DEFAULT_LANGUAGE);
+
     return {
-      defaultLanguage:
-        (values[INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE] as
-          | Languages
-          | undefined) || DEFAULT_LANGUAGE,
+      defaultLanguage,
       loginBanners
     };
   }
 
-  async getLoginBanners(): Promise<Record<Languages, string | undefined>> {
-    const values = await this.redisService.getMultiple(
+  async getLoginBanners(): Promise<Record<Languages, string | null>> {
+    const values = await this.keyValueStoreRepo.getMultiple(
       ...languagesArr.map(INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER)
     );
 
     const loginBanners = _.fromPairs(
       languagesArr.map(language => {
         const value = values[INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language)];
-        return [language, value] as [Languages, string | undefined];
+        return [language, value.orNull()] as [Languages, string | null];
       })
-    ) as Record<Languages, string | undefined>;
+    ) as Record<Languages, string | null>;
 
     return loginBanners;
   }
 
   async getLoginBannerForLanguage(lang: Languages): Promise<Maybe<string>> {
     const key = INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(lang);
-    return await this.redisService.get(key);
+    return await this.keyValueStoreRepo.get(key);
   }
 
   async getDefaultLanguage(): Promise<Languages> {
-    const value = await this.redisService.get<Languages>(
+    const value = await this.keyValueStoreRepo.get<Languages>(
       INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE
     );
     return value.orSome(DEFAULT_LANGUAGE);
@@ -91,7 +121,7 @@ export class InstanceConfigService implements OnModuleInit {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 
-    await this.redisService.set(
+    await this.keyValueStoreRepo.set(
       INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
       lang
     );
@@ -109,9 +139,9 @@ export class InstanceConfigService implements OnModuleInit {
 
     const key = INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(lang);
     if (_.isNull(bannerText)) {
-      await this.redisService.remove(key);
+      await this.keyValueStoreRepo.remove(key);
     } else {
-      await this.redisService.set(key, bannerText);
+      await this.keyValueStoreRepo.set(key, bannerText);
     }
 
     return Success<SetInstanceConfigValueFail, true>(true);
