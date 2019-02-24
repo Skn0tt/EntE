@@ -136,7 +136,8 @@ generate:docs:
   script: "./scripts/ci/generate_docs.sh"
   artifacts:
     paths:
-      - site/
+      - docs/en/site/
+      - docs/de/site/
 
 generate:allure:
   image: skn0tt/allure
@@ -172,10 +173,12 @@ pages:
     GIT_STRATEGY: none
   script:
     - mkdir .public
-    - mkdir .public/coverage .public/allure-report .public/docs
+    - mkdir .public/coverage .public/allure-report .public/docs .public/docs/de
     - cp -R assets/pages/dist/* .public/
     - cp -R coverage/lcov-report/* .public/coverage/
-    - cp -R site/* .public/docs/
+    - cp -R docs/en/site/* .public/docs/
+    - cp -R docs/en/site/* .public/docs/en/
+    - cp -R docs/de/site/* .public/docs/de/
     - cp -R allure-report/* .public/allure-report/
     - mv .public public
   artifacts:
