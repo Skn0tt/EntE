@@ -23,7 +23,12 @@ import {
 import "typeface-roboto";
 
 import theme from "./theme";
-import setupRedux, { ReduxConfig } from "./redux";
+import setupRedux, {
+  ReduxConfig,
+  AppState,
+  updateConfig,
+  getLanguage
+} from "./redux";
 import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
@@ -33,6 +38,9 @@ import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
 import { StoreContext } from "./helpers/store-context";
+import { Store } from "redux";
+import { DEFAULT_LANGUAGE } from "ente-types";
+import { getSagaListeners } from "./saga-listeners";
 
 installMuiStyles();
 
@@ -79,8 +87,18 @@ if (!!SENTRY_DSN) {
   setupSentry(SENTRY_DSN);
 }
 
+const setupSagaListeners = (store: Store<AppState>) => {
+  const getLanguageOfStore = () => {
+    return getLanguage(store.getState()).orSome(DEFAULT_LANGUAGE);
+  };
+  const sagaListeners = getSagaListeners(getLanguageOfStore);
+  updateConfig(sagaListeners);
+};
+
 const bootstrap = async () => {
   const store = await setupRedux(config);
+
+  setupSagaListeners(store);
 
   const Index = () => (
     <div>

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Changed: Close the import dialog after importing
+- Changed: When an entry is signed/unsigned, EntE now sends students and parents a notification email
+- Changed: When an entry is deleted, EntE now sends you a notification email
 - Changed: Now Invitation links are tailored to the role of the receiving user ([#249](https://gitlab.com/Skn0tt/EntE/issues/249))
 - Changed: Instanceconfig data is now stored in the SQL database, not in Redis. This enables it to be included in SQL backups ([#233](https://gitlab.com/Skn0tt/EntE/issues/233))
 

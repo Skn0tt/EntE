@@ -93,48 +93,16 @@ import {
   CreateEntryDto,
   CreateUserDto,
   PatchUserDto,
-  getByLanguage,
-  Languages,
-  DEFAULT_LANGUAGE
+  Languages
 } from "ente-types";
 import { Maybe } from "monet";
-import { addMessages } from "../context/Messages";
-
-const translation = getByLanguage({
-  en: {
-    requestError: "Request failed.",
-    signingError: "Signing failed.",
-    invalidCredentials: "Wrong credentials.",
-    resetPassword: {
-      success: "You will receive an email shortly."
-    },
-    setPassword: {
-      success: "Successfully set password.",
-      error: "Failure resetting password."
-    }
-  },
-  de: {
-    requestError: "Anfrage fehlgeschlagen.",
-    signingError: "Unterschrift fehlgeschlagen.",
-    invalidCredentials: "Anmeldedaten sind ungültig.",
-    resetPassword: {
-      success: "Sie erhalten in kürze eine Email."
-    },
-    setPassword: {
-      success: "Passwort erfolgreich gesetzt.",
-      error: "Passwort konnte nicht zurückgesetzt werden."
-    }
-  }
-});
+import { getConfig } from "./config";
 
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
 
-function* getLanguage() {
-  const language: Maybe<Languages> = yield select(selectors.getLanguage);
-  return language.orSome(DEFAULT_LANGUAGE);
-}
+const onRequestError = (error: Error) => getConfig().onRequestError(error);
 
 function* loginSaga(action: Action<BasicCredentials>) {
   try {
@@ -146,8 +114,7 @@ function* loginSaga(action: Action<BasicCredentials>) {
     yield dispatchUpdates(apiResponse);
     yield put(loginSuccess(authState, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).invalidCredentials);
+    getConfig().onLoginFailedInvalidCredentials();
     yield put(loginError(error, action));
   }
 }
@@ -159,8 +126,7 @@ function* refreshTokenSaga(action: Action<void>) {
 
     yield put(refreshTokenSuccess(authState, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(refreshTokenError(error, action));
     yield put(logout());
   }
@@ -197,8 +163,7 @@ function* getEntrySaga(action: Action<string>) {
     yield put(getEntrySuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(getEntryError(error, action));
   }
 }
@@ -209,9 +174,10 @@ function* deleteUserSaga(action: Action<string>) {
     yield call(api.deleteUser, action.payload!, token.some());
 
     yield put(deleteUserSuccess(action.payload, action));
+
+    getConfig().onUserDeleted(action.payload!);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(deleteUserError(error, action));
   }
 }
@@ -222,9 +188,10 @@ function* deleteEntrySaga(action: Action<string>) {
     yield call(api.deleteEntry, action.payload!, token.some());
 
     yield put(deleteEntrySuccess(action.payload, action));
+
+    getConfig().onEntryDeleted(action.payload!);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(deleteEntryError(error, action));
   }
 }
@@ -237,8 +204,7 @@ function* getEntriesSaga(action: Action<void>) {
     yield put(getEntriesSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(getEntriesError(error, action));
   }
 }
@@ -251,8 +217,7 @@ function* getSlotsSaga(action: Action<void>) {
     yield put(getSlotsSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(getSlotsError(error, action));
   }
 }
@@ -265,8 +230,7 @@ function* getUserSaga(action: Action<string>) {
     yield put(getUserSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(getUserError(error, action));
   }
 }
@@ -279,8 +243,7 @@ function* getUsersSaga(action: Action<void>) {
     yield put(getUsersSuccess(action));
     yield dispatchUpdates(result);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(getUsersError(error, action));
   }
 }
@@ -292,6 +255,8 @@ function* createEntrySaga(action: Action<CreateEntryDto>) {
 
     yield put(createEntrySuccess(action));
     yield dispatchUpdates(result);
+
+    getConfig().onEntryCreated(action.payload!);
   } catch (error) {
     yield put(createEntryError(error, action));
   }
@@ -305,11 +270,10 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
     yield dispatchUpdates(result);
     yield put(createUsersSuccess(action));
 
-    return;
+    getConfig().onUsersCreated(action.payload!);
   } catch (error) {
-    const ex: Error = error;
-    addMessages(ex.message);
-    yield put(createUsersError(ex, action));
+    onRequestError(error);
+    yield put(createUsersError(error, action));
   }
 }
 
@@ -347,11 +311,10 @@ function* importUsersSaga(action: Action<ImportUsersRequestPayload>) {
 
     yield put(importUsersSuccess(result, action));
 
-    return;
+    getConfig().onImportSuccessful(action.payload!);
   } catch (error) {
-    const ex: Error = error;
-    addMessages(ex.message);
-    yield put(importUsersError(ex, action));
+    onRequestError(error);
+    yield put(importUsersError(error, action));
   }
 }
 
@@ -367,7 +330,10 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
 
     yield put(updateUserSuccess(action));
     yield dispatchUpdates(result);
+
+    getConfig().onUserUpdated(action.payload![1]);
   } catch (error) {
+    onRequestError(error);
     yield put(updateUserError(error, action));
   }
 }
@@ -379,9 +345,9 @@ function* signEntrySaga(action: Action<string>) {
 
     yield put(signEntrySuccess(action));
     yield dispatchUpdates(result);
+    getConfig().onSignedEntry(action.payload!);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).signingError);
+    getConfig().onSigningError(error);
     yield put(signEntryError(error, action));
   }
 }
@@ -393,9 +359,9 @@ function* unsignEntrySaga(action: Action<string>) {
 
     yield put(unsignEntrySuccess(action));
     yield dispatchUpdates(result);
+    getConfig().onUnsignedEntry(action.payload!);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).signingError);
+    getConfig().onSigningError(error);
     yield put(unsignEntryError(error, action));
   }
 }
@@ -404,12 +370,10 @@ function* resetPasswordSaga(action: Action<string>) {
   try {
     const result = yield call(api.resetPassword, action.payload!);
 
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).resetPassword.success);
     yield put(resetPasswordSuccess(result, action));
+    getConfig().onPasswordResetRequested(action.payload!);
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(resetPasswordError(error, action));
   }
 }
@@ -422,12 +386,10 @@ function* setPasswordSaga(action: Action<INewPassword>) {
       action.payload!.newPassword
     );
 
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).setPassword.success);
+    getConfig().onSetPasswordSuccess();
     yield put(setPasswordSuccess(result, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).setPassword.error);
+    getConfig().onSetPasswordError(error);
     yield put(setPasswordError(error, action));
   }
 }
@@ -440,8 +402,7 @@ function* fetchInstanceConfigSaga(action: Action<void>) {
 
     yield put(fetchInstanceConfigSuccess(result, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(fetchInstanceConfigError(error, action));
   }
 }
@@ -453,8 +414,7 @@ function* setDefaultLanguageSaga(action: Action<Languages>) {
 
     yield put(setDefaultLanguageSuccess(action.payload, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(setDefaultLanguageError(error, action));
   }
 }
@@ -471,8 +431,7 @@ function* setLoginBannerSaga(action: Action<SetLoginBannerRequestPayload>) {
 
     yield put(setLoginBannerSuccess(action.payload, action));
   } catch (error) {
-    const language: Languages = yield getLanguage();
-    addMessages(translation(language).requestError);
+    onRequestError(error);
     yield put(setLoginBannerError(error, action));
   }
 }
@@ -483,7 +442,7 @@ function* syncLanguageSaga(action: Action<Languages>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     yield call(api.setLanguage, userId.some(), action.payload!, token.some());
   } catch (error) {
-    console.error(error);
+    getConfig().onSyncingLanguageError(error);
   }
 }
 

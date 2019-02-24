@@ -8,7 +8,6 @@ services:
   api:
     ports:
       - 5555:5555
-    command: yarn --cwd packages/ente-api start:watch
     volumes:
       - ${PWD}/packages/ente-api/src:/usr/src/app/packages/ente-api/src
       - ${PWD}/packages/ente-types/src:/usr/src/app/packages/ente-types/src
