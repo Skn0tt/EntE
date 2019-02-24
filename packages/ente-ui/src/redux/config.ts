@@ -3,11 +3,7 @@ import { asyncLocalStorage } from "redux-persist/storages";
 import { CreateEntryDto, CreateUserDto, PatchUserDto } from "ente-types";
 import { ImportUsersRequestPayload } from "./actions";
 
-export type ReduxConfig = {
-  baseUrl: string;
-  middlewares: Middleware[];
-  onSagaError: (err: Error) => void;
-  onFileDownload: (file: Blob, filename: string) => void;
+export type SagaListeners = {
   onImportSuccessful: (payload: ImportUsersRequestPayload) => void;
   onUsersCreated: (users: CreateUserDto[]) => void;
   onUserUpdated: (patch: PatchUserDto) => void;
@@ -24,8 +20,15 @@ export type ReduxConfig = {
   onSetPasswordError: (error: Error) => void;
   onSetPasswordSuccess: () => void;
   onSyncingLanguageError: (error: Error) => void;
-  storage: any;
+  onSagaError: (err: Error) => void;
 };
+
+export type ReduxConfig = {
+  onFileDownload: (file: Blob, filename: string) => void;
+  baseUrl: string;
+  middlewares: Middleware[];
+  storage: any;
+} & SagaListeners;
 
 const ignore = () => {};
 

@@ -100,43 +100,11 @@ import {
 import { Maybe } from "monet";
 import { getConfig } from "./config";
 
-const translation = getByLanguage({
-  en: {
-    requestError: "Request failed.",
-    signingError: "Signing failed.",
-    invalidCredentials: "Wrong credentials.",
-    resetPassword: {
-      success: "You will receive an email shortly."
-    },
-    setPassword: {
-      success: "Successfully set password.",
-      error: "Failure resetting password."
-    }
-  },
-  de: {
-    requestError: "Anfrage fehlgeschlagen.",
-    signingError: "Unterschrift fehlgeschlagen.",
-    invalidCredentials: "Anmeldedaten sind ungültig.",
-    resetPassword: {
-      success: "Sie erhalten in kürze eine Email."
-    },
-    setPassword: {
-      success: "Passwort erfolgreich gesetzt.",
-      error: "Passwort konnte nicht zurückgesetzt werden."
-    }
-  }
-});
-
 function* dispatchUpdates(data: APIResponse) {
   yield put(addResponse(data));
 }
 
 const onRequestError = (error: Error) => getConfig().onRequestError(error);
-
-function* getLanguage() {
-  const language: Maybe<Languages> = yield select(selectors.getLanguage);
-  return language.orSome(DEFAULT_LANGUAGE);
-}
 
 function* loginSaga(action: Action<BasicCredentials>) {
   try {
