@@ -3,13 +3,14 @@ import {
   WeeklySummaryRowData,
   WeeklySummary
 } from "../templates/WeeklySummary";
-import { UserDto, SlotDto } from "ente-types";
+import { UserDto, SlotDto, EntryDto } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { NodemailerService } from "../infrastructure/nodemailer.service";
 import { EmailTransportService } from "../infrastructure/email-transport.service";
 import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";
 import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
+import { EntryDeletedNotification } from "../templates/EntryDeletedNotification";
 import { SignRequest } from "../templates/SignRequest";
 import { InvitationLink } from "../templates/InvitationLink";
 
@@ -58,6 +59,34 @@ export class EmailService {
         });
         this.logger.log(
           `Successfully dispatched SignedInformation to ${JSON.stringify([
+            recipient.username,
+            recipient.email
+          ])}`
+        );
+      })
+    );
+  }
+
+  async dispatchEntryDeletedNotification(
+    entry: EntryDto,
+    recipients: UserDto[]
+  ) {
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await EntryDeletedNotification(
+          entry,
+          recipient,
+          recipient.language
+        );
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched EntryDeletedInformation to ${JSON.stringify([
             recipient.username,
             recipient.email
           ])}`

@@ -294,6 +294,20 @@ export class EntriesService {
 
     await this.entryRepo.delete(id);
 
+    entryV.forEach(async entry => {
+      const recipients = [entry.student];
+
+      if (!userIsAdult(entry.student)) {
+        const parents = await this.userRepo.getParentsOfUser(entry.student.id);
+        parents.forEach(parents => recipients.push(...parents));
+      }
+
+      await this.emailService.dispatchEntryDeletedNotification(
+        entry,
+        recipients
+      );
+    });
+
     return Success(entryV.success());
   }
 
