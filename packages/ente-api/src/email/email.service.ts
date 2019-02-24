@@ -87,7 +87,11 @@ export class EmailService {
   }
 
   async dispatchInvitationLink(link: string, user: UserDto) {
-    const { subject, html } = await InvitationLink(link, user.language);
+    const { subject, html } = await InvitationLink(
+      link,
+      user.role,
+      user.language
+    );
     await this.emailTransport.sendMail({
       recipients: [user.email],
       body: {
