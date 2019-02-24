@@ -16,7 +16,7 @@ Each user has different properties that need to be set:
 - children
 - graduationYear
 
-If `password` is left blank, a password reset will be invoked for the user so they can set their password themselves.
+If `password` is left blank, the user receives an invitation mail so they can set their password themselves.
 
 `children` should contain a list of the usernames of that users children, separated by colons.
 If the user doesn't have any children, leave the field blank.

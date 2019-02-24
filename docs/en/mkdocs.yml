@@ -1,10 +1,16 @@
 site_name: EntE
+site_url: https://skn0tt.gitlab.io/ente/docs/
 repo_url: https://gitlab.com/skn0tt/EntE/
 repo_name: Gitlab
 use_directory_urls: false
+docs_dir: content
+site_dir: site
 theme:
-  name: 'material'
-  custom_dir: docs/theme_customizations/
+  name: "material"
+  custom_dir: ../theme_customizations/
+  language: "en"
+  palette:
+    primary: "blue"
 markdown_extensions:
   - pymdownx.superfences:
       custom_fences:

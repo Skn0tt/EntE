@@ -25,6 +25,5 @@ A small overview:
 
 The most important packages are `ente-api` and `ente-ui`, most of the logic is in there.
 
-To start a local dev environment, build all images with `make build-docker` and start them with `docker-compose up -d`.
-For a quick feedback cycle, you can mount your sources into the container with `make dev`.
-When working on the UI, make sure to run `yarn start` in there to start the bundler.
+To start a local dev environment, build all images with `make build-docker` and start them with `./scripts/dev/start.sh`.
+When working on the UI, make sure to run `yarn watch` in `/packages/ente-ui` to start the bundler.
