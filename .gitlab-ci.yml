@@ -173,7 +173,7 @@ pages:
     GIT_STRATEGY: none
   script:
     - mkdir .public
-    - mkdir .public/coverage .public/allure-report .public/docs .public/docs/de
+    - mkdir .public/coverage .public/allure-report .public/docs .public/docs/de .public/docs/en
     - cp -R assets/pages/dist/* .public/
     - cp -R coverage/lcov-report/* .public/coverage/
     - cp -R docs/en/site/* .public/docs/
