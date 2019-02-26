@@ -10,7 +10,8 @@ import {
   roleHasGraduationYear,
   roleHasChildren,
   roleHasBirthday,
-  Languages
+  Languages,
+  ROLES_WITH_GRADUATION_YEAR
 } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
@@ -120,6 +121,7 @@ export class UserRepo {
   async findByGraduationYear(year: number): Promise<UserDto[]> {
     const users = await this._userQuery()
       .where("user.graduationYear = :year", { year })
+      .andWhere("user.role IN (:roles)", { roles: ROLES_WITH_GRADUATION_YEAR })
       .getMany();
 
     return users.map(u => UserRepo.toDto(u));
