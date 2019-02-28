@@ -1,5 +1,4 @@
 import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
-import { RedisService } from "../infrastructure/redis.service";
 import {
   InstanceConfigDto,
   Languages,
@@ -25,38 +24,10 @@ const INSTANCE_CONFIG_REDIS_KEYS = {
 export class InstanceConfigService implements OnModuleInit {
   constructor(
     @Inject(KeyValueStoreRepo)
-    private readonly keyValueStoreRepo: KeyValueStoreRepo,
-    @Inject(RedisService)
-    private readonly redisService: RedisService
+    private readonly keyValueStoreRepo: KeyValueStoreRepo
   ) {}
 
   async onModuleInit() {
-    // TODO: Remove in next release, this is to migrate data from redis to sql
-
-    const defaultLanguage = await this.redisService.get(
-      INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE
-    );
-    if (defaultLanguage.isSome()) {
-      this.keyValueStoreRepo.set(
-        INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
-        defaultLanguage.some()
-      );
-    }
-
-    for (const language of languagesArr) {
-      const banner = await this.redisService.get(
-        INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language)
-      );
-      if (banner.isSome()) {
-        this.keyValueStoreRepo.set(
-          INSTANCE_CONFIG_REDIS_KEYS.LOGIN_BANNER(language),
-          banner.some()
-        );
-      }
-    }
-
-    //
-
     await this.keyValueStoreRepo.setIfNotExists(
       INSTANCE_CONFIG_REDIS_KEYS.DEFAULT_LANGUAGE,
       DEFAULT_LANGUAGE
