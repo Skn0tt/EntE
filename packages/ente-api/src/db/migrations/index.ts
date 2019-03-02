@@ -8,6 +8,7 @@ import { AddKeyValueStoreTable1551014417000 } from "./1551014417000-AddKeyValueS
 import { UseEnumType1551372175000 } from "./1551372175000-UseEnumType";
 import { MakeKeyValueStoreTextType1551372598000 } from "./1551372598000-MakeKeyValueStoreTextType";
 import { MakeKeyValueStoreNotNullable1551377199000 } from "./1551377199000-MakeKeyValueStoreNotNullable";
+import { RemoveInconsistentUserAttributes1551534415000 } from "./1551534415000-RemoveInconsistentUserAttributes";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -19,5 +20,6 @@ export const migrations = [
   AddKeyValueStoreTable1551014417000,
   UseEnumType1551372175000,
   MakeKeyValueStoreTextType1551372598000,
-  MakeKeyValueStoreNotNullable1551377199000
+  MakeKeyValueStoreNotNullable1551377199000,
+  RemoveInconsistentUserAttributes1551534415000
 ];
