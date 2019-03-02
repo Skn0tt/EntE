@@ -116,6 +116,96 @@ describe("CreateUserDtoValidator", () => {
     });
   });
 
+  describe("when passing a graduationYear to a", () => {
+    describe("student", () => {
+      it("returns true", () => {
+        expect(
+          CreateUserDtoValidator.validate({
+            children: [],
+            role: Roles.STUDENT,
+            displayname: "Herr Mann",
+            email: "herr@mann.de",
+            username: "herrmann",
+            birthday: "2000-01-01",
+            graduationYear: 2019
+          })
+        ).to.be.true;
+      });
+    });
+    describe("manager", () => {
+      it("returns true", () => {
+        expect(
+          CreateUserDtoValidator.validate({
+            children: [],
+            role: Roles.MANAGER,
+            displayname: "Herr Mann",
+            email: "herr@mann.de",
+            username: "herrmann",
+            graduationYear: 2019
+          })
+        ).to.be.true;
+      });
+    });
+    describe("parent", () => {
+      it("returns false", () => {
+        expect(
+          CreateUserDtoValidator.validate({
+            children: [],
+            role: Roles.PARENT,
+            displayname: "Herr Mann",
+            email: "herr@mann.de",
+            username: "herrmann",
+            graduationYear: 2019
+          })
+        ).to.be.false;
+      });
+    });
+    describe("teacher", () => {
+      it("returns false", () => {
+        expect(
+          CreateUserDtoValidator.validate({
+            children: [],
+            role: Roles.TEACHER,
+            displayname: "Herr Mann",
+            email: "herr@mann.de",
+            username: "herrmann",
+            graduationYear: 2019
+          })
+        ).to.be.false;
+      });
+    });
+  });
+
+  describe("when passing a birthday to a non-student", () => {
+    it("returns false", () => {
+      expect(
+        CreateUserDtoValidator.validate({
+          children: [],
+          role: Roles.TEACHER,
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
+          birthday: "2000-01-01"
+        })
+      ).to.be.false;
+    });
+  });
+
+  describe("when passing children to a non-parent", () => {
+    it("returns false", () => {
+      expect(
+        CreateUserDtoValidator.validate({
+          children: ["mychild"],
+          role: Roles.TEACHER,
+          displayname: "Herr Mann",
+          email: "herr@mann.de",
+          username: "herrmann",
+          birthday: "2000-01-01"
+        })
+      ).to.be.false;
+    });
+  });
+
   describe("when giving invalid infos", () => {
     it("invalid password", () => {
       expect(
