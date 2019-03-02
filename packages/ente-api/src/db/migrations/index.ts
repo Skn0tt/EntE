@@ -5,6 +5,9 @@ import { AlterEntryDatetimeColumnsToDate1545813658000 } from "./1545813658000-Al
 import { AddLanguageFieldToUser1545942329000 } from "./1545942329000-AddLanguageFieldToUser";
 import { AddEntryReason1546417592000 } from "./1546417592000-AddEntryReason";
 import { AddKeyValueStoreTable1551014417000 } from "./1551014417000-AddKeyValueStoreTable";
+import { UseEnumType1551372175000 } from "./1551372175000-UseEnumType";
+import { MakeKeyValueStoreTextType1551372598000 } from "./1551372598000-MakeKeyValueStoreTextType";
+import { MakeKeyValueStoreNotNullable1551377199000 } from "./1551377199000-MakeKeyValueStoreNotNullable";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -13,5 +16,8 @@ export const migrations = [
   AlterEntryDatetimeColumnsToDate1545813658000,
   AddLanguageFieldToUser1545942329000,
   AddEntryReason1546417592000,
-  AddKeyValueStoreTable1551014417000
+  AddKeyValueStoreTable1551014417000,
+  UseEnumType1551372175000,
+  MakeKeyValueStoreTextType1551372598000,
+  MakeKeyValueStoreNotNullable1551377199000
 ];
