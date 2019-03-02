@@ -1,14 +1,11 @@
-import {
-  EntryReasonCategory,
-  entryReasonCategoryArray
-} from "ente-types/src/dtos/entry-reason.dto";
+import { EntryReasonCategory, entryReasonCategoryArray } from "ente-types";
 import { Entity, Column, ManyToOne } from "typeorm";
 import { IsIn } from "class-validator";
 import { User } from "./user.entity";
 
 @Entity()
 export class EntryReason {
-  @Column("varchar", { nullable: true })
+  @Column("enum", { nullable: true, enum: EntryReasonCategory })
   @IsIn(entryReasonCategoryArray)
   category: EntryReasonCategory | null;
 

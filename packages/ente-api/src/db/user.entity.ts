@@ -58,7 +58,7 @@ export class User {
   @IsIn(languagesArr)
   language: Languages;
 
-  @Column("varchar", { length: 80 })
+  @Column("enum", { enum: Roles, nullable: false })
   @IsIn(rolesArr)
   role: Roles;
 

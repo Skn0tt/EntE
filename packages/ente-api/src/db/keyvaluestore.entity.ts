@@ -5,6 +5,6 @@ export class KeyValueStore {
   @PrimaryColumn("varchar")
   key: string;
 
-  @Column("varchar", { nullable: true })
-  value: string | null;
+  @Column("text", { nullable: false })
+  value: string;
 }

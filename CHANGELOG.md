@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed some datatypes in the database ([#257](https://gitlab.com/Skn0tt/EntE/issues/257))
+
 ## [v0.18.0] - 2019-02-27
 
 - Fixed: critical bug that prohibited manager login when the database is corrupted ([#247](https://gitlab.com/Skn0tt/EntE/issues/247))
