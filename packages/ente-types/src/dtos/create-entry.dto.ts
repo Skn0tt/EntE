@@ -1,5 +1,4 @@
 import {
-  IsBoolean,
   IsArray,
   ValidateNested,
   IsOptional,
@@ -23,12 +22,9 @@ export class CreateEntryDto {
   @Type(() => CreateSlotDto)
   slots: CreateSlotDto[];
 
-  @IsBoolean() forSchool: boolean;
-
-  @IsOptional()
   @ValidateNested()
   @Type(() => EntryReasonDto)
-  reason?: EntryReasonDto;
+  reason: EntryReasonDto;
 
   @IsOptional()
   @IsUUID()

@@ -148,8 +148,7 @@ export class EntryRepo {
     result.updatedAt = entry.updatedAt;
     result.signedManager = !!entry.signedManager;
     result.signedParent = !!entry.signedParent;
-    result.reason = EntryReasonRepo.toDto(entry.reason) || undefined;
-    result.forSchool = !!result.reason;
+    result.reason = EntryReasonRepo.toDto(entry.reason);
 
     return result;
   }

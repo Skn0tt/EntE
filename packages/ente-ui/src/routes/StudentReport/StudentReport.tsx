@@ -44,7 +44,7 @@ import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
-import { Roles } from "ente-types";
+import { Roles, entryReasonCategoryIsEducational } from "ente-types";
 import { NotFound } from "../NotFound";
 import LoadingIndicator from "../../elements/LoadingIndicator";
 import EntriesTable from "./EntriesTable";
@@ -195,13 +195,19 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     }
   }, []);
 
-  const entriesForSchool = React.useMemo(
-    () => entries.filter(e => e.get("forSchool")),
+  const entriesEducational = React.useMemo(
+    () =>
+      entries.filter(e =>
+        entryReasonCategoryIsEducational(e.get("reason").category)
+      ),
     [entries]
   );
 
   const entriesNotForSchool = React.useMemo(
-    () => entries.filter(e => !e.get("forSchool")),
+    () =>
+      entries.filter(
+        e => !entryReasonCategoryIsEducational(e.get("reason").category)
+      ),
     [entries]
   );
 
@@ -217,7 +223,7 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
 
   const entriesToUse = {
     all: entries,
-    educational: entriesForSchool,
+    educational: entriesEducational,
     not_educational: entriesNotForSchool
   }[mode];
 

@@ -7,40 +7,31 @@
  */
 
 import * as React from "react";
-import { connect, MapStateToPropsParam } from "react-redux";
 import { Grid, Button } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import { AppState, UserN, getTeachingUsers } from "../../redux";
-import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { CreateSlotDto } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import * as _ from "lodash";
 import { useFromToInput } from "../../helpers/use-from-to-input";
 import { HourFromToInput } from "../../elements/HourFromToInput";
+import TeacherInput from "./TeacherInput";
+import { Maybe } from "monet";
 
 const useTranslation = makeTranslationHook({
   en: {
     titles: {
-      teacher: "Teacher",
       day: "Day",
       from: "Start",
       to: "End"
-    },
-    helpers: {
-      teacher: "Select the teacher."
     },
     add: "Add"
   },
   de: {
     titles: {
-      teacher: "Lehrer",
       day: "Tag",
       from: "Beginn",
       to: "Ende"
-    },
-    helpers: {
-      teacher: "Wählen Sie den Lehrer aus."
     },
     add: "Hinzufügen"
   }
@@ -56,27 +47,10 @@ interface SlotEntryOwnProps {
   defaultDate: string;
 }
 
-interface SlotEntryStateProps {
-  teachingUsers: UserN[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  SlotEntryStateProps,
-  SlotEntryOwnProps,
-  AppState
-> = state => ({
-  teachingUsers: getTeachingUsers(state)
-});
-
-type SlotEntryProps = SlotEntryStateProps & SlotEntryOwnProps;
+type SlotEntryProps = SlotEntryOwnProps;
 
 const SlotEntry: React.FC<SlotEntryProps> = props => {
-  const {
-    defaultDate,
-    datePickerConfig,
-    onAdd,
-    isMultiDay,
-    teachingUsers: teachers
-  } = props;
+  const { defaultDate, datePickerConfig, onAdd, isMultiDay } = props;
   const translation = useTranslation();
 
   const { from, to, setFrom, setTo } = useFromToInput(1, 2);
@@ -101,23 +75,18 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
     [from, to, date, isMultiDay, teacherId]
   );
 
+  const handleChangeTeacher = React.useCallback(
+    (teacher: Maybe<string>) => {
+      setTeacherId(teacher.orUndefined());
+    },
+    [setTeacherId]
+  );
+
   return (
     <Grid container direction="row" spacing={16}>
       {/* Teacher */}
       <Grid item xs={12} md={isMultiDay ? 4 : 7}>
-        <SearchableDropdown<UserN>
-          label={translation.titles.teacher}
-          helperText={translation.helpers.teacher}
-          items={teachers}
-          onChange={t => setTeacherId(!!t ? t.get("id") : undefined)}
-          includeItem={(item, searchTerm) =>
-            item
-              .get("displayname")
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          }
-          itemToString={i => i.get("displayname")}
-        />
+        <TeacherInput onChange={handleChangeTeacher} />
       </Grid>
 
       {/* Date */}
@@ -154,6 +123,4 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
   );
 };
 
-export default connect<SlotEntryStateProps, {}, SlotEntryOwnProps, AppState>(
-  mapStateToProps
-)(SlotEntry);
+export default SlotEntry;

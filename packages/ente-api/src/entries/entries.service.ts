@@ -8,7 +8,9 @@ import {
   PatchEntryDto,
   UserDto,
   userIsAdult,
-  TEACHING_ROLES
+  TEACHING_ROLES,
+  entryReasonCategoryHasTeacherId,
+  ExamenPayload
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -192,6 +194,19 @@ export class EntriesService {
       signedByParent:
         userIsParent || userIsAdult((await requestingUser.getDto()).some())
     });
+
+    const hasTeacher = entryReasonCategoryHasTeacherId(entry.reason.category);
+    if (hasTeacher) {
+      const { teacherId } = entry.reason.payload as ExamenPayload;
+
+      const teacherExists = await this.userRepo.hasUsersWithRole(
+        TEACHING_ROLES,
+        teacherId!
+      );
+      if (!teacherExists) {
+        return Fail(CreateEntryFailure.TeacherUnknown);
+      }
+    }
 
     if (!result.signedParent) {
       const parentsOfUser = await this.userRepo.getParentsOfUser(

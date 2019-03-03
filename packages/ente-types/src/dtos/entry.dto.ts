@@ -21,12 +21,9 @@ export class EntryDto {
   @IsISO8601()
   dateEnd?: string;
 
-  @IsBoolean() forSchool: boolean;
-
-  @IsOptional()
   @ValidateNested()
   @Type(() => EntryReasonDto)
-  reason?: EntryReasonDto;
+  reason: EntryReasonDto;
 
   @IsBoolean() signedManager: boolean;
 

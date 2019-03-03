@@ -18,23 +18,26 @@ import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
 import { getLengthOfSlot } from "../../reporting/reporting";
 import * as _ from "lodash";
+import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 
 const useTranslation = makeTranslationHook({
   en: {
     date: "Date",
-    educational: "Educational",
     signed: "Signed",
     yes: "Yes",
     no: "No",
+    reason: "Reason",
     signedParent: "Signed by parent",
+    categories: EntryReasonCategoriesTranslation.en,
     signedManager: "Signed by manager",
     locale: enLocale,
     length: "Length",
     lengthF: (n: number) => n + " hours"
   },
   de: {
+    categories: EntryReasonCategoriesTranslation.de,
     date: "Datum",
-    educational: "Schulisch",
+    reason: "Grund",
     signed: "Signed",
     yes: "Ja",
     no: "Nein",
@@ -77,7 +80,7 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
           items={entries}
           headers={[
             translation.date,
-            translation.educational,
+            translation.reason,
             translation.length,
             {
               name: translation.signedManager,
@@ -90,7 +93,7 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
           ]}
           extract={e => [
             format(e.get("date"), "PP", { locale: translation.locale }),
-            e.get("forSchool") ? translation.yes : translation.no,
+            translation.categories[e.get("reason").category],
             translation.lengthF(
               _.sum(getSlots(e.get("slotIds")).map(getLengthOfSlot))
             ),

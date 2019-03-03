@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { entryReasonCategoryArray } from "ente-types";
 
 const rolesAtThatPoint = ["parent", "student", "teacher", "admin", "manager"];
 

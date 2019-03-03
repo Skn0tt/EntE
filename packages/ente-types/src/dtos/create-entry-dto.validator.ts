@@ -1,4 +1,4 @@
-import { CreateEntryDto, EntryReasonCategory } from ".";
+import { CreateEntryDto } from ".";
 import { makeDtoValidator } from "../validators/make-validator";
 import { isBefore } from "date-fns";
 import { daysBeforeNow } from "../validators/entry";
@@ -26,28 +26,6 @@ export const CreateEntryDtoValidator = makeDtoValidator(
       validation.forEachFail(failures => errors.push(...failures))
     );
 
-    const isForSchool = dto.forSchool;
-    if (isForSchool) {
-      const reasonIsSet = !!dto.reason;
-      if (!reasonIsSet) {
-        errors.push("If `forSchool` is true, `reason` must be set");
-      } else {
-        const reasonValidation = EntryReasonDtoValidator.validateWithErrors(
-          dto.reason!
-        );
-        reasonValidation.forEachFail(fails => errors.push(...fails));
-      }
-    }
-
-    if (!isForSchool) {
-      const isReasonUnset = !dto.reason;
-      if (!isReasonUnset) {
-        errors.push(
-          "entries that are not `forSchool` must not have a `reason`"
-        );
-      }
-    }
-
     const isRange = !!dto.dateEnd;
     if (isRange) {
       const dateEndIs14DaysOrLessAgo = is14DaysOrLessAgo(dto.dateEnd!);
@@ -58,15 +36,6 @@ export const CreateEntryDtoValidator = makeDtoValidator(
       const dateIsBeforeDateEnd = isBefore(dto.date, dto.dateEnd!);
       if (!dateIsBeforeDateEnd) {
         errors.push("`date` must be before `dateEnd`");
-      }
-
-      if (isForSchool) {
-        const reasonCategoryIsAllowed = [EntryReasonCategory.OTHER].includes(
-          dto.reason!.category
-        );
-        if (!reasonCategoryIsAllowed) {
-          errors.push("ranged entries only allow reason category `other`");
-        }
       }
 
       const isValidDate = isBetweenDates(dto.date, dto.dateEnd!);
@@ -89,5 +58,11 @@ export const CreateEntryDtoValidator = makeDtoValidator(
         errors.push(`single-day entries must not have dates in their slots`);
       }
     }
+
+    const reasonValidation = EntryReasonDtoValidator(
+      isRange,
+      true
+    ).validateWithErrors(dto.reason);
+    reasonValidation.forEachFail(fails => errors.push(...fails));
   }
 );

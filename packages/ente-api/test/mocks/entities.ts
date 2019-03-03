@@ -4,7 +4,8 @@ import {
   Roles,
   CreateEntryDto,
   SlotDto,
-  Languages
+  Languages,
+  EntryReasonCategory
 } from "ente-types";
 import { RequestContextUser } from "../../src/helpers/request-context";
 import { Some, Maybe } from "monet";
@@ -68,7 +69,10 @@ const entry: EntryDto = {
   date: "2018-12-26",
   createdAt: new Date(),
   updatedAt: new Date(),
-  forSchool: false,
+  reason: {
+    category: EntryReasonCategory.ILLNESS,
+    payload: {}
+  },
   signedManager: false,
   signedParent: false,
   student: tomTallis,
@@ -77,7 +81,10 @@ const entry: EntryDto = {
 
 const createEntry: CreateEntryDto = {
   date: "2018-12-03",
-  forSchool: false,
+  reason: {
+    category: EntryReasonCategory.ILLNESS,
+    payload: {}
+  },
   slots: [
     {
       from: 1,

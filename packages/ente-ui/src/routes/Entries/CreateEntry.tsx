@@ -39,7 +39,8 @@ import {
   dateToIsoString,
   daysBeforeNow,
   EntryReasonDto,
-  CreateEntryDtoValidator
+  CreateEntryDtoValidator,
+  EntryReasonCategory
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { Maybe } from "monet";
@@ -125,15 +126,15 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   const translation = useTranslation();
 
   const [isRange, setIsRange] = React.useState(false);
-  const [forSchool, setForSchool] = React.useState(false);
   const [beginDate, setBeginDate] = React.useState<string>(
     dateToIsoString(Date.now())
   );
   const [endDate, setEndDate] = React.useState<string | undefined>(undefined);
   const [slots, setSlots] = React.useState<CreateSlotDto[]>([]);
-  const [reason, setReason] = React.useState<EntryReasonDto | undefined>(
-    undefined
-  );
+  const [reason, setReason] = React.useState<EntryReasonDto>({
+    category: EntryReasonCategory.ILLNESS,
+    payload: {}
+  });
 
   const firstChildOfParent: string | undefined = children
     .flatMap(c => Maybe.fromUndefined(c[0]))
@@ -214,16 +215,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [setSlots]
   );
 
-  const handleChangeForSchool = React.useCallback(
-    (f: boolean) => {
-      setForSchool(f);
-      if (f === false) {
-        setReason(undefined);
-      }
-    },
-    [setForSchool, setReason]
-  );
-
   const handleAddSlot = React.useCallback(
     (v: CreateSlotDto) => {
       setSlots(s => [...s, v]);
@@ -237,14 +228,13 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
 
   const result = React.useMemo(
     () => ({
-      forSchool,
       slots,
       studentId,
       reason,
       date: beginDate,
       dateEnd: endDate
     }),
-    [forSchool, slots, studentId, reason, beginDate, endDate]
+    [slots, studentId, reason, beginDate, endDate]
   );
 
   const isValidInput = CreateEntryDtoValidator.validate(result);
@@ -268,13 +258,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                   value={isRange}
                   onChange={handleChangeIsRange}
                   label={translation.multiday}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <CheckboxInput
-                  value={forSchool}
-                  onChange={handleChangeForSchool}
-                  label={translation.forSchool}
                 />
               </Grid>
             </Grid>
@@ -323,11 +306,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
               )}
             </Grid>
           </Grid>
-          {forSchool && (
-            <Grid item xs={12}>
-              <EntryReasonInput onChange={setReason} isRange={isRange} />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <EntryReasonInput onChange={setReason} isRange={isRange} />
+          </Grid>
           <Grid item xs={12}>
             <Grid container direction="column" spacing={8}>
               <Typography variant="h6">{translation.titles.slots}</Typography>
