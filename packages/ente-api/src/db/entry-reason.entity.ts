@@ -7,7 +7,7 @@ import { User } from "./user.entity";
 export class EntryReason {
   @Column("enum", { nullable: true, enum: EntryReasonCategory })
   @IsIn(entryReasonCategoryArray)
-  category: EntryReasonCategory | null;
+  category: EntryReasonCategory;
 
   @Column("smallint", { nullable: true })
   from: number | null;

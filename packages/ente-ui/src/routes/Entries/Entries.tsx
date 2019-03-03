@@ -32,6 +32,7 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
+import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -39,10 +40,11 @@ const useTranslation = makeTranslationHook({
       name: "Name",
       date: "Date",
       created: "Created",
-      forSchool: "Educational",
+      reason: "Reason",
       manager: "Manager",
       parents: "Parents"
     },
+    reasonCategories: EntryReasonCategoriesTranslation.en,
     yes: "Yes",
     no: "No",
     locale: enLocale
@@ -52,10 +54,11 @@ const useTranslation = makeTranslationHook({
       name: "Name",
       date: "Datum",
       created: "Erstellt",
-      forSchool: "Schulisch",
+      reason: "Grund",
       manager: "Stufenleiter",
       parents: "Eltern"
     },
+    reasonCategories: EntryReasonCategoriesTranslation.de,
     yes: "Ja",
     no: "Nein",
     locale: deLocale
@@ -118,10 +121,17 @@ export const Entries: React.FunctionComponent<Props> = props => {
     requestEntries();
   }, []);
 
-  const showCreateEntry = () => setCreateEntryIsVisible(true);
-  const closeCreateEntry = () => setCreateEntryIsVisible(false);
-  const customBodyRender = (v: string) => (
-    <SignedAvatar signed={v === lang.yes} />
+  const showCreateEntry = React.useCallback(
+    () => setCreateEntryIsVisible(true),
+    [setCreateEntryIsVisible]
+  );
+  const closeCreateEntry = React.useCallback(
+    () => setCreateEntryIsVisible(false),
+    [setCreateEntryIsVisible]
+  );
+  const customBodyRender = React.useMemo(
+    () => (v: string) => <SignedAvatar signed={v === lang.yes} />,
+    [lang.yes]
   );
 
   return (
@@ -135,7 +145,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
           lang.headers.name,
           lang.headers.date,
           lang.headers.created,
-          { name: lang.headers.forSchool, options: { filter: true } },
+          { name: lang.headers.reason, options: { filter: true } },
           {
             name: lang.headers.manager,
             options: { customBodyRender, filter: true }
@@ -152,7 +162,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
             .get("displayname"),
           format(entry.get("date"), "PP", { locale: lang.locale }),
           format(entry.get("createdAt"), "PPpp", { locale: lang.locale }),
-          entry.get("forSchool") ? lang.yes : lang.no,
+          lang.reasonCategories[entry.get("reason").category],
           entry.get("signedManager") ? lang.yes : lang.no,
           entry.get("signedParent") ? lang.yes : lang.no
         ]}

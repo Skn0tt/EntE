@@ -1,40 +1,43 @@
 import * as React from "react";
 import { ExamenPayload } from "ente-types";
-import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import { TimeAndDescriptionInput } from "./TimeAndDescriptionReasonInput";
-
-const useTranslation = makeTranslationHook({
-  en: {
-    class: "Class"
-  },
-  de: {
-    class: "Fach"
-  }
-});
+import { Grid } from "@material-ui/core";
+import { HourFromToInput } from "../../elements/HourFromToInput";
+import TeacherInput from "./TeacherInput";
+import { None, Maybe } from "monet";
 
 interface ExamenReasonInputProps {
   onChange: (v: ExamenPayload) => void;
 }
 
 export const ExamenReasonInput: React.FC<ExamenReasonInputProps> = props => {
-  const translation = useTranslation();
-
   const { onChange } = props;
 
-  const handleChange = React.useCallback(
-    (time: { from: number; to: number }, d: string) => {
+  const [time, setTime] = React.useState<{ from: number; to: number }>({
+    from: -1,
+    to: -1
+  });
+
+  const [teacherId, setTeacherId] = React.useState<Maybe<string>>(None());
+
+  React.useEffect(
+    () => {
       onChange({
         ...time,
-        class: d
+        teacherId: teacherId.orNull()
       });
     },
-    [onChange]
+    [teacherId.orUndefined(), time]
   );
 
   return (
-    <TimeAndDescriptionInput
-      onChange={handleChange}
-      descriptionLabel={translation.class}
-    />
+    <Grid container direction="row" spacing={8}>
+      <Grid item xs={2}>
+        <HourFromToInput onChange={setTime} />
+      </Grid>
+
+      <Grid item xs={10}>
+        <TeacherInput onChange={setTeacherId} />
+      </Grid>
+    </Grid>
   );
 };

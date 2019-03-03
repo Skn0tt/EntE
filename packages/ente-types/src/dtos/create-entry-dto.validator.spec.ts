@@ -38,7 +38,10 @@ describe("CreateEntryDtoValidator", () => {
         const result = CreateEntryDtoValidator.validate({
           date: daysBeforeNow(30),
           dateEnd: daysBeforeNow(20),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 1,
@@ -58,7 +61,10 @@ describe("CreateEntryDtoValidator", () => {
         const result = CreateEntryDtoValidator.validate({
           date: daysBeforeNow(30),
           dateEnd: daysBeforeNow(10),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 1,
@@ -79,7 +85,10 @@ describe("CreateEntryDtoValidator", () => {
       describe("with date too long ago", () => {
         const result = CreateEntryDtoValidator.validate({
           date: daysBeforeNow(30),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 1,
@@ -97,7 +106,10 @@ describe("CreateEntryDtoValidator", () => {
       describe("with correct date", () => {
         const result = CreateEntryDtoValidator.validate({
           date: daysBeforeNow(10),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 1,
@@ -118,9 +130,8 @@ describe("CreateEntryDtoValidator", () => {
       expect(
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
-          forSchool: true,
           reason: {
-            category: EntryReasonCategory.OTHER,
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
           slots: [
@@ -138,14 +149,17 @@ describe("CreateEntryDtoValidator", () => {
       expect(
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 3,
               to: 4,
               teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
             }
-          ],
-          forSchool: false
+          ]
         })
       ).to.be.true;
     });
@@ -155,9 +169,8 @@ describe("CreateEntryDtoValidator", () => {
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addDays(now, 2)),
-          forSchool: true,
           reason: {
-            category: EntryReasonCategory.OTHER,
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
           slots: [
@@ -177,7 +190,10 @@ describe("CreateEntryDtoValidator", () => {
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addDays(now, 2)),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
+            payload: { description: "my_random_reason" }
+          },
           slots: [
             {
               date: dateToIsoString(now),
@@ -194,9 +210,8 @@ describe("CreateEntryDtoValidator", () => {
       expect(
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
-          forSchool: true,
           reason: {
-            category: EntryReasonCategory.OTHER,
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
           slots: [
@@ -216,7 +231,10 @@ describe("CreateEntryDtoValidator", () => {
       expect(
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 2,
@@ -232,7 +250,10 @@ describe("CreateEntryDtoValidator", () => {
       expect(
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 5,
@@ -249,7 +270,10 @@ describe("CreateEntryDtoValidator", () => {
         CreateEntryDtoValidator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addHours(now, 12)),
-          forSchool: false,
+          reason: {
+            category: EntryReasonCategory.ILLNESS,
+            payload: {}
+          },
           slots: [
             {
               from: 5,
@@ -259,23 +283,6 @@ describe("CreateEntryDtoValidator", () => {
           ]
         })
       ).to.be.false;
-    });
-
-    describe("reason missing", () => {
-      const result = CreateEntryDtoValidator.validate({
-        date: daysBeforeNow(10),
-        forSchool: true,
-        slots: [
-          {
-            from: 1,
-            to: 2,
-            teacherId: "2e239ff6-9f40-48e6-9cec-cae9f983ee50"
-          }
-        ]
-      });
-      it("returns false", () => {
-        expect(result).to.be.false;
-      });
     });
   });
 });

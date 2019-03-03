@@ -1,6 +1,10 @@
 import * as React from "react";
 
-export const useFromToInput = (defaultFrom: number, defaultTo: number) => {
+export const useFromToInput = (
+  defaultFrom: number,
+  defaultTo: number,
+  disableCorrection = false
+) => {
   const [from, setFrom] = React.useState(defaultFrom);
   const [to, setTo] = React.useState(defaultTo);
 
@@ -37,7 +41,7 @@ export const useFromToInput = (defaultFrom: number, defaultTo: number) => {
   return {
     from,
     to,
-    setFrom: handleSetFrom,
-    setTo: handleSetTo
+    setFrom: disableCorrection ? setFrom : handleSetFrom,
+    setTo: disableCorrection ? setTo : handleSetTo
   };
 };

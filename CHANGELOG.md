@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added: New Entry reasons ([#252](https://gitlab.com/Skn0tt/EntE/issues/252))
 - Improve user data validation to prevent further database inconsistencies ([#258](https://gitlab.com/Skn0tt/EntE/issues/258))
 - Changed some datatypes in the database ([#257](https://gitlab.com/Skn0tt/EntE/issues/257))
 

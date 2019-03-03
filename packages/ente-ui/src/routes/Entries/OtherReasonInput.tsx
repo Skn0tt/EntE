@@ -1,5 +1,8 @@
 import * as React from "react";
-import { OtherPayload } from "ente-types";
+import {
+  OtherNonEducationalPayload,
+  OtherEducationalPayload
+} from "ente-types";
 import { TextField } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
@@ -13,7 +16,7 @@ const useTranslation = makeTranslationHook({
 });
 
 interface OtherReasonInput {
-  onChange: (v: OtherPayload) => void;
+  onChange: (v: OtherEducationalPayload | OtherNonEducationalPayload) => void;
 }
 
 export const OtherReasonInput: React.FC<OtherReasonInput> = props => {

@@ -5,7 +5,8 @@ import {
   EntryDto,
   SlotDto,
   Languages,
-  dateToIsoString
+  dateToIsoString,
+  EntryReasonCategory
 } from "ente-types";
 
 const simon: UserDto = {
@@ -53,7 +54,10 @@ const slot: SlotDto = {
 const entry: EntryDto = {
   createdAt: new Date(0),
   date: dateToIsoString(0),
-  forSchool: true,
+  reason: {
+    category: EntryReasonCategory.OTHER_EDUCATIONAL,
+    payload: { description: "some_description" }
+  },
   id: "jkdas",
   signedManager: false,
   signedParent: false,

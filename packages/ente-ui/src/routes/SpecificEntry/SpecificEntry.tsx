@@ -35,10 +35,12 @@ import LoadingIndicator from "../../elements/LoadingIndicator";
 import {
   Roles,
   ExamenPayload,
-  OtherPayload,
+  OtherEducationalPayload,
+  OtherNonEducationalPayload,
   FieldTripPayload,
   CompetitionPayload,
-  EntryReasonCategory
+  EntryReasonCategory,
+  IllnessPayload
 } from "ente-types";
 import {
   AppState,
@@ -86,19 +88,25 @@ const useTranslation = makeTranslationHook({
     reason: "Reason:",
     date: "Date:",
     reasonPayloads: {
-      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload) =>
-        `Examen: ${v.from}-${v.to}, ${v.class}`,
-      [EntryReasonCategory.OTHER]: (v: OtherPayload) =>
-        `Other: ${v.description}`,
+      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
+        `Examen: ${v.from}-${v.to}, ${teacher
+          .map(t => t.get("displayname"))
+          .orSome("Teacher Deleted")}`,
+      [EntryReasonCategory.OTHER_EDUCATIONAL]: (v: OtherEducationalPayload) =>
+        `Other (educational): ${v.description}`,
+      [EntryReasonCategory.OTHER_NON_EDUCATIONAL]: (
+        v: OtherNonEducationalPayload
+      ) => `Other (non-educational): ${v.description}`,
+      [EntryReasonCategory.ILLNESS]: "Illness",
       [EntryReasonCategory.FIELD_TRIP]: (
         v: FieldTripPayload,
-        teacher: UserN | null
+        teacher: Maybe<UserN>
       ) =>
-        `Field Trip: ${v.from}-${v.to}, ${
-          !!teacher ? teacher.get("displayname") : "Deleted"
-        }`,
+        `Field Trip: ${v.from}-${v.to}, ${teacher
+          .map(t => t.get("displayname"))
+          .orSome("Teacher Deleted")}`,
       [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
-        `Competition: ${v.from}-${v.to}, ${!!v.name}`
+        `Competition: ${v.from}-${v.to}, ${v.name}`
     },
     dateRange: (start: string, end: string) =>
       `From ${format(start, "PP", { locale: enLocale })} to ${format(
@@ -139,19 +147,25 @@ const useTranslation = makeTranslationHook({
     forSchool: "Schulisch:",
     reason: "Grund:",
     reasonPayloads: {
-      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload) =>
-        `Klausur: ${v.from}-${v.to}, ${v.class}`,
-      [EntryReasonCategory.OTHER]: (v: OtherPayload) =>
-        `Sonstiges: ${v.description}`,
+      [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
+        `Klausur: ${v.from}-${v.to}, ${teacher
+          .map(t => t.get("displayname"))
+          .orSome("Lehrer gelöscht")}`,
+      [EntryReasonCategory.OTHER_EDUCATIONAL]: (v: OtherEducationalPayload) =>
+        `Sonstiges (schulisch): ${v.description}`,
+      [EntryReasonCategory.OTHER_NON_EDUCATIONAL]: (
+        v: OtherNonEducationalPayload
+      ) => `Sonstiges (außerschulisch): ${v.description}`,
+      [EntryReasonCategory.ILLNESS]: "Krankheit",
       [EntryReasonCategory.FIELD_TRIP]: (
         v: FieldTripPayload,
-        teacher: UserN | null
+        teacher: Maybe<UserN>
       ) =>
-        `Exkursion: ${v.from}-${v.to}, ${
-          !!teacher ? teacher.get("displayname") : "Gelöscht"
-        }`,
+        `Exkursion: ${v.from}-${v.to}, ${teacher
+          .map(t => t.get("displayname"))
+          .orSome("Lehrer gelöscht")}`,
       [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
-        `Wettbewerb: ${v.from}-${v.to}, ${!!v.name}`
+        `Wettbewerb: ${v.from}-${v.to}, ${v.name}`
     },
     date: "Datum:",
     dateRange: (start: string, end: string) =>
@@ -332,40 +346,49 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                   <i>{lang.id}</i> {entry.get("id")} <br />
                   <i>{lang.createdAt}</i>{" "}
                   {entry.get("createdAt").toLocaleString()} <br />
-                  <i>{lang.forSchool}</i>{" "}
-                  {entry.get("forSchool") ? lang.yes : lang.no} <br />
-                  {entry.get("forSchool") && (
-                    <>
-                      <i>{lang.reason}</i>{" "}
-                      {(() => {
-                        const { payload, category } = entry.get("reason")!;
-                        switch (category) {
-                          case EntryReasonCategory.COMPETITION:
-                            return lang.reasonPayloads[
-                              EntryReasonCategory.COMPETITION
-                            ](payload as CompetitionPayload);
-                          case EntryReasonCategory.EXAMEN:
-                            return lang.reasonPayloads[
-                              EntryReasonCategory.EXAMEN
-                            ](payload as ExamenPayload);
-                          case EntryReasonCategory.OTHER:
-                            return lang.reasonPayloads[
-                              EntryReasonCategory.OTHER
-                            ](payload as OtherPayload);
-                          case EntryReasonCategory.FIELD_TRIP:
-                            return lang.reasonPayloads[
-                              EntryReasonCategory.FIELD_TRIP
-                            ](
-                              payload as FieldTripPayload,
-                              getUser(
-                                (payload as FieldTripPayload).teacherId || ""
-                              ).orSome(null as any)
-                            );
-                        }
-                      })()}
-                      <br />
-                    </>
-                  )}
+                  <>
+                    <i>{lang.reason}</i>{" "}
+                    {(() => {
+                      const { payload, category } = entry.get("reason")!;
+                      switch (category) {
+                        case EntryReasonCategory.COMPETITION:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.COMPETITION
+                          ](payload as CompetitionPayload);
+                        case EntryReasonCategory.EXAMEN:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.EXAMEN
+                          ](
+                            payload as ExamenPayload,
+                            Maybe.fromNull(
+                              (payload as ExamenPayload).teacherId
+                            ).flatMap(getUser)
+                          );
+                        case EntryReasonCategory.OTHER_EDUCATIONAL:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.OTHER_EDUCATIONAL
+                          ](payload as OtherEducationalPayload);
+                        case EntryReasonCategory.OTHER_NON_EDUCATIONAL:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.OTHER_NON_EDUCATIONAL
+                          ](payload as OtherNonEducationalPayload);
+                        case EntryReasonCategory.ILLNESS:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.ILLNESS
+                          ];
+                        case EntryReasonCategory.FIELD_TRIP:
+                          return lang.reasonPayloads[
+                            EntryReasonCategory.FIELD_TRIP
+                          ](
+                            payload as FieldTripPayload,
+                            Maybe.fromNull(
+                              (payload as FieldTripPayload).teacherId
+                            ).flatMap(getUser)
+                          );
+                      }
+                    })()}
+                    <br />
+                  </>
                   <i>{lang.student}</i>{" "}
                   {getUser(entry.get("studentId"))
                     .some()

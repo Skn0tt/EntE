@@ -3,7 +3,9 @@ import {
   EntryReasonCategory,
   entryReasonCategoryArray,
   EntryReasonPayload,
-  EntryReasonDto
+  EntryReasonDto,
+  entryReasonCategoryIsAllowedInMultiday,
+  REASON_CATEGORIES_ALLOWED_IN_MULTIDAY
 } from "ente-types";
 import { Grid, Typography } from "@material-ui/core";
 import { DropdownInput } from "../../elements/DropdownInput";
@@ -13,27 +15,18 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { ExamenReasonInput } from "./ExamenReasonInput";
 import FieldTripReasonInput from "./FieldTripReasonInput";
 import { CompetitionReasonInput } from "./CompetitionReasonInput";
+import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 
 const useTranslation = makeTranslationHook({
   en: {
     type: "Type",
-    typeLabels: {
-      [EntryReasonCategory.OTHER]: "Other",
-      [EntryReasonCategory.COMPETITION]: "Competition",
-      [EntryReasonCategory.EXAMEN]: "Examen",
-      [EntryReasonCategory.FIELD_TRIP]: "Field Trip"
-    },
+    typeLabels: EntryReasonCategoriesTranslation.en,
     title: "Reason",
     caption: "Enter the reason for the excuse."
   },
   de: {
     type: "Art",
-    typeLabels: {
-      [EntryReasonCategory.OTHER]: "Sonstiges",
-      [EntryReasonCategory.COMPETITION]: "Wettbewerb",
-      [EntryReasonCategory.EXAMEN]: "Klausur",
-      [EntryReasonCategory.FIELD_TRIP]: "Exkursion"
-    },
+    typeLabels: EntryReasonCategoriesTranslation.de,
     title: "Grund des Fehlens",
     caption: "Geben Sie den Grund des Fehlens an."
   }
@@ -50,17 +43,18 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = props => {
   const { onChange, isRange } = props;
 
   const [category, setCategory] = React.useState<EntryReasonCategory>(
-    EntryReasonCategory.EXAMEN
+    EntryReasonCategory.ILLNESS
   );
-  const [payload, setPayload] = React.useState<EntryReasonPayload | undefined>(
-    undefined
-  );
+  const [payload, setPayload] = React.useState<EntryReasonPayload>({});
 
   React.useEffect(
     () => {
-      const categoryIsMultidayAllowed = category === EntryReasonCategory.OTHER;
+      const categoryIsMultidayAllowed = entryReasonCategoryIsAllowedInMultiday(
+        category
+      );
       if (isRange && !categoryIsMultidayAllowed) {
-        setCategory(EntryReasonCategory.OTHER);
+        setCategory(EntryReasonCategory.ILLNESS);
+        setPayload({});
       }
     },
     [category, isRange, setCategory]
@@ -78,6 +72,16 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = props => {
     [payload, category, onChange]
   );
 
+  const handleChangeCategory = React.useCallback(
+    (category: EntryReasonCategory) => {
+      setCategory(category);
+      if (category === EntryReasonCategory.ILLNESS) {
+        setPayload({});
+      }
+    },
+    [setCategory, setPayload]
+  );
+
   return (
     <Grid container direction="column" spacing={8}>
       <Grid item>
@@ -87,9 +91,11 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = props => {
 
       <Grid item>
         <DropdownInput<EntryReasonCategory>
-          onChange={setCategory}
+          onChange={handleChangeCategory}
           options={
-            isRange ? [EntryReasonCategory.OTHER] : entryReasonCategoryArray
+            isRange
+              ? REASON_CATEGORIES_ALLOWED_IN_MULTIDAY
+              : entryReasonCategoryArray
           }
           getOptionKey={_.identity}
           getOptionLabel={k => trans.typeLabels[k]}
@@ -100,14 +106,17 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = props => {
       </Grid>
 
       <Grid item>
-        {category === EntryReasonCategory.OTHER && (
+        {category === EntryReasonCategory.OTHER_EDUCATIONAL && (
+          <OtherReasonInput onChange={setPayload} />
+        )}
+        {category === EntryReasonCategory.OTHER_NON_EDUCATIONAL && (
           <OtherReasonInput onChange={setPayload} />
         )}
         {category === EntryReasonCategory.EXAMEN && (
           <ExamenReasonInput onChange={setPayload} />
         )}
         {category === EntryReasonCategory.FIELD_TRIP && (
-          <FieldTripReasonInput onChange={setPayload} />
+          <FieldTripReasonInput onChange={setPayload} isRange={isRange} />
         )}
         {category === EntryReasonCategory.COMPETITION && (
           <CompetitionReasonInput onChange={setPayload} />

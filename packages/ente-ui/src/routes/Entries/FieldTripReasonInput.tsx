@@ -1,68 +1,59 @@
 import * as React from "react";
-import { SearchableDropdown } from "../../components/SearchableDropdown";
-import { UserN, AppState, getTeachingUsers } from "../../redux";
-import { connect, MapStateToPropsParam } from "react-redux";
-import { FieldTripPayload } from "ente-types";
-import { HourFromToInput } from "../../elements/HourFromToInput";
+import { FieldTripPayload, dateToIsoString, daysBeforeNow } from "ente-types";
 import { Grid } from "@material-ui/core";
+import TeacherInput from "./TeacherInput";
+import { Maybe, None } from "monet";
+import { useFromToInput } from "../../helpers/use-from-to-input";
+import { NumberInput } from "../../elements/NumberInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { DateInput } from "../../elements/DateInput";
 
 const useTranslation = makeTranslationHook({
   en: {
-    teacher: "Teacher"
+    from: "From",
+    to: "To",
+    slot: "Hour"
   },
   de: {
-    teacher: "Lehrer"
+    from: "Von",
+    to: "Bis",
+    slot: "Stunde"
   }
 });
 
-const getDisplayname = (v: UserN) => v.get("displayname");
-
-const includeItem = (u: UserN, searchTerm: string) =>
-  u
-    .get("displayname")
-    .toLowerCase()
-    .includes(searchTerm.toLowerCase());
-
 interface FieldTripReasonInputOwnProps {
   onChange: (v: FieldTripPayload) => void;
+  isRange: boolean;
 }
 
-interface FieldTripReasonInputStateProps {
-  teachers: UserN[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  FieldTripReasonInputStateProps,
-  FieldTripReasonInputOwnProps,
-  AppState
-> = state => ({
-  teachers: getTeachingUsers(state)
-});
-
-type FieldTripReasonInputPropsConnected = FieldTripReasonInputOwnProps &
-  FieldTripReasonInputStateProps;
+type FieldTripReasonInputPropsConnected = FieldTripReasonInputOwnProps;
 
 const FieldTripReasonInput: React.FC<
   FieldTripReasonInputPropsConnected
 > = props => {
   const translation = useTranslation();
 
-  const { onChange, teachers } = props;
+  const { onChange, isRange } = props;
 
-  const [time, setTime] = React.useState<{ from: number; to: number }>({
-    from: -1,
-    to: -1
-  });
-  const [teacherId, setTeacherId] = React.useState<string | undefined>(
-    undefined
+  const { from, to, setFrom, setTo } = useFromToInput(1, 2, isRange);
+  const [startDate, setStartDate] = React.useState<string>(
+    dateToIsoString(Date.now())
+  );
+  const [endDate, setEndDate] = React.useState<string>(
+    dateToIsoString(Date.now())
   );
 
-  const payload: any = React.useMemo(
-    () => ({
-      ...time,
-      teacherId
+  const [teacherId, setTeacherId] = React.useState<Maybe<string>>(None());
+
+  const payload = React.useMemo(
+    (): FieldTripPayload => ({
+      to,
+      from,
+      teacherId: teacherId.orNull(),
+      startDate: isRange ? startDate : undefined,
+      endDate: isRange ? endDate : undefined
     }),
-    [time, teacherId]
+    [from, to, startDate, endDate, teacherId]
   );
 
   React.useEffect(
@@ -72,30 +63,57 @@ const FieldTripReasonInput: React.FC<
     [payload, onChange]
   );
 
-  const handleChangeTeacher = React.useCallback(
-    (t?: UserN) => {
-      setTeacherId(!!t ? t.get("id") : undefined);
-    },
-    [setTeacherId]
-  );
-
   return (
     <Grid container direction="row" spacing={8}>
-      <Grid item xs={2}>
-        <HourFromToInput onChange={setTime} />
+      <Grid item xs={isRange ? 12 : 2}>
+        <Grid container spacing={8}>
+          {isRange && (
+            <Grid item xs={4}>
+              <DateInput
+                label={translation.from}
+                onChange={setStartDate}
+                minDate={
+                  isRange ? undefined : dateToIsoString(daysBeforeNow(14))
+                }
+                value={startDate}
+              />
+            </Grid>
+          )}
+
+          <Grid item xs={isRange ? 2 : 6}>
+            <NumberInput
+              label={isRange ? translation.slot : translation.from}
+              onChange={setFrom}
+              value={from}
+            />
+          </Grid>
+
+          {isRange && (
+            <Grid item xs={4}>
+              <DateInput
+                label={translation.to}
+                onChange={setEndDate}
+                minDate={startDate}
+                value={endDate}
+              />
+            </Grid>
+          )}
+
+          <Grid item xs={isRange ? 2 : 6}>
+            <NumberInput
+              label={isRange ? translation.slot : translation.to}
+              onChange={setTo}
+              value={to}
+            />
+          </Grid>
+        </Grid>
       </Grid>
 
-      <Grid item xs={10}>
-        <SearchableDropdown<UserN>
-          items={teachers}
-          onChange={handleChangeTeacher}
-          itemToString={getDisplayname}
-          includeItem={includeItem}
-          label={translation.teacher}
-        />
+      <Grid item xs={isRange ? 12 : 10}>
+        <TeacherInput onChange={setTeacherId} />
       </Grid>
     </Grid>
   );
 };
 
-export default connect(mapStateToProps)(FieldTripReasonInput);
+export default FieldTripReasonInput;

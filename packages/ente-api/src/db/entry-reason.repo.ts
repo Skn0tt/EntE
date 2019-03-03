@@ -5,7 +5,8 @@ import {
   CompetitionPayload,
   ExamenPayload,
   FieldTripPayload,
-  OtherPayload
+  OtherEducationalPayload,
+  OtherNonEducationalPayload
 } from "ente-types";
 import { User } from "./user.entity";
 
@@ -24,10 +25,10 @@ export class EntryReasonRepo {
         break;
       }
       case EntryReasonCategory.EXAMEN: {
-        const { from, to, class: _class } = dto.payload as ExamenPayload;
+        const { from, to, teacherId } = dto.payload as ExamenPayload;
         result.from = from;
         result.to = to;
-        result.description = _class;
+        result.teacher = { _id: teacherId } as User;
         break;
       }
       case EntryReasonCategory.FIELD_TRIP: {
@@ -37,9 +38,20 @@ export class EntryReasonRepo {
         result.teacher = { _id: teacherId } as User;
         break;
       }
-      case EntryReasonCategory.OTHER: {
-        const { description } = dto.payload as OtherPayload;
+      case EntryReasonCategory.OTHER_NON_EDUCATIONAL: {
+        const { description } = dto.payload as OtherNonEducationalPayload;
         result.description = description!;
+        break;
+      }
+      case EntryReasonCategory.OTHER_NON_EDUCATIONAL:
+      case EntryReasonCategory.OTHER_EDUCATIONAL: {
+        const { description } = dto.payload as
+          | OtherEducationalPayload
+          | OtherNonEducationalPayload;
+        result.description = description!;
+        break;
+      }
+      case EntryReasonCategory.ILLNESS: {
         break;
       }
     }
@@ -47,11 +59,7 @@ export class EntryReasonRepo {
     return result;
   }
 
-  static toDto(v: EntryReason): EntryReasonDto | null {
-    if (!v.category) {
-      return null;
-    }
-
+  static toDto(v: EntryReason): EntryReasonDto {
     const result = new EntryReasonDto();
 
     result.category = v.category!;
@@ -73,7 +81,7 @@ export class EntryReasonRepo {
         const payload: ExamenPayload = {
           from: v.from!,
           to: v.to!,
-          class: v.description!
+          teacherId: v.teacher!._id
         };
 
         result.payload = payload;
@@ -93,8 +101,14 @@ export class EntryReasonRepo {
         break;
       }
 
-      case EntryReasonCategory.OTHER: {
-        const payload: OtherPayload = {
+      case EntryReasonCategory.ILLNESS: {
+        result.payload = {};
+        break;
+      }
+
+      case EntryReasonCategory.OTHER_NON_EDUCATIONAL:
+      case EntryReasonCategory.OTHER_EDUCATIONAL: {
+        const payload: OtherEducationalPayload | OtherNonEducationalPayload = {
           description: v.description!
         };
 
