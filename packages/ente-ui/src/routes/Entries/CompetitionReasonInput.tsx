@@ -13,7 +13,7 @@ const useTranslation = makeTranslationHook({
 });
 
 interface CompetitionReasonInputProps {
-  onChange: (v: CompetitionPayload) => void;
+  onChange: (v: Partial<CompetitionPayload>) => void;
 }
 
 export const CompetitionReasonInput: React.FC<
@@ -24,7 +24,7 @@ export const CompetitionReasonInput: React.FC<
   const { onChange } = props;
 
   const handleChange = React.useCallback(
-    (time: { from: number; to: number }, d: string) => {
+    (time: { from?: number; to?: number }, d: string) => {
       onChange({
         ...time,
         name: d

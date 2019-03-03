@@ -60,14 +60,15 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
   );
 
   const isTeacherValid = !!teacherId;
+  const timeIsValid = !_.isUndefined(from) && !_.isUndefined(to);
 
-  const isValid = isTeacherValid;
+  const isValid = isTeacherValid && timeIsValid;
 
   const handleSubmit = React.useCallback(
     () => {
       onAdd({
-        from,
-        to,
+        from: from!,
+        to: to!,
         date: isMultiDay ? date : undefined,
         teacherId: teacherId!
       });

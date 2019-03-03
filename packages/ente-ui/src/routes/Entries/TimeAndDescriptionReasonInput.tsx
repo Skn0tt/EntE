@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 import TextInput from "../../elements/TextInput";
 
 interface TimeAndDescriptionInputProps {
-  onChange: (time: { from: number; to: number }, description: string) => void;
+  onChange: (time: { from?: number; to?: number }, description: string) => void;
   descriptionLabel: string;
 }
 
@@ -13,7 +13,7 @@ export const TimeAndDescriptionInput: React.FC<
 > = props => {
   const { onChange, descriptionLabel } = props;
 
-  const [time, setTime] = React.useState<{ from: number; to: number }>({
+  const [time, setTime] = React.useState<{ from?: number; to?: number }>({
     from: -1,
     to: -1
   });
