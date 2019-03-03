@@ -16,7 +16,7 @@ const useTranslation = makeTranslationHook({
 });
 
 interface FromToInputProps {
-  onChange: (v: { from: number; to: number }) => void;
+  onChange: (v: { from?: number; to?: number }) => void;
 }
 
 export const HourFromToInput: React.FC<FromToInputProps> = props => {

@@ -6,13 +6,13 @@ import TeacherInput from "./TeacherInput";
 import { None, Maybe } from "monet";
 
 interface ExamenReasonInputProps {
-  onChange: (v: ExamenPayload) => void;
+  onChange: (v: Partial<ExamenPayload>) => void;
 }
 
 export const ExamenReasonInput: React.FC<ExamenReasonInputProps> = props => {
   const { onChange } = props;
 
-  const [time, setTime] = React.useState<{ from: number; to: number }>({
+  const [time, setTime] = React.useState<{ from?: number; to?: number }>({
     from: -1,
     to: -1
   });

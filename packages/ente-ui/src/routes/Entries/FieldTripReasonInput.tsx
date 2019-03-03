@@ -22,7 +22,7 @@ const useTranslation = makeTranslationHook({
 });
 
 interface FieldTripReasonInputOwnProps {
-  onChange: (v: FieldTripPayload) => void;
+  onChange: (v: Partial<FieldTripPayload>) => void;
   isRange: boolean;
 }
 
@@ -46,7 +46,7 @@ const FieldTripReasonInput: React.FC<
   const [teacherId, setTeacherId] = React.useState<Maybe<string>>(None());
 
   const payload = React.useMemo(
-    (): FieldTripPayload => ({
+    (): Partial<FieldTripPayload> => ({
       to,
       from,
       teacherId: teacherId.orNull(),

@@ -33,7 +33,9 @@ const useTranslation = makeTranslationHook({
 });
 
 interface EntryReasonInputProps {
-  onChange: (v: EntryReasonDto) => void;
+  onChange: (
+    v: { category: EntryReasonCategory; payload: Partial<EntryReasonPayload> }
+  ) => void;
   isRange: boolean;
 }
 
@@ -45,7 +47,9 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = props => {
   const [category, setCategory] = React.useState<EntryReasonCategory>(
     EntryReasonCategory.ILLNESS
   );
-  const [payload, setPayload] = React.useState<EntryReasonPayload>({});
+  const [payload, setPayload] = React.useState<
+    Partial<EntryReasonPayload> | undefined
+  >({});
 
   React.useEffect(
     () => {

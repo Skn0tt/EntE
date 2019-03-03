@@ -237,11 +237,11 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [slots, studentId, reason, beginDate, endDate]
   );
 
-  const isValidInput = CreateEntryDtoValidator.validate(result);
+  const isValidInput = CreateEntryDtoValidator.validate(result as any);
 
   const handleSubmit = React.useCallback(
     () => {
-      createEntry(result);
+      createEntry(result as CreateEntryDto);
     },
     [createEntry, result]
   );
@@ -307,7 +307,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <EntryReasonInput onChange={setReason} isRange={isRange} />
+            <EntryReasonInput onChange={setReason as any} isRange={isRange} />
           </Grid>
           <Grid item xs={12}>
             <Grid container direction="column" spacing={8}>

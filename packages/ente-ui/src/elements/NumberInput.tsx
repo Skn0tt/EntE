@@ -4,7 +4,7 @@ import * as _ from "lodash";
 
 interface NumberInputProps {
   value?: number;
-  onChange: (v: number) => void;
+  onChange: (v?: number) => void;
   label?: string;
   isValid?: (n: number) => boolean;
 }
@@ -12,36 +12,51 @@ interface NumberInputProps {
 export const NumberInput: React.FC<NumberInputProps> = props => {
   const { value, onChange, label, isValid } = props;
 
-  const [state, setState] = React.useState<number>(value || 0);
-
-  React.useEffect(
-    () => {
-      if (!_.isUndefined(value) && value !== state) {
-        setState(value);
-      }
-    },
-    [value === state, setState]
-  );
+  const [state, setState] = React.useState<number | undefined>(0);
 
   const handleChange = React.useCallback<
     React.ChangeEventHandler<HTMLInputElement>
   >(
     evt => {
-      const n = +evt.target.value;
+      const { value } = evt.target;
+      const n = value === "" ? undefined : +value;
       setState(n);
-      !!onChange && onChange(n);
+      if (!!onChange) {
+        onChange(n);
+      }
     },
     [setState, onChange]
   );
+
+  React.useEffect(
+    () => {
+      if (state !== value) {
+        setState(value);
+      }
+    },
+    [state !== value, setState]
+  );
+
+  const showError = (() => {
+    if (!isValid) {
+      return false;
+    }
+
+    if (_.isUndefined(state)) {
+      return true;
+    }
+
+    return !isValid(state);
+  })();
 
   return (
     <TextField
       label={label}
       fullWidth
-      value={_.isUndefined(value) ? state : value}
+      value={state}
       onChange={handleChange}
       type="number"
-      error={!!isValid && !isValid(state)}
+      error={showError}
       InputLabelProps={{
         shrink: true
       }}
