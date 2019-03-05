@@ -3,7 +3,7 @@ version: "3.6"
 services:
   ui:
     image: registry.gitlab.com/skn0tt/ente/ui:${UI_TAG}
-    restart: on-failure
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefixStrip: /"
@@ -17,7 +17,7 @@ services:
 
   api:
     image: registry.gitlab.com/skn0tt/ente/api:${API_TAG}
-    restart: on-failure
+    restart: unless-stopped
     depends_on:
       - redis
       - signer
@@ -52,7 +52,7 @@ services:
     image: skn0tt/signer:v0.5.0
     depends_on:
       - redis
-    restart: on-failure
+    restart: unless-stopped
     environment:
       REDIS_HOSTNAME: redis
       TOKEN_EXPIRY: ${config.rotation_period.keys}
@@ -64,11 +64,13 @@ services:
 
   redis:
     image: redis:4.0.10
+    restart: unless-stopped
     networks:
       - ente_bridge
 
   traefik:
     image: traefik
+    restart: unless-stopped
     command:
       - "--api"
       - "--docker"
