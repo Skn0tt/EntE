@@ -23,7 +23,8 @@ import {
   SlotN,
   AuthState,
   EntryN,
-  InstanceConfigN
+  InstanceConfigN,
+  ParentSignatureTimesN
 } from "./types";
 import * as _ from "lodash";
 import { getConfig } from "./config";
@@ -45,7 +46,15 @@ const startPersistance = (store: Store) => {
       {
         storage: getConfig().storage,
         transforms: [removeUnneededTransform],
-        records: [UserN, SlotN, AuthState, AppState, EntryN, InstanceConfigN]
+        records: [
+          UserN,
+          SlotN,
+          AuthState,
+          AppState,
+          EntryN,
+          InstanceConfigN,
+          ParentSignatureTimesN
+        ]
       },
       () => resolve(persistor)
     );

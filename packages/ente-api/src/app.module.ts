@@ -12,7 +12,6 @@ import { Entry } from "./db/entry.entity";
 import { LoggerMiddleware } from "./logger.middleware";
 import { UsersModule } from "./users/users.module";
 import { PasswordResetModule } from "./password-reset/password-reset.module";
-import { ScheduleService } from "./schedule.service";
 import { ExportModule } from "./export/export.module";
 import { migrations } from "./db/migrations";
 import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
@@ -21,6 +20,7 @@ import { InstanceModule } from "./instance/instance.module";
 import { InstanceConfigModule } from "./instance-config/instance-config.module";
 import { LoginModule } from "./login/login.module";
 import { KeyValueStore } from "./db/keyvaluestore.entity";
+import { WeeklyUpdatesSchedulerModule } from "./weekly-updates-scheduler/weekly-updates-scheduler.module";
 
 const {
   database,
@@ -59,11 +59,12 @@ const isDevMode = Config.isDevMode();
     TokenModule,
     StatusModule,
     InstanceModule,
+    WeeklyUpdatesSchedulerModule,
     LoginModule,
     ExportModule,
     ...(isDevMode ? [DevModule] : [])
   ],
-  providers: [WinstonLoggerService, ScheduleService],
+  providers: [WinstonLoggerService],
   exports: [WinstonLoggerService]
 })
 export class AppModule implements NestModule {

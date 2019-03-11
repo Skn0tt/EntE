@@ -40,7 +40,10 @@ import {
   FieldTripPayload,
   CompetitionPayload,
   EntryReasonCategory,
-  IllnessPayload
+  IllnessPayload,
+  getEntryExpirationTime,
+  isParentSignatureExpiryEnabled,
+  canEntryStillBeSigned
 } from "ente-types";
 import {
   AppState,
@@ -55,7 +58,8 @@ import {
   UserN,
   EntryN,
   SlotN,
-  deleteEntryRequest
+  deleteEntryRequest,
+  getParentSignatureExpiryTime
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -130,7 +134,9 @@ const useTranslation = makeTranslationHook({
     titles: {
       info: "Information",
       signed: "Signed"
-    }
+    },
+    possibleUntil: "possible until",
+    signatureExpired: "This entry can not be signed anymore."
   },
   de: {
     sign: "Unterschreiben",
@@ -190,7 +196,9 @@ const useTranslation = makeTranslationHook({
     titles: {
       info: "Info",
       signed: "Signiert"
-    }
+    },
+    possibleUntil: "möglich bis",
+    signatureExpired: "Dieser Eintrag kann nicht mehr unterschrieben werden."
   }
 });
 
@@ -231,6 +239,7 @@ interface StateProps {
   getSlots(ids: string[]): SlotN[];
   loading: boolean;
   role: Maybe<Roles>;
+  entryExpirationTime: number;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -241,7 +250,8 @@ const mapStateToProps: MapStateToPropsParam<
   getUser: id => getUser(id)(state),
   getSlots: ids => getSlotsById(ids)(state),
   loading: isLoading(state),
-  role: getRole(state)
+  role: getRole(state),
+  entryExpirationTime: getParentSignatureExpiryTime(state).some()
 });
 
 interface DispatchProps {
@@ -283,7 +293,8 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     entryId,
     loading,
     onClose,
-    getEntry
+    getEntry,
+    entryExpirationTime
   } = props;
 
   const entry = getEntry(entryId);
@@ -315,186 +326,209 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
           text={lang.areYouSureToDelete}
         />
         <DialogContent>
-          {!!entry ? (
-            <Grid container direction="column" spacing={24}>
-              {role.some() === Roles.MANAGER && (
-                <>
-                  <IconButton
-                    aria-label={lang.delete}
-                    onClick={() => setShowDelete(true)}
-                    className={classes.deleteButton}
-                  >
-                    <DeleteIcon fontSize="default" />
-                  </IconButton>
+          <Grid container direction="column" spacing={24}>
+            {role.some() === Roles.MANAGER && (
+              <>
+                <IconButton
+                  aria-label={lang.delete}
+                  onClick={() => setShowDelete(true)}
+                  className={classes.deleteButton}
+                >
+                  <DeleteIcon fontSize="default" />
+                </IconButton>
 
-                  <IconButton
-                    aria-label={lang.mail}
-                    href={`mailto:${getUser(entry.get("studentId"))
-                      .some()
-                      .get("email")}`}
-                    className={classes.mailButton}
-                  >
-                    <MailIcon fontSize="default" />
-                  </IconButton>
-                </>
-              )}
-              <div className={classes.printButton}>{printButton}</div>
-
-              <Grid item>
-                <Typography variant="h6">{lang.titles.info}</Typography>
-                <Typography variant="body1">
-                  <i>{lang.id}</i> {entry.get("id")} <br />
-                  <i>{lang.createdAt}</i>{" "}
-                  {entry.get("createdAt").toLocaleString()} <br />
-                  <>
-                    <i>{lang.reason}</i>{" "}
-                    {(() => {
-                      const { payload, category } = entry.get("reason")!;
-                      switch (category) {
-                        case EntryReasonCategory.COMPETITION:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.COMPETITION
-                          ](payload as CompetitionPayload);
-                        case EntryReasonCategory.EXAMEN:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.EXAMEN
-                          ](
-                            payload as ExamenPayload,
-                            Maybe.fromNull(
-                              (payload as ExamenPayload).teacherId
-                            ).flatMap(getUser)
-                          );
-                        case EntryReasonCategory.OTHER_EDUCATIONAL:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.OTHER_EDUCATIONAL
-                          ](payload as OtherEducationalPayload);
-                        case EntryReasonCategory.OTHER_NON_EDUCATIONAL:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.OTHER_NON_EDUCATIONAL
-                          ](payload as OtherNonEducationalPayload);
-                        case EntryReasonCategory.ILLNESS:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.ILLNESS
-                          ];
-                        case EntryReasonCategory.FIELD_TRIP:
-                          return lang.reasonPayloads[
-                            EntryReasonCategory.FIELD_TRIP
-                          ](
-                            payload as FieldTripPayload,
-                            Maybe.fromNull(
-                              (payload as FieldTripPayload).teacherId
-                            ).flatMap(getUser)
-                          );
-                      }
-                    })()}
-                    <br />
-                  </>
-                  <i>{lang.student}</i>{" "}
-                  {getUser(entry.get("studentId"))
+                <IconButton
+                  aria-label={lang.mail}
+                  href={`mailto:${getUser(entry.get("studentId"))
                     .some()
-                    .get("displayname")}{" "}
-                  <br />
-                  <i>{lang.date}</i>{" "}
-                  {!!entry.get("dateEnd")
-                    ? lang.dateRange(entry.get("date"), entry.get("dateEnd")!)
-                    : format(entry.get("date"), "PP", {
-                        locale: lang.locale
-                      })}
-                  <br />
-                </Typography>
-              </Grid>
+                    .get("email")}`}
+                  className={classes.mailButton}
+                >
+                  <MailIcon fontSize="default" />
+                </IconButton>
+              </>
+            )}
+            <div className={classes.printButton}>{printButton}</div>
 
-              {/* Slots */}
-              <Grid item>
-                <Typography variant="h6">{lang.slotsTable.title}</Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{lang.slotsTable.date}</TableCell>
-                      <TableCell>{lang.slotsTable.from}</TableCell>
-                      <TableCell>{lang.slotsTable.to}</TableCell>
-                      <TableCell>{lang.slotsTable.teacher}</TableCell>
+            <Grid item>
+              <Typography variant="h6">{lang.titles.info}</Typography>
+              <Typography variant="body1">
+                <i>{lang.id}</i> {entry.get("id")} <br />
+                <i>{lang.createdAt}</i>{" "}
+                {entry.get("createdAt").toLocaleString()} <br />
+                <>
+                  <i>{lang.reason}</i>{" "}
+                  {(() => {
+                    const { payload, category } = entry.get("reason")!;
+                    switch (category) {
+                      case EntryReasonCategory.COMPETITION:
+                        return lang.reasonPayloads[
+                          EntryReasonCategory.COMPETITION
+                        ](payload as CompetitionPayload);
+                      case EntryReasonCategory.EXAMEN:
+                        return lang.reasonPayloads[EntryReasonCategory.EXAMEN](
+                          payload as ExamenPayload,
+                          Maybe.fromNull(
+                            (payload as ExamenPayload).teacherId
+                          ).flatMap(getUser)
+                        );
+                      case EntryReasonCategory.OTHER_EDUCATIONAL:
+                        return lang.reasonPayloads[
+                          EntryReasonCategory.OTHER_EDUCATIONAL
+                        ](payload as OtherEducationalPayload);
+                      case EntryReasonCategory.OTHER_NON_EDUCATIONAL:
+                        return lang.reasonPayloads[
+                          EntryReasonCategory.OTHER_NON_EDUCATIONAL
+                        ](payload as OtherNonEducationalPayload);
+                      case EntryReasonCategory.ILLNESS:
+                        return lang.reasonPayloads[EntryReasonCategory.ILLNESS];
+                      case EntryReasonCategory.FIELD_TRIP:
+                        return lang.reasonPayloads[
+                          EntryReasonCategory.FIELD_TRIP
+                        ](
+                          payload as FieldTripPayload,
+                          Maybe.fromNull(
+                            (payload as FieldTripPayload).teacherId
+                          ).flatMap(getUser)
+                        );
+                    }
+                  })()}
+                  <br />
+                </>
+                <i>{lang.student}</i>{" "}
+                {getUser(entry.get("studentId"))
+                  .some()
+                  .get("displayname")}{" "}
+                <br />
+                <i>{lang.date}</i>{" "}
+                {!!entry.get("dateEnd")
+                  ? lang.dateRange(entry.get("date"), entry.get("dateEnd")!)
+                  : format(entry.get("date"), "PP", {
+                      locale: lang.locale
+                    })}
+                <br />
+              </Typography>
+            </Grid>
+
+            {/* Slots */}
+            <Grid item>
+              <Typography variant="h6">{lang.slotsTable.title}</Typography>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{lang.slotsTable.date}</TableCell>
+                    <TableCell>{lang.slotsTable.from}</TableCell>
+                    <TableCell>{lang.slotsTable.to}</TableCell>
+                    <TableCell>{lang.slotsTable.teacher}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {getSlots(entry.get("slotIds")).map(slot => (
+                    <TableRow key={slot.get("id")}>
+                      <TableCell>
+                        {format(slot.get("date"), "PP", {
+                          locale: lang.locale
+                        })}
+                      </TableCell>
+                      <TableCell>{slot.get("from")}</TableCell>
+                      <TableCell>{slot.get("to")}</TableCell>
+                      <TableCell>
+                        {Maybe.fromFalsy(slot.get("teacherId")).cata(
+                          () => lang.slotsTable.deleted,
+                          id =>
+                            getUser(id)
+                              .some()
+                              .get("displayname")
+                        )}
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {getSlots(entry.get("slotIds")).map(slot => (
-                      <TableRow key={slot.get("id")}>
-                        <TableCell>
-                          {format(slot.get("date"), "PP", {
-                            locale: lang.locale
-                          })}
-                        </TableCell>
-                        <TableCell>{slot.get("from")}</TableCell>
-                        <TableCell>{slot.get("to")}</TableCell>
-                        <TableCell>
-                          {Maybe.fromFalsy(slot.get("teacherId")).cata(
-                            () => lang.slotsTable.deleted,
-                            id =>
-                              getUser(id)
-                                .some()
-                                .get("displayname")
-                          )}
-                        </TableCell>
-                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+
+            {/* Signed */}
+            <Grid item>
+              <Typography variant="h6">{lang.titles.signed}</Typography>
+              <List>
+                {/* Admin */}
+                <ListItem>
+                  <SignedAvatar signed={entry.get("signedManager")} />
+                  <ListItemText primary={lang.signed.manager} />
+                  {role.some() === Roles.MANAGER &&
+                    (entry.get("signedManager") ? (
+                      <ListItemSecondaryAction>
+                        <Button
+                          className={classes.unsignEntryButton}
+                          onClick={() => unsignEntry(entry.get("id"))}
+                        >
+                          <AssignmentReturnedIcon />
+                        </Button>
+                      </ListItemSecondaryAction>
+                    ) : (
+                      <ListItemSecondaryAction>
+                        <Button
+                          className={classes.signEntryButton}
+                          onClick={() => signEntry(entry.get("id"))}
+                          variant="raised"
+                        >
+                          <AssignmentTurnedInIcon />
+                        </Button>
+                      </ListItemSecondaryAction>
                     ))}
-                  </TableBody>
-                </Table>
-              </Grid>
+                </ListItem>
 
-              {/* Signed */}
-              <Grid item>
-                <Typography variant="h6">{lang.titles.signed}</Typography>
-                <List>
-                  {/* Admin */}
-                  <ListItem>
-                    <SignedAvatar signed={entry.get("signedManager")} />
-                    <ListItemText primary={lang.signed.manager} />
-                    {role.some() === Roles.MANAGER &&
-                      (entry.get("signedManager") ? (
-                        <ListItemSecondaryAction>
-                          <Button
-                            className={classes.unsignEntryButton}
-                            onClick={() => unsignEntry(entry.get("id"))}
-                          >
-                            <AssignmentReturnedIcon />
-                          </Button>
-                        </ListItemSecondaryAction>
-                      ) : (
-                        <ListItemSecondaryAction>
-                          <Button
-                            className={classes.signEntryButton}
-                            onClick={() => signEntry(entry.get("id"))}
-                            variant="raised"
-                          >
-                            <AssignmentTurnedInIcon />
-                          </Button>
-                        </ListItemSecondaryAction>
-                      ))}
-                  </ListItem>
+                {/* Parents */}
+                <ListItem>
+                  <SignedAvatar signed={entry.get("signedParent")} />
+                  <ListItemText primary={lang.signed.parents} />
+                  {!entry.get("signedParent") &&
+                    role.some() === Roles.PARENT &&
+                    (() => {
+                      const entryExpirationIsEnabled = isParentSignatureExpiryEnabled(
+                        entryExpirationTime
+                      );
 
-                  {/* Parents */}
-                  <ListItem>
-                    <SignedAvatar signed={entry.get("signedParent")} />
-                    <ListItemText primary={lang.signed.parents} />
-                    {!entry.get("signedParent") &&
-                      role.some() === Roles.PARENT && (
+                      return canEntryStillBeSigned(
+                        +entry.get("createdAt"),
+                        entryExpirationTime
+                      ) ? (
                         <ListItemSecondaryAction>
                           <Button
                             className={classes.signEntryButton}
                             onClick={() => signEntry(entry.get("id"))}
                           >
                             {lang.sign}
+                            {entryExpirationIsEnabled && (
+                              <>
+                                <br />({lang.possibleUntil + " "}
+                                {(() => {
+                                  const expirationDate = getEntryExpirationTime(
+                                    +entry.get("createdAt"),
+                                    entryExpirationTime
+                                  );
+                                  return new Date(
+                                    expirationDate
+                                  ).toLocaleString();
+                                })()}
+                                )
+                              </>
+                            )}
                             <AssignmentTurnedInIcon />
                           </Button>
                         </ListItemSecondaryAction>
-                      )}
-                  </ListItem>
-                </List>
-              </Grid>
+                      ) : (
+                        <ListItemSecondaryAction>
+                          <Typography color="secondary">
+                            {lang.signatureExpired}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      );
+                    })()}
+                </ListItem>
+              </List>
             </Grid>
-          ) : (
-            loading && <LoadingIndicator />
-          )}
+          </Grid>
         </DialogContent>
 
         <DialogActions>

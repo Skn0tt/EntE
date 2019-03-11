@@ -75,7 +75,13 @@ import {
   SET_DEFAULT_LANGUAGE_SUCCESS,
   SET_LOGIN_BANNER_REQUEST,
   SET_LOGIN_BANNER_ERROR,
-  SET_LOGIN_BANNER_SUCCESS
+  SET_LOGIN_BANNER_SUCCESS,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_ERROR,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_SUCCESS,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -84,7 +90,8 @@ import {
   UserN,
   SlotN,
   EntryN,
-  InstanceConfigN
+  InstanceConfigN,
+  ParentSignatureTimesN
 } from "./types";
 import * as _ from "lodash";
 import { Languages } from "ente-types";
@@ -388,10 +395,15 @@ const reducer = handleActions<AppState | undefined, any>(
       FETCH_INSTANCE_CONFIG_SUCCESS,
       (state: AppState, action: Action<FetchInstanceConfigSuccessPayload>) => {
         const { payload } = action;
-        const { defaultLanguage, loginBanners } = payload!;
+        const {
+          defaultLanguage,
+          loginBanners,
+          parentSignatureTimes
+        } = payload!;
         const instanceConfigN = new InstanceConfigN({
           defaultLanguage,
-          loginBanners: Map(loginBanners as any)
+          loginBanners: Map(loginBanners as any),
+          parentSignatureTimes: ParentSignatureTimesN(parentSignatureTimes)
         });
         return state
           .update("language", l => l || defaultLanguage)
@@ -407,6 +419,34 @@ const reducer = handleActions<AppState | undefined, any>(
       (state: AppState, action: Action<Languages>) => {
         const { payload } = action;
         return state.setIn(["instanceConfig", "defaultLanguage"], payload);
+      }
+    ),
+
+    // ## SET_PARENT_SIGNATURE_EXPIRY_TIME
+    ...asyncReducersFull(
+      SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
+      SET_PARENT_SIGNATURE_EXPIRY_TIME_ERROR,
+      SET_PARENT_SIGNATURE_EXPIRY_TIME_SUCCESS,
+      (state: AppState, action: Action<number>) => {
+        const { payload } = action;
+        return state.setIn(
+          ["instanceConfig", "parentSignatureTimes", "expiry"],
+          payload
+        );
+      }
+    ),
+
+    // ## SET_PARENT_SIGNATURE_NOTIFICATION_TIME
+    ...asyncReducersFull(
+      SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
+      SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
+      SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
+      (state: AppState, action: Action<number>) => {
+        const { payload } = action;
+        return state.setIn(
+          ["instanceConfig", "parentSignatureTimes", "notification"],
+          payload
+        );
       }
     ),
 

@@ -15,6 +15,7 @@ import { SignRequest } from "../templates/SignRequest";
 import { InvitationLink } from "../templates/InvitationLink";
 import { ManagerSignedInformation } from "../templates/ManagerSignedInformation";
 import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformation";
+import { EntryStillUnsignedNotification } from "../templates/EntryStillUnsignedNotification";
 
 @Injectable()
 export class EmailService {
@@ -141,6 +142,32 @@ export class EmailService {
             recipient.username,
             recipient.email
           ])}`
+        );
+      })
+    );
+  }
+
+  async dispatchEntryStillUnsignedNotification(
+    link: string,
+    recipients: UserDto[]
+  ) {
+    await Promise.all(
+      recipients.map(async recipient => {
+        const { html, subject } = await EntryStillUnsignedNotification(
+          link,
+          recipient.language
+        );
+        await this.emailTransport.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully dispatched EntryStillUnsignedNotification to ${JSON.stringify(
+            [recipient.username, recipient.email]
+          )}`
         );
       })
     );

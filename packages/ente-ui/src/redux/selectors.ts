@@ -16,7 +16,8 @@ import {
   roleHasChildren,
   AuthState,
   userIsTeaching,
-  InstanceConfigN
+  InstanceConfigN,
+  ParentSignatureTimesN
 } from "./types";
 import { createSelector } from "reselect";
 import { Roles, Languages, DEFAULT_LANGUAGE } from "ente-types";
@@ -172,6 +173,23 @@ export const getLanguage: Selector<Maybe<Languages>> = state =>
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
   const instanceConfig = getInstanceConfig(state);
   return instanceConfig.map(i => i.get("defaultLanguage"));
+};
+
+export const getParentSignatureTimes: Selector<
+  Maybe<ParentSignatureTimesN>
+> = state => {
+  const instanceConfig = getInstanceConfig(state);
+  return instanceConfig.map(i => i.get("parentSignatureTimes"));
+};
+
+export const getParentSignatureExpiryTime: Selector<Maybe<number>> = state => {
+  return getParentSignatureTimes(state).map(v => v.get("expiry"));
+};
+
+export const getParentSignatureNotificationTime: Selector<
+  Maybe<number>
+> = state => {
+  return getParentSignatureTimes(state).map(v => v.get("notification"));
 };
 
 export const getLoginBanners: Selector<

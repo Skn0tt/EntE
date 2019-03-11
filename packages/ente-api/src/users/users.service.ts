@@ -67,7 +67,7 @@ export class UsersService implements OnModuleInit {
     @Inject(UserRepo) private readonly userRepo: UserRepo,
     @Inject(PasswordResetService)
     private readonly passwordResetService: PasswordResetService,
-    @Inject(WinstonLoggerService) private readonly logger: LoggerService,
+    @Inject(WinstonLoggerService) private readonly logger: WinstonLoggerService,
     @Inject(InstanceConfigService)
     private readonly instanceConfigService: InstanceConfigService
   ) {}

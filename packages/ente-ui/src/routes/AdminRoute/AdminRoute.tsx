@@ -18,6 +18,8 @@ import LoginBannerEditor from "./LoginBannerEditor";
 import { Languages } from "ente-types";
 import DefaultLanguageUpdater from "./DefaultLanguageUpdater";
 import { Description } from "../../components/Description";
+import ParentSignatureExpiryTimeUpdater from "./ParentSignatureExpiryTimeUpdater";
+import ParentSignatureNotificationTimeUpdater from "./ParentSignatureNotificationTimeUpdater";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -26,7 +28,19 @@ const useTranslation = makeTranslationHook({
     defaultLanguage: "Default Language",
     defaultLanguageDescription: "New users have this language set",
     loginBanner: "Login-Banner",
-    loginBannerDescription: "This text is shown on the login page."
+    loginBannerDescription: "This text is shown on the login page.",
+    parentSignature: {
+      expiry: {
+        title: "Signature expiry",
+        description:
+          "Duration after which an entry is not signable anymore (in days). Set to '0' to disable expiration."
+      },
+      notification: {
+        title: "Signature notification delay",
+        description:
+          "Duration after which parents receive a notification to sign an entry (in days). Set to '0' disable."
+      }
+    }
   },
   de: {
     downloadExcel: "Excel Export downloaden",
@@ -35,7 +49,19 @@ const useTranslation = makeTranslationHook({
     defaultLanguageDescription:
       "Neue Nutzer haben diese Sprache voreingestellt",
     loginBanner: "Login-Banner",
-    loginBannerDescription: "Dieser Text wird auf der Login-Seite angezeigt."
+    loginBannerDescription: "Dieser Text wird auf der Login-Seite angezeigt.",
+    parentSignature: {
+      expiry: {
+        title: "Auslaufzeit Unterschrift",
+        description:
+          "Zeitdauer, nach der ein Eintrag nicht mehr unterschrieben werden kann (in Tagen). Auf '0' setzen, um zu deaktivieren."
+      },
+      notification: {
+        title: "Erinnerungs-Email Verzögerung",
+        description:
+          "Zeitdauer, nach der die Eltern eine Erinnerungs-Email erhalten, falls ein Eintrag noch nicht unterschrieben wurde (in Tagen). Auf '0' setzen, um zu deaktivieren."
+      }
+    }
   }
 });
 
@@ -121,11 +147,37 @@ const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
           <Grid container direction="row" justify="flex-start" spacing={16}>
             <Grid item xs={12} md={5}>
               <Description title={lang.defaultLanguage}>
-                {lang.loginBannerDescription}
+                {lang.defaultLanguageDescription}
               </Description>
             </Grid>
             <Grid item xs={11} md={5}>
               <DefaultLanguageUpdater />
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item>
+          <Grid container direction="row" justify="flex-start" spacing={16}>
+            <Grid item xs={12} md={5}>
+              <Description title={lang.parentSignature.expiry.title}>
+                {lang.parentSignature.expiry.description}
+              </Description>
+            </Grid>
+            <Grid item xs={11} md={5}>
+              <ParentSignatureExpiryTimeUpdater />
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item>
+          <Grid container direction="row" justify="flex-start" spacing={16}>
+            <Grid item xs={12} md={5}>
+              <Description title={lang.parentSignature.notification.title}>
+                {lang.parentSignature.notification.description}
+              </Description>
+            </Grid>
+            <Grid item xs={11} md={5}>
+              <ParentSignatureNotificationTimeUpdater />
             </Grid>
           </Grid>
         </Grid>
