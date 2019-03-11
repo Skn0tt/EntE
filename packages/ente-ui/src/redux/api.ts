@@ -460,3 +460,37 @@ export const setDefaultLanguage = async (
     }
   );
 };
+
+export const setParentSignatureNotificationTime = async (
+  value: number,
+  token: string
+): Promise<void> => {
+  const response = await put(
+    `${getBaseUrl()}/instanceConfig/parentSignatureTimes/notification`,
+    token,
+    "" + value,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
+};
+
+export const setParentSignatureExpiryTime = async (
+  value: number,
+  token: string
+): Promise<void> => {
+  const response = await put(
+    `${getBaseUrl()}/instanceConfig/parentSignatureTimes/expiry`,
+    token,
+    "" + value,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
+};

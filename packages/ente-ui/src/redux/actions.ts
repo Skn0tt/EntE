@@ -77,7 +77,13 @@ import {
   SET_LOGIN_BANNER_ERROR,
   SET_DEFAULT_LANGUAGE_REQUEST,
   SET_DEFAULT_LANGUAGE_SUCCESS,
-  SET_DEFAULT_LANGUAGE_ERROR
+  SET_DEFAULT_LANGUAGE_ERROR,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_SUCCESS,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_ERROR,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import {
@@ -341,3 +347,27 @@ export const setDefaultLanguageError = createMetaAction<
   Action<Languages>,
   Error
 >(SET_DEFAULT_LANGUAGE_ERROR);
+
+export const setParentSignatureExpiryTimeRequest = createAction<number>(
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST
+);
+export const setParentSignatureExpiryTimeSuccess = createMetaAction<
+  Action<Languages>,
+  number
+>(SET_PARENT_SIGNATURE_EXPIRY_TIME_SUCCESS);
+export const setParentSignatureExpiryTimeError = createMetaAction<
+  Action<Languages>,
+  Error
+>(SET_PARENT_SIGNATURE_EXPIRY_TIME_ERROR);
+
+export const setParentSignatureNotificationTimeRequest = createAction<number>(
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST
+);
+export const setParentSignatureNotificationTimeSuccess = createMetaAction<
+  Action<Languages>,
+  number
+>(SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS);
+export const setParentSignatureNotificationTimeError = createMetaAction<
+  Action<Languages>,
+  Error
+>(SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR);

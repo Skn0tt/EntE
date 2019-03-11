@@ -10,7 +10,9 @@ import {
   userIsAdult,
   TEACHING_ROLES,
   entryReasonCategoryHasTeacherId,
-  ExamenPayload
+  ExamenPayload,
+  isParentSignatureNotificationEnabled,
+  canEntryStillBeSigned
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -19,6 +21,9 @@ import { validate } from "class-validator";
 import * as _ from "lodash";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
+import { InstanceConfigService } from "../instance-config/instance-config.service";
+import { EntryNotificationQueue } from "./entry-notification.queue";
+import { WinstonLoggerService } from "../winston-logger.service";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -59,7 +64,8 @@ export enum PatchEntryFailure {
   ForbiddenForRole,
   ForbiddenForUser,
   NotFound,
-  IllegalPatch
+  IllegalPatch,
+  EntryAlreadyExpired
 }
 
 @Injectable()
@@ -67,7 +73,13 @@ export class EntriesService {
   constructor(
     @Inject(EntryRepo) private readonly entryRepo: EntryRepo,
     @Inject(UserRepo) private readonly userRepo: UserRepo,
-    @Inject(EmailService) private readonly emailService: EmailService
+    @Inject(EmailService) private readonly emailService: EmailService,
+    @Inject(InstanceConfigService)
+    private readonly instanceConfigService: InstanceConfigService,
+    @Inject(EntryNotificationQueue)
+    private readonly entryNotificationQueue: EntryNotificationQueue,
+    @Inject(WinstonLoggerService)
+    private readonly logger: WinstonLoggerService
   ) {}
 
   async findAll(
@@ -209,9 +221,20 @@ export class EntriesService {
     }
 
     if (!result.signedParent) {
+      const parentSignatureNotificationTime = await this.instanceConfigService.getParentSignatureNotificationTime();
+      if (
+        isParentSignatureNotificationEnabled(parentSignatureNotificationTime)
+      ) {
+        await this.entryNotificationQueue.addJob(
+          result.id,
+          parentSignatureNotificationTime
+        );
+      }
+
       const parentsOfUser = await this.userRepo.getParentsOfUser(
         entry.studentId!
       );
+
       parentsOfUser.cata(
         () => {
           throw new Error(
@@ -290,6 +313,11 @@ export class EntriesService {
 
         await dispatchSignedInfoEmail(patch.signed!);
       } else {
+        const expiryDuration = await this.instanceConfigService.getParentSignatureExpiryTime();
+        if (!canEntryStillBeSigned(+entry.some().createdAt, expiryDuration)) {
+          return Fail(PatchEntryFailure.EntryAlreadyExpired);
+        }
+
         const isTrueBecauseOnlyManagersCanRemoveSignature =
           patch.signed === true;
         if (!isTrueBecauseOnlyManagersCanRemoveSignature) {
@@ -350,6 +378,35 @@ export class EntriesService {
     });
 
     return Success(entryV.success());
+  }
+
+  async sendNotification(entryId: string) {
+    const entry = await this.entryRepo.findById(entryId);
+    await entry.cata(
+      async () => {
+        this.logger.log(`entry ${entryId} does not exist anymore.`);
+      },
+      async entry => {
+        const { signedParent, student } = entry;
+        if (signedParent) {
+          this.logger.log(`Entry has already been signed.`);
+        }
+
+        const parents = await this.userRepo.getParentsOfUser(student.id);
+        await parents.cata(
+          async () => {
+            this.logger.log(`Student ${student.id} does not exist anymore.`);
+          },
+          async parents => {
+            const entryLink = this.getSigningLinkForEntry(entry);
+            await this.emailService.dispatchEntryStillUnsignedNotification(
+              entryLink,
+              parents
+            );
+          }
+        );
+      }
+    );
   }
 
   getSigningLinkForEntry(entry: EntryDto) {

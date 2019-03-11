@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Moved weekly update schedule into bull queues, now the API service can be scaled horizontally
+- Added: Parents now receive a reminder email after a configurable number of days ([#251](https://gitlab.com/Skn0tt/EntE/issues/251))
 - Fixed: Number entry fields now can be erased ([#259](https://gitlab.com/Skn0tt/EntE/issues/259))
 - Added: New Entry reasons ([#252](https://gitlab.com/Skn0tt/EntE/issues/252))
 - Improve user data validation to prevent further database inconsistencies ([#258](https://gitlab.com/Skn0tt/EntE/issues/258))

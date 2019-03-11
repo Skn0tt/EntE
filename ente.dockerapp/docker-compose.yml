@@ -28,7 +28,6 @@ services:
       NODE_ENV: ${debug.environment}
       BASE_URL: ${config.baseUrl}
       SIGNER_BASEURL: http://signer:3000
-      ENABLE_CRON_JOBS: "true"
       CRON_WEEKLY_SUMMARY: "0 16 * * 5"
       SENTRY_DSN: ${sentry.api}
       MYSQL_HOST: ${mysql.host}

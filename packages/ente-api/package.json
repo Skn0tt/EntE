@@ -27,6 +27,7 @@
     "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
+    "bull": "^3.7.0",
     "class-transformer": "^0.1.10",
     "class-validator": "^0.9.1",
     "ente-types": "^0.18.0",
@@ -37,7 +38,6 @@
     "monet": "^0.9.0",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
-    "nest-schedule": "^0.4.3",
     "nodemailer": "^4.6.8",
     "passport": "^0.4.0",
     "passport-custom": "^1.0.5",
@@ -54,6 +54,7 @@
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
     "@types/bcrypt": "^3.0.0",
+    "@types/bull": "^3.5.8",
     "@types/express": "^4.16.0",
     "@types/handlebars": "^4.0.39",
     "@types/jest": "^23.3.1",

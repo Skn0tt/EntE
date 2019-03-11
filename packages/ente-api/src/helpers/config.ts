@@ -1,6 +1,5 @@
 import { Maybe } from "monet";
 import { ensureNotEnding } from "./ensure-not-ending";
-import { Languages } from "ente-types";
 import * as _ from "lodash";
 const pack = require("../../package.json");
 
@@ -20,7 +19,6 @@ interface IConfig {
     pool: boolean;
   };
   cron: {
-    enable: boolean;
     weeklySummary: string;
   };
   db: {
@@ -45,7 +43,6 @@ const config = ((): Readonly<IConfig> => {
     REDIS_HOST,
     REDIS_PORT,
     REDIS_PREFIX,
-    ENABLE_CRON_JOBS,
     CRON_WEEKLY_SUMMARY,
     SMTP_HOST,
     SMTP_PORT,
@@ -54,14 +51,12 @@ const config = ((): Readonly<IConfig> => {
     SMTP_SENDER,
     SMTP_POOL,
     SMTP_ADDRESS,
-    DEFAULT_LANGUAGE,
     SENTRY_DSN
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL!),
     production: envVars.NODE_ENV === "production",
     cron: {
-      enable: ENABLE_CRON_JOBS === "true",
       weeklySummary: CRON_WEEKLY_SUMMARY!
     },
     DSN: Maybe.fromUndefined(SENTRY_DSN).filter(s => s !== "<nil>"),
@@ -106,8 +101,6 @@ const getSentryDsn = () => config.DSN;
 
 const getConfig = () => config;
 
-const isCronEnabled = () => config.cron.enable;
-
 const getWeeklySummaryCron = () => config.cron.weeklySummary;
 
 const getSignerBaseUrl = () => config.signerBaseUrl;
@@ -125,7 +118,6 @@ export const Config = {
   getBaseUrl,
   getSentryDsn,
   getConfig,
-  isCronEnabled,
   getWeeklySummaryCron,
   getSignerBaseUrl,
   getVersion

@@ -58,7 +58,11 @@ import {
   setDefaultLanguageError,
   SetLoginBannerRequestPayload,
   setLoginBannerSuccess,
-  setLoginBannerError
+  setLoginBannerError,
+  setParentSignatureExpiryTimeSuccess,
+  setParentSignatureExpiryTimeError,
+  setParentSignatureNotificationTimeSuccess,
+  setParentSignatureNotificationTimeError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -83,7 +87,9 @@ import {
   IMPORT_USERS_REQUEST,
   FETCH_INSTANCE_CONFIG_REQUEST,
   SET_DEFAULT_LANGUAGE_REQUEST,
-  SET_LOGIN_BANNER_REQUEST
+  SET_LOGIN_BANNER_REQUEST,
+  SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -436,6 +442,36 @@ function* setLoginBannerSaga(action: Action<SetLoginBannerRequestPayload>) {
   }
 }
 
+function* setParentSignatureExpiryTimeSaga(action: Action<number>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.setParentSignatureExpiryTime, action.payload!, token.some());
+
+    yield put(setParentSignatureExpiryTimeSuccess(action.payload, action));
+  } catch (error) {
+    onRequestError(error);
+    yield put(setParentSignatureExpiryTimeError(error, action));
+  }
+}
+
+function* setParentSignatureNotificationTimeSaga(action: Action<number>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(
+      api.setParentSignatureNotificationTime,
+      action.payload!,
+      token.some()
+    );
+
+    yield put(
+      setParentSignatureNotificationTimeSuccess(action.payload, action)
+    );
+  } catch (error) {
+    onRequestError(error);
+    yield put(setParentSignatureNotificationTimeError(error, action));
+  }
+}
+
 function* syncLanguageSaga(action: Action<Languages>) {
   try {
     const userId: Maybe<string> = yield select(selectors.getUserId);
@@ -466,6 +502,14 @@ function* saga() {
   yield takeEvery(IMPORT_USERS_REQUEST, importUsersSaga);
   yield takeEvery(FETCH_INSTANCE_CONFIG_REQUEST, fetchInstanceConfigSaga);
   yield takeEvery(SET_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
+  yield takeEvery(
+    SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
+    setParentSignatureExpiryTimeSaga
+  );
+  yield takeEvery(
+    SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
+    setParentSignatureNotificationTimeSaga
+  );
   yield takeEvery(SET_LOGIN_BANNER_REQUEST, setLoginBannerSaga);
   yield takeEvery<Action<CreateEntryDto>>(
     CREATE_ENTRY_REQUEST,

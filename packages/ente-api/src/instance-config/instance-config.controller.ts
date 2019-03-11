@@ -50,6 +50,70 @@ export class InstanceConfigController {
     return value.orUndefined();
   }
 
+  @Get("parentSignatureTimes")
+  async getParentSignatureTimes() {
+    return await this.instanceConfigService.getParentSignatureTimes();
+  }
+
+  @Get("parentSignatureTimes/expiry")
+  async getParentSignatureExpiryTime() {
+    return await this.instanceConfigService.getParentSignatureExpiryTime();
+  }
+
+  @Get("parentSignatureTimes/notification")
+  async getParentSignatureNotificationTime() {
+    return await this.instanceConfigService.getParentSignatureNotificationTime();
+  }
+
+  @Put("parentSignatureTimes/expiry")
+  @UseGuards(AuthGuard("combined"))
+  async setParentSignatureExpiryTime(
+    @Req() req: Request,
+    @Ctx() ctx: RequestContext
+  ) {
+    const value = +req.body;
+    if (isNaN(value)) {
+      throw new BadRequestException("Number expected");
+    }
+    const result = await this.instanceConfigService.setParentSignatureExpiryTime(
+      value,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case SetInstanceConfigValueFail.ForbiddenForRole:
+            throw new ForbiddenException();
+        }
+      },
+      () => {}
+    );
+  }
+
+  @Put("parentSignatureTimes/notification")
+  @UseGuards(AuthGuard("combined"))
+  async setParentSignatureNotificationTime(
+    @Req() req: Request,
+    @Ctx() ctx: RequestContext
+  ) {
+    const value = +req.body;
+    const result = await this.instanceConfigService.setParentSignatureNotificationTime(
+      value,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case SetInstanceConfigValueFail.ForbiddenForRole:
+            throw new ForbiddenException();
+          case SetInstanceConfigValueFail.IllegalValue:
+            throw new BadRequestException();
+        }
+      },
+      () => {}
+    );
+  }
+
   @Put("loginBanners/:lang")
   @UseGuards(AuthGuard("combined"))
   async setLoginBanner(
@@ -57,7 +121,7 @@ export class InstanceConfigController {
     @Req() req: Request,
     @Ctx() ctx: RequestContext
   ): Promise<void> {
-    const bannerText = (await req.body) as string;
+    const bannerText = req.body as string;
 
     if (!isValidLanguage(lang)) {
       throw new NotFoundException();
@@ -73,6 +137,8 @@ export class InstanceConfigController {
         switch (fail) {
           case SetInstanceConfigValueFail.ForbiddenForRole:
             throw new ForbiddenException();
+          case SetInstanceConfigValueFail.IllegalValue:
+            throw new BadRequestException();
         }
       },
       () => {}
@@ -90,7 +156,7 @@ export class InstanceConfigController {
     @Req() req: Request,
     @Ctx() ctx: RequestContext
   ): Promise<void> {
-    const lang = (await req.body) as string;
+    const lang = req.body as string;
     if (!isValidLanguage(lang)) {
       throw new BadRequestException();
     }

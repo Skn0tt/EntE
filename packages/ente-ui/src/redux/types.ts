@@ -15,7 +15,10 @@ import {
   Languages,
   roleIsTeaching,
   dateToIsoString,
-  DEFAULT_LANGUAGE
+  DEFAULT_LANGUAGE,
+  ParentSignatureTimesDto,
+  DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
+  DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
 } from "ente-types";
 import { Action } from "redux";
 import { Maybe, None } from "monet";
@@ -53,16 +56,27 @@ class SlotDtoNormalised extends SlotDto {
   teacherId: string | null;
 }
 
+export type ParentSignatureTimesN = ImmutableRecord<ParentSignatureTimesDto>;
+export const ParentSignatureTimesN = ImmutableRecord<ParentSignatureTimesDto>(
+  {
+    expiry: DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
+    notification: DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
+  },
+  "ParentSignatureTimesN"
+);
+
 interface InstanceConfigRecord {
   defaultLanguage: Languages;
   loginBanners: Map<Languages, string>;
+  parentSignatureTimes: ParentSignatureTimesN;
 }
 
 export type InstanceConfigN = ImmutableRecord<InstanceConfigRecord>;
 export const InstanceConfigN = ImmutableRecord<InstanceConfigRecord>(
   {
     defaultLanguage: DEFAULT_LANGUAGE,
-    loginBanners: Map()
+    loginBanners: Map(),
+    parentSignatureTimes: ParentSignatureTimesN()
   },
   "InstanceConfigN"
 );
