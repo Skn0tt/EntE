@@ -35,7 +35,7 @@ export class AddNewEntryReasonCategories1551552955000
     await queryRunner.query(`
       UPDATE entry
       SET reasonCategory = 'illness'
-      WHERE reasonCategory = NULL;
+      WHERE reasonCategory IS NULL;
     `);
 
     await queryRunner.query(

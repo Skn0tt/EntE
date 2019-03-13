@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed migration script SQL syntax
+
 ## [v0.19.0] - 2019-03-13
 
 - Moved weekly update schedule into bull queues, now the API service can be scaled horizontally
