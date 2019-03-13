@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.19.1] - 2019-03-13
+
 - Fixed migration script SQL syntax
 
 ## [v0.19.0] - 2019-03-13
