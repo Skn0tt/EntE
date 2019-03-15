@@ -87,8 +87,11 @@ const useStyles = makeStyles(
     },
     content: {
       width: "100%",
-      marginTop: 64,
+      height: "calc(100vh - 56px)",
+      marginTop: 56,
       [theme.breakpoints.up("md")]: {
+        height: "calc(100vh - 64px)",
+        marginTop: 64,
         marginLeft: drawerWidth
       }
     }

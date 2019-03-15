@@ -147,9 +147,27 @@ const GraduationYearReportRoute: React.FC<
       </Center>
     ),
     users => (
-      <Grid container direction="column" spacing={16}>
-        {ownRole === Roles.ADMIN && (
-          <Grid item className={classes.padding}>
+      <Table<UserN>
+        headers={[
+          translation.headers.name,
+          translation.headers.absentDays,
+          translation.headers.absentHours,
+          translation.headers.unexcusedAbsentHours,
+          translation.headers.hourRate
+        ]}
+        extract={u => {
+          const entries = getEntriesOfStudent(u.get("id"));
+          const summary = Reporting.summarize(entries, slotsMap);
+          return [
+            u.get("displayname"),
+            summary.absentDays.total,
+            summary.absentSlots.total,
+            summary.absentSlots.unexcused,
+            summary.slotsPerDay
+          ].map(String);
+        }}
+        title={
+          ownRole === Roles.ADMIN ? (
             <DropdownInput
               value={year.some()}
               options={existingGradYears}
@@ -158,35 +176,14 @@ const GraduationYearReportRoute: React.FC<
               fullWidth
               label={translation.year}
             />
-          </Grid>
-        )}
-
-        <Grid item>
-          <Table<UserN>
-            headers={[
-              translation.headers.name,
-              translation.headers.absentDays,
-              translation.headers.absentHours,
-              translation.headers.unexcusedAbsentHours,
-              translation.headers.hourRate
-            ]}
-            extract={u => {
-              const entries = getEntriesOfStudent(u.get("id"));
-              const summary = Reporting.summarize(entries, slotsMap);
-              return [
-                u.get("displayname"),
-                summary.absentDays.total,
-                summary.absentSlots.total,
-                summary.absentSlots.unexcused,
-                summary.slotsPerDay
-              ].map(String);
-            }}
-            onClick={handleRowClicked}
-            extractId={extractId}
-            items={users}
-          />
-        </Grid>
-      </Grid>
+          ) : (
+            undefined
+          )
+        }
+        onClick={handleRowClicked}
+        extractId={extractId}
+        items={users}
+      />
     )
   );
 };

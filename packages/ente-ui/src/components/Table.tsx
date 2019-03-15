@@ -95,6 +95,7 @@ interface TableOwnProps<T> {
   headers: ReadonlyArray<ConfigItem>;
   extractId: (item: T) => string;
   onClick?: (id: string) => void;
+  title?: string | JSX.Element;
 }
 
 type TableProps<T> = TableOwnProps<T>;
@@ -106,7 +107,8 @@ export class Table<T> extends React.PureComponent<TableProps<T>> {
       items,
       extract,
       extractId,
-      onClick = () => {}
+      onClick = () => {},
+      title
     } = this.props;
     const data = items.map(i => [extractId(i), ...extract(i)]);
     const columns = headers.map(h =>
@@ -119,10 +121,12 @@ export class Table<T> extends React.PureComponent<TableProps<T>> {
           <MUIDataTable
             columns={[idColumn, ...columns]}
             data={data}
+            title={title as any}
             options={{
               rowsPerPage: 50,
               rowsPerPageOptions: [20, 50, 100],
               selectableRows: false,
+              elevation: 1,
               responsive: "scroll",
               onRowClick: (d: any[]) => onClick(d[0]),
               textLabels: translation(lang).textLabels

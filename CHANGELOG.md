@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- changed styling to make visual integration of tables better
+
 ## [v0.19.1] - 2019-03-13
 
 - Fixed migration script SQL syntax

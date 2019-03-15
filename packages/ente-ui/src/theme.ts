@@ -15,7 +15,20 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true
-  }
+  },
+  overrides: {
+    MUIDataTable: {
+      paper: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start"
+      },
+      responsiveScroll: {
+        flexGrow: 1
+      }
+    }
+  } as any
 });
 
 export default theme;
