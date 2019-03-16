@@ -18,7 +18,8 @@ import {
   getUser,
   getEntriesRequest,
   EntryN,
-  UserN
+  UserN,
+  getTimeScope
 } from "../../redux";
 import { Action } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
@@ -29,10 +30,11 @@ import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
+import { getTimeScopeValidator, TimeScope } from "../../time-scope";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -73,11 +75,13 @@ interface EntriesStateProps {
   entries: EntryN[];
   canCreateEntries: Maybe<boolean>;
   getUser(id: string): Maybe<UserN>;
+  timeScope: TimeScope;
 }
 const mapStateToProps = (state: AppState): EntriesStateProps => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
-  getUser: (id: string) => getUser(id)(state)
+  getUser: (id: string) => getUser(id)(state),
+  timeScope: getTimeScope(state)
 });
 
 interface EntriesDispatchProps {
@@ -110,7 +114,8 @@ export const Entries: React.FunctionComponent<Props> = props => {
     entries,
     getUser,
     history,
-    requestEntries
+    requestEntries,
+    timeScope
   } = props;
 
   const lang = useTranslation();
@@ -134,6 +139,14 @@ export const Entries: React.FunctionComponent<Props> = props => {
     [lang.yes]
   );
 
+  const entriesInScope = React.useMemo(
+    () => {
+      const validator = getTimeScopeValidator(timeScope);
+      return entries.filter(e => validator(parseISO(e.get("createdAt"))));
+    },
+    [entries, timeScope]
+  );
+
   return (
     <React.Fragment>
       {/* Modals */}
@@ -155,13 +168,15 @@ export const Entries: React.FunctionComponent<Props> = props => {
             options: { customBodyRender, filter: true }
           }
         ]}
-        items={entries}
+        items={entriesInScope}
         extract={entry => [
           getUser(entry.get("studentId"))
             .some()
             .get("displayname"),
-          format(entry.get("date"), "PP", { locale: lang.locale }),
-          format(entry.get("createdAt"), "PPpp", { locale: lang.locale }),
+          format(parseISO(entry.get("date")), "PP", { locale: lang.locale }),
+          format(parseISO(entry.get("createdAt")), "PPpp", {
+            locale: lang.locale
+          }),
           lang.reasonCategories[entry.get("reason").category],
           entry.get("signedManager") ? lang.yes : lang.no,
           entry.get("signedParent") ? lang.yes : lang.no

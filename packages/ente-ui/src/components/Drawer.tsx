@@ -34,6 +34,7 @@ import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
 import { withRouter, RouteComponentProps } from "react-router";
+import TimeScopeSelectionView from "./TimeScopeSelectionView";
 
 const drawerWidth = 240;
 
@@ -150,6 +151,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = props => {
               height={24}
             />
             <div className={classes.grow} />
+
             <RefreshButton />
             <SettingsMenu />
           </Toolbar>

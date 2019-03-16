@@ -67,8 +67,8 @@ const slot: SlotDto = {
 const entry: EntryDto = {
   id: "1cf900d1-2c1e-4178-903a-23e327f11d05",
   date: "2018-12-26",
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
   reason: {
     category: EntryReasonCategory.ILLNESS,
     payload: {}

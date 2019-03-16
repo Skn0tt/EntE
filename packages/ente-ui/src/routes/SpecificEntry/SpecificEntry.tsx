@@ -71,7 +71,7 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MailIcon from "@material-ui/icons/MailRounded";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
@@ -113,8 +113,8 @@ const useTranslation = makeTranslationHook({
         `Competition: ${v.from}-${v.to}, ${v.name}`
     },
     dateRange: (start: string, end: string) =>
-      `From ${format(start, "PP", { locale: enLocale })} to ${format(
-        end,
+      `From ${format(parseISO(start), "PP", { locale: enLocale })} to ${format(
+        parseISO(end),
         "PP",
         { locale: enLocale }
       )}`,
@@ -175,8 +175,8 @@ const useTranslation = makeTranslationHook({
     },
     date: "Datum:",
     dateRange: (start: string, end: string) =>
-      `Von ${format(start, "PP", { locale: deLocale })} bis ${format(
-        end,
+      `Von ${format(parseISO(start), "PP", { locale: deLocale })} bis ${format(
+        parseISO(end),
         "PP",
         { locale: deLocale }
       )}`,
@@ -403,7 +403,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                 <i>{lang.date}</i>{" "}
                 {!!entry.get("dateEnd")
                   ? lang.dateRange(entry.get("date"), entry.get("dateEnd")!)
-                  : format(entry.get("date"), "PP", {
+                  : format(parseISO(entry.get("date")), "PP", {
                       locale: lang.locale
                     })}
                 <br />
@@ -426,7 +426,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                   {getSlots(entry.get("slotIds")).map(slot => (
                     <TableRow key={slot.get("id")}>
                       <TableCell>
-                        {format(slot.get("date"), "PP", {
+                        {format(parseISO(slot.get("date")), "PP", {
                           locale: lang.locale
                         })}
                       </TableCell>

@@ -1,6 +1,15 @@
 import * as React from "react";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader
+} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import TimelapseIcon from "@material-ui/icons/Timelapse";
 import { None, Some, Maybe } from "monet";
 import { Route } from "react-router";
 import { History } from "history";
@@ -13,15 +22,24 @@ import {
 } from "react-redux";
 import { AppState, getLanguage, setLanguage } from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
+import TimeScopeSelectionView from "./TimeScopeSelectionView";
 
 const useTranslation = makeTranslationHook({
   en: {
     about: "About",
-    language: "Language"
+    language: "Language",
+    subHeaders: {
+      filters: "Filters",
+      preferences: "Preferences"
+    }
   },
   de: {
     about: "Über",
-    language: "Sprache"
+    language: "Sprache",
+    subHeaders: {
+      filters: "Filter",
+      preferences: "Einstellungen"
+    }
   }
 });
 
@@ -117,19 +135,30 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
           anchorEl={anchorEl.orSome(null as any)}
           onClose={closeMenu}
         >
+          <ListSubheader>{translation.subHeaders.filters}</ListSubheader>
+
+          <MenuItem>
+            <ListItemIcon>
+              <TimelapseIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <TimeScopeSelectionView />
+            </ListItemText>
+          </MenuItem>
+
+          <ListSubheader>{translation.subHeaders.preferences}</ListSubheader>
+
+          <MenuItem onClick={openLanguagePicker}>
+            {translation.language}
+          </MenuItem>
+
           <Route
             render={({ history }) => (
-              <MenuItem
-                dense
-                onClick={navigateToPathFactory("/about", history)}
-              >
+              <MenuItem onClick={navigateToPathFactory("/about", history)}>
                 {translation.about}
               </MenuItem>
             )}
           />
-          <MenuItem onClick={openLanguagePicker}>
-            {translation.language}
-          </MenuItem>
         </Menu>
       </div>
     </>

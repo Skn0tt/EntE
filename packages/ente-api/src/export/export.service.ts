@@ -81,7 +81,7 @@ export class ExportService {
           dateToIsoString(e.date),
           !!e.dateEnd ? dateToIsoString(e.dateEnd) : "",
           e.student.username,
-          e.createdAt.toISOString(),
+          e.createdAt,
           !!e.reason ? JSON.stringify(e.reason) : "",
           "" + e.signedManager,
           "" + e.signedParent,

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, MenuItem } from "@material-ui/core";
 import * as _ from "lodash";
+import { InputProps } from "@material-ui/core/Input";
 
 interface DropdownInputProps<T> {
   onChange: (v: T) => void;
@@ -8,10 +9,12 @@ interface DropdownInputProps<T> {
   value: T;
   getOptionLabel: (v: T) => string;
   getOptionKey?: (v: T) => string;
+  disableNative?: boolean;
   fullWidth?: boolean;
   label?: string;
   variant?: "standard" | "filled" | "outlined";
   margin?: "dense" | "normal" | "none";
+  InputProps?: Partial<InputProps>;
 }
 
 // tslint:disable-next-line:function-name
@@ -25,7 +28,9 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
     fullWidth,
     label,
     variant,
-    margin
+    margin,
+    disableNative = false,
+    InputProps
   } = props;
 
   const lookup = React.useMemo(
@@ -54,13 +59,20 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
       fullWidth={fullWidth}
       margin={margin}
       label={label}
-      SelectProps={{ native: true }}
+      InputProps={InputProps}
+      SelectProps={{ native: !disableNative }}
     >
-      {options.map(option => (
-        <option key={getOptionKey(option)} value={getOptionKey(option)}>
-          {getOptionLabel(option)}
-        </option>
-      ))}
+      {disableNative
+        ? options.map(option => (
+            <MenuItem key={getOptionKey(option)} value={getOptionKey(option)}>
+              {getOptionLabel(option)}
+            </MenuItem>
+          ))
+        : options.map(option => (
+            <option key={getOptionKey(option)} value={getOptionKey(option)}>
+              {getOptionLabel(option)}
+            </option>
+          ))}
     </TextField>
   );
 }

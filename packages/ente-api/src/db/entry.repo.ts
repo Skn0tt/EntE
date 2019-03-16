@@ -13,6 +13,7 @@ import {
   withPagination
 } from "../helpers/pagination-info";
 import { EntryReasonRepo } from "./entry-reason.repo";
+import { parseISO } from "date-fns";
 
 @Injectable()
 export class EntryRepo {
@@ -94,7 +95,9 @@ export class EntryRepo {
                 relations: ["children"]
               });
               return await manager.create(Slot, {
-                date: isMultiDayEntry ? dateToIsoString(s.date!) : null,
+                date: isMultiDayEntry
+                  ? dateToIsoString(parseISO(s.date!))
+                  : null,
                 hour_from: s.from,
                 hour_to: s.to,
                 teacher
@@ -144,8 +147,8 @@ export class EntryRepo {
     result.dateEnd = entry.dateEnd || undefined;
     result.slots = entry.slots.map(SlotRepo.toDto);
     result.student = UserRepo.toDto(entry.student);
-    result.createdAt = entry.createdAt;
-    result.updatedAt = entry.updatedAt;
+    result.createdAt = entry.createdAt.toISOString();
+    result.updatedAt = entry.updatedAt.toISOString();
     result.signedManager = !!entry.signedManager;
     result.signedParent = !!entry.signedParent;
     result.reason = EntryReasonRepo.toDto(entry.reason);

@@ -83,7 +83,8 @@ import {
   SET_PARENT_SIGNATURE_EXPIRY_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
-  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
+  SET_TIME_SCOPE
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import {
@@ -304,6 +305,8 @@ export const importUsersError = createMetaAction<
 >(IMPORT_USERS_ERROR);
 
 export const logout = createAction(LOGOUT);
+
+export const setTimeScope = createAction(SET_TIME_SCOPE);
 
 export type FetchInstanceConfigSuccessPayload = InstanceConfigDto;
 

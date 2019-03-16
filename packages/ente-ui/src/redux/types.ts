@@ -22,6 +22,7 @@ import {
 } from "ente-types";
 import { Action } from "redux";
 import { Maybe, None } from "monet";
+import { TimeScope } from "../time-scope";
 
 export interface BasicCredentials {
   username: string;
@@ -111,7 +112,7 @@ export const roleHasGradYear = (r: Roles) =>
 export type EntryN = ImmutableRecord<EntryDtoNormalised>;
 export const EntryN = ImmutableRecord<EntryDtoNormalised>(
   {
-    createdAt: new Date(0),
+    createdAt: new Date(0).toISOString(),
     date: dateToIsoString(0),
     dateEnd: undefined,
     id: "",
@@ -122,7 +123,7 @@ export const EntryN = ImmutableRecord<EntryDtoNormalised>(
     slotIds: [],
     student: (null as unknown) as UserDto,
     studentId: "",
-    updatedAt: new Date()
+    updatedAt: new Date().toISOString()
   },
   "EntryN"
 );
@@ -184,6 +185,7 @@ export interface IAppState {
   instanceConfig: InstanceConfigN | null;
   language: Languages | null;
   pendingActions: PendingActions;
+  timeScope: TimeScope;
 }
 
 export type AppState = ImmutableRecord<IAppState>;
@@ -195,7 +197,8 @@ export const AppState = ImmutableRecord<IAppState>(
     auth: null,
     instanceConfig: null,
     language: null,
-    pendingActions: Set<Action>()
+    pendingActions: Set<Action>(),
+    timeScope: "everything"
   },
   "AppState"
 );

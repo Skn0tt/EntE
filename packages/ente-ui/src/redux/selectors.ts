@@ -25,6 +25,7 @@ import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Action } from "redux";
 import { Map } from "immutable";
+import { TimeScope } from "../time-scope";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -215,3 +216,6 @@ export const getCurrentLoginBanner: Selector<Maybe<string>> = state => {
   const result = getLoginBannerForLanguage(lang)(state);
   return result;
 };
+
+export const getTimeScope: Selector<TimeScope> = state =>
+  state.get("timeScope");

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DatePicker } from "material-ui-pickers";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { isBefore, isAfter } from "date-fns";
+import { isBefore, isAfter, parseISO } from "date-fns";
 import { dateToIsoString } from "ente-types";
 
 const useTranslation = makeTranslationHook({
@@ -41,7 +41,7 @@ export const DateInput: React.FC<DateInputProps> = props => {
   const lang = useTranslation();
 
   const handleOnChange = React.useCallback(
-    (d: Date | number | string) => {
+    (d: Date | number) => {
       const s = dateToIsoString(d);
       onChange(s);
     },
@@ -54,12 +54,12 @@ export const DateInput: React.FC<DateInputProps> = props => {
   React.useEffect(
     () => {
       if (!dateIsNotBeforeMinDate) {
-        handleOnChange(minDate!);
+        handleOnChange(parseISO(minDate!));
         return;
       }
 
       if (!dateIsNotAfterMaxDate) {
-        handleOnChange(maxDate!);
+        handleOnChange(parseISO(maxDate!));
         return;
       }
     },

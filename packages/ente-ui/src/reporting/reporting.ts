@@ -1,6 +1,6 @@
 import { SlotN, EntryN } from "../redux/";
 import * as _ from "lodash";
-import { getDay, differenceInCalendarDays } from "date-fns";
+import { getDay, differenceInCalendarDays, parseISO } from "date-fns";
 import { fillRange } from "../helpers/fillRange";
 import { Map } from "immutable";
 
@@ -33,8 +33,8 @@ export const getLengthOfEntry = (entry: EntryN): number => {
   }
 
   const distance = differenceInCalendarDays(
-    entry.get("dateEnd")!,
-    entry.get("date")
+    parseISO(entry.get("dateEnd")!),
+    parseISO(entry.get("date"))
   );
   return Math.abs(distance) + 1;
 };
@@ -100,7 +100,7 @@ export const absentHoursByTeacher = (
 };
 
 export const weekdayOfDate = (date: string): Weekday => {
-  const weekday = getDay(date);
+  const weekday = getDay(parseISO(date));
 
   const isSunday = weekday === 0;
 

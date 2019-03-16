@@ -37,7 +37,6 @@ const getBaseUrl = () => getConfig().baseUrl;
 
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
-  transformResponse: transformDates,
   validateStatus: s => s >= 200 && s < 300
 });
 
@@ -46,16 +45,6 @@ const axiosTokenParams = (token: string): AxiosRequestConfig => ({
     Authorization: "Bearer " + token
   }
 });
-
-const reviver = (key: string, value: any) =>
-  ["date", "dateEnd", "createdAt", "updatedAt"].indexOf(key) !== -1
-    ? new Date(value)
-    : value;
-
-const transformDates = (data: string) => {
-  const input = JSON.parse(data, reviver);
-  return input;
-};
 
 const get = async <T>(url: string, token: string) => {
   const response = await axios.get<T>(url, axiosStandardParams(token));

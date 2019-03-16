@@ -13,7 +13,7 @@ import Table from "../../components/Table";
 import { Route } from "react-router";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
 import { getLengthOfSlot } from "../../reporting/reporting";
@@ -92,7 +92,9 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
             }
           ]}
           extract={e => [
-            format(e.get("date"), "PP", { locale: translation.locale }),
+            format(parseISO(e.get("date")), "PP", {
+              locale: translation.locale
+            }),
             translation.categories[e.get("reason").category],
             translation.lengthF(
               _.sum(getSlots(e.get("slotIds")).map(getLengthOfSlot))

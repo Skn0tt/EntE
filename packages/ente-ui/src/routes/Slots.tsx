@@ -22,14 +22,16 @@ import {
   getSlots,
   AppState,
   SlotN,
-  UserN
+  UserN,
+  getTimeScope
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
+import { getTimeScopeValidator, TimeScope } from "../time-scope";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -69,6 +71,7 @@ class SlotsTable extends Table<SlotN> {}
 interface SlotsStateProps {
   slots: SlotN[];
   getUser(id: string): Maybe<UserN>;
+  timeScope: TimeScope;
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotsStateProps,
@@ -76,7 +79,8 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   slots: getSlots(state),
-  getUser: id => getUser(id)(state)
+  getUser: id => getUser(id)(state),
+  timeScope: getTimeScope(state)
 });
 
 interface SlotsDispatchProps {
@@ -95,7 +99,15 @@ type SlotsProps = SlotsStateProps & SlotsDispatchProps;
 
 const Slots: React.FunctionComponent<SlotsProps> = props => {
   const lang = useTranslation();
-  const { getUser, slots, requestSlots } = props;
+  const { getUser, slots, requestSlots, timeScope } = props;
+
+  const slotsInScope = React.useMemo(
+    () => {
+      const validator = getTimeScopeValidator(timeScope);
+      return slots.filter(s => validator(parseISO(s.get("date"))));
+    },
+    [slots, timeScope]
+  );
 
   React.useEffect(() => {
     requestSlots();
@@ -117,13 +129,13 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
         },
         lang.headers.teacher
       ]}
-      items={slots}
+      items={slotsInScope}
       extractId={user => user.get("id")}
       extract={slot => [
         getUser(slot.get("studentId"))
           .some()
           .get("displayname"),
-        format(slot.get("date"), "PP", { locale: lang.locale }),
+        format(parseISO(slot.get("date")), "PP", { locale: lang.locale }),
         "" + slot.get("from"),
         "" + slot.get("to"),
         slot.get("forSchool") ? lang.yes : lang.no,
