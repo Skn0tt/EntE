@@ -81,7 +81,8 @@ import {
   SET_PARENT_SIGNATURE_EXPIRY_TIME_SUCCESS,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
-  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
+  SET_TIME_SCOPE
 } from "./constants";
 import {
   AppState,
@@ -101,6 +102,7 @@ import {
   FetchInstanceConfigSuccessPayload,
   SetLoginBannerSuccessPayload
 } from "./actions";
+import { TimeScope } from "../time-scope";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -213,6 +215,12 @@ const reducer = handleActions<AppState | undefined, any>(
         pendingActions: state!.get("pendingActions"),
         language: state!.get("language")
       }),
+
+    // ## LOGOUT
+    [SET_TIME_SCOPE]: (
+      state?: AppState,
+      action?: Action<TimeScope>
+    ): AppState => state!.set("timeScope", action!.payload!),
 
     // ## RESET_PASSWORD
     ...asyncReducersFull(

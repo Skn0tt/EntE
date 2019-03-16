@@ -110,5 +110,6 @@ export const SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR =
 
 export const ADD_RESPONSE = "ADD_RESPONSE";
 export const SET_LANGUAGE = "SET_LANGUAGE";
+export const SET_TIME_SCOPE = "SET_TIME_SCOPE";
 
 export const LOGOUT = "LOGOUT";

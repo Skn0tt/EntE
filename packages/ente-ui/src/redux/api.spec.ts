@@ -52,7 +52,7 @@ const slot: SlotDto = {
 };
 
 const entry: EntryDto = {
-  createdAt: new Date(0),
+  createdAt: new Date(0).toISOString(),
   date: dateToIsoString(0),
   reason: {
     category: EntryReasonCategory.OTHER_EDUCATIONAL,
@@ -63,7 +63,7 @@ const entry: EntryDto = {
   signedParent: false,
   slots: [slot],
   student: simon,
-  updatedAt: new Date(0)
+  updatedAt: new Date(0).toISOString()
 };
 
 describe("normalizeUsers", () => {

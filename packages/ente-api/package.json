@@ -30,6 +30,7 @@
     "bull": "^3.7.0",
     "class-transformer": "^0.1.10",
     "class-validator": "^0.9.1",
+    "date-fns": "^2.0.0-alpha.27",
     "ente-types": "^0.19.1",
     "excel4node": "^1.7.0",
     "handlebars": "^4.0.12",

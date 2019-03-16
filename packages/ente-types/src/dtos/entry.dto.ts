@@ -37,11 +37,9 @@ export class EntryDto {
   @ValidateNested()
   student: UserDto;
 
-  @IsDate()
-  @Type(() => Date)
-  createdAt: Date;
+  @IsISO8601()
+  createdAt: string;
 
-  @IsDate()
-  @Type(() => Date)
-  updatedAt: Date;
+  @IsISO8601()
+  updatedAt: string;
 }

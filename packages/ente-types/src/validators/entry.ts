@@ -12,9 +12,8 @@ import { subDays, isBefore as _isBefore } from "date-fns";
 
 export const daysBeforeNow = (n: number) => subDays(Date.now(), n);
 
-const isBefore = (a: Date | number | string) => (b: Date | number | string) =>
-  _isBefore(b, a);
+const isBefore = (a: Date | number) => (b: Date | number) => _isBefore(b, a);
 
 export const isOlderThanTwoWeeksBeforeNow: SyncValidator<
-  Date | number | string
+  Date | number
 > = isBefore(daysBeforeNow(14));
