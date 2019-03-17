@@ -32,6 +32,7 @@ import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { getTimeScopeValidator, TimeScope } from "../time-scope";
+import TimeScopeSelectionView from "../components/TimeScopeSelectionView";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -65,8 +66,6 @@ const useTranslation = makeTranslationHook({
     locale: deLocale
   }
 });
-
-class SlotsTable extends Table<SlotN> {}
 
 interface SlotsStateProps {
   slots: SlotN[];
@@ -114,40 +113,70 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
   }, []);
 
   return (
-    <SlotsTable
-      headers={[
-        lang.headers.name,
-        lang.headers.date,
-        lang.headers.from,
-        lang.headers.to,
-        lang.headers.forSchool,
+    <Table<SlotN>
+      columns={[
         {
-          name: lang.headers.signed,
+          name: lang.headers.name,
+          extract: slot =>
+            getUser(slot.get("studentId"))
+              .map(user => user.get("displayname"))
+              .orSome(""),
           options: {
-            customBodyRender: v => <SignedAvatar signed={v === lang.yes} />
+            filter: false
           }
         },
-        lang.headers.teacher
+        {
+          name: lang.headers.date,
+          extract: slot => parseISO(slot.get("date")),
+          options: {
+            filter: false,
+            customBodyRender: isoTime =>
+              format(isoTime, "PP", { locale: lang.locale })
+          }
+        },
+        {
+          name: lang.headers.from,
+          extract: slot => slot.get("from"),
+          options: {
+            filter: false
+          }
+        },
+        {
+          name: lang.headers.to,
+          extract: slot => slot.get("to"),
+          options: {
+            filter: false
+          }
+        },
+        {
+          name: lang.headers.forSchool,
+          extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
+        },
+        {
+          name: lang.headers.from,
+          extract: slot => (slot.get("signed") ? lang.yes : lang.no),
+          options: {
+            customBodyRender: s => <SignedAvatar signed={s === lang.yes} />
+          }
+        },
+        {
+          name: lang.headers.teacher,
+          extract: slot =>
+            Maybe.fromNull(slot.get("teacherId")).cata(
+              () => lang.deleted,
+              id =>
+                getUser(id)
+                  .map(user => user.get("displayname"))
+                  .orSome("")
+            ),
+          options: {
+            filter: false
+          }
+        }
       ]}
+      title={<TimeScopeSelectionView />}
       items={slotsInScope}
       extractId={user => user.get("id")}
-      extract={slot => [
-        getUser(slot.get("studentId"))
-          .some()
-          .get("displayname"),
-        format(parseISO(slot.get("date")), "PP", { locale: lang.locale }),
-        "" + slot.get("from"),
-        "" + slot.get("to"),
-        slot.get("forSchool") ? lang.yes : lang.no,
-        slot.get("signed") ? lang.yes : lang.no,
-        Maybe.fromNull(slot.get("teacherId")).cata(
-          () => lang.deleted,
-          id =>
-            getUser(id)
-              .some()
-              .get("displayname")
-        )
-      ]}
     />
   );
 };

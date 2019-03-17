@@ -77,22 +77,20 @@ export const translation = getByLanguage({
   }
 });
 
-interface ColumnConfig {
+interface ColumnConfig<S, T> {
   name: string;
+  extract: (v: S) => T;
   options?: {
     display?: boolean;
     filter?: boolean;
     sort?: boolean;
-    customBodyRender?: (v: string) => string | JSX.Element;
+    customBodyRender?: (v: T) => string | JSX.Element;
   };
 }
 
-type ConfigItem = ColumnConfig | string;
-
 interface TableOwnProps<T> {
   items: ReadonlyArray<T>;
-  extract: (item: T) => string[];
-  headers: ReadonlyArray<ConfigItem>;
+  columns: ReadonlyArray<ColumnConfig<T, any>>;
   extractId: (item: T) => string;
   onClick?: (id: string) => void;
   title?: string | JSX.Element;
@@ -102,19 +100,17 @@ type TableProps<T> = TableOwnProps<T>;
 
 export class Table<T> extends React.PureComponent<TableProps<T>> {
   render() {
-    const {
-      headers,
-      items,
-      extract,
-      extractId,
-      onClick = () => {},
-      title
-    } = this.props;
-    const data = items.map(i => [extractId(i), ...extract(i)]);
-    const columns = headers.map(h =>
-      typeof h === "string" ? { name: h, options: { filter: false } } : h
-    );
+    const { columns, items, extractId, onClick = () => {}, title } = this.props;
+
+    const data = items.map(item => {
+      const id = extractId(item);
+      const cells = columns.map(columnOptions => {
+        return columnOptions.extract(item);
+      });
+      return [id, ...cells];
+    });
     const idColumn = { name: "ID", options: { display: false, filter: false } };
+
     return (
       <LanguageProvider>
         {lang => (

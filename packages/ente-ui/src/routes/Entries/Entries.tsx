@@ -35,6 +35,8 @@ import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { getTimeScopeValidator, TimeScope } from "../../time-scope";
+import { EntryReasonCategory } from "ente-types";
+import TimeScopeSelectionView from "../../components/TimeScopeSelectionView";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -153,34 +155,58 @@ export const Entries: React.FunctionComponent<Props> = props => {
       <CreateEntry onClose={closeCreateEntry} show={createEntryIsVisible} />
 
       {/* Main */}
-      <EntriesTable
-        headers={[
-          lang.headers.name,
-          lang.headers.date,
-          lang.headers.created,
-          { name: lang.headers.reason, options: { filter: true } },
+      <Table<EntryN>
+        columns={[
+          {
+            name: lang.headers.name,
+            extract: e =>
+              getUser(e.get("studentId"))
+                .map(e => e.get("displayname"))
+                .orSome(""),
+            options: {
+              filter: false
+            }
+          },
+          {
+            name: lang.headers.date,
+            extract: e => parseISO(e.get("date")),
+            options: {
+              filter: false,
+              customBodyRender: (isoTime: number) =>
+                format(isoTime, "PP", { locale: lang.locale })
+            }
+          },
+          {
+            name: lang.headers.created,
+            extract: e => parseISO(e.get("createdAt")),
+            options: {
+              filter: false,
+              customBodyRender: (isoTime: number) =>
+                format(isoTime, "PPpp", { locale: lang.locale })
+            }
+          },
+          {
+            name: lang.headers.reason,
+            extract: e => e.get("reason").category,
+            options: {
+              filter: true,
+              customBodyRender: (category: EntryReasonCategory) =>
+                lang.reasonCategories[category]
+            }
+          },
           {
             name: lang.headers.manager,
+            extract: e => (e.get("signedManager") ? lang.yes : lang.no),
             options: { customBodyRender, filter: true }
           },
           {
             name: lang.headers.parents,
+            extract: e => (e.get("signedParent") ? lang.yes : lang.no),
             options: { customBodyRender, filter: true }
           }
         ]}
+        title={<TimeScopeSelectionView />}
         items={entriesInScope}
-        extract={entry => [
-          getUser(entry.get("studentId"))
-            .some()
-            .get("displayname"),
-          format(parseISO(entry.get("date")), "PP", { locale: lang.locale }),
-          format(parseISO(entry.get("createdAt")), "PPpp", {
-            locale: lang.locale
-          }),
-          lang.reasonCategories[entry.get("reason").category],
-          entry.get("signedManager") ? lang.yes : lang.no,
-          entry.get("signedParent") ? lang.yes : lang.no
-        ]}
         extractId={entry => entry.get("id")}
         onClick={id => history.push(`/entries/${id}`)}
       />

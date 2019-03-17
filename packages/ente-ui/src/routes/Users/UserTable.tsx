@@ -27,44 +27,43 @@ interface UserTableOwnProps {
   onClick?: (id: string) => void;
 }
 
-class _UserTable extends Table<UserN> {}
-
 export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
   const { users, onClick } = props;
   const lang = useTranslation();
 
   return (
-    <_UserTable
-      headers={[
+    <Table<UserN>
+      columns={[
         {
           name: lang.headers.username,
+          extract: user => user.get("username"),
           options: {
             filter: false
           }
         },
         {
           name: lang.headers.displayname,
+          extract: user => user.get("displayname"),
           options: {
             filter: false
           }
         },
         {
           name: lang.headers.email,
+          extract: user => user.get("email"),
           options: {
             filter: false
           }
         },
         {
-          name: lang.headers.role
+          name: lang.headers.role,
+          extract: user => user.get("role"),
+          options: {
+            filter: true
+          }
         }
       ]}
       items={users}
-      extract={user => [
-        user.get("username")!,
-        user.get("displayname")!,
-        user.get("email")!,
-        user.get("role")!
-      ]}
       extractId={user => user.get("id")}
       onClick={onClick}
     />

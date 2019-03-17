@@ -342,4 +342,4 @@ export default withPrintButton(
     mapStateToProps,
     mapDispatchToProps
   )(StudentReport)
-);
+) as React.FC<StudentReportOwnProps>;

@@ -18,10 +18,10 @@ import Table from "../components/Table";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { Map } from "immutable";
-import { Reporting } from "../reporting/reporting";
+import { Reporting, EntrySummary } from "../reporting/reporting";
 import { RouteComponentProps } from "react-router";
 import { DropdownInput } from "../elements/DropdownInput";
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Center } from "../components/Center";
 
@@ -146,45 +146,89 @@ const GraduationYearReportRoute: React.FC<
         <Typography>{translation.noUsers}</Typography>
       </Center>
     ),
-    users => (
-      <Table<UserN>
-        headers={[
-          translation.headers.name,
-          translation.headers.absentDays,
-          translation.headers.absentHours,
-          translation.headers.unexcusedAbsentHours,
-          translation.headers.hourRate
-        ]}
-        extract={u => {
-          const entries = getEntriesOfStudent(u.get("id"));
+    users => {
+      const results: Record<string, EntrySummary> = _.fromPairs(
+        users.map(user => {
+          const userId = user.get("id");
+          const entries = getEntriesOfStudent(userId);
           const summary = Reporting.summarize(entries, slotsMap);
-          return [
-            u.get("displayname"),
-            summary.absentDays.total,
-            summary.absentSlots.total,
-            summary.absentSlots.unexcused,
-            summary.slotsPerDay
-          ].map(String);
-        }}
-        title={
-          ownRole === Roles.ADMIN ? (
-            <DropdownInput
-              value={year.some()}
-              options={existingGradYears}
-              getOptionLabel={String}
-              onChange={handleChangeGradYear}
-              fullWidth
-              label={translation.year}
-            />
-          ) : (
-            undefined
-          )
-        }
-        onClick={handleRowClicked}
-        extractId={extractId}
-        items={users}
-      />
-    )
+          return [userId, summary];
+        })
+      );
+
+      return (
+        <Table<UserN>
+          title={
+            ownRole === Roles.ADMIN ? (
+              <DropdownInput
+                value={year.some()}
+                options={existingGradYears}
+                getOptionLabel={String}
+                onChange={handleChangeGradYear}
+                fullWidth
+                variant="outlined"
+                margin="dense"
+                label={translation.year}
+              />
+            ) : (
+              undefined
+            )
+          }
+          columns={[
+            {
+              name: translation.headers.name,
+              extract: u => u.get("displayname"),
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: translation.headers.absentDays,
+              extract: u => {
+                const record = results[u.get("id")];
+                return record.absentDays.total;
+              },
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: translation.headers.absentHours,
+              extract: u => {
+                const record = results[u.get("id")];
+                return record.absentSlots.total;
+              },
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: translation.headers.unexcusedAbsentHours,
+              extract: u => {
+                const record = results[u.get("id")];
+                return record.absentSlots.unexcused;
+              },
+              options: {
+                filter: false
+              }
+            },
+            {
+              name: translation.headers.hourRate,
+              extract: u => {
+                const record = results[u.get("id")];
+                return record.slotsPerDay;
+              },
+              options: {
+                filter: false
+              }
+            }
+          ]}
+          onClick={handleRowClicked}
+          extractId={extractId}
+          items={users}
+        />
+      );
+    }
   );
 };
 

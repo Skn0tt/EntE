@@ -27,13 +27,13 @@ describe("Table", () => {
     }
   ];
 
-  class PersonTable extends Table<Person> {}
-
   const comp = shallow(
-    <PersonTable
-      headers={[{ name: "Name" }, { name: "Alter" }]}
+    <Table<Person>
+      columns={[
+        { name: "Name", extract: v => v.name },
+        { name: "Alter", extract: v => v.alter }
+      ]}
       items={items}
-      extract={i => [i.name, "" + i.alter]}
       extractId={i => i.name}
     />
   );

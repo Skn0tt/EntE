@@ -4,7 +4,6 @@ import { MapStateToProps, MapDispatchToPropsParam, connect } from "react-redux";
 import { AppState, getTimeScope, setTimeScope } from "../redux";
 import { DropdownInput } from "../elements/DropdownInput";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { Paper } from "@material-ui/core";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -13,7 +12,8 @@ const useTranslation = makeTranslationHook({
     this_month: "This month",
     last_two_weeks: "Last two weeks",
     this_week: "This week",
-    today: "Today"
+    today: "Today",
+    label: "Timespan"
   },
   de: {
     everything: "Alles",
@@ -21,7 +21,8 @@ const useTranslation = makeTranslationHook({
     this_month: "Dieser Monat",
     last_two_weeks: "Zwei Wochen",
     this_week: "Diese Woche",
-    today: "Heute"
+    today: "Heute",
+    label: "Zeitspanne"
   }
 });
 
@@ -71,8 +72,10 @@ const TimeScopeSelectionView: React.FC<TimeScopeSelectionViewProps> = props => {
       getOptionLabel={o => translation[o]}
       value={timeScope}
       onChange={setTimeScope}
-      variant="standard"
-      margin="normal"
+      label={translation.label}
+      fullWidth
+      variant="outlined"
+      margin="dense"
     />
   );
 };
