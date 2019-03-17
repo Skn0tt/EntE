@@ -1,5 +1,12 @@
 import * as React from "react";
-import { IconButton, Menu, MenuItem, ListSubheader } from "@material-ui/core";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Switch
+} from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { None, Some, Maybe } from "monet";
 import { Route } from "react-router";
@@ -11,17 +18,25 @@ import {
   MapDispatchToPropsParam,
   connect
 } from "react-redux";
-import { AppState, getLanguage, setLanguage } from "../redux";
+import {
+  AppState,
+  getLanguage,
+  setLanguage,
+  getColorScheme,
+  setColorScheme
+} from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
 
 const useTranslation = makeTranslationHook({
   en: {
     about: "About",
-    language: "Language"
+    language: "Language",
+    darkMode: "Dark Mode (beta)"
   },
   de: {
     about: "Über",
-    language: "Sprache"
+    language: "Sprache",
+    darkMode: "Dark Mode (beta)"
   }
 });
 
@@ -29,23 +44,27 @@ interface SettingsMenuOwnProps {}
 
 interface SettingsMenuStateProps {
   language: Languages;
+  isDarkModeEnabled: boolean;
 }
 const mapStateToProps: MapStateToPropsParam<
   SettingsMenuStateProps,
   SettingsMenuOwnProps,
   AppState
 > = state => ({
-  language: getLanguage(state).orSome(DEFAULT_LANGUAGE)
+  language: getLanguage(state).orSome(DEFAULT_LANGUAGE),
+  isDarkModeEnabled: getColorScheme(state) === "dark"
 });
 
 interface SettingsMenuDispatchProps {
   setLanguage: (lang: Languages) => void;
+  setDarkMode: (on: boolean) => void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   SettingsMenuDispatchProps,
   SettingsMenuOwnProps
 > = dispatch => ({
-  setLanguage: lang => dispatch(setLanguage(lang))
+  setLanguage: lang => dispatch(setLanguage(lang)),
+  setDarkMode: on => dispatch(setColorScheme(on ? "dark" : "light"))
 });
 
 type SettingsMenuProps = SettingsMenuOwnProps &
@@ -53,7 +72,7 @@ type SettingsMenuProps = SettingsMenuOwnProps &
   SettingsMenuStateProps;
 
 export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
-  const { language, setLanguage } = props;
+  const { language, setLanguage, isDarkModeEnabled, setDarkMode } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<Maybe<HTMLElement>>(None());
   const [languagePickerIsOpen, setLanguagePickerIsOpen] = React.useState<
@@ -119,6 +138,16 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
         >
           <MenuItem onClick={openLanguagePicker}>
             {translation.language}
+          </MenuItem>
+
+          <MenuItem>
+            <ListItemText>{translation.darkMode}</ListItemText>
+            <ListItemSecondaryAction>
+              <Switch
+                onChange={(_, c) => setDarkMode(c)}
+                checked={isDarkModeEnabled}
+              />
+            </ListItemSecondaryAction>
           </MenuItem>
 
           <Route

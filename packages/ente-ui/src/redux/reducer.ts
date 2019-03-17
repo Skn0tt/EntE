@@ -82,7 +82,8 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
-  SET_TIME_SCOPE
+  SET_TIME_SCOPE,
+  SET_COLOR_SCHEME
 } from "./constants";
 import {
   AppState,
@@ -103,6 +104,7 @@ import {
   SetLoginBannerSuccessPayload
 } from "./actions";
 import { TimeScope } from "../time-scope";
+import { ColorScheme } from "../theme";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -216,11 +218,17 @@ const reducer = handleActions<AppState | undefined, any>(
         language: state!.get("language")
       }),
 
-    // ## LOGOUT
+    // ## SET_TIME_SCOPE
     [SET_TIME_SCOPE]: (
       state?: AppState,
       action?: Action<TimeScope>
     ): AppState => state!.set("timeScope", action!.payload!),
+
+    // ## SET_COLOR_SCHEME
+    [SET_COLOR_SCHEME]: (
+      state?: AppState,
+      action?: Action<ColorScheme>
+    ): AppState => state!.set("colorScheme", action!.payload!),
 
     // ## RESET_PASSWORD
     ...asyncReducersFull(

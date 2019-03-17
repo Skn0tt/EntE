@@ -6,29 +6,35 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, Theme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
+import * as _ from "lodash";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue
-  },
-  typography: {
-    useNextVariants: true
-  },
-  overrides: {
-    MUIDataTable: {
-      paper: {
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start"
+export type ColorScheme = "light" | "dark";
+
+export const createTheme = _.memoize(
+  (scheme: ColorScheme): Theme => {
+    return createMuiTheme({
+      palette: {
+        primary: blue,
+        type: scheme
       },
-      responsiveScroll: {
-        flexGrow: 1
-      }
-    }
-  } as any
-});
-
-export default theme;
+      typography: {
+        useNextVariants: true
+      },
+      overrides: {
+        MUIDataTable: {
+          paper: {
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start"
+          },
+          responsiveScroll: {
+            flexGrow: 1
+          }
+        }
+      } as any
+    });
+  }
+);

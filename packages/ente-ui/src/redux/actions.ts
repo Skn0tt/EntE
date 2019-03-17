@@ -84,7 +84,8 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
-  SET_TIME_SCOPE
+  SET_TIME_SCOPE,
+  SET_COLOR_SCHEME
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import {
@@ -95,6 +96,8 @@ import {
   InstanceConfigDto
 } from "ente-types";
 import * as _ from "lodash";
+import { TimeScope } from "../time-scope";
+import { ColorScheme } from "../theme";
 
 const createMetaAction = <Meta, Payload = any>(type: string) =>
   createAction<Payload, Meta>(
@@ -306,7 +309,8 @@ export const importUsersError = createMetaAction<
 
 export const logout = createAction(LOGOUT);
 
-export const setTimeScope = createAction(SET_TIME_SCOPE);
+export const setTimeScope = createAction<TimeScope>(SET_TIME_SCOPE);
+export const setColorScheme = createAction<ColorScheme>(SET_COLOR_SCHEME);
 
 export type FetchInstanceConfigSuccessPayload = InstanceConfigDto;
 

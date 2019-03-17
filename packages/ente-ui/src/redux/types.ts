@@ -23,6 +23,7 @@ import {
 import { Action } from "redux";
 import { Maybe, None } from "monet";
 import { TimeScope } from "../time-scope";
+import { ColorScheme } from "../theme";
 
 export interface BasicCredentials {
   username: string;
@@ -186,6 +187,7 @@ export interface IAppState {
   language: Languages | null;
   pendingActions: PendingActions;
   timeScope: TimeScope;
+  colorScheme: ColorScheme;
 }
 
 export type AppState = ImmutableRecord<IAppState>;
@@ -198,7 +200,8 @@ export const AppState = ImmutableRecord<IAppState>(
     instanceConfig: null,
     language: null,
     pendingActions: Set<Action>(),
-    timeScope: "everything"
+    timeScope: "everything",
+    colorScheme: "light"
   },
   "AppState"
 );

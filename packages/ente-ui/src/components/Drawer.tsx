@@ -15,7 +15,8 @@ import {
   Toolbar,
   Drawer as MUIDrawer,
   List,
-  Divider
+  Divider,
+  Theme
 } from "@material-ui/core";
 import * as React from "react";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -34,12 +35,11 @@ import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
 import { withRouter, RouteComponentProps } from "react-router";
-import TimeScopeSelectionView from "./TimeScopeSelectionView";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(
-  theme => ({
+  (theme: Theme) => ({
     root: {
       width: "100%",
       zIndex: 1,
@@ -88,8 +88,9 @@ const useStyles = makeStyles(
     },
     content: {
       width: "100%",
-      height: "calc(100vh - 56px)",
+      minHeight: "calc(100vh - 56px)",
       marginTop: 56,
+      backgroundColor: theme.palette.background.default,
       [theme.breakpoints.up("md")]: {
         height: "calc(100vh - 64px)",
         marginTop: 64,
