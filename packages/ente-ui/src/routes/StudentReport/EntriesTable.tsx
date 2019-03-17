@@ -19,6 +19,7 @@ import * as enLocale from "date-fns/locale/en-GB";
 import { getLengthOfSlot } from "../../reporting/reporting";
 import * as _ from "lodash";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
+import { EntryReasonCategory } from "ente-types";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -78,29 +79,44 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
       render={f => (
         <Table<EntryN>
           items={entries}
-          headers={[
-            translation.date,
-            translation.reason,
-            translation.length,
+          columns={[
+            {
+              name: translation.date,
+              extract: entry => parseISO(entry.get("date")),
+              options: {
+                filter: false,
+                customBodyRender: isoTime =>
+                  format(isoTime, "PP", { locale: translation.locale })
+              }
+            },
+            {
+              name: translation.reason,
+              extract: e => e.get("reason").category,
+              options: {
+                filter: true,
+                customBodyRender: (category: EntryReasonCategory) =>
+                  translation.categories[category]
+              }
+            },
+            {
+              name: translation.length,
+              extract: entry =>
+                _.sum(getSlots(entry.get("slotIds")).map(getLengthOfSlot)),
+              options: {
+                filter: false,
+                customBodyRender: length => translation.lengthF(length)
+              }
+            },
             {
               name: translation.signedManager,
-              options: { customBodyRender }
+              extract: e => e.get("signedManager"),
+              options: { customBodyRender, filter: true }
             },
             {
               name: translation.signedParent,
-              options: { customBodyRender }
+              extract: e => e.get("signedParent"),
+              options: { customBodyRender, filter: true }
             }
-          ]}
-          extract={e => [
-            format(parseISO(e.get("date")), "PP", {
-              locale: translation.locale
-            }),
-            translation.categories[e.get("reason").category],
-            translation.lengthF(
-              _.sum(getSlots(e.get("slotIds")).map(getLengthOfSlot))
-            ),
-            e.get("signedManager") ? "true" : "false",
-            e.get("signedParent") ? "true" : "false"
           ]}
           extractId={e => e.get("id")}
           onClick={e => {

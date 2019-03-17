@@ -3,19 +3,20 @@
 exports[`Table renders correctly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <PersonTable
-    extract={[Function]}
-    extractId={[Function]}
-    headers={
+  Symbol(enzyme.__unrendered__): <Table
+    columns={
       Array [
         Object {
+          "extract": [Function],
           "name": "Name",
         },
         Object {
+          "extract": [Function],
           "name": "Alter",
         },
       ]
     }
+    extractId={[Function]}
     items={
       Array [
         Object {

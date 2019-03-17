@@ -546,4 +546,4 @@ export default withPrintButton(
     mapStateToProps,
     mapDispatchToProps
   )(withErrorBoundary()(SpecificEntry))
-);
+) as React.FC<SpecificEntryOwnProps>;
