@@ -26,6 +26,7 @@ import * as _ from "lodash";
 import { Action } from "redux";
 import { Map } from "immutable";
 import { TimeScope } from "../time-scope";
+import { ColorScheme } from "../theme";
 
 type Selector<T> = (state: AppState) => T;
 
@@ -219,3 +220,6 @@ export const getCurrentLoginBanner: Selector<Maybe<string>> = state => {
 
 export const getTimeScope: Selector<TimeScope> = state =>
   state.get("timeScope");
+
+export const getColorScheme: Selector<ColorScheme> = state =>
+  state.get("colorScheme");

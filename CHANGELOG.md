@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added dark mode ([#263](https://gitlab.com/Skn0tt/EntE/issues/263))
 - Fixed sorting by dates ([#261](https://gitlab.com/Skn0tt/EntE/issues/261))
 - Added possibility to filter items by recency in UI
 - changed styling to make visual integration of tables better

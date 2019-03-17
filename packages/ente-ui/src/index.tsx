@@ -14,22 +14,16 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { get as getConfig } from "./config";
-import {
-  install as installMuiStyles,
-  ThemeProvider as MuiStylesThemeProvider
-} from "@material-ui/styles";
+import { install as installMuiStyles } from "@material-ui/styles";
 
 // Fonts
 import "typeface-roboto";
-
-import theme from "./theme";
 import setupRedux, {
   ReduxConfig,
   AppState,
   updateConfig,
   getLanguage
 } from "./redux";
-import { MuiThemeProvider } from "@material-ui/core";
 import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
 import { HttpsGate } from "./components/HttpsGate";
@@ -41,6 +35,7 @@ import { StoreContext } from "./helpers/store-context";
 import { Store } from "redux";
 import { DEFAULT_LANGUAGE } from "ente-types";
 import { getSagaListeners } from "./saga-listeners";
+import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
 
 installMuiStyles();
 
@@ -106,17 +101,15 @@ const bootstrap = async () => {
         <CssBaseline />
         <StoreContext.Provider value={store}>
           <Provider store={store}>
-            <MuiStylesThemeProvider theme={theme}>
-              <MuiThemeProvider theme={theme}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <HttpsGate disable={ALLOW_INSECURE}>
-                    <MessagesProvider>
-                      <App />
-                    </MessagesProvider>
-                  </HttpsGate>
-                </MuiPickersUtilsProvider>
-              </MuiThemeProvider>
-            </MuiStylesThemeProvider>
+            <ConnectedCombinedThemeProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <HttpsGate disable={ALLOW_INSECURE}>
+                  <MessagesProvider>
+                    <App />
+                  </MessagesProvider>
+                </HttpsGate>
+              </MuiPickersUtilsProvider>
+            </ConnectedCombinedThemeProvider>
           </Provider>
         </StoreContext.Provider>
       </React.StrictMode>
