@@ -1,4 +1,6 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
-export const dateToIsoString = (d: Date | number | string) =>
-  format(d, "yyyy-MM-dd");
+export const dateToIsoString = (d: Date | number | string) => {
+  const v = typeof d === "string" ? parseISO(d) : d;
+  return format(v, "yyyy-MM-dd");
+};

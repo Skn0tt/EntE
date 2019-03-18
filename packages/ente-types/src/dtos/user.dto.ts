@@ -15,7 +15,7 @@ import {
   isValidEmail
 } from "../validators";
 import { Type } from "class-transformer";
-import { isBefore } from "date-fns";
+import { isBefore, parseISO } from "date-fns";
 import { roleHasBirthday } from "../roles";
 import { languagesArr, Languages } from "../languages";
 
@@ -47,5 +47,5 @@ export class UserDto {
 }
 
 export const userIsAdult = (u: UserDto) => {
-  return roleHasBirthday(u.role) && isBefore(u.birthday!, Date.now());
+  return roleHasBirthday(u.role) && isBefore(parseISO(u.birthday!), Date.now());
 };

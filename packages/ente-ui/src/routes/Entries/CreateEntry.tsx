@@ -44,7 +44,7 @@ import {
 } from "ente-types";
 import { DateInput } from "../../elements/DateInput";
 import { Maybe } from "monet";
-import { isBefore, subDays, addDays, isAfter } from "date-fns";
+import { isBefore, subDays, addDays, isAfter, parseISO } from "date-fns";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { CheckboxInput } from "../../elements/CheckboxInput";
 import * as _ from "lodash";
@@ -160,7 +160,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
           return undefined;
         }
         return _.isUndefined(endDate)
-          ? dateToIsoString(addDays(beginDate, 1))
+          ? dateToIsoString(addDays(parseISO(beginDate), 1))
           : endDate;
       });
     },
@@ -175,13 +175,16 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
       }
 
       const slotsWithoutSlotsThatAreTooEarly = slots.filter(
-        s => !isBefore(s.date!, d)
+        s => !isBefore(parseISO(s.date!), parseISO(d))
       );
       setSlots(slotsWithoutSlotsThatAreTooEarly);
 
-      const endDateIsBeforeDate = isBefore(endDate!, addDays(d, 1));
+      const endDateIsBeforeDate = isBefore(
+        parseISO(endDate!),
+        addDays(parseISO(d), 1)
+      );
       if (endDateIsBeforeDate || _.isUndefined(endDate)) {
-        setEndDate(dateToIsoString(addDays(d, 1)));
+        setEndDate(dateToIsoString(addDays(parseISO(d), 1)));
       }
 
       setBeginDate(d);
@@ -193,14 +196,17 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     (d: string) => {
       setSlots(slots => {
         const slotsWithoutSlotsThatAreTooLate = slots.filter(
-          s => !isAfter(s.date!, d)
+          s => !isAfter(parseISO(s.date!), parseISO(d))
         );
         return slotsWithoutSlotsThatAreTooLate;
       });
 
-      const endDateIsBeforeBeginDate = isBefore(d, beginDate);
+      const endDateIsBeforeBeginDate = isBefore(
+        parseISO(d),
+        parseISO(beginDate)
+      );
       if (endDateIsBeforeBeginDate) {
-        setBeginDate(dateToIsoString(subDays(d, 1)));
+        setBeginDate(dateToIsoString(subDays(parseISO(d), 1)));
       }
 
       setEndDate(d);
@@ -223,7 +229,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
 
   const isEndDateValid = isRange
-    ? isAfter(endDate!, beginDate)
+    ? isAfter(parseISO(endDate!), parseISO(beginDate))
     : _.isUndefined(endDate);
 
   const result = React.useMemo(

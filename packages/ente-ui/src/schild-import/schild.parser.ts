@@ -1,5 +1,5 @@
 import * as Papa from "papaparse";
-import { getYear } from "date-fns";
+import { getYear, parseISO } from "date-fns";
 import * as _ from "lodash";
 import { CreateUserDto, Roles } from "ente-types";
 
@@ -36,7 +36,7 @@ const parseDateToISO = (date: string) => {
 };
 
 const parseGradYear = (gradDate: string): number => {
-  return getYear(gradDate);
+  return getYear(parseISO(gradDate));
 };
 
 const renameDuplicateUsernames = <T extends CreateUserDto>(users: T[]): T[] => {

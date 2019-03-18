@@ -12,7 +12,8 @@ import {
   entryReasonCategoryHasTeacherId,
   ExamenPayload,
   isParentSignatureNotificationEnabled,
-  canEntryStillBeSigned
+  canEntryStillBeSigned,
+  CreateEntryDtoValidator
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -166,8 +167,7 @@ export class EntriesService {
     entry: CreateEntryDto,
     requestingUser: RequestContextUser
   ): Promise<Validation<CreateEntryFailure, EntryDto>> {
-    const isValidDto =
-      (await validate(entry, { forbidNonWhitelisted: true })).length === 0;
+    const isValidDto = CreateEntryDtoValidator.validate(entry);
     if (!isValidDto) {
       return Fail(CreateEntryFailure.IllegalDto);
     }
