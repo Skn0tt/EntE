@@ -48,8 +48,10 @@ export const DateInput: React.FC<DateInputProps> = props => {
     [onChange]
   );
 
-  const dateIsNotBeforeMinDate = !minDate || !isBefore(value, minDate);
-  const dateIsNotAfterMaxDate = !maxDate || !isAfter(value, maxDate);
+  const dateIsNotBeforeMinDate =
+    !minDate || !isBefore(parseISO(value), parseISO(minDate));
+  const dateIsNotAfterMaxDate =
+    !maxDate || !isAfter(parseISO(value), parseISO(maxDate));
 
   React.useEffect(
     () => {

@@ -16,7 +16,8 @@ import {
   languagesArr,
   TEACHING_ROLES,
   roleIsTeaching,
-  PatchUserDtoValidator
+  PatchUserDtoValidator,
+  CreateUserDtoValidator
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -224,9 +225,7 @@ export class UsersService implements OnModuleInit {
       return Fail(CreateUsersFailure.ForbiddenForUser);
     }
 
-    const dtosValid = (await Promise.all(
-      users.map(async u => await validate(u))
-    )).every(errors => errors.length === 0);
+    const dtosValid = users.every(CreateUserDtoValidator.validate);
     if (!dtosValid) {
       return Fail(CreateUsersFailure.IllegalDtos);
     }

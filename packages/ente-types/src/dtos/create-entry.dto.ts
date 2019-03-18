@@ -3,7 +3,8 @@ import {
   ValidateNested,
   IsOptional,
   IsUUID,
-  IsISO8601
+  IsISO8601,
+  IsDefined
 } from "class-validator";
 import { Type } from "class-transformer";
 import { CreateSlotDto } from "./create-slot.dto";
@@ -22,6 +23,7 @@ export class CreateEntryDto {
   @Type(() => CreateSlotDto)
   slots: CreateSlotDto[];
 
+  @IsDefined()
   @ValidateNested()
   @Type(() => EntryReasonDto)
   reason: EntryReasonDto;

@@ -1,14 +1,13 @@
 import { CreateEntryDto } from ".";
 import { makeDtoValidator } from "../validators/make-validator";
-import { isBefore } from "date-fns";
+import { isBefore, parseISO, isAfter } from "date-fns";
 import { daysBeforeNow } from "../validators/entry";
 import { CreateSlotDtoValidator } from "./create-slot-dto.validator";
-import { dateToIsoString } from "../date-to-iso-string";
 import { EntryReasonDtoValidator } from "./entry-reason-dto.validator";
 import { isBetweenDates } from "../validators/is-between-dates";
 
-export const is14DaysOrLessAgo = (date: string) => {
-  return !isBefore(date, dateToIsoString(daysBeforeNow(14)));
+export const is14DaysOrLessAgo = (date: Date | number) => {
+  return !isBefore(date, daysBeforeNow(14.0));
 };
 
 export const CreateEntryDtoValidator = makeDtoValidator(
@@ -28,12 +27,17 @@ export const CreateEntryDtoValidator = makeDtoValidator(
 
     const isRange = !!dto.dateEnd;
     if (isRange) {
-      const dateEndIs14DaysOrLessAgo = is14DaysOrLessAgo(dto.dateEnd!);
+      const dateEndIs14DaysOrLessAgo = is14DaysOrLessAgo(
+        parseISO(dto.dateEnd!)
+      );
       if (!dateEndIs14DaysOrLessAgo) {
         errors.push("`dateEnd` must be at most 14 days ago");
       }
 
-      const dateIsBeforeDateEnd = isBefore(dto.date, dto.dateEnd!);
+      const dateIsBeforeDateEnd = isBefore(
+        parseISO(dto.date),
+        parseISO(dto.dateEnd!)
+      );
       if (!dateIsBeforeDateEnd) {
         errors.push("`date` must be before `dateEnd`");
       }
@@ -48,7 +52,7 @@ export const CreateEntryDtoValidator = makeDtoValidator(
     }
 
     if (!isRange) {
-      const dateIs14DaysOrLessAgo = is14DaysOrLessAgo(dto.date);
+      const dateIs14DaysOrLessAgo = is14DaysOrLessAgo(parseISO(dto.date));
       if (!dateIs14DaysOrLessAgo) {
         errors.push("`date` must be at most 14 days ago");
       }

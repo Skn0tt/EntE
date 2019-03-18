@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed issue where corrupt entries could be created when using old clients ([#266](https://gitlab.com/Skn0tt/EntE/issues/266))
+
 ## [v0.20.0] - 2019-03-17
 
 - Added dark mode ([#263](https://gitlab.com/Skn0tt/EntE/issues/263))

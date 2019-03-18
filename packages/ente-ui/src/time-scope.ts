@@ -3,9 +3,8 @@ import {
   isSameWeek,
   isSameMonth,
   isSameDay,
-  Options
+  subWeeks
 } from "date-fns";
-import { subWeeks } from "date-fns/esm";
 import { Weekday } from "./reporting/reporting";
 
 export type TimeScope =
@@ -18,19 +17,15 @@ export type TimeScope =
 
 export type TimeScopeValidator = (d: Date | number) => boolean;
 
-const options: Options = {
-  weekStartsOn: Weekday.MONDAY
-};
-
 const timeScopeToValidator: Record<TimeScope, TimeScopeValidator> = {
   everything: () => true,
-  today: d => isSameDay(d, Date.now(), options),
-  this_month: d => isSameMonth(d, Date.now(), options),
+  today: d => isSameDay(d, Date.now()),
+  this_month: d => isSameMonth(d, Date.now()),
   last_two_weeks: d =>
-    isSameWeek(d, Date.now(), options) ||
-    isSameWeek(d, subWeeks(Date.now(), 1), options),
-  this_week: d => isSameWeek(d, Date.now(), options),
-  this_year: d => isSameYear(d, Date.now(), options)
+    isSameWeek(d, Date.now(), { weekStartsOn: Weekday.MONDAY }) ||
+    isSameWeek(d, subWeeks(Date.now(), 1), { weekStartsOn: Weekday.MONDAY }),
+  this_week: d => isSameWeek(d, Date.now(), { weekStartsOn: Weekday.MONDAY }),
+  this_year: d => isSameYear(d, Date.now())
 };
 
 export const getTimeScopeValidator = (
