@@ -22,7 +22,9 @@ import {
   DialogActions,
   Button,
   TextField,
-  Grid
+  Grid,
+  Typography,
+  Theme
 } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import {
@@ -44,6 +46,23 @@ import {
 } from "../../helpers/with-translation";
 import * as querystring from "query-string";
 import { Maybe } from "monet";
+import * as config from "../../config";
+import {
+  makeStyles,
+  createStyles,
+  withStyles,
+  WithStyles
+} from "@material-ui/styles";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    versionCode: {
+      bottom: 0,
+      left: 0,
+      margin: theme.spacing.unit,
+      position: "absolute"
+    }
+  });
 
 const lang = {
   en: {
@@ -105,7 +124,8 @@ type LoginProps = LoginStateProps &
   LoginDispatchProps &
   InjectedProps &
   RouteComponentProps<{}> &
-  WithTranslation<typeof lang.en>;
+  WithTranslation<typeof lang.en> &
+  WithStyles<"versionCode">;
 
 interface State {
   username: string;
@@ -165,7 +185,8 @@ class Login extends React.PureComponent<LoginProps, State> {
       loginPending,
       passwordResetPending,
       translation: lang,
-      loginBanner
+      loginBanner,
+      classes
     } = this.props;
     const { showPasswordResetModal, username } = this.state;
     const { from } = location.state || {
@@ -233,6 +254,10 @@ class Login extends React.PureComponent<LoginProps, State> {
             </Button>
           </DialogActions>
         </Dialog>
+
+        <Typography color="default" className={classes.versionCode}>
+          v{config.get().VERSION}
+        </Typography>
       </>
     );
   }
@@ -244,7 +269,9 @@ export default withRouter(
     mapDispatchToProps
   )(
     withTranslation(lang)(
-      withMobileDialog<LoginProps>()(withErrorBoundary()(Login))
+      withStyles(styles)(
+        withMobileDialog<LoginProps>()(withErrorBoundary()(Login))
+      )
     )
   )
 );

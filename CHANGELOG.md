@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed bug where data was provided to the wrong user when logging in on a different account ([#256](https://gitlab.com/Skn0tt/EntE/issues/256))
+- Added: Version code is shown on login screen, too ([#271](https://gitlab.com/Skn0tt/EntE/issues/271))
 
 ## [v0.20.1] - 2019-03-18
 
