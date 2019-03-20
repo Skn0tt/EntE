@@ -28,6 +28,7 @@ import {
 } from "./types";
 import * as _ from "lodash";
 import { getConfig } from "./config";
+import { Persistor } from "redux-persist";
 
 const keysToRemove: (keyof IAppState)[] = ["pendingActions"];
 const removeUnneededTransform = createTransform(
@@ -39,8 +40,8 @@ const removeUnneededTransform = createTransform(
 );
 
 const startPersistance = (store: Store) => {
-  let persistor: any;
-  return new Promise((resolve, reject) => {
+  let persistor: Persistor;
+  return new Promise<Persistor>((resolve, reject) => {
     persistor = persistStore(
       store,
       {
@@ -62,7 +63,7 @@ const startPersistance = (store: Store) => {
 };
 
 let store: Store | null = null;
-let persistor: any;
+let persistor: Persistor;
 
 export const createStore = async () => {
   const sagaMiddleware = reduxSaga({

@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, MapDispatchToPropsParam } from "react-redux";
 import Drawer from "./components/Drawer";
 import MessageStream from "./components/MessageStream";
 
@@ -18,7 +18,7 @@ import Login from "./routes/Login/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
-import { AppState, isAuthValid, getRole } from "./redux";
+import { AppState, isAuthValid, getRole, logout } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
 import { Maybe } from "monet";
@@ -37,10 +37,20 @@ const mapStateToProps = (state: AppState) => ({
   role: getRole(state)
 });
 
-type AppProps = AppStateProps;
+interface AppDispatchProps {
+  purgeStaleData: () => void;
+}
+const mapDispatchToProps: MapDispatchToPropsParam<
+  AppDispatchProps,
+  {}
+> = dispatch => ({
+  purgeStaleData: () => dispatch(logout())
+});
+
+type AppProps = AppStateProps & AppDispatchProps;
 
 const App: React.FunctionComponent<AppProps> = props => {
-  const { authValid, role } = props;
+  const { authValid, role, purgeStaleData } = props;
 
   return (
     <InstanceConfigGate>
@@ -52,7 +62,10 @@ const App: React.FunctionComponent<AppProps> = props => {
             <Route path="/passwordReset/:token" component={PasswordReset} />
             <Route path="/invitation/:token" component={Invitation} />
             <Route path="/login" component={Login} />
-            <AuthenticatedRoute isLoggedIn={authValid}>
+            <AuthenticatedRoute
+              isLoggedIn={authValid}
+              purgeStaleData={purgeStaleData}
+            >
               <Drawer>
                 <Routes role={role.orSome(Roles.STUDENT)} />
               </Drawer>
@@ -64,4 +77,7 @@ const App: React.FunctionComponent<AppProps> = props => {
   );
 };
 
-export default connect(mapStateToProps)(withErrorBoundary()(App));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorBoundary()(App));

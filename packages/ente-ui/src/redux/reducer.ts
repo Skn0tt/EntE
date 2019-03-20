@@ -105,6 +105,7 @@ import {
 } from "./actions";
 import { TimeScope } from "../time-scope";
 import { ColorScheme } from "../theme";
+import { getOwnUserId } from "./selectors";
 
 const withoutEntries = (...ids: string[]) => (state: AppState) => {
   const entries = state
@@ -215,7 +216,7 @@ const reducer = handleActions<AppState | undefined, any>(
     [LOGOUT]: (state?: AppState): AppState =>
       new AppState({
         pendingActions: state!.get("pendingActions"),
-        language: state!.get("language")
+        colorScheme: state!.get("colorScheme")
       }),
 
     // ## SET_TIME_SCOPE
@@ -421,9 +422,7 @@ const reducer = handleActions<AppState | undefined, any>(
           loginBanners: Map(loginBanners as any),
           parentSignatureTimes: ParentSignatureTimesN(parentSignatureTimes)
         });
-        return state
-          .update("language", l => l || defaultLanguage)
-          .set("instanceConfig", instanceConfigN);
+        return state.set("instanceConfig", instanceConfigN);
       }
     ),
 
@@ -487,8 +486,14 @@ const reducer = handleActions<AppState | undefined, any>(
       UPDATE_USER_ERROR
     ),
 
-    [SET_LANGUAGE]: (state: AppState | undefined, action: Action<Languages>) =>
-      state!.set("language", action.payload!)
+    [SET_LANGUAGE]: (
+      state: AppState | undefined,
+      action: Action<Languages>
+    ) => {
+      const ownId = getOwnUserId(state!);
+
+      return state!.setIn(["usersMap", ownId, "language"], action.payload);
+    }
   },
   initialState
 );
