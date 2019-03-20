@@ -474,7 +474,7 @@ function* setParentSignatureNotificationTimeSaga(action: Action<number>) {
 
 function* syncLanguageSaga(action: Action<Languages>) {
   try {
-    const userId: Maybe<string> = yield select(selectors.getUserId);
+    const userId: Maybe<string> = yield select(selectors.getOwnUserId);
     const token: Maybe<string> = yield select(selectors.getToken);
     yield call(api.setLanguage, userId.some(), action.payload!, token.some());
   } catch (error) {

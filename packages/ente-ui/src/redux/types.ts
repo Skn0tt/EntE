@@ -21,7 +21,6 @@ import {
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
 } from "ente-types";
 import { Action } from "redux";
-import { Maybe, None } from "monet";
 import { TimeScope } from "../time-scope";
 import { ColorScheme } from "../theme";
 
@@ -184,7 +183,6 @@ export interface IAppState {
   slotsMap: Map<string, SlotN>;
   auth: AuthState | null;
   instanceConfig: InstanceConfigN | null;
-  language: Languages | null;
   pendingActions: PendingActions;
   timeScope: TimeScope;
   colorScheme: ColorScheme;
@@ -198,7 +196,6 @@ export const AppState = ImmutableRecord<IAppState>(
     slotsMap: Map<string, SlotN>(),
     auth: null,
     instanceConfig: null,
-    language: null,
     pendingActions: Set<Action>(),
     timeScope: "everything",
     colorScheme: "light"

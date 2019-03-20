@@ -14,6 +14,7 @@ import { Redirect, RouteComponentProps, withRouter } from "react-router";
  */
 interface AuthenticatedRouteOwnProps {
   isLoggedIn: boolean;
+  purgeStaleData: () => void;
 }
 
 type AuthenticatedRouteProps = AuthenticatedRouteOwnProps &
@@ -22,15 +23,23 @@ type AuthenticatedRouteProps = AuthenticatedRouteOwnProps &
 /**
  * # Component
  */
-export const AuthenticatedRoute: React.SFC<AuthenticatedRouteProps> = ({
-  isLoggedIn,
-  children,
-  location
-}) =>
-  isLoggedIn ? (
-    <>{children}</>
-  ) : (
-    <Redirect to={{ pathname: "/login", state: { from: location } }} />
+export const AuthenticatedRoute: React.SFC<AuthenticatedRouteProps> = props => {
+  const { location, children, isLoggedIn, purgeStaleData } = props;
+
+  React.useEffect(
+    () => {
+      if (!isLoggedIn) {
+        purgeStaleData();
+      }
+    },
+    [isLoggedIn, purgeStaleData]
   );
+
+  if (isLoggedIn) {
+    return <>{children}</>;
+  }
+
+  return <Redirect to={{ pathname: "/login", state: { from: location } }} />;
+};
 
 export default withRouter(AuthenticatedRoute);

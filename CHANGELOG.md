@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed bug where data was provided to the wrong user when logging in on a different account ([#256](https://gitlab.com/Skn0tt/EntE/issues/256))
+
 ## [v0.20.1] - 2019-03-18
 
 - Fixed issue where corrupt entries could be created when using old clients ([#266](https://gitlab.com/Skn0tt/EntE/issues/266))

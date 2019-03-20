@@ -104,13 +104,13 @@ export const getUsername: Selector<Maybe<string>> = state => {
   return authState.map(s => s.get("username"));
 };
 
-export const getUserId: Selector<Maybe<string>> = state => {
+export const getOwnUserId: Selector<Maybe<string>> = state => {
   const authState = getAuthState(state);
   return authState.map(s => s.get("userId"));
 };
 
 export const getOneSelf: Selector<Maybe<UserN>> = state => {
-  const userId = getUserId(state);
+  const userId = getOwnUserId(state);
   return userId.flatMap(id => getUser(id)(state));
 };
 
@@ -169,13 +169,16 @@ export const getStudents = createSelector(
 export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
   Maybe.fromNull(state.get("instanceConfig"));
 
-export const getLanguage: Selector<Maybe<Languages>> = state =>
-  Maybe.fromNull(state.get("language"));
+export const getOneSelvesLanguage: Selector<Maybe<Languages>> = state =>
+  getOneSelf(state).map(u => u.get("language"));
 
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
   const instanceConfig = getInstanceConfig(state);
   return instanceConfig.map(i => i.get("defaultLanguage"));
 };
+
+export const getLanguage: Selector<Maybe<Languages>> = state =>
+  getOneSelvesLanguage(state).orElse(getDefaultLanguage(state));
 
 export const getParentSignatureTimes: Selector<
   Maybe<ParentSignatureTimesN>
