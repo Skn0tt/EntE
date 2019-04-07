@@ -33,6 +33,21 @@ export const createTheme = _.memoize(
           responsiveScroll: {
             flexGrow: 1
           }
+        },
+        MUIDataTablePagination: {
+          toolbar: {
+            marginRight: 56
+          },
+          root: {
+            "&:last-child": {
+              padding: 0
+            }
+          }
+        },
+        MuiTablePagination: {
+          spacer: {
+            display: "None"
+          }
         }
       } as any
     });
