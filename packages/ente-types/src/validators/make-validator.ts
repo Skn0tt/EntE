@@ -2,7 +2,7 @@ import { Fail, Success, Validation } from "monet";
 import { makeAnnotationValidator, Class } from "./make-annotation-validator";
 import { DtoValidator, FailResult } from "./dto-validator";
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 export function makeDtoValidator<T>(
   _class: Class<T>,
