@@ -96,6 +96,43 @@ export const lang = {
   }
 };
 
+const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
+  const {
+    birthday,
+    displayname,
+    email,
+    children,
+    password,
+    role,
+    username,
+    graduationYear,
+    language
+  } = dto;
+
+  const result: CreateUserDto = {
+    children,
+    displayname,
+    email,
+    password,
+    role,
+    username,
+    language
+  };
+
+  switch (role) {
+    case Roles.MANAGER:
+      result.graduationYear = graduationYear;
+      break;
+
+    case Roles.STUDENT:
+      result.birthday = birthday;
+      result.graduationYear = graduationYear;
+      break;
+  }
+
+  return result;
+};
+
 /**
  * # Component Types
  */
@@ -160,7 +197,7 @@ export class CreateUser extends React.PureComponent<
   handleClose = () => this.props.onClose();
 
   handleSubmit = () => {
-    return this.props.createUsers(this.state.create);
+    return this.props.createUsers(this.getCleanDto());
   };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
@@ -225,7 +262,9 @@ export class CreateUser extends React.PureComponent<
   childrenValid = (): boolean =>
     !this.hasChildren() || this.state.create.children.length > 0;
   inputValid = (): boolean =>
-    CreateUserDtoValidator.validate(this.state.create);
+    CreateUserDtoValidator.validate(this.getCleanDto());
+
+  getCleanDto = () => cleanUpDtoByRole(this.state.create);
 
   render() {
     const { show, fullScreen, getUser, students, translation } = this.props;
