@@ -20,7 +20,7 @@ import {
   ParentSignatureTimesN
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, Languages, DEFAULT_LANGUAGE } from "ente-types";
+import { Roles, Languages, DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Action } from "redux";
@@ -216,7 +216,7 @@ export const getLoginBannerForLanguage = (
 
 export const getCurrentLoginBanner: Selector<Maybe<string>> = state => {
   const currentLanguage = getLanguage(state);
-  const lang = currentLanguage.orSome(DEFAULT_LANGUAGE);
+  const lang = currentLanguage.orSome(DEFAULT_DEFAULT_LANGUAGE);
   const result = getLoginBannerForLanguage(lang)(state);
   return result;
 };

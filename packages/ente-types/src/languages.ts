@@ -15,4 +15,4 @@ export type ByLanguage<T> = { [TKey in Languages]: T };
 export const getByLanguage = <T>(values: ByLanguage<T>) => (lang: Languages) =>
   values[lang];
 
-export const DEFAULT_LANGUAGE = Languages.ENGLISH;
+export const DEFAULT_DEFAULT_LANGUAGE = Languages.ENGLISH;

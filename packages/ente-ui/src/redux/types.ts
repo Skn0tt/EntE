@@ -15,7 +15,7 @@ import {
   Languages,
   roleIsTeaching,
   dateToIsoString,
-  DEFAULT_LANGUAGE,
+  DEFAULT_DEFAULT_LANGUAGE,
   ParentSignatureTimesDto,
   DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
@@ -75,7 +75,7 @@ interface InstanceConfigRecord {
 export type InstanceConfigN = ImmutableRecord<InstanceConfigRecord>;
 export const InstanceConfigN = ImmutableRecord<InstanceConfigRecord>(
   {
-    defaultLanguage: DEFAULT_LANGUAGE,
+    defaultLanguage: DEFAULT_DEFAULT_LANGUAGE,
     loginBanners: Map(),
     parentSignatureTimes: ParentSignatureTimesN()
   },
@@ -94,7 +94,7 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     role: Roles.STUDENT,
     childrenIds: [],
     graduationYear: undefined,
-    language: DEFAULT_LANGUAGE
+    language: DEFAULT_DEFAULT_LANGUAGE
   },
   "UserN"
 );

@@ -33,7 +33,7 @@ import { ErrorReporting } from "./ErrorReporting";
 import { MessagesProvider } from "./context/Messages";
 import { StoreContext } from "./helpers/store-context";
 import { Store } from "redux";
-import { DEFAULT_LANGUAGE } from "ente-types";
+import { DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 import { getSagaListeners } from "./saga-listeners";
 import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
 
@@ -84,7 +84,7 @@ if (!!SENTRY_DSN) {
 
 const setupSagaListeners = (store: Store<AppState>) => {
   const getLanguageOfStore = () => {
-    return getLanguage(store.getState()).orSome(DEFAULT_LANGUAGE);
+    return getLanguage(store.getState()).orSome(DEFAULT_DEFAULT_LANGUAGE);
   };
   const sagaListeners = getSagaListeners(getLanguageOfStore);
   updateConfig(sagaListeners);
