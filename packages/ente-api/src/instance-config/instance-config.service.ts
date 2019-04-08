@@ -3,7 +3,7 @@ import {
   InstanceConfigDto,
   Languages,
   languagesArr,
-  DEFAULT_LANGUAGE,
+  DEFAULT_DEFAULT_LANGUAGE,
   Roles,
   DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME,
@@ -22,7 +22,7 @@ export enum SetInstanceConfigValueFail {
 }
 
 const INSTANCE_CONFIG_KEYS = {
-  DEFAULT_LANGUAGE: "INSTANCE_CONFIG__DEFAULT_LANGUAGE",
+  DEFAULT_DEFAULT_LANGUAGE: "INSTANCE_CONFIG__DEFAULT_DEFAULT_LANGUAGE",
   LOGIN_BANNER: (l: Languages) => "INSTANCE_CONFIG__LOGIN_BANNER_" + l,
   PARENT_SIGNATURE_EXPIRY_TIME: "INSTANCE_CONFIG__PARENT_SIGNATURE_EXPIRY_TIME",
   PARENT_SIGNATURE_NOTIFICATION_TIME:
@@ -38,8 +38,8 @@ export class InstanceConfigService implements OnModuleInit {
 
   async onModuleInit() {
     await this.keyValueStoreRepo.setIfNotExists(
-      INSTANCE_CONFIG_KEYS.DEFAULT_LANGUAGE,
-      DEFAULT_LANGUAGE
+      INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE,
+      DEFAULT_DEFAULT_LANGUAGE
     );
     await this.keyValueStoreRepo.setIfNotExists(
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME,
@@ -53,7 +53,7 @@ export class InstanceConfigService implements OnModuleInit {
 
   async getInstanceConfig(): Promise<InstanceConfigDto> {
     const values = await this.keyValueStoreRepo.getMultiple(
-      INSTANCE_CONFIG_KEYS.DEFAULT_LANGUAGE,
+      INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE,
       ...languagesArr.map(INSTANCE_CONFIG_KEYS.LOGIN_BANNER),
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME,
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME
@@ -67,8 +67,8 @@ export class InstanceConfigService implements OnModuleInit {
     ) as Record<Languages, string | null>;
 
     const defaultLanguage = (values[
-      INSTANCE_CONFIG_KEYS.DEFAULT_LANGUAGE
-    ] as Maybe<Languages>).orSome(DEFAULT_LANGUAGE);
+      INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE
+    ] as Maybe<Languages>).orSome(DEFAULT_DEFAULT_LANGUAGE);
 
     const parentSignatureExpiry = values[
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME
@@ -113,9 +113,9 @@ export class InstanceConfigService implements OnModuleInit {
 
   async getDefaultLanguage(): Promise<Languages> {
     const value = await this.keyValueStoreRepo.get<Languages>(
-      INSTANCE_CONFIG_KEYS.DEFAULT_LANGUAGE
+      INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE
     );
-    return value.orSome(DEFAULT_LANGUAGE);
+    return value.orSome(DEFAULT_DEFAULT_LANGUAGE);
   }
 
   async getParentSignatureTimes(): Promise<ParentSignatureTimesDto> {
@@ -205,7 +205,7 @@ export class InstanceConfigService implements OnModuleInit {
     }
 
     await this.keyValueStoreRepo.set(
-      INSTANCE_CONFIG_KEYS.DEFAULT_LANGUAGE,
+      INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE,
       lang
     );
     return Success<SetInstanceConfigValueFail, true>(true);

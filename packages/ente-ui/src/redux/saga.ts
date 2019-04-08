@@ -82,7 +82,7 @@ import {
   SET_LANGUAGE,
   IMPORT_USERS_REQUEST,
   FETCH_INSTANCE_CONFIG_REQUEST,
-  SET_DEFAULT_LANGUAGE_REQUEST,
+  SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST,
   SET_LOGIN_BANNER_REQUEST,
   SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST
@@ -469,7 +469,7 @@ function* saga() {
   yield takeEvery(SET_LANGUAGE, syncLanguageSaga);
   yield takeEvery(IMPORT_USERS_REQUEST, importUsersSaga);
   yield takeEvery(FETCH_INSTANCE_CONFIG_REQUEST, fetchInstanceConfigSaga);
-  yield takeEvery(SET_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
+  yield takeEvery(SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
   yield takeEvery(
     SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
     setParentSignatureExpiryTimeSaga
