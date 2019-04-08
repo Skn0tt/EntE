@@ -28,7 +28,6 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_SUCCESS,
   GET_SLOTS_ERROR,
-  ADD_RESPONSE,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
@@ -50,9 +49,6 @@ import {
   CREATE_USERS_REQUEST,
   CREATE_USERS_SUCCESS,
   CREATE_USERS_ERROR,
-  GET_NEEDED_USERS_ERROR,
-  GET_NEEDED_USERS_SUCCESS,
-  GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_ERROR,
   UNSIGN_ENTRY_SUCCESS,
   UNSIGN_ENTRY_REQUEST,
@@ -111,7 +107,7 @@ export const createEntryRequest = createAction<CreateEntryDto>(
 );
 export const createEntrySuccess = createMetaAction<
   Action<CreateEntryDto>,
-  void
+  APIResponse
 >(CREATE_ENTRY_SUCCESS);
 export const createEntryError = createMetaAction<Action<CreateEntryDto>, Error>(
   CREATE_ENTRY_ERROR
@@ -128,7 +124,7 @@ export const createUsersRequest = createAction<
 });
 export const createUsersSuccess = createMetaAction<
   Action<CreateUserDto[]>,
-  void
+  APIResponse
 >(CREATE_USERS_SUCCESS);
 export const createUsersError = createMetaAction<
   Action<CreateUserDto[]>,
@@ -136,7 +132,7 @@ export const createUsersError = createMetaAction<
 >(CREATE_USERS_ERROR);
 
 export const signEntryRequest = createAction<string>(SIGN_ENTRY_REQUEST);
-export const signEntrySuccess = createMetaAction<Action<string>, void>(
+export const signEntrySuccess = createMetaAction<Action<string>, APIResponse>(
   SIGN_ENTRY_SUCCESS
 );
 export const signEntryError = createMetaAction<Action<string>, Error>(
@@ -144,7 +140,7 @@ export const signEntryError = createMetaAction<Action<string>, Error>(
 );
 
 export const unsignEntryRequest = createAction<string>(UNSIGN_ENTRY_REQUEST);
-export const unsignEntrySuccess = createMetaAction<Action<string>, Error>(
+export const unsignEntrySuccess = createMetaAction<Action<string>, APIResponse>(
   UNSIGN_ENTRY_SUCCESS
 );
 export const unsignEntryError = createMetaAction<Action<string>, Error>(
@@ -166,7 +162,7 @@ export const updateUserRequest = createAction<[string, PatchUserDto]>(
 );
 export const updateUserSuccess = createMetaAction<
   Action<[string, PatchUserDto]>,
-  void
+  APIResponse
 >(UPDATE_USER_SUCCESS);
 export const updateUserError = createMetaAction<
   Action<[string, PatchUserDto]>,
@@ -174,7 +170,7 @@ export const updateUserError = createMetaAction<
 >(UPDATE_USER_ERROR);
 
 export const getEntriesRequest = createAction(GET_ENTRIES_REQUEST);
-export const getEntriesSuccess = createMetaAction<Action<void>, void>(
+export const getEntriesSuccess = createMetaAction<Action<void>, APIResponse>(
   GET_ENTRIES_SUCCESS
 );
 export const getEntriesError = createMetaAction<Action<void>, Error>(
@@ -182,7 +178,7 @@ export const getEntriesError = createMetaAction<Action<void>, Error>(
 );
 
 export const getEntryRequest = createAction<string>(GET_ENTRY_REQUEST);
-export const getEntrySuccess = createMetaAction<Action<string>, void>(
+export const getEntrySuccess = createMetaAction<Action<string>, APIResponse>(
   GET_ENTRY_SUCCESS
 );
 export const getEntryError = createMetaAction<Action<string>, Error>(
@@ -190,7 +186,7 @@ export const getEntryError = createMetaAction<Action<string>, Error>(
 );
 
 export const getUserRequest = createAction<string>(GET_USER_REQUEST);
-export const getUserSuccess = createMetaAction<Action<string>, void>(
+export const getUserSuccess = createMetaAction<Action<string>, APIResponse>(
   GET_USER_SUCCESS
 );
 export const getUserError = createMetaAction<Action<string>, Error>(
@@ -198,7 +194,7 @@ export const getUserError = createMetaAction<Action<string>, Error>(
 );
 
 export const getUsersRequest = createAction(GET_USERS_REQUEST);
-export const getUsersSuccess = createMetaAction<Action<void>, void>(
+export const getUsersSuccess = createMetaAction<Action<void>, APIResponse>(
   GET_USERS_SUCCESS
 );
 export const getUsersError = createMetaAction<Action<void>, Error>(
@@ -206,19 +202,11 @@ export const getUsersError = createMetaAction<Action<void>, Error>(
 );
 
 export const getSlotsRequest = createAction(GET_SLOTS_REQUEST);
-export const getSlotsSuccess = createMetaAction<Action<void>, void>(
+export const getSlotsSuccess = createMetaAction<Action<void>, APIResponse>(
   GET_SLOTS_SUCCESS
 );
 export const getSlotsError = createMetaAction<Action<void>, Error>(
   GET_SLOTS_ERROR
-);
-
-export const getNeededUsersRequest = createAction(GET_NEEDED_USERS_REQUEST);
-export const getNeededUsersSuccess = createMetaAction<Action<void>, void>(
-  GET_NEEDED_USERS_SUCCESS
-);
-export const getNeededUsersError = createMetaAction<Action<void>, Error>(
-  GET_NEEDED_USERS_ERROR
 );
 
 export const deleteUserRequest = createAction<string>(DELETE_USER_REQUEST);
@@ -237,10 +225,15 @@ export const deleteEntryError = createMetaAction<Action<string>, Error>(
   DELETE_ENTRY_ERROR
 );
 
+export interface LoginSuccessPayload {
+  authState: AuthState;
+  apiResponse: APIResponse;
+}
+
 export const loginRequest = createAction<BasicCredentials>(LOGIN_REQUEST);
 export const loginSuccess = createMetaAction<
   Action<BasicCredentials>,
-  AuthState
+  LoginSuccessPayload
 >(LOGIN_SUCCESS);
 export const loginError = createMetaAction<Action<BasicCredentials>, Error>(
   LOGIN_ERROR
@@ -279,8 +272,6 @@ export const setPasswordSuccess = createMetaAction<
 export const setPasswordError = createMetaAction<Action<INewPassword>, Error>(
   SET_PASSWORD_ERROR
 );
-
-export const addResponse = createAction<APIResponse>(ADD_RESPONSE);
 
 export const setLanguage = createAction<Languages>(SET_LANGUAGE);
 

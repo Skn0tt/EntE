@@ -204,11 +204,6 @@ export const getChildren = async (token: string): Promise<APIResponse> => {
   return normalizeUsers(...data);
 };
 
-export const getNeededUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
-  return normalizeUsers(...data);
-};
-
 export const downloadExcelExport = async (token: string): Promise<void> => {
   const response = await axios.get<Blob>(`${getBaseUrl()}/export/excel`, {
     ...axiosTokenParams(token),
