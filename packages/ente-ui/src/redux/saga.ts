@@ -18,7 +18,6 @@ import {
   getUsersError,
   getSlotsSuccess,
   getSlotsError,
-  addResponse,
   createEntrySuccess,
   createEntryError,
   createUsersError,
@@ -32,8 +31,6 @@ import {
   loginError,
   refreshTokenError,
   logout,
-  getNeededUsersSuccess,
-  getNeededUsersError,
   updateUserSuccess,
   unsignEntryError,
   unsignEntrySuccess,
@@ -78,7 +75,6 @@ import {
   REFRESH_TOKEN_REQUEST,
   LOGIN_REQUEST,
   CREATE_USERS_REQUEST,
-  GET_NEEDED_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
   DELETE_USER_REQUEST,
   DELETE_ENTRY_REQUEST,
@@ -104,10 +100,6 @@ import {
 import { Maybe } from "monet";
 import { getConfig } from "./config";
 
-function* dispatchUpdates(data: APIResponse) {
-  yield put(addResponse(data));
-}
-
 const onRequestError = (error: Error) => getConfig().onRequestError(error);
 
 function* loginSaga(action: Action<BasicCredentials>) {
@@ -117,8 +109,7 @@ function* loginSaga(action: Action<BasicCredentials>) {
       action.payload!
     );
 
-    yield dispatchUpdates(apiResponse);
-    yield put(loginSuccess(authState, action));
+    yield put(loginSuccess({ authState, apiResponse }, action));
   } catch (error) {
     getConfig().onLoginFailedInvalidCredentials();
     yield put(loginError(error, action));
@@ -138,18 +129,6 @@ function* refreshTokenSaga(action: Action<void>) {
   }
 }
 
-function* getNeededUsersSaga(action: Action<void>) {
-  try {
-    const token: Maybe<string> = yield select(selectors.getToken);
-    const result = yield call(api.getNeededUsers, token.some());
-
-    yield put(getNeededUsersSuccess(action));
-    yield dispatchUpdates(result);
-  } catch (error) {
-    yield put(getNeededUsersError(error, action));
-  }
-}
-
 function* downloadExcelExportSaga(action: Action<void>) {
   try {
     const token: Maybe<string> = yield select(selectors.getToken);
@@ -166,8 +145,7 @@ function* getEntrySaga(action: Action<string>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getEntry, action.payload!, token.some());
 
-    yield put(getEntrySuccess(action));
-    yield dispatchUpdates(result);
+    yield put(getEntrySuccess(result, action));
   } catch (error) {
     onRequestError(error);
     yield put(getEntryError(error, action));
@@ -207,8 +185,7 @@ function* getEntriesSaga(action: Action<void>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getEntries, token.some());
 
-    yield put(getEntriesSuccess(action));
-    yield dispatchUpdates(result);
+    yield put(getEntriesSuccess(result, action));
   } catch (error) {
     onRequestError(error);
     yield put(getEntriesError(error, action));
@@ -220,8 +197,7 @@ function* getSlotsSaga(action: Action<void>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getSlots, token.some());
 
-    yield put(getSlotsSuccess(action));
-    yield dispatchUpdates(result);
+    yield put(getSlotsSuccess(result, action));
   } catch (error) {
     onRequestError(error);
     yield put(getSlotsError(error, action));
@@ -233,8 +209,7 @@ function* getUserSaga(action: Action<string>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getUser, action.payload!, token.some());
 
-    yield put(getUserSuccess(action));
-    yield dispatchUpdates(result);
+    yield put(getUserSuccess(result, action));
   } catch (error) {
     onRequestError(error);
     yield put(getUserError(error, action));
@@ -246,8 +221,7 @@ function* getUsersSaga(action: Action<void>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.getUsers, token.some());
 
-    yield put(getUsersSuccess(action));
-    yield dispatchUpdates(result);
+    yield put(getUsersSuccess(result, action));
   } catch (error) {
     onRequestError(error);
     yield put(getUsersError(error, action));
@@ -259,8 +233,7 @@ function* createEntrySaga(action: Action<CreateEntryDto>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.createEntry, action.payload!, token.some());
 
-    yield put(createEntrySuccess(action));
-    yield dispatchUpdates(result);
+    yield put(createEntrySuccess(result, action));
 
     getConfig().onEntryCreated(action.payload!);
   } catch (error) {
@@ -273,9 +246,8 @@ function* createUsersSaga(action: Action<CreateUserDto[]>) {
     const token: Maybe<string> = yield select(selectors.getToken);
 
     const result = yield call(api.createUsers, action.payload!, token.some());
-    yield dispatchUpdates(result);
-    yield put(createUsersSuccess(action));
 
+    yield put(createUsersSuccess(result, action));
     getConfig().onUsersCreated(action.payload!);
   } catch (error) {
     onRequestError(error);
@@ -334,8 +306,7 @@ function* updateUserSaga(action: Action<[string, PatchUserDto]>) {
       token.some()
     );
 
-    yield put(updateUserSuccess(action));
-    yield dispatchUpdates(result);
+    yield put(updateUserSuccess(result, action));
 
     getConfig().onUserUpdated(action.payload![1]);
   } catch (error) {
@@ -349,8 +320,7 @@ function* signEntrySaga(action: Action<string>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.signEntry, action.payload!, token.some());
 
-    yield put(signEntrySuccess(action));
-    yield dispatchUpdates(result);
+    yield put(signEntrySuccess(result, action));
     getConfig().onSignedEntry(action.payload!);
   } catch (error) {
     getConfig().onSigningError(error);
@@ -363,8 +333,7 @@ function* unsignEntrySaga(action: Action<string>) {
     const token: Maybe<string> = yield select(selectors.getToken);
     const result = yield call(api.unsignEntry, action.payload!, token.some());
 
-    yield put(unsignEntrySuccess(action));
-    yield dispatchUpdates(result);
+    yield put(unsignEntrySuccess(result, action));
     getConfig().onUnsignedEntry(action.payload!);
   } catch (error) {
     getConfig().onSigningError(error);
@@ -494,7 +463,6 @@ function* saga() {
   yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(LOGIN_REQUEST, loginSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
-  yield takeEvery(GET_NEEDED_USERS_REQUEST, getNeededUsersSaga);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
   yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);
   yield takeEvery(DOWNLOAD_EXCEL_EXPORT_REQUEST, downloadExcelExportSaga);
