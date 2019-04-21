@@ -57,6 +57,7 @@
       <script>
         const baseUrlEnglish = "{{ config.site_url_en }}";
         const baseUrlGerman = "{{ config.site_url_de }}";
+        const baseUrl = "{{ config.site_url_base }}";
 
         const currentLanguage = "{{ config.theme.language }}";
         const currentBaseUrl =
@@ -64,7 +65,7 @@
 
         function getPath() {
           const href = window.location.href;
-          const path = href.replace(currentBaseUrl, "");
+          const path = href.replace(currentBaseUrl, "").replace(baseUrl, "");
           return path;
         }
 

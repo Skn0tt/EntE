@@ -1,6 +1,7 @@
 site_name: EntE
 site_url_de: https://docs.ente.app/de/
 site_url_en: https://docs.ente.app/en/
+site_url_base: https://docs.ente.app/
 site_url: https://docs.ente.app/en/
 repo_url: https://gitlab.com/skn0tt/EntE/
 repo_name: Gitlab
