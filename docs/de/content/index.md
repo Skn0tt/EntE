@@ -7,7 +7,7 @@ title: Erste Schritte
 _EntE_ ist ein Administrations-Tool für Schulen, welches die Fehlzeiten der Schüler verwaltet.
 Es wurde entwickelt, um das Entschuldigungsverfahren an Schulen angenehmer und effizienter zu gestalten.
 
-- [Website](https://skn0tt.gitlab.io/EntE)
+- [Website](https://ente.app)
 - [Gitlab](https://gitlab.com/skn0tt/EntE)
 - [Wie läuft das Entschuldigungsverfahren mit EntE ab?](manual/flow.md)
 

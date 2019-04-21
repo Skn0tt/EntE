@@ -23,7 +23,7 @@ const useTranslation = makeTranslationHook({
       <>
         EntE is a digital system for managing scholar absence. For further
         information about EntE, see the{" "}
-        <a href="https://skn0tt.gitlab.io/EntE/docs" target="_blank">
+        <a href="https://docs.ente.app/en" target="_blank">
           documentation
         </a>
         .
@@ -40,7 +40,7 @@ const useTranslation = makeTranslationHook({
       <>
         EntE ist ein digitales System zur Verwaltung von Fehlzeiten in der
         Schule. Weitere Informationen zur Benutzung finden Sie in der{" "}
-        <a href="https://skn0tt.gitlab.io/EntE/docs" target="_blank">
+        <a href="https://docs.ente.app/de" target="_blank">
           EntE-Dokumentation
         </a>
         .

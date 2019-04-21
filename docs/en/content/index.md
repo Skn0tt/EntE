@@ -6,7 +6,7 @@ title: Getting Started
 
 _EntE_ is an administration tool for schools to manage absence hours of students.
 
-- [Website](https://skn0tt.gitlab.io/EntE/en/)
+- [Website](https://ente.app/en)
 - [Gitlab](https://gitlab.com/skn0tt/EntE)
 
 EntE was born to make handling excuses and absent hours at schools less painful.

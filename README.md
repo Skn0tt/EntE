@@ -7,7 +7,7 @@ Digital Excuse Workflow for Schools.
 - [Get Started](#Get-Started)
 - [About](#About)
 - [Documentation](https://docs.ente.app)
-- [Website](https://skn0tt.gitlab.io/EntE/en/)
+- [Website](https://ente.app/en/)
 - [Contributing](https://docs.ente.app/contributing)
 
 ## Get Started
@@ -29,6 +29,6 @@ You can read the [Whitepaper (German)](assets/paper/src/Paper.md).
 
 ## Links
 
-- [Coverage Report](https://skn0tt.gitlab.io/EntE/coverage/)
-- [Test Report](https://skn0tt.gitlab.io/EntE/allure-report/)
+- [Coverage Report](https://coverage-report.ente.app)
+- [Test Report](https://test-report.ente.app)
 - [Demo Instance](https://bull.ente.app)
