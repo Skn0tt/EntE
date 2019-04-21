@@ -166,7 +166,6 @@ generate:pages:
   variables:
     NOW_SCOPE: "--scope ente"
     NOW_SECRET: "--token=$NOW_TOKEN"
-    NOW: "now $NOW_SECRET $NOW_SCOPE"
   before_script:
     - yarn global add now
 
@@ -176,9 +175,9 @@ deploy:pages:
     - generate:pages
   script:
     # assets/pages/dist contains pages
-    - NOW_DEPLOYMENT=$(now --token=$NOW_TOKEN --scope ente --name product-website assets/pages/dist)
+    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name product-website assets/pages/dist)
     - sleep 10
-    - $NOW alias $NOW_DEPLOYMENT ente.app
+    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT ente.app
 
 deploy:coverage:
   <<: *now_deploy_template
@@ -186,10 +185,9 @@ deploy:coverage:
     - test:unit
   script:
     # coverage/lcov-report contains line coverage report
-    - echo $NOW
-    - NOW_DEPLOYMENT=$(${NOW} --name coverage-report coverage/lcov-report/)
+    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name coverage-report coverage/lcov-report/)
     - sleep 10
-    - $NOW alias $NOW_DEPLOYMENT coverage-report.ente.app
+    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT coverage-report.ente.app
 
 deploy:test-report:
   <<: *now_deploy_template
@@ -197,18 +195,18 @@ deploy:test-report:
     - generate:allure
   script:
     # allure-report/ contains report files
-    - NOW_DEPLOYMENT=$(${NOW} --name test-report allure-report)
+    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name test-report allure-report)
     - sleep 10
-    - $NOW alias $NOW_DEPLOYMENT test-report.ente.app
+    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT test-report.ente.app
 
 deploy:docs:
   <<: *now_deploy_template
   dependencies:
     - generate:docs
   script:
-    - NOW_DEPLOYMENT=$(${NOW} --name docs docs_dist)
+    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name docs docs_dist)
     - sleep 10
-    - $NOW alias $NOW_DEPLOYMENT docs.ente.app
+    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT docs.ente.app
 
 deploy:images:
   image: docker:stable
