@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed deeply flawed adulthood detection ([#276](https://gitlab.com/Skn0tt/EntE/issues/276))
 - Add further documentation on administration and usage ([#161](https://gitlab.com/Skn0tt/EntE/issues/161))
 - Made entry creation deadline configurable ([#260](https://gitlab.com/Skn0tt/EntE/issues/260))
 - Fetching entries/slots/users removes potentially outdated data ([#265](https://gitlab.com/Skn0tt/EntE/issues/265))
