@@ -165,7 +165,7 @@ generate:pages:
   only:
     - master
   variables:
-    NOW_TEAM: "ente"
+    NOW_TEAM: "--team ente"
     NOW_SECRET: "--token=${NOW_TOKEN}"
     NOW: "now $NOW_SECRET $NOW_TEAM"
   before_script:
