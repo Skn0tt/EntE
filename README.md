@@ -6,9 +6,9 @@ Digital Excuse Workflow for Schools.
 
 - [Get Started](#Get-Started)
 - [About](#About)
-- [Documentation](https://skn0tt.gitlab.io/EntE/docs/index.html)
+- [Documentation](https://docs.ente.app)
 - [Website](https://skn0tt.gitlab.io/EntE/en/)
-- [Contributing](https://skn0tt.gitlab.io/EntE/docs/contributing)
+- [Contributing](https://docs.ente.app/contributing)
 
 ## Get Started
 

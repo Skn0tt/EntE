@@ -44,7 +44,7 @@ const template = Handlebars.compile(`
 
           <br /> <br />
           Dieser Link ist für sieben Tage gültig.
-          Falls ihr Link schon abgelaufen ist, lesen Sie in der <a href="https://skn0tt.gitlab.io/EntE/docs/">Dokumentation</a> nach,
+          Falls ihr Link schon abgelaufen ist, lesen Sie in der <a href="https://docs.ente.app/">Dokumentation</a> nach,
           wie Sie ihr Benutzerkonto trotzdem aktivieren können.
         </mj-text>
       </mj-column>
