@@ -2,7 +2,7 @@
 title: User Management
 ---
 
-# Management
+# User Management
 
 Users can only be managed by administrators.
 A list of all users of the instance can be seen at the "Users" page that can be reached using the navigation bar.
