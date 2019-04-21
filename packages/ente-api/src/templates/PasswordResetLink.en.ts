@@ -11,11 +11,11 @@ const template = Handlebars.compile(`
         <mj-divider border-color="black" />
 
         <mj-text font-size="20px" font-family="helvetica">
-          Reset Password
+          Reset password
         </mj-text>
         
         <mj-text>
-          Somebody requested a password-reset for the following account:
+          Somebody requested a password reset for the following account:
         <br /> <br />
           {{ username }}
         <br /> <br />

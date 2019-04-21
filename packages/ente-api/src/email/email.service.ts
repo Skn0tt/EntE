@@ -238,7 +238,8 @@ export class EmailService {
       displayname: s.student.displayname,
       hour_from: s.from,
       hour_to: s.to,
-      signed: s.signed
+      signed: s.signed,
+      educational: s.forSchool
     }));
     const { html, subject } = await WeeklySummary(data, teacher.language);
     await this.emailTransport.sendMail({

@@ -11,7 +11,7 @@ const template = Handlebars.compile(`
         <mj-divider border-color="black" />
 
         <mj-text font-size="20px" font-family="helvetica">
-          Successfully Changed Password
+          Successfully changed password
         </mj-text>
         
         <mj-text>

@@ -11,7 +11,7 @@ const template = Handlebars.compile(`
         <mj-divider border-color="black" />
 
         <mj-text font-size="20px" font-family="helvetica">
-          Password Zurücksetzen
+          Password zurücksetzen
         </mj-text>
         
         <mj-text>
@@ -20,7 +20,7 @@ const template = Handlebars.compile(`
           {{ username }}
         <br /> <br />
 
-          Falls dies nicht beabsichtigt war, ignorieren Sie einfach diese E-Mail.
+          Falls dies nicht beabsichtigt war, ignorieren Sie diese E-Mail einfach.
 
         <br />
           Um Ihr Passwort zurückzusetzen, besuchen Sie folgende Adresse:

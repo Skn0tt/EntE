@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed deeply flawed adulthood detection ([#276](https://gitlab.com/Skn0tt/EntE/issues/276))
+- Add new column "educational" to weekly summary
+- Fix some typos ([#189](https://gitlab.com/Skn0tt/EntE/issues/189))
 - Add further documentation on administration and usage ([#161](https://gitlab.com/Skn0tt/EntE/issues/161))
 - Update to react-router@5.0.0 ([#216](https://gitlab.com/Skn0tt/EntE/issues/216))
 - Made entry creation deadline configurable ([#260](https://gitlab.com/Skn0tt/EntE/issues/260))
