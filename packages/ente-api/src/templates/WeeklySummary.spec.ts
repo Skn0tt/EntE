@@ -19,14 +19,16 @@ describe("WeeklySummary", () => {
           displayname: "simon",
           hour_from: 1,
           hour_to: 2,
-          signed: false
+          signed: false,
+          educational: false
         },
         {
           date: dateToIsoString(Date.now() + 24 * 60 * 60 * 1000),
           signed: true,
           hour_to: 1,
           hour_from: 2,
-          displayname: "simone"
+          displayname: "simone",
+          educational: false
         }
       ];
 
@@ -48,14 +50,16 @@ describe("WeeklySummary", () => {
           displayname: "simon",
           hour_from: 1,
           hour_to: 2,
-          signed: false
+          signed: false,
+          educational: false
         },
         {
           date: dateToIsoString(Date.now() + 24 * 60 * 60 * 1000),
           signed: true,
           hour_to: 1,
           hour_from: 2,
-          displayname: "simone"
+          displayname: "simone",
+          educational: false
         }
       ];
 

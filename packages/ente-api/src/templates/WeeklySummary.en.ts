@@ -11,6 +11,7 @@ const tableRow = (data: WeeklySummaryRowData) => `
     <td>${data.hour_from}</td>
     <td>${data.hour_to}</td>
     <td>${data.signed ? "Excused" : "Pending"}</td>
+    <td>${data.educational ? "Educational" : "Not Educational"}</td>
   </tr>
 `;
 
@@ -35,6 +36,7 @@ const template: HandlebarsTemplateDelegate<
               <th>From</th>
               <th>To</th>
               <th>State</th>
+              <th>Educational</th>
             </tr>
             {{#each items}}
               {{{ this }}}

@@ -22,6 +22,7 @@ export interface WeeklySummaryRowData {
   hour_from: number;
   hour_to: number;
   signed: boolean;
+  educational: boolean;
 }
 
 const getTemplate = getByLanguage({
