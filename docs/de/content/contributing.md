@@ -1,8 +1,8 @@
 ---
-title: An EntE Mitarbeiten
+title: An EntE mitarbeiten
 ---
 
-# An EntE Mitarbeiten
+# An EntE mitarbeiten
 
 👍🎉 Zuerst einmal: Vielen Dank, dass du dir die Zeit nimmst, an EntE mitzuarbeiten! 🎉👍
 
