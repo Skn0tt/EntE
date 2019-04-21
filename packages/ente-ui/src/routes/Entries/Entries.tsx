@@ -69,8 +69,6 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-class EntriesTable extends Table<EntryN> {}
-
 interface EntriesOwnProps {}
 
 interface EntriesStateProps {
@@ -96,18 +94,11 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   requestEntries: () => dispatch(getEntriesRequest())
 });
 
-interface State {
-  showCreateEntry: boolean;
-}
 type Props = EntriesOwnProps &
   EntriesStateProps &
   EntriesDispatchProps &
   WithStyles &
   RouteComponentProps<{}>;
-
-/**
- * # Component
- */
 
 export const Entries: React.FunctionComponent<Props> = props => {
   const {

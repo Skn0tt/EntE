@@ -34,7 +34,6 @@ import { Maybe } from "monet";
 import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
-import { withRouter, RouteComponentProps } from "react-router";
 
 const drawerWidth = 240;
 
@@ -111,7 +110,7 @@ const mapStateToProps = (state: AppState): DrawerStateProps => ({
   role: getRole(state)
 });
 
-type DrawerProps = DrawerOwnProps & DrawerStateProps & RouteComponentProps;
+type DrawerProps = DrawerOwnProps & DrawerStateProps;
 
 const Drawer: React.FunctionComponent<DrawerProps> = props => {
   const { role, children } = props;
@@ -189,8 +188,6 @@ const Drawer: React.FunctionComponent<DrawerProps> = props => {
   );
 };
 
-export default withRouter(
-  connect<DrawerStateProps, {}, DrawerOwnProps, AppState>(mapStateToProps)(
-    Drawer
-  )
-);
+export default connect<DrawerStateProps, {}, DrawerOwnProps, AppState>(
+  mapStateToProps
+)(Drawer);
