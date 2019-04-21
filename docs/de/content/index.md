@@ -17,6 +17,6 @@ Nachdem der Eintrag erstellt wurde, kann er von den Erziehungsberechtigten und e
 Sobald beide Parteien den Eintrag mit einer digitalen Signatur genehmigt haben, ist dieser abgeschlossen.
 Lehrer nehmen an diesem Ablauf nicht aktiv teil, sie können lediglich die verpassten Stunden ihrer Schüler einsehen.
 
-Für Demonstrationen gibt es eine Demo-Instanz auf meinem Entwicklungsserver: [https://bull.simonknott.de](https://bull.simonknott.de) (User: admin, Pass: root).
+Für Demonstrationen gibt es eine Demo-Instanz auf meinem Entwicklungsserver: [https://bull.ente.app](https://bull.ente.app) (User: admin, Pass: root).
 
 Falls sie an einer Schule arbeiten und sich fragen, wie EntE sich in ihren Ablauf einfügt, kontaktieren sie mich gerne unter [info@simonknott.de](mailto:info@simonknott.de).

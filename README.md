@@ -4,11 +4,11 @@
 
 Digital Excuse Workflow for Schools.
 
-* [Get Started](#Get-Started)
-* [About](#About)
-* [Documentation](https://skn0tt.gitlab.io/EntE/docs/index.html)
-* [Website](https://skn0tt.gitlab.io/EntE/en/)
-* [Contributing](https://skn0tt.gitlab.io/EntE/docs/contributing)
+- [Get Started](#Get-Started)
+- [About](#About)
+- [Documentation](https://skn0tt.gitlab.io/EntE/docs/index.html)
+- [Website](https://skn0tt.gitlab.io/EntE/en/)
+- [Contributing](https://skn0tt.gitlab.io/EntE/docs/contributing)
 
 ## Get Started
 
@@ -18,7 +18,7 @@ On submission, his parents and his manager receive an email requesting to pass t
 When both parties pass the entry by giving their digital signature, the entry is completed.
 Teachers don't take part in this flow, but are able to see their students missed lessons.
 
-For a working demo instance, have a look at my development server: <https://bull.simonknott.de> (User: admin, Pass: root).
+For a working demo instance, have a look at my development server: <https://bull.ente.app> (User: admin, Pass: root).
 
 If you're a school and you are wondering how this would fit into your workflow, feel free to contact me at <mailto:info@simonknott.de>.
 
@@ -29,6 +29,6 @@ You can read the [Whitepaper (German)](assets/paper/src/Paper.md).
 
 ## Links
 
-* [Coverage Report](https://skn0tt.gitlab.io/EntE/coverage/)
-* [Test Report](https://skn0tt.gitlab.io/EntE/allure-report/)
-* [Demo Instance](https://bull.simonknott.de)
+- [Coverage Report](https://skn0tt.gitlab.io/EntE/coverage/)
+- [Test Report](https://skn0tt.gitlab.io/EntE/allure-report/)
+- [Demo Instance](https://bull.ente.app)

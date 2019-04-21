@@ -60,7 +60,7 @@ export default {
     demoPopup: {
       title: "You're interested. Cool!",
       text: `
-        To try the demo, go to <a target="_blank" href="https://bull.simonknott.de">bull.simonknott.de</a>.<br/>
+        To try the demo, go to <a target="_blank" href="https://bull.ente.app">bull.ente.app</a>.<br/>
         Username is <i>admin</i>, Password is <i>root</i>.`,
       cancel: "Cancel",
       goTo: "Go to Demo"
@@ -129,7 +129,7 @@ export default {
     demoPopup: {
       title: "Sie möchten sich die Demo anschauen. Super!",
       text: `
-        Um die Demo zu sehen, besuchen Sie <a target="_blank" href="https://bull.simonknott.de">bull.simonknott.de</a>.<br/>
+        Um die Demo zu sehen, besuchen Sie <a target="_blank" href="https://bull.ente.app">bull.ente.app</a>.<br/>
         Der Benutzername ist <i>admin</i>, das Passwort ist <i>root</i>.`,
       cancel: "Abbrechen",
       goTo: "Demo Anschauen"

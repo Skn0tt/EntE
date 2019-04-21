@@ -15,6 +15,6 @@ On submission, his parents and his manager receive an email requesting to pass t
 When both parties pass the entry by giving their digital signature, the entry is completed.
 Teachers don't take part in this flow, but are able to see their students missed lessons.
 
-For a working demo instance, have a look at my development server: [https://bull.simonknott.de](https://bull.simonknott.de) (User: admin, Pass: root).
+For a working demo instance, have a look at my development server: [https://bull.ente.app](https://bull.ente.app) (User: admin, Pass: root).
 
 If you work at a school and wonder how this would fit into your workflow, feel free to contact me at [info@simonknott.de](mailto:info@simonknott.de).
