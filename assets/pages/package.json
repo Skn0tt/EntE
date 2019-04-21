@@ -3,20 +3,27 @@
   "name": "startbootstrap-landing-page",
   "version": "4.1.1",
   "description": "An HTML landing page template built with Bootstrap",
-  "keywords": ["css", "sass", "html", "responsive", "theme", "template"],
+  "keywords": [
+    "css",
+    "sass",
+    "html",
+    "responsive",
+    "theme",
+    "template"
+  ],
   "homepage": "https://startbootstrap.com/template-overviews/landing-page",
   "bugs": {
-    "url":
-      "https://github.com/BlackrockDigital/startbootstrap-landing-page/issues",
+    "url": "https://github.com/BlackrockDigital/startbootstrap-landing-page/issues",
     "email": "feedback@startbootstrap.com"
   },
   "scripts": {
-    "build:prod":
-      "./generate.ts && npx parcel build index.html de/index.html en/index.html --public-url /EntE/"
+    "build:prod": "./generate.ts && npx parcel build index.html de/index.html en/index.html"
   },
   "license": "MIT",
   "author": "Start Bootstrap",
-  "contributors": ["David Miller (http://davidmiller.io/)"],
+  "contributors": [
+    "David Miller (http://davidmiller.io/)"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/BlackrockDigital/startbootstrap-landing-page.git"

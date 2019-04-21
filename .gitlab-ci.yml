@@ -159,31 +159,56 @@ generate:pages:
     paths:
       - assets/pages/dist/
 
-pages:
-  image: debian
+.now_deploy_template: &now_deploy_template
+  image: node:10
   stage: deploy
   only:
     - master
+  variables:
+    NOW_TEAM: "ente"
+    NOW_SECRET: "--token=${NOW_TOKEN}"
+    NOW: "now $NOW_SECRET $NOW_TEAM"
+  before_script:
+    - yarn global add now
+
+deploy:pages:
+  <<: *now_deploy_template
+  dependencies:
+    - generate:pages
+  script:
+    # assets/pages/dist contains pages
+    - $NOW --name product-website assets/pages/dist
+    - $NOW alias product-website ente.app
+
+deploy:coverage:
+  <<: *now_deploy_template
   dependencies:
     - test:unit
-    - generate:docs
-    - generate:allure
-    - generate:pages
-  variables:
-    GIT_STRATEGY: none
   script:
-    - mkdir .public
-    - mkdir .public/coverage .public/allure-report .public/docs .public/docs/de .public/docs/en
-    - cp -R assets/pages/dist/* .public/
-    - cp -R coverage/lcov-report/* .public/coverage/
-    - cp -R docs/en/site/* .public/docs/
-    - cp -R docs/en/site/* .public/docs/en/
-    - cp -R docs/de/site/* .public/docs/de/
-    - cp -R allure-report/* .public/allure-report/
-    - mv .public public
-  artifacts:
-    paths:
-      - public
+    # coverage/lcov-report contains line coverage report
+    - $NOW --name coverage-report coverage/lcov-report/
+    - $NOW alias coverage-report coverage-report.ente.app
+
+deploy:test-report:
+  <<: *now_deploy_template
+  dependencies:
+    - generate:allure
+  script:
+    # allure-report/ contains report files
+    - $NOW --name test-report allure-report
+    - $NOW alias test-report test-report.ente.app
+
+deploy:docs:
+  <<: *now_deploy_template
+  dependencies:
+    - generate:docs
+  script:
+    - mkdir public public/docs public/docs/en public/docs/de
+    - cp -R docs/en/site/* public/docs/
+    - cp -R docs/en/site/* public/docs/en/
+    - cp -R docs/de/site/* public/docs/de/
+    - $NOW --name docs public/docs
+    - $NOW alias docs docs.ente.app
 
 deploy:images:
   image: docker:stable
