@@ -177,7 +177,7 @@ deploy:pages:
     - generate:pages
   script:
     # assets/pages/dist contains pages
-    - NOW_DEPLOYMENT=$(${NOW} --name product-website assets/pages/dist)
+    - NOW_DEPLOYMENT=$(now --token=$NOW_TOKEN --scope ente --name product-website assets/pages/dist)
     - sleep 10
     - $NOW alias $NOW_DEPLOYMENT ente.app
 
@@ -187,6 +187,7 @@ deploy:coverage:
     - test:unit
   script:
     # coverage/lcov-report contains line coverage report
+    - echo $NOW
     - NOW_DEPLOYMENT=$(${NOW} --name coverage-report coverage/lcov-report/)
     - sleep 10
     - $NOW alias $NOW_DEPLOYMENT coverage-report.ente.app
