@@ -10,19 +10,20 @@ sentry: # Override when using Sentry
   ui: ~
 
 # mysql:
-# host:
-# port:
-# username:
-# password:
-# database:
+#   host:
+#   port:
+#   username:
+#   password:
+#   database:
+#   timezone:
 
 # smtp:
-# host:
-# port:
-# username:
-# password:
-# sender:
-# address:
+#   host:
+#   port:
+#   username:
+#   password:
+#   sender:
+#   address:
 
 debug:
   traefik_dashboard_port: 8080

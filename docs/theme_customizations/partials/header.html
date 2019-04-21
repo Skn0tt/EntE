@@ -9,8 +9,13 @@
         >
           {% if config.theme.logo.icon %}
           <i class="md-icon">{{ config.theme.logo.icon }}</i> {% else %}
-          <img src="{{ config.theme.logo | url }}" width="24" height="24" /> {%
-          endif %}
+          <img
+            src="{{ config.theme.logo | url }}"
+            width="56"
+            height="56"
+            style="position: relative; top: -14px;"
+          />
+          {% endif %}
         </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -82,7 +87,7 @@
       </script>
 
       <div
-        style="vertical-align: middle; white-space: nowrap; padding-left: 20px;"
+        style="white-space: nowrap; padding-left: 20px; top: 1.4em"
         class="md-flex__cell md-flex__cell--shrink"
       >
         <img
