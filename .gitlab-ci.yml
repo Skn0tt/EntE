@@ -177,8 +177,9 @@ deploy:pages:
     - generate:pages
   script:
     # assets/pages/dist contains pages
-    - $NOW --name product-website assets/pages/dist
-    - $NOW alias product-website ente.app
+    - NOW_DEPLOYMENT=$(${NOW} --name product-website assets/pages/dist)
+    - sleep 10
+    - $NOW alias $NOW_DEPLOYMENT ente.app
 
 deploy:coverage:
   <<: *now_deploy_template
@@ -186,8 +187,9 @@ deploy:coverage:
     - test:unit
   script:
     # coverage/lcov-report contains line coverage report
-    - $NOW --name coverage-report coverage/lcov-report/
-    - $NOW alias coverage-report coverage-report.ente.app
+    - NOW_DEPLOYMENT=$(${NOW} --name coverage-report coverage/lcov-report/)
+    - sleep 10
+    - $NOW alias $NOW_DEPLOYMENT coverage-report.ente.app
 
 deploy:test-report:
   <<: *now_deploy_template
@@ -195,8 +197,9 @@ deploy:test-report:
     - generate:allure
   script:
     # allure-report/ contains report files
-    - $NOW --name test-report allure-report
-    - $NOW alias test-report test-report.ente.app
+    - NOW_DEPLOYMENT=$(${NOW} --name test-report allure-report)
+    - sleep 10
+    - $NOW alias $NOW_DEPLOYMENT test-report.ente.app
 
 deploy:docs:
   <<: *now_deploy_template
@@ -207,8 +210,9 @@ deploy:docs:
     - cp -R docs/en/site/* public/docs/
     - cp -R docs/en/site/* public/docs/en/
     - cp -R docs/de/site/* public/docs/de/
-    - $NOW --name docs public/docs
-    - $NOW alias docs docs.ente.app
+    - NOW_DEPLOYMENT=$(${NOW} --name docs public/docs)
+    - sleep 10
+    - $NOW alias $NOW_DEPLOYMENT docs.ente.app
 
 deploy:images:
   image: docker:stable
