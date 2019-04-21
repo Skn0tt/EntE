@@ -166,7 +166,7 @@ generate:pages:
     - master
   variables:
     NOW_SCOPE: "--scope ente"
-    NOW_SECRET: "--token=${NOW_TOKEN}"
+    NOW_SECRET: "--token=$NOW_TOKEN"
     NOW: "now $NOW_SECRET $NOW_SCOPE"
   before_script:
     - yarn global add now
