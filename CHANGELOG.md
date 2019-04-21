@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add new column "educational" to weekly summary
+- Fix some typos ([#189](https://gitlab.com/Skn0tt/EntE/issues/189))
 - Add further documentation on administration and usage ([#161](https://gitlab.com/Skn0tt/EntE/issues/161))
 - Made entry creation deadline configurable ([#260](https://gitlab.com/Skn0tt/EntE/issues/260))
 - Fetching entries/slots/users removes potentially outdated data ([#265](https://gitlab.com/Skn0tt/EntE/issues/265))
