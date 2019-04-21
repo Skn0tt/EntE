@@ -30,6 +30,13 @@ export default {
         Traditional excuse-forms cost precious time in class.
         EntE ensures that administration won't interfere with your teaching time.`
     },
+    statistics: {
+      title: "Catches Truants",
+      caption: `
+        Rich statistics make patterns in absence obvious.<br>
+        A student always misses the first two classes of mondays? Caught.<br>
+        A student always misses class with Mr Smith? Caught.`
+    },
     hosting: {
       title: "Self-Hosted or SaaS",
       caption: `
@@ -80,6 +87,13 @@ export default {
       title: "Leicht zu bedienen",
       caption:
         "Smartphone-taugliche Web-App und Email-Anbindung ermöglichen eine einfache Bedienung."
+    },
+    statistics: {
+      title: "Erwischt Schulschwänzer",
+      caption: `
+        Erweiterte Statistiken ermöglichen es, Fehlstundenmuster zu erkennen.<br>
+        Fehlt ein Schüler immer Montags in den ersten beiden Stunden? Erwischt.<br>
+        Fehlt ein Schüler immer während Herr Müllers Unterricht? Erwischt.`
     },
     openSource: {
       title: "Open Source",
