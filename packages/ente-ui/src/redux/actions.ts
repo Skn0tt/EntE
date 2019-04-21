@@ -81,7 +81,10 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
   SET_TIME_SCOPE,
-  SET_COLOR_SCHEME
+  SET_COLOR_SCHEME,
+  SET_ENTRY_CREATION_DAYS_REQUEST,
+  SET_ENTRY_CREATION_DAYS_SUCCESS,
+  SET_ENTRY_CREATION_DAYS_ERROR
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials } from "./types";
 import {
@@ -362,10 +365,22 @@ export const setParentSignatureNotificationTimeRequest = createAction<number>(
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST
 );
 export const setParentSignatureNotificationTimeSuccess = createMetaAction<
-  Action<Languages>,
+  Action<number>,
   number
 >(SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS);
 export const setParentSignatureNotificationTimeError = createMetaAction<
-  Action<Languages>,
+  Action<number>,
   Error
 >(SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR);
+
+export const setEntryCreationDaysRequest = createAction<number>(
+  SET_ENTRY_CREATION_DAYS_REQUEST
+);
+export const setEntryCreationDaysSuccess = createMetaAction<
+  Action<number>,
+  number
+>(SET_ENTRY_CREATION_DAYS_SUCCESS);
+export const setEntryCreationDaysError = createMetaAction<
+  Action<number>,
+  Error
+>(SET_ENTRY_CREATION_DAYS_ERROR);

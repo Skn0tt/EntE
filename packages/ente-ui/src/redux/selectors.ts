@@ -187,6 +187,11 @@ export const getParentSignatureTimes: Selector<
   return instanceConfig.map(i => i.get("parentSignatureTimes"));
 };
 
+export const getEntryCreationDeadline: Selector<Maybe<number>> = state => {
+  const instanceConfig = getInstanceConfig(state);
+  return instanceConfig.map(i => i.get("entryCreationDeadline"));
+};
+
 export const getParentSignatureExpiryTime: Selector<Maybe<number>> = state => {
   return getParentSignatureTimes(state).map(v => v.get("expiry"));
 };

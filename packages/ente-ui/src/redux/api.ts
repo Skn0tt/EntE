@@ -478,3 +478,20 @@ export const setParentSignatureExpiryTime = async (
     }
   );
 };
+
+export const setEntryCreationDays = async (
+  value: number,
+  token: string
+): Promise<void> => {
+  const response = await put(
+    `${getBaseUrl()}/instanceConfig/entryCreationDeadline`,
+    token,
+    "" + value,
+    {
+      transformResponse: [],
+      headers: {
+        "Content-Type": "text/plain"
+      }
+    }
+  );
+};

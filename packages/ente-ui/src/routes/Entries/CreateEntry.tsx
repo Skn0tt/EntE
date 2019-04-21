@@ -31,7 +31,8 @@ import {
   AppState,
   getChildren,
   isParent,
-  UserN
+  UserN,
+  getEntryCreationDeadline
 } from "../../redux";
 import {
   CreateEntryDto,
@@ -95,6 +96,7 @@ interface CreateEntryOwnProps {
 interface CreateEntryStateProps {
   isParent: boolean;
   children: Maybe<UserN[]>;
+  createEntryDeadline: number;
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateEntryStateProps,
@@ -102,7 +104,8 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   children: getChildren(state),
-  isParent: isParent(state).some()
+  isParent: isParent(state).some(),
+  createEntryDeadline: getEntryCreationDeadline(state).some()
 });
 
 interface CreateEntryDispatchProps {
@@ -122,7 +125,15 @@ type CreateEntryProps = CreateEntryOwnProps &
   InjectedProps;
 
 const CreateEntry: React.SFC<CreateEntryProps> = props => {
-  const { fullScreen, onClose, show, isParent, children, createEntry } = props;
+  const {
+    fullScreen,
+    onClose,
+    show,
+    isParent,
+    children,
+    createEntry,
+    createEntryDeadline
+  } = props;
   const translation = useTranslation();
 
   const [isRange, setIsRange] = React.useState(false);
@@ -243,7 +254,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [slots, studentId, reason, beginDate, endDate]
   );
 
-  const isValidInput = CreateEntryDtoValidator.validate(result as any);
+  const isValidInput = CreateEntryDtoValidator(createEntryDeadline).validate(
+    result as any
+  );
 
   const handleSubmit = React.useCallback(
     () => {
@@ -293,7 +306,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                   label={translation.fromLabel}
                   onChange={handleChangeBeginDate}
                   minDate={
-                    isRange ? undefined : dateToIsoString(daysBeforeNow(14))
+                    isRange
+                      ? undefined
+                      : dateToIsoString(daysBeforeNow(createEntryDeadline))
                   }
                   value={beginDate}
                 />
@@ -304,7 +319,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                     label={translation.toLabel}
                     isValid={() => isEndDateValid}
                     onChange={handleChangeEndDate}
-                    minDate={dateToIsoString(daysBeforeNow(14))}
+                    minDate={dateToIsoString(
+                      daysBeforeNow(createEntryDeadline)
+                    )}
                     value={endDate!}
                     minDateMessage={translation.dateMustBeBiggerThanFrom}
                   />

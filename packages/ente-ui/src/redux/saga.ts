@@ -59,7 +59,9 @@ import {
   setParentSignatureExpiryTimeSuccess,
   setParentSignatureExpiryTimeError,
   setParentSignatureNotificationTimeSuccess,
-  setParentSignatureNotificationTimeError
+  setParentSignatureNotificationTimeError,
+  setEntryCreationDaysSuccess,
+  setEntryCreationDaysError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -85,7 +87,8 @@ import {
   SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST,
   SET_LOGIN_BANNER_REQUEST,
   SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
-  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST
+  SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
+  SET_ENTRY_CREATION_DAYS_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -441,6 +444,18 @@ function* setParentSignatureNotificationTimeSaga(action: Action<number>) {
   }
 }
 
+function* setEntryCreationDaysSaga(action: Action<number>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.setEntryCreationDays, action.payload!, token.some());
+
+    yield put(setEntryCreationDaysSuccess(action.payload, action));
+  } catch (error) {
+    onRequestError(error);
+    yield put(setEntryCreationDaysError(error, action));
+  }
+}
+
 function* syncLanguageSaga(action: Action<Languages>) {
   try {
     const userId: Maybe<string> = yield select(selectors.getOwnUserId);
@@ -469,6 +484,7 @@ function* saga() {
   yield takeEvery(SET_LANGUAGE, syncLanguageSaga);
   yield takeEvery(IMPORT_USERS_REQUEST, importUsersSaga);
   yield takeEvery(FETCH_INSTANCE_CONFIG_REQUEST, fetchInstanceConfigSaga);
+  yield takeEvery(SET_ENTRY_CREATION_DAYS_REQUEST, setEntryCreationDaysSaga);
   yield takeEvery(SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
   yield takeEvery(
     SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,

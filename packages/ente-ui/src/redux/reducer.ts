@@ -79,7 +79,10 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
   SET_TIME_SCOPE,
-  SET_COLOR_SCHEME
+  SET_COLOR_SCHEME,
+  SET_ENTRY_CREATION_DAYS_REQUEST,
+  SET_ENTRY_CREATION_DAYS_ERROR,
+  SET_ENTRY_CREATION_DAYS_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -449,10 +452,12 @@ const reducer = handleActions<AppState | undefined, any>(
         const {
           defaultLanguage,
           loginBanners,
-          parentSignatureTimes
+          parentSignatureTimes,
+          entryCreationDeadline
         } = payload!;
         const instanceConfigN = new InstanceConfigN({
           defaultLanguage,
+          entryCreationDeadline,
           loginBanners: Map(loginBanners as any),
           parentSignatureTimes: ParentSignatureTimesN(parentSignatureTimes)
         });
@@ -499,6 +504,20 @@ const reducer = handleActions<AppState | undefined, any>(
       }
     ),
 
+    // ## SET_ENTRY_CREATION_DAYS
+    ...asyncReducersFull(
+      SET_ENTRY_CREATION_DAYS_REQUEST,
+      SET_ENTRY_CREATION_DAYS_ERROR,
+      SET_ENTRY_CREATION_DAYS_SUCCESS,
+      (state: AppState, action: Action<number>) => {
+        const { payload } = action;
+        return state.setIn(
+          ["instanceConfig", "entryCreationDeadline"],
+          payload
+        );
+      }
+    ),
+
     // ## SET_LOGIN_BANNER
     ...asyncReducersFull(
       SET_LOGIN_BANNER_REQUEST,
@@ -527,7 +546,10 @@ const reducer = handleActions<AppState | undefined, any>(
     ) => {
       const ownId = getOwnUserId(state!);
 
-      return state!.setIn(["usersMap", ownId, "language"], action.payload);
+      return state!.setIn(
+        ["usersMap", ownId.some(), "language"],
+        action.payload
+      );
     }
   },
   initialState

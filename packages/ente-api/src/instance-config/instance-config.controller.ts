@@ -31,6 +31,35 @@ export class InstanceConfigController {
     return await this.instanceConfigService.getInstanceConfig();
   }
 
+  @Get("entryCreationDeadline")
+  async getEntryCreationDeadline(): Promise<number> {
+    return await this.instanceConfigService.getEntryCreationDeadline();
+  }
+
+  @Put("entryCreationDeadline")
+  @UseGuards(AuthGuard("combined"))
+  async setEntryCreationDeadline(
+    @Req() req: Request,
+    @Ctx() ctx: RequestContext
+  ): Promise<void> {
+    const days = +req.body;
+    const result = await this.instanceConfigService.setEntryCreationDeadline(
+      days,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case SetInstanceConfigValueFail.ForbiddenForRole:
+            throw new ForbiddenException();
+          case SetInstanceConfigValueFail.IllegalValue:
+            throw new BadRequestException();
+        }
+      },
+      () => {}
+    );
+  }
+
   @Get("loginBanners")
   async getLoginBanners(): Promise<Record<Languages, string | null>> {
     return await this.instanceConfigService.getLoginBanners();
