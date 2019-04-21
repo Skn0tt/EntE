@@ -13,7 +13,7 @@ cd ../..
 
 root=$(pwd)
 
-pip install -r ./docs/requirements.txt
+pip3 install -r ./docs/requirements.txt
 
 # English
 cd $root/docs/en/
