@@ -7,13 +7,8 @@
  */
 
 import * as _ from "lodash";
-import { SyncValidator } from "./shared";
 import { subDays, isBefore as _isBefore } from "date-fns";
 
 export const daysBeforeNow = (n: number): Date => subDays(Date.now(), n);
 
 const isBefore = (a: Date | number) => (b: Date | number) => _isBefore(b, a);
-
-export const isOlderThanTwoWeeksBeforeNow: SyncValidator<
-  Date | number
-> = isBefore(daysBeforeNow(14));

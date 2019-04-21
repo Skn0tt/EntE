@@ -18,7 +18,8 @@ import {
   DEFAULT_DEFAULT_LANGUAGE,
   ParentSignatureTimesDto,
   DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
-  DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
+  DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME,
+  DEFAULT_ENTRY_CREATION_DEADLINE
 } from "ente-types";
 import { Action } from "redux";
 import { TimeScope } from "../time-scope";
@@ -70,6 +71,7 @@ interface InstanceConfigRecord {
   defaultLanguage: Languages;
   loginBanners: Map<Languages, string>;
   parentSignatureTimes: ParentSignatureTimesN;
+  entryCreationDeadline: number;
 }
 
 export type InstanceConfigN = ImmutableRecord<InstanceConfigRecord>;
@@ -77,7 +79,8 @@ export const InstanceConfigN = ImmutableRecord<InstanceConfigRecord>(
   {
     defaultLanguage: DEFAULT_DEFAULT_LANGUAGE,
     loginBanners: Map(),
-    parentSignatureTimes: ParentSignatureTimesN()
+    parentSignatureTimes: ParentSignatureTimesN(),
+    entryCreationDeadline: DEFAULT_ENTRY_CREATION_DEADLINE
   },
   "InstanceConfigN"
 );

@@ -1,5 +1,5 @@
 import {
-  is14DaysOrLessAgo,
+  makeDeadlineValidator,
   CreateEntryDtoValidator
 } from "./create-entry-dto.validator";
 import { dateToIsoString } from "../date-to-iso-string";
@@ -7,23 +7,26 @@ import { expect } from "chai";
 import { subDays, addDays, addHours } from "date-fns";
 import { EntryReasonCategory } from "./entry-reason.dto";
 
-describe("is14DaysOrLessAgo", () => {
-  it("exactly 14 days ago", () => {
-    const date = daysBeforeNow(14);
-    const result = is14DaysOrLessAgo(date);
-    expect(result).to.be.true;
-  });
+describe("makeDeadlineValidator", () => {
+  describe("using 14 days", () => {
+    const validator = makeDeadlineValidator(14);
+    it("exactly 14 days ago", () => {
+      const date = daysBeforeNow(14);
+      const result = validator(date);
+      expect(result).to.be.true;
+    });
 
-  it("less than 14 days ago", () => {
-    const date = daysBeforeNow(13);
-    const result = is14DaysOrLessAgo(date);
-    expect(result).to.be.true;
-  });
+    it("less than 14 days ago", () => {
+      const date = daysBeforeNow(13);
+      const result = validator(date);
+      expect(result).to.be.true;
+    });
 
-  it("more than 14 days ago", () => {
-    const date = daysBeforeNow(15);
-    const result = is14DaysOrLessAgo(date);
-    expect(result).to.be.false;
+    it("more than 14 days ago", () => {
+      const date = daysBeforeNow(15);
+      const result = validator(date);
+      expect(result).to.be.false;
+    });
   });
 });
 
@@ -32,10 +35,11 @@ const now = Date.now();
 const daysBeforeNow = (d: number) => subDays(Date.now(), d);
 
 describe("CreateEntryDtoValidator", () => {
+  const validator = CreateEntryDtoValidator(14);
   describe("too long ago", () => {
     describe("when given a multi-day entry", () => {
       describe("with dateEnd too long ago", () => {
-        const result = CreateEntryDtoValidator.validate({
+        const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(30)),
           dateEnd: dateToIsoString(daysBeforeNow(20)),
           reason: {
@@ -58,7 +62,7 @@ describe("CreateEntryDtoValidator", () => {
       });
 
       describe("with correct dateEnd", () => {
-        const result = CreateEntryDtoValidator.validate({
+        const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(30)),
           dateEnd: dateToIsoString(daysBeforeNow(10)),
           reason: {
@@ -83,7 +87,7 @@ describe("CreateEntryDtoValidator", () => {
 
     describe("when given a single-day entry", () => {
       describe("with date too long ago", () => {
-        const result = CreateEntryDtoValidator.validate({
+        const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(30)),
           reason: {
             category: EntryReasonCategory.ILLNESS,
@@ -104,7 +108,7 @@ describe("CreateEntryDtoValidator", () => {
       });
 
       describe("with correct date", () => {
-        const result = CreateEntryDtoValidator.validate({
+        const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(10)),
           reason: {
             category: EntryReasonCategory.ILLNESS,
@@ -128,7 +132,7 @@ describe("CreateEntryDtoValidator", () => {
   describe("when passing valid entries", () => {
     it("returns true", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
@@ -147,7 +151,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("when passing slots", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: {
             category: EntryReasonCategory.ILLNESS,
@@ -166,7 +170,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("returns true", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addDays(now, 2)),
           reason: {
@@ -187,7 +191,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("returns true", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addDays(now, 2)),
           reason: {
@@ -208,7 +212,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("returns true", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
@@ -229,7 +233,7 @@ describe("CreateEntryDtoValidator", () => {
   describe("when passing invalid entries returns false", () => {
     it("Slot invalid teacher id", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: {
             category: EntryReasonCategory.ILLNESS,
@@ -248,7 +252,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("Slot invalid hours", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: {
             category: EntryReasonCategory.ILLNESS,
@@ -267,7 +271,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("Dates not far enough apart", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           dateEnd: dateToIsoString(addHours(now, 12)),
           reason: {
@@ -287,7 +291,7 @@ describe("CreateEntryDtoValidator", () => {
 
     it("does not receive a reason", () => {
       expect(
-        CreateEntryDtoValidator.validate({
+        validator.validate({
           date: dateToIsoString(now),
           reason: undefined as any,
           slots: [

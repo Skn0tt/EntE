@@ -9,4 +9,7 @@ export class InstanceConfigDto {
   defaultLanguage: Languages;
   loginBanners: Record<Languages, string | null>;
   parentSignatureTimes: ParentSignatureTimesDto;
+  entryCreationDeadline: number;
 }
+
+export const DEFAULT_ENTRY_CREATION_DEADLINE = 14;

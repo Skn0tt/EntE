@@ -9,7 +9,8 @@ import {
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME,
   ParentSignatureTimesDto,
   isValidParentSignatureNotificationTime,
-  isValidParentSignatureExpiryTime
+  isValidParentSignatureExpiryTime,
+  DEFAULT_ENTRY_CREATION_DEADLINE
 } from "ente-types";
 import * as _ from "lodash";
 import { Maybe, Validation, Success, Fail } from "monet";
@@ -26,7 +27,8 @@ const INSTANCE_CONFIG_KEYS = {
   LOGIN_BANNER: (l: Languages) => "INSTANCE_CONFIG__LOGIN_BANNER_" + l,
   PARENT_SIGNATURE_EXPIRY_TIME: "INSTANCE_CONFIG__PARENT_SIGNATURE_EXPIRY_TIME",
   PARENT_SIGNATURE_NOTIFICATION_TIME:
-    "INSTANCE_CONFIG__PARENT_SIGNATURE_NOTIFICATION_TIME"
+    "INSTANCE_CONFIG__PARENT_SIGNATURE_NOTIFICATION_TIME",
+  ENTRY_CREATION_DEADLINE: "INSTANCE_CONFIG__ENTRY_CREATION_DEADLINE"
 };
 
 @Injectable()
@@ -49,6 +51,10 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME,
       "" + DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME
     );
+    await this.keyValueStoreRepo.setIfNotExists(
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE,
+      "" + DEFAULT_ENTRY_CREATION_DEADLINE
+    );
   }
 
   async getInstanceConfig(): Promise<InstanceConfigDto> {
@@ -56,7 +62,8 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE,
       ...languagesArr.map(INSTANCE_CONFIG_KEYS.LOGIN_BANNER),
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME,
-      INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME
+      INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME,
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE
     );
 
     const loginBanners = _.fromPairs(
@@ -77,9 +84,16 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME
     ].map(s => +s);
 
+    const entryCreationDeadline = values[
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE
+    ].map(s => +s);
+
     return {
       defaultLanguage,
       loginBanners,
+      entryCreationDeadline: entryCreationDeadline.orSome(
+        DEFAULT_ENTRY_CREATION_DEADLINE
+      ),
       parentSignatureTimes: {
         expiry: parentSignatureExpiry.orSome(
           DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME
@@ -116,6 +130,13 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE
     );
     return value.orSome(DEFAULT_DEFAULT_LANGUAGE);
+  }
+
+  async getEntryCreationDeadline(): Promise<number> {
+    const value = await this.keyValueStoreRepo.get<string>(
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE
+    );
+    return value.map(Number).orSome(DEFAULT_ENTRY_CREATION_DEADLINE);
   }
 
   async getParentSignatureTimes(): Promise<ParentSignatureTimesDto> {
@@ -207,6 +228,25 @@ export class InstanceConfigService implements OnModuleInit {
     await this.keyValueStoreRepo.set(
       INSTANCE_CONFIG_KEYS.DEFAULT_DEFAULT_LANGUAGE,
       lang
+    );
+    return Success<SetInstanceConfigValueFail, true>(true);
+  }
+
+  async setEntryCreationDeadline(
+    days: number,
+    user: RequestContextUser
+  ): Promise<Validation<SetInstanceConfigValueFail, true>> {
+    if (user.role !== Roles.ADMIN) {
+      return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
+    }
+
+    if (isNaN(days)) {
+      return Fail(SetInstanceConfigValueFail.IllegalValue);
+    }
+
+    await this.keyValueStoreRepo.set(
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE,
+      "" + days
     );
     return Success<SetInstanceConfigValueFail, true>(true);
   }

@@ -7,6 +7,8 @@ import { useFromToInput } from "../../helpers/use-from-to-input";
 import { NumberInput } from "../../elements/NumberInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { DateInput } from "../../elements/DateInput";
+import { connect, MapStateToPropsParam } from "react-redux";
+import { AppState, getEntryCreationDeadline } from "ente-ui/src/redux";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -26,14 +28,26 @@ interface FieldTripReasonInputOwnProps {
   isRange: boolean;
 }
 
-type FieldTripReasonInputPropsConnected = FieldTripReasonInputOwnProps;
+interface FieldTripInputStateProps {
+  createEntryDeadline: number;
+}
+const mapStateToProps: MapStateToPropsParam<
+  FieldTripInputStateProps,
+  FieldTripReasonInputOwnProps,
+  AppState
+> = state => ({
+  createEntryDeadline: getEntryCreationDeadline(state).some()
+});
+
+type FieldTripReasonInputPropsConnected = FieldTripReasonInputOwnProps &
+  FieldTripInputStateProps;
 
 const FieldTripReasonInput: React.FC<
   FieldTripReasonInputPropsConnected
 > = props => {
   const translation = useTranslation();
 
-  const { onChange, isRange } = props;
+  const { onChange, isRange, createEntryDeadline } = props;
 
   const { from, to, setFrom, setTo } = useFromToInput(1, 2, isRange);
   const [startDate, setStartDate] = React.useState<string>(
@@ -73,7 +87,9 @@ const FieldTripReasonInput: React.FC<
                 label={translation.from}
                 onChange={setStartDate}
                 minDate={
-                  isRange ? undefined : dateToIsoString(daysBeforeNow(14))
+                  isRange
+                    ? undefined
+                    : dateToIsoString(daysBeforeNow(createEntryDeadline))
                 }
                 value={startDate}
               />
@@ -116,4 +132,4 @@ const FieldTripReasonInput: React.FC<
   );
 };
 
-export default FieldTripReasonInput;
+export default connect(mapStateToProps)(FieldTripReasonInput);

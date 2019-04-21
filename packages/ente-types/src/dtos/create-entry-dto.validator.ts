@@ -1,18 +1,21 @@
 import { CreateEntryDto } from ".";
 import { makeDtoValidator } from "../validators/make-validator";
-import { isBefore, parseISO, isAfter } from "date-fns";
+import { isBefore, parseISO } from "date-fns";
 import { daysBeforeNow } from "../validators/entry";
 import { CreateSlotDtoValidator } from "./create-slot-dto.validator";
 import { EntryReasonDtoValidator } from "./entry-reason-dto.validator";
 import { isBetweenDates } from "../validators/is-between-dates";
 
-export const is14DaysOrLessAgo = (date: Date | number) => {
-  return !isBefore(date, daysBeforeNow(14.0));
+export const makeDeadlineValidator = (deadline: number) => (
+  date: Date | number
+) => {
+  return !isBefore(date, daysBeforeNow(deadline));
 };
 
-export const CreateEntryDtoValidator = makeDtoValidator(
-  CreateEntryDto,
-  (dto, errors) => {
+export const CreateEntryDtoValidator = (deadline: number) => {
+  const isBeforeDeadline = makeDeadlineValidator(deadline);
+
+  return makeDtoValidator(CreateEntryDto, (dto, errors) => {
     const slotsAreNotEmpty = dto.slots.length !== 0;
     if (!slotsAreNotEmpty) {
       errors.push("`slots` must not be empty");
@@ -27,11 +30,9 @@ export const CreateEntryDtoValidator = makeDtoValidator(
 
     const isRange = !!dto.dateEnd;
     if (isRange) {
-      const dateEndIs14DaysOrLessAgo = is14DaysOrLessAgo(
-        parseISO(dto.dateEnd!)
-      );
-      if (!dateEndIs14DaysOrLessAgo) {
-        errors.push("`dateEnd` must be at most 14 days ago");
+      const dateEndIsBeforeDeadline = isBeforeDeadline(parseISO(dto.dateEnd!));
+      if (!dateEndIsBeforeDeadline) {
+        errors.push("`dateEnd` must be before deadline");
       }
 
       const dateIsBeforeDateEnd = isBefore(
@@ -52,7 +53,7 @@ export const CreateEntryDtoValidator = makeDtoValidator(
     }
 
     if (!isRange) {
-      const dateIs14DaysOrLessAgo = is14DaysOrLessAgo(parseISO(dto.date));
+      const dateIs14DaysOrLessAgo = isBeforeDeadline(parseISO(dto.date));
       if (!dateIs14DaysOrLessAgo) {
         errors.push("`date` must be at most 14 days ago");
       }
@@ -68,5 +69,5 @@ export const CreateEntryDtoValidator = makeDtoValidator(
       true
     ).validateWithErrors(dto.reason);
     reasonValidation.forEachFail(fails => errors.push(...fails));
-  }
-);
+  });
+};

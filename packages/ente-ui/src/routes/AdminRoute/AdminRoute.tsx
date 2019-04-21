@@ -20,6 +20,7 @@ import DefaultLanguageUpdater from "./DefaultLanguageUpdater";
 import { Description } from "../../components/Description";
 import ParentSignatureExpiryTimeUpdater from "./ParentSignatureExpiryTimeUpdater";
 import ParentSignatureNotificationTimeUpdater from "./ParentSignatureNotificationTimeUpdater";
+import EntryCreationDaysUpdater from "./EntryCreationDaysUpdater";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -27,6 +28,9 @@ const useTranslation = makeTranslationHook({
     importUsers: "Import Users",
     defaultLanguage: "Default Language",
     defaultLanguageDescription: "New users have this language set",
+    entryCreationDeadline: "Entry creation deadline",
+    entryCreationDeadlineDescription:
+      "Duration after which an entry can not be created anymore (in days).",
     loginBanner: "Login-Banner",
     loginBannerDescription: "This text is shown on the login page.",
     parentSignature: {
@@ -38,7 +42,7 @@ const useTranslation = makeTranslationHook({
       notification: {
         title: "Signature notification delay",
         description:
-          "Duration after which parents receive a notification to sign an entry (in days). Set to '0' disable."
+          "Duration after which parents receive a notification to sign an entry (in days). Set to '0' to disable."
       }
     }
   },
@@ -48,13 +52,16 @@ const useTranslation = makeTranslationHook({
     defaultLanguage: "Standard-Sprache",
     defaultLanguageDescription:
       "Neue Nutzer haben diese Sprache voreingestellt",
+    entryCreationDeadline: "Eintrags-Erstellungs-Frist",
+    entryCreationDeadlineDescription:
+      "Frist, nach der ein Eintrag nicht mehr erstellt werden kann (in Tagen).",
     loginBanner: "Login-Banner",
     loginBannerDescription: "Dieser Text wird auf der Login-Seite angezeigt.",
     parentSignature: {
       expiry: {
         title: "Auslaufzeit Unterschrift",
         description:
-          "Zeitdauer, nach der ein Eintrag nicht mehr unterschrieben werden kann (in Tagen). Auf '0' setzen, um zu deaktivieren."
+          "Frist, nach der ein Eintrag nicht mehr unterschrieben werden kann (in Tagen). Auf '0' setzen, um zu deaktivieren."
       },
       notification: {
         title: "Erinnerungs-Email Verzögerung",
@@ -152,6 +159,19 @@ const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
             </Grid>
             <Grid item xs={11} md={5}>
               <DefaultLanguageUpdater />
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item>
+          <Grid container direction="row" justify="flex-start" spacing={16}>
+            <Grid item xs={12} md={5}>
+              <Description title={lang.entryCreationDeadline}>
+                {lang.entryCreationDeadlineDescription}
+              </Description>
+            </Grid>
+            <Grid item xs={11} md={5}>
+              <EntryCreationDaysUpdater />
             </Grid>
           </Grid>
         </Grid>

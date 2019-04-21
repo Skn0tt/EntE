@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Made entry creation deadline configurable ([#260](https://gitlab.com/Skn0tt/EntE/issues/260))
 - Fetching entries/slots/users removes potentially outdated data ([#265](https://gitlab.com/Skn0tt/EntE/issues/265))
 - Fixed bug in user creation form where old data triggered validation ([#274](https://gitlab.com/Skn0tt/EntE/issues/274))
 - Added script for consistently anonymising SQL dumps ([#273](https://gitlab.com/Skn0tt/EntE/issues/273))
