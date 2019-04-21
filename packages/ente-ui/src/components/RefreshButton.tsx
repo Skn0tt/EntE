@@ -59,33 +59,44 @@ type RefreshButtonProps = RefreshButtonStateProps &
   RefreshButtonDispatchProps &
   RouteComponentProps<{}>;
 
-const RefreshButton: React.SFC<RefreshButtonProps> = props =>
-  props.loading ? (
-    <CircularProgress style={{ color: "white" }} />
-  ) : shouldRender(props.location.pathname) ? (
-    <IconButton
-      onClick={() => {
-        const { location } = props;
-        switch (location.pathname) {
-          case "/entries":
-            props.getEntries();
-            break;
-          case "/users":
-            props.getUsers();
-            break;
-          case "/slots":
-            props.getSlots();
-            break;
-          default:
-            break;
-        }
-      }}
-      style={{ color: "white" }}
-    >
-      <RefreshIcon />
-    </IconButton>
-  ) : null;
+const RefreshButton: React.SFC<RefreshButtonProps> = props => {
+  const { loading, location } = props;
+
+  if (loading) {
+    return <CircularProgress style={{ color: "white" }} />;
+  }
+
+  if (shouldRender(location.pathname)) {
+    return (
+      <IconButton
+        onClick={() => {
+          switch (location.pathname) {
+            case "/entries":
+              props.getEntries();
+              break;
+            case "/users":
+              props.getUsers();
+              break;
+            case "/slots":
+              props.getSlots();
+              break;
+            default:
+              break;
+          }
+        }}
+        style={{ color: "white" }}
+      >
+        <RefreshIcon />
+      </IconButton>
+    );
+  }
+
+  return null;
+};
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RefreshButton)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RefreshButton)
 );

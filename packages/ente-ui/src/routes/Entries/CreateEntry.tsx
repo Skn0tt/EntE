@@ -12,10 +12,7 @@ import {
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
-
 import { Action } from "redux";
-
-import { withRouter, RouteComponentProps } from "react-router";
 import { Dialog, Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -121,7 +118,6 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 type CreateEntryProps = CreateEntryOwnProps &
   CreateEntryDispatchProps &
   CreateEntryStateProps &
-  RouteComponentProps<{}> &
   InjectedProps;
 
 const CreateEntry: React.SFC<CreateEntryProps> = props => {
@@ -379,4 +375,4 @@ export default connect<
 >(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(withMobileDialog<CreateEntryProps>()(CreateEntry)));
+)(withMobileDialog<CreateEntryProps>()(CreateEntry));
