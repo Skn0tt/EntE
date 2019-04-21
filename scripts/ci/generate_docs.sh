@@ -29,3 +29,8 @@ mkdocs build
 ###
 
 cd $cwd
+
+mkdir docs_dist docs_dist/de docs_dist/en
+cp -R docs/de/site/* docs_dist/
+cp -R docs/en/site/* docs_dist/en/
+cp -R docs/de/site/* docs_dist/de/

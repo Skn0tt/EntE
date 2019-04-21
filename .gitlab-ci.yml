@@ -136,8 +136,7 @@ generate:docs:
   script: "./scripts/ci/generate_docs.sh"
   artifacts:
     paths:
-      - docs/en/site/
-      - docs/de/site/
+      - docs_dist/
 
 generate:allure:
   image: skn0tt/allure
@@ -207,11 +206,7 @@ deploy:docs:
   dependencies:
     - generate:docs
   script:
-    - mkdir public public/docs public/docs/en public/docs/de
-    - cp -R docs/en/site/* public/docs/
-    - cp -R docs/en/site/* public/docs/en/
-    - cp -R docs/de/site/* public/docs/de/
-    - NOW_DEPLOYMENT=$(${NOW} --name docs public/docs)
+    - NOW_DEPLOYMENT=$(${NOW} --name docs docs_dist)
     - sleep 10
     - $NOW alias $NOW_DEPLOYMENT docs.ente.app
 
