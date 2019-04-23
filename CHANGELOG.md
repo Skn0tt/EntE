@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.21.0] - 2019-04-23
+
 - Fixed deeply flawed adulthood detection ([#276](https://gitlab.com/Skn0tt/EntE/issues/276))
 - Add new column "educational" to weekly summary
 - Fix some typos ([#189](https://gitlab.com/Skn0tt/EntE/issues/189))
