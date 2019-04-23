@@ -40,7 +40,7 @@ function create_database () {
 
 function import_dump () {
   input_file=$1;
-  printf "Importing dump from stdin ... "
+  printf "Importing dump from $1 ... "
   $mysql_bin -u $mysql_username -p$mysql_password $tmp_db_name < $input_file
   printf "Done\n"
 }
