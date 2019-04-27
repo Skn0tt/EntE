@@ -7,10 +7,22 @@ import {
   IsOptional,
   IsISO8601
 } from "class-validator";
-import { UserDto } from "./user.dto";
+import { UserDto, BlackedUserDto } from "./user.dto";
 import { Type } from "class-transformer";
 
-export class SlotDto {
+export interface BlackedSlotDto {
+  id: string;
+  teacher: BlackedUserDto | null;
+  student: BlackedUserDto;
+  date: string;
+  from: number;
+  to: number;
+  signed: boolean;
+  isEducational: boolean;
+  forSchool: boolean; // remove in future version
+}
+
+export class SlotDto implements BlackedSlotDto {
   @IsUUID("4") id: string;
 
   @IsOptional()
@@ -31,4 +43,6 @@ export class SlotDto {
   @IsBoolean() signed: boolean;
 
   @IsBoolean() forSchool: boolean;
+
+  @IsBoolean() isEducational: boolean;
 }

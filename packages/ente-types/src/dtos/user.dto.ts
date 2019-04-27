@@ -15,11 +15,28 @@ import {
   isValidEmail
 } from "../validators";
 import { Type } from "class-transformer";
-import { isBefore, parseISO, subYears, addYears, isAfter } from "date-fns";
+import { parseISO, addYears, isAfter } from "date-fns";
 import { roleHasBirthday } from "../roles";
 import { languagesArr, Languages } from "../languages";
 
-export class UserDto {
+export interface BaseUserDto {
+  id: string;
+  username: string;
+  displayname: string;
+  role: Roles;
+}
+
+export interface SensitiveUserDto extends BaseUserDto {
+  email: string;
+  language: Languages;
+  children: BlackedUserDto[];
+  graduationYear?: number;
+  birthday?: string;
+}
+
+export type BlackedUserDto = BaseUserDto & Partial<SensitiveUserDto>;
+
+export class UserDto implements BlackedUserDto {
   @IsUUID() id: string;
 
   @CustomStringValidator(isValidUsername) username: string;
