@@ -1,11 +1,13 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { Validation, Success, Fail } from "monet";
 import { RedisService } from "../infrastructure/redis.service";
 import { SignerService } from "../infrastructure/signer.service";
 
-enum ConnectionUnhealthy {
-  Redis = "CONNECTION_UNHEALTHY_REDIS",
-  Signer = "CONNECTION_UNHEALTHY_SIGNER"
+export interface HealthReport {
+  isHealthy: boolean;
+  dependencies: {
+    redis: boolean;
+    signer: boolean;
+  };
 }
 
 @Injectable()
@@ -15,17 +17,21 @@ export class StatusService {
     @Inject(SignerService) private readonly signerService: SignerService
   ) {}
 
-  async getStatus(): Promise<Validation<ConnectionUnhealthy[], boolean>> {
-    const errors: ConnectionUnhealthy[] = [];
+  async getStatus(): Promise<HealthReport> {
+    // TODO: DB check
 
-    if (!await this.redisService.isHealthy()) {
-      errors.push(ConnectionUnhealthy.Redis);
-    }
+    const redisIsHealthy = await this.redisService.isHealthy();
+    const signerIsHealthy = await this.signerService.isHealthy();
 
-    if (!await this.signerService.isHealthy()) {
-      errors.push(ConnectionUnhealthy.Redis);
-    }
+    const enteIsHealthy = redisIsHealthy && signerIsHealthy;
+    const healthReport: HealthReport = {
+      isHealthy: enteIsHealthy,
+      dependencies: {
+        signer: signerIsHealthy,
+        redis: redisIsHealthy
+      }
+    };
 
-    return errors.length === 0 ? Success(true) : Fail(errors);
+    return healthReport;
   }
 }

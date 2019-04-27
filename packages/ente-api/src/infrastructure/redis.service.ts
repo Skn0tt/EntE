@@ -83,10 +83,24 @@ export class RedisService {
       });
     });
 
-  async isHealthy(): Promise<boolean> {
-    return true;
-    throw new Error("Not Implemented");
-  }
+  isHealthy = () =>
+    new Promise<boolean>(resolve => {
+      let finished = false;
+
+      setTimeout(() => {
+        if (!finished) {
+          finished = true;
+          resolve(false);
+        }
+      }, 1000);
+
+      this.client.ping(() => {
+        if (!finished) {
+          finished = true;
+          resolve(true);
+        }
+      });
+    });
 
   private prefixedKey = (key: string) => this.prefix + key;
 }

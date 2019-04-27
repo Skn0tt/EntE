@@ -45,7 +45,7 @@ export class SignerService {
   }
 
   async isHealthy(): Promise<boolean> {
-    return true;
-    throw new Error("Not Implemented");
+    const res = await this.client.get("/status");
+    return res.status === 200;
   }
 }
