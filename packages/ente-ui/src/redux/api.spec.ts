@@ -48,6 +48,7 @@ const slot: SlotDto = {
   teacher: benni,
   student: simon,
   forSchool: true,
+  isEducational: true,
   to: 1
 };
 

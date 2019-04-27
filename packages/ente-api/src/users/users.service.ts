@@ -13,14 +13,13 @@ import {
   roleIsTeaching,
   PatchUserDtoValidator,
   CreateUserDtoValidator,
-  BlackedUserDto,
-  BaseUserDto
+  BaseUserDto,
+  BlackedUserDto
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
@@ -94,11 +93,10 @@ export class UsersService implements OnModuleInit {
     }
   }
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<Validation<FindAllUsersFailure, BlackedUserDto[]>> {
-    // TODO:
+  ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.userRepo.findAll(paginationInfo));
@@ -134,11 +132,20 @@ export class UsersService implements OnModuleInit {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(users =>
+      users.map(u => UsersService.blackenDto(u, requestingUser.role))
+    );
+  }
+
+  private async _findOne(
     id: string,
     _requestingUser: RequestContextUser
-  ): Promise<Validation<FindOneUserFailure, BlackedUserDto>> {
-    // TODO:
+  ): Promise<Validation<FindOneUserFailure, UserDto>> {
     switch (_requestingUser.role) {
       case Roles.TEACHER:
         return Fail(FindOneUserFailure.ForbiddenForUser);
@@ -153,9 +160,7 @@ export class UsersService implements OnModuleInit {
     }
 
     const user = await this.userRepo.findById(id);
-    return await user.cata<
-      Promise<Validation<FindOneUserFailure, BlackedUserDto>>
-    >(
+    return await user.cata<Promise<Validation<FindOneUserFailure, UserDto>>>(
       async () => Fail(FindOneUserFailure.UserNotFound),
       async u => {
         const requestingOneSelf = id === _requestingUser.id;
@@ -196,6 +201,11 @@ export class UsersService implements OnModuleInit {
         throw new Error("Not reachable");
       }
     );
+  }
+
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(r => UsersService.blackenDto(r, requestingUser.role));
   }
 
   private async _createUsers(...users: CreateUserDto[]) {
@@ -383,7 +393,7 @@ export class UsersService implements OnModuleInit {
       return Fail(DeleteUserFailure.ForbiddenForRole);
     }
 
-    const userV = await this.findOne(id, requestingUser);
+    const userV = await this._findOne(id, requestingUser);
     if (userV.isFail()) {
       switch (userV.fail()) {
         case FindOneUserFailure.ForbiddenForUser:

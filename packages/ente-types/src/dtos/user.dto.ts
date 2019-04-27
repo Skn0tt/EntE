@@ -65,7 +65,7 @@ export class UserDto implements BlackedUserDto {
 
 const ADULTHOOD_AGE = 18;
 
-export const userIsAdult = (u: UserDto, now = Date.now()) => {
+export const userIsAdult = (u: BlackedUserDto, now = Date.now()) => {
   if (!roleHasBirthday(u.role)) {
     return false;
   }

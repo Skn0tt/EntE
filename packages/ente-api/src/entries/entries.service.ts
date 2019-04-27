@@ -6,7 +6,6 @@ import {
   EntryDto,
   CreateEntryDto,
   PatchEntryDto,
-  UserDto,
   userIsAdult,
   TEACHING_ROLES,
   entryReasonCategoryHasTeacherId,
@@ -14,20 +13,20 @@ import {
   isParentSignatureNotificationEnabled,
   canEntryStillBeSigned,
   CreateEntryDtoValidator,
-  BlackedEntryDto
+  BlackedEntryDto,
+  UserDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
-import { validate } from "class-validator";
 import * as _ from "lodash";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
 import { EntryNotificationQueue } from "./entry-notification.queue";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { SlotsService } from "slots/slots.service";
-import { UsersService } from "users/users.service";
+import { SlotsService } from "../slots/slots.service";
+import { UsersService } from "../users/users.service";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -86,11 +85,10 @@ export class EntriesService {
     private readonly logger: WinstonLoggerService
   ) {}
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<Validation<FindAllEntriesFailure, BlackedEntryDto[]>> {
-    // TODO:
+  ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.entryRepo.findAll(paginationInfo));
@@ -122,11 +120,20 @@ export class EntriesService {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(entries =>
+      entries.map(e => EntriesService.blackenDto(e, requestingUser.role))
+    );
+  }
+
+  private async _findOne(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<FindEntryFailure, BlackedEntryDto>> {
-    // TODO:
+  ): Promise<Validation<FindEntryFailure, EntryDto>> {
     const entry = await this.entryRepo.findById(id);
 
     const user =
@@ -168,17 +175,21 @@ export class EntriesService {
     );
   }
 
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+  }
+
   private async getCreateEntryDtoValidator() {
     const deadline = await this.instanceConfigService.getEntryCreationDeadline();
 
     return CreateEntryDtoValidator(deadline);
   }
 
-  async create(
+  private async _create(
     entry: CreateEntryDto,
     requestingUser: RequestContextUser
-  ): Promise<Validation<CreateEntryFailure, BlackedEntryDto>> {
-    // TODO:
+  ): Promise<Validation<CreateEntryFailure, EntryDto>> {
     const validator = await this.getCreateEntryDtoValidator();
     const isValidDto = validator.validate(entry);
     if (!isValidDto) {
@@ -270,12 +281,19 @@ export class EntriesService {
     return Success(result);
   }
 
-  async patch(
+  public async create(
+    entry: CreateEntryDto,
+    requestingUser: RequestContextUser
+  ) {
+    const r = await this._create(entry, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+  }
+
+  private async _patch(
     id: string,
     patch: PatchEntryDto,
     _requestingUser: RequestContextUser
-  ): Promise<Validation<PatchEntryFailure, BlackedEntryDto>> {
-    // TODO:
+  ): Promise<Validation<PatchEntryFailure, EntryDto>> {
     const roleIsAllowed = [Roles.MANAGER, Roles.PARENT].includes(
       _requestingUser.role
     );
@@ -353,11 +371,19 @@ export class EntriesService {
     return Success(entry.some());
   }
 
-  async delete(
+  public async patch(
+    id: string,
+    patch: PatchEntryDto,
+    requestingUser: RequestContextUser
+  ) {
+    const r = await this._patch(id, patch, requestingUser);
+    return r.map(r => EntriesService.blackenDto(r, requestingUser.role));
+  }
+
+  private async _delete(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<DeleteEntryFailure, BlackedEntryDto>> {
-    // TODO:
+  ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
     if (
       [Roles.PARENT, Roles.STUDENT, Roles.TEACHER, Roles.ADMIN].includes(
         requestingUser.role
@@ -366,7 +392,7 @@ export class EntriesService {
       return Fail(DeleteEntryFailure.ForbiddenForRole);
     }
 
-    const entryV = await this.findOne(id, requestingUser);
+    const entryV = await this._findOne(id, requestingUser);
     if (entryV.isFail()) {
       switch (entryV.fail()) {
         case FindEntryFailure.EntryNotFound:
@@ -393,6 +419,11 @@ export class EntriesService {
     });
 
     return Success(entryV.success());
+  }
+
+  public async delete(id: string, requestingUser: RequestContextUser) {
+    const r = await this._delete(id, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
   }
 
   async sendNotification(entryId: string) {

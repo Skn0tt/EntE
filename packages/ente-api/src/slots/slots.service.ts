@@ -4,17 +4,17 @@ import { SlotRepo } from "../db/slot.repo";
 import {
   Roles,
   SlotDto,
-  UserDto,
   daysBeforeNow,
   TEACHING_ROLES,
-  BlackedSlotDto
+  BlackedSlotDto,
+  UserDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
-import { UsersService } from "users/users.service";
+import { UsersService } from "../users/users.service";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -30,11 +30,10 @@ export class SlotsService {
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<BlackedSlotDto[]> {
-    // TODO:
+  ): Promise<SlotDto[]> {
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return await this.slotRepo.findAll(paginationInfo);
@@ -66,11 +65,18 @@ export class SlotsService {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(s => SlotsService.blackenDto(s, requestingUser.role));
+  }
+
+  private async _findOne(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<FindOneSlotFailure, BlackedSlotDto>> {
-    // TODO:
+  ): Promise<Validation<FindOneSlotFailure, SlotDto>> {
     const slot = await this.slotRepo.findById(id);
 
     const user =
@@ -117,6 +123,11 @@ export class SlotsService {
         return Success(s);
       }
     );
+  }
+
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(r => SlotsService.blackenDto(r, requestingUser.role));
   }
 
   async dispatchWeeklySummary() {
