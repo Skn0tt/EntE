@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Implement more advanced healthcheck that actually checks dependencies ([#280](https://gitlab.com/Skn0tt/EntE/issues/280))
 - Updated mui-datatables to v2.0.0, this fixes issues with dark mode theming ([#264](https://gitlab.com/Skn0tt/EntE/issues/264))
 
 ## [v0.21.0] - 2019-04-23
