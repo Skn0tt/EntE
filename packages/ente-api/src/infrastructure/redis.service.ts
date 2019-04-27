@@ -94,10 +94,11 @@ export class RedisService {
         }
       }, 1000);
 
-      this.client.ping(() => {
+      this.client.ping(err => {
         if (!finished) {
+          const isHealthy = !err;
           finished = true;
-          resolve(true);
+          resolve(isHealthy);
         }
       });
     });
