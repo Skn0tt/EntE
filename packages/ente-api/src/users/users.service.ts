@@ -13,7 +13,8 @@ import {
   roleIsTeaching,
   PatchUserDtoValidator,
   CreateUserDtoValidator,
-  BlackedUserDto
+  BlackedUserDto,
+  BaseUserDto
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -401,5 +402,30 @@ export class UsersService implements OnModuleInit {
     );
 
     return Success(userV.success());
+  }
+
+  static blackenDto(user: UserDto, role: Roles): BlackedUserDto {
+    const fullUser = user;
+    const baseUser: BaseUserDto = {
+      displayname: user.displayname,
+      id: user.id,
+      role: user.role,
+      username: user.username
+    };
+
+    switch (role) {
+      case Roles.ADMIN:
+        return fullUser;
+
+      case Roles.MANAGER:
+        return {
+          ...baseUser,
+          graduationYear: user.graduationYear,
+          email: user.email
+        };
+
+      default:
+        return baseUser;
+    }
   }
 }

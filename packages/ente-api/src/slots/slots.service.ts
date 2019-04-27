@@ -14,6 +14,7 @@ import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
+import { UsersService } from "users/users.service";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -131,5 +132,14 @@ export class SlotsService {
       })
     );
     this.logger.log("Weekly summary successfully dispatched.");
+  }
+
+  static blackenDto(slot: SlotDto, role: Roles): BlackedSlotDto {
+    const { teacher, student } = slot;
+    return {
+      ...slot,
+      student: UsersService.blackenDto(student, role),
+      teacher: !!teacher ? UsersService.blackenDto(teacher, role) : null
+    };
   }
 }

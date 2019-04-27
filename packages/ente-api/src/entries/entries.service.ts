@@ -26,6 +26,8 @@ import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
 import { EntryNotificationQueue } from "./entry-notification.queue";
 import { WinstonLoggerService } from "../winston-logger.service";
+import { SlotsService } from "slots/slots.service";
+import { UsersService } from "users/users.service";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -425,5 +427,15 @@ export class EntriesService {
   getSigningLinkForEntry(entry: EntryDto) {
     const baseUrl = Config.getBaseUrl();
     return `${baseUrl}/entries/${entry.id}`;
+  }
+
+  static blackenDto(entry: EntryDto, role: Roles): BlackedEntryDto {
+    const { student, slots } = entry;
+
+    return {
+      ...entry,
+      student: UsersService.blackenDto(student, role),
+      slots: slots.map(s => SlotsService.blackenDto(s, role))
+    };
   }
 }

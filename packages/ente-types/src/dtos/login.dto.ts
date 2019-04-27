@@ -1,9 +1,9 @@
-import { BlackedUserDto } from "./user.dto";
+import { BlackedUserDto, UserDto } from "./user.dto";
 import { BlackedEntryDto } from "./entry.dto";
 
 export class LoginDto {
   token: string;
-  oneSelf: BlackedUserDto;
+  oneSelf: UserDto;
   onesEntries: BlackedEntryDto[];
   neededUsers: BlackedUserDto[];
 }

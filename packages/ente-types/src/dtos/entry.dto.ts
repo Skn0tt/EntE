@@ -5,7 +5,7 @@ import {
   ValidateNested,
   IsISO8601
 } from "class-validator";
-import { SlotDto } from "./slot.dto";
+import { SlotDto, BlackedSlotDto } from "./slot.dto";
 import { UserDto, BlackedUserDto } from "./user.dto";
 import { Type } from "class-transformer";
 import { EntryReasonDto } from "./entry-reason.dto";
@@ -17,7 +17,7 @@ export interface BlackedEntryDto {
   reason: EntryReasonDto;
   signedManager: boolean;
   signedParent: boolean;
-  slots: SlotDto[];
+  slots: BlackedSlotDto[];
   student: BlackedUserDto;
   createdAt: string;
   updatedAt: string;
