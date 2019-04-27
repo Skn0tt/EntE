@@ -6,14 +6,14 @@ import { CreateSlotDtoValidator } from "./create-slot-dto.validator";
 import { EntryReasonDtoValidator } from "./entry-reason-dto.validator";
 import { isBetweenDates } from "../validators/is-between-dates";
 
-export const makeDeadlineValidator = (deadline: number) => (
+export const makeDeadlineValidator = (deadlineInDays: number) => (
   date: Date | number
 ) => {
-  return !isBefore(date, daysBeforeNow(deadline));
+  return !isBefore(date, daysBeforeNow(deadlineInDays));
 };
 
-export const CreateEntryDtoValidator = (deadline: number) => {
-  const isBeforeDeadline = makeDeadlineValidator(deadline);
+export const CreateEntryDtoValidator = (deadlineInDays: number) => {
+  const isBeforeDeadline = makeDeadlineValidator(deadlineInDays);
 
   return makeDtoValidator(CreateEntryDto, (dto, errors) => {
     const slotsAreNotEmpty = dto.slots.length !== 0;
