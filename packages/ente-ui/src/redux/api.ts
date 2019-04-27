@@ -27,11 +27,15 @@ import {
   PatchEntryDto,
   Languages,
   InstanceConfigDto,
-  LoginDto
+  LoginDto,
+  BlackedUserDto,
+  BlackedEntryDto,
+  BlackedSlotDto
 } from "ente-types";
 import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
 import { getConfig } from "./config";
+import { Map } from "immutable";
 
 const getBaseUrl = () => getConfig().baseUrl;
 
@@ -52,28 +56,26 @@ const get = async <T>(url: string, token: string) => {
 };
 
 export const mergeAPIResponses = (...values: APIResponse[]): APIResponse => {
-  const entries = _.concat([], ...values.map(v => v.entries));
-  const users = _.concat([], ...values.map(v => v.users));
-  const slots = _.concat([], ...values.map(v => v.slots));
-
-  return {
-    entries: _.uniqBy(entries, e => e.get("id")),
-    slots: _.uniqBy(slots, e => e.get("id")),
-    users: _.uniqBy(users, e => e.get("id"))
-  };
+  return values.reduce((previousResponse, value) => {
+    return {
+      entries: previousResponse.entries.mergeDeep(value.entries),
+      slots: previousResponse.slots.mergeDeep(value.slots),
+      users: previousResponse.users.mergeDeep(value.users)
+    };
+  }, emptyAPIResponse());
 };
 
 const emptyAPIResponse = (): APIResponse => ({
-  entries: [],
-  slots: [],
-  users: []
+  entries: Map(),
+  slots: Map(),
+  users: Map()
 });
 
-export const normalizeUsers = (...users: UserDto[]): APIResponse => {
+export const normalizeUsers = (...users: BlackedUserDto[]): APIResponse => {
   let result = emptyAPIResponse();
 
   users.forEach(user => {
-    const { children } = user;
+    const { children = [] } = user;
     const childrenIds = children.map(c => c.id);
 
     const normalised = new UserN({
@@ -81,7 +83,7 @@ export const normalizeUsers = (...users: UserDto[]): APIResponse => {
       ...user,
       children: []
     });
-    result.users.push(normalised);
+    result.users = result.users.mergeIn([normalised.get("id")], normalised);
 
     const childrenResponse = normalizeUsers(...children);
     result = mergeAPIResponses(result, childrenResponse);
@@ -90,7 +92,9 @@ export const normalizeUsers = (...users: UserDto[]): APIResponse => {
   return result;
 };
 
-export const normalizeEntries = (...entries: EntryDto[]): APIResponse => {
+export const normalizeEntries = (
+  ...entries: BlackedEntryDto[]
+): APIResponse => {
   let result = emptyAPIResponse();
 
   entries.forEach(entry => {
@@ -103,7 +107,7 @@ export const normalizeEntries = (...entries: EntryDto[]): APIResponse => {
       slotIds: slots.map(s => s.id)
     });
 
-    result.entries.push(normalised);
+    result.entries = result.entries.mergeIn([normalised.get("id")], normalised);
 
     const slotResponse = normalizeSlots(...slots);
     const studentResponse = normalizeUsers(student);
@@ -114,7 +118,7 @@ export const normalizeEntries = (...entries: EntryDto[]): APIResponse => {
   return result;
 };
 
-export const normalizeSlots = (...slots: SlotDto[]): APIResponse => {
+export const normalizeSlots = (...slots: BlackedSlotDto[]): APIResponse => {
   let result = emptyAPIResponse();
 
   slots.forEach(slot => {
@@ -127,7 +131,7 @@ export const normalizeSlots = (...slots: SlotDto[]): APIResponse => {
       teacherId: !!teacher ? teacher.id : null
     });
 
-    result.slots.push(normalised);
+    result.slots = result.slots.mergeIn([normalised.get("id")], normalised);
 
     const userResponse =
       teacher === null

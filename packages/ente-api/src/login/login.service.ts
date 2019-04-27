@@ -1,10 +1,12 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
-import { LoginDto, UserDto, Roles, EntryDto, TEACHING_ROLES } from "ente-types";
+import { LoginDto, Roles, EntryDto, TEACHING_ROLES, UserDto } from "ente-types";
 import { TokenService } from "../token/token.service";
 import { EntryRepo } from "../db/entry.repo";
 import { UserRepo } from "../db/user.repo";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
+import { EntriesService } from "../entries/entries.service";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class LoginService {
@@ -25,8 +27,12 @@ export class LoginService {
     return {
       token,
       oneSelf,
-      onesEntries: await this.getOnesEntries(oneSelf),
-      neededUsers: await this.getNeededUsers(oneSelf)
+      onesEntries: (await this.getOnesEntries(oneSelf)).map(e =>
+        EntriesService.blackenDto(e, user.role)
+      ),
+      neededUsers: (await this.getNeededUsers(oneSelf)).map(e =>
+        UsersService.blackenDto(e, user.role)
+      )
     };
   }
 

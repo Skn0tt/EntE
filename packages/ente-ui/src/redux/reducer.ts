@@ -109,33 +109,9 @@ import { getOwnUserId } from "./selectors";
 
 const addResponse = (state: AppState, apiResponse: APIResponse) =>
   state
-    .update("usersMap", users =>
-      users.merge(
-        Map<string, UserN>(
-          apiResponse.users.map(
-            user => [user.get("id"), user] as [string, UserN]
-          )
-        )
-      )
-    )
-    .update("slotsMap", slots =>
-      slots.merge(
-        Map<string, SlotN>(
-          apiResponse.slots.map(
-            slot => [slot.get("id"), slot] as [string, SlotN]
-          )
-        )
-      )
-    )
-    .update("entriesMap", entries =>
-      entries.merge(
-        Map<string, EntryN>(
-          apiResponse.entries.map(
-            entry => [entry.get("id"), entry] as [string, EntryN]
-          )
-        )
-      )
-    );
+    .mergeIn(["usersMap"], apiResponse.users)
+    .mergeIn(["entriesMap"], apiResponse.entries)
+    .mergeIn(["slotsMap"], apiResponse.slots);
 
 const addResponseUpdater = (
   state: AppState,
@@ -289,16 +265,10 @@ const reducer = handleActions<AppState | undefined, any>(
           return state;
         }
 
-        const usersById = _.keyBy(newState.users, (u: UserN) => u.get("id"));
-        const slotsById = _.keyBy(newState.slots, (s: SlotN) => s.get("id"));
-        const entriesById = _.keyBy(newState.entries, (e: EntryN) =>
-          e.get("id")
-        );
-
         return state
-          .set("entriesMap", Map(entriesById))
-          .set("usersMap", Map(usersById))
-          .set("slotsMap", Map(slotsById));
+          .set("entriesMap", newState.entries)
+          .set("usersMap", newState.users)
+          .set("slotsMap", newState.slots);
       }
     ),
 

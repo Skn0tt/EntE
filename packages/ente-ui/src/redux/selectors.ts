@@ -170,7 +170,7 @@ export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
   Maybe.fromNull(state.get("instanceConfig"));
 
 export const getOneSelvesLanguage: Selector<Maybe<Languages>> = state =>
-  getOneSelf(state).map(u => u.get("language"));
+  getOneSelf(state).flatMap(u => Maybe.fromUndefined(u.get("language")));
 
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
   const instanceConfig = getInstanceConfig(state);
