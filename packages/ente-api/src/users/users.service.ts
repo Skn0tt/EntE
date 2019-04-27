@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  OnModuleInit,
-  LoggerService
-} from "@nestjs/common";
+import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
 import { Validation, Success, Fail } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
@@ -17,7 +12,8 @@ import {
   TEACHING_ROLES,
   roleIsTeaching,
   PatchUserDtoValidator,
-  CreateUserDtoValidator
+  CreateUserDtoValidator,
+  BlackedUserDto
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
@@ -100,7 +96,8 @@ export class UsersService implements OnModuleInit {
   async findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
+  ): Promise<Validation<FindAllUsersFailure, BlackedUserDto[]>> {
+    // TODO:
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.userRepo.findAll(paginationInfo));
@@ -139,7 +136,8 @@ export class UsersService implements OnModuleInit {
   async findOne(
     id: string,
     _requestingUser: RequestContextUser
-  ): Promise<Validation<FindOneUserFailure, UserDto>> {
+  ): Promise<Validation<FindOneUserFailure, BlackedUserDto>> {
+    // TODO:
     switch (_requestingUser.role) {
       case Roles.TEACHER:
         return Fail(FindOneUserFailure.ForbiddenForUser);
@@ -154,7 +152,9 @@ export class UsersService implements OnModuleInit {
     }
 
     const user = await this.userRepo.findById(id);
-    return await user.cata<Promise<Validation<FindOneUserFailure, UserDto>>>(
+    return await user.cata<
+      Promise<Validation<FindOneUserFailure, BlackedUserDto>>
+    >(
       async () => Fail(FindOneUserFailure.UserNotFound),
       async u => {
         const requestingOneSelf = id === _requestingUser.id;

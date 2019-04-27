@@ -13,7 +13,8 @@ import {
   ExamenPayload,
   isParentSignatureNotificationEnabled,
   canEntryStillBeSigned,
-  CreateEntryDtoValidator
+  CreateEntryDtoValidator,
+  BlackedEntryDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -86,7 +87,8 @@ export class EntriesService {
   async findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
+  ): Promise<Validation<FindAllEntriesFailure, BlackedEntryDto[]>> {
+    // TODO:
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return Success(await this.entryRepo.findAll(paginationInfo));
@@ -121,7 +123,8 @@ export class EntriesService {
   async findOne(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<FindEntryFailure, EntryDto>> {
+  ): Promise<Validation<FindEntryFailure, BlackedEntryDto>> {
+    // TODO:
     const entry = await this.entryRepo.findById(id);
 
     const user =
@@ -172,7 +175,8 @@ export class EntriesService {
   async create(
     entry: CreateEntryDto,
     requestingUser: RequestContextUser
-  ): Promise<Validation<CreateEntryFailure, EntryDto>> {
+  ): Promise<Validation<CreateEntryFailure, BlackedEntryDto>> {
+    // TODO:
     const validator = await this.getCreateEntryDtoValidator();
     const isValidDto = validator.validate(entry);
     if (!isValidDto) {
@@ -268,7 +272,8 @@ export class EntriesService {
     id: string,
     patch: PatchEntryDto,
     _requestingUser: RequestContextUser
-  ): Promise<Validation<PatchEntryFailure, EntryDto>> {
+  ): Promise<Validation<PatchEntryFailure, BlackedEntryDto>> {
+    // TODO:
     const roleIsAllowed = [Roles.MANAGER, Roles.PARENT].includes(
       _requestingUser.role
     );
@@ -349,7 +354,8 @@ export class EntriesService {
   async delete(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
+  ): Promise<Validation<DeleteEntryFailure, BlackedEntryDto>> {
+    // TODO:
     if (
       [Roles.PARENT, Roles.STUDENT, Roles.TEACHER, Roles.ADMIN].includes(
         requestingUser.role

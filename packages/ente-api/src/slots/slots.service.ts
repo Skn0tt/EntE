@@ -6,7 +6,8 @@ import {
   SlotDto,
   UserDto,
   daysBeforeNow,
-  TEACHING_ROLES
+  TEACHING_ROLES,
+  BlackedSlotDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -31,7 +32,8 @@ export class SlotsService {
   async findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
-  ): Promise<SlotDto[]> {
+  ): Promise<BlackedSlotDto[]> {
+    // TODO:
     switch (requestingUser.role) {
       case Roles.ADMIN:
         return await this.slotRepo.findAll(paginationInfo);
@@ -66,7 +68,8 @@ export class SlotsService {
   async findOne(
     id: string,
     requestingUser: RequestContextUser
-  ): Promise<Validation<FindOneSlotFailure, SlotDto>> {
+  ): Promise<Validation<FindOneSlotFailure, BlackedSlotDto>> {
+    // TODO:
     const slot = await this.slotRepo.findById(id);
 
     const user =

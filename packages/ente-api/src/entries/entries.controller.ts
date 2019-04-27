@@ -22,7 +22,12 @@ import {
   PatchEntryFailure
 } from "./entries.service";
 import { AuthGuard } from "@nestjs/passport";
-import { CreateEntryDto, EntryDto, PatchEntryDto } from "ente-types";
+import {
+  CreateEntryDto,
+  EntryDto,
+  PatchEntryDto,
+  BlackedEntryDto
+} from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
   PaginationInfo,
@@ -40,7 +45,7 @@ export class EntriesController {
   async findAll(
     @Ctx() ctx: RequestContext,
     @PaginationInfo() pInfo: PaginationInformation
-  ): Promise<EntryDto[]> {
+  ): Promise<BlackedEntryDto[]> {
     const entry = await this.entriesService.findAll(ctx.user, pInfo);
     return entry.cata(
       fail => {
@@ -76,7 +81,7 @@ export class EntriesController {
     @Body(new ValidationPipe({ array: false, type: CreateEntryDto }))
     entry: CreateEntryDto,
     @Ctx() ctx: RequestContext
-  ): Promise<EntryDto> {
+  ): Promise<BlackedEntryDto> {
     const result = await this.entriesService.create(entry, ctx.user);
     return result.cata(
       fail => {
