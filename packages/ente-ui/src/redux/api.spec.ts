@@ -71,18 +71,18 @@ describe("normalizeUsers", () => {
   describe("when given empty array", () => {
     it("returns an empty APIResponse", () => {
       const result = normalizeUsers();
-      expect(result.entries).toHaveLength(0);
-      expect(result.users).toHaveLength(0);
-      expect(result.slots).toHaveLength(0);
+      expect(result.entries.size).toBe(0);
+      expect(result.users.size).toBe(0);
+      expect(result.slots.size).toBe(0);
     });
   });
 
   describe("when given values", () => {
     it("returns the normalised values", () => {
       const result = normalizeUsers(susanne);
-      expect(result.entries).toHaveLength(0);
-      expect(result.users).toHaveLength(2);
-      expect(result.slots).toHaveLength(0);
+      expect(result.entries.size).toBe(0);
+      expect(result.users.size).toBe(2);
+      expect(result.slots.size).toBe(0);
     });
   });
 });
@@ -91,18 +91,18 @@ describe("normalizeEntries", () => {
   describe("when given empty array", () => {
     it("returns empty response", () => {
       const result = normalizeEntries();
-      expect(result.entries).toHaveLength(0);
-      expect(result.users).toHaveLength(0);
-      expect(result.slots).toHaveLength(0);
+      expect(result.entries.size).toBe(0);
+      expect(result.users.size).toBe(0);
+      expect(result.slots.size).toBe(0);
     });
   });
 
   describe("when given values array", () => {
     it("returns normalised response", () => {
       const result = normalizeEntries(entry);
-      expect(result.entries).toHaveLength(1);
-      expect(result.users).toHaveLength(2);
-      expect(result.slots).toHaveLength(1);
+      expect(result.entries.size).toBe(1);
+      expect(result.users.size).toBe(2);
+      expect(result.slots.size).toBe(1);
     });
   });
 });
@@ -111,18 +111,18 @@ describe("normalizeSlots", () => {
   describe("when given empty array", () => {
     it("returns empty response", () => {
       const result = normalizeSlots();
-      expect(result.entries).toHaveLength(0);
-      expect(result.users).toHaveLength(0);
-      expect(result.slots).toHaveLength(0);
+      expect(result.entries.size).toBe(0);
+      expect(result.users.size).toBe(0);
+      expect(result.slots.size).toBe(0);
     });
   });
 
   describe("when given values array", () => {
     it("returns normalised response", () => {
       const result = normalizeSlots(slot);
-      expect(result.entries).toHaveLength(0);
-      expect(result.users).toHaveLength(2);
-      expect(result.slots).toHaveLength(1);
+      expect(result.entries.size).toBe(0);
+      expect(result.users.size).toBe(2);
+      expect(result.slots.size).toBe(1);
     });
   });
 });

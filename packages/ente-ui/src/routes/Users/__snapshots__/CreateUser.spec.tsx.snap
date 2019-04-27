@@ -14,14 +14,14 @@ ShallowWrapper {
         Immutable.UserN {
           "id": "mystupidid",
           "username": "simon",
-          "children": Array [],
+          "children": undefined,
           "displayname": "Simon",
           "email": "email@emai.com",
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
           "graduationYear": undefined,
-          "language": "en",
+          "language": undefined,
         },
       ]
     }
@@ -2503,14 +2503,14 @@ ShallowWrapper {
         Immutable.UserN {
           "id": "mystupidid",
           "username": "simon",
-          "children": Array [],
+          "children": undefined,
           "displayname": "Simon",
           "email": "email@emai.com",
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
           "graduationYear": undefined,
-          "language": "en",
+          "language": undefined,
         },
       ]
     }
