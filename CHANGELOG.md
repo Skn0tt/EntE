@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Update to Nest@v6
 - Do not limit table height ([#281](https://gitlab.com/Skn0tt/EntE/issues/281))
 
 ## [v0.22.0] - 2019-04-28

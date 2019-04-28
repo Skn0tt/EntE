@@ -1,26 +1,26 @@
-import {
-  Injectable,
-  NestMiddleware,
-  MiddlewareFunction,
-  Inject
-} from "@nestjs/common";
+import { Injectable, NestMiddleware, Inject } from "@nestjs/common";
 import { WinstonLoggerService } from "./winston-logger.service";
 import * as morgan from "morgan";
+import { RequestHandler, Request, Response, NextFunction } from "express";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
+  morgan: RequestHandler;
+
   constructor(
     @Inject(WinstonLoggerService)
     private readonly winstonLogger: WinstonLoggerService
-  ) {}
-
-  resolve(): MiddlewareFunction {
-    return morgan("combined", {
+  ) {
+    this.morgan = morgan("combined", {
       stream: {
         write: s => {
           this.winstonLogger.log(s);
         }
       }
-    }) as MiddlewareFunction;
+    });
+  }
+
+  use(req: Request, res: Response, next: NextFunction) {
+    this.morgan(req, res, next);
   }
 }
