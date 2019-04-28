@@ -1,31 +1,43 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { Validation, Success, Fail } from "monet";
 import { RedisService } from "../infrastructure/redis.service";
 import { SignerService } from "../infrastructure/signer.service";
+import { DbHealthIndicator } from "../db/db-health-indicator";
 
-enum ConnectionUnhealthy {
-  Redis = "CONNECTION_UNHEALTHY_REDIS",
-  Signer = "CONNECTION_UNHEALTHY_SIGNER"
+export interface HealthReport {
+  isHealthy: boolean;
+  dependencies: {
+    redis: boolean;
+    signer: boolean;
+    db: boolean;
+  };
 }
 
 @Injectable()
 export class StatusService {
   constructor(
     @Inject(RedisService) private readonly redisService: RedisService,
-    @Inject(SignerService) private readonly signerService: SignerService
+    @Inject(SignerService) private readonly signerService: SignerService,
+    @Inject(DbHealthIndicator)
+    private readonly dbHealthIndicator: DbHealthIndicator
   ) {}
 
-  async getStatus(): Promise<Validation<ConnectionUnhealthy[], boolean>> {
-    const errors: ConnectionUnhealthy[] = [];
+  async getStatus(): Promise<HealthReport> {
+    // TODO: email check
 
-    if (!await this.redisService.isHealthy()) {
-      errors.push(ConnectionUnhealthy.Redis);
-    }
+    const redisIsHealthy = await this.redisService.isHealthy();
+    const signerIsHealthy = await this.signerService.isHealthy();
+    const dbIsHealthy = await this.dbHealthIndicator.isHealthy();
 
-    if (!await this.signerService.isHealthy()) {
-      errors.push(ConnectionUnhealthy.Redis);
-    }
+    const enteIsHealthy = redisIsHealthy && signerIsHealthy && dbIsHealthy;
+    const healthReport: HealthReport = {
+      isHealthy: enteIsHealthy,
+      dependencies: {
+        signer: signerIsHealthy,
+        redis: redisIsHealthy,
+        db: dbIsHealthy
+      }
+    };
 
-    return errors.length === 0 ? Success(true) : Fail(errors);
+    return healthReport;
   }
 }

@@ -1,4 +1,9 @@
-import { Controller, ConflictException, Get, Inject } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Inject,
+  ServiceUnavailableException
+} from "@nestjs/common";
 import { StatusService } from "./status.service";
 
 @Controller("status")
@@ -10,11 +15,9 @@ export class StatusController {
   @Get()
   async status() {
     const status = await this.statusService.getStatus();
-    return status.cata(
-      errors => {
-        throw new ConflictException(errors);
-      },
-      () => {}
-    );
+    if (!status.isHealthy) {
+      throw new ServiceUnavailableException(status);
+    }
+    return status;
   }
 }

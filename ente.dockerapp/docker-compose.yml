@@ -48,7 +48,7 @@ services:
       - ente_bridge
 
   signer:
-    image: skn0tt/signer:v0.5.0
+    image: skn0tt/signer:v0.7.0
     depends_on:
       - redis
     restart: unless-stopped
