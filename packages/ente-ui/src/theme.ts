@@ -31,7 +31,8 @@ export const createTheme = _.memoize(
             justifyContent: "flex-start"
           },
           responsiveScroll: {
-            flexGrow: 1
+            flexGrow: 1,
+            maxHeight: undefined
           }
         },
         MUIDataTablePagination: {
