@@ -4,15 +4,17 @@ import { SlotRepo } from "../db/slot.repo";
 import {
   Roles,
   SlotDto,
-  UserDto,
   daysBeforeNow,
-  TEACHING_ROLES
+  TEACHING_ROLES,
+  BlackedSlotDto,
+  UserDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
+import { UsersService } from "../users/users.service";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -28,7 +30,7 @@ export class SlotsService {
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
@@ -63,7 +65,15 @@ export class SlotsService {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(s => SlotsService.blackenDto(s, requestingUser.role));
+  }
+
+  private async _findOne(
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<FindOneSlotFailure, SlotDto>> {
@@ -115,6 +125,11 @@ export class SlotsService {
     );
   }
 
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(r => SlotsService.blackenDto(r, requestingUser.role));
+  }
+
   async dispatchWeeklySummary() {
     this.logger.log("Starting do dispatch the weekly summary.");
     const teachingUsers = await this.userRepo.findByRoles(...TEACHING_ROLES);
@@ -128,5 +143,14 @@ export class SlotsService {
       })
     );
     this.logger.log("Weekly summary successfully dispatched.");
+  }
+
+  static blackenDto(slot: SlotDto, role: Roles): BlackedSlotDto {
+    const { teacher, student } = slot;
+    return {
+      ...slot,
+      student: UsersService.blackenDto(student, role),
+      teacher: !!teacher ? UsersService.blackenDto(teacher, role) : null
+    };
   }
 }

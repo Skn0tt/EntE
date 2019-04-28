@@ -1,17 +1,29 @@
 import {
   IsUUID,
-  IsDate,
   IsOptional,
   IsBoolean,
   ValidateNested,
   IsISO8601
 } from "class-validator";
-import { SlotDto } from "./slot.dto";
-import { UserDto } from "./user.dto";
+import { SlotDto, BlackedSlotDto } from "./slot.dto";
+import { UserDto, BlackedUserDto } from "./user.dto";
 import { Type } from "class-transformer";
 import { EntryReasonDto } from "./entry-reason.dto";
 
-export class EntryDto {
+export interface BlackedEntryDto {
+  id: string;
+  date: string;
+  dateEnd?: string;
+  reason: EntryReasonDto;
+  signedManager: boolean;
+  signedParent: boolean;
+  slots: BlackedSlotDto[];
+  student: BlackedUserDto;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export class EntryDto implements BlackedEntryDto {
   @IsUUID("4") id: string;
 
   @IsISO8601()

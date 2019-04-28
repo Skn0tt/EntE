@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Updated mui-datatables to v2.0.0, this fixes issues with dark mode theming ([#264](https://gitlab.com/Skn0tt/EntE/issues/264))
+- Restrained data that the user receives: not everyone needs to know about sensitive data (email, birhtday etc.) ([#225](https://gitlab.com/Skn0tt/EntE/issues/225))
 
 ## [v0.21.0] - 2019-04-23
 

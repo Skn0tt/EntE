@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  OnModuleInit,
-  LoggerService
-} from "@nestjs/common";
+import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
 import { Validation, Success, Fail } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
@@ -17,13 +12,14 @@ import {
   TEACHING_ROLES,
   roleIsTeaching,
   PatchUserDtoValidator,
-  CreateUserDtoValidator
+  CreateUserDtoValidator,
+  BaseUserDto,
+  BlackedUserDto
 } from "ente-types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { validate } from "class-validator";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
@@ -97,7 +93,7 @@ export class UsersService implements OnModuleInit {
     }
   }
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
@@ -136,7 +132,17 @@ export class UsersService implements OnModuleInit {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(users =>
+      users.map(u => UsersService.blackenDto(u, requestingUser.role))
+    );
+  }
+
+  private async _findOne(
     id: string,
     _requestingUser: RequestContextUser
   ): Promise<Validation<FindOneUserFailure, UserDto>> {
@@ -195,6 +201,11 @@ export class UsersService implements OnModuleInit {
         throw new Error("Not reachable");
       }
     );
+  }
+
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(r => UsersService.blackenDto(r, requestingUser.role));
   }
 
   private async _createUsers(...users: CreateUserDto[]) {
@@ -382,7 +393,7 @@ export class UsersService implements OnModuleInit {
       return Fail(DeleteUserFailure.ForbiddenForRole);
     }
 
-    const userV = await this.findOne(id, requestingUser);
+    const userV = await this._findOne(id, requestingUser);
     if (userV.isFail()) {
       switch (userV.fail()) {
         case FindOneUserFailure.ForbiddenForUser:
@@ -401,5 +412,30 @@ export class UsersService implements OnModuleInit {
     );
 
     return Success(userV.success());
+  }
+
+  static blackenDto(user: UserDto, role: Roles): BlackedUserDto {
+    const fullUser = user;
+    const baseUser: BaseUserDto = {
+      displayname: user.displayname,
+      id: user.id,
+      role: user.role,
+      username: user.username
+    };
+
+    switch (role) {
+      case Roles.ADMIN:
+        return fullUser;
+
+      case Roles.MANAGER:
+        return {
+          ...baseUser,
+          graduationYear: user.graduationYear,
+          email: user.email
+        };
+
+      default:
+        return baseUser;
+    }
   }
 }

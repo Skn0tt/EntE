@@ -28,7 +28,13 @@ import {
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
 import { AuthGuard } from "@nestjs/passport";
-import { UserDto, CreateUserDto, PatchUserDto, Languages } from "ente-types";
+import {
+  UserDto,
+  CreateUserDto,
+  PatchUserDto,
+  Languages,
+  BlackedUserDto
+} from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
   PaginationInfo,
@@ -46,7 +52,7 @@ export class UsersController {
   async findAll(
     @Ctx() ctx: RequestContext,
     @PaginationInfo() pInfo: PaginationInformation
-  ): Promise<UserDto[]> {
+  ): Promise<BlackedUserDto[]> {
     const result = await this.usersService.findAll(ctx.user, pInfo);
     return result.cata(
       fail => {
@@ -63,7 +69,7 @@ export class UsersController {
   async find(
     @Param("id") id: string,
     @Ctx() ctx: RequestContext
-  ): Promise<UserDto> {
+  ): Promise<BlackedUserDto> {
     const result = await this.usersService.findOne(id, ctx.user);
     return result.cata(
       fail => {
@@ -87,7 +93,7 @@ export class UsersController {
     )
     users: CreateUserDto[],
     @Ctx() ctx: RequestContext
-  ) {
+  ): Promise<UserDto[]> {
     const result = await this.usersService.createUsers(users, ctx.user);
 
     return result.cata(
@@ -113,7 +119,7 @@ export class UsersController {
     @Body(new ValidationPipe({ array: false, type: PatchUserDto }))
     patch: PatchUserDto,
     @Ctx() ctx: RequestContext
-  ) {
+  ): Promise<UserDto> {
     const result = await this.usersService.patchUser(id, patch, ctx.user);
 
     return result.cata(
@@ -163,7 +169,10 @@ export class UsersController {
   }
 
   @Delete(":id")
-  async delete(@Param("id") id: string, @Ctx() ctx: RequestContext) {
+  async delete(
+    @Param("id") id: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<UserDto> {
     const result = await this.usersService.delete(id, ctx.user);
     return result.cata(
       fail => {

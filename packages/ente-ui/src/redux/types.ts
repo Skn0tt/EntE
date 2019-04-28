@@ -9,9 +9,10 @@
 import { Map, Record as ImmutableRecord, Set } from "immutable";
 import {
   Roles,
+  BlackedEntryDto,
+  BlackedSlotDto,
+  BlackedUserDto,
   UserDto,
-  EntryDto,
-  SlotDto,
   Languages,
   roleIsTeaching,
   dateToIsoString,
@@ -36,24 +37,24 @@ export interface BasicCredentials {
 
 export interface APIResponse {
   auth?: AuthState;
-  users: UserN[];
-  entries: EntryN[];
-  slots: SlotN[];
+  users: Map<string, UserN>;
+  entries: Map<string, EntryN>;
+  slots: Map<string, SlotN>;
 }
 
 /**
  * User
  */
-class UserDtoNormalised extends UserDto {
+interface UserDtoNormalised extends BlackedUserDto {
   childrenIds: string[];
 }
 
-class EntryDtoNormalised extends EntryDto {
+interface EntryDtoNormalised extends BlackedEntryDto {
   studentId: string;
   slotIds: string[];
 }
 
-class SlotDtoNormalised extends SlotDto {
+interface SlotDtoNormalised extends BlackedSlotDto {
   studentId: string;
   teacherId: string | null;
 }
@@ -90,14 +91,14 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
   {
     id: "",
     username: "",
-    children: [],
+    children: undefined,
     displayname: "",
-    email: "",
+    email: undefined,
     birthday: undefined,
     role: Roles.STUDENT,
     childrenIds: [],
     graduationYear: undefined,
-    language: DEFAULT_DEFAULT_LANGUAGE
+    language: undefined
   },
   "UserN"
 );
@@ -143,7 +144,8 @@ export const SlotN = ImmutableRecord<SlotDtoNormalised>(
     studentId: "",
     teacherId: null,
     to: 0,
-    forSchool: false
+    forSchool: false,
+    isEducational: false
   },
   "SlotN"
 );

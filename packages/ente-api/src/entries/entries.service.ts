@@ -6,25 +6,27 @@ import {
   EntryDto,
   CreateEntryDto,
   PatchEntryDto,
-  UserDto,
   userIsAdult,
   TEACHING_ROLES,
   entryReasonCategoryHasTeacherId,
   ExamenPayload,
   isParentSignatureNotificationEnabled,
   canEntryStillBeSigned,
-  CreateEntryDtoValidator
+  CreateEntryDtoValidator,
+  BlackedEntryDto,
+  UserDto
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
-import { validate } from "class-validator";
 import * as _ from "lodash";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
 import { EntryNotificationQueue } from "./entry-notification.queue";
 import { WinstonLoggerService } from "../winston-logger.service";
+import { SlotsService } from "../slots/slots.service";
+import { UsersService } from "../users/users.service";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -83,7 +85,7 @@ export class EntriesService {
     private readonly logger: WinstonLoggerService
   ) {}
 
-  async findAll(
+  private async _findAll(
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
@@ -118,7 +120,17 @@ export class EntriesService {
     }
   }
 
-  async findOne(
+  public async findAll(
+    requestingUser: RequestContextUser,
+    paginationInfo: PaginationInformation
+  ) {
+    const r = await this._findAll(requestingUser, paginationInfo);
+    return r.map(entries =>
+      entries.map(e => EntriesService.blackenDto(e, requestingUser.role))
+    );
+  }
+
+  private async _findOne(
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<FindEntryFailure, EntryDto>> {
@@ -163,13 +175,18 @@ export class EntriesService {
     );
   }
 
+  public async findOne(id: string, requestingUser: RequestContextUser) {
+    const r = await this._findOne(id, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+  }
+
   private async getCreateEntryDtoValidator() {
     const deadline = await this.instanceConfigService.getEntryCreationDeadline();
 
     return CreateEntryDtoValidator(deadline);
   }
 
-  async create(
+  private async _create(
     entry: CreateEntryDto,
     requestingUser: RequestContextUser
   ): Promise<Validation<CreateEntryFailure, EntryDto>> {
@@ -264,7 +281,15 @@ export class EntriesService {
     return Success(result);
   }
 
-  async patch(
+  public async create(
+    entry: CreateEntryDto,
+    requestingUser: RequestContextUser
+  ) {
+    const r = await this._create(entry, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+  }
+
+  private async _patch(
     id: string,
     patch: PatchEntryDto,
     _requestingUser: RequestContextUser
@@ -346,7 +371,16 @@ export class EntriesService {
     return Success(entry.some());
   }
 
-  async delete(
+  public async patch(
+    id: string,
+    patch: PatchEntryDto,
+    requestingUser: RequestContextUser
+  ) {
+    const r = await this._patch(id, patch, requestingUser);
+    return r.map(r => EntriesService.blackenDto(r, requestingUser.role));
+  }
+
+  private async _delete(
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
@@ -358,7 +392,7 @@ export class EntriesService {
       return Fail(DeleteEntryFailure.ForbiddenForRole);
     }
 
-    const entryV = await this.findOne(id, requestingUser);
+    const entryV = await this._findOne(id, requestingUser);
     if (entryV.isFail()) {
       switch (entryV.fail()) {
         case FindEntryFailure.EntryNotFound:
@@ -385,6 +419,11 @@ export class EntriesService {
     });
 
     return Success(entryV.success());
+  }
+
+  public async delete(id: string, requestingUser: RequestContextUser) {
+    const r = await this._delete(id, requestingUser);
+    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
   }
 
   async sendNotification(entryId: string) {
@@ -419,5 +458,15 @@ export class EntriesService {
   getSigningLinkForEntry(entry: EntryDto) {
     const baseUrl = Config.getBaseUrl();
     return `${baseUrl}/entries/${entry.id}`;
+  }
+
+  static blackenDto(entry: EntryDto, role: Roles): BlackedEntryDto {
+    const { student, slots } = entry;
+
+    return {
+      ...entry,
+      student: UsersService.blackenDto(student, role),
+      slots: slots.map(s => SlotsService.blackenDto(s, role))
+    };
   }
 }
