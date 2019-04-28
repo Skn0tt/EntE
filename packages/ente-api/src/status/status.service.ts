@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RedisService } from "../infrastructure/redis.service";
 import { SignerService } from "../infrastructure/signer.service";
-import { DbHealthIndicator } from "db/db-health-indicator";
+import { DbHealthIndicator } from "../db/db-health-indicator";
 
 export interface HealthReport {
   isHealthy: boolean;
