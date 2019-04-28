@@ -1,12 +1,16 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { StatusController } from "./status.controller";
 import { setupEnvVars } from "../../test/setup";
-import { StatusService } from "./status.service";
-import { Success } from "monet";
+import { StatusService, HealthReport } from "./status.service";
+
+const mockReport = {
+  isHealthy: true,
+  dependencies: { redis: true, signer: true, db: true }
+};
 
 const statusServiceMock: StatusService = {
-  async getStatus() {
-    return Success(true);
+  async getStatus(): Promise<HealthReport> {
+    return mockReport;
   }
 } as any;
 
@@ -32,13 +36,13 @@ describe("Status Controller", () => {
   });
 
   describe("requesting status", () => {
-    it("should return void", async () => {
+    it("should return a status report", async () => {
       const controller: StatusController = module.get<StatusController>(
         StatusController
       );
 
       const result = await controller.status();
-      expect(result).toBeUndefined();
+      expect(result).toEqual(mockReport);
     });
   });
 });
