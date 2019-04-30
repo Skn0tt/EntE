@@ -1402,12 +1402,11 @@
     express "4.16.4"
     multer "1.4.1"
 
-"@nestjs/testing@^5.1.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-5.5.0.tgz#4a77d78d100a1865668a671a792c13844f7ff43e"
-  integrity sha512-dz6JLD5CTGx4hw5xm1ueLyxdbaO8asjKnyWlnW3ry7u+wqr1YhBnxxD5akNlEEbPa1GcT3qSXgiZycfclEalNA==
+"@nestjs/testing@^6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-6.1.1.tgz#cc871867f9bd053069467a5a2f1b429945413313"
+  integrity sha512-EQLRES20n8zWkFRXgwFKjCE0s/WsHvqv3v22umqq2XHiep7WiJub0hNG/FcC00WltXPDPAaEDu0XDPr56UWZhQ==
   dependencies:
-    deprecate "1.0.0"
     optional "0.1.4"
 
 "@nestjs/typeorm@^6.1.0":
@@ -5376,11 +5375,6 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
-
-deprecate@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/deprecate/-/deprecate-1.0.0.tgz#661490ed2428916a6c8883d8834e5646f4e4a4a8"
-  integrity sha1-ZhSQ7SQokWpsiIPYg05WRvTkpKg=
 
 des.js@^1.0.0:
   version "1.0.0"
