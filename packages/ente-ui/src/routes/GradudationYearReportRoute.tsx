@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Maybe, None } from "monet";
+import { Maybe } from "monet";
 import { Roles } from "ente-types";
 import {
   UserN,
@@ -19,17 +19,18 @@ import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { Map } from "immutable";
 import { Reporting, EntrySummary } from "../reporting/reporting";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, Route } from "react-router";
 import { DropdownInput } from "../elements/DropdownInput";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Typography, Grid, Button, Theme } from "@material-ui/core";
 import { Center } from "../components/Center";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles({
-  padding: {
-    margin: 12
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    color: theme.palette.grey[600]
   }
-});
+}));
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -41,7 +42,8 @@ const useTranslation = makeTranslationHook({
       hourRate: "Hour rate"
     },
     year: "Graduation year",
-    noUsers: "No users found."
+    noUsers: "No users found.",
+    openReport: "Open Report"
   },
   de: {
     headers: {
@@ -52,7 +54,8 @@ const useTranslation = makeTranslationHook({
       hourRate: "Stundenrate"
     },
     year: "Jahrgangsstufe",
-    noUsers: "Keine Nutzer*innen gefunden."
+    noUsers: "Keine Nutzer*innen gefunden.",
+    openReport: "Bericht öffnen"
   }
 });
 
@@ -103,8 +106,8 @@ type GraduationYearReportRouteProps = GraduationYearReportRouteStateProps &
 const GraduationYearReportRoute: React.FC<
   GraduationYearReportRouteProps
 > = props => {
-  const classes = useStyles(props);
   const translation = useTranslation();
+  const classes = useStyles();
 
   const {
     slotsMap,
@@ -159,20 +162,47 @@ const GraduationYearReportRoute: React.FC<
       return (
         <Table<UserN>
           title={
-            ownRole === Roles.ADMIN ? (
-              <DropdownInput
-                value={year.some()}
-                options={existingGradYears}
-                getOptionLabel={String}
-                onChange={handleChangeGradYear}
-                fullWidth
-                variant="outlined"
-                margin="dense"
-                label={translation.year}
+            <Grid
+              container
+              justify="flex-start"
+              alignItems="center"
+              spacing={24}
+            >
+              {ownRole === Roles.ADMIN && (
+                <Grid item xs={8}>
+                  <DropdownInput
+                    value={year.some()}
+                    options={existingGradYears}
+                    getOptionLabel={String}
+                    onChange={handleChangeGradYear}
+                    fullWidth
+                    variant="outlined"
+                    margin="dense"
+                    label={translation.year}
+                  />
+                </Grid>
+              )}
+
+              <Route
+                render={({ history }) => (
+                  <Grid item xs={4}>
+                    <Button
+                      onClick={() =>
+                        history.push(
+                          `/graduationYears/${year.orSome(0)}/report`
+                        )
+                      }
+                      variant="text"
+                      color="inherit"
+                      className={classes.button}
+                    >
+                      <AssessmentIcon />
+                      {translation.openReport}
+                    </Button>
+                  </Grid>
+                )}
               />
-            ) : (
-              undefined
-            )
+            </Grid>
           }
           columns={[
             {

@@ -33,7 +33,7 @@ const StudentReportRoute: React.FC<StudentReportProps> = props => {
       scroll="body"
       maxWidth="md"
     >
-      <StudentReport studentId={studentId} onClose={handleOnClose} />
+      <StudentReport studentIds={[studentId]} onClose={handleOnClose} />
     </Dialog>
   );
 };

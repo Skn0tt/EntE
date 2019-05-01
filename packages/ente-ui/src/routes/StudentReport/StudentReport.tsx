@@ -13,7 +13,7 @@ import {
   isLoading,
   getSlotsMap
 } from "../../redux";
-import { Maybe } from "monet";
+import { Either } from "monet";
 import { Reporting } from "../../reporting/reporting";
 import {
   connect,
@@ -30,11 +30,9 @@ import {
   Grid,
   IconButton,
   FormControl,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
-  Radio,
-  FormGroup
+  Radio
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SlotsByTeacherChart from "./SlotsByTeacherChart";
@@ -96,14 +94,14 @@ const useTranslation = makeTranslationHook({
 });
 
 interface StudentReportOwnProps {
-  studentId: string;
+  studentIds: string[];
   onClose: () => void;
 }
 
 type StudentReportProps = StudentReportOwnProps;
 
 interface StudentReportStateProps {
-  student: Maybe<UserN>;
+  students: Either<string, UserN>[];
   entries: EntryN[];
   slots: SlotN[];
   slotsMap: Map<string, SlotN>;
@@ -115,14 +113,19 @@ const mapStateToProps: MapStateToPropsParam<
   StudentReportProps,
   AppState
 > = (state, props) => {
-  const { studentId } = props;
+  const { studentIds } = props;
 
-  const student = getUser(studentId)(state);
-  const entries = getEntries(state).filter(
-    f => f.get("studentId") === studentId
+  const students = studentIds.map(id => {
+    const maybeUser = getUser(id)(state);
+    return maybeUser.toEither(id);
+  });
+  const entries = getEntries(state).filter(f =>
+    studentIds.includes(f.get("studentId"))
   );
   const slotsMap = getSlotsMap(state);
-  const slots = getSlots(state).filter(f => f.get("studentId") === studentId);
+  const slots = getSlots(state).filter(f =>
+    studentIds.includes(f.get("studentId"))
+  );
 
   const role = getRole(state).some();
 
@@ -130,7 +133,7 @@ const mapStateToProps: MapStateToPropsParam<
 
   return {
     role,
-    student,
+    students,
     entries,
     slots,
     slotsMap,
@@ -159,12 +162,12 @@ type StudentReportPropsConnected = StudentReportProps &
 const StudentReport: React.FC<StudentReportPropsConnected> = props => {
   const {
     entries,
-    student,
+    students,
     slots,
     onClose,
     role,
     fetchEntries,
-    studentId,
+    studentIds,
     fetchStudent,
     isLoading,
     slotsMap
@@ -190,9 +193,9 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
   }, []);
 
   React.useEffect(() => {
-    if (student.isNone()) {
-      fetchStudent(studentId);
-    }
+    students.forEach(id => {
+      id.forEachLeft(fetchStudent);
+    });
   }, []);
 
   const entriesEducational = React.useMemo(
@@ -248,92 +251,101 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slotsToUse]
   );
 
-  return student.cata(
-    () => (isLoading ? <LoadingIndicator /> : <NotFound />),
-    student => (
-      <div>
-        <DialogTitle>
-          <Typography variant="overline">
-            {translation.absenceReport}
-          </Typography>
-          <Typography variant="h5">{student.get("displayname")}</Typography>
-          {role === Roles.MANAGER && (
-            <IconButton
-              href={`mailto:${student.get("email")}`}
-              className={classes.mailButton}
-            >
-              <MailIcon fontSize="default" color="action" />
-            </IconButton>
-          )}
-          <div className={classes.printButton}>{printButton}</div>
-        </DialogTitle>
-        <DialogContent>
-          <Grid container direction="column" spacing={24}>
-            <Grid item>
-              <FormControl>
-                <RadioGroup row value={mode} onChange={handleModeChanged}>
-                  <FormControlLabel
-                    value="not_educational"
-                    control={<Radio />}
-                    label={translation.modes.not_educational}
-                  />
-                  <FormControlLabel
-                    value="educational"
-                    control={<Radio />}
-                    label={translation.modes.educational}
-                  />
-                  <FormControlLabel
-                    value="all"
-                    control={<Radio />}
-                    label={translation.modes.all}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+  const allStudentsAvailable = students.every(student => student.isRight());
 
-            <Grid item>
-              <Typography variant="h6" className={classes.heading}>
-                {translation.summary}
-              </Typography>
-              <SummaryTable data={summary} />
-            </Grid>
+  if (!allStudentsAvailable) {
+    return isLoading ? <LoadingIndicator /> : <NotFound />;
+  }
 
-            <Divider />
+  const studentsR = students.map(s => s.right());
 
-            <Grid item>
-              <Typography variant="h6" className={classes.heading}>
-                {translation.absentHoursByTeacher}
-              </Typography>
-              <SlotsByTeacherChart data={absentHoursByTeacher} />
-            </Grid>
+  const [firstStudent] = studentsR;
+  const displayname =
+    studentsR.length === 1
+      ? firstStudent.get("displayname")
+      : firstStudent.get("graduationYear");
 
-            <Divider />
-
-            <Grid item>
-              <Typography variant="h6" className={classes.heading}>
-                {translation.absentHoursByTime}
-              </Typography>
-              <HoursByWeekdayAndTimeChart
-                variant="scatterplot"
-                data={hoursByWeekdayAndTime}
-              />
-            </Grid>
-
-            <Grid item>
-              <Typography variant="h6" className={classes.heading}>
-                {translation.entries}
-              </Typography>
-              <EntriesTable entries={entries} />
-            </Grid>
+  return (
+    <div>
+      <DialogTitle>
+        <Typography variant="overline">{translation.absenceReport}</Typography>
+        <Typography variant="h5">{displayname}</Typography>
+        {role === Roles.MANAGER && studentsR.length === 1 && (
+          <IconButton
+            href={`mailto:${firstStudent.get("email")}`}
+            className={classes.mailButton}
+          >
+            <MailIcon fontSize="default" color="action" />
+          </IconButton>
+        )}
+        <div className={classes.printButton}>{printButton}</div>
+      </DialogTitle>
+      <DialogContent>
+        <Grid container direction="column" spacing={24}>
+          <Grid item>
+            <FormControl>
+              <RadioGroup row value={mode} onChange={handleModeChanged}>
+                <FormControlLabel
+                  value="not_educational"
+                  control={<Radio />}
+                  label={translation.modes.not_educational}
+                />
+                <FormControlLabel
+                  value="educational"
+                  control={<Radio />}
+                  label={translation.modes.educational}
+                />
+                <FormControlLabel
+                  value="all"
+                  control={<Radio />}
+                  label={translation.modes.all}
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button size="small" color="primary" onClick={onClose}>
-            {translation.close}
-          </Button>
-        </DialogActions>
-      </div>
-    )
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.summary}
+            </Typography>
+            <SummaryTable data={summary} />
+          </Grid>
+
+          <Divider />
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.absentHoursByTeacher}
+            </Typography>
+            <SlotsByTeacherChart data={absentHoursByTeacher} />
+          </Grid>
+
+          <Divider />
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.absentHoursByTime}
+            </Typography>
+            <HoursByWeekdayAndTimeChart
+              variant="scatterplot"
+              data={hoursByWeekdayAndTime}
+            />
+          </Grid>
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.entries}
+            </Typography>
+            <EntriesTable entries={entries} />
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button size="small" color="primary" onClick={onClose}>
+          {translation.close}
+        </Button>
+      </DialogActions>
+    </div>
   );
 };
 
