@@ -233,13 +233,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v0.8.3] - 2018-11-14
 
-> Janked: Crash when Sentry is used
+> Yanked: Crash when Sentry is used
 
 - Fixed Sentry import
 
 ## [v0.8.2] - 2018-11-14
 
-> Janked: Crash when Sentry is used
+> Yanked: Crash when Sentry is used
 
 - Added Sentry Error reporting to API
 
@@ -247,7 +247,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v0.8.1] - 2018-11-14
 
-> Janked: Crash when Sentry is used
+> Yanked: Crash when Sentry is used
 
 - Changed: InstanceInfo now should be passed in Url-Encoding
 
