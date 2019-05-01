@@ -166,6 +166,12 @@ export const getStudents = createSelector(
   users => users.filter(userIsStudent)
 );
 
+export const getStudentsOfGradYear = (gradYear: number) =>
+  createSelector(
+    [getStudents],
+    students => students.filter(s => s.get("graduationYear") === gradYear)
+  );
+
 export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
   Maybe.fromNull(state.get("instanceConfig"));
 

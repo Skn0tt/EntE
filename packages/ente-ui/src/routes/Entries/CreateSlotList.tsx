@@ -14,7 +14,11 @@ export const CreateSlotList: React.SFC<CreateSlotListProps> = props => {
   return (
     <List>
       {slots.map(slot => (
-        <SlotListItem slot={slot} onRemove={() => onRemove(slot)} />
+        <SlotListItem
+          key={slot.from + slot.teacherId + slot.to}
+          slot={slot}
+          onRemove={() => onRemove(slot)}
+        />
       ))}
     </List>
   );
