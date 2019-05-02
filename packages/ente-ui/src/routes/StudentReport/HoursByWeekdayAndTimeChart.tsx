@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as _ from "lodash";
-import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { Weekday } from "../../reporting/reporting";
 import {
   XYPlot,
@@ -10,6 +9,7 @@ import {
   YAxis,
   makeVisFlexible
 } from "react-vis";
+import { useWeekdayTranslations } from "../../helpers/use-weekday-translations";
 
 const FlexibleXYPlot = makeVisFlexible(XYPlot);
 
@@ -21,31 +21,6 @@ const defaultWeek = _.fromPairs(
   })
 );
 
-const useTranslation = makeTranslationHook({
-  en: {
-    days: {
-      [Weekday.MONDAY]: "Mo",
-      [Weekday.TUESDAY]: "Tu",
-      [Weekday.WEDNESDAY]: "We",
-      [Weekday.THURSDAY]: "Thu",
-      [Weekday.FRIDAY]: "Fri",
-      [Weekday.SATURDAY]: "Sat",
-      [Weekday.SUNDAY]: "Sun"
-    } as Record<string, string>
-  },
-  de: {
-    days: {
-      [Weekday.MONDAY]: "Mo",
-      [Weekday.TUESDAY]: "Di",
-      [Weekday.WEDNESDAY]: "Mi",
-      [Weekday.THURSDAY]: "Do",
-      [Weekday.FRIDAY]: "Fr",
-      [Weekday.SATURDAY]: "Sa",
-      [Weekday.SUNDAY]: "So"
-    } as Record<string, string>
-  }
-});
-
 interface HoursByWeekdayAndTimeChartOwnProps {
   data: Record<Weekday, Record<number, number>>;
   variant: "scatterplot" | "heatmap";
@@ -54,7 +29,7 @@ interface HoursByWeekdayAndTimeChartOwnProps {
 export const HoursByWeekdayAndTimeChart: React.FC<
   HoursByWeekdayAndTimeChartOwnProps
 > = props => {
-  const translation = useTranslation();
+  const weekdayTranslation = useWeekdayTranslations().twoCharacter;
 
   const { data, variant } = props;
 
@@ -68,7 +43,7 @@ export const HoursByWeekdayAndTimeChart: React.FC<
       return _.flatMap(dataWithDefaultDays, (values, weekday) => {
         return _.flatMap(values, (amount, hour) => {
           return {
-            x: translation.days[weekday],
+            x: weekdayTranslation[weekday],
             y: +hour,
             size: +amount
           };

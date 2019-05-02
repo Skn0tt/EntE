@@ -26,13 +26,16 @@ import {
   getTimeScope
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
-import { Maybe } from "monet";
+import { Maybe, None } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { getTimeScopeValidator, TimeScope } from "../time-scope";
 import TimeScopeSelectionView from "../components/TimeScopeSelectionView";
+import { Grid } from "@material-ui/core";
+import { CourseFilterButton } from "../components/CourseFilterButton";
+import { CourseFilter, isSlotDuringCourse } from "../helpers/course-filter";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -100,12 +103,25 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
   const lang = useTranslation();
   const { getUser, slots, requestSlots, timeScope } = props;
 
+  const [courseFilter, setCourseFilter] = React.useState<Maybe<CourseFilter>>(
+    None()
+  );
+
   const slotsInScope = React.useMemo(
     () => {
       const validator = getTimeScopeValidator(timeScope);
       return slots.filter(s => validator(parseISO(s.get("date"))));
     },
     [slots, timeScope]
+  );
+
+  const slotsInCourse = React.useMemo(
+    () =>
+      courseFilter.cata(
+        () => slotsInScope,
+        course => slotsInScope.filter(isSlotDuringCourse(course))
+      ),
+    [courseFilter, slotsInScope]
   );
 
   React.useEffect(() => {
@@ -174,8 +190,18 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
           }
         }
       ]}
-      title={<TimeScopeSelectionView />}
-      items={slotsInScope}
+      title={
+        <Grid container direction="row" spacing={16} alignItems="center">
+          <Grid item xs={6}>
+            <TimeScopeSelectionView />
+          </Grid>
+
+          <Grid item xs={6}>
+            <CourseFilterButton onChange={setCourseFilter} />
+          </Grid>
+        </Grid>
+      }
+      items={slotsInCourse}
       extractId={user => user.get("id")}
     />
   );
