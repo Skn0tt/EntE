@@ -20,7 +20,12 @@ import {
   ParentSignatureTimesN
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, Languages, DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
+import {
+  Roles,
+  Languages,
+  DEFAULT_DEFAULT_LANGUAGE,
+  UserDto
+} from "ente-types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Action } from "redux";
@@ -66,8 +71,8 @@ export const getAuthState: Selector<Maybe<AuthState>> = state =>
   Maybe.fromNull(state.get("auth"));
 
 export const getRole: Selector<Maybe<Roles>> = state => {
-  const authState = getAuthState(state);
-  return authState.map(s => s.get("role"));
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map(s => s.get("role"));
 };
 
 export const hasChildren = createSelector(
@@ -86,32 +91,33 @@ export const getToken: Selector<Maybe<string>> = state => {
 };
 
 export const getChildren: Selector<Maybe<UserN[]>> = state => {
-  const authState = getAuthState(state);
-  return authState.map(s => {
-    const childrenIds = s.get("children");
-    const children = childrenIds.map(id => getUser(id)(state));
-    return children.filter(c => c.isSome()).map(c => c.some());
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map(s => {
+    const childrenIds = s.get("childrenIds");
+    return childrenIds
+      .map(id => getUser(id)(state))
+      .filter(c => c.isSome())
+      .map(c => c.some());
   });
 };
 
 export const getDisplayname: Selector<Maybe<string>> = state => {
-  const authState = getAuthState(state);
-  return authState.map(s => s.get("displayname"));
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map(s => s.get("displayname"));
 };
 
 export const getUsername: Selector<Maybe<string>> = state => {
-  const authState = getAuthState(state);
-  return authState.map(s => s.get("username"));
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map(s => s.get("username"));
 };
 
 export const getOwnUserId: Selector<Maybe<string>> = state => {
-  const authState = getAuthState(state);
-  return authState.map(s => s.get("userId"));
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map(s => s.get("id"));
 };
 
 export const getOneSelf: Selector<Maybe<UserN>> = state => {
-  const userId = getOwnUserId(state);
-  return userId.flatMap(id => getUser(id)(state));
+  return Maybe.fromNull(state.get("oneSelf"));
 };
 
 export const getOneSelvesGraduationYear: Selector<Maybe<number>> = state => {
@@ -176,7 +182,7 @@ export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
   Maybe.fromNull(state.get("instanceConfig"));
 
 export const getOneSelvesLanguage: Selector<Maybe<Languages>> = state =>
-  getOneSelf(state).flatMap(u => Maybe.fromUndefined(u.get("language")));
+  getOneSelf(state).flatMap(u => Maybe.fromFalsy(u.get("language")));
 
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
   const instanceConfig = getInstanceConfig(state);
