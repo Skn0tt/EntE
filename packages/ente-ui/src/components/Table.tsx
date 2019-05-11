@@ -115,6 +115,7 @@ export class Table<T> extends React.PureComponent<TableProps<T>> {
       <LanguageProvider>
         {lang => (
           <MUIDataTable
+            key={items.map(extractId).join("-")}
             columns={[idColumn, ...columns]}
             data={data}
             title={title as any}
