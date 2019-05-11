@@ -154,11 +154,6 @@ const getAuthState = (token: string): AuthState => {
   const payload = getTokenPayload(token);
   return new AuthState({
     token,
-    role: payload.role,
-    displayname: payload.displayname,
-    username: payload.username,
-    children: payload.childrenIds,
-    userId: payload.id,
     exp: new Date((payload as any).exp * 1000)
   });
 };
@@ -166,6 +161,7 @@ const getAuthState = (token: string): AuthState => {
 export interface LoginInfo {
   authState: AuthState;
   apiResponse: APIResponse;
+  oneSelf: UserN;
 }
 
 export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
@@ -183,7 +179,12 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
 
   return {
     authState,
-    apiResponse
+    apiResponse,
+    oneSelf: UserN({
+      ...oneSelf,
+      children: [],
+      childrenIds: oneSelf.children.map(c => c.id)
+    })
   };
 };
 
