@@ -86,13 +86,14 @@ import {
   SET_ENTRY_CREATION_DAYS_SUCCESS,
   SET_ENTRY_CREATION_DAYS_ERROR
 } from "./constants";
-import { APIResponse, AuthState, BasicCredentials } from "./types";
+import { APIResponse, AuthState, BasicCredentials, UserN } from "./types";
 import {
   CreateUserDto,
   CreateEntryDto,
   PatchUserDto,
   Languages,
-  InstanceConfigDto
+  InstanceConfigDto,
+  UserDto
 } from "ente-types";
 import * as _ from "lodash";
 import { TimeScope } from "../time-scope";
@@ -231,6 +232,7 @@ export const deleteEntryError = createMetaAction<Action<string>, Error>(
 export interface LoginSuccessPayload {
   authState: AuthState;
   apiResponse: APIResponse;
+  oneSelf: UserN;
 }
 
 export const loginRequest = createAction<BasicCredentials>(LOGIN_REQUEST);

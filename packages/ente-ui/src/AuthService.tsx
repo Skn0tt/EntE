@@ -26,7 +26,7 @@ export class AuthService extends React.PureComponent<AuthServiceProps> {
   componentDidMount() {
     const { period, refreshToken } = this.props;
     setTimeout(() => {
-      console.log(`Starting token refresh cycle: Period is '${period}.'`);
+      console.log(`Starting token refresh cycle: Period is '${period}'.`);
       this.timer = setInterval(refreshToken, period);
     }, period);
   }

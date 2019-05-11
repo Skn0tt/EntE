@@ -156,23 +156,13 @@ export const SlotN = ImmutableRecord<SlotDtoNormalised>(
 interface IAuthState {
   token: string;
   exp: Date;
-  displayname: string;
-  username: string;
-  role: Roles;
-  children: string[];
-  userId: string;
 }
 
 export type AuthState = ImmutableRecord<IAuthState>;
 export const AuthState = ImmutableRecord<IAuthState>(
   {
-    children: [],
-    displayname: "",
     exp: new Date(),
-    role: Roles.STUDENT,
-    username: "",
-    token: "",
-    userId: ""
+    token: ""
   },
   "AuthState"
 );
@@ -187,6 +177,7 @@ export interface IAppState {
   usersMap: Map<string, UserN>;
   slotsMap: Map<string, SlotN>;
   auth: AuthState | null;
+  oneSelf: UserN | null;
   instanceConfig: InstanceConfigN | null;
   pendingActions: PendingActions;
   timeScope: TimeScope;
@@ -200,6 +191,7 @@ export const AppState = ImmutableRecord<IAppState>(
     usersMap: Map<string, UserN>(),
     slotsMap: Map<string, SlotN>(),
     auth: null,
+    oneSelf: null,
     instanceConfig: null,
     pendingActions: Set<Action>(),
     timeScope: "everything",

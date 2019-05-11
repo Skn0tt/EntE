@@ -206,15 +206,18 @@ const reducer = handleActions<AppState | undefined, any>(
     /**
      * # Auth
      */
-    // ## GET_TOKEN
+    // ## LOGIN
     ...asyncReducersFullWithoutMetaPayload(
       LOGIN_REQUEST,
       LOGIN_ERROR,
       LOGIN_SUCCESS,
       (state, action: Action<LoginSuccessPayload>) => {
-        const { apiResponse, authState } = action.payload!;
+        const { apiResponse, authState, oneSelf } = action.payload!;
 
-        return addResponse(state.set("auth", authState), apiResponse);
+        return addResponse(
+          state.set("auth", authState).set("oneSelf", oneSelf),
+          apiResponse
+        );
       }
     ),
 
@@ -514,12 +517,7 @@ const reducer = handleActions<AppState | undefined, any>(
       state: AppState | undefined,
       action: Action<Languages>
     ) => {
-      const ownId = getOwnUserId(state!);
-
-      return state!.setIn(
-        ["usersMap", ownId.some(), "language"],
-        action.payload
-      );
+      return state!.setIn(["oneSelf", "language"], action.payload);
     }
   },
   initialState

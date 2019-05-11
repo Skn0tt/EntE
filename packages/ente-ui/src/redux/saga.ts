@@ -107,12 +107,12 @@ const onRequestError = (error: Error) => getConfig().onRequestError(error);
 
 function* loginSaga(action: Action<BasicCredentials>) {
   try {
-    const { apiResponse, authState }: api.LoginInfo = yield call(
+    const { apiResponse, authState, oneSelf }: api.LoginInfo = yield call(
       api.login,
       action.payload!
     );
 
-    yield put(loginSuccess({ authState, apiResponse }, action));
+    yield put(loginSuccess({ authState, apiResponse, oneSelf }, action));
   } catch (error) {
     getConfig().onLoginFailedInvalidCredentials();
     yield put(loginError(error, action));
