@@ -20,25 +20,20 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 
 type AuthServiceProps = AuthServiceOwnProps & AuthServiceDispatchProps;
 
-export class AuthService extends React.PureComponent<AuthServiceProps> {
-  timer: NodeJS.Timer;
+const AuthService: React.FC<AuthServiceProps> = props => {
+  const { period, refreshToken } = props;
 
-  componentDidMount() {
-    const { period, refreshToken } = this.props;
-    setTimeout(() => {
+  React.useEffect(
+    () => {
       console.log(`Starting token refresh cycle: Period is '${period}'.`);
-      this.timer = setInterval(refreshToken, period);
-    }, period);
-  }
+      const timer = setInterval(refreshToken, period);
+      return () => clearInterval(timer);
+    },
+    [period, refreshToken]
+  );
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
-  render() {
-    return null;
-  }
-}
+  return null;
+};
 
 export default connect<{}, AuthServiceDispatchProps, AuthServiceOwnProps>(
   undefined,
