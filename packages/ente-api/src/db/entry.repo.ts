@@ -71,7 +71,9 @@ export class EntryRepo {
 
   async createEntry(
     dto: CreateEntryDto,
-    config: { signedByParent: boolean } = { signedByParent: false }
+    config: { signedByParent: boolean } = {
+      signedByParent: false
+    }
   ): Promise<EntryDto> {
     const entry = await this.repo.manager.transaction(
       async (manager): Promise<Entry> => {
@@ -86,7 +88,9 @@ export class EntryRepo {
           reason: !!dto.reason
             ? EntryReasonRepo.fromCreationDto(dto.reason)
             : undefined,
-          signedParent: config.signedByParent,
+          parentSignatureDate: config.signedByParent
+            ? dateToIsoString(Date.now())
+            : null,
           date: dto.date,
           dateEnd: dto.dateEnd,
           slots: await Promise.all(
@@ -121,11 +125,33 @@ export class EntryRepo {
   }
 
   async setSignedManager(id: string, value: boolean) {
-    await this.repo.update(id, { signedManager: value });
+    if (value) {
+      await this.repo.query(
+        `UPDATE entry
+        SET managerSignatureDate = ?
+        WHERE _id = ?
+        AND managerSignatureDate IS NULL;
+        `,
+        [dateToIsoString(Date.now()), id]
+      );
+    } else {
+      await this.repo.update(id, { managerSignatureDate: null });
+    }
   }
 
   async setSignedParent(id: string, value: boolean) {
-    await this.repo.update(id, { signedParent: value });
+    if (value) {
+      await this.repo.query(
+        `UPDATE entry
+        SET parentSignatureDate = ?
+        WHERE _id = ?
+        AND parentSignatureDate IS NULL;
+        `,
+        [dateToIsoString(Date.now()), id]
+      );
+    } else {
+      await this.repo.update(id, { parentSignatureDate: null });
+    }
   }
 
   async delete(id: string) {
@@ -149,8 +175,10 @@ export class EntryRepo {
     result.student = UserRepo.toDto(entry.student);
     result.createdAt = entry.createdAt.toISOString();
     result.updatedAt = entry.updatedAt.toISOString();
-    result.signedManager = !!entry.signedManager;
-    result.signedParent = !!entry.signedParent;
+    result.signedManager = !!entry.managerSignatureDate;
+    result.signedParent = !!entry.parentSignatureDate;
+    result.signedManagerDate = entry.managerSignatureDate;
+    result.signedParentDate = entry.parentSignatureDate;
     result.reason = EntryReasonRepo.toDto(entry.reason);
 
     return result;
