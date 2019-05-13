@@ -76,6 +76,8 @@ const entry: EntryDto = {
   },
   signedManager: false,
   signedParent: false,
+  signedManagerDate: null,
+  signedParentDate: null,
   student: tomTallis,
   slots: [slot]
 };

@@ -15,7 +15,6 @@ import {
   ManyToOne,
   OneToMany
 } from "typeorm";
-import { IsBoolean } from "class-validator";
 import { User } from "./user.entity";
 import { Slot } from "./slot.entity";
 import { EntryReason } from "./entry-reason.entity";
@@ -38,13 +37,11 @@ export class Entry {
   @Column(type => EntryReason)
   reason: EntryReason;
 
-  @Column("tinyint", { nullable: false })
-  @IsBoolean()
-  signedManager: boolean = false;
+  @Column("date", { nullable: true })
+  managerSignatureDate: string | null = null;
 
-  @Column("tinyint", { nullable: false })
-  @IsBoolean()
-  signedParent: boolean = false;
+  @Column("date", { nullable: true })
+  parentSignatureDate: string | null = null;
 
   /**
    * ## Relations

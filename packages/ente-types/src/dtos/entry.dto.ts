@@ -16,7 +16,9 @@ export interface BlackedEntryDto {
   dateEnd?: string;
   reason: EntryReasonDto;
   signedManager: boolean;
+  signedManagerDate: string | null;
   signedParent: boolean;
+  signedParentDate: string | null;
   slots: BlackedSlotDto[];
   student: BlackedUserDto;
   createdAt: string;
@@ -39,7 +41,15 @@ export class EntryDto implements BlackedEntryDto {
 
   @IsBoolean() signedManager: boolean;
 
+  @IsOptional()
+  @IsISO8601()
+  signedManagerDate: string | null;
+
   @IsBoolean() signedParent: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  signedParentDate: string | null;
 
   @Type(() => SlotDto)
   @ValidateNested({ each: true })

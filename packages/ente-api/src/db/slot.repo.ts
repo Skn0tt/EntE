@@ -102,7 +102,8 @@ export class SlotRepo {
       slot.entry.reason.category
     );
     result.isEducational = result.forSchool;
-    result.signed = !!slot.entry.signedManager && !!slot.entry.signedParent;
+    result.signed =
+      !!slot.entry.managerSignatureDate && !!slot.entry.parentSignatureDate;
 
     return result;
   }

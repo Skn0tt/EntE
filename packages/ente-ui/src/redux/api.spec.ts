@@ -62,6 +62,8 @@ const entry: EntryDto = {
   id: "jkdas",
   signedManager: false,
   signedParent: false,
+  signedManagerDate: null,
+  signedParentDate: null,
   slots: [slot],
   student: simon,
   updatedAt: new Date(0).toISOString()
