@@ -27,6 +27,7 @@ import { EntryNotificationQueue } from "./entry-notification.queue";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
+import { parseISO } from "date-fns";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -346,7 +347,12 @@ export class EntriesService {
         await dispatchSignedInfoEmail(patch.signed!);
       } else {
         const expiryDuration = await this.instanceConfigService.getParentSignatureExpiryTime();
-        if (!canEntryStillBeSigned(+entry.some().createdAt, expiryDuration)) {
+        if (
+          !canEntryStillBeSigned(
+            +parseISO(entry.some().createdAt),
+            expiryDuration
+          )
+        ) {
           return Fail(PatchEntryFailure.EntryAlreadyExpired);
         }
 

@@ -489,8 +489,10 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                         entryExpirationTime
                       );
 
+                      const createdAt = +parseISO(entry.get("createdAt"));
+
                       return canEntryStillBeSigned(
-                        +entry.get("createdAt"),
+                        createdAt,
                         entryExpirationTime
                       ) ? (
                         <ListItemSecondaryAction>
@@ -504,7 +506,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                                 <br />({lang.possibleUntil + " "}
                                 {(() => {
                                   const expirationDate = getEntryExpirationTime(
-                                    +entry.get("createdAt"),
+                                    createdAt,
                                     entryExpirationTime
                                   );
                                   return new Date(

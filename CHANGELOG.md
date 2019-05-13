@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed a bug where parents could not sign an entry ([#283](https://gitlab.com/Skn0tt/EntE/issues/283))
 - Fixed bug where re-login was not possible for teachers ([#282](https://gitlab.com/Skn0tt/EntE/issues/282))
 - Add Course filter ([#67](https://gitlab.com/Skn0tt/EntE/issues/67))
 - Add Report for whole grad year ([#232](https://gitlab.com/Skn0tt/EntE/issues/232))
