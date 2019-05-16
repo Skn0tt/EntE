@@ -47,12 +47,7 @@ import {
 import * as querystring from "query-string";
 import { Maybe } from "monet";
 import * as config from "../../config";
-import {
-  makeStyles,
-  createStyles,
-  withStyles,
-  WithStyles
-} from "@material-ui/styles";
+import { createStyles, withStyles, WithStyles } from "@material-ui/styles";
 
 const styles = (theme: Theme) =>
   createStyles({

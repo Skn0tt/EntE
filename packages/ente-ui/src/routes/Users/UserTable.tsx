@@ -2,6 +2,11 @@ import * as React from "react";
 import Table from "../../components/Table";
 import { UserN } from "../../redux";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { useTheme } from "@material-ui/styles";
+import { Theme } from "@material-ui/core";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { UserTableSmallCard } from "./UserTableSmallCard";
+import { RoleChip } from "./RoleChip";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -28,8 +33,10 @@ interface UserTableOwnProps {
 }
 
 export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
-  const { users, onClick } = props;
+  const { users, onClick = () => {} } = props;
   const lang = useTranslation();
+  const theme = useTheme<Theme>();
+  const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Table<UserN>
@@ -59,13 +66,24 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
           name: lang.headers.role,
           extract: user => user.get("role"),
           options: {
-            filter: true
+            filter: true,
+            customBodyRender: role => <RoleChip role={role} />
           }
         }
       ]}
       items={users}
       extractId={user => user.get("id")}
       onClick={onClick}
+      customRowRender={
+        isNarrow
+          ? item => (
+              <UserTableSmallCard
+                user={item}
+                onClick={u => onClick(u.get("id"))}
+              />
+            )
+          : undefined
+      }
     />
   );
 };

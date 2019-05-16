@@ -1,10 +1,9 @@
 import * as React from "react";
 import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
-import { LanguageProvider } from "../helpers/Language-Provider";
-import { getByLanguage } from "ente-types";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
-export const translation = getByLanguage({
+const useTranslation = makeTranslationHook({
   en: {
     textLabels: {
       body: {
@@ -94,45 +93,81 @@ interface TableOwnProps<T> {
   extractId: (item: T) => string;
   onClick?: (id: string) => void;
   title?: string | JSX.Element;
+  customRowRender?: (item: T) => JSX.Element;
 }
 
 type TableProps<T> = TableOwnProps<T>;
 
-export class Table<T> extends React.PureComponent<TableProps<T>> {
-  render() {
-    const { columns, items, extractId, onClick = () => {}, title } = this.props;
+// tslint:disable-next-line:function-name
+export function Table<T>(props: TableProps<T>) {
+  const translation = useTranslation();
+  const {
+    columns,
+    items,
+    extractId,
+    onClick = () => {},
+    title,
+    customRowRender
+  } = props;
 
-    const data = items.map(item => {
-      const id = extractId(item);
-      const cells = columns.map(columnOptions => {
-        return columnOptions.extract(item);
-      });
-      return [id, ...cells];
+  const visibleColumns = columns.filter(c => {
+    const { options } = c;
+    if (!options) {
+      return true;
+    }
+
+    const { display } = options;
+    if (_.isUndefined(display)) {
+      return true;
+    }
+
+    return display;
+  });
+
+  const data = items.map(item => {
+    const id = extractId(item);
+    const cells = columns.map(columnOptions => {
+      return columnOptions.extract(item);
     });
-    const idColumn = { name: "ID", options: { display: false, filter: false } };
+    return [id, ...cells];
+  });
+  const idColumn = { name: "ID", options: { display: false, filter: false } };
 
-    return (
-      <LanguageProvider>
-        {lang => (
-          <MUIDataTable
-            key={items.map(extractId).join("-")}
-            columns={[idColumn, ...columns]}
-            data={data}
-            title={title as any}
-            options={{
-              rowsPerPage: 50,
-              rowsPerPageOptions: [20, 50, 100],
-              selectableRows: false,
-              elevation: 1,
-              responsive: "scroll",
-              onRowClick: (d: any[]) => onClick(d[0]),
-              textLabels: translation(lang).textLabels
-            }}
-          />
-        )}
-      </LanguageProvider>
-    );
-  }
+  return (
+    <MUIDataTable
+      key={
+        "mui-datatable-" +
+        items.map(extractId).join("-") +
+        ";" +
+        (!!customRowRender ? "a" : "b")
+      }
+      columns={[idColumn, ...columns]}
+      data={data}
+      title={title as any}
+      options={{
+        rowsPerPage: 50,
+        rowsPerPageOptions: [20, 50, 100],
+        selectableRows: false,
+        responsive: "scroll",
+        onRowClick: (d: any[]) => onClick(d[0]),
+        textLabels: translation.textLabels,
+        viewColumns: false,
+        customRowRender: !!customRowRender
+          ? (data: any[]) => {
+              const [id] = data;
+              const item = items.find(item => extractId(item) === id);
+              return (
+                <tr key={id}>
+                  <td colSpan={visibleColumns.length}>
+                    {!!item ? customRowRender(item) : null}
+                  </td>
+                </tr>
+              );
+            }
+          : undefined
+      }}
+    />
+  );
 }
 
 export default Table;

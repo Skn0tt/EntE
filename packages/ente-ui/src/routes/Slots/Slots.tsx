@@ -13,9 +13,9 @@ import {
   MapDispatchToPropsParam
 } from "react-redux";
 
-import SignedAvatar from "../elements/SignedAvatar";
+import SignedAvatar from "../../elements/SignedAvatar";
 import { Action } from "redux";
-import { Table } from "../components/Table";
+import { Table } from "../../components/Table";
 import {
   getSlotsRequest,
   getUser,
@@ -23,19 +23,24 @@ import {
   AppState,
   SlotN,
   UserN,
-  getTimeScope
-} from "../redux";
-import withErrorBoundary from "../hocs/withErrorBoundary";
-import { Maybe, None } from "monet";
-import { makeTranslationHook } from "../helpers/makeTranslationHook";
+  getTimeScope,
+  getRole
+} from "../../redux";
+import withErrorBoundary from "../../hocs/withErrorBoundary";
+import { Maybe, None, Some } from "monet";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
-import { getTimeScopeValidator, TimeScope } from "../time-scope";
-import TimeScopeSelectionView from "../components/TimeScopeSelectionView";
-import { Grid } from "@material-ui/core";
-import { CourseFilterButton } from "../components/CourseFilterButton";
-import { CourseFilter, isSlotDuringCourse } from "../helpers/course-filter";
+import { getTimeScopeValidator, TimeScope } from "../../time-scope";
+import TimeScopeSelectionView from "../../components/TimeScopeSelectionView";
+import { Grid, Theme } from "@material-ui/core";
+import { CourseFilterButton } from "../../components/CourseFilterButton";
+import { CourseFilter, isSlotDuringCourse } from "../../helpers/course-filter";
+import { useTheme } from "@material-ui/styles";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
+import { Roles } from "ente-types";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -74,6 +79,7 @@ interface SlotsStateProps {
   slots: SlotN[];
   getUser(id: string): Maybe<UserN>;
   timeScope: TimeScope;
+  role: Roles;
 }
 const mapStateToProps: MapStateToPropsParam<
   SlotsStateProps,
@@ -82,7 +88,8 @@ const mapStateToProps: MapStateToPropsParam<
 > = state => ({
   slots: getSlots(state),
   getUser: id => getUser(id)(state),
-  timeScope: getTimeScope(state)
+  timeScope: getTimeScope(state),
+  role: getRole(state).some()
 });
 
 interface SlotsDispatchProps {
@@ -101,7 +108,9 @@ type SlotsProps = SlotsStateProps & SlotsDispatchProps;
 
 const Slots: React.FunctionComponent<SlotsProps> = props => {
   const lang = useTranslation();
-  const { getUser, slots, requestSlots, timeScope } = props;
+  const { getUser, slots, requestSlots, timeScope, role } = props;
+  const theme = useTheme<Theme>();
+  const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [courseFilter, setCourseFilter] = React.useState<Maybe<CourseFilter>>(
     None()
@@ -138,7 +147,8 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
               .map(user => user.get("displayname"))
               .orSome(""),
           options: {
-            filter: false
+            filter: false,
+            display: role !== Roles.STUDENT
           }
         },
         {
@@ -186,7 +196,8 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
                   .orSome("")
             ),
           options: {
-            filter: false
+            filter: false,
+            display: role !== Roles.TEACHER
           }
         }
       ]}
@@ -203,6 +214,26 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
       }
       items={slotsInCourse}
       extractId={user => user.get("id")}
+      customRowRender={
+        isNarrow
+          ? slot => (
+              <SlotsTableSmallCard
+                slot={slot}
+                role={role}
+                studentName={getUser(slot.get("studentId"))
+                  .map(s => s.get("displayname"))
+                  .orSome("")}
+                teacherName={
+                  !!slot.get("teacherId")
+                    ? getUser(slot.get("teacherId")!)
+                        .map(t => t.get("displayname"))
+                        .orSome("")
+                    : lang.deleted
+                }
+              />
+            )
+          : undefined
+      }
     />
   );
 };

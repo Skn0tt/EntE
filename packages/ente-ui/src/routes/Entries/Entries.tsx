@@ -19,7 +19,8 @@ import {
   getEntriesRequest,
   EntryN,
   UserN,
-  getTimeScope
+  getTimeScope,
+  getRole
 } from "../../redux";
 import { Action } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
@@ -33,10 +34,14 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
-import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { getTimeScopeValidator, TimeScope } from "../../time-scope";
-import { EntryReasonCategory } from "ente-types";
+import { EntryReasonCategory, Roles } from "ente-types";
 import TimeScopeSelectionView from "../../components/TimeScopeSelectionView";
+import { useTheme } from "@material-ui/styles";
+import { Theme } from "@material-ui/core";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
+import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -48,7 +53,6 @@ const useTranslation = makeTranslationHook({
       manager: "Manager",
       parents: "Parents"
     },
-    reasonCategories: EntryReasonCategoriesTranslation.en,
     yes: "Yes",
     no: "No",
     locale: enLocale
@@ -62,7 +66,6 @@ const useTranslation = makeTranslationHook({
       manager: "Stufenleiter",
       parents: "Eltern"
     },
-    reasonCategories: EntryReasonCategoriesTranslation.de,
     yes: "Ja",
     no: "Nein",
     locale: deLocale
@@ -76,12 +79,14 @@ interface EntriesStateProps {
   canCreateEntries: Maybe<boolean>;
   getUser(id: string): Maybe<UserN>;
   timeScope: TimeScope;
+  ownRole: Roles;
 }
 const mapStateToProps = (state: AppState): EntriesStateProps => ({
   entries: getEntries(state),
   canCreateEntries: canCreateEntries(state),
   getUser: (id: string) => getUser(id)(state),
-  timeScope: getTimeScope(state)
+  timeScope: getTimeScope(state),
+  ownRole: getRole(state).some()
 });
 
 interface EntriesDispatchProps {
@@ -108,10 +113,14 @@ export const Entries: React.FunctionComponent<Props> = props => {
     getUser,
     history,
     requestEntries,
-    timeScope
+    timeScope,
+    ownRole
   } = props;
 
   const lang = useTranslation();
+
+  const theme = useTheme<Theme>();
+  const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [createEntryIsVisible, setCreateEntryIsVisible] = React.useState(false);
 
@@ -140,6 +149,13 @@ export const Entries: React.FunctionComponent<Props> = props => {
     [entries, timeScope]
   );
 
+  const handleClick = React.useCallback(
+    (id: string) => {
+      history.push(`/entries/${id}`);
+    },
+    [history]
+  );
+
   return (
     <React.Fragment>
       {/* Modals */}
@@ -155,7 +171,8 @@ export const Entries: React.FunctionComponent<Props> = props => {
                 .map(e => e.get("displayname"))
                 .orSome(""),
             options: {
-              filter: false
+              filter: false,
+              display: ownRole !== Roles.STUDENT
             }
           },
           {
@@ -181,8 +198,9 @@ export const Entries: React.FunctionComponent<Props> = props => {
             extract: e => e.get("reason").category,
             options: {
               filter: true,
-              customBodyRender: (category: EntryReasonCategory) =>
-                lang.reasonCategories[category]
+              customBodyRender: (category: EntryReasonCategory) => (
+                <EntryReasonCategoryChip reasonCategory={category} />
+              )
             }
           },
           {
@@ -199,7 +217,19 @@ export const Entries: React.FunctionComponent<Props> = props => {
         title={<TimeScopeSelectionView />}
         items={entriesInScope}
         extractId={entry => entry.get("id")}
-        onClick={id => history.push(`/entries/${id}`)}
+        onClick={handleClick}
+        customRowRender={
+          isNarrow
+            ? entry => (
+                <EntriesTableSmallCard
+                  entry={entry}
+                  role={ownRole}
+                  student={getUser(entry.get("studentId"))}
+                  onClick={entry => handleClick(entry.get("id"))}
+                />
+              )
+            : undefined
+        }
       />
 
       {/* FAB */}

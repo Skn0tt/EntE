@@ -33,7 +33,16 @@ export const createTheme = _.memoize(
           responsiveScroll: {
             flexGrow: 1,
             maxHeight: undefined
+          },
+          tableRoot: {
+            tableLayout: "fixed"
           }
+        },
+        MUIDataTableHeadCell: {
+          toolButton: { display: "flex" }
+        },
+        MUIDataTableToolbar: {
+          root: { minHeight: "auto" }
         },
         MUIDataTablePagination: {
           toolbar: {

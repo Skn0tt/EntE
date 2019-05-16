@@ -3,7 +3,6 @@ import {
   EntryReasonCategory,
   entryReasonCategoryArray,
   EntryReasonPayload,
-  EntryReasonDto,
   entryReasonCategoryIsAllowedInMultiday,
   REASON_CATEGORIES_ALLOWED_IN_MULTIDAY
 } from "ente-types";
