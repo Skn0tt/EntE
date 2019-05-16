@@ -109,9 +109,11 @@ import { getOwnUserId } from "./selectors";
 
 const addResponse = (state: AppState, apiResponse: APIResponse) =>
   state
-    .mergeIn(["usersMap"], apiResponse.users)
-    .mergeIn(["entriesMap"], apiResponse.entries)
-    .mergeIn(["slotsMap"], apiResponse.slots);
+    .update("usersMap", map =>
+      map.mergeDeepWith((old, newV) => newV, apiResponse.users)
+    )
+    .mergeDeepIn(["entriesMap"], apiResponse.entries)
+    .mergeDeepIn(["slotsMap"], apiResponse.slots);
 
 const addResponseUpdater = (
   state: AppState,
