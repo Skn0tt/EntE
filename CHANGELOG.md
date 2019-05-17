@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.23.0] - 2019-05-17
+
 - Fixed a bug where parents could not sign an entry ([#283](https://gitlab.com/Skn0tt/EntE/issues/283))
 - EntE now stores the date a signature was given ([#283](https://gitlab.com/Skn0tt/EntE/issues/283))
 - Add mobile-friendly versions of the tables ([#205](https://gitlab.com/Skn0tt/EntE/issues/205))
