@@ -128,7 +128,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = props => {
           [Roles.PARENT]: <ParentItems />,
           [Roles.STUDENT]: <StudentItems />,
           [Roles.MANAGER]: <ManagerItems />
-        }[role.some()]
+        }[role.orSome(Roles.PARENT)]
       }
     </List>
   );
