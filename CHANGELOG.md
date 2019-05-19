@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.23.1] - 2019-05-19
+
 - Fixed a crash on updating ([#285](https://gitlab.com/Skn0tt/EntE/issues/285))
 
 ## [v0.23.0] - 2019-05-17
