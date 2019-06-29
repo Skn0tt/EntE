@@ -1,6 +1,6 @@
-# EntE:
+# EntE
 
-> Etymology: **Ent**schuldigungsverfahren (german for _excude procedure_) + **E**lectronic
+> Etymology: **Ent**schuldigungsverfahren (german for _excuse procedure_) + **E**lectronic
 
 Digital Excuse Workflow for Schools.
 
