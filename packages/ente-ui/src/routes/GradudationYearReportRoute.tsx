@@ -42,7 +42,7 @@ const useTranslation = makeTranslationHook({
       hourRate: "Hour rate"
     },
     year: "Graduation year",
-    noUsers: "No users found.",
+    noUsers: "No students found.",
     openReport: "Open Report"
   },
   de: {
@@ -54,7 +54,7 @@ const useTranslation = makeTranslationHook({
       hourRate: "Stundenrate"
     },
     year: "Jahrgangsstufe",
-    noUsers: "Keine Nutzer*innen gefunden.",
+    noUsers: "Keine Schüler*innen gefunden.",
     openReport: "Bericht öffnen"
   }
 });
