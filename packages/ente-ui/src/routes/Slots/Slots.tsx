@@ -179,7 +179,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
           extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
         },
         {
-          name: lang.headers.from,
+          name: lang.headers.signed,
           extract: slot => (slot.get("signed") ? lang.yes : lang.no),
           options: {
             customBodyRender: s => <SignedAvatar signed={s === lang.yes} />
