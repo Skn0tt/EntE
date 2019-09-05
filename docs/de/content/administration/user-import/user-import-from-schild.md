@@ -8,7 +8,7 @@ Wenn ihre Schule das SchiLD-Verwaltungstool nutzt, können sie ihre Schüler und
 
 ## Wie erstelle ich den SchiLD-Export?
 
-Verwenden sie die [bereitgestellte Export-Vorlage für SchiLD template](https://gitlab.com/Skn0tt/EntE/raw/master/docs/assets/example-import.csv?inline=false), um ihre Daten aus SchiLD zu exportieren.
+Verwenden sie die [bereitgestellte Export-Vorlage für SchiLD template](https://gitlab.com/Skn0tt/EntE/raw/master/docs/assets/SchiLD%20Template.txt?inline=false), um ihre Daten aus SchiLD zu exportieren.
 
 ## Wie importiere ich den SchiLD-Export in EntE?
 

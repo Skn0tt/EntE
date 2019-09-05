@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed a bug where slots would appear doubled when signing an entry ([#292](https://gitlab.com/Skn0tt/EntE/issues/292))
+- Fixed link to SchiLD-Tempalate in Docs ([#290](https://gitlab.com/Skn0tt/EntE/issues/290))
 
 ## [v0.23.1] - 2019-05-19
 
