@@ -371,6 +371,20 @@ export class EntriesService {
 
         await this.entryRepo.setSignedParent(id, patch.signed);
         entry.some().signedParent = patch.signed;
+
+        const dispatchSignedInfoEmail = async () => {
+          const entryStudent = entry.some().student;
+          const parentsOfStudent = userIsAdult(entryStudent)
+            ? []
+            : (await this.userRepo.getParentsOfUser(entryStudent.id)).some();
+
+          const recipients = [entryStudent, ...parentsOfStudent];
+
+          const link = this.getSigningLinkForEntry(entry.some());
+          await this.emailService.dispatchSignedInformation(link, recipients);
+        };
+
+        await dispatchSignedInfoEmail();
       }
     }
 
