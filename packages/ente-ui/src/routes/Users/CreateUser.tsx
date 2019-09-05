@@ -110,18 +110,22 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
   } = dto;
 
   const result: CreateUserDto = {
-    children,
     displayname,
     email,
     password,
     role,
     username,
-    language
+    language,
+    children: []
   };
 
   switch (role) {
     case Roles.MANAGER:
       result.graduationYear = graduationYear;
+      break;
+
+    case Roles.PARENT:
+      result.children = children;
       break;
 
     case Roles.STUDENT:

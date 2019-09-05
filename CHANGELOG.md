@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed link to SchiLD-Tempalate in Docs ([#290](https://gitlab.com/Skn0tt/EntE/issues/290))
 - Dispatch SignedInformation when parent signs an entry ([#289](https://gitlab.com/Skn0tt/EntE/issues/289))
 - Fixed wrong language string showing on Slots page ([#288](https://gitlab.com/Skn0tt/EntE/issues/288))
+- Fixed a bug where creating a manager wasnt allowed after having children selected ([#296](https://gitlab.com/Skn0tt/EntE/issues/296))
 
 ## [v0.23.1] - 2019-05-19
 
