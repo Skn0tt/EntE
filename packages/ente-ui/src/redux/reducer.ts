@@ -88,9 +88,6 @@ import {
   AppState,
   AuthState,
   APIResponse,
-  UserN,
-  SlotN,
-  EntryN,
   InstanceConfigN,
   ParentSignatureTimesN
 } from "./types";
@@ -105,7 +102,6 @@ import {
 } from "./actions";
 import { TimeScope } from "../time-scope";
 import { ColorScheme } from "../theme";
-import { getOwnUserId } from "./selectors";
 
 const addResponse = (state: AppState, apiResponse: APIResponse) =>
   state
@@ -113,6 +109,9 @@ const addResponse = (state: AppState, apiResponse: APIResponse) =>
       map.mergeDeepWith((old, newV) => newV, apiResponse.users)
     )
     .mergeDeepIn(["entriesMap"], apiResponse.entries)
+    .update("entriesMap", entries =>
+      entries.map(entry => entry.update("slotIds", _.uniq))
+    )
     .mergeDeepIn(["slotsMap"], apiResponse.slots);
 
 const addResponseUpdater = (
