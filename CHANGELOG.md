@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed a bug where slots would appear doubled when signing an entry ([#292](https://gitlab.com/Skn0tt/EntE/issues/292))
+
 ## [v0.23.1] - 2019-05-19
 
 - Fixed a crash on updating ([#285](https://gitlab.com/Skn0tt/EntE/issues/285))
