@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v0.24.1] - 2019-09-06
+## [v0.24.2] - 2019-09-06
 
 Republished `v0.24.0` due to versioning error.
 
-## [v0.24.0] - 2019-09-06
+## [v0.24.0] - 2019-09-06 (not available)
 
 - Fixed a bug where slots would appear doubled when signing an entry ([#292](https://gitlab.com/Skn0tt/EntE/issues/292))
 - Fixed link to SchiLD-Tempalate in Docs ([#290](https://gitlab.com/Skn0tt/EntE/issues/290))
