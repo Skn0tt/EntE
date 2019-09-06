@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { ClientFunction } from "testcafe";
+import { ClientFunction, t } from "testcafe";
 import config from "./config";
 
 const { baseUrl } = config;
@@ -16,7 +16,7 @@ fixture("Login Form").page(baseUrl!);
 const USERNAME = "admin";
 const PASSWORD = "root";
 
-test("Login", async t => {
+test("Login", async () => {
   await t
     .typeText("#name", USERNAME)
     .typeText("#password", PASSWORD)

@@ -20,12 +20,12 @@ import {
 /**
  * Validates a username
  * Rules:
- * - 4-100 characters
+ * - 1-100 characters
  * - Can contain numbers
  * - No Special Characters
  */
 export const isValidUsername: SyncValidator<string> = matches([
-  isLength(4, 100),
+  isLength(1, 100),
   not(containsForbiddenChars),
   not(containsSpaces)
 ]);
