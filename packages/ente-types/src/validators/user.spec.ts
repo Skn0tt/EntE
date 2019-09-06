@@ -15,6 +15,7 @@ import {
   isValidUuid
 } from "./user";
 import { rolesArr } from "ente-types";
+import "jest";
 
 describe("isValidRole", () => {
   describe("when passed a role returns true", () => {
@@ -111,6 +112,18 @@ describe("isValidUsername", () => {
         expect(isValidUsername(r)).to.be.false;
       });
     });
+  });
+
+  describe("when passed a very short username it returns true", () => {
+    ["ema", "pho", "lu", "l"].forEach(r => {
+      it(r, () => {
+        expect(isValidUsername(r)).to.be.true;
+      });
+    });
+  });
+
+  test("when passed empty username it returns false", () => {
+    expect(isValidUsername("")).to.be.false;
   });
 });
 
