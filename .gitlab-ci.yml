@@ -164,6 +164,7 @@ deploy:pages:
     - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name product-website assets/pages/dist)
     - sleep 10
     - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT ente.app
+    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT www.ente.app
 
 deploy:coverage:
   <<: *now_deploy_template
