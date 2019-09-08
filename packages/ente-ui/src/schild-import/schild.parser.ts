@@ -12,12 +12,15 @@ const ERZIEHER_EMAIL = "Erzieher: E-Mail";
 const EMAIL_PRIVAT = "E-Mail (privat)";
 const GEBURTSDATUM = "Geburtsdatum";
 
-const sanitizeUsername = (username: string) =>
-  username.toLowerCase().replace(" ", "_");
+const replaceAll = (input: string, replace: string, by: string) =>
+  input.split(replace).join(by);
 
-const deriveUsername = (firstname: string, lastname: string) => {
+export const sanitizeName = (username: string) =>
+  replaceAll(username.toLowerCase(), " ", "_");
+
+export const deriveUsername = (firstname: string, lastname: string) => {
   const username = `${firstname}.${lastname}`;
-  return sanitizeUsername(username);
+  return sanitizeName(username);
 };
 
 const deriveDisplayname = (firstname: string, lastname: string) => {
@@ -97,7 +100,7 @@ const parseInput = (input: any[]) => {
         children: []
       },
       {
-        username: v.parent.lastName,
+        username: sanitizeName(v.parent.lastName),
         displayname: deriveDisplayname(v.parent.firstName, v.parent.lastName),
         email: v.parent.email,
         role: Roles.PARENT,
