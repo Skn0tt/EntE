@@ -2,8 +2,6 @@ import * as React from "react";
 import { Maybe, Some, None } from "monet";
 import { CreateUserDto } from "ente-types";
 import { parseCSVFromFile } from "../../helpers/parser";
-import { AppState, getStudents } from "../../redux";
-import { MapStateToPropsParam, connect } from "react-redux";
 import { ValidationError } from "class-validator";
 import { Grid } from "@material-ui/core";
 import ErrorDisplay from "./ErrorDisplay";
@@ -11,23 +9,13 @@ import ImportDropzone from "./ImportDropzone";
 
 interface CsvImportMethodOwnProps {
   onImport: (u: Maybe<CreateUserDto[]>) => void;
+  existingUsernames: string[];
 }
 
-interface CsvImportMethodStateProps {
-  usernames: string[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  CsvImportMethodStateProps,
-  CsvImportMethodOwnProps,
-  AppState
-> = state => ({
-  usernames: getStudents(state).map(u => u.get("username"))
-});
-
-type CsvImportMethodProps = CsvImportMethodOwnProps & CsvImportMethodStateProps;
+type CsvImportMethodProps = CsvImportMethodOwnProps;
 
 const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
-  const { onImport, usernames } = props;
+  const { onImport, existingUsernames } = props;
 
   const [errors, setErrors] = React.useState<
     Maybe<(ValidationError | string)[]>
@@ -35,7 +23,7 @@ const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
 
   const handleDrop = React.useCallback(
     async (input: string) => {
-      const result = await parseCSVFromFile(input, usernames);
+      const result = await parseCSVFromFile(input, existingUsernames);
       result.forEach(success => {
         onImport(Some(success));
         setErrors(None());
@@ -45,7 +33,7 @@ const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
         setErrors(Some(fail));
       });
     },
-    [setErrors, onImport]
+    [setErrors, onImport, existingUsernames]
   );
 
   return (
@@ -64,4 +52,4 @@ const CsvImportMethod: React.FC<CsvImportMethodProps> = props => {
   );
 };
 
-export default connect(mapStateToProps)(CsvImportMethod);
+export default CsvImportMethod;

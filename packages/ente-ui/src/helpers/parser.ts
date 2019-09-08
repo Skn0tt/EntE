@@ -19,12 +19,32 @@ export const parseCSVFromFile = async (
   existingUsernames: string[]
 ) => await parseCSV(s, existingUsernames);
 
+export const validateCreateUserDtos = (
+  dtos: CreateUserDto[],
+  existingStudentUsernames: string[]
+): Validation<(ValidationError | string)[], CreateUserDto[]> => {
+  const errors: (ValidationError | string)[] = [];
+  const validations = dtos.map(CreateUserDtoValidator.validateWithErrors);
+  validations.forEach(validation => {
+    validation.forEachFail(fail => {
+      errors.push(...fail);
+    });
+  });
+
+  const usernames = dtos.map(u => u.username).concat(existingStudentUsernames);
+  const childrenThatDontExist = dtos.reduce<string[]>((acc, user) => {
+    const notExistant = user.children.filter(c => !usernames.includes(c));
+    return acc.concat(notExistant);
+  }, []);
+  errors.push(...childrenThatDontExist.map(c => `Unknown child: ${c}`));
+
+  return errors.length === 0 ? Success(dtos) : Fail(errors);
+};
+
 const parseCSV = async (
   input: string,
   existingUsernames: string[]
 ): Promise<Validation<(ValidationError | string)[], CreateUserDto[]>> => {
-  const errors: (ValidationError | string)[] = [];
-
   const parsed = await parse(input.trim());
 
   const result: CreateUserDto[] = parsed.data.map((row: any) => {
@@ -44,21 +64,7 @@ const parseCSV = async (
     return res;
   });
 
-  const validations = result.map(CreateUserDtoValidator.validateWithErrors);
-  validations.forEach(validation => {
-    validation.forEachFail(fail => {
-      errors.push(...fail);
-    });
-  });
-
-  const usernames = result.map(u => u.username).concat(existingUsernames);
-  const childrenThatDontExist = result.reduce<string[]>((acc, user) => {
-    const notExistant = user.children.filter(c => !usernames.includes(c));
-    return acc.concat(notExistant);
-  }, []);
-  errors.push(...childrenThatDontExist.map(c => `Unknown child: ${c}`));
-
-  return errors.length === 0 ? Success(result) : Fail(errors);
+  return validateCreateUserDtos(result, existingUsernames);
 };
 
 const parse = (input: string) =>

@@ -26,7 +26,7 @@ import {
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
-import { AppState, UserN, importUsersRequest } from "../../redux";
+import { AppState, UserN, importUsersRequest, getStudents } from "../../redux";
 import * as _ from "lodash";
 import { UserTable } from "../Users/UserTable";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
@@ -130,12 +130,16 @@ interface ImportUsersDialogOwnProps {
   show: boolean;
 }
 
-interface ImportUsersDialogStateProps {}
+interface ImportUsersDialogStateProps {
+  existingStudentUsernames: string[];
+}
 const mapStateToProps: MapStateToPropsParam<
   ImportUsersDialogStateProps,
   ImportUsersDialogOwnProps,
   AppState
-> = state => ({});
+> = state => ({
+  existingStudentUsernames: getStudents(state).map(s => s.get("username"))
+});
 
 interface ImportUsersDialogDispatchProps {
   importUsers: (
@@ -168,7 +172,13 @@ type ImportUsersDialogProps = ImportUsersDialogOwnProps &
 const ImportUsersDialog: React.FunctionComponent<
   ImportUsersDialogProps
 > = props => {
-  const { fullScreen, show, onClose, importUsers } = props;
+  const {
+    fullScreen,
+    show,
+    onClose,
+    importUsers,
+    existingStudentUsernames
+  } = props;
   const translation = useTranslation();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
@@ -198,6 +208,11 @@ const ImportUsersDialog: React.FunctionComponent<
   );
 
   const inputIsValid = users.isSome();
+
+  const existingStudentsWillBeDeleted = deleteUsers || deleteStudentsAndParents;
+  const visibleExistingUsernames: string[] = existingStudentsWillBeDeleted
+    ? []
+    : existingStudentUsernames;
 
   return (
     <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
@@ -244,9 +259,17 @@ const ImportUsersDialog: React.FunctionComponent<
             />
           </Grid>
 
-          {importMethod === "csv" && <CsvImportMethod onImport={setUsers} />}
+          {importMethod === "csv" && (
+            <CsvImportMethod
+              onImport={setUsers}
+              existingUsernames={visibleExistingUsernames}
+            />
+          )}
           {importMethod === "schild" && (
-            <SchiLDImportMethod onImport={setUsers} />
+            <SchiLDImportMethod
+              onImport={setUsers}
+              existingUsernames={visibleExistingUsernames}
+            />
           )}
 
           {users
