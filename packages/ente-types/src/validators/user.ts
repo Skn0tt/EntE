@@ -16,6 +16,7 @@ import {
   containsForbiddenChars,
   SyncValidator
 } from "./shared";
+import { containsUnknownChar } from "./containsUnknownChar";
 
 /**
  * Validates a username
@@ -26,6 +27,7 @@ import {
  */
 export const isValidUsername: SyncValidator<string> = matches([
   isLength(1, 100),
+  not(containsUnknownChar),
   not(containsForbiddenChars),
   not(containsSpaces)
 ]);
