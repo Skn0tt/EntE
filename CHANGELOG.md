@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.24.3] - 2019-09-08
+
 - Validate SchiLD imports on the client side before importing ([#298](https://gitlab.com/Skn0tt/EntE/issues/298))
 - Check username for containing "�" character ([#297](https://gitlab.com/Skn0tt/EntE/issues/297))
-
 - Fixed a bug in the SchiLD parser that produced an error when trying to import users with more than one space in their username ([#299](https://gitlab.com/Skn0tt/EntE/issues/299))
 
 ## [v0.24.2] - 2019-09-06
