@@ -15,7 +15,8 @@
   ],
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "preversion": "yarn test:unit && ./scripts/dockerapp-version.js update",
+    "preversion": "yarn test:unit",
+    "version": "./scripts/dockerapp-version.js update",
     "test:tsc": "yarn tsc",
     "test:unit": "yarn jest",
     "test:unit:watch": "yarn jest --watch",
