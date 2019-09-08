@@ -2,6 +2,7 @@ import * as Papa from "papaparse";
 import { getYear, parseISO } from "date-fns";
 import * as _ from "lodash";
 import { CreateUserDto, Roles } from "ente-types";
+import { validateCreateUserDtos } from "../helpers/parser";
 
 const VORNAME = "Vorname";
 const NACHNAME = "Nachname";
@@ -131,7 +132,7 @@ const parseInput = (input: any[]) => {
       .map(s => s.username)
   }));
 
-  const studentsWithoutParentEmail = students.map(s =>
+  const studentsWithoutParentEmail: CreateUserDto[] = students.map(s =>
     _.omit(s, "parentEmail")
   );
 
@@ -145,6 +146,14 @@ export const parse = (input: string) => {
   return users;
 };
 
+export const parseWithValidation = (
+  input: string,
+  existingStudentUsernames: string[]
+) => {
+  const rows = parse(input);
+  return validateCreateUserDtos(rows, existingStudentUsernames);
+};
+
 export const SchildParser = {
-  parse
+  parseWithValidation
 };
