@@ -2,6 +2,14 @@
 title: Ablauf
 ---
 
+<video width="400" controls>
+  <source
+    src="https://gitlab.com/Skn0tt/EntE/raw/master/assets/video/Einleitung%20EntE.mp4?inline=false"
+    type="video/mp4"
+  >
+  Your browser does not support HTML5 video.
+</video>
+
 Auf dieser Seite wird beschrieben, wie das Entschuldigungsverfahren mit EntE abläuft.
 
 Im Herzen des Verfahrens steht der Entschuldigungs-Eintrag, der ein Versäumnis abbildet.
