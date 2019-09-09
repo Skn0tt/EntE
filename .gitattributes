@@ -19,3 +19,4 @@ doc/Paper/Screenshot-entries.png filter=lfs diff=lfs merge=lfs -text
 doc/out/Logo[[:space:]]mit[[:space:]]Schrift[[:space:]]Artboard.png filter=lfs diff=lfs merge=lfs -text
 packages/ente-ui/src/res/img/Diggie.png filter=lfs diff=lfs merge=lfs -text
 assets/video/Intro.mp4 filter=lfs diff=lfs merge=lfs -text
+assets/video/Einleitung[[:space:]]EntE.mp4 filter=lfs diff=lfs merge=lfs -text
