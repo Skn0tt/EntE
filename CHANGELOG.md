@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add API endpoint for invoking the invitation routine manually ([#299](https://gitlab.com/Skn0tt/EntE/issues/299))
+
 ## [v0.24.3] - 2019-09-08
 
 - Validate SchiLD imports on the client side before importing ([#298](https://gitlab.com/Skn0tt/EntE/issues/298))
