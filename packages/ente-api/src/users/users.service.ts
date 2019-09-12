@@ -58,6 +58,11 @@ export enum SetLanguageFailure {
   IllegalLanguage
 }
 
+export enum InvokeInvitationEmailFailure {
+  UserNotFound,
+  ForbiddenForUser
+}
+
 @Injectable()
 export class UsersService implements OnModuleInit {
   constructor(
@@ -412,6 +417,27 @@ export class UsersService implements OnModuleInit {
     );
 
     return Success(userV.success());
+  }
+
+  async invokeInvitationRoutine(
+    id: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<InvokeInvitationEmailFailure, true>> {
+    if (requestingUser.role !== Roles.ADMIN) {
+      return Fail(InvokeInvitationEmailFailure.ForbiddenForUser);
+    }
+
+    const user = await this.userRepo.findById(id);
+    return await user.cata<
+      Promise<Validation<InvokeInvitationEmailFailure, true>>
+    >(
+      async () => Fail(InvokeInvitationEmailFailure.UserNotFound),
+      async userDto => {
+        await this.passwordResetService.invokeInvitationRoutine(userDto);
+
+        return Success<InvokeInvitationEmailFailure, true>(true);
+      }
+    );
   }
 
   static blackenDto(user: UserDto, role: Roles): BlackedUserDto {

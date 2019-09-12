@@ -14,7 +14,8 @@ import {
   Inject,
   UseGuards,
   Delete,
-  Put
+  Put,
+  InternalServerErrorException
 } from "@nestjs/common";
 import {
   UsersService,
@@ -23,7 +24,8 @@ import {
   FindAllUsersFailure,
   FindOneUserFailure,
   DeleteUserFailure,
-  SetLanguageFailure
+  SetLanguageFailure,
+  InvokeInvitationEmailFailure
 } from "./users.service";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
@@ -184,6 +186,28 @@ export class UsersController {
         }
       },
       user => user
+    );
+  }
+
+  @Post(":id/invokeInvitationRoutine")
+  async invokeInvitationRoutine(
+    @Param("id") id: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<string> {
+    const result = await this.usersService.invokeInvitationRoutine(
+      id,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case InvokeInvitationEmailFailure.ForbiddenForUser:
+            throw new ForbiddenException();
+          case InvokeInvitationEmailFailure.UserNotFound:
+            throw new NotFoundException();
+        }
+      },
+      () => "Successfully invoked routine."
     );
   }
 }
