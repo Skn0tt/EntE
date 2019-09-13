@@ -22,7 +22,9 @@ import {
   IconButton,
   withStyles,
   WithStyles,
-  createStyles
+  createStyles,
+  Menu,
+  MenuItem
 } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
@@ -31,7 +33,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DeleteIcon from "@material-ui/icons/Delete";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import LoadingIndicator from "../elements/LoadingIndicator";
 import * as _ from "lodash";
 import {
@@ -44,7 +46,8 @@ import {
   updateUserRequest,
   UserN,
   deleteUserRequest,
-  roleHasGradYear
+  roleHasGradYear,
+  getToken
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import {
@@ -61,11 +64,15 @@ import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { DateInput } from "../elements/DateInput";
 import { Link } from "react-router-dom";
+import { useMessages } from "../context/Messages";
+import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 
 const useTranslation = makeTranslationHook({
   en: {
     submit: "OK",
     close: "Close",
+    deleteUser: "Delete User",
+    resendInvitationEmail: "Resend invitation email",
     titles: {
       email: "Email",
       displayname: "Displayname",
@@ -78,13 +85,19 @@ const useTranslation = makeTranslationHook({
         `Are you sure you want to delete user "${username}"?`
     },
     ariaLabels: {
-      delete: "Delete"
+      openMenu: "Open Menu"
     },
-    openReport: "Open Report"
+    openReport: "Open Report",
+    invitationRoutine: {
+      error: "An error occured.",
+      success: "Invitation has been dispatched successfully."
+    }
   },
   de: {
     submit: "OK",
     close: "Schließen",
+    deleteUser: "Benutzer löschen",
+    resendInvitationEmail: "Einladungs-Email erneut verschicken",
     titles: {
       email: "Email",
       displayname: "Displayname",
@@ -97,14 +110,18 @@ const useTranslation = makeTranslationHook({
         `Sind Sie sicher, dass Sie den Nutzer "${username}" löschen möchten?`
     },
     ariaLabels: {
-      delete: "Löschen"
+      openMenu: "Menü öffnen"
     },
-    openReport: "Bericht öffnen"
+    openReport: "Bericht öffnen",
+    invitationRoutine: {
+      error: "Es ist ein Fehler aufgetreten.",
+      success: "Einladung wurde erfolgreich versandt."
+    }
   }
 });
 
-const styles = createStyles<"deleteButton">({
-  deleteButton: {
+const styles = createStyles<"menuButton">({
+  menuButton: {
     position: "absolute",
     top: 0,
     right: 0
@@ -121,6 +138,7 @@ interface SpecificUserStateProps {
   getUser(id: string): Maybe<UserN>;
   loading: boolean;
   students: UserN[];
+  token: string;
 }
 const mapStateToProps: MapStateToPropsParam<
   SpecificUserStateProps,
@@ -129,7 +147,8 @@ const mapStateToProps: MapStateToPropsParam<
 > = state => ({
   getUser: id => getUser(id)(state),
   loading: isLoading(state),
-  students: getStudents(state)
+  students: getStudents(state),
+  token: getToken(state).some()
 });
 
 interface SpecificUserDispatchProps {
@@ -152,7 +171,7 @@ type SpecificUserProps = SpecificUserStateProps &
   SpecificUserOwnProps &
   RouteComponentProps<RouteMatch> &
   SpecificUserDispatchProps &
-  WithStyles<"deleteButton"> &
+  WithStyles<"menuButton"> &
   InjectedProps;
 
 /**
@@ -174,7 +193,8 @@ export const SpecificUser: React.FunctionComponent<
     updateUser,
     history,
     match,
-    requestUser
+    requestUser,
+    token
   } = props;
 
   const userId = match.params.userId;
@@ -204,6 +224,31 @@ export const SpecificUser: React.FunctionComponent<
     onClose();
   };
 
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState<HTMLElement | null>(
+    null
+  );
+  const showMenu = !!menuAnchorEl;
+
+  const { addMessages } = useMessages();
+
+  const handleInvokeInvitationRoutine = React.useCallback(
+    () => {
+      async function doIt() {
+        const result = await invokeInvitationRoutine(userId, token);
+        result.forEachFail(console.error);
+        addMessages(
+          result.cata(
+            () => lang.invitationRoutine.error,
+            () => lang.invitationRoutine.success
+          )
+        );
+      }
+
+      doIt();
+    },
+    [token, addMessages, userId, lang]
+  );
+
   return user.cata(
     () => <LoadingIndicator />,
     user => (
@@ -224,12 +269,33 @@ export const SpecificUser: React.FunctionComponent<
               <DialogTitle>
                 {user.get("displayname")}
                 <IconButton
-                  aria-label={lang.ariaLabels.delete}
-                  onClick={() => setShowDelete(true)}
-                  className={classes.deleteButton}
+                  aria-label={lang.ariaLabels.openMenu}
+                  className={classes.menuButton}
+                  onClick={evt => setMenuAnchorEl(evt.currentTarget)}
                 >
-                  <DeleteIcon fontSize="large" />
+                  <MoreVertIcon fontSize="large" />
                 </IconButton>
+                <Menu
+                  anchorEl={menuAnchorEl}
+                  keepMounted
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={showMenu}
+                  onClose={() => setMenuAnchorEl(null)}
+                >
+                  <MenuItem onClick={() => setShowDelete(true)}>
+                    {lang.deleteUser}
+                  </MenuItem>
+                  <MenuItem onClick={handleInvokeInvitationRoutine}>
+                    {lang.resendInvitationEmail}
+                  </MenuItem>
+                </Menu>
               </DialogTitle>
               <DialogContent>
                 <Grid container spacing={24} alignItems="stretch">
