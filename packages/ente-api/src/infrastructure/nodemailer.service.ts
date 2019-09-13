@@ -8,6 +8,7 @@ import { Config } from "../helpers/config";
 import * as nodemailer from "nodemailer";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { EmailTransportService, Envelope } from "./email-transport.service";
+import { Success, Fail, Validation } from "monet";
 
 @Injectable()
 export class NodemailerService implements EmailTransportService, OnModuleInit {
@@ -39,13 +40,25 @@ export class NodemailerService implements EmailTransportService, OnModuleInit {
     }
   }
 
-  async sendMail(envelope: Envelope) {
-    await this.transport.sendMail({
-      to: envelope.recipients,
-      subject: envelope.subject,
-      text: envelope.body.text,
-      html: envelope.body.html,
-      from: this.sender
-    });
+  async sendMail(envelope: Envelope): Promise<Validation<string, void>> {
+    try {
+      await this.transport.sendMail({
+        to: envelope.recipients,
+        subject: envelope.subject,
+        text: envelope.body.text,
+        html: envelope.body.html,
+        from: this.sender
+      });
+
+      this.logger.log(
+        `Successfully dispatched email '${
+          envelope.subject
+        }' to ${JSON.stringify(envelope.recipients)}`
+      );
+
+      return Success(undefined);
+    } catch (error) {
+      return Fail(error);
+    }
   }
 }

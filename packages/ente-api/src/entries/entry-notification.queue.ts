@@ -23,7 +23,7 @@ export class EntryNotificationQueue extends BullQueue<
     @Inject(WinstonLoggerService)
     private readonly logger: WinstonLoggerService,
     @Inject(forwardRef(() => EntriesService))
-    private readonly entriesService: EntriesService
+    entriesService: EntriesService
   ) {
     super(
       ENTRY_NOTIFICATION_QUEUE_NAME,

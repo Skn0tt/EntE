@@ -17,6 +17,7 @@ interface IConfig {
     username: string;
     password: string;
     pool: boolean;
+    retryDelay: number;
   };
   cron: {
     weeklySummary: string;
@@ -51,6 +52,7 @@ const config = ((): Readonly<IConfig> => {
     SMTP_SENDER,
     SMTP_POOL,
     SMTP_ADDRESS,
+    SMTP_RETRY_DELAY,
     SENTRY_DSN
   } = envVars;
   return {
@@ -69,7 +71,8 @@ const config = ((): Readonly<IConfig> => {
       password: SMTP_PASSWORD!,
       sender: SMTP_SENDER!,
       username: SMTP_USERNAME!,
-      pool: SMTP_POOL === "false" ? false : true
+      pool: SMTP_POOL === "false" ? false : true,
+      retryDelay: +SMTP_RETRY_DELAY!
     },
     db: {
       host: envVars.MYSQL_HOST!,
