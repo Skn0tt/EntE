@@ -42,6 +42,7 @@ services:
       SMTP_PASSWORD: ${smtp.password}
       SMTP_SENDER: ${smtp.sender}
       SMTP_ADDRESS: ${smtp.address}
+      SMTP_RETRY_DELAY: ${smtp.retryDelay}
       REDIS_HOST: redis
       REDIS_PORT: 6379
     networks:

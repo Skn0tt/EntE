@@ -25,6 +25,9 @@ sentry: # Override when using Sentry
 #   sender:
 #   address:
 
+smtp:
+  retryDelay: 3600000
+
 debug:
   traefik_dashboard_port: 8080
   allow_http: false

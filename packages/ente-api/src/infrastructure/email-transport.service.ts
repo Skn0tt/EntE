@@ -1,3 +1,5 @@
+import { Validation } from "monet";
+
 export interface Envelope {
   subject: string;
   recipients: string[];
@@ -8,5 +10,5 @@ export interface Envelope {
 }
 
 export interface EmailTransportService {
-  sendMail(envelope: Envelope): Promise<void>;
+  sendMail(envelope: Envelope): Promise<Validation<string, void>>;
 }

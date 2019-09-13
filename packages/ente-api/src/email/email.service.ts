@@ -5,8 +5,6 @@ import {
 } from "../templates/WeeklySummary";
 import { UserDto, SlotDto, EntryDto } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { NodemailerService } from "../infrastructure/nodemailer.service";
-import { EmailTransportService } from "../infrastructure/email-transport.service";
 import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";
 import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
@@ -16,12 +14,13 @@ import { InvitationLink } from "../templates/InvitationLink";
 import { ManagerSignedInformation } from "../templates/ManagerSignedInformation";
 import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformation";
 import { EntryStillUnsignedNotification } from "../templates/EntryStillUnsignedNotification";
+import { EmailQueue } from "./email.queue";
 
 @Injectable()
 export class EmailService {
   constructor(
-    @Inject(NodemailerService)
-    private readonly emailTransport: EmailTransportService,
+    @Inject(EmailQueue)
+    private readonly emailQueue: EmailQueue,
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
@@ -29,7 +28,7 @@ export class EmailService {
     await Promise.all(
       recipients.map(async recipient => {
         const { html, subject } = await SignRequest(link, recipient.language);
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -37,7 +36,7 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched SignRequest to ${JSON.stringify([
+          `Successfully enqueued SignRequest to ${JSON.stringify([
             recipient.username,
             recipient.email
           ])}`
@@ -53,7 +52,7 @@ export class EmailService {
           link,
           recipient.language
         );
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -61,7 +60,7 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched SignedInformation to ${JSON.stringify([
+          `Successfully enqueued SignedInformation to ${JSON.stringify([
             recipient.username,
             recipient.email
           ])}`
@@ -77,7 +76,7 @@ export class EmailService {
           link,
           recipient.language
         );
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -85,9 +84,10 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched ManagerSignedInformation to ${JSON.stringify(
-            [recipient.username, recipient.email]
-          )}`
+          `Successfully enqueued ManagerSignedInformation to ${JSON.stringify([
+            recipient.username,
+            recipient.email
+          ])}`
         );
       })
     );
@@ -103,7 +103,7 @@ export class EmailService {
           link,
           recipient.language
         );
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -111,7 +111,7 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched ManagerUnsignedInformation to ${JSON.stringify(
+          `Successfully enqueued ManagerUnsignedInformation to ${JSON.stringify(
             [recipient.username, recipient.email]
           )}`
         );
@@ -130,7 +130,7 @@ export class EmailService {
           recipient,
           recipient.language
         );
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -138,7 +138,7 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched EntryDeletedInformation to ${JSON.stringify([
+          `Successfully enqueued EntryDeletedInformation to ${JSON.stringify([
             recipient.username,
             recipient.email
           ])}`
@@ -157,7 +157,7 @@ export class EmailService {
           link,
           recipient.language
         );
-        await this.emailTransport.sendMail({
+        await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
             html
@@ -165,7 +165,7 @@ export class EmailService {
           subject
         });
         this.logger.log(
-          `Successfully dispatched EntryStillUnsignedNotification to ${JSON.stringify(
+          `Successfully enqueued EntryStillUnsignedNotification to ${JSON.stringify(
             [recipient.username, recipient.email]
           )}`
         );
@@ -179,7 +179,7 @@ export class EmailService {
       user.username,
       user.language
     );
-    await this.emailTransport.sendMail({
+    await this.emailQueue.sendMail({
       recipients: [user.email],
       body: {
         html
@@ -187,7 +187,7 @@ export class EmailService {
       subject
     });
     this.logger.log(
-      `Successfully dispatched PasswordResetLink to ${user.username}, ${
+      `Successfully enqueued PasswordResetLink to ${user.username}, ${
         user.email
       }`
     );
@@ -199,7 +199,7 @@ export class EmailService {
       user.role,
       user.language
     );
-    await this.emailTransport.sendMail({
+    await this.emailQueue.sendMail({
       recipients: [user.email],
       body: {
         html
@@ -207,9 +207,7 @@ export class EmailService {
       subject
     });
     this.logger.log(
-      `Successfully dispatched InvitationLink to ${user.username}, ${
-        user.email
-      }`
+      `Successfully enqueued InvitationLink to ${user.username}, ${user.email}`
     );
   }
 
@@ -218,7 +216,7 @@ export class EmailService {
       user.username,
       user.language
     );
-    await this.emailTransport.sendMail({
+    await this.emailQueue.sendMail({
       recipients: [user.email],
       body: {
         html
@@ -226,7 +224,7 @@ export class EmailService {
       subject
     });
     this.logger.log(
-      `Successfully dispatched PasswordResetSuccess to ${user.username}, ${
+      `Successfully enqueued PasswordResetSuccess to ${user.username}, ${
         user.email
       }`
     );
@@ -242,7 +240,7 @@ export class EmailService {
       educational: s.forSchool
     }));
     const { html, subject } = await WeeklySummary(data, teacher.language);
-    await this.emailTransport.sendMail({
+    await this.emailQueue.sendMail({
       recipients: [teacher.email],
       body: {
         html
@@ -250,7 +248,7 @@ export class EmailService {
       subject
     });
     this.logger.log(
-      `Successfully dispatched WeeklySummary to ${teacher.username}, ${
+      `Successfully enqueued WeeklySummary to ${teacher.username}, ${
         teacher.email
       }`
     );
