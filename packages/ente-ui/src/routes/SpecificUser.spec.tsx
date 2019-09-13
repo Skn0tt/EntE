@@ -35,8 +35,9 @@ describe.skip("SpecificUser", () => {
       {...getMockRouterProps({ userId })}
       getUser={getUser}
       fullScreen
-      classes={{ deleteButton: "" }}
+      classes={{ menuButton: "" }}
       loading={false}
+      token=""
       requestUser={requestUser}
       students={[]}
       updateUser={() => {}}
@@ -60,7 +61,8 @@ describe.skip("SpecificUser", () => {
         {...getMockRouterProps({ userId })}
         getUser={getUser}
         fullScreen
-        classes={{ deleteButton: "" }}
+        classes={{ menuButton: "" }}
+        token=""
         loading={false}
         requestUser={requestUser}
         students={[]}

@@ -261,7 +261,7 @@ export const getUsers = async (token: string): Promise<APIResponse> => {
   return normalizeUsers(...data);
 };
 
-const post = async <T>(url: string, token: string, body?: {}) => {
+export const post = async <T>(url: string, token: string, body?: {}) => {
   const response = await axios.post<T>(url, body, axiosStandardParams(token));
   return response.data;
 };
