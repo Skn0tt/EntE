@@ -23,7 +23,9 @@ import {
   getLanguage,
   setLanguage,
   getColorScheme,
-  setColorScheme
+  setColorScheme,
+  resetPasswordRequest,
+  getUsername
 } from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
 
@@ -31,12 +33,14 @@ const useTranslation = makeTranslationHook({
   en: {
     about: "About",
     language: "Language",
-    darkMode: "Dark Mode (beta)"
+    darkMode: "Dark Mode (beta)",
+    resetPassword: "Reset / Change Password"
   },
   de: {
     about: "Über",
     language: "Sprache",
-    darkMode: "Dark Mode (beta)"
+    darkMode: "Dark Mode (beta)",
+    resetPassword: "Passwort ändern / zurücksetzen"
   }
 });
 
@@ -45,6 +49,7 @@ interface SettingsMenuOwnProps {}
 interface SettingsMenuStateProps {
   language: Languages;
   isDarkModeEnabled: boolean;
+  username: string;
 }
 const mapStateToProps: MapStateToPropsParam<
   SettingsMenuStateProps,
@@ -52,19 +57,22 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE),
-  isDarkModeEnabled: getColorScheme(state) === "dark"
+  isDarkModeEnabled: getColorScheme(state) === "dark",
+  username: getUsername(state).some()
 });
 
 interface SettingsMenuDispatchProps {
   setLanguage: (lang: Languages) => void;
   setDarkMode: (on: boolean) => void;
+  resetPassword(username: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   SettingsMenuDispatchProps,
   SettingsMenuOwnProps
 > = dispatch => ({
   setLanguage: lang => dispatch(setLanguage(lang)),
-  setDarkMode: on => dispatch(setColorScheme(on ? "dark" : "light"))
+  setDarkMode: on => dispatch(setColorScheme(on ? "dark" : "light")),
+  resetPassword: username => dispatch(resetPasswordRequest(username))
 });
 
 type SettingsMenuProps = SettingsMenuOwnProps &
@@ -72,7 +80,14 @@ type SettingsMenuProps = SettingsMenuOwnProps &
   SettingsMenuStateProps;
 
 export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
-  const { language, setLanguage, isDarkModeEnabled, setDarkMode } = props;
+  const {
+    language,
+    setLanguage,
+    isDarkModeEnabled,
+    setDarkMode,
+    resetPassword,
+    username
+  } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<Maybe<HTMLElement>>(None());
   const [languagePickerIsOpen, setLanguagePickerIsOpen] = React.useState<
@@ -115,6 +130,14 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
     history.push(path);
   };
 
+  const handleClickResetPassword = React.useCallback(
+    () => {
+      resetPassword(username);
+      closeMenu();
+    },
+    [resetPassword, username, closeMenu]
+  );
+
   return (
     <>
       <LanguagePicker
@@ -138,6 +161,10 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
         >
           <MenuItem onClick={openLanguagePicker}>
             {translation.language}
+          </MenuItem>
+
+          <MenuItem onClick={handleClickResetPassword}>
+            {translation.resetPassword}
           </MenuItem>
 
           <MenuItem>
