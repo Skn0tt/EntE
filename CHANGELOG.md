@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.25.0] - 2019-09-15
+
 - Add button for changing passwords ([#293](https://gitlab.com/Skn0tt/EntE/issues/293))
 - Queue E-Mail dispatches and retry them on failure ([#302](https://gitlab.com/Skn0tt/EntE/issues/302))
 - Add UI button for invoking invitation routine ([#301](https://gitlab.com/Skn0tt/EntE/issues/301))
