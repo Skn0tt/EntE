@@ -7,9 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Add UI button for invoking the password reset routine ([#293](https://gitlab.com/Skn0tt/EntE/issues/293))
+- Add button for changing passwords ([#293](https://gitlab.com/Skn0tt/EntE/issues/293))
 - Queue E-Mail dispatches and retry them on failure ([#302](https://gitlab.com/Skn0tt/EntE/issues/302))
-- Add API endpoint for invoking the invitation routine manually ([#299](https://gitlab.com/Skn0tt/EntE/issues/299))
 - Add UI button for invoking invitation routine ([#301](https://gitlab.com/Skn0tt/EntE/issues/301))
 - Add API endpoint for invoking the invitation routine manually ([#300](https://gitlab.com/Skn0tt/EntE/issues/300))
 
