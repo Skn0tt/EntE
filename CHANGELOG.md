@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed bug where the coursefilter didn't work
+
 ## [v0.25.0] - 2019-09-15
 
 - Add button for changing passwords ([#293](https://gitlab.com/Skn0tt/EntE/issues/293))

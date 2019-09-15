@@ -135,12 +135,7 @@ export function Table<T>(props: TableProps<T>) {
 
   return (
     <MUIDataTable
-      key={
-        "mui-datatable-" +
-        items.map(extractId).join("-") +
-        ";" +
-        (!!customRowRender ? "a" : "b")
-      }
+      key={"mui-datatable-" + ";" + (!!customRowRender ? "a" : "b")}
       columns={[idColumn, ...columns]}
       data={data}
       title={title as any}
