@@ -8,6 +8,7 @@ stages:
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  DOCKER_TLS_CERTDIR: "/certs"
 
 include:
   template: SAST.gitlab-ci.yml
@@ -63,7 +64,7 @@ build:api:
   stage: build
   dependencies: []
   services:
-    - docker:stable-dind
+    - docker:19.03.0-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/build_docker.sh api"
@@ -73,7 +74,7 @@ build:ui:
   stage: build
   dependencies: []
   services:
-    - docker:stable-dind
+    - docker:19.03.0-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/build_docker.sh ui"
@@ -83,7 +84,7 @@ build:docker-app:
   stage: build
   dependencies: []
   services:
-    - docker:stable-dind
+    - docker:19.03.0-dind
   script: "./scripts/ci/build_dockerapp.sh"
 
 test:e2e:
@@ -95,7 +96,7 @@ test:e2e:
     paths:
       - node_modules/
   services:
-    - name: docker:stable-dind
+    - name: docker:19.03.0-dind
       alias: dind
   variables:
     BASE_URL: "http://dind:80"
