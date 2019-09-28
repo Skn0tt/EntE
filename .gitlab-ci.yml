@@ -9,10 +9,6 @@ stages:
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-  # See: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "/certs"
-
 include:
   template: SAST.gitlab-ci.yml
 
@@ -67,7 +63,7 @@ build:api:
   stage: build
   dependencies: []
   services:
-    - docker:19.03.0-dind
+    - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/build_docker.sh api"
@@ -77,7 +73,7 @@ build:ui:
   stage: build
   dependencies: []
   services:
-    - docker:19.03.0-dind
+    - docker:stable-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/build_docker.sh ui"
@@ -87,7 +83,7 @@ build:docker-app:
   stage: build
   dependencies: []
   services:
-    - docker:19.03.0-dind
+    - docker:stable-dind
   script: "./scripts/ci/build_dockerapp.sh"
 
 test:e2e:
@@ -103,7 +99,6 @@ test:e2e:
       alias: dind
   variables:
     BASE_URL: "http://dind:80"
-    DOCKER_HOST: dind:2375
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: ./scripts/ci/test_e2e.sh
