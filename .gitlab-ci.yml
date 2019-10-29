@@ -99,6 +99,7 @@ test:e2e:
       alias: dind
   variables:
     BASE_URL: "http://dind:80"
+    DOCKER_HOST: "tcp://dind:2375"
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: ./scripts/ci/test_e2e.sh
