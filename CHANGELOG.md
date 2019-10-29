@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed bug where entry notifications were sent when entry was already signed by parents ([#309](https://gitlab.com/Skn0tt/EntE/issues/309))
 - Fixed bug where the coursefilter didn't work
 
 ## [v0.25.0] - 2019-09-15
