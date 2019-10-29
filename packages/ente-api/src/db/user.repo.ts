@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotImplementedException } from "@nestjs/common";
 import { Repository, Brackets, In, Not } from "typeorm";
 import { User } from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
@@ -446,6 +446,12 @@ export class UserRepo {
     await this.repo.delete({ _id: id });
   }
 
+  async setManagerNotes(studentId: string, value: string) {
+    await this.repo.update(studentId, {
+      managerNotes: value
+    });
+  }
+
   static toDto(user: User): UserDto {
     const result = new UserDto();
 
@@ -468,6 +474,8 @@ export class UserRepo {
       ? user.graduationYear!
       : undefined;
     result.language = user.language;
+    result.managerNotes =
+      user.role === Roles.STUDENT ? user.managerNotes : undefined;
 
     return result;
   }

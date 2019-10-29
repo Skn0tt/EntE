@@ -82,7 +82,10 @@ import {
   SET_COLOR_SCHEME,
   SET_ENTRY_CREATION_DAYS_REQUEST,
   SET_ENTRY_CREATION_DAYS_ERROR,
-  SET_ENTRY_CREATION_DAYS_SUCCESS
+  SET_ENTRY_CREATION_DAYS_SUCCESS,
+  UPDATE_MANAGER_NOTES_REQUEST,
+  UPDATE_MANAGER_NOTES_ERROR,
+  UPDATE_MANAGER_NOTES_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -98,7 +101,8 @@ import {
   ImportUsersSuccessPayload,
   FetchInstanceConfigSuccessPayload,
   SetLoginBannerSuccessPayload,
-  LoginSuccessPayload
+  LoginSuccessPayload,
+  UpdateManagerNotesSuccessPayload
 } from "./actions";
 import { TimeScope } from "../time-scope";
 import { ColorScheme } from "../theme";
@@ -512,6 +516,25 @@ const reducer = handleActions<AppState | undefined, any>(
       UPDATE_USER_ERROR,
       UPDATE_USER_SUCCESS,
       addResponseUpdater
+    ),
+
+    // # UPDATE_MANAGER_NOTES
+    ...asyncReducersFull(
+      UPDATE_MANAGER_NOTES_REQUEST,
+      UPDATE_MANAGER_NOTES_ERROR,
+      UPDATE_MANAGER_NOTES_SUCCESS,
+      (state: AppState, action: Action<UpdateManagerNotesSuccessPayload>) => {
+        const { studentId, value } = action.payload!;
+        return state.update("usersMap", usersMap => {
+          if (!usersMap.has(studentId)) {
+            return usersMap;
+          }
+
+          return usersMap.update(studentId, student =>
+            student.set("managerNotes", value)
+          );
+        });
+      }
     ),
 
     [SET_LANGUAGE]: (

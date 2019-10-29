@@ -25,7 +25,8 @@ import {
   FindOneUserFailure,
   DeleteUserFailure,
   SetLanguageFailure,
-  InvokeInvitationEmailFailure
+  InvokeInvitationEmailFailure,
+  UpdateManagerNotesFailure
 } from "./users.service";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
@@ -208,6 +209,30 @@ export class UsersController {
         }
       },
       () => "Successfully invoked routine."
+    );
+  }
+
+  @Put(":id/managerNotes")
+  async setManagerNotes(
+    @Param("id") id: string,
+    @Body() value: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<string> {
+    const result = await this.usersService.updateManagerNotes(
+      id,
+      value,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case UpdateManagerNotesFailure.ForbiddenForUser:
+            throw new ForbiddenException();
+          case UpdateManagerNotesFailure.StudentNotFound:
+            throw new NotFoundException();
+        }
+      },
+      () => value
     );
   }
 }

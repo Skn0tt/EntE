@@ -84,7 +84,10 @@ import {
   SET_COLOR_SCHEME,
   SET_ENTRY_CREATION_DAYS_REQUEST,
   SET_ENTRY_CREATION_DAYS_SUCCESS,
-  SET_ENTRY_CREATION_DAYS_ERROR
+  SET_ENTRY_CREATION_DAYS_ERROR,
+  UPDATE_MANAGER_NOTES_REQUEST,
+  UPDATE_MANAGER_NOTES_SUCCESS,
+  UPDATE_MANAGER_NOTES_ERROR
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials, UserN } from "./types";
 import {
@@ -386,3 +389,22 @@ export const setEntryCreationDaysError = createMetaAction<
   Action<number>,
   Error
 >(SET_ENTRY_CREATION_DAYS_ERROR);
+
+export interface UpdateManagerNotesRequestPayload {
+  studentId: string;
+  value: string;
+}
+
+export type UpdateManagerNotesSuccessPayload = UpdateManagerNotesRequestPayload;
+
+export const updateManagerNotesRequest = createAction<
+  UpdateManagerNotesRequestPayload
+>(UPDATE_MANAGER_NOTES_REQUEST);
+export const updateManagerNotesSuccess = createMetaAction<
+  Action<UpdateManagerNotesRequestPayload>,
+  UpdateManagerNotesSuccessPayload
+>(UPDATE_MANAGER_NOTES_SUCCESS);
+export const updateManagerNotesError = createMetaAction<
+  Action<UpdateManagerNotesRequestPayload>,
+  Error
+>(UPDATE_MANAGER_NOTES_ERROR);
