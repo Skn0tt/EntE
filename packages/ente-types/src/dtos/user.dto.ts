@@ -6,7 +6,8 @@ import {
   ValidateNested,
   IsOptional,
   IsInt,
-  IsISO8601
+  IsISO8601,
+  IsString
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
@@ -32,6 +33,7 @@ export interface SensitiveUserDto extends BaseUserDto {
   children: BlackedUserDto[];
   graduationYear?: number;
   birthday?: string;
+  managerNotes: string;
 }
 
 export type BlackedUserDto = BaseUserDto & Partial<SensitiveUserDto>;
@@ -61,6 +63,10 @@ export class UserDto implements BlackedUserDto {
 
   @IsISO8601()
   birthday?: string;
+
+  @IsOptional()
+  @IsString()
+  managerNotes?: string;
 }
 
 const ADULTHOOD_AGE = 18;

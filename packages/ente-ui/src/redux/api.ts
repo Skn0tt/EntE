@@ -500,3 +500,16 @@ export const setEntryCreationDays = async (
     }
   );
 };
+
+export const updateManagerNotes = async (
+  studentId: string,
+  value: string,
+  token: string
+): Promise<void> => {
+  await put(`${getBaseUrl()}/users/${studentId}/managerNotes`, token, value, {
+    transformResponse: [],
+    headers: {
+      "Content-Type": "text/plain"
+    }
+  });
+};

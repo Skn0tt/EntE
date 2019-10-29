@@ -18,6 +18,7 @@ ShallowWrapper {
           "childrenIds": Array [],
           "graduationYear": undefined,
           "language": undefined,
+          "managerNotes": undefined,
         },
         Immutable.UserN {
           "id": "jkldsfjlk",
@@ -30,6 +31,7 @@ ShallowWrapper {
           "childrenIds": Array [],
           "graduationYear": undefined,
           "language": undefined,
+          "managerNotes": undefined,
         },
       ]
     }
@@ -52,6 +54,7 @@ ShallowWrapper {
       "childrenIds": Array [],
       "graduationYear": undefined,
       "language": undefined,
+      "managerNotes": undefined,
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {
@@ -120,6 +123,7 @@ ShallowWrapper {
                     "childrenIds": Array [],
                     "graduationYear": undefined,
                     "language": undefined,
+                    "managerNotes": undefined,
                   },
                 ]
               }
@@ -319,6 +323,7 @@ ShallowWrapper {
                       "childrenIds": Array [],
                       "graduationYear": undefined,
                       "language": undefined,
+                      "managerNotes": undefined,
                     },
                   ]
                 }
@@ -368,6 +373,7 @@ ShallowWrapper {
                       "childrenIds": Array [],
                       "graduationYear": undefined,
                       "language": undefined,
+                      "managerNotes": undefined,
                     },
                   ]
                 }
@@ -398,6 +404,7 @@ ShallowWrapper {
                     "childrenIds": Array [],
                     "graduationYear": undefined,
                     "language": undefined,
+                    "managerNotes": undefined,
                   },
                 ],
                 "label": "Child",
@@ -518,6 +525,7 @@ ShallowWrapper {
                       "childrenIds": Array [],
                       "graduationYear": undefined,
                       "language": undefined,
+                      "managerNotes": undefined,
                     },
                   ]
                 }
@@ -717,6 +725,7 @@ ShallowWrapper {
                         "childrenIds": Array [],
                         "graduationYear": undefined,
                         "language": undefined,
+                        "managerNotes": undefined,
                       },
                     ]
                   }
@@ -766,6 +775,7 @@ ShallowWrapper {
                         "childrenIds": Array [],
                         "graduationYear": undefined,
                         "language": undefined,
+                        "managerNotes": undefined,
                       },
                     ]
                   }
@@ -796,6 +806,7 @@ ShallowWrapper {
                       "childrenIds": Array [],
                       "graduationYear": undefined,
                       "language": undefined,
+                      "managerNotes": undefined,
                     },
                   ],
                   "label": "Child",
@@ -896,6 +907,7 @@ ShallowWrapper {
           "childrenIds": Array [],
           "graduationYear": undefined,
           "language": undefined,
+          "managerNotes": undefined,
         },
       ]
     }
@@ -918,6 +930,7 @@ ShallowWrapper {
       "childrenIds": Array [],
       "graduationYear": undefined,
       "language": undefined,
+      "managerNotes": undefined,
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {

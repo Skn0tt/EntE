@@ -63,6 +63,11 @@ export enum InvokeInvitationEmailFailure {
   ForbiddenForUser
 }
 
+export enum UpdateManagerNotesFailure {
+  StudentNotFound,
+  ForbiddenForUser
+}
+
 @Injectable()
 export class UsersService implements OnModuleInit {
   constructor(
@@ -440,6 +445,44 @@ export class UsersService implements OnModuleInit {
     );
   }
 
+  async updateManagerNotes(
+    studentId: string,
+    newNotesValue: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<UpdateManagerNotesFailure, true>> {
+    if (requestingUser.role !== Roles.MANAGER) {
+      return Fail(UpdateManagerNotesFailure.ForbiddenForUser);
+    }
+
+    const requestingUserDto = await requestingUser.getDto();
+    if (requestingUserDto.isNone()) {
+      return Fail(UpdateManagerNotesFailure.ForbiddenForUser);
+    }
+
+    const {
+      graduationYear: gradYearOfRequestingManager
+    } = requestingUserDto.some();
+
+    const user = await this.userRepo.findById(studentId);
+
+    return await user.cata<
+      Promise<Validation<UpdateManagerNotesFailure, true>>
+    >(
+      async () => Fail(UpdateManagerNotesFailure.StudentNotFound),
+      async userDto => {
+        const isStudentOfManager =
+          userDto.graduationYear === gradYearOfRequestingManager;
+        if (!isStudentOfManager) {
+          return Fail(UpdateManagerNotesFailure.ForbiddenForUser);
+        }
+
+        await this.userRepo.setManagerNotes(studentId, newNotesValue);
+
+        return Success<UpdateManagerNotesFailure, true>(true);
+      }
+    );
+  }
+
   static blackenDto(user: UserDto, role: Roles): BlackedUserDto {
     const fullUser = user;
     const baseUser: BaseUserDto = {
@@ -457,7 +500,8 @@ export class UsersService implements OnModuleInit {
         return {
           ...baseUser,
           graduationYear: user.graduationYear,
-          email: user.email
+          email: user.email,
+          managerNotes: user.managerNotes
         };
 
       default:

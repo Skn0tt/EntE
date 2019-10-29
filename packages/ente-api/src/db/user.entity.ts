@@ -24,7 +24,7 @@ import {
   JoinTable,
   OneToMany
 } from "typeorm";
-import { IsIn, IsInt, IsISO8601 } from "class-validator";
+import { IsIn, IsInt, IsISO8601, IsString } from "class-validator";
 import { Entry } from "./entry.entity";
 import { Slot } from "./slot.entity";
 
@@ -65,6 +65,10 @@ export class User {
   @Column("smallint", { nullable: true })
   @IsInt()
   graduationYear: number | null;
+
+  @Column("varchar", { nullable: false, default: "" })
+  @IsString()
+  managerNotes: string = "";
 
   /**
    * ## Password

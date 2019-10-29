@@ -98,7 +98,8 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     role: Roles.STUDENT,
     childrenIds: [],
     graduationYear: undefined,
-    language: undefined
+    language: undefined,
+    managerNotes: undefined
   },
   "UserN"
 );

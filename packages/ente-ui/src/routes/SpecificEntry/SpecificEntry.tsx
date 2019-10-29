@@ -75,6 +75,7 @@ import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
+import ManagerNotesEditor from "./ManagerNotesEditor";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -291,7 +292,6 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     unsignEntry,
     deleteEntry,
     entryId,
-    loading,
     onClose,
     getEntry,
     entryExpirationTime
@@ -530,6 +530,14 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                 </ListItem>
               </List>
             </Grid>
+
+            {role.contains(Roles.MANAGER) && (
+              <Grid item>
+                <ManagerNotesEditor
+                  student={getUser(entry.get("studentId")).some()}
+                />
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
 

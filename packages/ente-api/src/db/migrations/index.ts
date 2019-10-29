@@ -11,6 +11,7 @@ import { MakeKeyValueStoreNotNullable1551377199000 } from "./1551377199000-MakeK
 import { RemoveInconsistentUserAttributes1551534415000 } from "./1551534415000-RemoveInconsistentUserAttributes";
 import { AddNewEntryReasonCategories1551552955000 } from "./1551552955000-AddNewEntryReasonCategories";
 import { SaveSignatureDates1557748840000 } from "./1557748840000-SaveSignatureDates";
+import { AddManagerNotesField1569158678000 } from "./1569158678000-AddManagerNotesField";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -26,5 +27,6 @@ export const migrations = [
   RemoveInconsistentUserAttributes1551534415000,
   AddNewEntryReasonCategories1551552955000,
   RemoveInconsistentUserAttributes1551534415000,
-  SaveSignatureDates1557748840000
+  SaveSignatureDates1557748840000,
+  AddManagerNotesField1569158678000
 ];

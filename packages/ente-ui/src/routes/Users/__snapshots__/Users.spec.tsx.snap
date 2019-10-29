@@ -70,6 +70,7 @@ ShallowWrapper {
           "childrenIds": Array [],
           "graduationYear": undefined,
           "language": undefined,
+          "managerNotes": undefined,
         },
       ]
     }
@@ -107,6 +108,7 @@ ShallowWrapper {
                 "childrenIds": Array [],
                 "graduationYear": undefined,
                 "language": undefined,
+                "managerNotes": undefined,
               },
             ]
           }
@@ -151,6 +153,7 @@ ShallowWrapper {
               "childrenIds": Array [],
               "graduationYear": undefined,
               "language": undefined,
+              "managerNotes": undefined,
             },
           ],
         },
@@ -209,6 +212,7 @@ ShallowWrapper {
                   "childrenIds": Array [],
                   "graduationYear": undefined,
                   "language": undefined,
+                  "managerNotes": undefined,
                 },
               ]
             }
@@ -253,6 +257,7 @@ ShallowWrapper {
                 "childrenIds": Array [],
                 "graduationYear": undefined,
                 "language": undefined,
+                "managerNotes": undefined,
               },
             ],
           },

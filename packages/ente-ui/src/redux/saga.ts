@@ -61,7 +61,10 @@ import {
   setParentSignatureNotificationTimeSuccess,
   setParentSignatureNotificationTimeError,
   setEntryCreationDaysSuccess,
-  setEntryCreationDaysError
+  setEntryCreationDaysError,
+  UpdateManagerNotesRequestPayload,
+  updateManagerNotesSuccess,
+  updateManagerNotesError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -88,7 +91,8 @@ import {
   SET_LOGIN_BANNER_REQUEST,
   SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
-  SET_ENTRY_CREATION_DAYS_REQUEST
+  SET_ENTRY_CREATION_DAYS_REQUEST,
+  UPDATE_MANAGER_NOTES_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -466,6 +470,20 @@ function* syncLanguageSaga(action: Action<Languages>) {
   }
 }
 
+function* updateManagerNotesSaga(
+  action: Action<UpdateManagerNotesRequestPayload>
+) {
+  try {
+    const { studentId, value } = action.payload!;
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.updateManagerNotes, studentId, value, token.some());
+    yield put(updateManagerNotesSuccess(action.payload!, action));
+  } catch (error) {
+    yield put(updateManagerNotesError(error, action));
+    onRequestError(error);
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<string>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -507,6 +525,7 @@ function* saga() {
     UPDATE_USER_REQUEST,
     updateUserSaga
   );
+  yield takeEvery(UPDATE_MANAGER_NOTES_REQUEST, updateManagerNotesSaga);
 }
 
 export default saga;
