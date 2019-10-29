@@ -456,6 +456,7 @@ export class EntriesService {
         const { signedParent, student } = entry;
         if (signedParent) {
           this.logger.log(`Entry has already been signed.`);
+          return;
         }
 
         const parents = await this.userRepo.getParentsOfUser(student.id);
