@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed bug where entry notifications were sent when entry was already signed by parents ([#309](https://gitlab.com/Skn0tt/EntE/issues/309))
 - Add manager notes feature ([#TODO:](https://gitlab.com/Skn0tt/EntE/issues/TODO))
+- Fixed crash when downloading empty tables ([#303](https://gitlab.com/Skn0tt/EntE/issues/303))
+- Add API endpoint for invoking the invitation routine manually ([#299](https://gitlab.com/Skn0tt/EntE/issues/299))
 - Fixed bug where the coursefilter didn't work
 
 ## [v0.25.0] - 2019-09-15
