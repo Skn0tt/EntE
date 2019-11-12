@@ -14,7 +14,7 @@ cd ../..
 
 sha=$(get_commit_sha)
 
-yarn
+yarn --network-concurrency 1
 TAG="$sha" ./scripts/dev/pull.sh
 
 CI=true ./tests/e2e/run.sh $sha

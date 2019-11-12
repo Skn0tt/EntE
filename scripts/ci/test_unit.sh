@@ -10,7 +10,7 @@ cd $(dirname "$(readlink -f "$0")")
 
 cd ../..
 
-yarn
+yarn --network-concurrency 1
 
 yarn test:unit:ci
 
