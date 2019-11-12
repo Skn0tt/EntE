@@ -5,10 +5,9 @@
   "private": true,
   "scripts": {
     "start": "yarn parcel src/index.html",
-    "build": "touch ./src/sw.js && yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && yarn serviceworker && size-limit",
+    "build": "yarn parcel build src/index.html --public-url / -o index && mv dist/report.html report.html && size-limit",
     "watch": "yarn parcel watch src/index.html --public-url / -o index",
     "docker:replace": "docker exec ente_ui_1 /usr/local/bin/replace",
-    "serviceworker": "yarn workbox generateSW",
     "snyk": "snyk test",
     "analyze": "source-map-explorer build/static/js/main.*",
     "lint": "tslint --project ."
@@ -25,6 +24,7 @@
     "ente-types": "^0.26.0",
     "immutable": "^4.0.0-rc.12",
     "luxon": "^1.4.5",
+    "material-icons": "^0.3.1",
     "material-ui-pickers": "^2.0.4",
     "monet": "^0.9.0",
     "mui-datatables": "https://github.com/Skn0tt/mui-datatables#8785baa6d9cb45b64c5df308498d77ab955dd647",
@@ -74,9 +74,7 @@
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.4.2",
     "tslint-config-prettier": "^1.8.0",
-    "typescript": "^2.7.2",
-    "workbox-build": "^3.0.1",
-    "workbox-cli": "^3.0.1"
+    "typescript": "^2.7.2"
   },
   "size-limit": [
     {

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Remove serviceworker ([#315](https://gitlab.com/Skn0tt/EntE/issues/315))
+
 ## [v0.26.0] - 2019-10-31
 
 - Fixed bug where entry notifications were sent when entry was already signed by parents ([#309](https://gitlab.com/Skn0tt/EntE/issues/309))
