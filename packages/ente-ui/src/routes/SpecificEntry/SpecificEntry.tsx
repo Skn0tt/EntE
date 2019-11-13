@@ -76,6 +76,7 @@ import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
+import { slotTimeComparator } from "ente-ui/src/helpers/slot-time-comparator";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -423,26 +424,28 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {getSlots(entry.get("slotIds")).map(slot => (
-                    <TableRow key={slot.get("id")}>
-                      <TableCell>
-                        {format(parseISO(slot.get("date")), "PP", {
-                          locale: lang.locale
-                        })}
-                      </TableCell>
-                      <TableCell>{slot.get("from")}</TableCell>
-                      <TableCell>{slot.get("to")}</TableCell>
-                      <TableCell>
-                        {Maybe.fromFalsy(slot.get("teacherId")).cata(
-                          () => lang.slotsTable.deleted,
-                          id =>
-                            getUser(id)
-                              .some()
-                              .get("displayname")
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {getSlots(entry.get("slotIds"))
+                    .sort(slotTimeComparator)
+                    .map(slot => (
+                      <TableRow key={slot.get("id")}>
+                        <TableCell>
+                          {format(parseISO(slot.get("date")), "PP", {
+                            locale: lang.locale
+                          })}
+                        </TableCell>
+                        <TableCell>{slot.get("from")}</TableCell>
+                        <TableCell>{slot.get("to")}</TableCell>
+                        <TableCell>
+                          {Maybe.fromFalsy(slot.get("teacherId")).cata(
+                            () => lang.slotsTable.deleted,
+                            id =>
+                              getUser(id)
+                                .some()
+                                .get("displayname")
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </Grid>
