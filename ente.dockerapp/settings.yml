@@ -33,5 +33,5 @@ debug:
   allow_http: false
   environment: "production"
 
-UI_TAG: v0.26.0
-API_TAG: v0.26.0
+UI_TAG: v0.27.1
+API_TAG: v0.27.1
