@@ -230,6 +230,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
               )
             : undefined
         }
+        persistenceKey="entries_table"
       />
 
       {/* FAB */}

@@ -234,6 +234,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
             )
           : undefined
       }
+      persistenceKey="slots-table"
     />
   );
 };
