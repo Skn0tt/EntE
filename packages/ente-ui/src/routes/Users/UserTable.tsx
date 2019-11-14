@@ -84,6 +84,7 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
             )
           : undefined
       }
+      persistenceKey="users-table"
     />
   );
 };

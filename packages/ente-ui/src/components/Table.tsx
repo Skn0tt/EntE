@@ -2,6 +2,7 @@ import * as React from "react";
 import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { useTableStatePersistence } from "../context/TableStatePersistence";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -94,6 +95,7 @@ interface TableOwnProps<T> {
   onClick?: (id: string) => void;
   title?: string | JSX.Element;
   customRowRender?: (item: T) => JSX.Element;
+  persistenceKey?: string;
 }
 
 type TableProps<T> = TableOwnProps<T>;
@@ -107,10 +109,28 @@ export function Table<T>(props: TableProps<T>) {
     extractId,
     onClick = () => {},
     title,
-    customRowRender
+    customRowRender,
+    persistenceKey
   } = props;
 
-  const visibleColumns = columns.filter(c => {
+  const [persistedState, updatePersistedState] = useTableStatePersistence(
+    persistenceKey || "unknown"
+  );
+
+  const columnsWithPersistedFilter = !persistedState
+    ? columns
+    : columns.map((column, i) => {
+        const filterList = persistedState[i + 1];
+        return {
+          ...column,
+          options: {
+            ...(column.options || {}),
+            filterList
+          }
+        };
+      });
+
+  const visibleColumns = columnsWithPersistedFilter.filter(c => {
     const { options } = c;
     if (!options) {
       return true;
@@ -126,7 +146,7 @@ export function Table<T>(props: TableProps<T>) {
 
   const data = items.map(item => {
     const id = extractId(item);
-    const cells = columns.map(columnOptions => {
+    const cells = columnsWithPersistedFilter.map(columnOptions => {
       return columnOptions.extract(item);
     });
     return [id, ...cells];
@@ -136,17 +156,20 @@ export function Table<T>(props: TableProps<T>) {
   return (
     <MUIDataTable
       key={"mui-datatable-" + ";" + (!!customRowRender ? "a" : "b")}
-      columns={[idColumn, ...columns]}
+      columns={[idColumn, ...columnsWithPersistedFilter]}
       data={data}
       title={title as any}
       options={{
         rowsPerPage: 50,
         rowsPerPageOptions: [20, 50, 100],
-        selectableRows: false,
-        responsive: "scroll",
+        selectableRows: "none",
+        responsive: "scrollFullHeight",
         onRowClick: (d: any[]) => onClick(d[0]),
         textLabels: translation.textLabels,
         viewColumns: false,
+        onFilterChange: (changedColumn: string, filterList: any) => {
+          updatePersistedState(filterList);
+        },
         customRowRender: !!customRowRender
           ? (data: any[]) => {
               const [id] = data;
