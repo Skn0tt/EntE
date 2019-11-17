@@ -35,7 +35,7 @@ import {
 import * as _ from "lodash";
 import { Base64 } from "../helpers/base64";
 import { getConfig } from "./config";
-import { Map } from "immutable";
+import { Map, Set } from "immutable";
 
 const getBaseUrl = () => getConfig().baseUrl;
 
@@ -162,6 +162,7 @@ export interface LoginInfo {
   authState: AuthState;
   apiResponse: APIResponse;
   oneSelf: UserN;
+  reviewedRecords: Set<string>;
 }
 
 export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
@@ -169,7 +170,13 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
     auth
   });
 
-  const { token, oneSelf, neededUsers, onesEntries } = response.data;
+  const {
+    token,
+    oneSelf,
+    neededUsers,
+    onesEntries,
+    reviewedRecords = []
+  } = response.data;
   const authState = getAuthState(token);
 
   const apiResponse = mergeAPIResponses(
@@ -184,7 +191,8 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
       ...oneSelf,
       children: [],
       childrenIds: oneSelf.children.map(c => c.id)
-    })
+    }),
+    reviewedRecords: Set(reviewedRecords)
   };
 };
 
@@ -500,6 +508,15 @@ export const setEntryCreationDays = async (
     }
   );
 };
+
+export async function addReviewedRecord(token: string, entryId: string) {
+  await axios.post(`${getBaseUrl()}/reviewedRecords`, entryId, {
+    headers: {
+      ...axiosStandardParams(token).headers,
+      "Content-Type": "text/plain"
+    }
+  });
+}
 
 export const updateManagerNotes = async (
   studentId: string,

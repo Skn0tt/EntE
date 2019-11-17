@@ -80,11 +80,14 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
-  SET_TIME_SCOPE,
+  SET_FILTER_SCOPE,
   SET_COLOR_SCHEME,
   SET_ENTRY_CREATION_DAYS_REQUEST,
   SET_ENTRY_CREATION_DAYS_SUCCESS,
   SET_ENTRY_CREATION_DAYS_ERROR,
+  ADD_REVIEWED_RECORD_ERROR,
+  ADD_REVIEWED_RECORD_REQUEST,
+  ADD_REVIEWED_RECORD_SUCCESS,
   UPDATE_MANAGER_NOTES_REQUEST,
   UPDATE_MANAGER_NOTES_SUCCESS,
   UPDATE_MANAGER_NOTES_ERROR
@@ -95,12 +98,12 @@ import {
   CreateEntryDto,
   PatchUserDto,
   Languages,
-  InstanceConfigDto,
-  UserDto
+  InstanceConfigDto
 } from "ente-types";
 import * as _ from "lodash";
-import { TimeScope } from "../time-scope";
+import { FilterScope } from "../filter-scope";
 import { ColorScheme } from "../theme";
+import { Set } from "immutable";
 
 const createMetaAction = <Meta, Payload = any>(type: string) =>
   createAction<Payload, Meta>(
@@ -236,6 +239,7 @@ export interface LoginSuccessPayload {
   authState: AuthState;
   apiResponse: APIResponse;
   oneSelf: UserN;
+  reviewedRecords: Set<string>;
 }
 
 export const loginRequest = createAction<BasicCredentials>(LOGIN_REQUEST);
@@ -308,7 +312,7 @@ export const importUsersError = createMetaAction<
 
 export const logout = createAction(LOGOUT);
 
-export const setTimeScope = createAction<TimeScope>(SET_TIME_SCOPE);
+export const setFilterScope = createAction<FilterScope>(SET_FILTER_SCOPE);
 export const setColorScheme = createAction<ColorScheme>(SET_COLOR_SCHEME);
 
 export type FetchInstanceConfigSuccessPayload = InstanceConfigDto;
@@ -390,6 +394,16 @@ export const setEntryCreationDaysError = createMetaAction<
   Error
 >(SET_ENTRY_CREATION_DAYS_ERROR);
 
+export const addReviewedRecordRequest = createAction<string>(
+  ADD_REVIEWED_RECORD_REQUEST
+);
+export const addReviewedRecordSuccess = createMetaAction<
+  Action<string>,
+  string
+>(ADD_REVIEWED_RECORD_SUCCESS);
+export const addReviewedRecordError = createMetaAction<Action<void>, Error>(
+  ADD_REVIEWED_RECORD_ERROR
+);
 export interface UpdateManagerNotesRequestPayload {
   studentId: string;
   value: string;

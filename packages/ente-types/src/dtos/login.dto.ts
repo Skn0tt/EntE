@@ -6,4 +6,5 @@ export class LoginDto {
   oneSelf: UserDto;
   onesEntries: BlackedEntryDto[];
   neededUsers: BlackedUserDto[];
+  reviewedRecords: string[];
 }

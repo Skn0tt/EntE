@@ -15,6 +15,47 @@ export class RedisService {
     this.prefix = prefix;
   }
 
+  removeFromSet = (key: string, value: string) =>
+    new Promise<void>((resolve, reject) => {
+      this.client.srem(this.prefixedKey(key), value, err => {
+        if (!!err) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
+
+  addToSet = (key: string, value: string) =>
+    new Promise<void>((resolve, reject) => {
+      this.client.sadd(this.prefixedKey(key), value, err => {
+        if (!!err) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
+
+  getAllFromSet = (key: string) =>
+    new Promise<Maybe<Set<string>>>((resolve, reject) => {
+      this.client.smembers(this.prefixedKey(key), (err, result) => {
+        if (!!err) {
+          reject(err);
+        }
+
+        resolve(Maybe.fromFalsy(result).map(values => new Set(values)));
+      });
+    });
+
+  keys = (keyPattern: string) =>
+    new Promise<Set<string>>((resolve, reject) => {
+      this.client.keys(this.prefixedKey(keyPattern), (err, result) => {
+        if (!!err) {
+          reject(err);
+        }
+        resolve(new Set(result));
+      });
+    });
+
   set = (key: string, value: string) =>
     new Promise<void>((resolve, reject) => {
       this.client.set(this.prefixedKey(key), value, err => {
@@ -68,7 +109,10 @@ export class RedisService {
           return reject(error);
         }
 
-        const result = _.zipObject(keys, values);
+        const result: Record<T, string | null> = _.zipObject(
+          keys,
+          values
+        ) as any;
         return resolve(result);
       });
     });

@@ -23,7 +23,7 @@ import {
   DEFAULT_ENTRY_CREATION_DEADLINE
 } from "ente-types";
 import { Action } from "redux";
-import { TimeScope } from "../time-scope";
+import { FilterScope } from "../filter-scope";
 import { ColorScheme } from "../theme";
 
 export interface BasicCredentials {
@@ -52,11 +52,13 @@ interface UserDtoNormalised extends BlackedUserDto {
 interface EntryDtoNormalised extends BlackedEntryDto {
   studentId: string;
   slotIds: string[];
+  isInReviewedRecords: boolean;
 }
 
 interface SlotDtoNormalised extends BlackedSlotDto {
   studentId: string;
   teacherId: string | null;
+  isInReviewedRecords: boolean;
 }
 
 export type ParentSignatureTimesN = ImmutableRecord<ParentSignatureTimesDto>;
@@ -130,7 +132,8 @@ export const EntryN = ImmutableRecord<EntryDtoNormalised>(
     slotIds: [],
     student: (null as unknown) as UserDto,
     studentId: "",
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+    isInReviewedRecords: false
   },
   "EntryN"
 );
@@ -148,7 +151,8 @@ export const SlotN = ImmutableRecord<SlotDtoNormalised>(
     teacherId: null,
     to: 0,
     forSchool: false,
-    isEducational: false
+    isEducational: false,
+    isInReviewedRecords: false
   },
   "SlotN"
 );
@@ -183,8 +187,9 @@ export interface IAppState {
   oneSelf: UserN | null;
   instanceConfig: InstanceConfigN | null;
   pendingActions: PendingActions;
-  timeScope: TimeScope;
+  timeScope: FilterScope;
   colorScheme: ColorScheme;
+  reviewedRecords: Set<string> | null;
 }
 
 export type AppState = ImmutableRecord<IAppState>;
@@ -198,7 +203,8 @@ export const AppState = ImmutableRecord<IAppState>(
     instanceConfig: null,
     pendingActions: Set<Action>(),
     timeScope: "everything",
-    colorScheme: "light"
+    colorScheme: "light",
+    reviewedRecords: null
   },
   "AppState"
 );

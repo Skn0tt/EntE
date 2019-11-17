@@ -1,6 +1,13 @@
 import * as React from "react";
-import { SlotN } from "ente-ui/src/redux";
-import { Card, Theme, CardContent, Typography } from "@material-ui/core";
+import { SlotN } from "../../redux";
+import {
+  Card,
+  Theme,
+  CardContent,
+  Typography,
+  IconButton
+} from "@material-ui/core";
+import DoneIcon from "@material-ui/icons/Done";
 import { makeStyles } from "@material-ui/styles";
 import { useLocalizedDateFormat } from "../../helpers/use-localized-date-format";
 import { Roles } from "ente-types";
@@ -25,14 +32,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing.unit
   },
   upRight: {
-    float: "right",
-    top: 0,
-    right: 0
+    position: "relative",
+    float: "right"
   },
-  downRight: {
+  upAlmostRight: {
+    position: "relative",
     float: "right",
-    bottom: 0,
-    right: 0
+    top: "-4px"
   }
 }));
 
@@ -41,12 +47,21 @@ interface SlotsTableSmallCardProps {
   role: Roles;
   teacherName: string;
   studentName: string;
+  showAddToReviewed: boolean;
+  addToReviewed(): void;
 }
 
 export const SlotsTableSmallCard: React.FC<
   SlotsTableSmallCardProps
 > = props => {
-  const { slot, teacherName, studentName, role } = props;
+  const {
+    slot,
+    teacherName,
+    studentName,
+    role,
+    addToReviewed,
+    showAddToReviewed
+  } = props;
 
   const classes = useStyles();
   const format = useLocalizedDateFormat();
@@ -55,9 +70,16 @@ export const SlotsTableSmallCard: React.FC<
   return (
     <Card className={classes.card}>
       <CardContent>
-        <div className={classes.upRight}>
+        <span className={classes.upRight}>
           <SignedAvatar signed={slot.get("signed")} />
-        </div>
+        </span>
+        {showAddToReviewed && (
+          <span className={classes.upAlmostRight}>
+            <IconButton onClick={addToReviewed}>
+              <DoneIcon />
+            </IconButton>
+          </span>
+        )}
 
         <Typography color="textSecondary">
           {format(slot.get("date"), "PP")}; {slot.get("from")} -{" "}

@@ -7,14 +7,11 @@
  */
 
 import * as React from "react";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
-
+import { connect } from "react-redux";
+import DoneIcon from "@material-ui/icons/Done";
+import CloseIcon from "@material-ui/icons/Close";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { Action } from "redux";
+import { Dispatch } from "redux";
 import { Table } from "../../components/Table";
 import {
   getSlotsRequest,
@@ -22,25 +19,26 @@ import {
   getSlots,
   AppState,
   SlotN,
-  UserN,
-  getTimeScope,
-  getRole
+  getFilterScope,
+  getRole,
+  addReviewedRecordRequest
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { Maybe, None, Some } from "monet";
+import { Maybe, None } from "monet";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
-import { getTimeScopeValidator, TimeScope } from "../../time-scope";
-import TimeScopeSelectionView from "../../components/TimeScopeSelectionView";
-import { Grid, Theme } from "@material-ui/core";
+import { getFilterScopeValidator } from "../../filter-scope";
+import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
+import { Grid, Theme, IconButton } from "@material-ui/core";
 import { CourseFilterButton } from "../../components/CourseFilterButton";
 import { CourseFilter, isSlotDuringCourse } from "../../helpers/course-filter";
 import { useTheme } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "ente-types";
+import { Set } from "immutable";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -51,7 +49,8 @@ const useTranslation = makeTranslationHook({
       to: "To",
       forSchool: "For School",
       signed: "Signed",
-      teacher: "Teacher"
+      teacher: "Teacher",
+      reviewed: "Review"
     },
     deleted: "Deleted",
     yes: "Yes",
@@ -66,7 +65,8 @@ const useTranslation = makeTranslationHook({
       to: "Bis",
       forSchool: "Schulisch",
       signed: "Unterschrieben",
-      teacher: "Lehrer"
+      teacher: "Lehrer",
+      reviewed: "Abhaken"
     },
     deleted: "Gelöscht",
     yes: "Ja",
@@ -75,40 +75,36 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface SlotsStateProps {
-  slots: SlotN[];
-  getUser(id: string): Maybe<UserN>;
-  timeScope: TimeScope;
-  role: Roles;
-}
-const mapStateToProps: MapStateToPropsParam<
-  SlotsStateProps,
-  SlotsOwnProps,
-  AppState
-> = state => ({
-  slots: getSlots(state),
-  getUser: id => getUser(id)(state),
-  timeScope: getTimeScope(state),
-  role: getRole(state).some()
+const mapStateToProps = (state: AppState) => {
+  return {
+    slots: getSlots(state),
+    getUser: (id: string) => getUser(id)(state),
+    filterScope: getFilterScope(state),
+    role: getRole(state).some()
+  };
+};
+
+type SlotsStateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  requestSlots: () => dispatch(getSlotsRequest()),
+  addToReviewed: (id: string) => dispatch(addReviewedRecordRequest(id))
 });
 
-interface SlotsDispatchProps {
-  requestSlots(): Action;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  SlotsDispatchProps,
-  SlotsOwnProps
-> = dispatch => ({
-  requestSlots: () => dispatch(getSlotsRequest())
-});
-
-interface SlotsOwnProps {}
+type SlotsDispatchProps = ReturnType<typeof mapDispatchToProps>;
 
 type SlotsProps = SlotsStateProps & SlotsDispatchProps;
 
 const Slots: React.FunctionComponent<SlotsProps> = props => {
   const lang = useTranslation();
-  const { getUser, slots, requestSlots, timeScope, role } = props;
+  const {
+    getUser,
+    slots,
+    requestSlots,
+    filterScope,
+    role,
+    addToReviewed
+  } = props;
   const theme = useTheme<Theme>();
   const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -118,10 +114,16 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
 
   const slotsInScope = React.useMemo(
     () => {
-      const validator = getTimeScopeValidator(timeScope);
-      return slots.filter(s => validator(parseISO(s.get("date"))));
+      const validator = getFilterScopeValidator(filterScope);
+      return slots.filter(s =>
+        validator({
+          id: s.get("id"),
+          date: parseISO(s.get("date")),
+          isInReviewedRecords: s.get("isInReviewedRecords")
+        })
+      );
     },
-    [slots, timeScope]
+    [slots, filterScope]
   );
 
   const slotsInCourse = React.useMemo(
@@ -199,12 +201,30 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
             filter: false,
             display: role !== Roles.TEACHER
           }
+        },
+        {
+          name: lang.headers.reviewed,
+          extract: (slot: SlotN) => slot,
+          options: {
+            filter: false,
+            display:
+              [Roles.MANAGER, Roles.TEACHER].includes(role) &&
+              filterScope === "not_reviewed",
+            customBodyRender: (slot: SlotN) => {
+              const id = slot.get("id");
+              return (
+                <IconButton onClick={() => addToReviewed(id)}>
+                  <DoneIcon />
+                </IconButton>
+              );
+            }
+          }
         }
       ]}
       title={
         <Grid container direction="row" spacing={16} alignItems="center">
           <Grid item xs={6}>
-            <TimeScopeSelectionView />
+            <FilterScopeSelectionView />
           </Grid>
 
           <Grid item xs={6}>
@@ -214,6 +234,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
       }
       items={slotsInCourse}
       extractId={user => user.get("id")}
+      key={"SlotsTable" + (filterScope === "not_reviewed")}
       customRowRender={
         isNarrow
           ? slot => (
@@ -229,6 +250,11 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
                         .map(t => t.get("displayname"))
                         .orSome("")
                     : lang.deleted
+                }
+                addToReviewed={() => addToReviewed(slot.get("id"))}
+                showAddToReviewed={
+                  [Roles.MANAGER, Roles.TEACHER].includes(role) &&
+                  filterScope === "not_reviewed"
                 }
               />
             )

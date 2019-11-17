@@ -9,6 +9,7 @@ import { Config } from "./helpers/config";
 import { User } from "./db/user.entity";
 import { Slot } from "./db/slot.entity";
 import { Entry } from "./db/entry.entity";
+import { RecordReviewal } from "./db/recordReviewal.entity";
 import { LoggerMiddleware } from "./logger.middleware";
 import { UsersModule } from "./users/users.module";
 import { PasswordResetModule } from "./password-reset/password-reset.module";
@@ -21,6 +22,7 @@ import { InstanceConfigModule } from "./instance-config/instance-config.module";
 import { LoginModule } from "./login/login.module";
 import { KeyValueStore } from "./db/keyvaluestore.entity";
 import { WeeklyUpdatesSchedulerModule } from "./weekly-updates-scheduler/weekly-updates-scheduler.module";
+import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module";
 
 const {
   database,
@@ -46,7 +48,7 @@ const isDevMode = Config.isDevMode();
       database,
       timezone,
       dateStrings: ["DATE"],
-      entities: [User, Slot, Entry, KeyValueStore],
+      entities: [User, Slot, Entry, KeyValueStore, RecordReviewal],
       synchronize: false,
       logger: new CustomTypeOrmLogger(),
       logging: "all"
@@ -62,6 +64,7 @@ const isDevMode = Config.isDevMode();
     WeeklyUpdatesSchedulerModule,
     LoginModule,
     ExportModule,
+    ReviewedRecordsModule,
     ...(isDevMode ? [DevModule] : [])
   ],
   providers: [WinstonLoggerService],
