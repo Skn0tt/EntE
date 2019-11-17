@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.28.0] - 2019-10-17
+
+- Add inbox filter ([#294](https://gitlab.com/Skn0tt/EntE/issues/294))
 - Mention ente.app in WeeklySummary newsletter ([#321](https://gitlab.com/Skn0tt/EntE/issues/321))
 
 ## [v0.27.3] - 2019-10-17
 
-- Add inbox filter ([#294](https://gitlab.com/Skn0tt/EntE/issues/294))
 - Don't forget table search and state when moving off the table ([#319](https://gitlab.com/Skn0tt/EntE/issues/319))
 
 ## [v0.27.2] - 2019-10-15
