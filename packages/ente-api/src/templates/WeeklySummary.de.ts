@@ -26,27 +26,32 @@ const template: HandlebarsTemplateDelegate<
         <mj-divider border-color="black" />
 
         <mj-text font-size="20px" font-family="helvetica">
-          Wöchentliche Zusammenfassung
+          Weekly Summary
         </mj-text>
-        {{#if items.length}}    
-          <mj-table>
-            <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
-              <th>Schüler</th>
-              <th>Datum</th>
-              <th>Von</th>
-              <th>Bis</th>
-              <th>Status</th>
-              <th>Schulisch</th>
-            </tr>
-            {{#each items}}
-              {{{ this }}}
-            {{/each}}
-          </mj-table>
+        {{#if items.length}}
+        <mj-table>
+          <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+            <th>Student</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>State</th>
+            <th>Educational</th>
+          </tr>
+          {{#each items}} {{{ this }}} {{/each}}
+        </mj-table>
         {{else}}
-          <mj-text>
-            Diese Woche hatten hat es in ihren Stunden keine Entschuldigungsanträge gegeben.
-          </mj-text>
+        <mj-text>
+          There have been no absences in your classes during the last week.
+        </mj-text>
         {{/if}}
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fbfbfb">
+      <mj-column>
+        <mj-text>
+					Weitere Informationen über EntE: <a href="https://ente.app">ente.app</a>
+        </mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

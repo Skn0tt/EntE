@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Mention ente.app in WeeklySummary newsletter ([#321](https://gitlab.com/Skn0tt/EntE/issues/321))
+
 - Don't forget table search and state when moving off the table ([#319](https://gitlab.com/Skn0tt/EntE/issues/319))
 
 ## [v0.27.2] - 2019-10-15
