@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Don't forget table search and state when moving off the table ([#319](https://gitlab.com/Skn0tt/EntE/issues/319))
+
 ## [v0.27.2] - 2019-10-15
 
-- Don't forget table state when moving off the table ([#312](https://gitlab.com/Skn0tt/EntE/issues/312))
+- Don't forget table filter state when moving off the table ([#312](https://gitlab.com/Skn0tt/EntE/issues/312))
 
 ## [v0.27.1] - 2019-11-13
 
