@@ -5,7 +5,7 @@ ADD package.json yarn.lock tsconfig.json lerna.json ./
 ADD packages/ente-ui/package.json ./packages/ente-ui/package.json
 ADD packages/ente-types/package.json ./packages/ente-types/package.json
 
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --network-concurrency 1
 RUN yarn lerna bootstrap
 
 COPY packages/ente-ui ./packages/ente-ui
