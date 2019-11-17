@@ -2,7 +2,7 @@ import * as React from "react";
 import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { useTableStatePersistence } from "../context/TableStatePersistence";
+import { useKeyValueStorage } from "../context/KeyValueStorage";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -113,22 +113,29 @@ export function Table<T>(props: TableProps<T>) {
     persistenceKey
   } = props;
 
-  const [persistedState, updatePersistedState] = useTableStatePersistence(
-    persistenceKey || "unknown"
+  const [searchText = undefined, updateSearchText] = useKeyValueStorage<string>(
+    `${persistenceKey}-searchText`
   );
+  const [filterLists = [], updateFilterLists] = useKeyValueStorage<string>(
+    `${persistenceKey}-filterLists`
+  );
+  const [sortedColumn = [-1, "asc"], updateSortedColumn] = useKeyValueStorage<
+    [string, "asc" | "desc"]
+  >(`${persistenceKey}-sortedColumn`);
 
-  const columnsWithPersistedFilter = !persistedState
-    ? columns
-    : columns.map((column, i) => {
-        const filterList = persistedState[i + 1];
-        return {
-          ...column,
-          options: {
-            ...(column.options || {}),
-            filterList
-          }
-        };
-      });
+  const columnsWithPersistedFilter = columns.map((column, i) => {
+    const { name } = column;
+    const filterList = filterLists[i + 1];
+    const [sortedColName, direction] = sortedColumn;
+    return {
+      ...column,
+      options: {
+        ...(column.options || {}),
+        filterList,
+        sortDirection: sortedColName === name ? direction : undefined
+      }
+    };
+  });
 
   const visibleColumns = columnsWithPersistedFilter.filter(c => {
     const { options } = c;
@@ -167,8 +174,21 @@ export function Table<T>(props: TableProps<T>) {
         onRowClick: (d: any[]) => onClick(d[0]),
         textLabels: translation.textLabels,
         viewColumns: false,
-        onFilterChange: (changedColumn: string, filterList: any) => {
-          updatePersistedState(filterList);
+        searchText: searchText,
+        onSearchChange: (newSearchText: string) => {
+          updateSearchText(newSearchText);
+        },
+        onFilterChange: (changedColumn: string, filterLists: any) => {
+          updateFilterLists(filterLists);
+        },
+        onColumnSortChange: (
+          column: string,
+          direction: "ascending" | "descending"
+        ) => {
+          updateSortedColumn([
+            column,
+            direction === "ascending" ? "asc" : "desc"
+          ]);
         },
         customRowRender: !!customRowRender
           ? (data: any[]) => {
