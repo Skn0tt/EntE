@@ -12,6 +12,7 @@ import { RemoveInconsistentUserAttributes1551534415000 } from "./1551534415000-R
 import { AddNewEntryReasonCategories1551552955000 } from "./1551552955000-AddNewEntryReasonCategories";
 import { SaveSignatureDates1557748840000 } from "./1557748840000-SaveSignatureDates";
 import { AddManagerNotesField1569158678000 } from "./1569158678000-AddManagerNotesField";
+import { CreateRecordReviewalTable1573931612000 } from "./1573931612000-CreateRecordReviewalTable";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -24,9 +25,9 @@ export const migrations = [
   UseEnumType1551372175000,
   MakeKeyValueStoreTextType1551372598000,
   MakeKeyValueStoreNotNullable1551377199000,
-  RemoveInconsistentUserAttributes1551534415000,
   AddNewEntryReasonCategories1551552955000,
   RemoveInconsistentUserAttributes1551534415000,
   SaveSignatureDates1557748840000,
-  AddManagerNotesField1569158678000
+  AddManagerNotesField1569158678000,
+  CreateRecordReviewalTable1573931612000
 ];

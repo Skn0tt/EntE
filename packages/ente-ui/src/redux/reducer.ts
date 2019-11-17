@@ -78,11 +78,14 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_ERROR,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_SUCCESS,
-  SET_TIME_SCOPE,
+  SET_FILTER_SCOPE,
   SET_COLOR_SCHEME,
   SET_ENTRY_CREATION_DAYS_REQUEST,
   SET_ENTRY_CREATION_DAYS_ERROR,
   SET_ENTRY_CREATION_DAYS_SUCCESS,
+  ADD_REVIEWED_RECORD_REQUEST,
+  ADD_REVIEWED_RECORD_SUCCESS,
+  ADD_REVIEWED_RECORD_ERROR,
   UPDATE_MANAGER_NOTES_REQUEST,
   UPDATE_MANAGER_NOTES_ERROR,
   UPDATE_MANAGER_NOTES_SUCCESS
@@ -96,7 +99,7 @@ import {
 } from "./types";
 import * as _ from "lodash";
 import { Languages } from "ente-types";
-import { Map } from "immutable";
+import { Map, Set } from "immutable";
 import {
   ImportUsersSuccessPayload,
   FetchInstanceConfigSuccessPayload,
@@ -104,7 +107,7 @@ import {
   LoginSuccessPayload,
   UpdateManagerNotesSuccessPayload
 } from "./actions";
-import { TimeScope } from "../time-scope";
+import { FilterScope } from "../filter-scope";
 import { ColorScheme } from "../theme";
 
 const addResponse = (state: AppState, apiResponse: APIResponse) =>
@@ -217,12 +220,19 @@ const reducer = handleActions<AppState | undefined, any>(
       LOGIN_ERROR,
       LOGIN_SUCCESS,
       (state, action: Action<LoginSuccessPayload>) => {
-        const { apiResponse, authState, oneSelf } = action.payload!;
+        const {
+          apiResponse,
+          authState,
+          oneSelf,
+          reviewedRecords
+        } = action.payload!;
 
-        return addResponse(
-          state.set("auth", authState).set("oneSelf", oneSelf),
-          apiResponse
-        );
+        const newState = state
+          .set("auth", authState)
+          .set("oneSelf", oneSelf)
+          .set("reviewedRecords", reviewedRecords);
+
+        return addResponse(newState, apiResponse);
       }
     ),
 
@@ -243,9 +253,9 @@ const reducer = handleActions<AppState | undefined, any>(
       }),
 
     // ## SET_TIME_SCOPE
-    [SET_TIME_SCOPE]: (
+    [SET_FILTER_SCOPE]: (
       state?: AppState,
-      action?: Action<TimeScope>
+      action?: Action<FilterScope>
     ): AppState => state!.set("timeScope", action!.payload!),
 
     // ## SET_COLOR_SCHEME
@@ -504,6 +514,18 @@ const reducer = handleActions<AppState | undefined, any>(
       (state: AppState, action: Action<SetLoginBannerSuccessPayload>) => {
         const { language, text } = action.payload!;
         return state.setIn(["instanceConfig", "loginBanners", language], text);
+      }
+    ),
+
+    // ## ADD_REVIEWED_RECORD
+    ...asyncReducersFull(
+      ADD_REVIEWED_RECORD_REQUEST,
+      ADD_REVIEWED_RECORD_ERROR,
+      ADD_REVIEWED_RECORD_SUCCESS,
+      (state: AppState, action: Action<string>) => {
+        return state.update("reviewedRecords", entries =>
+          (entries || Set()).add(action.payload!)
+        );
       }
     ),
 

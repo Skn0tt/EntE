@@ -73,6 +73,14 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
+  async findAllUserIds(): Promise<Set<string>> {
+    const records = await this.repo.find({
+      select: ["_id"]
+    });
+    const ids = records.map(user => user._id);
+    return new Set(ids);
+  }
+
   async findByIds(...ids: string[]): Promise<UserDto[]> {
     const users = await this._userQueryWithChildren()
       .whereInIds(ids)

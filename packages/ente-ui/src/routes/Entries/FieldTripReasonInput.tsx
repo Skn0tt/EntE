@@ -8,7 +8,7 @@ import { NumberInput } from "../../elements/NumberInput";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { DateInput } from "../../elements/DateInput";
 import { connect, MapStateToPropsParam } from "react-redux";
-import { AppState, getEntryCreationDeadline } from "ente-ui/src/redux";
+import { AppState, getEntryCreationDeadline } from "../../redux";
 
 const useTranslation = makeTranslationHook({
   en: {

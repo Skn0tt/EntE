@@ -27,6 +27,7 @@ import {
 import { IsIn, IsInt, IsISO8601, IsString } from "class-validator";
 import { Entry } from "./entry.entity";
 import { Slot } from "./slot.entity";
+import { RecordReviewal } from "./recordReviewal.entity";
 
 /**
  * # User
@@ -91,4 +92,7 @@ export class User {
 
   @OneToMany(type => Slot, slot => slot.teacher)
   slots?: Slot[];
+
+  @OneToMany(type => RecordReviewal, reviewedRecord => reviewedRecord.user)
+  reviewedRecords?: RecordReviewal[];
 }

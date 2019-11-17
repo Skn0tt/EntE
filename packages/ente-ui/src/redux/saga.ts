@@ -62,6 +62,8 @@ import {
   setParentSignatureNotificationTimeError,
   setEntryCreationDaysSuccess,
   setEntryCreationDaysError,
+  addReviewedRecordSuccess,
+  addReviewedRecordError,
   UpdateManagerNotesRequestPayload,
   updateManagerNotesSuccess,
   updateManagerNotesError
@@ -92,6 +94,7 @@ import {
   SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_ENTRY_CREATION_DAYS_REQUEST,
+  ADD_REVIEWED_RECORD_REQUEST,
   UPDATE_MANAGER_NOTES_REQUEST
 } from "./constants";
 import * as api from "./api";
@@ -111,12 +114,16 @@ const onRequestError = (error: Error) => getConfig().onRequestError(error);
 
 function* loginSaga(action: Action<BasicCredentials>) {
   try {
-    const { apiResponse, authState, oneSelf }: api.LoginInfo = yield call(
-      api.login,
-      action.payload!
-    );
+    const {
+      apiResponse,
+      authState,
+      oneSelf,
+      reviewedRecords
+    }: api.LoginInfo = yield call(api.login, action.payload!);
 
-    yield put(loginSuccess({ authState, apiResponse, oneSelf }, action));
+    yield put(
+      loginSuccess({ authState, apiResponse, oneSelf, reviewedRecords }, action)
+    );
   } catch (error) {
     getConfig().onLoginFailedInvalidCredentials();
     yield put(loginError(error, action));
@@ -470,6 +477,19 @@ function* syncLanguageSaga(action: Action<Languages>) {
   }
 }
 
+function* addReviedEntrySaga(action: Action<string>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+
+    yield call(api.addReviewedRecord, token.some(), action.payload!);
+
+    yield put(addReviewedRecordSuccess(action.payload!, action));
+  } catch (error) {
+    onRequestError(error);
+    yield put(addReviewedRecordError(error, action));
+  }
+}
+
 function* updateManagerNotesSaga(
   action: Action<UpdateManagerNotesRequestPayload>
 ) {
@@ -504,6 +524,7 @@ function* saga() {
   yield takeEvery(FETCH_INSTANCE_CONFIG_REQUEST, fetchInstanceConfigSaga);
   yield takeEvery(SET_ENTRY_CREATION_DAYS_REQUEST, setEntryCreationDaysSaga);
   yield takeEvery(SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
+  yield takeEvery(ADD_REVIEWED_RECORD_REQUEST, addReviedEntrySaga);
   yield takeEvery(
     SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
     setParentSignatureExpiryTimeSaga

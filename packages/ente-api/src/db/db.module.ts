@@ -9,16 +9,28 @@ import { Entry } from "./entry.entity";
 import { KeyValueStore } from "./keyvaluestore.entity";
 import { KeyValueStoreRepo } from "./keyvaluestore.repo";
 import { DbHealthIndicator } from "./db-health-indicator";
+import { RecordReviewalRepo } from "./recordReviewal.repo";
+import { RecordReviewal } from "./recordReviewal.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Slot, Entry, KeyValueStore])],
+  imports: [
+    TypeOrmModule.forFeature([User, Slot, Entry, KeyValueStore, RecordReviewal])
+  ],
   providers: [
     EntryRepo,
     UserRepo,
     SlotRepo,
     KeyValueStoreRepo,
-    DbHealthIndicator
+    DbHealthIndicator,
+    RecordReviewalRepo
   ],
-  exports: [EntryRepo, UserRepo, SlotRepo, KeyValueStoreRepo, DbHealthIndicator]
+  exports: [
+    EntryRepo,
+    UserRepo,
+    SlotRepo,
+    KeyValueStoreRepo,
+    DbHealthIndicator,
+    RecordReviewalRepo
+  ]
 })
 export class DbModule {}

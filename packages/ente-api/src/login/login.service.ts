@@ -7,6 +7,7 @@ import { UserRepo } from "../db/user.repo";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
 import { EntriesService } from "../entries/entries.service";
 import { UsersService } from "../users/users.service";
+import { ReviewedRecordsService } from "../reviewedRecords/reviewedRecords.service";
 
 @Injectable()
 export class LoginService {
@@ -16,7 +17,9 @@ export class LoginService {
     @Inject(EntryRepo)
     private readonly entryRepo: EntryRepo,
     @Inject(UserRepo)
-    private readonly userRepo: UserRepo
+    private readonly userRepo: UserRepo,
+    @Inject(ReviewedRecordsService)
+    private readonly reviewedRecordsService: ReviewedRecordsService
   ) {}
 
   async getLoginData(user: RequestContextUser): Promise<LoginDto> {
@@ -32,7 +35,10 @@ export class LoginService {
       ),
       neededUsers: (await this.getNeededUsers(oneSelf)).map(e =>
         UsersService.blackenDto(e, user.role)
-      )
+      ),
+      reviewedRecords: [
+        ...(await this.reviewedRecordsService.getReviewedRecords(oneSelf.id))
+      ]
     };
   }
 

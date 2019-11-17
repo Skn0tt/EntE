@@ -20,18 +20,40 @@ import {
   ParentSignatureTimesN
 } from "./types";
 import { createSelector } from "reselect";
-import {
-  Roles,
-  Languages,
-  DEFAULT_DEFAULT_LANGUAGE,
-  UserDto
-} from "ente-types";
+import { Roles, Languages, DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
-import { Action } from "redux";
-import { Map } from "immutable";
-import { TimeScope } from "../time-scope";
+import { Map, Set } from "immutable";
+import { FilterScope } from "../filter-scope";
 import { ColorScheme } from "../theme";
+import { ADD_REVIEWED_RECORD_REQUEST } from "./constants";
+import { Action } from "redux-actions";
+
+export const transferReviewedRecords = (state: AppState): AppState => {
+  const reviewedRecords = getReviewedRecords(state);
+  return reviewedRecords.reduce((state, recordId) => {
+    function setIsInReviewedRecordsTrue(item: (SlotN | EntryN) | null) {
+      if (!item) {
+        return null;
+      }
+
+      return (item as any).set("isInReviewedRecords", true);
+    }
+
+    if (state.hasIn(["entriesMap", recordId])) {
+      return state.updateIn(
+        ["entriesMap", recordId],
+        setIsInReviewedRecordsTrue
+      );
+    }
+
+    if (state.hasIn(["slotsMap", recordId])) {
+      return state.updateIn(["slotsMap", recordId], setIsInReviewedRecordsTrue);
+    }
+
+    return state;
+  }, state);
+};
 
 type Selector<T> = (state: AppState) => T;
 
@@ -44,9 +66,10 @@ export const isTypePending: Selector<(type: string) => boolean> = _.memoize(
   (state: AppState) => (type: string) =>
     !!state.get("pendingActions").find(action => action.type === type)
 );
-export const isActionPending: Selector<(action: Action) => boolean> = _.memoize(
-  (state: AppState) => (action: Action) =>
-    !!state.get("pendingActions").find(v => _.isEqual(action, v))
+export const isActionPending: Selector<
+  (action: Action<any>) => boolean
+> = _.memoize((state: AppState) => (action: Action<any>) =>
+  !!state.get("pendingActions").find(v => _.isEqual(action, v))
 );
 
 /**
@@ -129,33 +152,35 @@ export const getOneSelvesGraduationYear: Selector<Maybe<number>> = state => {
  * Data
  */
 export const getEntry = (id: string): Selector<Maybe<EntryN>> => state =>
-  Maybe.fromUndefined(state.getIn(["entriesMap", id]));
+  Maybe.fromUndefined(transferReviewedRecords(state).getIn(["entriesMap", id]));
 
 export const getEntries: Selector<EntryN[]> = state =>
-  state
+  transferReviewedRecords(state)
     .get("entriesMap")
     .toArray()
     .map(([_, value]) => value);
 
 export const getUser = (id: string): Selector<Maybe<UserN>> => state =>
-  Maybe.fromUndefined(state.getIn(["usersMap", id]));
+  Maybe.fromUndefined(transferReviewedRecords(state).getIn(["usersMap", id]));
 
 export const getUsers: Selector<UserN[]> = state =>
-  state
+  transferReviewedRecords(state)
     .get("usersMap")
     .toArray()
     .map(([_, value]) => value);
 
 export const getSlotsMap: Selector<Map<string, SlotN>> = state =>
-  state.get("slotsMap");
+  transferReviewedRecords(state).get("slotsMap");
 
 export const getSlots: Selector<SlotN[]> = state =>
-  getSlotsMap(state)
+  getSlotsMap(transferReviewedRecords(state))
     .toArray()
     .map(([_, value]) => value);
 
 export const getSlotsById = (ids: string[]): Selector<SlotN[]> => state =>
-  ids.map(id => state.getIn(["slotsMap", id])).filter(s => !!s);
+  ids
+    .map(id => transferReviewedRecords(state).getIn(["slotsMap", id]))
+    .filter(s => !!s);
 
 export const getTeachers = createSelector(
   [getUsers],
@@ -238,8 +263,20 @@ export const getCurrentLoginBanner: Selector<Maybe<string>> = state => {
   return result;
 };
 
-export const getTimeScope: Selector<TimeScope> = state =>
+export const getFilterScope: Selector<FilterScope> = state =>
   state.get("timeScope");
 
 export const getColorScheme: Selector<ColorScheme> = state =>
   state.get("colorScheme");
+
+export const getReviewedRecords: Selector<Set<string>> = state => {
+  const reviewedRecords = state.get("reviewedRecords") || Set();
+
+  const pendingActions = state.get("pendingActions");
+
+  const currentlyAdding = pendingActions
+    .filter(action => action.type === ADD_REVIEWED_RECORD_REQUEST)
+    .map((a: Action<string>) => a.payload!);
+
+  return reviewedRecords.union(currentlyAdding);
+};

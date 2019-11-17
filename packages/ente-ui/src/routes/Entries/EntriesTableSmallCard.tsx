@@ -5,10 +5,10 @@ import {
   Theme,
   CardContent,
   Typography,
-  Chip,
   ListItem,
   ListItemText,
-  List
+  List,
+  IconButton
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { makeStyles } from "@material-ui/styles";
@@ -17,6 +17,7 @@ import { Roles } from "ente-types";
 import { Maybe } from "monet";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
+import DoneIcon from "@material-ui/icons/Done";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -34,9 +35,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing.unit
   },
   upRight: {
+    position: "relative",
+    float: "right"
+  },
+  upAlmostRight: {
+    position: "relative",
     float: "right",
-    top: 0,
-    right: 0
+    top: "-8px"
   },
   list: {
     paddingBottom: 0,
@@ -49,12 +54,21 @@ interface EntriesTableSmallCardProps {
   role: Roles;
   student: Maybe<UserN>;
   onClick: (entry: EntryN) => void;
+  showAddToReviewed: boolean;
+  addToReviewed(): void;
 }
 
 export const EntriesTableSmallCard: React.FC<
   EntriesTableSmallCardProps
 > = props => {
-  const { entry, role, student, onClick } = props;
+  const {
+    entry,
+    role,
+    student,
+    onClick,
+    showAddToReviewed,
+    addToReviewed
+  } = props;
 
   const translation = useTranslation();
 
@@ -79,11 +93,23 @@ export const EntriesTableSmallCard: React.FC<
   return (
     <Card className={classes.card} onClick={handleClick}>
       <CardContent>
-        <div className={classes.upRight}>
+        <span className={classes.upRight}>
           <EntryReasonCategoryChip
             reasonCategory={entry.get("reason").category}
           />
-        </div>
+        </span>
+        {showAddToReviewed && (
+          <span className={classes.upAlmostRight}>
+            <IconButton
+              onClick={evt => {
+                evt.stopPropagation();
+                addToReviewed();
+              }}
+            >
+              <DoneIcon />
+            </IconButton>
+          </span>
+        )}
 
         <Typography variant="h6" component="h2">
           {dateText}

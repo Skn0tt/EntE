@@ -8,9 +8,11 @@
 
 import * as React from "react";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect, MapDispatchToPropsParam } from "react-redux";
+import { connect } from "react-redux";
 import styles from "./Entries.styles";
+import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 import {
   AppState,
   getEntries,
@@ -18,27 +20,26 @@ import {
   getUser,
   getEntriesRequest,
   EntryN,
-  UserN,
-  getTimeScope,
-  getRole
+  getFilterScope,
+  getRole,
+  addReviewedRecordRequest
 } from "../../redux";
-import { Action } from "redux";
+import { Dispatch } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { RouteComponentProps, withRouter } from "react-router";
 import Fab from "@material-ui/core/Fab";
 import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { Maybe } from "monet";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
-import { getTimeScopeValidator, TimeScope } from "../../time-scope";
+import { getFilterScopeValidator } from "../../filter-scope";
 import { EntryReasonCategory, Roles } from "ente-types";
-import TimeScopeSelectionView from "../../components/TimeScopeSelectionView";
+import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
 import { useTheme } from "@material-ui/styles";
-import { Theme } from "@material-ui/core";
+import { Theme, IconButton } from "@material-ui/core";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
@@ -51,7 +52,8 @@ const useTranslation = makeTranslationHook({
       created: "Created",
       reason: "Reason",
       manager: "Manager",
-      parents: "Parents"
+      parents: "Parents",
+      reviewed: "Review"
     },
     yes: "Yes",
     no: "No",
@@ -64,7 +66,8 @@ const useTranslation = makeTranslationHook({
       created: "Erstellt",
       reason: "Grund",
       manager: "Stufenleiter",
-      parents: "Eltern"
+      parents: "Eltern",
+      reviewed: "Abhaken"
     },
     yes: "Ja",
     no: "Nein",
@@ -72,35 +75,24 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface EntriesOwnProps {}
-
-interface EntriesStateProps {
-  entries: EntryN[];
-  canCreateEntries: Maybe<boolean>;
-  getUser(id: string): Maybe<UserN>;
-  timeScope: TimeScope;
-  ownRole: Roles;
-}
-const mapStateToProps = (state: AppState): EntriesStateProps => ({
+const mapStateToProps = (state: AppState) => ({
   entries: getEntries(state),
-  canCreateEntries: canCreateEntries(state),
   getUser: (id: string) => getUser(id)(state),
-  timeScope: getTimeScope(state),
-  ownRole: getRole(state).some()
+  filterScope: getFilterScope(state),
+  ownRole: getRole(state).some(),
+  canCreateEntries: canCreateEntries(state)
 });
 
-interface EntriesDispatchProps {
-  requestEntries(): Action;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  EntriesDispatchProps,
-  EntriesOwnProps
-> = dispatch => ({
-  requestEntries: () => dispatch(getEntriesRequest())
+type EntriesStateProps = ReturnType<typeof mapStateToProps>;
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  requestEntries: () => dispatch(getEntriesRequest()),
+  addToReviewed: (id: string) => dispatch(addReviewedRecordRequest(id))
 });
 
-type Props = EntriesOwnProps &
-  EntriesStateProps &
+type EntriesDispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+type Props = EntriesStateProps &
   EntriesDispatchProps &
   WithStyles &
   RouteComponentProps<{}>;
@@ -113,8 +105,9 @@ export const Entries: React.FunctionComponent<Props> = props => {
     getUser,
     history,
     requestEntries,
-    timeScope,
-    ownRole
+    filterScope,
+    ownRole,
+    addToReviewed
   } = props;
 
   const lang = useTranslation();
@@ -143,10 +136,16 @@ export const Entries: React.FunctionComponent<Props> = props => {
 
   const entriesInScope = React.useMemo(
     () => {
-      const validator = getTimeScopeValidator(timeScope);
-      return entries.filter(e => validator(parseISO(e.get("createdAt"))));
+      const validator = getFilterScopeValidator(filterScope);
+      return entries.filter(e =>
+        validator({
+          date: parseISO(e.get("createdAt")),
+          id: e.get("id"),
+          isInReviewedRecords: e.get("isInReviewedRecords")
+        })
+      );
     },
-    [entries, timeScope]
+    [entries, filterScope]
   );
 
   const handleClick = React.useCallback(
@@ -212,9 +211,33 @@ export const Entries: React.FunctionComponent<Props> = props => {
             name: lang.headers.parents,
             extract: e => (e.get("signedParent") ? lang.yes : lang.no),
             options: { customBodyRender, filter: true }
+          },
+          {
+            name: lang.headers.reviewed,
+            extract: (entry: EntryN) => entry,
+            options: {
+              filter: false,
+              display:
+                [Roles.TEACHER, Roles.MANAGER].includes(ownRole) &&
+                filterScope === "not_reviewed",
+              customBodyRender: (entry: EntryN) => {
+                const id = entry.get("id");
+                return (
+                  <IconButton
+                    onClick={evt => {
+                      evt.stopPropagation();
+                      addToReviewed(id);
+                    }}
+                  >
+                    <DoneIcon />
+                  </IconButton>
+                );
+              }
+            }
           }
         ]}
-        title={<TimeScopeSelectionView />}
+        key={"EntriesTable" + (filterScope === "not_reviewed")}
+        title={<FilterScopeSelectionView />}
         items={entriesInScope}
         extractId={entry => entry.get("id")}
         onClick={handleClick}
@@ -226,6 +249,11 @@ export const Entries: React.FunctionComponent<Props> = props => {
                   role={ownRole}
                   student={getUser(entry.get("studentId"))}
                   onClick={entry => handleClick(entry.get("id"))}
+                  showAddToReviewed={
+                    [Roles.TEACHER, Roles.MANAGER].includes(ownRole) &&
+                    filterScope === "not_reviewed"
+                  }
+                  addToReviewed={() => addToReviewed(entry.get("id"))}
                 />
               )
             : undefined
