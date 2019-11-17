@@ -1,6 +1,6 @@
 {
   "name": "ente-api",
-  "version": "0.27.2",
+  "version": "0.27.3",
   "description": "API for EntE",
   "repository": "https://gitlab.com/Skn0tt/EntE/master/packages/ente-api",
   "license": "AGPL-3.0-or-later",
@@ -32,7 +32,7 @@
     "class-transformer": "^0.1.10",
     "class-validator": "^0.9.1",
     "date-fns": "^2.0.0-alpha.27",
-    "ente-types": "^0.27.2",
+    "ente-types": "^0.27.3",
     "excel4node": "^1.7.0",
     "handlebars": "^4.0.12",
     "lodash": "^4.17.11",
