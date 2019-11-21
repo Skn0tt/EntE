@@ -41,13 +41,13 @@ export class CreateRecordReviewalTable1573931612000
     await queryRunner.createTable(recordReviewalTable);
 
     const managerAndEntries = await queryRunner.query(
-      "SELECT manager._id AS managerId, entry._id AS entryId FROM entry JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear`;"
+      "SELECT manager._id AS managerId, entry._id AS entryId FROM entry JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear` WHERE manager.role = 'manager';"
     );
     const managerAndSlots = await queryRunner.query(
-      "SELECT manager._id AS managerId, slot._id AS slotId FROM slot JOIN entry ON slot.entry_id = entry._id JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear`;"
+      "SELECT manager._id AS managerId, slot._id AS slotId FROM slot JOIN entry ON slot.entry_id = entry._id JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear` WHERE manager.role = 'manager';"
     );
     const teacherAndSlots = await queryRunner.query(
-      "SELECT teacher._id AS teacherId, slot._id AS slotId FROM slot JOIN user AS teacher ON slot.teacher_id = teacher._id;"
+      "SELECT teacher._id AS teacherId, slot._id AS slotId FROM slot JOIN user AS teacher ON slot.teacher_id = teacher._id WHERE teacher.role = 'teacher';"
     );
 
     const pairs: [string, string][] = [
