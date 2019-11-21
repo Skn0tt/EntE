@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix migration script for inbox
+
 ## [v0.28.0] - 2019-10-17
 
 - Add inbox filter ([#294](https://gitlab.com/Skn0tt/EntE/issues/294))
