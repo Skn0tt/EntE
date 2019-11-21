@@ -8,37 +8,53 @@ import {
 import { User } from "../user.entity";
 import { RecordReviewal } from "../recordReviewal.entity";
 
-const recordReviewalTable = new Table({
-  name: "record_reviewal",
-  columns: [
-    new TableColumn({
-      name: "user_id",
-      type: "varchar",
-      isPrimary: true,
-      isNullable: false,
-      charset: "utf8"
-    }),
-    new TableColumn({
-      name: "recordId",
-      type: "varchar",
-      isPrimary: true,
-      isNullable: false
-    })
-  ],
-  foreignKeys: [
-    new TableForeignKey({
-      referencedTableName: "user",
-      columnNames: ["user_id"],
-      referencedColumnNames: ["_id"],
-      onDelete: "CASCADE"
-    })
-  ]
-});
+/**
+ * @param charSet is dynamically defined, based upon existing column
+ */
+const recordReviewalTable = (charset: string) =>
+  new Table({
+    name: "record_reviewal",
+    columns: [
+      new TableColumn({
+        name: "user_id",
+        type: "varchar",
+        isPrimary: true,
+        isNullable: false,
+        charset
+      }),
+      new TableColumn({
+        name: "recordId",
+        type: "varchar",
+        isPrimary: true,
+        isNullable: false
+      })
+    ],
+    foreignKeys: [
+      new TableForeignKey({
+        referencedTableName: "user",
+        columnNames: ["user_id"],
+        referencedColumnNames: ["_id"],
+        onDelete: "CASCADE"
+      })
+    ]
+  });
 
 export class CreateRecordReviewalTable1573931612000
   implements MigrationInterface {
+  async getCharSetOfUserIdColumn(qr: QueryRunner) {
+    const [{ character_set_name }] = await qr.query(
+      'SELECT character_set_name FROM information_schema.`COLUMNS` WHERE table_name = "user" AND column_name = "_id";'
+    );
+    return character_set_name;
+  }
+
+  async createDDL(qr: QueryRunner) {
+    const charset = await this.getCharSetOfUserIdColumn(qr);
+    return recordReviewalTable(charset);
+  }
+
   async up(queryRunner: QueryRunner) {
-    await queryRunner.createTable(recordReviewalTable);
+    await queryRunner.createTable(await this.createDDL(queryRunner));
 
     const managerAndEntries = await queryRunner.query(
       "SELECT manager._id AS managerId, entry._id AS entryId FROM entry JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear` WHERE manager.role = 'manager';"
@@ -85,6 +101,6 @@ export class CreateRecordReviewalTable1573931612000
   }
 
   async down(queryRunner: QueryRunner) {
-    await queryRunner.dropTable(recordReviewalTable);
+    await queryRunner.dropTable(recordReviewalTable("charset does not matter"));
   }
 }
