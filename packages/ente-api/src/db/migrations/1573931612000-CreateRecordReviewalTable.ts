@@ -13,16 +13,16 @@ const recordReviewalTable = new Table({
   columns: [
     new TableColumn({
       name: "user_id",
-      type: "char",
+      type: "varchar",
       isPrimary: true,
-      length: "36"
+      isNullable: false,
+      charset: "utf8"
     }),
     new TableColumn({
       name: "recordId",
-      type: "char",
+      type: "varchar",
       isPrimary: true,
-      isNullable: false,
-      length: "36"
+      isNullable: false
     })
   ],
   foreignKeys: [
@@ -38,7 +38,7 @@ const recordReviewalTable = new Table({
 export class CreateRecordReviewalTable1573931612000
   implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
-    queryRunner.createTable(recordReviewalTable);
+    await queryRunner.createTable(recordReviewalTable);
 
     const managerAndEntries = await queryRunner.query(
       "SELECT manager._id AS managerId, entry._id AS entryId FROM entry JOIN user AS `student` ON student_id = student._id JOIN user AS `manager` ON `student`.`graduationYear` = `manager`.`graduationYear`;"
@@ -85,6 +85,6 @@ export class CreateRecordReviewalTable1573931612000
   }
 
   async down(queryRunner: QueryRunner) {
-    queryRunner.dropTable(recordReviewalTable);
+    await queryRunner.dropTable(recordReviewalTable);
   }
 }
