@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Repository, Brackets } from "typeorm";
 import { Some, None, Maybe } from "monet";
 import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
@@ -76,13 +76,32 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  async findHavingTeacherUpdatedSince(
-    id: string,
+  async findSlotsSignedOrCreatedSinceHavingTeacher(
+    teacherId: string,
     since: Date
   ): Promise<SlotDto[]> {
+    const hasBeenSignedDuringLastWeek = new Brackets(qb => {
+      qb.where("entry.managerSignatureDate IS NOT NULL")
+        .andWhere("entry.parentSignatureDate IS NOT NULL")
+        .andWhere(
+          new Brackets(qb => {
+            qb.where("entry.managerSignatureDate > :since", { since }).orWhere(
+              "entry.parentSignatureDate > :since",
+              { since }
+            );
+          })
+        );
+    });
+
+    const hasBeenCreatedOrSignedDuringLastWeek = new Brackets(qb => {
+      qb.where("entry.createdAt > :since", { since }).orWhere(
+        hasBeenSignedDuringLastWeek
+      );
+    });
+
     const slots = await this._slotQueryWithTeacher()
-      .where("slot.teacher = :id", { id })
-      .andWhere("entry.updatedAt > :since", { since })
+      .where("slot.teacher = :id", { id: teacherId })
+      .andWhere(hasBeenCreatedOrSignedDuringLastWeek)
       .getMany();
 
     return slots.map(SlotRepo.toDto);
