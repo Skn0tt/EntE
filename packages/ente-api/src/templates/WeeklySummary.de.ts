@@ -26,23 +26,23 @@ const template: HandlebarsTemplateDelegate<
         <mj-divider border-color="black" />
 
         <mj-text font-size="20px" font-family="helvetica">
-          Weekly Summary
+          Wöchentliche Zusammenfassung
         </mj-text>
         {{#if items.length}}
         <mj-table>
           <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
-            <th>Student</th>
-            <th>Date</th>
-            <th>From</th>
-            <th>To</th>
-            <th>State</th>
-            <th>Educational</th>
+            <th>Schüler*in</th>
+            <th>Datum</th>
+            <th>Von</th>
+            <th>Bis</th>
+            <th>Status</th>
+            <th>(Außer-)schulisch</th>
           </tr>
           {{#each items}} {{{ this }}} {{/each}}
         </mj-table>
         {{else}}
         <mj-text>
-          There have been no absences in your classes during the last week.
+          Während der letzten Woche ist in ihrem Unterricht nicht gefehlt worden.
         </mj-text>
         {{/if}}
       </mj-column>

@@ -135,9 +135,9 @@ export class SlotsService {
     const teachingUsers = await this.userRepo.findByRoles(...TEACHING_ROLES);
     await Promise.all(
       teachingUsers.map(async teacher => {
-        const slots = await this.slotRepo.findHavingTeacherUpdatedSince(
+        const slots = await this.slotRepo.findSlotsSignedOrCreatedSinceHavingTeacher(
           teacher.id,
-          daysBeforeNow(14)
+          daysBeforeNow(7)
         );
         await this.emailService.dispatchWeeklySummary(teacher, slots);
       })
