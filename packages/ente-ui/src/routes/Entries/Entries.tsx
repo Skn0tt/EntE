@@ -214,14 +214,13 @@ export const Entries: React.FunctionComponent<Props> = props => {
           },
           {
             name: lang.headers.reviewed,
-            extract: (entry: EntryN) => entry,
+            extract: (entry: EntryN) => entry.get("id"),
             options: {
               filter: false,
               display:
                 [Roles.TEACHER, Roles.MANAGER].includes(ownRole) &&
                 filterScope === "not_reviewed",
-              customBodyRender: (entry: EntryN) => {
-                const id = entry.get("id");
+              customBodyRender: (id: string) => {
                 return (
                   <IconButton
                     onClick={evt => {

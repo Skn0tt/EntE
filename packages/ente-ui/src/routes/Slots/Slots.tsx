@@ -204,14 +204,13 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
         },
         {
           name: lang.headers.reviewed,
-          extract: (slot: SlotN) => slot,
+          extract: (slot: SlotN) => slot.get("id"),
           options: {
             filter: false,
             display:
               [Roles.MANAGER, Roles.TEACHER].includes(role) &&
               filterScope === "not_reviewed",
-            customBodyRender: (slot: SlotN) => {
-              const id = slot.get("id");
+            customBodyRender: (id: string) => {
               return (
                 <IconButton onClick={() => addToReviewed(id)}>
                   <DoneIcon />

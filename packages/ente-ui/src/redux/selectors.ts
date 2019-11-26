@@ -29,31 +29,36 @@ import { ColorScheme } from "../theme";
 import { ADD_REVIEWED_RECORD_REQUEST } from "./constants";
 import { Action } from "redux-actions";
 
-export const transferReviewedRecords = (state: AppState): AppState => {
-  const reviewedRecords = getReviewedRecords(state);
-  return reviewedRecords.reduce((state, recordId) => {
-    function setIsInReviewedRecordsTrue(item: (SlotN | EntryN) | null) {
-      if (!item) {
-        return null;
+export const transferReviewedRecords: (state: AppState) => AppState = _.memoize(
+  (state: AppState): AppState => {
+    const reviewedRecords = getReviewedRecords(state);
+    return reviewedRecords.reduce((state, recordId) => {
+      function setIsInReviewedRecordsTrue(item: (SlotN | EntryN) | null) {
+        if (!item) {
+          return null;
+        }
+
+        return (item as any).set("isInReviewedRecords", true);
       }
 
-      return (item as any).set("isInReviewedRecords", true);
-    }
+      if (state.hasIn(["entriesMap", recordId])) {
+        return state.updateIn(
+          ["entriesMap", recordId],
+          setIsInReviewedRecordsTrue
+        );
+      }
 
-    if (state.hasIn(["entriesMap", recordId])) {
-      return state.updateIn(
-        ["entriesMap", recordId],
-        setIsInReviewedRecordsTrue
-      );
-    }
+      if (state.hasIn(["slotsMap", recordId])) {
+        return state.updateIn(
+          ["slotsMap", recordId],
+          setIsInReviewedRecordsTrue
+        );
+      }
 
-    if (state.hasIn(["slotsMap", recordId])) {
-      return state.updateIn(["slotsMap", recordId], setIsInReviewedRecordsTrue);
-    }
-
-    return state;
-  }, state);
-};
+      return state;
+    }, state);
+  }
+);
 
 type Selector<T> = (state: AppState) => T;
 
