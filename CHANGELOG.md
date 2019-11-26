@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Optimize some bottlenecks while rendering ([#322](https://gitlab.com/Skn0tt/EntE/issues/322))
+
 ## [v0.28.2] - 2019-11-21
 
 - Fix migration script for inbox (again)
