@@ -7,12 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v0.28.3] - 2019-11-26
+## [v0.29.0] - 2019-11-26
 
-- Optimize some bottlenecks while rendering ([#322](https://gitlab.com/Skn0tt/EntE/issues/322))
 - Translate WeeklySummary Email to german
 - Change query for weeklysummary ([#286](https://gitlab.com/Skn0tt/EntE/issues/286)).
   Now, all slots are included that have either been created or fully signed during the last week.
+
+## [v0.28.3] - 2019-11-26
+
+- Optimize some bottlenecks while rendering ([#322](https://gitlab.com/Skn0tt/EntE/issues/322))
 
 ## [v0.28.2] - 2019-11-21
 
