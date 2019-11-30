@@ -1,6 +1,8 @@
 export default {
   en: {
+    schools: "Schools",
     language: "en",
+    docs: "Docs",
     title: "EntE | Digital Excuse Workflow for Schools",
     languagePicker: {
       title: "Language",
@@ -67,6 +69,8 @@ export default {
     }
   },
   de: {
+    schools: "Schulen",
+    docs: "Handbuch",
     language: "de",
     title: "EntE | Digitales Entschuldigungsverfahren für Schulen",
     languagePicker: {
