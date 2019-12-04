@@ -61,7 +61,7 @@ license_management:
     paths: [gl-license-management-report.json]
 
 build:api:
-  image: skn0tt/dind-make
+  image: skn0tt/dind-make:298476cb7a58ce49f9bdab4da93529a10e3c6c1ed5fd7264e6e36b726e11dfa8
   stage: build
   dependencies: []
   services:
@@ -71,7 +71,7 @@ build:api:
   script: "./scripts/ci/build_docker.sh api"
 
 build:ui:
-  image: skn0tt/dind-make
+  image: skn0tt/dind-make:298476cb7a58ce49f9bdab4da93529a10e3c6c1ed5fd7264e6e36b726e11dfa8
   stage: build
   dependencies: []
   services:
@@ -81,7 +81,7 @@ build:ui:
   script: "./scripts/ci/build_docker.sh ui"
 
 build:docker-app:
-  image: docker:stable
+  image: docker:19.03.5
   stage: build
   dependencies: []
   services:
@@ -115,7 +115,7 @@ test:e2e:
       junit: e2e.xml
 
 generate:docs:
-  image: python
+  image: python:3.8.0
   stage: generate
   dependencies: []
   cache:
@@ -129,7 +129,7 @@ generate:docs:
       - docs_dist/
 
 generate:allure:
-  image: skn0tt/allure
+  image: skn0tt/allure:e251d33f2ea388f1e2ce97ad9968ba1f03f65d3e320c692dff6ac1d36f9e4ca0
   stage: generate
   dependencies:
     - test:unit
@@ -200,17 +200,17 @@ deploy:docs:
     - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT docs.ente.app
 
 deploy:images:
-  image: docker:stable
+  image: docker:19.03.5
   stage: deploy
   dependencies: []
   services:
-    - docker:19.03.2-dind
+    - docker:19.03.5-dind
   before_script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin registry.gitlab.com
   script: "./scripts/ci/publish_images.sh"
 
 release:trigger_deployment:
-  image: tutum/curl
+  image: tutum/curl:cb1c7129e1d51aada58db27bce740dca9979a1813530a5933c1f2461d306c05e
   stage: release
   dependencies: []
   variables:

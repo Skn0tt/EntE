@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
   mariadb:
-    image: mariadb
+    image: mariadb:10.4
     ports:
       - 3306:3306
     environment:
@@ -12,7 +12,7 @@ services:
       MYSQL_USER: ente
 
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0.0
     ports:
       - 8025:8025
     networks:
