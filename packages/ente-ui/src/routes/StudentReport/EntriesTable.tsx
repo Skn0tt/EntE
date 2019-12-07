@@ -67,7 +67,9 @@ const mapStateToProps: MapStateToPropsParam<
   getSlots: ids => getSlotsById(ids)(state)
 });
 
-const customBodyRender = (v: string) => <SignedAvatar signed={v === "true"} />;
+const customBodyRender = (v: "true" | "false") => (
+  <SignedAvatar signed={v === "true"} />
+);
 
 type EntriesTableProps = EntriesTableOwnProps & EntriesTableStateProps;
 
@@ -82,11 +84,13 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
           columns={[
             {
               name: translation.date,
-              extract: entry => parseISO(entry.get("date")),
+              extract: entry => entry.get("date"),
               options: {
                 filter: false,
-                customBodyRender: isoTime =>
-                  format(isoTime, "PP", { locale: translation.locale })
+                customBodyRender: (isoTime: string) =>
+                  format(parseISO(isoTime), "PP", {
+                    locale: translation.locale
+                  })
               }
             },
             {
@@ -109,12 +113,12 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
             },
             {
               name: translation.signedManager,
-              extract: e => e.get("signedManager"),
+              extract: e => "" + e.get("signedManager"),
               options: { customBodyRender, filter: true }
             },
             {
               name: translation.signedParent,
-              extract: e => e.get("signedParent"),
+              extract: e => "" + e.get("signedParent"),
               options: { customBodyRender, filter: true }
             }
           ]}
