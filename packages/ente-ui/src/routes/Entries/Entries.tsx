@@ -176,20 +176,20 @@ export const Entries: React.FunctionComponent<Props> = props => {
           },
           {
             name: lang.headers.date,
-            extract: e => parseISO(e.get("date")),
+            extract: e => e.get("date"),
             options: {
               filter: false,
-              customBodyRender: (isoTime: number) =>
-                format(isoTime, "PP", { locale: lang.locale })
+              customBodyRender: (isoTime: string) =>
+                format(parseISO(isoTime), "PP", { locale: lang.locale })
             }
           },
           {
             name: lang.headers.created,
-            extract: e => parseISO(e.get("createdAt")),
+            extract: e => e.get("createdAt"),
             options: {
               filter: false,
-              customBodyRender: (isoTime: number) =>
-                format(isoTime, "PPpp", { locale: lang.locale })
+              customBodyRender: (isoTime: string) =>
+                format(parseISO(isoTime), "PPpp", { locale: lang.locale })
             }
           },
           {

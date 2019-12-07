@@ -155,11 +155,11 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
         },
         {
           name: lang.headers.date,
-          extract: slot => parseISO(slot.get("date")),
+          extract: slot => slot.get("date"),
           options: {
             filter: false,
-            customBodyRender: isoTime =>
-              format(isoTime, "PP", { locale: lang.locale })
+            customBodyRender: (isoTime: string) =>
+              format(parseISO(isoTime), "PP", { locale: lang.locale })
           }
         },
         {

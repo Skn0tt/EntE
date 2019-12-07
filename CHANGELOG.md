@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed sorting bug ([#324](https://gitlab.com/Skn0tt/EntE/issues/324))
+- Fix signature state in report ([#325](https://gitlab.com/Skn0tt/EntE/issues/325))
 
 ## [v0.29.0] - 2019-11-26
 
