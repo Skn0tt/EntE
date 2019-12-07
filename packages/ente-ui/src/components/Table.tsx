@@ -132,7 +132,7 @@ export function Table<T>(props: TableProps<T>) {
       options: {
         ...(column.options || {}),
         filterList,
-        sortDirection: sortedColName === name ? direction : undefined
+        sortDirection: sortedColName === name ? direction : "none"
       }
     };
   });
