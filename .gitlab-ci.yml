@@ -210,7 +210,7 @@ deploy:images:
   script: "./scripts/ci/publish_images.sh"
 
 release:trigger_deployment:
-  image: tutum/curl:cb1c7129e1d51aada58db27bce740dca9979a1813530a5933c1f2461d306c05e
+  image: tutum/curl
   stage: release
   dependencies: []
   variables:
