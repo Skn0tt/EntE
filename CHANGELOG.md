@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move Dark Mode out of Beta ([#333](https://gitlab.com/Skn0tt/EntE/issues/333))
 - Hide IDs from user (can still be retrieved from navigation bar) ([#331](https://gitlab.com/Skn0tt/EntE/issues/331))
 - Fixed small typo ([#326](https://gitlab.com/Skn0tt/EntE/issues/326))
+- Translate ReasonCategory filter to German ([#327](https://gitlab.com/Skn0tt/EntE/issues/327))
 
 ## [v0.29.2] - 2019-12-08
 

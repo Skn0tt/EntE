@@ -95,7 +95,7 @@ export const EntriesTableSmallCard: React.FC<
       <CardContent>
         <span className={classes.upRight}>
           <EntryReasonCategoryChip
-            reasonCategory={entry.get("reason").category}
+            reasonCategoryTranslated={entry.get("reason").category}
           />
         </span>
         {showAddToReviewed && (
