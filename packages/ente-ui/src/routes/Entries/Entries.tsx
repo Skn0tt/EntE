@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import styles from "./Entries.styles";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
-import CloseIcon from "@material-ui/icons/Close";
 import {
   AppState,
   getEntries,
@@ -43,9 +42,11 @@ import { Theme, IconButton } from "@material-ui/core";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
+import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 
 const useTranslation = makeTranslationHook({
   en: {
+    reason: EntryReasonCategoriesTranslation.en,
     headers: {
       name: "Name",
       date: "Date",
@@ -60,6 +61,7 @@ const useTranslation = makeTranslationHook({
     locale: enLocale
   },
   de: {
+    reason: EntryReasonCategoriesTranslation.de,
     headers: {
       name: "Name",
       date: "Datum",
@@ -194,11 +196,14 @@ export const Entries: React.FunctionComponent<Props> = props => {
           },
           {
             name: lang.headers.reason,
-            extract: e => e.get("reason").category,
+            extract: e => {
+              const category = e.get("reason").category;
+              return lang.reason[category];
+            },
             options: {
               filter: true,
-              customBodyRender: (category: EntryReasonCategory) => (
-                <EntryReasonCategoryChip reasonCategory={category} />
+              customBodyRender: (s: string) => (
+                <EntryReasonCategoryChip reasonCategoryTranslated={s} />
               )
             }
           },
