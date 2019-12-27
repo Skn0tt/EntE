@@ -1,5 +1,5 @@
 import { Roles, rolesArr } from "ente-types";
-import { IsOptional, IsIn, IsInt, IsISO8601 } from "class-validator";
+import { IsOptional, IsIn, IsInt, IsISO8601, IsBoolean } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidDisplayname,
@@ -23,10 +23,6 @@ export class PatchUserDto {
   email?: string;
 
   @IsOptional()
-  @IsIn(rolesArr)
-  role?: Roles;
-
-  @IsOptional()
   @IsIn(languagesArr)
   language?: Languages;
 
@@ -41,4 +37,8 @@ export class PatchUserDto {
   @IsOptional()
   @IsInt()
   graduationYear?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  subscribedToWeeklySummary?: boolean;
 }

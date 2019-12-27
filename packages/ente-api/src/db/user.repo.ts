@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Repository, Brackets, In, Not } from "typeorm";
 import { User } from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
@@ -11,7 +11,8 @@ import {
   roleHasChildren,
   roleHasBirthday,
   Languages,
-  ROLES_WITH_GRADUATION_YEAR
+  ROLES_WITH_GRADUATION_YEAR,
+  TEACHING_ROLES
 } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
@@ -353,6 +354,13 @@ export class UserRepo {
     );
   }
 
+  async setSubscribedToWeeklySummary(
+    id: string,
+    subscribedToWeeklySummary: boolean
+  ) {
+    await this.repo.update(id, { subscribedToWeeklySummary });
+  }
+
   async findUserAndPasswordHashByUsername(
     username: string
   ): Promise<Maybe<UserAndPasswordHash>> {
@@ -460,6 +468,16 @@ export class UserRepo {
     });
   }
 
+  async findWeeklySummaryRecipients() {
+    const recipients = await this.repo.find({
+      where: {
+        role: In(TEACHING_ROLES),
+        subscribedToWeeklySummary: true
+      }
+    });
+    return recipients.map(UserRepo.toDto);
+  }
+
   static toDto(user: User): UserDto {
     const result = new UserDto();
 
@@ -484,6 +502,9 @@ export class UserRepo {
     result.language = user.language;
     result.managerNotes =
       user.role === Roles.STUDENT ? user.managerNotes : undefined;
+    result.subscribedToWeeklySummary = TEACHING_ROLES.includes(user.role)
+      ? !!user.subscribedToWeeklySummary
+      : undefined;
 
     return result;
   }

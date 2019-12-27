@@ -12,7 +12,12 @@ import { None, Some, Maybe } from "monet";
 import { Route } from "react-router";
 import { History } from "history";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { Languages, DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
+import {
+  Languages,
+  DEFAULT_DEFAULT_LANGUAGE,
+  Roles,
+  TEACHING_ROLES
+} from "ente-types";
 import {
   MapStateToPropsParam,
   MapDispatchToPropsParam,
@@ -25,7 +30,11 @@ import {
   getColorScheme,
   setColorScheme,
   resetPasswordRequest,
-  getUsername
+  getUsername,
+  getRole,
+  isSubscribedToWeeklySummary,
+  updateUserRequest,
+  getOneSelf
 } from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
 
@@ -33,12 +42,14 @@ const useTranslation = makeTranslationHook({
   en: {
     about: "About",
     language: "Language",
+    weeklySummarySubscription: "Weekly summary mail",
     darkMode: "Dark Mode",
     resetPassword: "Reset / Change Password"
   },
   de: {
     about: "Über",
     language: "Sprache",
+    weeklySummarySubscription: "Wöchentliche Zusammenfassungs-Mail",
     darkMode: "Dark Mode",
     resetPassword: "Passwort ändern / zurücksetzen"
   }
@@ -50,6 +61,9 @@ interface SettingsMenuStateProps {
   language: Languages;
   isDarkModeEnabled: boolean;
   username: string;
+  role: Maybe<Roles>;
+  ownId: string;
+  isSubscribedToWeeklySummary: boolean;
 }
 const mapStateToProps: MapStateToPropsParam<
   SettingsMenuStateProps,
@@ -57,6 +71,11 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE),
+  role: getRole(state),
+  ownId: getOneSelf(state)
+    .map(u => u.get("id"))
+    .orSome(""),
+  isSubscribedToWeeklySummary: isSubscribedToWeeklySummary(state).orSome(true),
   isDarkModeEnabled: getColorScheme(state) === "dark",
   username: getUsername(state).some()
 });
@@ -65,6 +84,7 @@ interface SettingsMenuDispatchProps {
   setLanguage: (lang: Languages) => void;
   setDarkMode: (on: boolean) => void;
   resetPassword(username: string): void;
+  setWeeklySummary(v: boolean, id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   SettingsMenuDispatchProps,
@@ -72,7 +92,9 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 > = dispatch => ({
   setLanguage: lang => dispatch(setLanguage(lang)),
   setDarkMode: on => dispatch(setColorScheme(on ? "dark" : "light")),
-  resetPassword: username => dispatch(resetPasswordRequest(username))
+  resetPassword: username => dispatch(resetPasswordRequest(username)),
+  setWeeklySummary: (v, id) =>
+    dispatch(updateUserRequest([id, { subscribedToWeeklySummary: v }]))
 });
 
 type SettingsMenuProps = SettingsMenuOwnProps &
@@ -86,7 +108,11 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
     isDarkModeEnabled,
     setDarkMode,
     resetPassword,
-    username
+    username,
+    isSubscribedToWeeklySummary,
+    role,
+    ownId,
+    setWeeklySummary
   } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<Maybe<HTMLElement>>(None());
@@ -176,6 +202,20 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
               />
             </ListItemSecondaryAction>
           </MenuItem>
+
+          {TEACHING_ROLES.includes(role.orSome(Roles.STUDENT)) && (
+            <MenuItem>
+              <ListItemText style={{ whiteSpace: "initial", width: "100px" }}>
+                {translation.weeklySummarySubscription}
+              </ListItemText>
+              <ListItemSecondaryAction>
+                <Switch
+                  onChange={(_, c) => setWeeklySummary(c, ownId)}
+                  checked={isSubscribedToWeeklySummary}
+                />
+              </ListItemSecondaryAction>
+            </MenuItem>
+          )}
 
           <Route
             render={({ history }) => (

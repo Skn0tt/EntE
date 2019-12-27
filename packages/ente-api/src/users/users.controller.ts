@@ -14,8 +14,7 @@ import {
   Inject,
   UseGuards,
   Delete,
-  Put,
-  InternalServerErrorException
+  Put
 } from "@nestjs/common";
 import {
   UsersService,

@@ -145,7 +145,9 @@ export const getOwnUserId: Selector<Maybe<string>> = state => {
 };
 
 export const getOneSelf: Selector<Maybe<UserN>> = state => {
-  return Maybe.fromNull(state.get("oneSelf"));
+  return Maybe.fromNull(state.get("oneSelf"))
+    .map(s => s.get("id"))
+    .flatMap(id => Maybe.fromFalsy(state.get("usersMap").get(id)));
 };
 
 export const getOneSelvesGraduationYear: Selector<Maybe<number>> = state => {
@@ -213,6 +215,11 @@ export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>
 
 export const getOneSelvesLanguage: Selector<Maybe<Languages>> = state =>
   getOneSelf(state).flatMap(u => Maybe.fromFalsy(u.get("language")));
+
+export const isSubscribedToWeeklySummary: Selector<Maybe<boolean>> = state =>
+  getOneSelf(state).flatMap(u =>
+    Maybe.fromUndefined(u.get("subscribedToWeeklySummary"))
+  );
 
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {
   const instanceConfig = getInstanceConfig(state);

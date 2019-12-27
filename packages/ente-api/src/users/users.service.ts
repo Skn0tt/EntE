@@ -315,6 +315,29 @@ export class UsersService implements OnModuleInit {
     );
   }
 
+  private async patchOneSelf(
+    patch: PatchUserDto,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<PatchUserFailure, UserDto>> {
+    const { id } = requestingUser;
+    const user = (await requestingUser.getDto()).some();
+
+    if (!!patch.language) {
+      await this.userRepo.setLanguage(id, patch.language);
+      user.language = patch.language;
+    }
+
+    if (!_.isUndefined(patch.subscribedToWeeklySummary)) {
+      await this.userRepo.setSubscribedToWeeklySummary(
+        id,
+        patch.subscribedToWeeklySummary
+      );
+      user.subscribedToWeeklySummary = patch.subscribedToWeeklySummary;
+    }
+
+    return Success(user);
+  }
+
   async patchUser(
     id: string,
     patch: PatchUserDto,
@@ -323,6 +346,10 @@ export class UsersService implements OnModuleInit {
     const dtoIsLegal = PatchUserDtoValidator.validate(patch);
     if (!dtoIsLegal) {
       return Fail(PatchUserFailure.IllegalPatch);
+    }
+
+    if (requestingUser.id === id) {
+      return await this.patchOneSelf(patch, requestingUser);
     }
 
     const userIsAdmin = requestingUser.role === Roles.ADMIN;
@@ -348,11 +375,6 @@ export class UsersService implements OnModuleInit {
     if (!!patch.birthday) {
       await this.userRepo.setBirthday(id, patch.birthday);
       user.some().birthday = patch.birthday;
-    }
-
-    if (!!patch.role) {
-      await this.userRepo.setRole(id, patch.role);
-      user.some().role = patch.role;
     }
 
     if (!!patch.email) {

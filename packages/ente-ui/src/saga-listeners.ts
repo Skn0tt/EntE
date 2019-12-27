@@ -1,6 +1,7 @@
 import { Languages, getByLanguage } from "ente-types";
 import { SagaListeners } from "./redux";
 import { addMessages } from "./context/Messages";
+import * as _ from "lodash";
 
 const translation = getByLanguage({
   en: {
@@ -13,7 +14,11 @@ const translation = getByLanguage({
     successfullyUpdatedUser: `Successfully updated users.`,
     importSuccessful: `Import was successful.`,
     passwordChangedSuccessfuly: `Password was changed successfully.`,
-    successfullyRequestedPasswordReset: `Successfully requested password reset. You will receive an email shortly.`
+    successfullyRequestedPasswordReset: `Successfully requested password reset. You will receive an email shortly.`,
+    subscriptionChanged: (subscribed: boolean) =>
+      subscribed
+        ? "Successfully subscribed to weekly summary"
+        : "Successfully unsubscribed from weekly summary"
   },
   de: {
     anErrorOccured: "Ein Fehler ist aufgetreten.",
@@ -25,7 +30,11 @@ const translation = getByLanguage({
     successfullyUpdatedUser: `Benutzer*in wurde erfolgreich aktualisiert.`,
     importSuccessful: `Der Import wurde erfolgreich durchgeführt.`,
     passwordChangedSuccessfuly: `Das Passwort wurde erfolgreich zurückgesetzt.`,
-    successfullyRequestedPasswordReset: `Passwort-Zurücksetzung erfolgreich beantragt. Sie erhalten in Kürze eine Email.`
+    successfullyRequestedPasswordReset: `Passwort-Zurücksetzung erfolgreich beantragt. Sie erhalten in Kürze eine Email.`,
+    subscriptionChanged: (subscribed: boolean) =>
+      subscribed
+        ? "Anmeldung für den wöchentlichen Newsletter erfolgreich."
+        : "Abmeldung vom wöchentlichen Newsletter erfolgreich."
   }
 });
 
@@ -65,7 +74,12 @@ export const getSagaListeners = (
     onUsersCreated: () => {
       addMessages(t().successfullyCreatedUsers);
     },
-    onUserUpdated: () => {
+    onUserUpdated: ({ subscribedToWeeklySummary }) => {
+      if (!_.isUndefined(subscribedToWeeklySummary)) {
+        addMessages(t().subscriptionChanged(subscribedToWeeklySummary));
+        return;
+      }
+
       addMessages(t().successfullyUpdatedUser);
     },
     onSigningError: () => {

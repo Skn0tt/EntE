@@ -25,6 +25,7 @@ export interface BaseUserDto {
   username: string;
   displayname: string;
   role: Roles;
+  subscribedToWeeklySummary?: boolean;
 }
 
 export interface SensitiveUserDto extends BaseUserDto {
@@ -67,6 +68,10 @@ export class UserDto implements BlackedUserDto {
   @IsOptional()
   @IsString()
   managerNotes?: string;
+
+  @IsOptional()
+  @IsString()
+  subscribedToWeeklySummary?: boolean;
 }
 
 const ADULTHOOD_AGE = 18;

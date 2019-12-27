@@ -132,7 +132,7 @@ export class SlotsService {
 
   async dispatchWeeklySummary() {
     this.logger.log("Starting do dispatch the weekly summary.");
-    const teachingUsers = await this.userRepo.findByRoles(...TEACHING_ROLES);
+    const teachingUsers = await this.userRepo.findWeeklySummaryRecipients();
     await Promise.all(
       teachingUsers.map(async teacher => {
         const slots = await this.slotRepo.findSlotsSignedOrCreatedSinceHavingTeacher(

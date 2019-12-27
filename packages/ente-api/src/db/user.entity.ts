@@ -24,7 +24,7 @@ import {
   JoinTable,
   OneToMany
 } from "typeorm";
-import { IsIn, IsInt, IsISO8601, IsString } from "class-validator";
+import { IsIn, IsInt, IsISO8601, IsString, IsBoolean } from "class-validator";
 import { Entry } from "./entry.entity";
 import { Slot } from "./slot.entity";
 import { RecordReviewal } from "./recordReviewal.entity";
@@ -70,6 +70,10 @@ export class User {
   @Column("varchar", { nullable: false, default: "" })
   @IsString()
   managerNotes: string = "";
+
+  @Column("tinyint", { nullable: false, default: true })
+  @IsBoolean()
+  subscribedToWeeklySummary: boolean = true;
 
   /**
    * ## Password
