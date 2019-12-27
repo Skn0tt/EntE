@@ -13,6 +13,7 @@ import { AddNewEntryReasonCategories1551552955000 } from "./1551552955000-AddNew
 import { SaveSignatureDates1557748840000 } from "./1557748840000-SaveSignatureDates";
 import { AddManagerNotesField1569158678000 } from "./1569158678000-AddManagerNotesField";
 import { CreateRecordReviewalTable1573931612000 } from "./1573931612000-CreateRecordReviewalTable";
+import { AddWeeklySummarySubscriptionFlag1577435990000 } from "./1577435990000-AddWeeklySummarySubscriptionFlag";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -29,5 +30,6 @@ export const migrations = [
   RemoveInconsistentUserAttributes1551534415000,
   SaveSignatureDates1557748840000,
   AddManagerNotesField1569158678000,
-  CreateRecordReviewalTable1573931612000
+  CreateRecordReviewalTable1573931612000,
+  AddWeeklySummarySubscriptionFlag1577435990000
 ];

@@ -19,6 +19,7 @@ ShallowWrapper {
           "graduationYear": undefined,
           "language": undefined,
           "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
         },
         Immutable.UserN {
           "id": "jkldsfjlk",
@@ -32,6 +33,7 @@ ShallowWrapper {
           "graduationYear": undefined,
           "language": undefined,
           "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
         },
       ]
     }
@@ -55,6 +57,7 @@ ShallowWrapper {
       "graduationYear": undefined,
       "language": undefined,
       "managerNotes": undefined,
+      "subscribedToWeeklySummary": undefined,
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {
@@ -124,6 +127,7 @@ ShallowWrapper {
                     "graduationYear": undefined,
                     "language": undefined,
                     "managerNotes": undefined,
+                    "subscribedToWeeklySummary": undefined,
                   },
                 ]
               }
@@ -324,6 +328,7 @@ ShallowWrapper {
                       "graduationYear": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
+                      "subscribedToWeeklySummary": undefined,
                     },
                   ]
                 }
@@ -374,6 +379,7 @@ ShallowWrapper {
                       "graduationYear": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
+                      "subscribedToWeeklySummary": undefined,
                     },
                   ]
                 }
@@ -405,6 +411,7 @@ ShallowWrapper {
                     "graduationYear": undefined,
                     "language": undefined,
                     "managerNotes": undefined,
+                    "subscribedToWeeklySummary": undefined,
                   },
                 ],
                 "label": "Child",
@@ -526,6 +533,7 @@ ShallowWrapper {
                       "graduationYear": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
+                      "subscribedToWeeklySummary": undefined,
                     },
                   ]
                 }
@@ -726,6 +734,7 @@ ShallowWrapper {
                         "graduationYear": undefined,
                         "language": undefined,
                         "managerNotes": undefined,
+                        "subscribedToWeeklySummary": undefined,
                       },
                     ]
                   }
@@ -776,6 +785,7 @@ ShallowWrapper {
                         "graduationYear": undefined,
                         "language": undefined,
                         "managerNotes": undefined,
+                        "subscribedToWeeklySummary": undefined,
                       },
                     ]
                   }
@@ -807,6 +817,7 @@ ShallowWrapper {
                       "graduationYear": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
+                      "subscribedToWeeklySummary": undefined,
                     },
                   ],
                   "label": "Child",
@@ -908,6 +919,7 @@ ShallowWrapper {
           "graduationYear": undefined,
           "language": undefined,
           "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
         },
       ]
     }
@@ -931,6 +943,7 @@ ShallowWrapper {
       "graduationYear": undefined,
       "language": undefined,
       "managerNotes": undefined,
+      "subscribedToWeeklySummary": undefined,
     }
   </ChildrenInput>,
   Symbol(enzyme.__renderer__): Object {

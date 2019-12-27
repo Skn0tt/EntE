@@ -101,7 +101,8 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     childrenIds: [],
     graduationYear: undefined,
     language: undefined,
-    managerNotes: undefined
+    managerNotes: undefined,
+    subscribedToWeeklySummary: undefined
   },
   "UserN"
 );

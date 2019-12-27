@@ -23,6 +23,7 @@ ShallowWrapper {
           "graduationYear": undefined,
           "language": undefined,
           "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
         },
       ]
     }
@@ -2513,6 +2514,7 @@ ShallowWrapper {
           "graduationYear": undefined,
           "language": undefined,
           "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
         },
       ]
     }
