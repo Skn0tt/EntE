@@ -7,6 +7,7 @@ import { Theme } from "@material-ui/core";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { UserTableSmallCard } from "./UserTableSmallCard";
 import { RoleChip } from "./RoleChip";
+import { useRoleTranslation } from "../../roles.translation";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -35,6 +36,7 @@ interface UserTableOwnProps {
 export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
   const { users, onClick = () => {} } = props;
   const lang = useTranslation();
+  const roleLang = useRoleTranslation();
   const theme = useTheme<Theme>();
   const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -64,10 +66,10 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = props => {
         },
         {
           name: lang.headers.role,
-          extract: user => user.get("role"),
+          extract: user => roleLang[user.get("role")],
           options: {
             filter: true,
-            customBodyRender: role => <RoleChip role={role} />
+            customBodyRender: role => <RoleChip translatedRole={role} />
           }
         }
       ]}

@@ -3,6 +3,7 @@ import { UserN } from "../../redux";
 import { Card, CardContent, Typography, Chip, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { RoleChip } from "./RoleChip";
+import { useRoleTranslation } from "ente-ui/src/roles.translation";
 
 const useStyles = makeStyles((theme: Theme) => ({
   roleDiv: {
@@ -23,6 +24,7 @@ interface UserTableSmallCardProps {
 export const UserTableSmallCard: React.FC<UserTableSmallCardProps> = props => {
   const { user, onClick } = props;
 
+  const roleTranslation = useRoleTranslation();
   const classes = useStyles();
 
   const handleClick = React.useCallback(
@@ -36,7 +38,7 @@ export const UserTableSmallCard: React.FC<UserTableSmallCardProps> = props => {
     <Card onClick={handleClick} className={classes.card} elevation={1}>
       <CardContent>
         <div className={classes.roleDiv}>
-          <RoleChip role={user.get("role")} />
+          <RoleChip translatedRole={roleTranslation[user.get("role")]} />
         </div>
 
         <Typography color="textSecondary">{user.get("username")}</Typography>
