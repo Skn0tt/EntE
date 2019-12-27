@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Hide IDs from user (can still be retrieved from navigation bar) ([#331](https://gitlab.com/Skn0tt/EntE/issues/331))
+
 ## [v0.29.2] - 2019-12-08
 
 - Fixed sorting bug ([#324](https://gitlab.com/Skn0tt/EntE/issues/324))

@@ -72,7 +72,7 @@ import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
-import { slotTimeComparator } from "ente-ui/src/helpers/slot-time-comparator";
+import { slotTimeComparator } from "../../helpers/slot-time-comparator";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -84,7 +84,6 @@ const useTranslation = makeTranslationHook({
     yes: "Yes",
     no: "No",
     student: "Student:",
-    id: "ID:",
     createdAt: "Created:",
     forSchool: "Educational:",
     reason: "Reason:",
@@ -146,7 +145,6 @@ const useTranslation = makeTranslationHook({
     yes: "Ja",
     no: "Nein",
     student: "Schüler:",
-    id: "ID:",
     createdAt: "Erstellt:",
     forSchool: "Schulisch:",
     reason: "Grund:",
@@ -349,7 +347,6 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
               <Grid item>
                 <Typography variant="h6">{lang.titles.info}</Typography>
                 <Typography variant="body1">
-                  <i>{lang.id}</i> {entry.get("id")} <br />
                   <i>{lang.createdAt}</i>{" "}
                   {entry.get("createdAt").toLocaleString()} <br />
                   <>

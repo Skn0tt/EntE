@@ -78,7 +78,6 @@ const useTranslation = makeTranslationHook({
       displayname: "Displayname",
       birthday: "Birthday",
       username: "Username",
-      id: "ID",
       role: "Role",
       gradYear: "Graduation Year",
       areYouSureYouWannaDelete: (username: string) =>
@@ -103,7 +102,6 @@ const useTranslation = makeTranslationHook({
       displayname: "Displayname",
       birthday: "Geburtstag",
       username: "Benutzername",
-      id: "ID",
       role: "Rolle",
       gradYear: "Abschluss-Jahrgang",
       areYouSureYouWannaDelete: (username: string) =>
@@ -301,7 +299,6 @@ export const SpecificUser: React.FunctionComponent<
                 <Grid container spacing={24} alignItems="stretch">
                   <Grid item xs={12}>
                     <DialogContentText>
-                      {lang.titles.id}: {user.get("id")} <br />
                       {lang.titles.role}: {user.get("role")} <br />
                     </DialogContentText>
                   </Grid>
