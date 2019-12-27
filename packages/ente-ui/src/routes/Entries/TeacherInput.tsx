@@ -44,6 +44,14 @@ type TeacherInputProps = TeacherInputOwnProps & TeacherInputStateProps;
 const TeacherInput: React.FC<TeacherInputProps> = props => {
   const { onChange, teachingUsers } = props;
 
+  const sortedTeachingUsers = React.useMemo(
+    () =>
+      teachingUsers.sort((a, b) => {
+        return a.get("username").localeCompare(b.get("username"));
+      }),
+    [teachingUsers]
+  );
+
   const translation = useTranslation();
 
   const handleChange = React.useCallback(
@@ -61,7 +69,7 @@ const TeacherInput: React.FC<TeacherInputProps> = props => {
     <SearchableDropdown<UserN>
       label={translation.titles.teacher}
       helperText={translation.helpers.teacher}
-      items={teachingUsers}
+      items={sortedTeachingUsers}
       onChange={handleChange}
       includeItem={(item, searchTerm) =>
         item
