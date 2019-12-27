@@ -33,13 +33,13 @@ const useTranslation = makeTranslationHook({
   en: {
     about: "About",
     language: "Language",
-    darkMode: "Dark Mode (beta)",
+    darkMode: "Dark Mode",
     resetPassword: "Reset / Change Password"
   },
   de: {
     about: "Über",
     language: "Sprache",
-    darkMode: "Dark Mode (beta)",
+    darkMode: "Dark Mode",
     resetPassword: "Passwort ändern / zurücksetzen"
   }
 });
