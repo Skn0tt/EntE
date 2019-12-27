@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Move Dark Mode out of Beta ([#333](https://gitlab.com/Skn0tt/EntE/issues/333))
+
 ## [v0.29.2] - 2019-12-08
 
 - Fixed sorting bug ([#324](https://gitlab.com/Skn0tt/EntE/issues/324))
