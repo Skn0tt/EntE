@@ -25,7 +25,7 @@ const translation = getByLanguage({
     successfullyUpdatedUser: `Benutzer*in wurde erfolgreich aktualisiert.`,
     importSuccessful: `Der Import wurde erfolgreich durchgeführt.`,
     passwordChangedSuccessfuly: `Das Passwort wurde erfolgreich zurückgesetzt.`,
-    successfullyRequestedPasswordReset: `Passwort-Zurücksetzung erfolgreich beantragt. Sie erhalten in kürze eine Email.`
+    successfullyRequestedPasswordReset: `Passwort-Zurücksetzung erfolgreich beantragt. Sie erhalten in Kürze eine Email.`
   }
 });
 
