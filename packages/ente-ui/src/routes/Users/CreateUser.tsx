@@ -54,6 +54,7 @@ import {
   withTranslation
 } from "../../helpers/with-translation";
 import { DateInput } from "../../elements/DateInput";
+import { RoleTranslation } from "../../roles.translation";
 
 export const lang = {
   en: {
@@ -73,7 +74,8 @@ export const lang = {
     submit: "Submit",
     close: "Close",
     import: "Import",
-    passwordSpec: PasswordRequirementsHint.en
+    passwordSpec: PasswordRequirementsHint.en,
+    roles: RoleTranslation.en
   },
   de: {
     titles: {
@@ -92,7 +94,8 @@ export const lang = {
     submit: "Erstellen",
     close: "Schließen",
     import: "Importieren",
-    passwordSpec: PasswordRequirementsHint.de
+    passwordSpec: PasswordRequirementsHint.de,
+    roles: RoleTranslation.de
   }
 };
 
@@ -331,12 +334,9 @@ export class CreateUser extends React.PureComponent<
                     SelectProps={{ native: true }}
                     helperText={translation.helpers.chooseRoleOfUser}
                   >
-                    {Object.keys(Roles).map(role => (
-                      <option
-                        key={(Roles as any)[role]}
-                        value={(Roles as any)[role]}
-                      >
-                        {(Roles as any)[role]}
+                    {Object.keys(Roles).map(k => (
+                      <option key={(Roles as any)[k]} value={(Roles as any)[k]}>
+                        {(translation.roles as any)[(Roles as any)[k]]}
                       </option>
                     ))}
                   </TextField>

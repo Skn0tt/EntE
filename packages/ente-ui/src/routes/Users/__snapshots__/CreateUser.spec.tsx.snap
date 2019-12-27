@@ -35,6 +35,13 @@ ShallowWrapper {
         },
         "import": "Importieren",
         "passwordSpec": [Function],
+        "roles": Object {
+          "admin": "Admin",
+          "manager": "Stufenleitung",
+          "parent": "Erziehungsberechtigte*r",
+          "student": "Schüler*in",
+          "teacher": "Lehrkraft",
+        },
         "submit": "Erstellen",
         "titles": Object {
           "birthday": "Geburtstag",
@@ -157,27 +164,27 @@ ShallowWrapper {
                   <option
                     value="parent"
                   >
-                    parent
+                    Erziehungsberechtigte*r
                   </option>
                   <option
                     value="student"
                   >
-                    student
+                    Schüler*in
                   </option>
                   <option
                     value="teacher"
                   >
-                    teacher
+                    Lehrkraft
                   </option>
                   <option
                     value="admin"
                   >
-                    admin
+                    Admin
                   </option>
                   <option
                     value="manager"
                   >
-                    manager
+                    Stufenleitung
                   </option>
                 </TextField>
               </WithStyles(Grid)>
@@ -320,27 +327,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -493,27 +500,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -630,27 +637,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -764,27 +771,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>,
@@ -996,27 +1003,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>,
                     "item": true,
@@ -1035,27 +1042,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>,
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>,
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>,
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>,
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>,
                       ],
                       "fullWidth": true,
@@ -1074,11 +1081,11 @@ ShallowWrapper {
                         "key": "parent",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "parent",
+                          "children": "Erziehungsberechtigte*r",
                           "value": "parent",
                         },
                         "ref": null,
-                        "rendered": "parent",
+                        "rendered": "Erziehungsberechtigte*r",
                         "type": "option",
                       },
                       Object {
@@ -1086,11 +1093,11 @@ ShallowWrapper {
                         "key": "student",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "student",
+                          "children": "Schüler*in",
                           "value": "student",
                         },
                         "ref": null,
-                        "rendered": "student",
+                        "rendered": "Schüler*in",
                         "type": "option",
                       },
                       Object {
@@ -1098,11 +1105,11 @@ ShallowWrapper {
                         "key": "teacher",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "teacher",
+                          "children": "Lehrkraft",
                           "value": "teacher",
                         },
                         "ref": null,
-                        "rendered": "teacher",
+                        "rendered": "Lehrkraft",
                         "type": "option",
                       },
                       Object {
@@ -1110,11 +1117,11 @@ ShallowWrapper {
                         "key": "admin",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "admin",
+                          "children": "Admin",
                           "value": "admin",
                         },
                         "ref": null,
-                        "rendered": "admin",
+                        "rendered": "Admin",
                         "type": "option",
                       },
                       Object {
@@ -1122,11 +1129,11 @@ ShallowWrapper {
                         "key": "manager",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "manager",
+                          "children": "Stufenleitung",
                           "value": "manager",
                         },
                         "ref": null,
-                        "rendered": "manager",
+                        "rendered": "Stufenleitung",
                         "type": "option",
                       },
                     ],
@@ -1364,27 +1371,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -1527,27 +1534,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -1700,27 +1707,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -1837,27 +1844,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -1971,27 +1978,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>
                       </TextField>
                     </WithStyles(Grid)>,
@@ -2203,27 +2210,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>
                       </TextField>,
                       "item": true,
@@ -2242,27 +2249,27 @@ ShallowWrapper {
                           <option
                             value="parent"
                           >
-                            parent
+                            Erziehungsberechtigte*r
                           </option>,
                           <option
                             value="student"
                           >
-                            student
+                            Schüler*in
                           </option>,
                           <option
                             value="teacher"
                           >
-                            teacher
+                            Lehrkraft
                           </option>,
                           <option
                             value="admin"
                           >
-                            admin
+                            Admin
                           </option>,
                           <option
                             value="manager"
                           >
-                            manager
+                            Stufenleitung
                           </option>,
                         ],
                         "fullWidth": true,
@@ -2281,11 +2288,11 @@ ShallowWrapper {
                           "key": "parent",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "parent",
+                            "children": "Erziehungsberechtigte*r",
                             "value": "parent",
                           },
                           "ref": null,
-                          "rendered": "parent",
+                          "rendered": "Erziehungsberechtigte*r",
                           "type": "option",
                         },
                         Object {
@@ -2293,11 +2300,11 @@ ShallowWrapper {
                           "key": "student",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "student",
+                            "children": "Schüler*in",
                             "value": "student",
                           },
                           "ref": null,
-                          "rendered": "student",
+                          "rendered": "Schüler*in",
                           "type": "option",
                         },
                         Object {
@@ -2305,11 +2312,11 @@ ShallowWrapper {
                           "key": "teacher",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "teacher",
+                            "children": "Lehrkraft",
                             "value": "teacher",
                           },
                           "ref": null,
-                          "rendered": "teacher",
+                          "rendered": "Lehrkraft",
                           "type": "option",
                         },
                         Object {
@@ -2317,11 +2324,11 @@ ShallowWrapper {
                           "key": "admin",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "admin",
+                            "children": "Admin",
                             "value": "admin",
                           },
                           "ref": null,
-                          "rendered": "admin",
+                          "rendered": "Admin",
                           "type": "option",
                         },
                         Object {
@@ -2329,11 +2336,11 @@ ShallowWrapper {
                           "key": "manager",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "manager",
+                            "children": "Stufenleitung",
                             "value": "manager",
                           },
                           "ref": null,
-                          "rendered": "manager",
+                          "rendered": "Stufenleitung",
                           "type": "option",
                         },
                       ],
@@ -2526,6 +2533,13 @@ ShallowWrapper {
         },
         "import": "Importieren",
         "passwordSpec": [Function],
+        "roles": Object {
+          "admin": "Admin",
+          "manager": "Stufenleitung",
+          "parent": "Erziehungsberechtigte*r",
+          "student": "Schüler*in",
+          "teacher": "Lehrkraft",
+        },
         "submit": "Erstellen",
         "titles": Object {
           "birthday": "Geburtstag",
@@ -2648,27 +2662,27 @@ ShallowWrapper {
                   <option
                     value="parent"
                   >
-                    parent
+                    Erziehungsberechtigte*r
                   </option>
                   <option
                     value="student"
                   >
-                    student
+                    Schüler*in
                   </option>
                   <option
                     value="teacher"
                   >
-                    teacher
+                    Lehrkraft
                   </option>
                   <option
                     value="admin"
                   >
-                    admin
+                    Admin
                   </option>
                   <option
                     value="manager"
                   >
-                    manager
+                    Stufenleitung
                   </option>
                 </TextField>
               </WithStyles(Grid)>
@@ -2811,27 +2825,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -2984,27 +2998,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -3121,27 +3135,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -3255,27 +3269,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>,
@@ -3487,27 +3501,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>,
                     "item": true,
@@ -3526,27 +3540,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>,
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>,
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>,
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>,
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>,
                       ],
                       "fullWidth": true,
@@ -3565,11 +3579,11 @@ ShallowWrapper {
                         "key": "parent",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "parent",
+                          "children": "Erziehungsberechtigte*r",
                           "value": "parent",
                         },
                         "ref": null,
-                        "rendered": "parent",
+                        "rendered": "Erziehungsberechtigte*r",
                         "type": "option",
                       },
                       Object {
@@ -3577,11 +3591,11 @@ ShallowWrapper {
                         "key": "student",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "student",
+                          "children": "Schüler*in",
                           "value": "student",
                         },
                         "ref": null,
-                        "rendered": "student",
+                        "rendered": "Schüler*in",
                         "type": "option",
                       },
                       Object {
@@ -3589,11 +3603,11 @@ ShallowWrapper {
                         "key": "teacher",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "teacher",
+                          "children": "Lehrkraft",
                           "value": "teacher",
                         },
                         "ref": null,
-                        "rendered": "teacher",
+                        "rendered": "Lehrkraft",
                         "type": "option",
                       },
                       Object {
@@ -3601,11 +3615,11 @@ ShallowWrapper {
                         "key": "admin",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "admin",
+                          "children": "Admin",
                           "value": "admin",
                         },
                         "ref": null,
-                        "rendered": "admin",
+                        "rendered": "Admin",
                         "type": "option",
                       },
                       Object {
@@ -3613,11 +3627,11 @@ ShallowWrapper {
                         "key": "manager",
                         "nodeType": "host",
                         "props": Object {
-                          "children": "manager",
+                          "children": "Stufenleitung",
                           "value": "manager",
                         },
                         "ref": null,
-                        "rendered": "manager",
+                        "rendered": "Stufenleitung",
                         "type": "option",
                       },
                     ],
@@ -3855,27 +3869,27 @@ ShallowWrapper {
                     <option
                       value="parent"
                     >
-                      parent
+                      Erziehungsberechtigte*r
                     </option>
                     <option
                       value="student"
                     >
-                      student
+                      Schüler*in
                     </option>
                     <option
                       value="teacher"
                     >
-                      teacher
+                      Lehrkraft
                     </option>
                     <option
                       value="admin"
                     >
-                      admin
+                      Admin
                     </option>
                     <option
                       value="manager"
                     >
-                      manager
+                      Stufenleitung
                     </option>
                   </TextField>
                 </WithStyles(Grid)>
@@ -4018,27 +4032,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -4191,27 +4205,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -4328,27 +4342,27 @@ ShallowWrapper {
                       <option
                         value="parent"
                       >
-                        parent
+                        Erziehungsberechtigte*r
                       </option>
                       <option
                         value="student"
                       >
-                        student
+                        Schüler*in
                       </option>
                       <option
                         value="teacher"
                       >
-                        teacher
+                        Lehrkraft
                       </option>
                       <option
                         value="admin"
                       >
-                        admin
+                        Admin
                       </option>
                       <option
                         value="manager"
                       >
-                        manager
+                        Stufenleitung
                       </option>
                     </TextField>
                   </WithStyles(Grid)>
@@ -4462,27 +4476,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>
                       </TextField>
                     </WithStyles(Grid)>,
@@ -4694,27 +4708,27 @@ ShallowWrapper {
                         <option
                           value="parent"
                         >
-                          parent
+                          Erziehungsberechtigte*r
                         </option>
                         <option
                           value="student"
                         >
-                          student
+                          Schüler*in
                         </option>
                         <option
                           value="teacher"
                         >
-                          teacher
+                          Lehrkraft
                         </option>
                         <option
                           value="admin"
                         >
-                          admin
+                          Admin
                         </option>
                         <option
                           value="manager"
                         >
-                          manager
+                          Stufenleitung
                         </option>
                       </TextField>,
                       "item": true,
@@ -4733,27 +4747,27 @@ ShallowWrapper {
                           <option
                             value="parent"
                           >
-                            parent
+                            Erziehungsberechtigte*r
                           </option>,
                           <option
                             value="student"
                           >
-                            student
+                            Schüler*in
                           </option>,
                           <option
                             value="teacher"
                           >
-                            teacher
+                            Lehrkraft
                           </option>,
                           <option
                             value="admin"
                           >
-                            admin
+                            Admin
                           </option>,
                           <option
                             value="manager"
                           >
-                            manager
+                            Stufenleitung
                           </option>,
                         ],
                         "fullWidth": true,
@@ -4772,11 +4786,11 @@ ShallowWrapper {
                           "key": "parent",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "parent",
+                            "children": "Erziehungsberechtigte*r",
                             "value": "parent",
                           },
                           "ref": null,
-                          "rendered": "parent",
+                          "rendered": "Erziehungsberechtigte*r",
                           "type": "option",
                         },
                         Object {
@@ -4784,11 +4798,11 @@ ShallowWrapper {
                           "key": "student",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "student",
+                            "children": "Schüler*in",
                             "value": "student",
                           },
                           "ref": null,
-                          "rendered": "student",
+                          "rendered": "Schüler*in",
                           "type": "option",
                         },
                         Object {
@@ -4796,11 +4810,11 @@ ShallowWrapper {
                           "key": "teacher",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "teacher",
+                            "children": "Lehrkraft",
                             "value": "teacher",
                           },
                           "ref": null,
-                          "rendered": "teacher",
+                          "rendered": "Lehrkraft",
                           "type": "option",
                         },
                         Object {
@@ -4808,11 +4822,11 @@ ShallowWrapper {
                           "key": "admin",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "admin",
+                            "children": "Admin",
                             "value": "admin",
                           },
                           "ref": null,
-                          "rendered": "admin",
+                          "rendered": "Admin",
                           "type": "option",
                         },
                         Object {
@@ -4820,11 +4834,11 @@ ShallowWrapper {
                           "key": "manager",
                           "nodeType": "host",
                           "props": Object {
-                            "children": "manager",
+                            "children": "Stufenleitung",
                             "value": "manager",
                           },
                           "ref": null,
-                          "rendered": "manager",
+                          "rendered": "Stufenleitung",
                           "type": "option",
                         },
                       ],
