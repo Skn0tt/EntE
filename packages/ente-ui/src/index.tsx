@@ -11,8 +11,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import { get as getConfig } from "./config";
 import { install as installMuiStyles } from "@material-ui/styles";
 
@@ -36,6 +34,7 @@ import { Store } from "redux";
 import { DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 import { getSagaListeners } from "./saga-listeners";
 import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
+import { LocalizedMUIPickersUtilsProvider } from "./components/LocalizedMUIPickersUtilsProvider";
 
 installMuiStyles();
 
@@ -102,13 +101,13 @@ const bootstrap = async () => {
         <StoreContext.Provider value={store}>
           <Provider store={store}>
             <ConnectedCombinedThemeProvider>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <LocalizedMUIPickersUtilsProvider>
                 <HttpsGate disable={ALLOW_INSECURE}>
                   <MessagesProvider>
                     <App />
                   </MessagesProvider>
                 </HttpsGate>
-              </MuiPickersUtilsProvider>
+              </LocalizedMUIPickersUtilsProvider>
             </ConnectedCombinedThemeProvider>
           </Provider>
         </StoreContext.Provider>

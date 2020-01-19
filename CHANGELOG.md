@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Translate date pickers correctly ([#330](https://gitlab.com/Skn0tt/EntE/issues/330))
 - In teacher dropdown, sort by username ([#332](https://gitlab.com/Skn0tt/EntE/issues/332))
 - Allow teachers/managers to unsubscribe from Weekly Summary ([#287](https://gitlab.com/Skn0tt/EntE/issues/287))
 - Translate roles ([#323](https://gitlab.com/Skn0tt/EntE/issues/323))
