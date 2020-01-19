@@ -3,13 +3,13 @@ import * as deLocale from "date-fns/locale/de";
 import { makeTranslationHook } from "./makeTranslationHook";
 import { format as _format, parseISO } from "date-fns";
 
-const useTranslation = makeTranslationHook({
+export const useLocalization = makeTranslationHook({
   de: deLocale,
   en: enLocale
 });
 
 export const useLocalizedDateFormat = () => {
-  const locale = useTranslation();
+  const locale = useLocalization();
 
   return (date: number | Date | string, format: string): string => {
     return _format(typeof date === "string" ? parseISO(date) : date, format, {
