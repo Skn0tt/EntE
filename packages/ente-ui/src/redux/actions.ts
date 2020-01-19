@@ -90,7 +90,13 @@ import {
   ADD_REVIEWED_RECORD_SUCCESS,
   UPDATE_MANAGER_NOTES_REQUEST,
   UPDATE_MANAGER_NOTES_SUCCESS,
-  UPDATE_MANAGER_NOTES_ERROR
+  UPDATE_MANAGER_NOTES_ERROR,
+  PROMOTE_TEACHER_REQUEST,
+  PROMOTE_TEACHER_SUCCESS,
+  PROMOTE_TEACHER_ERROR,
+  DEMOTE_MANAGER_REQUEST,
+  DEMOTE_MANAGER_SUCCESS,
+  DEMOTE_MANAGER_ERROR
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials, UserN } from "./types";
 import {
@@ -422,3 +428,32 @@ export const updateManagerNotesError = createMetaAction<
   Action<UpdateManagerNotesRequestPayload>,
   Error
 >(UPDATE_MANAGER_NOTES_ERROR);
+
+export interface PromoteTeacherRequestPayload {
+  id: string;
+  gradYear: number;
+}
+
+export type PromoteTeacherSuccessPayload = PromoteTeacherRequestPayload;
+
+export const promoteTeacherRequest = createAction<PromoteTeacherRequestPayload>(
+  PROMOTE_TEACHER_REQUEST
+);
+export const promoteTeacherSuccess = createMetaAction<
+  Action<PromoteTeacherRequestPayload>,
+  PromoteTeacherSuccessPayload
+>(PROMOTE_TEACHER_SUCCESS);
+export const promoteTeacherError = createMetaAction<
+  Action<PromoteTeacherRequestPayload>,
+  Error
+>(PROMOTE_TEACHER_ERROR);
+
+export const demoteManagerRequest = createAction<string>(
+  DEMOTE_MANAGER_REQUEST
+);
+export const demoteManagerSuccess = createMetaAction<Action<string>, string>(
+  DEMOTE_MANAGER_SUCCESS
+);
+export const demoteManagerError = createMetaAction<Action<string>, Error>(
+  DEMOTE_MANAGER_ERROR
+);

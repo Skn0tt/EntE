@@ -68,6 +68,16 @@ export enum UpdateManagerNotesFailure {
   ForbiddenForUser
 }
 
+export enum PromoteTeacherFailure {
+  TeacherNotFound,
+  ForbiddenForUser
+}
+
+export enum DemoteManagerFailure {
+  ManagerNotFound,
+  ForbiddenForUser
+}
+
 @Injectable()
 export class UsersService implements OnModuleInit {
   constructor(
@@ -503,6 +513,42 @@ export class UsersService implements OnModuleInit {
         return Success<UpdateManagerNotesFailure, true>(true);
       }
     );
+  }
+
+  async promoteTeacher(
+    teacherId: string,
+    gradYear: number,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<PromoteTeacherFailure, true>> {
+    if (requestingUser.role !== Roles.ADMIN) {
+      return Fail(PromoteTeacherFailure.ForbiddenForUser);
+    }
+
+    const foundTeacher = await this.userRepo.promoteToManager(
+      teacherId,
+      gradYear
+    );
+    if (!foundTeacher) {
+      return Fail(PromoteTeacherFailure.TeacherNotFound);
+    }
+
+    return Success<PromoteTeacherFailure, true>(true);
+  }
+
+  async demoteManager(
+    managerId: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<DemoteManagerFailure, true>> {
+    if (requestingUser.role !== Roles.ADMIN) {
+      return Fail(DemoteManagerFailure.ForbiddenForUser);
+    }
+
+    const foundManager = await this.userRepo.demoteToTeacher(managerId);
+    if (!foundManager) {
+      return Fail(DemoteManagerFailure.ManagerNotFound);
+    }
+
+    return Success<DemoteManagerFailure, true>(true);
   }
 
   static blackenDto(user: UserDto, role: Roles): BlackedUserDto {

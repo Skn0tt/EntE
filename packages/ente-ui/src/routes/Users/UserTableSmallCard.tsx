@@ -1,9 +1,9 @@
 import * as React from "react";
 import { UserN } from "../../redux";
-import { Card, CardContent, Typography, Chip, Theme } from "@material-ui/core";
+import { Card, CardContent, Typography, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { RoleChip } from "./RoleChip";
-import { useRoleTranslation } from "ente-ui/src/roles.translation";
+import { useRoleTranslation } from "../../roles.translation";
 
 const useStyles = makeStyles((theme: Theme) => ({
   roleDiv: {

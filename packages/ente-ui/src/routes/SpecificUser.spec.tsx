@@ -42,6 +42,8 @@ describe.skip("SpecificUser", () => {
       students={[]}
       updateUser={() => {}}
       deleteUser={() => {}}
+      promote={() => {}}
+      demote={() => {}}
     />
   );
 
@@ -68,6 +70,8 @@ describe.skip("SpecificUser", () => {
         students={[]}
         updateUser={() => {}}
         deleteUser={() => {}}
+        demote={() => {}}
+        promote={() => {}}
       />
     );
 

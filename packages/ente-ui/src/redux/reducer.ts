@@ -88,7 +88,13 @@ import {
   ADD_REVIEWED_RECORD_ERROR,
   UPDATE_MANAGER_NOTES_REQUEST,
   UPDATE_MANAGER_NOTES_ERROR,
-  UPDATE_MANAGER_NOTES_SUCCESS
+  UPDATE_MANAGER_NOTES_SUCCESS,
+  PROMOTE_TEACHER_REQUEST,
+  PROMOTE_TEACHER_ERROR,
+  PROMOTE_TEACHER_SUCCESS,
+  DEMOTE_MANAGER_REQUEST,
+  DEMOTE_MANAGER_ERROR,
+  DEMOTE_MANAGER_SUCCESS
 } from "./constants";
 import {
   AppState,
@@ -98,14 +104,16 @@ import {
   ParentSignatureTimesN
 } from "./types";
 import * as _ from "lodash";
-import { Languages } from "ente-types";
+import { Languages, Roles } from "ente-types";
 import { Map, Set } from "immutable";
 import {
   ImportUsersSuccessPayload,
   FetchInstanceConfigSuccessPayload,
   SetLoginBannerSuccessPayload,
   LoginSuccessPayload,
-  UpdateManagerNotesSuccessPayload
+  UpdateManagerNotesSuccessPayload,
+  PromoteTeacherRequestPayload,
+  PromoteTeacherSuccessPayload
 } from "./actions";
 import { FilterScope } from "../filter-scope";
 import { ColorScheme } from "../theme";
@@ -554,6 +562,44 @@ const reducer = handleActions<AppState | undefined, any>(
 
           return usersMap.update(studentId, student =>
             student.set("managerNotes", value)
+          );
+        });
+      }
+    ),
+
+    // #PROMOTE_TEACHER
+    ...asyncReducersFull(
+      PROMOTE_TEACHER_REQUEST,
+      PROMOTE_TEACHER_ERROR,
+      PROMOTE_TEACHER_SUCCESS,
+      (state: AppState, action: Action<PromoteTeacherSuccessPayload>) => {
+        const { gradYear, id } = action.payload!;
+        return state.update("usersMap", usersMap => {
+          if (!usersMap.has(id)) {
+            return usersMap;
+          }
+
+          return usersMap.update(id, teacher =>
+            teacher.set("role", Roles.MANAGER).set("graduationYear", gradYear)
+          );
+        });
+      }
+    ),
+
+    // #DEMOTE_MANAGER
+    ...asyncReducersFull(
+      DEMOTE_MANAGER_REQUEST,
+      DEMOTE_MANAGER_ERROR,
+      DEMOTE_MANAGER_SUCCESS,
+      (state: AppState, action: Action<string>) => {
+        const managerId = action.payload!;
+        return state.update("usersMap", usersMap => {
+          if (!usersMap.has(managerId)) {
+            return usersMap;
+          }
+
+          return usersMap.update(managerId, manager =>
+            manager.set("role", Roles.TEACHER).set("graduationYear", undefined)
           );
         });
       }

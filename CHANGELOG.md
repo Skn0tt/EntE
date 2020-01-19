@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Feature: Teachers can be promoted to managers (and vice versa) ([#248](https://gitlab.com/Skn0tt/EntE/issues/248))
 - In teacher dropdown, sort by username ([#332](https://gitlab.com/Skn0tt/EntE/issues/332))
 - Allow teachers/managers to unsubscribe from Weekly Summary ([#287](https://gitlab.com/Skn0tt/EntE/issues/287))
 - Translate roles ([#323](https://gitlab.com/Skn0tt/EntE/issues/323))

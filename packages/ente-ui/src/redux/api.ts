@@ -269,8 +269,17 @@ export const getUsers = async (token: string): Promise<APIResponse> => {
   return normalizeUsers(...data);
 };
 
-export const post = async <T>(url: string, token: string, body?: {}) => {
-  const response = await axios.post<T>(url, body, axiosStandardParams(token));
+export const post = async <T>(
+  url: string,
+  token: string,
+  body?: {},
+  config: AxiosRequestConfig = {}
+) => {
+  const response = await axios.post<T>(
+    url,
+    body,
+    _.merge(axiosStandardParams(token), config)
+  );
   return response.data;
 };
 
@@ -530,3 +539,25 @@ export const updateManagerNotes = async (
     }
   });
 };
+
+export async function promoteTeacher(
+  teacherId: string,
+  gradYear: number,
+  token: string
+) {
+  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, gradYear, {
+    transformResponse: [],
+    headers: {
+      "Content-Type": "text/plain"
+    }
+  });
+}
+
+export async function demoteManager(managerId: string, token: string) {
+  await post(`${getBaseUrl()}/users/${managerId}/demote`, token);
+  /* TODO: remove
+  await post(`${getBaseUrl()}/users/${managerId}/demote`, token, undefined, {
+    transformResponse: []
+  });
+  */
+}

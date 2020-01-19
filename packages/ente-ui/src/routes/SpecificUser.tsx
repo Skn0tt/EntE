@@ -47,7 +47,9 @@ import {
   UserN,
   deleteUserRequest,
   roleHasGradYear,
-  getToken
+  getToken,
+  demoteManagerRequest,
+  promoteTeacherRequest
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import {
@@ -56,7 +58,8 @@ import {
   isValidEmail,
   roleHasBirthday,
   PatchUserDtoValidator,
-  isValidUsername
+  isValidUsername,
+  Roles
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
 import { YearPicker } from "../elements/YearPicker";
@@ -66,6 +69,9 @@ import { DateInput } from "../elements/DateInput";
 import { Link } from "react-router-dom";
 import { useMessages } from "../context/Messages";
 import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
+import { useRoleTranslation } from "../roles.translation";
+
+const currentYear = new Date().getFullYear();
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -86,6 +92,8 @@ const useTranslation = makeTranslationHook({
     ariaLabels: {
       openMenu: "Open Menu"
     },
+    promote: "Promote to manager",
+    demote: "Demote to teacher",
     openReport: "Open Report",
     invitationRoutine: {
       error: "An error occured.",
@@ -110,6 +118,8 @@ const useTranslation = makeTranslationHook({
     ariaLabels: {
       openMenu: "Menü öffnen"
     },
+    promote: "Zu Stufenleiter befördern",
+    demote: "Zu Lehrer degradieren",
     openReport: "Bericht öffnen",
     invitationRoutine: {
       error: "Es ist ein Fehler aufgetreten.",
@@ -153,6 +163,8 @@ interface SpecificUserDispatchProps {
   requestUser(id: string): void;
   updateUser(id: string, u: PatchUserDto): void;
   deleteUser(id: string): void;
+  promote(id: string, gradYear: number): void;
+  demote(id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   SpecificUserDispatchProps,
@@ -160,7 +172,9 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 > = dispatch => ({
   requestUser: id => dispatch(getUserRequest(id)),
   updateUser: (id, user) => dispatch(updateUserRequest([id, user])),
-  deleteUser: id => dispatch(deleteUserRequest(id))
+  deleteUser: id => dispatch(deleteUserRequest(id)),
+  promote: (id, gradYear) => dispatch(promoteTeacherRequest({ id, gradYear })),
+  demote: id => dispatch(demoteManagerRequest(id))
 });
 
 interface SpecificUserOwnProps {}
@@ -179,6 +193,7 @@ export const SpecificUser: React.FunctionComponent<
   SpecificUserProps
 > = props => {
   const lang = useTranslation();
+  const roleTranslation = useRoleTranslation();
   const [showDelete, setShowDelete] = React.useState(false);
   const [patch, setPatch] = React.useState(new PatchUserDto());
   const {
@@ -192,7 +207,9 @@ export const SpecificUser: React.FunctionComponent<
     history,
     match,
     requestUser,
-    token
+    token,
+    promote,
+    demote
   } = props;
 
   const userId = match.params.userId;
@@ -290,6 +307,21 @@ export const SpecificUser: React.FunctionComponent<
                   <MenuItem onClick={() => setShowDelete(true)}>
                     {lang.deleteUser}
                   </MenuItem>
+
+                  {user.get("role") === Roles.TEACHER && (
+                    <MenuItem
+                      onClick={() => promote(user.get("id"), currentYear)}
+                    >
+                      {lang.promote}
+                    </MenuItem>
+                  )}
+
+                  {user.get("role") === Roles.MANAGER && (
+                    <MenuItem onClick={() => demote(user.get("id"))}>
+                      {lang.demote}
+                    </MenuItem>
+                  )}
+
                   <MenuItem onClick={handleInvokeInvitationRoutine}>
                     {lang.resendInvitationEmail}
                   </MenuItem>
@@ -299,7 +331,8 @@ export const SpecificUser: React.FunctionComponent<
                 <Grid container spacing={24} alignItems="stretch">
                   <Grid item xs={12}>
                     <DialogContentText>
-                      {lang.titles.role}: {user.get("role")} <br />
+                      {lang.titles.role}: {roleTranslation[user.get("role")]}{" "}
+                      <br />
                     </DialogContentText>
                   </Grid>
 

@@ -25,7 +25,9 @@ import {
   DeleteUserFailure,
   SetLanguageFailure,
   InvokeInvitationEmailFailure,
-  UpdateManagerNotesFailure
+  UpdateManagerNotesFailure,
+  PromoteTeacherFailure,
+  DemoteManagerFailure
 } from "./users.service";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
@@ -208,6 +210,55 @@ export class UsersController {
         }
       },
       () => "Successfully invoked routine."
+    );
+  }
+
+  @Post(":id/promote")
+  async promoteTeacherToBeManager(
+    @Param("id") id: string,
+    @Body() gradYearS: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<string> {
+    const gradYear = Number.parseInt(gradYearS);
+    if (Number.isNaN(gradYear)) {
+      throw new BadRequestException(
+        "Please provide an integer for the gradYear."
+      );
+    }
+    const result = await this.usersService.promoteTeacher(
+      id,
+      gradYear,
+      ctx.user
+    );
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case PromoteTeacherFailure.ForbiddenForUser:
+            throw new ForbiddenException();
+          case PromoteTeacherFailure.TeacherNotFound:
+            throw new NotFoundException();
+        }
+      },
+      () => "Successfully promoted."
+    );
+  }
+
+  @Post(":id/demote")
+  async demoteManagerToBeTeacher(
+    @Param("id") id: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<string> {
+    const result = await this.usersService.demoteManager(id, ctx.user);
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case DemoteManagerFailure.ForbiddenForUser:
+            throw new ForbiddenException();
+          case DemoteManagerFailure.ManagerNotFound:
+            throw new NotFoundException();
+        }
+      },
+      () => "Successfully demoted."
     );
   }
 
