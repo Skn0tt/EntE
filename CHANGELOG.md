@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.30.0] - 2020-01-19
+
+The first release in the new decade!
+This release moves Dark Mode out of Beta, improves translations, allows teachers and managers to unsubscribe from weekly e-mails and adds the option to promote teachers to be managers (and vice versa).
+
 - Feature: Teachers can be promoted to managers (and vice versa) ([#248](https://gitlab.com/Skn0tt/EntE/issues/248))
 - Translate date pickers correctly ([#330](https://gitlab.com/Skn0tt/EntE/issues/330))
 - In teacher dropdown, sort by username ([#332](https://gitlab.com/Skn0tt/EntE/issues/332))
