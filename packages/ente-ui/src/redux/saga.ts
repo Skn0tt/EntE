@@ -66,7 +66,12 @@ import {
   addReviewedRecordError,
   UpdateManagerNotesRequestPayload,
   updateManagerNotesSuccess,
-  updateManagerNotesError
+  updateManagerNotesError,
+  PromoteTeacherRequestPayload,
+  promoteTeacherSuccess,
+  promoteTeacherError,
+  demoteManagerSuccess,
+  demoteManagerError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -95,7 +100,9 @@ import {
   SET_PARENT_SIGNATURE_NOTIFICATION_TIME_REQUEST,
   SET_ENTRY_CREATION_DAYS_REQUEST,
   ADD_REVIEWED_RECORD_REQUEST,
-  UPDATE_MANAGER_NOTES_REQUEST
+  UPDATE_MANAGER_NOTES_REQUEST,
+  DEMOTE_MANAGER_REQUEST,
+  PROMOTE_TEACHER_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -504,6 +511,29 @@ function* updateManagerNotesSaga(
   }
 }
 
+function* promoteTeacherSaga(action: Action<PromoteTeacherRequestPayload>) {
+  try {
+    const { gradYear, id } = action.payload!;
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.promoteTeacher, id, gradYear, token.some());
+    yield put(promoteTeacherSuccess(action.payload!, action));
+  } catch (error) {
+    yield put(promoteTeacherError(error, action));
+    onRequestError(error);
+  }
+}
+
+function* demoteManagerSaga(action: Action<string>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.demoteManager, action.payload!, token.some());
+    yield put(demoteManagerSuccess(action.payload!, action));
+  } catch (error) {
+    yield put(demoteManagerError(error, action));
+    onRequestError(error);
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<string>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -525,6 +555,8 @@ function* saga() {
   yield takeEvery(SET_ENTRY_CREATION_DAYS_REQUEST, setEntryCreationDaysSaga);
   yield takeEvery(SET_DEFAULT_DEFAULT_LANGUAGE_REQUEST, setDefaultLanguageSaga);
   yield takeEvery(ADD_REVIEWED_RECORD_REQUEST, addReviedEntrySaga);
+  yield takeEvery(PROMOTE_TEACHER_REQUEST, promoteTeacherSaga);
+  yield takeEvery(DEMOTE_MANAGER_REQUEST, demoteManagerSaga);
   yield takeEvery(
     SET_PARENT_SIGNATURE_EXPIRY_TIME_REQUEST,
     setParentSignatureExpiryTimeSaga

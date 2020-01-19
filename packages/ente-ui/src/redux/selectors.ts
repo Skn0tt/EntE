@@ -218,7 +218,7 @@ export const getOneSelvesLanguage: Selector<Maybe<Languages>> = state =>
 
 export const isSubscribedToWeeklySummary: Selector<Maybe<boolean>> = state =>
   getOneSelf(state).flatMap(u =>
-    Maybe.fromUndefined(u.get("subscribedToWeeklySummary"))
+    Maybe.fromFalsy(u.get("subscribedToWeeklySummary"))
   );
 
 export const getDefaultLanguage: Selector<Maybe<Languages>> = state => {

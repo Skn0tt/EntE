@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository, Brackets, In, Not } from "typeorm";
+import { Repository, Brackets, In, Not, UpdateResult } from "typeorm";
 import { User } from "./user.entity";
 import { Maybe, Some, None, Validation, Fail, Success } from "monet";
 import {
@@ -21,6 +21,7 @@ import {
   withPagination
 } from "../helpers/pagination-info";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";
+import * as assert from "assert";
 
 interface UserAndPasswordHash {
   user: UserDto;
@@ -53,6 +54,12 @@ export enum SetLanguageFailure {
 export enum ImportUsersFailure {
   UsersNotFound
 }
+
+const getChangedRows = (result: UpdateResult): number => {
+  const v = result.raw.changedRows;
+  assert(typeof v === "number");
+  return v;
+};
 
 @Injectable()
 export class UserRepo {
@@ -476,6 +483,39 @@ export class UserRepo {
       }
     });
     return recipients.map(UserRepo.toDto);
+  }
+
+  async promoteToManager(
+    teacherId: string,
+    gradYear: number
+  ): Promise<boolean> {
+    const result = await this.repo
+      .createQueryBuilder()
+      .update()
+      .set({ role: Roles.MANAGER, graduationYear: gradYear })
+      .where("_id = :teacherId", { teacherId })
+      .andWhere("role = :r", { r: Roles.TEACHER })
+      .execute();
+
+    const updatedUsers = getChangedRows(result);
+    assert(updatedUsers <= 1);
+
+    return updatedUsers === 1;
+  }
+
+  async demoteToTeacher(managerId: string): Promise<boolean> {
+    const result = await this.repo
+      .createQueryBuilder()
+      .update()
+      .set({ role: Roles.TEACHER, graduationYear: null })
+      .where("_id = :managerId", { managerId })
+      .andWhere("role = :r", { r: Roles.MANAGER })
+      .execute();
+
+    const updatedUsers = getChangedRows(result);
+    assert(updatedUsers <= 1);
+
+    return updatedUsers === 1;
   }
 
   static toDto(user: User): UserDto {
