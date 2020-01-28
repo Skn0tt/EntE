@@ -45,7 +45,7 @@ import {
   withTranslation
 } from "../../helpers/with-translation";
 import * as querystring from "query-string";
-import { Maybe } from "monet";
+import { Maybe, Some, None } from "monet";
 import * as config from "../../config";
 import { createStyles, withStyles, WithStyles } from "@material-ui/styles";
 
@@ -118,7 +118,7 @@ type LoginProps = LoginStateProps &
   LoginOwnProps &
   LoginDispatchProps &
   InjectedProps &
-  RouteComponentProps<{}> &
+  RouteComponentProps<{ user?: string; pass?: string }> &
   WithTranslation<typeof lang.en> &
   WithStyles<"versionCode">;
 
@@ -128,12 +128,36 @@ interface State {
   showPasswordResetModal: boolean;
 }
 
+const extractLoginInfo = (
+  search: string
+): Maybe<{ username: string; password: string }> => {
+  const params = new URLSearchParams(search);
+  const username = params.get("user");
+  const password = params.get("pass");
+
+  if (!username || !password) {
+    return None();
+  }
+
+  return Some({ username, password });
+};
+
 class Login extends React.PureComponent<LoginProps, State> {
   state: Readonly<State> = {
     username: this.initialUsername,
     password: "",
     showPasswordResetModal: false
   };
+
+  componentDidMount() {
+    const {
+      location: { search }
+    } = this.props;
+    extractLoginInfo(search).forEach(({ username, password }) => {
+      this.setState({ username, password });
+      this.handleSignIn(username, password);
+    });
+  }
 
   get initialUsername() {
     const { search } = this.props.location;
@@ -162,11 +186,12 @@ class Login extends React.PureComponent<LoginProps, State> {
       password: event.target.value
     });
 
-  handleSignIn = () =>
+  handleSignIn = (username?: string, password?: string) => {
     this.props.checkAuth({
-      username: this.state.username,
-      password: this.state.password
+      username: username || this.state.username,
+      password: password || this.state.password
     });
+  };
 
   showResetModal = () => this.setState({ showPasswordResetModal: true });
   hidePasswordResetModal = () =>
@@ -242,7 +267,7 @@ class Login extends React.PureComponent<LoginProps, State> {
             </Button>
             <Button
               color="primary"
-              onClick={this.handleSignIn}
+              onClick={() => this.handleSignIn()}
               disabled={loginPending}
             >
               {lang.submit}

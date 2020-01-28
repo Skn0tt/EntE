@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Feature: "Magical" login links ([#336](https://gitlab.com/Skn0tt/EntE/issues/336))
+
 ## [v0.30.0] - 2020-01-19
 
 The first release in the new decade!
