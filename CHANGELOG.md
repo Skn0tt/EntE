@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix: Magical login links must use the URL hash to contain the password ([#337](https://gitlab.com/Skn0tt/EntE/issues/337))
+
 ## [v0.31.0] - 2020-01-28
 
 - Feature: "Magical" login links ([#336](https://gitlab.com/Skn0tt/EntE/issues/336))
