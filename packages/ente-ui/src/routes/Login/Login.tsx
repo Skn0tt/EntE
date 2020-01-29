@@ -129,12 +129,9 @@ interface State {
 }
 
 const extractLoginInfo = (
-  search: string
+  hash: string
 ): Maybe<{ username: string; password: string }> => {
-  const params = new URLSearchParams(search);
-  const username = params.get("user");
-  const password = params.get("pass");
-
+  const [username, password] = hash.substring(1).split(":");
   if (!username || !password) {
     return None();
   }
@@ -151,9 +148,9 @@ class Login extends React.PureComponent<LoginProps, State> {
 
   componentDidMount() {
     const {
-      location: { search }
+      location: { hash }
     } = this.props;
-    extractLoginInfo(search).forEach(({ username, password }) => {
+    extractLoginInfo(hash).forEach(({ username, password }) => {
       this.setState({ username, password });
       this.handleSignIn(username, password);
     });
