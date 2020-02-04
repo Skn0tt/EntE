@@ -81,7 +81,7 @@ export class EntryReasonRepo {
         const payload: ExamenPayload = {
           from: v.from!,
           to: v.to!,
-          teacherId: v.teacher!._id
+          teacherId: !!v.teacher ? v.teacher._id : null
         };
 
         result.payload = payload;
