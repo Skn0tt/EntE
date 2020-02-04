@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.31.2] - 2020-02-04
+
 - Fix critical bug where login was broken when a teacher is deleted ([#338](https://gitlab.com/Skn0tt/EntE/issues/338))
 
 ## [v0.31.1] - 2020-01-29
