@@ -180,28 +180,6 @@
     var name = $("#sname").val();
     var password = $("#spassword").val();
     var terms = $("#sterms").val();
-
-    $.ajax({
-      type: "POST",
-      url: "php/signupform-process.php",
-      data:
-        "email=" +
-        email +
-        "&name=" +
-        name +
-        "&password=" +
-        password +
-        "&terms=" +
-        terms,
-      success: function(text) {
-        if (text == "success") {
-          sformSuccess();
-        } else {
-          sformError();
-          ssubmitMSG(false, text);
-        }
-      }
-    });
   }
 
   function sformSuccess() {
@@ -253,20 +231,6 @@
     // initiate variables with form content
     var email = $("#lemail").val();
     var password = $("#lpassword").val();
-
-    $.ajax({
-      type: "POST",
-      url: "php/loginform-process.php",
-      data: "email=" + email + "&password=" + password,
-      success: function(text) {
-        if (text == "success") {
-          lformSuccess();
-        } else {
-          lformError();
-          lsubmitMSG(false, text);
-        }
-      }
-    });
   }
 
   function lformSuccess() {
@@ -318,19 +282,6 @@
     // initiate variables with form content
     var email = $("#nemail").val();
     var terms = $("#nterms").val();
-    $.ajax({
-      type: "POST",
-      url: "php/newsletterform-process.php",
-      data: "email=" + email + "&terms=" + terms,
-      success: function(text) {
-        if (text == "success") {
-          nformSuccess();
-        } else {
-          nformError();
-          nsubmitMSG(false, text);
-        }
-      }
-    });
   }
 
   function nformSuccess() {
@@ -384,28 +335,6 @@
     var email = $("#pemail").val();
     var select = $("#pselect").val();
     var terms = $("#pterms").val();
-
-    $.ajax({
-      type: "POST",
-      url: "php/privacyform-process.php",
-      data:
-        "name=" +
-        name +
-        "&email=" +
-        email +
-        "&select=" +
-        select +
-        "&terms=" +
-        terms,
-      success: function(text) {
-        if (text == "success") {
-          pformSuccess();
-        } else {
-          pformError();
-          psubmitMSG(false, text);
-        }
-      }
-    });
   }
 
   function pformSuccess() {
