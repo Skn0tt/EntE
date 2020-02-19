@@ -10,27 +10,27 @@
     <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Tivo is a HTML landing page template built with Bootstrap to help you crate engaging presentations for SaaS apps and convert visitors into users."
+      content="<%= I18n.t(:seo)[:description] %>"
     />
-    <meta name="author" content="Inovatik" />
+    <meta name="author" content="<%= I18n.t(:seo)[:author] %>" />
 
     <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
-    <meta property="og:site_name" content="" />
+    <meta property="og:site_name" content="<%= I18n.t(:seo)[:og_site_name] %>" />
     <!-- website name -->
-    <meta property="og:site" content="" />
+    <meta property="og:site" content="<%= I18n.t(:seo)[:og_site] %>" />
     <!-- website link -->
-    <meta property="og:title" content="" />
+    <meta property="og:title" content="<%= I18n.t(:seo)[:og_title] %>‚" />
     <!-- title shown in the actual shared post -->
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="<%= I18n.t(:seo)[:description] %>" />
     <!-- description shown in the actual shared post -->
-    <meta property="og:image" content="" />
+    <meta property="og:image" content="TODO:" />
     <!-- image link, make sure it's jpg -->
-    <meta property="og:url" content="" />
+    <meta property="og:url" content="TODO:" />
     <!-- where do you want your post to link to -->
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="TODO:" />
 
     <!-- Website Title -->
-    <title><%= current_page.data.title || "Middleman" %></title>
+    <title><%= current_page.data.title || "EntE" %></title>
 
     <!-- Styles -->
     
@@ -45,7 +45,7 @@
     <%= stylesheet_link_tag "site" %>
 
     <!-- Favicon  -->
-    <link rel="icon" href="images/favicon.png" />
+    <%= favicon_tag "images/favicon.png" %>
   </head>
   <body data-spy="scroll" data-target=".fixed-top">
     <!-- Preloader -->
@@ -65,9 +65,9 @@
         <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Tivo</a> -->
 
         <!-- Image Logo -->
-        <a class="navbar-brand logo-image" href="index.html"
-          ><img src="images/EntE-Logo.svg" alt="alternative"
-        /></a>
+        <% link_to '/index.html', :class => "navbar-brand logo-image" do %>
+          <%= image_tag "EntE-Logo.svg", :alt => "alternative" %>
+        <% end %>
 
         <!-- Mobile Menu Toggle Button -->
         <button
