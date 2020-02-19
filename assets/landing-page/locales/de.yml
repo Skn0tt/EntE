@@ -1,5 +1,6 @@
 ---
 de:
+  html5_video_not_supported: Ihr Browser unterstützt keine HTML5-Videos.
   seo:
     og_site_name: EntE
     og_site: EntE
@@ -9,5 +10,5 @@ de:
   index:
     header:
       title: Digitales Entschuldigungsverfahren für Schulen.
-      subtitle: BLABLABLA
+      subtitle: BLABLA
       try_demo: Demo ausprobieren
