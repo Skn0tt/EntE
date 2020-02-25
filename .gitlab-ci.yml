@@ -157,7 +157,7 @@ generate:pages:
     NOW_SCOPE: "--scope ente"
     NOW_SECRET: "--token=$NOW_TOKEN"
   before_script:
-    - yarn global add now
+    - yarn global add now@16.7.3
 
 deploy:pages:
   <<: *now_deploy_template
