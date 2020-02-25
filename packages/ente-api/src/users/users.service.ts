@@ -359,12 +359,14 @@ export class UsersService implements OnModuleInit {
     }
 
     if (requestingUser.id === id) {
-      return await this.patchOneSelf(patch, requestingUser);
+      await this.patchOneSelf(patch, requestingUser);
     }
 
     const userIsAdmin = requestingUser.role === Roles.ADMIN;
     if (!userIsAdmin) {
-      return Fail(PatchUserFailure.ForbiddenForRole);
+      return (await requestingUser.getDto()).toValidation(
+        PatchUserFailure.UserNotFound
+      );
     }
 
     const user = await this.userRepo.findById(id);

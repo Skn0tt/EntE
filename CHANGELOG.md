@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Update Sentry client to v5 ([#339](https://gitlab.com/Skn0tt/EntE/issues/339))
+- Fix bug that prohibited administrators from changing their usernames ([#340](https://gitlab.com/Skn0tt/EntE/issues/340))
 
 ## [v0.31.2] - 2020-02-04
 
