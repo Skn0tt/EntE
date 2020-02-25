@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug that prohibited administrators from changing their usernames ([#340](https://gitlab.com/Skn0tt/EntE/issues/340))
+
 ## [v0.31.2] - 2020-02-04
 
 - Fix critical bug where login was broken when a teacher is deleted ([#338](https://gitlab.com/Skn0tt/EntE/issues/338))
