@@ -91,6 +91,7 @@ build:ui:
 build:docker-app:
   image: docker:19.03.5
   stage: build
+  needs: []
   dependencies: []
   services:
     - docker:19.03.2-dind
