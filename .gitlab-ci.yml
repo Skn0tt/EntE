@@ -66,7 +66,7 @@ build:api:
   needs:
     - job: test:unit
       artifacts: false
-    - jobs: test:tsc
+    - job: test:tsc
       artifacts: false
   services:
     - docker:19.03.2-dind
