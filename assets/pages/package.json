@@ -17,7 +17,7 @@
     "email": "feedback@startbootstrap.com"
   },
   "scripts": {
-    "build:prod": "./generate.ts && npx parcel build index.html de/index.html en/index.html"
+    "build": "./generate.ts && npx parcel build index.html de/index.html en/index.html --out-dir public"
   },
   "license": "MIT",
   "author": "Start Bootstrap",
