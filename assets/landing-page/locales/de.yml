@@ -13,3 +13,8 @@ de:
       title: Digitales Entschuldigungsverfahren für Schulen.
       subtitle: BLABLA
       try_demo: Demo ausprobieren
+    features:
+      analytics:
+        tab: Auswertungen
+        title: Detaillierte Auswertungen
+        body: Welche Schüler fehlen besonders viel? Bei welchen Lehrern wird viel gefehlt?

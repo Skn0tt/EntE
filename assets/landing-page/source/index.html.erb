@@ -199,7 +199,7 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               role="tab"
               aria-controls="tab-3"
               aria-selected="false"
-              ><i class="fas fa-chart-bar"></i>Analytics</a
+              ><i class="fas fa-chart-bar"></i><%= t(:index)[:features][:analytics][:tab] %></a
             >
           </li>
         </ul>
@@ -350,7 +350,7 @@ title: "Tivo - SaaS App HTML Landing Page Template"
                 <div class="image-container">
                   <img
                     class="img-fluid"
-                    src="images/features-3.png"
+                    src="images/statistics.png"
                     alt="alternative"
                   />
                 </div>
@@ -359,12 +359,9 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               <!-- end of col -->
               <div class="col-lg-6">
                 <div class="text-container">
-                  <h3>Analytics Control Panel</h3>
+                  <h3><%= t(:index)[:features][:analytics][:title] %></h3>
                   <p>
-                    Analytics control panel is important for every marketing
-                    team so it's beed implemented from the begging and
-                    designed to produce reports based on very little input
-                    information.
+                    <%= t(:index)[:features][:analytics][:body] %>
                   </p>
                   <ul class="list-unstyled li-space-lg">
                     <li class="media">
