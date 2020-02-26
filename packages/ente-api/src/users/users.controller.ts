@@ -37,7 +37,8 @@ import {
   CreateUserDto,
   PatchUserDto,
   Languages,
-  BlackedUserDto
+  BlackedUserDto,
+  isValidClass
 } from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
@@ -216,20 +217,15 @@ export class UsersController {
   @Post(":id/promote")
   async promoteTeacherToBeManager(
     @Param("id") id: string,
-    @Body() gradYearS: string,
+    @Body() _class: string,
     @Ctx() ctx: RequestContext
   ): Promise<string> {
-    const gradYear = Number.parseInt(gradYearS);
-    if (Number.isNaN(gradYear)) {
+    if (!isValidClass(_class)) {
       throw new BadRequestException(
-        "Please provide an integer for the gradYear."
+        "Please provide an alphanumeric string for `class`."
       );
     }
-    const result = await this.usersService.promoteTeacher(
-      id,
-      gradYear,
-      ctx.user
-    );
+    const result = await this.usersService.promoteTeacher(id, _class, ctx.user);
     return result.cata(
       fail => {
         switch (fail) {

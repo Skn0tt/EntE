@@ -40,7 +40,7 @@ import {
   AppState,
   UserN,
   roleHasChildren,
-  roleHasGradYear
+  roleHasClass
 } from "../../redux";
 import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
@@ -65,7 +65,7 @@ export const lang = {
       email: "Email",
       password: "Password",
       role: "Role",
-      gradYear: "Graduation Year",
+      class: "Class / Graduation Year",
       birthday: "Birthday"
     },
     helpers: {
@@ -85,7 +85,7 @@ export const lang = {
       email: "Email",
       password: "Passwort",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang",
+      class: "Klasse / Abschluss-Jahrgang",
       birthday: "Geburtstag"
     },
     helpers: {
@@ -108,7 +108,7 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
     password,
     role,
     username,
-    graduationYear,
+    class: _class,
     language
   } = dto;
 
@@ -124,7 +124,7 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
 
   switch (role) {
     case Roles.MANAGER:
-      result.graduationYear = graduationYear;
+      result.class = _class;
       break;
 
     case Roles.PARENT:
@@ -133,7 +133,7 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
 
     case Roles.STUDENT:
       result.birthday = birthday;
-      result.graduationYear = graduationYear;
+      result.class = _class;
       break;
   }
 
@@ -222,7 +222,7 @@ export class CreateUser extends React.PureComponent<
     this.setState({ create: clone });
   };
   handleChangeUsername = this.update("username");
-  handleChangeYear = this.update("graduationYear");
+  handleChangeClass = this.update("class");
   handleChangeDisplayname = this.update("displayname");
   handleChangePassword = (value: string) => {
     const newValue = value === "" ? undefined : value;
@@ -242,11 +242,11 @@ export class CreateUser extends React.PureComponent<
     return roleHasChildren(role);
   };
 
-  hasGradYear = (): boolean => {
+  hasClass = (): boolean => {
     const {
       create: { role }
     } = this.state;
-    return roleHasGradYear(role);
+    return roleHasClass(role);
   };
 
   hasBirthday = (): boolean => {
@@ -352,13 +352,13 @@ export class CreateUser extends React.PureComponent<
                     />
                   </Grid>
                 )}
-                {this.hasGradYear() && (
+                {this.hasClass() && (
                   <Grid item xs={12}>
                     <YearPicker
-                      label={translation.titles.gradYear}
+                      label={translation.titles.class}
                       amount={5}
-                      onChange={this.handleChangeYear}
-                      value={create.graduationYear!}
+                      onChange={this.handleChangeClass}
+                      value={create.class!}
                     />
                   </Grid>
                 )}

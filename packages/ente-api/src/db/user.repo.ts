@@ -7,11 +7,11 @@ import {
   CreateUserDto,
   UserDto,
   isValidUuid,
-  roleHasGraduationYear,
+  roleHasClass,
   roleHasChildren,
   roleHasBirthday,
   Languages,
-  ROLES_WITH_GRADUATION_YEAR,
+  ROLES_WITH_CLASS,
   TEACHING_ROLES
 } from "ente-types";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -134,10 +134,10 @@ export class UserRepo {
     return user.map(UserRepo.toDto);
   }
 
-  async findByGraduationYear(year: number): Promise<UserDto[]> {
+  async findByClass(_class: string): Promise<UserDto[]> {
     const users = await this._userQuery()
-      .where("user.graduationYear = :year", { year })
-      .andWhere("user.role IN (:roles)", { roles: ROLES_WITH_GRADUATION_YEAR })
+      .where("user.class = :_class", { _class })
+      .andWhere("user.role IN (:roles)", { roles: ROLES_WITH_CLASS })
       .getMany();
 
     return users.map(u => UserRepo.toDto(u));
@@ -182,7 +182,7 @@ export class UserRepo {
               role: user.role,
               username: user.username,
               email: user.email,
-              graduationYear: user.graduationYear
+              class: user.class
             }))
           )
         );
@@ -251,7 +251,7 @@ export class UserRepo {
         user.birthday = dto.birthday || null;
         user.displayname = dto.displayname;
         user.email = dto.email;
-        user.graduationYear = dto.graduationYear || null;
+        user.class = dto.class || null;
         if (!!dto.language) {
           user.language = dto.language;
         }
@@ -326,16 +326,16 @@ export class UserRepo {
 
   async setYear(
     id: string,
-    graduationYear: number
+    _class: string
   ): Promise<Validation<UpdateUserFailure, true>> {
     const user = Maybe.fromUndefined(await this.repo.findOne(id));
     return await user.cata<Promise<Validation<UpdateUserFailure, true>>>(
       async () => Fail(UpdateUserFailure.UserNotFound),
       async user => {
-        if (!roleHasGraduationYear(user.role)) {
+        if (!roleHasClass(user.role)) {
           return Fail(UpdateUserFailure.UserWrongRole);
         }
-        await this.repo.update(id, { graduationYear });
+        await this.repo.update(id, { class: _class });
         return Success<UpdateUserFailure, true>(true);
       }
     );
@@ -485,14 +485,11 @@ export class UserRepo {
     return recipients.map(UserRepo.toDto);
   }
 
-  async promoteToManager(
-    teacherId: string,
-    gradYear: number
-  ): Promise<boolean> {
+  async promoteToManager(teacherId: string, _class: string): Promise<boolean> {
     const result = await this.repo
       .createQueryBuilder()
       .update()
-      .set({ role: Roles.MANAGER, graduationYear: gradYear })
+      .set({ role: Roles.MANAGER, class: _class })
       .where("_id = :teacherId", { teacherId })
       .andWhere("role = :r", { r: Roles.TEACHER })
       .execute();
@@ -507,7 +504,7 @@ export class UserRepo {
     const result = await this.repo
       .createQueryBuilder()
       .update()
-      .set({ role: Roles.TEACHER, graduationYear: null })
+      .set({ role: Roles.TEACHER, class: null })
       .where("_id = :managerId", { managerId })
       .andWhere("role = :r", { r: Roles.MANAGER })
       .execute();
@@ -536,9 +533,7 @@ export class UserRepo {
     result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;
     result.role = user.role;
     result.username = user.username;
-    result.graduationYear = roleHasGraduationYear(user.role)
-      ? user.graduationYear!
-      : undefined;
+    result.class = roleHasClass(user.role) ? user.class! : undefined;
     result.language = user.language;
     result.managerNotes =
       user.role === Roles.STUDENT ? user.managerNotes : undefined;

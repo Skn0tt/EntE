@@ -49,7 +49,7 @@ export class ExportService {
           "email",
           "role",
           "birthday",
-          "graduationYear",
+          "class",
           "children"
         ],
         rows: users.map(u => [
@@ -59,7 +59,7 @@ export class ExportService {
           u.email,
           u.role,
           "" + u.birthday,
-          "" + u.graduationYear,
+          "" + u.class,
           u.children.map(c => c.username).join(", ")
         ])
       },

@@ -18,14 +18,11 @@ import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
 import AboutRoute from "./routes/About";
 import StudentReportRoute from "./routes/StudentReport/StudentReportRoute";
-import GradudationYearReportRoute from "./routes/GradudationYearReportRoute";
-import _GraduationYearAllStudentsReportRoute from "./routes/GraduationYearAllStudentsReportRoute";
+import ClassReportRoute from "./routes/ClassReportRoute";
+import _ClassAllStudentsReportRoute from "./routes/ClassAllStudentsReportRoute";
 
-const GraduationYearAllStudentsReportRoute = () => (
-  <Route
-    path="/graduationYears/:graduationYear/report"
-    component={_GraduationYearAllStudentsReportRoute}
-  />
+const ClassAllStudentsReportRoute = () => (
+  <Route path="/class/:class/report" component={_ClassAllStudentsReportRoute} />
 );
 
 const AdminRoutes: React.SFC = () => (
@@ -39,10 +36,10 @@ const AdminRoutes: React.SFC = () => (
       <Route path="/about" component={AboutRoute} />
       <Route
         exact
-        path={["/graduationYears", "/graduationYears/:year"]}
-        component={GradudationYearReportRoute}
+        path={["/classes", "/classes/:class"]}
+        component={ClassReportRoute}
       />
-      <GraduationYearAllStudentsReportRoute />
+      <ClassAllStudentsReportRoute />
       <Route component={NotFound} />
     </Switch>
     <Switch>
@@ -86,10 +83,10 @@ const ManagerRoutes: React.SFC = () => (
       <Route path="/about" component={AboutRoute} />
       <Route
         exact
-        path={["/graduationYears", "/graduationYears/:year"]}
-        component={GradudationYearReportRoute}
+        path={["/classes", "/classes/:class"]}
+        component={ClassReportRoute}
       />
-      <GraduationYearAllStudentsReportRoute />
+      <ClassAllStudentsReportRoute />
       <Route component={NotFound} />
     </Switch>
     <Switch>

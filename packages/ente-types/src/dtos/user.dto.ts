@@ -5,9 +5,9 @@ import {
   IsArray,
   ValidateNested,
   IsOptional,
-  IsInt,
   IsISO8601,
-  IsString
+  IsString,
+  IsAlphanumeric
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
@@ -32,7 +32,7 @@ export interface SensitiveUserDto extends BaseUserDto {
   email: string;
   language: Languages;
   children: BlackedUserDto[];
-  graduationYear?: number;
+  class?: string;
   birthday?: string;
   managerNotes: string;
 }
@@ -59,8 +59,8 @@ export class UserDto implements BlackedUserDto {
   children: UserDto[];
 
   @IsOptional()
-  @IsInt()
-  graduationYear?: number;
+  @IsAlphanumeric()
+  class?: string;
 
   @IsISO8601()
   birthday?: string;

@@ -150,9 +150,9 @@ export const getOneSelf: Selector<Maybe<UserN>> = state => {
     .flatMap(id => Maybe.fromFalsy(state.get("usersMap").get(id)));
 };
 
-export const getOneSelvesGraduationYear: Selector<Maybe<number>> = state => {
+export const getOneSelvesClass: Selector<Maybe<string>> = state => {
   const oneSelf = getOneSelf(state);
-  return oneSelf.flatMap(u => Maybe.fromFalsy(u.get("graduationYear")));
+  return oneSelf.flatMap(u => Maybe.fromFalsy(u.get("class")));
 };
 
 /**
@@ -204,10 +204,10 @@ export const getStudents = createSelector(
   users => users.filter(userIsStudent)
 );
 
-export const getStudentsOfGradYear = (gradYear: number) =>
+export const getStudentsOfClass = (_class: string) =>
   createSelector(
     [getStudents],
-    students => students.filter(s => s.get("graduationYear") === gradYear)
+    students => students.filter(s => s.get("class") === _class)
   );
 
 export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = state =>

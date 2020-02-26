@@ -542,10 +542,10 @@ export const updateManagerNotes = async (
 
 export async function promoteTeacher(
   teacherId: string,
-  gradYear: number,
+  _class: string,
   token: string
 ) {
-  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, gradYear, {
+  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, _class, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain"

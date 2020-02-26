@@ -25,19 +25,15 @@ export const CreateUserDtoValidator = makeDtoValidator(
       errors.push(`users of role '${dto.role}' must not have 'birthday' set`);
     }
 
-    const needsToHaveGraduationYear = [Roles.STUDENT, Roles.MANAGER].includes(
-      dto.role
-    );
-    const hasGraduationYearSet = !!dto.graduationYear;
-    if (needsToHaveGraduationYear && !hasGraduationYearSet) {
+    const needsToHaveClass = [Roles.STUDENT, Roles.MANAGER].includes(dto.role);
+    const hasClassSet = !!dto.class;
+    if (needsToHaveClass && !hasClassSet) {
       errors.push(
-        "users of role `student` or `manager` need to have `graduationYear` set"
+        "users of role `student` or `manager` need to have `class` set"
       );
     }
-    if (!needsToHaveGraduationYear && hasGraduationYearSet) {
-      errors.push(
-        `users of role '${dto.role}' must not have 'graduationYear' set`
-      );
+    if (!needsToHaveClass && hasClassSet) {
+      errors.push(`users of role '${dto.role}' must not have 'class' set`);
     }
   }
 );

@@ -1,4 +1,4 @@
-username;displayname;email;password;role;birthday;graduationYear;children
+username;displayname;email;password;role;birthday;class;children
 norahparis;Norah Paris;test@test.com;p4sswort!;student;2000-02-01;2019;
 marcusparis;Marcus Paris;test@test.com;p4sswort!;student;2100-02-01;2021;
 seymourparis;Seymour Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis

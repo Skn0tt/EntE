@@ -46,7 +46,7 @@ import {
   updateUserRequest,
   UserN,
   deleteUserRequest,
-  roleHasGradYear,
+  roleHasClass,
   getToken,
   demoteManagerRequest,
   promoteTeacherRequest
@@ -85,7 +85,7 @@ const useTranslation = makeTranslationHook({
       birthday: "Birthday",
       username: "Username",
       role: "Role",
-      gradYear: "Graduation Year",
+      class: "Class",
       areYouSureYouWannaDelete: (username: string) =>
         `Are you sure you want to delete user "${username}"?`
     },
@@ -111,7 +111,7 @@ const useTranslation = makeTranslationHook({
       birthday: "Geburtstag",
       username: "Benutzername",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang",
+      class: "Klasse / Abschluss-Jahrgang",
       areYouSureYouWannaDelete: (username: string) =>
         `Sind Sie sicher, dass Sie den Nutzer "${username}" löschen möchten?`
     },
@@ -163,7 +163,7 @@ interface SpecificUserDispatchProps {
   requestUser(id: string): void;
   updateUser(id: string, u: PatchUserDto): void;
   deleteUser(id: string): void;
-  promote(id: string, gradYear: number): void;
+  promote(id: string, _class: string): void;
   demote(id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
@@ -173,7 +173,8 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   requestUser: id => dispatch(getUserRequest(id)),
   updateUser: (id, user) => dispatch(updateUserRequest([id, user])),
   deleteUser: id => dispatch(deleteUserRequest(id)),
-  promote: (id, gradYear) => dispatch(promoteTeacherRequest({ id, gradYear })),
+  promote: (id, _class) =>
+    dispatch(promoteTeacherRequest({ id, class: _class })),
   demote: id => dispatch(demoteManagerRequest(id))
 });
 
@@ -310,7 +311,9 @@ export const SpecificUser: React.FunctionComponent<
 
                   {user.get("role") === Roles.TEACHER && (
                     <MenuItem
-                      onClick={() => promote(user.get("id"), currentYear)}
+                      onClick={() =>
+                        promote(user.get("id"), "TODO: use first class")
+                      }
                     >
                       {lang.promote}
                     </MenuItem>
@@ -378,15 +381,13 @@ export const SpecificUser: React.FunctionComponent<
                   )}
 
                   {/* Graduation Year */}
-                  {roleHasGradYear(user.get("role")) && (
+                  {roleHasClass(user.get("role")) && (
                     <Grid item xs={6}>
                       <YearPicker
-                        label={lang.titles.gradYear}
-                        onChange={updatePatch("graduationYear")}
+                        label={lang.titles.class}
+                        onChange={updatePatch("class")}
                         amount={5}
-                        value={
-                          patch.graduationYear! || user.get("graduationYear")!
-                        }
+                        value={patch.class! || user.get("class")!}
                       />
                     </Grid>
                   )}

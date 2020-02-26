@@ -11,7 +11,7 @@ import {
   getUsers,
   getEntries,
   getSlotsMap,
-  getOneSelvesGraduationYear
+  getOneSelvesClass
 } from "../redux";
 import { MapStateToPropsParam, connect } from "react-redux";
 import Table from "../components/Table";
@@ -61,77 +61,73 @@ const useTranslation = makeTranslationHook({
 
 const extractId = (u: UserN) => u.get("id");
 
-interface GraduationYearReportRouteOwnProps {}
+interface ClassReportRouteOwnProps {}
 
-interface GraduationYearReportRouteStateProps {
-  ownGradYear: Maybe<number>;
+interface ClassReportRouteStateProps {
+  ownClass: Maybe<string>;
   ownRole: Roles;
-  existingGradYears: number[];
+  existingClasses: string[];
   getUser: (id: string) => Maybe<UserN>;
-  getStudentsOfGraduationYear: (year: number) => UserN[];
+  getStudentsOfClass: (_class: string) => UserN[];
   getEntriesOfStudent: (id: string) => EntryN[];
   slotsMap: Map<string, SlotN>;
 }
 const mapStateToProps: MapStateToPropsParam<
-  GraduationYearReportRouteStateProps,
-  GraduationYearReportRouteOwnProps,
+  ClassReportRouteStateProps,
+  ClassReportRouteOwnProps,
   AppState
 > = state => {
   return {
     ownRole: getRole(state).some(),
-    ownGradYear: getOneSelvesGraduationYear(state),
-    existingGradYears: _.uniq(
-      getUsers(state).map(u => u.get("graduationYear")!)
-    )
+    ownClass: getOneSelvesClass(state),
+    existingClasses: _.uniq(getUsers(state).map(u => u.get("class")!))
       .filter(v => !!v)
       .sort(),
     getUser: id => getUser(id)(state),
-    getStudentsOfGraduationYear: year =>
-      getUsers(state).filter(
-        u => u.get("graduationYear") === year && u.get("role") === Roles.STUDENT
-      ),
+    getStudentsOfClass: c =>
+      getUsers(state)
+        .filter(u => u.get("class") === c)
+        .filter(u => u.get("role") === Roles.STUDENT),
     getEntriesOfStudent: studentId =>
       getEntries(state).filter(e => e.get("studentId") === studentId),
     slotsMap: getSlotsMap(state)
   };
 };
 
-interface GraduationYearReportRouteParams {
-  year?: string;
+interface ClassReportRouteParams {
+  class?: string;
 }
 
-type GraduationYearReportRouteProps = GraduationYearReportRouteStateProps &
-  RouteComponentProps<GraduationYearReportRouteParams>;
+type ClassReportRouteProps = ClassReportRouteStateProps &
+  RouteComponentProps<ClassReportRouteParams>;
 
-const GraduationYearReportRoute: React.FC<
-  GraduationYearReportRouteProps
-> = props => {
+const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
   const translation = useTranslation();
   const classes = useStyles();
 
   const {
     slotsMap,
-    getStudentsOfGraduationYear: getUsersOfGraduationYear,
-    ownGradYear,
+    getStudentsOfClass,
+    ownClass,
     ownRole,
-    existingGradYears,
+    existingClasses,
     getEntriesOfStudent,
     history,
     match
   } = props;
-  const year = Maybe.fromFalsy(Number(match.params.year))
-    .filter(v => existingGradYears.includes(v))
-    .orElse(ownGradYear)
-    .orElse(Maybe.fromUndefined(existingGradYears[0]));
+  const _class = Maybe.fromFalsy(match.params.class)
+    .filter(v => existingClasses.includes(v))
+    .orElse(ownClass)
+    .orElse(Maybe.fromUndefined(existingClasses[0]));
 
-  const usersOfGradYear = React.useMemo(
-    () => year.map(getUsersOfGraduationYear),
-    [getUsersOfGraduationYear, year.orSome(0)]
-  );
+  const usersOfClass = React.useMemo(() => _class.map(getStudentsOfClass), [
+    getStudentsOfClass,
+    _class.orUndefined()
+  ]);
 
-  const handleChangeGradYear = React.useCallback(
-    (year: number) => {
-      history.replace(`/graduationYears/${year}`);
+  const handleChangeClass = React.useCallback(
+    (_class: string) => {
+      history.replace(`/classes/${_class}`);
     },
     [history]
   );
@@ -143,7 +139,7 @@ const GraduationYearReportRoute: React.FC<
     [history]
   );
 
-  return usersOfGradYear.cata(
+  return usersOfClass.cata(
     () => (
       <Center>
         <Typography>{translation.noUsers}</Typography>
@@ -171,10 +167,10 @@ const GraduationYearReportRoute: React.FC<
               {ownRole === Roles.ADMIN && (
                 <Grid item xs={8}>
                   <DropdownInput
-                    value={year.some()}
-                    options={existingGradYears}
+                    value={_class.some()}
+                    options={existingClasses}
                     getOptionLabel={String}
-                    onChange={handleChangeGradYear}
+                    onChange={handleChangeClass}
                     fullWidth
                     variant="outlined"
                     margin="dense"
@@ -188,9 +184,7 @@ const GraduationYearReportRoute: React.FC<
                   <Grid item xs={4}>
                     <Button
                       onClick={() =>
-                        history.push(
-                          `/graduationYears/${year.orSome(0)}/report`
-                        )
+                        history.push(`/classes/${_class.orUndefined()}/report`)
                       }
                       variant="text"
                       color="inherit"
@@ -262,4 +256,4 @@ const GraduationYearReportRoute: React.FC<
   );
 };
 
-export default connect(mapStateToProps)(GraduationYearReportRoute);
+export default connect(mapStateToProps)(ClassReportRoute);
