@@ -70,9 +70,9 @@ title: "Tivo - SaaS App HTML Landing Page Template"
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div class="above-heading">Vorteile</div>
+        <div class="above-heading"><%= t(:index)[:advantages][:subtitle] %></div>
         <h2 class="h2-heading">
-          Marketing Automation Will Bring More Qualified Leads
+          <%= t(:index)[:advantages][:title] %>
         </h2>
       </div>
       <!-- end of col -->
@@ -84,16 +84,17 @@ title: "Tivo - SaaS App HTML Landing Page Template"
         <div class="card">
           <div class="card-image">
             <img
-              class="img-fluid"
-              src="images/description-1.png"
+              class="img-fluid advantages-img"
+              src="images/undraw_time_management_30iu.svg"
               alt="alternative"
             />
           </div>
           <div class="card-body">
-            <h4 class="card-title">Lists Builder</h4>
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:time][:title] %>
+            </h4>
             <p>
-              It's very easy to start creating email lists for your
-              marketing actions. Just create your Tivo account
+              <%= t(:index)[:advantages][:time][:body] %>
             </p>
           </div>
         </div>
@@ -103,16 +104,17 @@ title: "Tivo - SaaS App HTML Landing Page Template"
         <div class="card">
           <div class="card-image">
             <img
-              class="img-fluid"
-              src="images/description-2.png"
+              class="img-fluid advantages-img"
+              src="images/undraw_safe_bnk7.svg"
               alt="alternative"
             />
           </div>
           <div class="card-body">
-            <h4 class="card-title">Campaign Tracker</h4>
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:reliable][:title] %>
+            </h4>
             <p>
-              Campaigns is a feature we've developed since the beginning
-              because it's at the core of Tivo's functionalities
+              <%= t(:index)[:advantages][:reliable][:body] %>
             </p>
           </div>
         </div>
@@ -122,16 +124,17 @@ title: "Tivo - SaaS App HTML Landing Page Template"
         <div class="card">
           <div class="card-image">
             <img
-              class="img-fluid"
-              src="images/description-3.png"
+              class="img-fluid advantages-img"
+              src="images/undraw_gdpr_3xfb.svg"
               alt="alternative"
             />
           </div>
           <div class="card-body">
-            <h4 class="card-title">Analytics Tool</h4>
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:gdpr][:title] %>
+            </h4>
             <p>
-              Tivo collects customer data in order to help you analyse
-              different situations and take required action
+              <%= t(:index)[:advantages][:gdpr][:body] %>
             </p>
           </div>
         </div>

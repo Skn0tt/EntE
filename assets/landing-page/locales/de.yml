@@ -13,8 +13,27 @@ de:
       title: Digitales Entschuldigungsverfahren für Schulen.
       subtitle: BLABLA
       try_demo: Demo ausprobieren
+    advantages:
+      subtitle: Vorteile
+      title: Entlastet Lehrer, Schüler und Eltern und schafft mehr Unterrichtszeit.
+      time:
+        title: Spart Zeit.
+        body: >
+          Jeder Teilnehmer wird höchstens 1 mal pro Entschuldigungseintrag aktiv.
+          Im Vergleich: Beim papierbasierte Verfahren sind es häufig >10!
+      reliable:
+        title: Zuverlässig
+        body: >
+          Alle Daten werden mehrfach gesichert und sind vor Verlust geschützt.
+      gdpr:
+        title: DSGVO-Konform
+        body: >
+          Jeder Teilnehmer kann nur die Daten sehen, die für seine Augen bestimmt sind.
+          Im Vergleich: Das papierbasierte Verfahren ermöglicht es Lehrern und Mitschülern, die gesamte Krankenhistorie nachzuverfolgen!
     features:
       analytics:
         tab: Auswertungen
         title: Detaillierte Auswertungen
-        body: Welche Schüler fehlen besonders viel? Bei welchen Lehrern wird viel gefehlt?
+        body: >
+          Welche Schüler fehlen besonders viel?
+          Bei welchen Lehrern wird viel gefehlt?
