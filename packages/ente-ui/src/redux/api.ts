@@ -555,9 +555,4 @@ export async function promoteTeacher(
 
 export async function demoteManager(managerId: string, token: string) {
   await post(`${getBaseUrl()}/users/${managerId}/demote`, token);
-  /* TODO: remove
-  await post(`${getBaseUrl()}/users/${managerId}/demote`, token, undefined, {
-    transformResponse: []
-  });
-  */
 }
