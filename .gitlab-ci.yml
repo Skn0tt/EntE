@@ -64,9 +64,10 @@ build:api:
   image: skn0tt/dind-make:298476cb7a58ce49f9bdab4da93529a10e3c6c1ed5fd7264e6e36b726e11dfa8
   stage: build
   needs:
-    - test:unit
-    - test:tsc
-  artifacts: false
+    - job: test:unit
+      artifacts: false
+    - jobs: test:tsc
+      artifacts: false
   services:
     - docker:19.03.2-dind
   before_script:
