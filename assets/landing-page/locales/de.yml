@@ -14,7 +14,7 @@ de:
       subtitle: BLABLA
       try_demo: Demo ausprobieren
     advantages:
-      subtitle: Vorteile
+      subtitle: VORTEILE
       title: Entlastet Lehrer, Schüler und Eltern und schafft mehr Unterrichtszeit.
       time:
         title: Spart Zeit.
@@ -31,6 +31,21 @@ de:
           Jeder Teilnehmer kann nur die Daten sehen, die für seine Augen bestimmt sind.
           Im Vergleich: Das papierbasierte Verfahren ermöglicht es Lehrern und Mitschülern, die gesamte Krankenhistorie nachzuverfolgen!
     features:
+      subtitle: Funktionen
+      title: Was EntE bietet
+      body: >
+        EntE ist schnell zu erlernen und einfach zu benutzen.
+        Die EntE-Oberfläche
+      easy_to_use:
+        tab: Einfach zu benutzen
+        title: BLABLA
+        body: >
+          auf desktop und mobil
+      integrates:
+        tab: Integrationen
+        title: Integriert mit bestehenden Lösungen
+        body: >
+          EntE lässt sich einfach an bestehende Lösungen wie SchiLD oder weBBSchule anbinden.
       analytics:
         tab: Auswertungen
         title: Detaillierte Auswertungen

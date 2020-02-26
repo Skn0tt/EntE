@@ -154,12 +154,10 @@ title: "Tivo - SaaS App HTML Landing Page Template"
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div class="above-heading">FEATURES</div>
-        <h2 class="h2-heading">Marketing Automation</h2>
+        <div class="above-heading"><%= t(:index)[:features][:subtitle] %></div>
+        <h2 class="h2-heading"><%= t(:index)[:features][:title] %></h2>
         <p class="p-heading">
-          Take your business strategy to the next level and automatize your
-          marketing tasks to save time for product development. Tivo can
-          provide results in less than 2 weeks
+          <%= t(:index)[:features][:body] %>
         </p>
       </div>
       <!-- end of col -->
@@ -178,7 +176,7 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               role="tab"
               aria-controls="tab-1"
               aria-selected="true"
-              ><i class="fas fa-list"></i>List Builder</a
+              ><i class="fas fa-user-check"></i><%= t(:index)[:features][:easy_to_use][:tab] %></a
             >
           </li>
           <li class="nav-item">
@@ -190,7 +188,7 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               role="tab"
               aria-controls="tab-2"
               aria-selected="false"
-              ><i class="fas fa-envelope-open-text"></i>Campaigns</a
+              ><i class="fas fa-cog"></i><%= t(:index)[:features][:integrates][:tab] %></a
             >
           </li>
           <li class="nav-item">
@@ -231,42 +229,10 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               <!-- end of col -->
               <div class="col-lg-6">
                 <div class="text-container">
-                  <h3>List Building Is Easier Than Ever</h3>
+                  <h3><%= t(:index)[:features][:easy_to_use][:title] %></h3>
                   <p>
-                    It's very easy to start using Tivo. You just need to
-                    fill out and submit the
-                    <a class="blue page-scroll" href="sign-up.html"
-                      >Sign Up Form</a
-                    >
-                    and you will receive access to the app and all of its
-                    features in no more than 24h.
+                    <%= t(:index)[:features][:easy_to_use][:body] %>
                   </p>
-                  <ul class="list-unstyled li-space-lg">
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Create and embed on websites newsletter sign up
-                        forms
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Manage forms and landing pages for your services
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Add and remove subscribers using the control panel
-                      </div>
-                    </li>
-                  </ul>
-                  <a
-                    class="btn-solid-reg popup-with-move-anim"
-                    href="#details-lightbox-1"
-                    >LIGHTBOX</a
-                  >
                 </div>
                 <!-- end of text-container -->
               </div>
@@ -298,39 +264,12 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               <!-- end of col -->
               <div class="col-lg-6">
                 <div class="text-container">
-                  <h3>Campaigns Monitoring Tools</h3>
+                  <h3>
+                    <%= t(:index)[:features][:integrates][:title] %>
+                  </h3>
                   <p>
-                    Campaigns monitoring is a feature we've developed since
-                    the beginning because it's at the core of Tivo and
-                    basically to any marketing activity focused on results.
+                    <%= t(:index)[:features][:integrates][:body] %>
                   </p>
-                  <ul class="list-unstyled li-space-lg">
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Easily plan campaigns and schedule their starting
-                        date
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Start campaigns and follow their evolution closely
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Evaluate campaign results and optimize future
-                        actions
-                      </div>
-                    </li>
-                  </ul>
-                  <a
-                    class="btn-solid-reg popup-with-move-anim"
-                    href="#details-lightbox-2"
-                    >LIGHTBOX</a
-                  >
                 </div>
                 <!-- end of text-container -->
               </div>
@@ -362,37 +301,12 @@ title: "Tivo - SaaS App HTML Landing Page Template"
               <!-- end of col -->
               <div class="col-lg-6">
                 <div class="text-container">
-                  <h3><%= t(:index)[:features][:analytics][:title] %></h3>
+                  <h3>
+                    <%= t(:index)[:features][:analytics][:title] %>
+                  </h3>
                   <p>
                     <%= t(:index)[:features][:analytics][:body] %>
                   </p>
-                  <ul class="list-unstyled li-space-lg">
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        If you set it up correctly you will get acces to
-                        great intel
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        Easy to integrate in your websites and landing pages
-                      </div>
-                    </li>
-                    <li class="media">
-                      <i class="fas fa-square"></i>
-                      <div class="media-body">
-                        The generated reports are important for your
-                        strategy
-                      </div>
-                    </li>
-                  </ul>
-                  <a
-                    class="btn-solid-reg popup-with-move-anim"
-                    href="#details-lightbox-3"
-                    >LIGHTBOX</a
-                  >
                 </div>
                 <!-- end of text-container -->
               </div>
