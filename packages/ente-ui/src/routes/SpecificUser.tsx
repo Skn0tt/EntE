@@ -49,7 +49,8 @@ import {
   roleHasClass,
   getToken,
   demoteManagerRequest,
-  promoteTeacherRequest
+  promoteTeacherRequest,
+  getUsers
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import {
@@ -70,8 +71,6 @@ import { Link } from "react-router-dom";
 import { useMessages } from "../context/Messages";
 import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 import { useRoleTranslation } from "../roles.translation";
-
-const currentYear = new Date().getFullYear();
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -144,6 +143,7 @@ interface RouteMatch {
 }
 interface SpecificUserStateProps {
   getUser(id: string): Maybe<UserN>;
+  availableClasses: string[];
   loading: boolean;
   students: UserN[];
   token: string;
@@ -154,6 +154,11 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   getUser: id => getUser(id)(state),
+  availableClasses: _.uniq(
+    getUsers(state)
+      .map(u => u.get("class"))
+      .filter(_.isString)
+  ),
   loading: isLoading(state),
   students: getStudents(state),
   token: getToken(state).some()
@@ -210,7 +215,8 @@ export const SpecificUser: React.FunctionComponent<
     requestUser,
     token,
     promote,
-    demote
+    demote,
+    availableClasses
   } = props;
 
   const userId = match.params.userId;
@@ -312,7 +318,10 @@ export const SpecificUser: React.FunctionComponent<
                   {user.get("role") === Roles.TEACHER && (
                     <MenuItem
                       onClick={() =>
-                        promote(user.get("id"), "TODO: use first class")
+                        promote(
+                          user.get("id"),
+                          availableClasses[0] || "default"
+                        )
                       }
                     >
                       {lang.promote}
