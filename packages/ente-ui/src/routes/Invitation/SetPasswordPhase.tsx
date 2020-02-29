@@ -92,7 +92,7 @@ const SetPasswordPhase: React.FC<SetPasswordPhasePropsConnected> = props => {
       </DialogContent>
       <DialogActions>
         <Button
-          variant="contained"
+          variant="raised"
           disabled={requestPending || newPassword === ""}
           onClick={requestReset}
         >

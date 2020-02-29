@@ -16,8 +16,8 @@ const styles = (theme: Theme): StyleRules => ({
   fab: {
     margin: 0,
     top: "auto",
-    right: theme.spacing(2),
-    bottom: theme.spacing(2),
+    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2,
     left: "auto",
     position: "fixed"
   },

@@ -19,6 +19,9 @@ export const createTheme = _.memoize(
         primary: blue,
         type: scheme
       },
+      typography: {
+        useNextVariants: true
+      },
       overrides: {
         MUIDataTable: {
           paper: {

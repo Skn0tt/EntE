@@ -115,11 +115,7 @@ const SlotEntry: React.FC<SlotEntryProps> = props => {
       {/* Add */}
       <Grid item xs={2}>
         <Tooltip title={translation.add}>
-          <Button
-            variant="contained"
-            disabled={!isValid}
-            onClick={handleSubmit}
-          >
+          <Button variant="raised" disabled={!isValid} onClick={handleSubmit}>
             {translation.add}
           </Button>
         </Tooltip>

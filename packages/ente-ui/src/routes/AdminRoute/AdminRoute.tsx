@@ -74,10 +74,10 @@ const useTranslation = makeTranslationHook({
 
 const styles = (theme: Theme) => ({
   iconLeft: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing.unit
   },
   container: {
-    margin: theme.spacing(1)
+    margin: theme.spacing.unit
   }
 });
 

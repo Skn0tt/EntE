@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 0
   },
   card: {
-    margin: theme.spacing(1)
+    margin: theme.spacing.unit
   }
 }));
 

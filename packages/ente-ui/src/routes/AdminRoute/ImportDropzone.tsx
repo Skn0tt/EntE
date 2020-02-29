@@ -18,8 +18,8 @@ const styles = (theme: Theme) =>
     dropzone: {
       minHeight: 24,
       border: `1px solid ${theme.palette.grey[300]}`,
-      borderRadius: theme.spacing(1),
-      padding: theme.spacing(2),
+      borderRadius: theme.spacing.unit,
+      padding: theme.spacing.unit * 2,
       boxSizing: "border-box"
     }
   });

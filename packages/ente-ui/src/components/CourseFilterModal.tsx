@@ -156,7 +156,7 @@ const CourseFilterModal: React.FC<
               </Grid>
               <Grid item xs={2}>
                 <Tooltip title={translation.add}>
-                  <Button variant="contained" onClick={handleAdd}>
+                  <Button variant="raised" onClick={handleAdd}>
                     {translation.add}
                   </Button>
                 </Tooltip>

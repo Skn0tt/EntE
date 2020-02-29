@@ -1,5 +1,5 @@
 import * as React from "react";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+import { DatePicker } from "material-ui-pickers";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { isBefore, isAfter, parseISO } from "date-fns";
 import { dateToIsoString } from "ente-types";
@@ -78,7 +78,7 @@ export const DateInput: React.FC<DateInputProps> = props => {
     dateIsNotBeforeMinDate && dateIsNotAfterMaxDate && isValid(value);
 
   return (
-    <KeyboardDatePicker
+    <DatePicker
       label={label}
       value={value}
       onChange={handleOnChange}

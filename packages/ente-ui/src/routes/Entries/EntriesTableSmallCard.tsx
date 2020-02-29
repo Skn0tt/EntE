@@ -32,7 +32,7 @@ const useTranslation = makeTranslationHook({
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    margin: theme.spacing(1)
+    margin: theme.spacing.unit
   },
   upRight: {
     position: "relative",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   list: {
     paddingBottom: 0,
-    paddingTop: theme.spacing(2)
+    paddingTop: theme.spacing.unit * 2
   }
 }));
 

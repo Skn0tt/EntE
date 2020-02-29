@@ -111,7 +111,7 @@ const PasswordReset: React.FC<PasswordResetPropsConnected> = props => {
       </DialogContent>
       <DialogActions>
         <Button
-          variant="contained"
+          variant="raised"
           disabled={resetIsPending || newPassword === ""}
           onClick={requestReset}
         >
