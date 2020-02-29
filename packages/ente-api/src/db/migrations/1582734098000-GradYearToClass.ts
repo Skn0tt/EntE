@@ -18,8 +18,8 @@ export class GradYearToClass1582734098000 implements MigrationInterface {
 
     await queryRunner.query(`
       UPDATE user
-      WHERE user.graduationYear NOT NULL
-      SET user.class = CAST(user.graduationYear AS VARCHAR(255))
+      SET user.class = CAST(user.graduationYear AS CHAR(4))
+      WHERE user.graduationYear IS NOT NULL  
     `);
 
     await queryRunner.dropColumn("user", this.gradYear);
@@ -30,8 +30,8 @@ export class GradYearToClass1582734098000 implements MigrationInterface {
 
     await queryRunner.query(`
       UPDATE user
-      WHERE user.class NOT NULL
       SET user.graduationYear = CAST(user.class AS UNSIGNED)
+      WHERE user.class IS NOT NULL
     `);
 
     await queryRunner.dropColumn("user", this.class);
