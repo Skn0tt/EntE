@@ -36,6 +36,7 @@ import {
 import {
   getStudents,
   getUser,
+  getUsers,
   createUsersRequest,
   AppState,
   UserN,
@@ -45,7 +46,6 @@ import {
 import TextInput from "../../elements/TextInput";
 import ChildrenInput from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
-import { YearPicker } from "../../elements/YearPicker";
 import { PasswordRequirementsHint } from "../../elements/PasswordRequirementsHint";
 import * as _ from "lodash";
 import { Maybe } from "monet";
@@ -55,6 +55,7 @@ import {
 } from "../../helpers/with-translation";
 import { DateInput } from "../../elements/DateInput";
 import { RoleTranslation } from "../../roles.translation";
+import { ClassPicker } from "../../elements/ClassPicker";
 
 export const lang = {
   en: {
@@ -155,6 +156,7 @@ interface CreateUserState {
 interface CreateUserStateProps {
   students: UserN[];
   getUser(id: string): Maybe<UserN>;
+  availableClasses: string[];
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateUserStateProps,
@@ -162,7 +164,10 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   getUser: id => getUser(id)(state),
-  students: getStudents(state)
+  students: getStudents(state),
+  availableClasses: _.uniq(getUsers(state)
+    .map(c => c.get("class"))
+    .filter(f => !!f) as string[])
 });
 
 interface CreateUserDispatchProps {
@@ -274,7 +279,14 @@ export class CreateUser extends React.PureComponent<
   getCleanDto = () => cleanUpDtoByRole(this.state.create);
 
   render() {
-    const { show, fullScreen, getUser, students, translation } = this.props;
+    const {
+      show,
+      fullScreen,
+      getUser,
+      students,
+      translation,
+      availableClasses
+    } = this.props;
     const { create } = this.state;
 
     return (
@@ -354,9 +366,9 @@ export class CreateUser extends React.PureComponent<
                 )}
                 {this.hasClass() && (
                   <Grid item xs={12}>
-                    <YearPicker
+                    <ClassPicker
                       label={translation.titles.class}
-                      amount={5}
+                      availableClasses={availableClasses}
                       onChange={this.handleChangeClass}
                       value={create.class!}
                     />

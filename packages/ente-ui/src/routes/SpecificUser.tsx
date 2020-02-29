@@ -63,7 +63,6 @@ import {
   Roles
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
-import { YearPicker } from "../elements/YearPicker";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { DateInput } from "../elements/DateInput";
@@ -71,6 +70,7 @@ import { Link } from "react-router-dom";
 import { useMessages } from "../context/Messages";
 import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 import { useRoleTranslation } from "../roles.translation";
+import { ClassPicker } from "../elements/ClassPicker";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -392,10 +392,10 @@ export const SpecificUser: React.FunctionComponent<
                   {/* Graduation Year */}
                   {roleHasClass(user.get("role")) && (
                     <Grid item xs={6}>
-                      <YearPicker
+                      <ClassPicker
                         label={lang.titles.class}
                         onChange={updatePatch("class")}
-                        amount={5}
+                        availableClasses={availableClasses}
                         value={patch.class! || user.get("class")!}
                       />
                     </Grid>
