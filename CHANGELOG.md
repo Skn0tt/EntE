@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Feature: Matching students is now done using "class" instead of "graduationYear".
+  This allows class/tutor-based schools to use EntE effectively. ([#342](https://gitlab.com/Skn0tt/EntE/issues/342))
+
 ## [v0.31.3] - 2020-02-26
 
 - Update Sentry client to v5 ([#339](https://gitlab.com/Skn0tt/EntE/issues/339))
