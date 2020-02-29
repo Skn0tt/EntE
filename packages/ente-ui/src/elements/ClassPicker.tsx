@@ -1,6 +1,5 @@
 import * as React from "react";
 import { TextField } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
 import * as _ from "lodash";
 
 interface ClassPickerProps {
@@ -13,20 +12,7 @@ interface ClassPickerProps {
 export const ClassPicker: React.SFC<ClassPickerProps> = props => {
   const { value, onChange, availableClasses, label } = props;
 
-  return (
-    <Autocomplete
-      freeSolo
-      options={availableClasses}
-      value={value}
-      onChange={(e: any) => {
-        console.log(e);
-        onChange("" + e);
-      }}
-      renderInput={params => (
-        <TextField {...params} label={label} SelectProps={{ native: true }} />
-      )}
-    />
-  );
+  return <p>lol</p>;
 };
 
 /*
