@@ -1,17 +1,11 @@
-import {
-  IsOptional,
-  IsIn,
-  IsInt,
-  IsISO8601,
-  IsBoolean,
-  IsAlphanumeric
-} from "class-validator";
+import { IsOptional, IsIn, IsISO8601, IsBoolean } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidDisplayname,
   isValidEmail,
   isValidUuidOrUsername,
-  isValidUsername
+  isValidUsername,
+  isValidClass
 } from "../validators";
 import { languagesArr, Languages } from "../languages";
 
@@ -41,7 +35,7 @@ export class PatchUserDto {
   birthday?: string;
 
   @IsOptional()
-  @IsAlphanumeric()
+  @CustomStringValidator(isValidClass)
   class?: string;
 
   @IsOptional()

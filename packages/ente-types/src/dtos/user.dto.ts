@@ -6,14 +6,14 @@ import {
   ValidateNested,
   IsOptional,
   IsISO8601,
-  IsString,
-  IsAlphanumeric
+  IsString
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
   isValidDisplayname,
-  isValidEmail
+  isValidEmail,
+  isValidClass
 } from "../validators";
 import { Type } from "class-transformer";
 import { parseISO, addYears, isAfter } from "date-fns";
@@ -59,7 +59,7 @@ export class UserDto implements BlackedUserDto {
   children: UserDto[];
 
   @IsOptional()
-  @IsAlphanumeric()
+  @CustomStringValidator(isValidClass)
   class?: string;
 
   @IsISO8601()

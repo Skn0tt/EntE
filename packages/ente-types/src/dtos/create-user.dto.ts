@@ -1,17 +1,12 @@
 import { rolesArr, Roles } from "ente-types";
-import {
-  IsIn,
-  IsOptional,
-  IsDefined,
-  IsISO8601,
-  IsAlphanumeric
-} from "class-validator";
+import { IsIn, IsOptional, IsDefined, IsISO8601 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
   isValidDisplayname,
   isValidEmail,
-  isValidUuidOrUsername
+  isValidUuidOrUsername,
+  isValidClass
 } from "../validators/user";
 import { isValidPassword } from "../validators/auth";
 import { languagesArr, Languages } from "../languages";
@@ -42,7 +37,7 @@ export class CreateUserDto {
   children: string[];
 
   @IsOptional()
-  @IsAlphanumeric()
+  @CustomStringValidator(isValidClass)
   class?: string;
 
   @IsOptional()
