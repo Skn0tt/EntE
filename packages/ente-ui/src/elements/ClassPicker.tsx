@@ -1,9 +1,9 @@
 import * as React from "react";
-import { TextField } from "@material-ui/core";
 import * as _ from "lodash";
+import { SearchableDropdown } from "../components/SearchableDropdown";
 
 interface ClassPickerProps {
-  onChange: (_class: string) => void;
+  onChange: (_class: string | undefined) => void;
   value: string;
   availableClasses: string[];
   label: string;
@@ -12,24 +12,18 @@ interface ClassPickerProps {
 export const ClassPicker: React.SFC<ClassPickerProps> = props => {
   const { value, onChange, availableClasses, label } = props;
 
-  return <p>lol</p>;
-};
+  const availableItems = !!value
+    ? [...availableClasses, value]
+    : availableClasses;
 
-/*
-
-    
-    <TextField
-      select
-      label={label}
+  return (
+    <SearchableDropdown<string>
+      items={_.uniq(availableItems)}
+      includeItem={(item, searchTerm) => item.includes(searchTerm)}
+      itemToString={_.identity}
       value={value}
-      fullWidth
-      onChange={e => onChange(e.target.value)}
-      SelectProps={{ native: true }}
-    >
-      {_.uniq(availableClasses).map(c => (
-        <option key={c} value={c}>
-          {"" + c}
-        </option>
-      ))}
-    </TextField>
-*/
+      label={label}
+      onChange={onChange}
+    />
+  );
+};

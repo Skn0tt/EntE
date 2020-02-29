@@ -70,7 +70,7 @@ const TeacherInput: React.FC<TeacherInputProps> = props => {
       label={translation.titles.teacher}
       helperText={translation.helpers.teacher}
       items={sortedTeachingUsers}
-      onChange={handleChange}
+      onSelect={handleChange}
       includeItem={(item, searchTerm) =>
         item
           .get("displayname")

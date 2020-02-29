@@ -129,7 +129,7 @@ export class ChildrenInput extends React.PureComponent<
           <Grid item xs={11}>
             <SearchableDropdown<UserN>
               items={students.filter(u => !includes(children)(u))}
-              onChange={this.handleSelectChild}
+              onSelect={this.handleSelectChild}
               itemToString={i => i.get("displayname")}
               includeItem={(u, searchTerm) =>
                 u

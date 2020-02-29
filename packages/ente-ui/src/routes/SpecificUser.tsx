@@ -235,7 +235,8 @@ export const SpecificUser: React.FunctionComponent<
 
   const updatePatch = (key: keyof PatchUserDto) => (value: any) => {
     const clone = Object.assign({}, patch);
-    clone[key] = value;
+    const isSameAsOrigin = user.some().get(key) === value;
+    clone[key] = isSameAsOrigin ? undefined : value;
     setPatch(clone);
   };
 
@@ -396,7 +397,11 @@ export const SpecificUser: React.FunctionComponent<
                         label={lang.titles.class}
                         onChange={updatePatch("class")}
                         availableClasses={availableClasses}
-                        value={patch.class! || user.get("class")!}
+                        value={
+                          _.isUndefined(patch.class)
+                            ? user.get("class")!
+                            : patch.class
+                        }
                       />
                     </Grid>
                   )}
