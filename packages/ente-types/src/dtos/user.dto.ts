@@ -6,7 +6,8 @@ import {
   ValidateNested,
   IsOptional,
   IsISO8601,
-  IsString
+  IsString,
+  IsInt
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
@@ -61,6 +62,13 @@ export class UserDto implements BlackedUserDto {
   @IsOptional()
   @CustomStringValidator(isValidClass)
   class?: string;
+
+  /**
+   * @deprecated
+   */
+  @IsOptional()
+  @IsInt()
+  graduationYear?: number;
 
   @IsISO8601()
   birthday?: string;

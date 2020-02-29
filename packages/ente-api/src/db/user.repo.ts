@@ -534,6 +534,7 @@ export class UserRepo {
     result.role = user.role;
     result.username = user.username;
     result.class = roleHasClass(user.role) ? user.class! : undefined;
+    result.graduationYear = parseInt(result.class || "") || -1;
     result.language = user.language;
     result.managerNotes =
       user.role === Roles.STUDENT ? user.managerNotes : undefined;
