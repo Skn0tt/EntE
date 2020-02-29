@@ -12,10 +12,10 @@ export const Description: React.FC<DescriptionProps> = props => {
   return (
     <Grid container direction="column" justify="space-between">
       <Grid>
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="body2">{title}</Typography>
       </Grid>
       <Grid>
-        <Typography variant="body2">{children}</Typography>
+        <Typography variant="body1">{children}</Typography>
       </Grid>
     </Grid>
   );

@@ -67,7 +67,7 @@ export const SetPasswordForm: React.FC<SetPasswordFormOwnProps> = props => {
           onChange={handleChangePassword}
         />
       </Grid>
-      <Typography variant="body2">
+      <Typography variant="body1">
         <translation.passwordSpecs />
       </Typography>
       <Grid item>

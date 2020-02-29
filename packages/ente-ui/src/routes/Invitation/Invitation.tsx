@@ -92,7 +92,7 @@ const Invitation: React.FC<InvitationProps> = props => {
           </DialogContent>
           <DialogActions>
             <Button
-              variant="raised"
+              variant="contained"
               onClick={() => {
                 history.push(`/login?username=${encodeURIComponent(username)}`);
               }}

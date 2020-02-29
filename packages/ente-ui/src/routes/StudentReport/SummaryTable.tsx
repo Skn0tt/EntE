@@ -43,7 +43,7 @@ export const SummaryTable: React.FC<SummaryTableProps> = props => {
 
   return (
     <Paper elevation={2}>
-      <Table padding="dense">
+      <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell />

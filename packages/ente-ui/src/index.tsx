@@ -12,7 +12,6 @@ import * as ReactDOM from "react-dom";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { get as getConfig } from "./config";
-import { install as installMuiStyles } from "@material-ui/styles";
 
 // Fonts
 import "typeface-roboto";
@@ -35,8 +34,6 @@ import { DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 import { getSagaListeners } from "./saga-listeners";
 import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
 import { LocalizedMUIPickersUtilsProvider } from "./components/LocalizedMUIPickersUtilsProvider";
-
-installMuiStyles();
 
 const baseUrl = `${location.protocol}//${location.hostname}`;
 

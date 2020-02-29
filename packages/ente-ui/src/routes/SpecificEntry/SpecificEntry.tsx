@@ -469,7 +469,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                           <Button
                             className={classes.signEntryButton}
                             onClick={signEntry}
-                            variant="raised"
+                            variant="contained"
                           >
                             <AssignmentTurnedInIcon />
                           </Button>

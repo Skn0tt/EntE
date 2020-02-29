@@ -54,7 +54,7 @@ const styles = (theme: Theme) =>
     versionCode: {
       bottom: 0,
       left: 0,
-      margin: theme.spacing.unit,
+      margin: theme.spacing(1),
       position: "absolute"
     }
   });
