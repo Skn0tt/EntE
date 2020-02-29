@@ -59,7 +59,7 @@ export class EntryRepo {
   }
 
   async findByClass(
-    _class: number,
+    _class: string,
     paginationInfo: PaginationInformation
   ): Promise<EntryDto[]> {
     const entry = await withPagination(paginationInfo)(
