@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix crash where browser crashed because `.some()` was called ([347](https://gitlab.com/Skn0tt/EntE/issues/347)
 - Fix bug where children couldn't be updated ([#344](https://gitlab.com/Skn0tt/EntE/issues/344))
 
 ## [v0.31.3] - 2020-02-26
