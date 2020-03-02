@@ -77,7 +77,7 @@ const mapStateToProps: MapStateToPropsParam<
     .orSome(""),
   isSubscribedToWeeklySummary: isSubscribedToWeeklySummary(state).orSome(true),
   isDarkModeEnabled: getColorScheme(state) === "dark",
-  username: getUsername(state).some()
+  username: getUsername(state).orSome("default_username")
 });
 
 interface SettingsMenuDispatchProps {
