@@ -345,6 +345,13 @@ title: "Tivo - SaaS App HTML Landing Page Template"
                   <p>
                     <%= t(:index)[:features][:analytics][:body] %>
                   </p>
+                  <ul class="checkmark-list">
+                    <% t(:index)[:features][:analytics][:questions].each do |question| %>
+                      <li>
+                        <%= question %>
+                      </li>
+                    <% end %>
+                  </ul>
                 </div>
                 <!-- end of text-container -->
               </div>

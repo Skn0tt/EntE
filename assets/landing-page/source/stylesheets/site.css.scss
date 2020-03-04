@@ -2133,3 +2133,14 @@ a:hover.back-to-top {
 .cards-1 .container {
   max-width: unset;
 }
+
+.checkmark-list > li {
+  list-style-type: none;
+}
+
+.checkmark-list > li:before {
+  font-family: "FontAwesome";
+  content: "\f058";
+  color: $accept-green;
+  margin: 0 5px 0 -40x;
+}

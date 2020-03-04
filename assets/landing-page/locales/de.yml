@@ -66,5 +66,7 @@ de:
         tab: Auswertungen
         title: Detaillierte Auswertungen
         body: >
-          Welche Schüler fehlen besonders viel?
-          Bei welchen Lehrern wird viel gefehlt?
+          BLABLA
+        questions:
+          - Welche Schüler fehlen besonders viel?
+          - Bei welchen Lehrern wird viel gefehlt?
