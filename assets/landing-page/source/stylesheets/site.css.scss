@@ -1816,7 +1816,7 @@ a:hover.back-to-top {
   /* Description */
   .cards-1 .card {
     display: inline-block;
-    width: 17rem;
+    width: 18%;
     max-width: 100%;
     margin-right: 1rem;
     margin-left: 1rem;
@@ -1995,7 +1995,7 @@ a:hover.back-to-top {
 
   /* Description */
   .cards-1 .card {
-    width: 18.875rem;
+    width: 18%;
     margin-right: 2rem;
     margin-left: 2rem;
   }
@@ -2128,4 +2128,8 @@ a:hover.back-to-top {
 
 .features-img {
   display: block;
+}
+
+.cards-1 .container {
+  max-width: unset;
 }
