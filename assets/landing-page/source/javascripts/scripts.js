@@ -367,6 +367,14 @@
       .text(msg);
   }
 
+  const firstContactLogo = (() => {
+    function fadeIn() {}
+
+    function fadeOut() {}
+
+    return { fadeIn, fadeOut };
+  })();
+
   /* Back To Top Button */
   // create the back to top button
   $("body").prepend(
@@ -375,8 +383,10 @@
   var amountScrolled = 700;
   $(window).scroll(function() {
     if ($(window).scrollTop() > amountScrolled) {
+      firstContactLogo.fadeIn();
       $("a.back-to-top").fadeIn("500");
     } else {
+      firstContactLogo.fadeOut();
       $("a.back-to-top").fadeOut("500");
     }
   });

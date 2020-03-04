@@ -93,31 +93,27 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link page-scroll" href="#header"
-                >HOME <span class="sr-only">(current)</span></a
+                ><%= t(:navbar)[:start] %> <span class="sr-only">(current)</span></a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link page-scroll" href="#features">FEATURES</a>
+              <a class="nav-link page-scroll" href="#features"><%= t(:navbar)[:for_schools] %></a>
+              <!-- TODO: correct linking-->
             </li>
             <li class="nav-item">
-              <a class="nav-link page-scroll" href="#details">DETAILS</a>
+              <a class="nav-link page-scroll" href="#details"><%= t(:navbar)[:for_students] %></a>
             </li>
-
-            <!-- Dropdown Menu -->
-            <li class="nav-item">
-              <a
-                class="nav-link page-scroll"
-                href="#video"
-                id="navbarDropdown"
-                role="button"
-                >VIDEO</a
-              >
-            </li>
-            <!-- end of dropdown menu -->
 
           </ul>
           <span class="nav-item">
-            <a class="btn-outline-sm" href="log-in.html">LOG IN</a>
+            <a class="btn-outline-sm" href="TODO: link">
+              <span id="first_contact_text_small">
+                <%= t(:navbar)[:first_contact_small] %>
+              </span>
+              <span class="d-none" id="first_contact_text">
+                <%= t(:navbar)[:first_contact] %>
+              </span>
+            </a>
           </span>
         </div>
       </div>

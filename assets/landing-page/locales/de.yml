@@ -8,6 +8,12 @@ de:
     og_title: EntE
     description: "EntE - Digitales Entschuldigungsverfahren für Schulen"
     author: "Simon Knott"
+  navbar:
+    start: Start
+    for_schools: Für Schulen
+    for_students: Für Schüler
+    first_contact_small: Erstgespräch
+    first_contact: Erstgespräch vereinbaren
   about:
     title: Über EntE
     body: >
