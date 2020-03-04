@@ -819,11 +819,7 @@ input[type="checkbox"] {
   text-align: center;
 }
 
-.header .text-container {
-  margin-bottom: 3rem;
-}
-
-.header h1 {
+.header h2 {
   margin-bottom: 1rem;
   color: #fff;
   font-size: 2.5rem;
@@ -1647,11 +1643,6 @@ a:hover.back-to-top {
   }
   /* end of general styles */
 
-  /* Header */
-  .header .text-container {
-    margin-bottom: 4rem;
-  }
-
   .header h1 {
     font-size: 3.5rem;
     line-height: 4.125rem;
@@ -1800,14 +1791,8 @@ a:hover.back-to-top {
     text-align: left;
   }
 
-  .header .text-container {
-    margin-top: 4rem;
-    margin-bottom: 0;
-  }
-
   .header .image-container {
     position: relative;
-    margin-top: 3rem;
   }
 
   .header .image-container .img-wrapper {
@@ -1983,16 +1968,6 @@ a:hover.back-to-top {
   .header .header-content {
     padding-top: 11rem;
     padding-bottom: 5rem;
-  }
-
-  .header .text-container {
-    margin-top: 5.5rem;
-    margin-right: 0.5rem;
-  }
-
-  .header .image-container {
-    margin-top: 1rem;
-    margin-left: 1.5rem;
   }
 
   .header .image-container .img-wrapper {

@@ -8,29 +8,33 @@ title: "Tivo - SaaS App HTML Landing Page Template"
   <div class="header-content">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-xl-5">
+        <div class="col-lg-6 order-lg-2">
           <div class="text-container">
-            <h1><%= t(:index)[:header][:title] %></h1>
+            <h2><%= t(:index)[:header][:title] %></h2>
             <p class="p-large">
               <%= t(:index)[:header][:subtitle] %>
             </p>
-            <a class="btn-solid-lg page-scroll" href="TODO:">
-              <%= t(:index)[:header][:try_demo] %>
+            <a class="btn-solid-lg page-scroll" href="TODO: e-mail form">
+              <%= t(:index)[:header][:first_contact] %>
             </a>
           </div>
           <!-- end of text-container -->
         </div>
         <!-- end of col -->
-        <div class="col-lg-6 col-xl-7">
-          <div class="image-container">
-            <div class="img-wrapper">
-              <img
-                class="img-fluid header-img float-lg-right"
-                src="images/iphone_x_entries.png"
-                alt="alternativeTODO:"
-              />
+        <div class="col-lg-6 order-lg-1">
+          <div class="image-container pt-4 pt-lg-0">
+            <div class="video-wrapper">
+              <video
+                class="img-fluid rounded-video"
+                controls>
+                <source
+                  src="https://gitlab.com/Skn0tt/EntE/raw/master/assets/video/Einleitung%20EntE.mp4?inline=false"
+                  type="video/mp4"
+                >
+                Your browser does not support HTML5 video.
+              </video>
             </div>
-            <!-- end of img-wrapper -->
+            <!-- end of video-wrapper -->
           </div>
           <!-- end of image-container -->
         </div>
