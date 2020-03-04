@@ -28,20 +28,24 @@ de:
     advantages:
       subtitle: VORTEILE
       title: Entlastet Lehrer, Schüler und Eltern und schafft mehr Unterrichtszeit.
+      paperless:
+        title: Papierlos
+        body: >
+          BLABLABLA
       time:
-        title: Spart Zeit.
+        title: Arbeitserleichterung für Lehrer und Verwaltung.
         body: >
           Jeder Teilnehmer wird höchstens 1 mal pro Entschuldigungseintrag aktiv.
           Im Vergleich: Beim papierbasierte Verfahren sind es häufig >10!
-      reliable:
-        title: Zuverlässig
-        body: >
-          Alle Daten werden mehrfach gesichert und sind vor Verlust geschützt.
       gdpr:
         title: DSGVO-Konform
         body: >
           Jeder Teilnehmer kann nur die Daten sehen, die für seine Augen bestimmt sind.
           Im Vergleich: Das papierbasierte Verfahren ermöglicht es Lehrern und Mitschülern, die gesamte Krankenhistorie nachzuverfolgen!
+      funding:
+        title: Öffentlich Förderbar
+        body: >
+          Durch X, Y, Z
     features:
       subtitle: Funktionen
       title: Was EntE bietet
