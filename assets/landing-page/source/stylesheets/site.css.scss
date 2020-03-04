@@ -194,6 +194,13 @@ a.white {
   transition: all 0.2s;
 }
 
+$accept-green: #4caf50;
+
+.btn-orange-bg {
+  border-color: $accept-green !important;
+  background-color: $accept-green !important;
+}
+
 .btn-outline-reg:hover {
   background-color: $main-color;
   color: #fff;

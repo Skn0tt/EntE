@@ -368,9 +368,23 @@
   }
 
   const firstContactLogo = (() => {
-    function fadeIn() {}
+    const duration = 400;
 
-    function fadeOut() {}
+    const textSmall = $("#first_contact_text_small");
+    const text = $("#first_contact_text");
+    const button = $("#first_contact_button");
+
+    function fadeIn() {
+      textSmall.hide(duration);
+      text.show(duration);
+      button.addClass("btn-orange-bg");
+    }
+
+    function fadeOut() {
+      text.hide(duration);
+      textSmall.show(duration);
+      button.removeClass("btn-orange-bg");
+    }
 
     return { fadeIn, fadeOut };
   })();
