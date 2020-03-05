@@ -1057,7 +1057,11 @@ input[type="checkbox"] {
   padding-top: 8rem;
   padding-bottom: 6.75rem;
   background-color: $light-gray;
-  text-align: center;
+  text-align: left;
+}
+
+.basic-2 .p-large {
+  margin-bottom: 2rem;
 }
 
 .basic-2 .image-container {
@@ -1811,18 +1815,6 @@ a:hover.back-to-top {
   }
   /* end of details */
 
-  /* Video */
-  .basic-2 .image-container {
-    max-width: 53.125rem;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  .basic-2 p {
-    width: 65%;
-    margin-right: auto;
-    margin-left: auto;
-  }
   /* end of video */
 
   /* Pricing */

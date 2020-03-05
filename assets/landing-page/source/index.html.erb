@@ -634,7 +634,17 @@ title: "Tivo - SaaS App HTML Landing Page Template"
 <div id="video" class="basic-2">
   <div class="container">
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-6">
+        <div class="text-container">
+          <h2><%= t(:index)[:for_students][:title] %></h2>
+          <p class="p-large">
+            <%= t(:index)[:for_students][:body] %>
+          </p>
+        </div>
+        <!-- end of text-container -->
+      </div>
+
+      <div class="col-lg-6 pt-4 pt-lg-0">
         <!-- Video Preview -->
         <div class="image-container">
           <div class="video-wrapper">
@@ -655,12 +665,6 @@ title: "Tivo - SaaS App HTML Landing Page Template"
         </div>
         <!-- end of image-container -->
         <!-- end of video preview -->
-
-        <div class="p-heading">
-          What better way to show off Tivo marketing automation saas app
-          than presenting you some great situations of each module and tool
-          available to users in a video
-        </div>
       </div>
       <!-- end of col -->
     </div>

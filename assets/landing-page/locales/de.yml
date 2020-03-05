@@ -79,3 +79,7 @@ de:
         - 1
         - 2
         - 3
+    for_students:
+      title: EntE für Schüler und Eltern
+      body: >
+        Blabla
