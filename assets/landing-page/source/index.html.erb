@@ -590,28 +590,22 @@ title: "Tivo - SaaS App HTML Landing Page Template"
     <div class="row">
       <div class="col-lg-6">
         <div class="text-container">
-          <h2>Now Is The Time To Upgrade Your Marketing Solution</h2>
+          <h2><%= t(:index)[:slide_tutorial][:title] %></h2>
           <p>
-            Target the right customers for your business with the help of
-            Tivo's patented segmentation technology and deploy efficient
-            marketing campaigns. Keep your customers happy and loyal.
+            <%= t(:index)[:slide_tutorial][:body] %>
           </p>
           <ul class="list-unstyled li-space-lg">
-            <li class="media">
-              <i class="fas fa-square"></i>
-              <div class="media-body">
-                Understand customers and meet their requirements
-              </div>
-            </li>
-            <li class="media">
-              <i class="fas fa-square"></i>
-              <div class="media-body">
-                Targeted client base with Tivo's efficient technology
-              </div>
-            </li>
+            <% t(:index)[:slide_tutorial][:items].each do |question| %>
+              <li class="media">
+                <i class="fas fa-square"></i>
+                <div class="media-body">
+                  <%= question %>  
+                </div>
+              </li>
+            <% end %>
           </ul>
-          <a class="btn-solid-reg page-scroll" href="sign-up.html"
-            >SIGN UP</a
+          <a class="btn-solid-reg page-scroll" href="TODO: first contact"
+            ><%= t(:index)[:slide_tutorial][:first_contact] %></a
           >
         </div>
         <!-- end of text-container -->

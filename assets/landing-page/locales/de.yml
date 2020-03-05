@@ -70,3 +70,12 @@ de:
         questions:
           - Welche Schüler fehlen besonders viel?
           - Bei welchen Lehrern wird viel gefehlt?
+    slide_tutorial:
+      title: So funktioniert's
+      first_contact: Erstgespräch vereinbaren
+      body: >
+        EntE ist intuitiv zu nutzen blablabla.
+      items:
+        - 1
+        - 2
+        - 3
