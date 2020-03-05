@@ -302,47 +302,6 @@
       .text(msg);
   }
 
-  /* Privacy Form */
-  $("#privacyForm")
-    .validator()
-    .on("submit", function(event) {
-      if (event.isDefaultPrevented()) {
-        // handle the invalid form...
-        pformError();
-        psubmitMSG(false, "Please fill all fields!");
-      } else {
-        // everything looks good!
-        event.preventDefault();
-        psubmitForm();
-      }
-    });
-
-  function psubmitForm() {
-    // initiate variables with form content
-    var name = $("#pname").val();
-    var email = $("#pemail").val();
-    var select = $("#pselect").val();
-    var terms = $("#pterms").val();
-  }
-
-  function pformSuccess() {
-    $("#privacyForm")[0].reset();
-    psubmitMSG(true, "Request Submitted!");
-    $("input").removeClass("notEmpty"); // resets the field label after submission
-  }
-
-  function pformError() {
-    $("#privacyForm")
-      .removeClass()
-      .addClass("shake animated")
-      .one(
-        "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
-        function() {
-          $(this).removeClass();
-        }
-      );
-  }
-
   function psubmitMSG(valid, msg) {
     if (valid) {
       var msgClasses = "h3 text-center tada animated";
