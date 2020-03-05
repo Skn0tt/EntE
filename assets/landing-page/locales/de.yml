@@ -11,7 +11,7 @@ de:
   navbar:
     start: Start
     for_schools: Für Schulen
-    for_students: Für Schüler
+    for_students: Für Schüler & Eltern
     first_contact_small: Erstgespräch
     first_contact: Erstgespräch vereinbaren
   about:
@@ -26,7 +26,7 @@ de:
       subtitle: "TODO: Was EntE so toll macht"
       first_contact: Erstgespräch vereinbaren
     advantages:
-      subtitle: VORTEILE
+      subtitle: VORTEILE FÜR SCHULEN
       title: Entlastet Lehrer, Schüler und Eltern und schafft mehr Unterrichtszeit.
       paperless:
         title: Papierlos
@@ -83,6 +83,22 @@ de:
       title: EntE für Schüler und Eltern
       body: >
         Blabla
+    advantages_for_students:
+      subtitle: VORTEILE FÜR SCHÜLER & ELTERN
+      title: LAAAAL
+      more_time:
+        title: Mehr Zeit
+        body: >
+          BLABLA
+      less_worries:
+        title: Weniger Ärger
+        body: >
+          BLABLA
+      control:
+        title: Kontrolle für Eltern
+        body: >
+          BLABLA
+
     endorsements:
       - pic: testimonial-2.jpg
         name: Roy Smith - Developer
