@@ -2078,3 +2078,13 @@ a:hover.back-to-top {
   color: $accept-green;
   margin: 0 5px 0 -40x;
 }
+
+.video-container {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.video-container > .logos {
+  padding: 10px;
+}
