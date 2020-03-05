@@ -377,21 +377,36 @@
     return { fadeIn, fadeOut };
   })();
 
+  function scrollToggle(threshhold, onBigger, onSmaller) {
+    let lastWasSmaller = true;
+    $(window).scroll(() => {
+      if ($(window).scrollTop() > threshhold) {
+        if (lastWasSmaller) {
+          onBigger();
+          lastWasSmaller = false;
+        }
+      } else {
+        if (!lastWasSmaller) {
+          onSmaller();
+          lastWasSmaller = true;
+        }
+      }
+    });
+  }
+
   /* Back To Top Button */
   // create the back to top button
   $("body").prepend(
     '<a href="body" class="back-to-top page-scroll">Back to Top</a>'
   );
-  var amountScrolled = 700;
-  $(window).scroll(function() {
-    if ($(window).scrollTop() > amountScrolled) {
-      firstContactLogo.fadeIn();
-      $("a.back-to-top").fadeIn("500");
-    } else {
-      firstContactLogo.fadeOut();
-      $("a.back-to-top").fadeOut("500");
-    }
-  });
+
+  scrollToggle(
+    700,
+    () => $("a.back-to-top").fadeIn("500"),
+    () => $("a.back-to-top").fadeOut("500")
+  );
+
+  scrollToggle(400, firstContactLogo.fadeIn, firstContactLogo.fadeOut);
 
   /* Removes Long Focus On Buttons */
   $(".button, a, button").mouseup(function() {
