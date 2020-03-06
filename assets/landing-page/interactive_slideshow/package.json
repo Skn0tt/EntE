@@ -6,6 +6,7 @@
     "parcel": "^1.12.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-full-screen": "^0.2.4",
     "typescript": "^3.8.3"
   }
 }
