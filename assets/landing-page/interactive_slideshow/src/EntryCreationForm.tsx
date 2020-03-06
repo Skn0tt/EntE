@@ -14,7 +14,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { DatePicker } from "./DatePicker";
 import { Slot, SlotInput } from "./SlotInput";
 
-interface Entry {
+export interface Entry {
   date: Date;
   reason: string;
   slots: Slot[];
@@ -44,7 +44,7 @@ function isLaterThan(target: EntryStage, current: EntryStage) {
   return order.indexOf(current) >= order.indexOf(target);
 }
 
-export function Entry(props: EntryProps) {
+export function EntryCreationForm(props: EntryProps) {
   const { stage, onDateEntered, onReasonEntered, onSent, onSlotAdded } = props;
 
   const [date, setDate] = React.useState<Date>(undefined);

@@ -1,29 +1,24 @@
 import * as React from "react";
-import { Entry, EntryStage } from "./Entry";
-import { Slide } from "./Slide";
+import { EntryCreationSlide } from "./EntryCreationSlide";
+import { Entry } from "./EntryCreationForm";
+
+type Stage = "student" | "parent" | "manager" | "teacher";
 
 export function StoryboardCoordinator() {
-  const [stage, setStage] = React.useState<EntryStage>("date");
+  const [stage, setStage] = React.useState<Stage>("student");
+  const [entry, setEntry] = React.useState<Entry>();
 
-  return (
-    <Slide
-      explanation={
-        <Entry
-          stage={stage}
-          onDateEntered={() => {
-            setStage("reason");
+  switch (stage) {
+    case "student":
+      return (
+        <EntryCreationSlide
+          onDone={e => {
+            setEntry(e);
+            setStage("parent");
           }}
-          onReasonEntered={() => {
-            setStage("slots");
-          }}
-          onSlotAdded={() => {
-            setStage("send");
-          }}
-          onSent={console.log}
         />
-      }
-      people={<p>Peeps</p>}
-      text={<p>TITLE</p>}
-    />
-  );
+      );
+    default:
+      return <div />;
+  }
 }
