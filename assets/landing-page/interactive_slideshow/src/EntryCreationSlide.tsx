@@ -28,7 +28,13 @@ export function EntryCreationSlide(props: EntryCreationSlideProps) {
           onSent={onDone}
         />
       }
-      people={<img src={studentPng} width="60%" style={{ margin: "auto" }} />}
+      people={
+        <img
+          src={studentPng}
+          height="80%"
+          style={{ position: "absolute", bottom: 0, left: "30%" }}
+        />
+      }
       text={<p>TITLE</p>}
     />
   );

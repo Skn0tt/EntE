@@ -24,7 +24,8 @@ export function Slide(props: SlideProps) {
         item
         xs={orientation === "landscape" ? 6 : 12}
         style={{
-          order: orientation === "landscape" ? undefined : 1
+          order: orientation === "landscape" ? undefined : 1,
+          height: "100%"
         }}
       >
         <Grid
@@ -33,8 +34,12 @@ export function Slide(props: SlideProps) {
           direction="column"
           justify="space-between"
         >
-          <Grid item>{text}</Grid>
-          <Grid item>{people}</Grid>
+          <Grid item style={{ height: "20%" }}>
+            {text}
+          </Grid>
+          <Grid item style={{ height: "80%", position: "relative" }}>
+            {people}
+          </Grid>
         </Grid>
       </Grid>
       <Grid

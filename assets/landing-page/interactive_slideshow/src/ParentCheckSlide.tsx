@@ -2,7 +2,7 @@ import * as React from "react";
 import { Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import { EntryRecord } from "./EntryRecord";
-import parentPng from "./assets/parents.png";
+import parentsPng from "./assets/parents.png";
 
 interface ParentCheckSlideProps {
   entry: Entry;
@@ -23,7 +23,13 @@ export function ParentCheckSlide(props: ParentCheckSlideProps) {
           tooltip="Hier Klicken"
         />
       }
-      people={<img src={parentPng} width="60%" style={{ margin: "auto" }} />}
+      people={
+        <img
+          src={parentsPng}
+          width="50%"
+          style={{ position: "absolute", bottom: 0, left: "22%" }}
+        />
+      }
       text={<p>Nun genehmigen die Eltern diesen Eintrag.</p>}
     />
   );
