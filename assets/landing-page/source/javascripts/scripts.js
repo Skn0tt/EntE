@@ -25,7 +25,7 @@
         .stop()
         .animate(
           {
-            scrollTop: $($anchor.attr("href")).offset().top
+            scrollTop: $($anchor.attr("href")).offset().top - 50
           },
           600,
           "easeInOutExpo"
