@@ -8,7 +8,22 @@ type Stage = "student" | "parent" | "manager" | "teacher";
 
 export function StoryboardCoordinator() {
   const [stage, setStage] = React.useState<Stage>("student");
-  const [entry, setEntry] = React.useState<Entry>();
+  const [entry, setEntry] = React.useState<Entry>({
+    date: new Date(),
+    reason: "Krankheit",
+    slots: [
+      {
+        from: 1,
+        to: 2,
+        teacher: "Frau Strahlkamp"
+      },
+      {
+        from: 3,
+        to: 3,
+        teacher: "Herr Ärmelt"
+      }
+    ]
+  });
 
   switch (stage) {
     case "student":
@@ -29,7 +44,7 @@ export function StoryboardCoordinator() {
         <ManagerCheckSlide entry={entry} onDone={() => setStage("teacher")} />
       );
     case "teacher":
-      return "Teachers";
+      return <div>"Teachers"</div>;
     default:
       return <div />;
   }

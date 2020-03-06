@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
-function SlotRow(props: { slot: Slot; onAdd?: () => void }) {
+export function SlotRow(props: { slot: Slot; onAdd?: () => void }) {
   const {
     slot: { from, teacher, to },
     onAdd

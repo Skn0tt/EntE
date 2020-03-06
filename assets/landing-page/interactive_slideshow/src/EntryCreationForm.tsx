@@ -5,7 +5,6 @@ import {
   CardActions,
   IconButton,
   Typography,
-  Tooltip,
   TextField,
   MenuItem,
   Grid
@@ -13,6 +12,8 @@ import {
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { DatePicker } from "./DatePicker";
 import { Slot, SlotInput } from "./SlotInput";
+import { Tooltip } from "./Tooltip";
+import { useFullscreenContainer } from "./FullScreen";
 
 export interface Entry {
   date: Date;
@@ -50,6 +51,8 @@ export function EntryCreationForm(props: EntryProps) {
   const [date, setDate] = React.useState<Date>(undefined);
   const [reason, setReason] = React.useState<string>(undefined);
   const [slots, setSlots] = React.useState<Slot[]>(undefined);
+
+  const container = useFullscreenContainer();
 
   return (
     <Card
@@ -99,6 +102,11 @@ export function EntryCreationForm(props: EntryProps) {
                   label="Grund"
                   value={reason}
                   fullWidth
+                  SelectProps={{
+                    MenuProps: {
+                      container
+                    }
+                  }}
                   onChange={evt => {
                     setReason(evt.target.value);
                     onReasonEntered();

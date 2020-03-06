@@ -11,14 +11,20 @@ interface ManagerCheckSlideProps {
 export function ManagerCheckSlide(props: ManagerCheckSlideProps) {
   const { entry, onDone } = props;
 
+  const [managerCheck, setManagerCheck] = React.useState(false);
+
   return (
     <Slide
       explanation={
         <EntryRecord
           entry={entry}
-          managerCheck={false}
+          managerCheck={managerCheck}
           parentCheck={true}
-          onCheck={onDone}
+          onCheck={() => {
+            setManagerCheck(true);
+            setTimeout(onDone, 1000);
+          }}
+          tooltip="Hier Klicken"
         />
       }
       people={<p>Stufenleitung</p>}

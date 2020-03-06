@@ -19,6 +19,7 @@ export function ParentCheckSlide(props: ParentCheckSlideProps) {
           managerCheck={false}
           parentCheck={false}
           onCheck={onDone}
+          tooltip="Hier Klicken"
         />
       }
       people={<p>Eltern</p>}
