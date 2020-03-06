@@ -2,6 +2,7 @@ import * as React from "react";
 import { Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import { EntryRecord } from "./EntryRecord";
+import managerPng from "./assets/teacher_c.png";
 
 interface ManagerCheckSlideProps {
   entry: Entry;
@@ -27,7 +28,7 @@ export function ManagerCheckSlide(props: ManagerCheckSlideProps) {
           tooltip="Hier Klicken"
         />
       }
-      people={<p>Stufenleitung</p>}
+      people={<img src={managerPng} style={{ margin: "auto" }} width="60%" />}
       text={<p>Nun genehmigt die Stufenleitung den Eintrag.</p>}
     />
   );

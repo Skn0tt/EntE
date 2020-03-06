@@ -3,11 +3,12 @@ import { EntryCreationSlide } from "./EntryCreationSlide";
 import { Entry } from "./EntryCreationForm";
 import { ParentCheckSlide } from "./ParentCheckSlide";
 import { ManagerCheckSlide } from "./ManagerCheckSlide";
+import { TeacherNotificationSlide } from "./TeacherNotificationSlide";
 
 type Stage = "student" | "parent" | "manager" | "teacher";
 
 export function StoryboardCoordinator() {
-  const [stage, setStage] = React.useState<Stage>("student");
+  const [stage, setStage] = React.useState<Stage>("teacher");
   const [entry, setEntry] = React.useState<Entry>({
     date: new Date(),
     reason: "Krankheit",
@@ -44,7 +45,15 @@ export function StoryboardCoordinator() {
         <ManagerCheckSlide entry={entry} onDone={() => setStage("teacher")} />
       );
     case "teacher":
-      return <div>"Teachers"</div>;
+      return (
+        <TeacherNotificationSlide
+          slots={entry.slots}
+          onRestart={() => {
+            setStage("student");
+            setEntry(undefined);
+          }}
+        />
+      );
     default:
       return <div />;
   }
