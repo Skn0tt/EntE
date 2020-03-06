@@ -1,6 +1,8 @@
 import * as React from "react";
 import { EntryCreationSlide } from "./EntryCreationSlide";
 import { Entry } from "./EntryCreationForm";
+import { ParentCheckSlide } from "./ParentCheckSlide";
+import { ManagerCheckSlide } from "./ManagerCheckSlide";
 
 type Stage = "student" | "parent" | "manager" | "teacher";
 
@@ -18,6 +20,16 @@ export function StoryboardCoordinator() {
           }}
         />
       );
+    case "parent":
+      return (
+        <ParentCheckSlide entry={entry} onDone={() => setStage("manager")} />
+      );
+    case "manager":
+      return (
+        <ManagerCheckSlide entry={entry} onDone={() => setStage("teacher")} />
+      );
+    case "teacher":
+      return "Teachers";
     default:
       return <div />;
   }
