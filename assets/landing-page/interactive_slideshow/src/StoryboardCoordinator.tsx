@@ -8,23 +8,8 @@ import { TeacherNotificationSlide } from "./TeacherNotificationSlide";
 type Stage = "student" | "parent" | "manager" | "teacher";
 
 export function StoryboardCoordinator() {
-  const [stage, setStage] = React.useState<Stage>("teacher");
-  const [entry, setEntry] = React.useState<Entry>({
-    date: new Date(),
-    reason: "Krankheit",
-    slots: [
-      {
-        from: 1,
-        to: 2,
-        teacher: "Frau Strahlkamp"
-      },
-      {
-        from: 3,
-        to: 3,
-        teacher: "Herr Ärmelt"
-      }
-    ]
-  });
+  const [stage, setStage] = React.useState<Stage>("student");
+  const [entry, setEntry] = React.useState<Entry>();
 
   switch (stage) {
     case "student":

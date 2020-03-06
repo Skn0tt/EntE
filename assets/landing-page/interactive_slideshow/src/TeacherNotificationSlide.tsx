@@ -2,6 +2,7 @@ import * as React from "react";
 import { Grid, Typography, Fab } from "@material-ui/core";
 import { Slot } from "./SlotInput";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { TeacherPortrait } from "./TeacherPortrait";
 
 interface TeacherNotificationSlideProps {
   slots: Slot[];
@@ -11,26 +12,24 @@ interface TeacherNotificationSlideProps {
 export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
   const { slots, onRestart } = props;
   return (
-    <Grid
-      container
-      direction="column"
-      justify="space-between"
-      style={{ height: "100%" }}
-    >
-      <Grid item>Nun können auch die Lehrer die Fehlstunde einsehen.</Grid>
-      <Grid item style={{ position: "relative" }}>
-        <Grid container direction="row" justify="space-around">
-          {slots.map(s => (
-            <Grid
-              key={s.teacher}
-              item
-              xs={Math.floor(12 / slots.length) as any}
-            >
-              <Typography>{s.teacher}</Typography>
-            </Grid>
-          ))}
-        </Grid>
+    <div style={{ height: "100%" }}>
+      <Typography style={{ height: "20%" }}>
+        Nun können auch die Lehrer die Fehlstunde einsehen.
+      </Typography>
+
+      <Grid
+        container
+        direction="row"
+        justify="space-around"
+        style={{ height: "80%" }}
+      >
+        {slots.map(s => (
+          <Grid key={s.teacher} item style={{ height: "100%" }}>
+            <TeacherPortrait name={s.teacher} />
+          </Grid>
+        ))}
       </Grid>
+
       <Fab
         variant="extended"
         size="medium"
@@ -43,6 +42,6 @@ export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
       >
         <ReplayIcon /> Neustarten
       </Fab>
-    </Grid>
+    </div>
   );
 }

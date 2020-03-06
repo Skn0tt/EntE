@@ -8,6 +8,7 @@ import {
   Divider
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import { TeacherNames } from "./TeacherNames";
 
 export function SlotRow(props: { slot: Slot; onAdd?: () => void }) {
   const {
@@ -38,7 +39,7 @@ export function SlotRow(props: { slot: Slot; onAdd?: () => void }) {
 }
 
 export interface Slot {
-  teacher: string;
+  teacher: TeacherNames;
   from: number;
   to: number;
 }
@@ -51,22 +52,22 @@ const exampleSlots: Slot[] = [
   {
     from: 1,
     to: 2,
-    teacher: "Frau Humboldt"
+    teacher: TeacherNames.Humboldt
   },
   {
     from: 3,
     to: 4,
-    teacher: "Herr Droste"
+    teacher: TeacherNames.Droste
   },
   {
     from: 5,
     to: 5,
-    teacher: "Frau Hansen"
+    teacher: TeacherNames.Hansen
   },
   {
     from: 6,
     to: 6,
-    teacher: "Herr Dölling"
+    teacher: TeacherNames.Dölling
   }
 ];
 
