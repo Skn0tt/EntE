@@ -1,12 +1,12 @@
 ---
 de:
-  title: EntE - Digitales Entschuldigungsverfahren für Schulen
+  title: EntE - Digitales Entschuldigungs&shy;verfahren für Schulen
   html5_video_not_supported: Ihr Browser unterstützt keine HTML5-Videos.
   seo:
     og_site_name: EntE
     og_site: EntE
     og_title: EntE
-    description: "EntE - Digitales Entschuldigungsverfahren für Schulen"
+    description: "EntE - Digitales Entschuldigungs&shy;verfahren für Schulen"
     author: "Simon Knott"
   navbar:
     start: Start
@@ -22,7 +22,7 @@ de:
     title: Kontakt
   index:
     header:
-      title: Digitales Entschuldigungsverfahren für Schulen
+      title: Digitales Entschuldigungs&shy;verfahren für Schulen
       subtitle: Digitalisierung geht auch einfach.
       first_contact: Erstgespräch vereinbaren
     advantages:
