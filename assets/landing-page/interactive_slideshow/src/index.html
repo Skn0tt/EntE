@@ -33,5 +33,16 @@
     <div id="interactive_slideshow_root"></div>
     <div id="interactive_slideshow_root_phone"></div>
     <script src="./index.tsx"></script>
+    <script>
+      new InteractiveSlideshow(
+        document.getElementById("interactive_slideshow_root"),
+        "landscape"
+      );
+
+      new InteractiveSlideshow(
+        document.getElementById("interactive_slideshow_root_phone"),
+        "portrait"
+      );
+    </script>
   </body>
 </html>

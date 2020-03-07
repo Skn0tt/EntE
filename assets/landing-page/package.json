@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "yarn build:interactive_slideshow",
+    "build:interactive_slideshow": "yarn --cwd interactive_slideshow parcel build --public-url /interactive_slideshow/ src/index.tsx && cp -r interactive_slideshow/dist/ source/interactive_slideshow"
+  }
+}

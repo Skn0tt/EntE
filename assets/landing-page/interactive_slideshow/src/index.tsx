@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { App } from "./App";
+import { Orientation } from "./Orientation";
 
-ReactDOM.render(
-  <App orientation="landscape" />,
-  document.getElementById("interactive_slideshow_root")
-);
+function createInteractiveSlideshow(
+  element: HTMLElement,
+  orientation: Orientation = "landscape"
+) {
+  ReactDOM.render(<App orientation={orientation} />, element);
+}
 
-ReactDOM.render(
-  <App orientation="portrait" />,
-  document.getElementById("interactive_slideshow_root_phone")
-);
+(window as any).InteractiveSlideshow = createInteractiveSlideshow;

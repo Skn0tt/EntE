@@ -603,11 +603,13 @@ layout: layout
       <!-- end of col -->
       <div class="col-lg-6">
         <div class="image-container">
-          <img
+          <div
             class="img-fluid"
-            src="images/details.png"
-            alt="alternative"
-          />
+            id="interactive-slideshow-root"
+          ></div>
+
+          <script src="/interactive_slideshow/index.js" defer></script>
+          <script src="/javascripts/mountInteractiveSlideshow.js" defer></script>
         </div>
         <!-- end of image-container -->
       </div>

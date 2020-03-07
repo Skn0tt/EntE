@@ -2088,3 +2088,21 @@ a:hover.back-to-top {
 .video-container > .logos {
   padding: 10px;
 }
+
+/*
+  Interactive Slideshow
+ */
+
+#interactive-slideshow-root {
+  width: 480px;
+  height: 270px;
+  margin: auto;
+
+  border: $body-text solid 1px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.fullscreen {
+  height: 100%;
+}
