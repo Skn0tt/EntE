@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "parcel build src/index.tsx",
+    "build": "parcel build src/index.tsx --experimental-scope-hoisting",
     "dev": "parcel src/index.html"
   },
   "dependencies": {
