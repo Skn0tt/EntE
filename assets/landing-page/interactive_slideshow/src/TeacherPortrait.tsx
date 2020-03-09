@@ -4,14 +4,15 @@ import herrDrosteImg from "./assets/herr_droste.svg";
 import herrDöllingImg from "./assets/herr_dölling.svg";
 import frauHumboldtImg from "./assets/frau_humboldt.svg";
 import frauHansenImg from "./assets/frau_hansen.svg";
-import { Typography } from "@material-ui/core";
+import { Slot, SlotRow } from "./SlotInput";
 
 interface TeacherPortraitProps {
   name: TeacherNames;
+  slot: Slot;
 }
 
 export function TeacherPortrait(props: TeacherPortraitProps) {
-  const { name } = props;
+  const { name, slot } = props;
 
   const teacherImg = {
     [TeacherNames.Dölling]: herrDöllingImg,
@@ -22,8 +23,12 @@ export function TeacherPortrait(props: TeacherPortraitProps) {
 
   return (
     <>
-      <Typography style={{ height: "20%" }}>{name}</Typography>
-      <img src={teacherImg} height="80%" style={{ marginLeft: "25%" }} />
+      <SlotRow slot={slot} />
+      <img
+        src={teacherImg}
+        height="83%"
+        style={{ marginTop: "5%", marginLeft: "10%" }}
+      />
     </>
   );
 }

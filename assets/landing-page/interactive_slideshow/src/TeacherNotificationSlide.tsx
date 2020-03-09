@@ -13,7 +13,14 @@ export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
   const { slots, onRestart } = props;
   return (
     <div style={{ height: "100%" }}>
-      <Typography style={{ height: "20%" }}>
+      <Typography
+        style={{
+          height: "18%",
+          paddingTop: "2%",
+          paddingLeft: "2%",
+          width: "60%"
+        }}
+      >
         Nun können auch die Lehrer die Fehlstunde einsehen.
       </Typography>
 
@@ -21,11 +28,11 @@ export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
         container
         direction="row"
         justify="space-around"
-        style={{ height: "80%" }}
+        style={{ height: "75%", marginTop: "2%" }}
       >
         {slots.map(s => (
           <Grid key={s.teacher} item style={{ height: "100%" }}>
-            <TeacherPortrait name={s.teacher} />
+            <TeacherPortrait name={s.teacher} slot={s} />
           </Grid>
         ))}
       </Grid>
