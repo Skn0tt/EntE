@@ -13,6 +13,8 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import DoneIcon from "@material-ui/icons/Done";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { Tooltip } from "./Tooltip";
+import { format } from "date-fns";
+import deLocale from "date-fns/locale/de";
 
 interface EntryRecordProps {
   entry: Entry;
@@ -34,11 +36,15 @@ export function EntryRecord(props: EntryRecordProps) {
   return (
     <Card
       style={{
-        width: "80%"
+        width: "70%",
+        position: "absolute",
+        top: "10%",
+        right: "10%",
+        margin: "auto"
       }}
     >
       <CardHeader
-        title={date.toDateString()}
+        title={format(date, "dd. MMMM", { locale: deLocale })}
         titleTypographyProps={{
           variant: "body1"
         }}
@@ -52,7 +58,8 @@ export function EntryRecord(props: EntryRecordProps) {
       />
       <CardContent
         style={{
-          padding: 0
+          paddingTop: 0,
+          paddingBottom: 0
         }}
       >
         <List>
@@ -61,7 +68,7 @@ export function EntryRecord(props: EntryRecordProps) {
           ))}
         </List>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing style={{ paddingTop: 0, paddingBottom: 0 }}>
         {parentCheck &&
           (managerCheck ? (
             <DoneAllIcon style={{ color: "green" }} />

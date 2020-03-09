@@ -48,7 +48,8 @@ export function Slide(props: SlideProps) {
         item
         style={{
           width: orientation === "landscape" ? "50%" : "100%",
-          height: orientation === "landscape" ? "100%" : "50%"
+          height: orientation === "landscape" ? "100%" : "50%",
+          position: "relative"
         }}
       >
         {explanation}

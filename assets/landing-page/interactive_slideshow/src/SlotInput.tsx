@@ -1,12 +1,9 @@
 import * as React from "react";
-import { List, Avatar, Chip } from "@material-ui/core";
+import { Avatar, Chip } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { TeacherNames } from "./TeacherNames";
 
-export function SlotRow(props: {
-  slot: SlotWithSlug & Slot;
-  onAdd?: () => void;
-}) {
+export function SlotRow(props: { slot: SlotWithSlug; onAdd?: () => void }) {
   const { slot, onAdd } = props;
 
   return (
@@ -36,7 +33,7 @@ interface SlotInputProps {
   onSlotAdded: (slots: Slot[]) => void;
 }
 
-type SlotWithSlug = Slot & { slug: string };
+type SlotWithSlug = Slot & { slug?: string };
 
 const exampleSlots: SlotWithSlug[] = [
   {
