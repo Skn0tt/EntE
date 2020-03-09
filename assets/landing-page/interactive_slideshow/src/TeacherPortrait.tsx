@@ -1,8 +1,9 @@
 import * as React from "react";
 import { TeacherNames } from "./TeacherNames";
-import teacherA from "./assets/teacher_a.png";
-import teacherB from "./assets/teacher_b.png";
-import teacherC from "./assets/teacher_c.png";
+import herrDrosteImg from "./assets/herr_droste.svg";
+import herrDöllingImg from "./assets/herr_dölling.svg";
+import frauHumboldtImg from "./assets/frau_humboldt.svg";
+import frauHansenImg from "./assets/frau_hansen.svg";
 import { Typography } from "@material-ui/core";
 
 interface TeacherPortraitProps {
@@ -13,10 +14,10 @@ export function TeacherPortrait(props: TeacherPortraitProps) {
   const { name } = props;
 
   const teacherImg = {
-    [TeacherNames.Dölling]: teacherA,
-    [TeacherNames.Humboldt]: teacherB,
-    [TeacherNames.Hansen]: teacherC,
-    [TeacherNames.Droste]: teacherA
+    [TeacherNames.Dölling]: herrDöllingImg,
+    [TeacherNames.Humboldt]: frauHumboldtImg,
+    [TeacherNames.Hansen]: frauHansenImg,
+    [TeacherNames.Droste]: herrDrosteImg
   }[name];
 
   return (

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import { EntryRecord } from "./EntryRecord";
-import parentsPng from "./assets/parents.png";
+import parentsImg from "./assets/parents.svg";
 
 interface ParentCheckSlideProps {
   entry: Entry;
@@ -25,7 +25,7 @@ export function ParentCheckSlide(props: ParentCheckSlideProps) {
       }
       people={
         <img
-          src={parentsPng}
+          src={parentsImg}
           width="50%"
           style={{ position: "absolute", bottom: 0, left: "22%" }}
         />

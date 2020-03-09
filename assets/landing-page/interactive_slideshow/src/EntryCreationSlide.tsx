@@ -1,7 +1,7 @@
 import * as React from "react";
 import { EntryStage, EntryCreationForm, Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
-import studentPng from "./assets/student.png";
+import studentImg from "./assets/student.svg";
 
 interface EntryCreationSlideProps {
   onDone: (e: Entry) => void;
@@ -30,7 +30,7 @@ export function EntryCreationSlide(props: EntryCreationSlideProps) {
       }
       people={
         <img
-          src={studentPng}
+          src={studentImg}
           height="80%"
           style={{ position: "absolute", bottom: 0, left: "30%" }}
         />
