@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "prepare": "yarn --cwd interactive_slideshow && cp ../video/Einleitung\\ EntE.mp4 source/video/introduction.mp4",
     "build": "yarn build:interactive_slideshow && bundler exec middleman build",
     "build:interactive_slideshow": "yarn --cwd interactive_slideshow build --public-url /interactive_slideshow/ --out-dir ../source/interactive_slideshow"
   }
