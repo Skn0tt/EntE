@@ -29,7 +29,9 @@ export function Slide(props: SlideProps) {
         }}
       >
         <Grid
-          style={{ height: "100%" }}
+          style={{
+            height: orientation === "landscape" ? "100%" : "50%"
+          }}
           container
           direction="column"
           justify="space-between"
@@ -45,7 +47,8 @@ export function Slide(props: SlideProps) {
       <Grid
         item
         style={{
-          width: orientation === "landscape" ? "50%" : "100%"
+          width: orientation === "landscape" ? "50%" : "100%",
+          height: orientation === "landscape" ? "100%" : "50%"
         }}
       >
         {explanation}

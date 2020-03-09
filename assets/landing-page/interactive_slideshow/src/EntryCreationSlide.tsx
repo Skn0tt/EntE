@@ -2,10 +2,18 @@ import * as React from "react";
 import { EntryStage, EntryCreationForm, Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import studentImg from "./assets/student.svg";
+import { Typography } from "@material-ui/core";
 
 interface EntryCreationSlideProps {
   onDone: (e: Entry) => void;
 }
+
+const titles: Record<EntryStage, string> = {
+  date: "Zu einem Fehlstundeneintrag gehört das Datum, ...",
+  reason: "..., der Grund des Fehlens, ...",
+  slots: "..., sowie die verpassten Unterrichtsstunden.",
+  send: "Nun kann der Eintrag erstellt werden."
+};
 
 export function EntryCreationSlide(props: EntryCreationSlideProps) {
   const { onDone } = props;
@@ -35,7 +43,16 @@ export function EntryCreationSlide(props: EntryCreationSlideProps) {
           style={{ position: "absolute", bottom: 0, left: "30%" }}
         />
       }
-      text={<p>TITLE</p>}
+      text={
+        <Typography
+          variant="body1"
+          style={{
+            margin: "5%"
+          }}
+        >
+          {titles[stage]}
+        </Typography>
+      }
     />
   );
 }

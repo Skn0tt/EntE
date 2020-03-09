@@ -11,12 +11,13 @@ import { useFullscreenContainer } from "./FullScreen";
 interface DatePickerProps {
   onPick: (d: Date) => void;
   enabled: boolean;
+  showLabel: boolean;
 }
 
 const threeDaysAgo = subDays(Date.now(), 2);
 
 export const DatePicker = React.forwardRef((props: DatePickerProps, ref) => {
-  const { onPick, enabled } = props;
+  const { onPick, enabled, showLabel } = props;
   const [value, setValue] = React.useState<Date>(null);
   const container = useFullscreenContainer();
 
@@ -25,12 +26,14 @@ export const DatePicker = React.forwardRef((props: DatePickerProps, ref) => {
       <MUIDatePicker
         PopoverProps={{ container }}
         innerRef={ref}
+        fullWidth
         autoOk
         disabled={!enabled}
         disableFuture
         minDate={threeDaysAgo}
         variant="inline"
-        label="Datum"
+        label={showLabel ? "Datum" : undefined}
+        size="small"
         format="dd. MMMM"
         value={value}
         onChange={date => {

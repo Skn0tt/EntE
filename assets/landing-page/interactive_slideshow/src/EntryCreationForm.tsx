@@ -57,21 +57,25 @@ export function EntryCreationForm(props: EntryProps) {
   return (
     <Card
       style={{
-        width: "100%",
+        width: "90%",
+        maxHeight: "90%",
         float: "right",
-        marginTop: "5%",
-        marginRight: "5%"
+        margin: "5%"
       }}
     >
-      <CardContent>
+      <CardContent style={{ padding: "12px" }}>
         <Typography
           style={{ fontSize: "1rem" }}
-          color={stage === "date" ? "textPrimary" : "textSecondary"}
+          color={stage === "send" ? "textSecondary" : "textPrimary"}
         >
           Neuer Eintrag
         </Typography>
-        <Grid container direction="column">
-          <Grid item>
+        <Grid
+          container
+          direction="row"
+          spacing={isLaterThan("slots", stage) && 1}
+        >
+          <Grid item xs={isLaterThan("slots", stage) ? 6 : 12}>
             <Tooltip
               title="Wann hast du gefehlt?"
               open={stage === "date"}
@@ -80,6 +84,7 @@ export function EntryCreationForm(props: EntryProps) {
             >
               <DatePicker
                 enabled={stage === "date"}
+                showLabel={!isLaterThan("slots", stage)}
                 onPick={date => {
                   setDate(date);
                   onDateEntered();
@@ -89,7 +94,7 @@ export function EntryCreationForm(props: EntryProps) {
           </Grid>
 
           {isLaterThan("reason", stage) && (
-            <Grid item>
+            <Grid item xs={isLaterThan("slots", stage) ? 6 : 12}>
               <Tooltip
                 title="Was war der Grund deines Fehlens?"
                 open={stage === "reason"}
@@ -99,9 +104,10 @@ export function EntryCreationForm(props: EntryProps) {
                 <TextField
                   select
                   disabled={stage !== "reason"}
-                  label="Grund"
+                  label={isLaterThan("slots", stage) ? undefined : "Grund"}
                   value={reason}
                   fullWidth
+                  size="small"
                   SelectProps={{
                     MenuProps: {
                       container
@@ -142,7 +148,7 @@ export function EntryCreationForm(props: EntryProps) {
         </Grid>
       </CardContent>
       {isLaterThan("send", stage) && (
-        <CardActions style={{ position: "relative", marginTop: "10px" }}>
+        <CardActions style={{ position: "relative", marginTop: "10%" }}>
           <Tooltip
             title="Erstellen sie den Eintrag."
             open={stage === "send"}
