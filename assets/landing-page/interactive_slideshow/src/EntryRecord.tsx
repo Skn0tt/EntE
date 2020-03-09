@@ -15,6 +15,7 @@ import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { Tooltip } from "./Tooltip";
 import { format } from "date-fns";
 import deLocale from "date-fns/locale/de";
+import { motion } from "framer-motion";
 
 interface EntryRecordProps {
   entry: Entry;
@@ -34,61 +35,70 @@ export function EntryRecord(props: EntryRecordProps) {
   } = props;
 
   return (
-    <Card
-      style={{
-        width: "70%",
-        position: "absolute",
-        top: "10%",
-        right: "10%",
-        margin: "auto"
-      }}
-    >
-      <CardHeader
-        title={format(date, "dd. MMMM", { locale: deLocale })}
-        titleTypographyProps={{
-          variant: "body1"
-        }}
-        subheader={reason}
-        subheaderTypographyProps={{
-          variant: "body2"
-        }}
+    <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
+      <Card
         style={{
-          paddingBottom: 0
-        }}
-      />
-      <CardContent
-        style={{
-          paddingTop: 0,
-          paddingBottom: 0
+          width: "70%",
+          position: "absolute",
+          margin: "auto",
+          marginTop: "10%",
+          right: "10%"
         }}
       >
-        <List>
-          {slots.map(s => (
-            <SlotRow slot={s} />
-          ))}
-        </List>
-      </CardContent>
-      <CardActions disableSpacing style={{ paddingTop: 0, paddingBottom: 0 }}>
-        {parentCheck &&
-          (managerCheck ? (
-            <DoneAllIcon style={{ color: "green" }} />
-          ) : (
-            <DoneIcon style={{ color: "green" }} />
-          ))}
+        <CardHeader
+          title={format(date, "dd. MMMM", { locale: deLocale })}
+          titleTypographyProps={{
+            variant: "body1"
+          }}
+          subheader={reason}
+          subheaderTypographyProps={{
+            variant: "body2"
+          }}
+          style={{
+            paddingBottom: 0
+          }}
+        />
+        <CardContent
+          style={{
+            paddingTop: 0,
+            paddingBottom: 0
+          }}
+        >
+          <List>
+            {slots.map(s => (
+              <SlotRow slot={s} />
+            ))}
+          </List>
+        </CardContent>
+        <CardActions disableSpacing style={{ paddingTop: 0, paddingBottom: 0 }}>
+          {parentCheck &&
+            (managerCheck ? (
+              <DoneAllIcon style={{ color: "green" }} />
+            ) : (
+              <DoneIcon style={{ color: "green" }} />
+            ))}
 
-        {!(parentCheck && managerCheck) && (
-          <Tooltip title={tooltip} open={!!tooltip} placement="left" arrow>
-            <IconButton
-              style={{
-                marginLeft: "auto"
-              }}
-              onClick={onCheck}
-            >
-              <AssignmentTurnedInIcon style={{ color: "green" }} />
-            </IconButton>
-          </Tooltip>
-        )}
-      </CardActions>
-    </Card>
+          <motion.div
+            style={{ marginLeft: "auto" }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            initial={{ opacity: 0 }}
+          >
+            {!(parentCheck && managerCheck) && (
+              <Tooltip title={tooltip} open={!!tooltip} placement="left" arrow>
+                <IconButton
+                  style={{
+                    marginLeft: "auto"
+                  }}
+                  onClick={onCheck}
+                >
+                  <AssignmentTurnedInIcon style={{ color: "green" }} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </motion.div>
+        </CardActions>
+      </Card>
+    </motion.div>
   );
 }

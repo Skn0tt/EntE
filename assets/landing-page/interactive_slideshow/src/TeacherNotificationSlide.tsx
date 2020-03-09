@@ -3,6 +3,7 @@ import { Grid, Typography, Fab } from "@material-ui/core";
 import { Slot } from "./SlotInput";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { TeacherPortrait } from "./TeacherPortrait";
+import { motion } from "framer-motion";
 
 interface TeacherNotificationSlideProps {
   slots: Slot[];
@@ -12,7 +13,11 @@ interface TeacherNotificationSlideProps {
 export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
   const { slots, onRestart } = props;
   return (
-    <div style={{ height: "100%" }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      style={{ height: "100%" }}
+    >
       <Typography
         style={{
           height: "18%",
@@ -32,7 +37,19 @@ export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
       >
         {slots.map(s => (
           <Grid key={s.teacher} item style={{ height: "100%" }}>
-            <TeacherPortrait name={s.teacher} slot={s} />
+            <motion.div
+              initial={{ y: 100 }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: 0.15,
+                type: "spring",
+                mass: 0.5,
+                damping: 20
+              }}
+              style={{ height: "100%" }}
+            >
+              <TeacherPortrait name={s.teacher} slot={s} />
+            </motion.div>
           </Grid>
         ))}
       </Grid>
@@ -49,6 +66,6 @@ export function TeacherNotificationSlide(props: TeacherNotificationSlideProps) {
       >
         <ReplayIcon /> Neustarten
       </Fab>
-    </div>
+    </motion.div>
   );
 }
