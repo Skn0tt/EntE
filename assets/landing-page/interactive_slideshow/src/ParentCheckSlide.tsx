@@ -3,6 +3,7 @@ import { Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import { EntryRecord } from "./EntryRecord";
 import parentsImg from "./assets/parents.svg";
+import { Typography } from "@material-ui/core";
 
 interface ParentCheckSlideProps {
   entry: Entry;
@@ -20,17 +21,26 @@ export function ParentCheckSlide(props: ParentCheckSlideProps) {
           managerCheck={false}
           parentCheck={false}
           onCheck={onDone}
-          tooltip="Hier Klicken"
+          tooltip="Signieren"
         />
       }
       people={
         <img
           src={parentsImg}
-          width="50%"
+          height="80%"
           style={{ position: "absolute", bottom: 0, left: "22%" }}
         />
       }
-      text={<p>Nun genehmigen die Eltern diesen Eintrag.</p>}
+      text={
+        <Typography
+          variant="body1"
+          style={{
+            margin: "5%"
+          }}
+        >
+          Nachdem die Eltern den Eintrag signiert haben, ...
+        </Typography>
+      }
     />
   );
 }

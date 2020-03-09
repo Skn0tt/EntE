@@ -39,7 +39,7 @@ export function EntryCreationSlide(props: EntryCreationSlideProps) {
       people={
         <img
           src={studentImg}
-          height="80%"
+          height="75%"
           style={{ position: "absolute", bottom: 0, left: "30%" }}
         />
       }

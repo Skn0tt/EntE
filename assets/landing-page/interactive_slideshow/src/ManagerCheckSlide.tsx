@@ -3,6 +3,7 @@ import { Entry } from "./EntryCreationForm";
 import { Slide } from "./Slide";
 import { EntryRecord } from "./EntryRecord";
 import managerImg from "./assets/herr_droste.svg";
+import { Typography } from "@material-ui/core";
 
 interface ManagerCheckSlideProps {
   entry: Entry;
@@ -25,11 +26,26 @@ export function ManagerCheckSlide(props: ManagerCheckSlideProps) {
             setManagerCheck(true);
             setTimeout(onDone, 1000);
           }}
-          tooltip="Hier Klicken"
+          tooltip="Signieren"
         />
       }
-      people={<img src={managerImg} style={{ margin: "auto" }} width="60%" />}
-      text={<p>Nun genehmigt die Stufenleitung den Eintrag.</p>}
+      people={
+        <img
+          src={managerImg}
+          style={{ position: "absolute", bottom: 0, left: "35%" }}
+          height="80%"
+        />
+      }
+      text={
+        <Typography
+          variant="body1"
+          style={{
+            margin: "5%"
+          }}
+        >
+          ... signiert auch die verantwortliche Lehrperson den Eintrag.
+        </Typography>
+      }
     />
   );
 }
