@@ -105,6 +105,37 @@ de:
           BLABLA
       cta: Stell EntE deiner Schule vor!
 
+    try_demo:
+      title: Demo ausprobieren
+      demo_url: https://bull.ente.app
+      body: > # TODO: Demo-Server auf demo.ente.app umlegen
+        Um sich bereits einen Eindruck
+        von der EntE-Oberfläche zu machen,
+        können Sie den EntE-Demo-Server benutzen.
+        Sie erreichen diesen unter
+        <a href="https://bull.ente.app">bull.ente.app</a>.
+        In der folgenden Tabelle finden sie
+        Anmeldedaten für einige Nutzer:
+      users_head:
+        role: Rolle
+        username: Benutzername
+        password: Passwort
+      users:
+        - role: "Administration"
+          username: "admin"
+          password: "root"
+        - role: "Schüler*in"
+          username: "TODO:"
+          password: "TODO:"
+        - role: "Erziehungsberechtigt*e"
+          username: "TODO:"
+          password: "TODO:"
+        - role: "Lehrkraft"
+          username: "TODO:"
+          password: "TODO:"
+      open_demo: Zur Demo
+      back: ZURÜCK
+
     endorsements:
       - pic: testimonial-2.jpg
         name: Roy Smith - Developer
