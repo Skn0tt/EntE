@@ -158,33 +158,22 @@
               It's very easy to start using Tivo. You just need to fill out and
               submit the Sign Up Form and you will receive access to the app.
             </p>
-            <ul class="list-unstyled li-space-lg">
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">List building framework</div>
-              </li>
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">Easy database browsing</div>
-              </li>
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">User administration</div>
-              </li>
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">Automate user signup</div>
-              </li>
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">Quick formatting tools</div>
-              </li>
-              <li class="media">
-                <i class="fas fa-square"></i>
-                <div class="media-body">Fast email checking</div>
-              </li>
-            </ul>
-            <a class="btn-solid-reg mfp-close" href="sign-up.html">SIGN UP</a>
+            <form
+              action="/api/form"
+              method="POST"
+            >
+              <input
+                type="email"
+                placeholder="Geben sie ihre E-Mail-Addresse ein..."
+                name="email"
+              >
+              <button
+                type="submit"
+                class="btn-solid-reg"
+              >
+                Abschicken
+              </button>
+            </form>
             <a class="btn-outline-reg mfp-close as-button" href="#screenshots"
               >BACK</a
             >
