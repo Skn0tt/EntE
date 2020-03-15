@@ -2,6 +2,7 @@
   "env": {
     "PROJECT_ID": "@form-project-id",
     "ACCESS_TOKEN": "@form-access-token",
-    "ASSIGNEE_IDS": "@form-assignee-ids"
+    "ASSIGNEE_IDS": "@form-assignee-ids",
+    "ISSUE_LABELS": "@form-issue-labels"
   }
 }

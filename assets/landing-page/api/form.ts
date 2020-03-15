@@ -1,7 +1,12 @@
 import { NowRequest, NowResponse } from "@now/node";
 import axios from "axios";
 
-const { PROJECT_ID, ACCESS_TOKEN, ASSIGNEE_IDS = undefined } = process.env;
+const {
+  PROJECT_ID,
+  ACCESS_TOKEN,
+  ASSIGNEE_IDS = undefined,
+  ISSUE_LABELS
+} = process.env;
 
 const gitlab = axios.create({
   baseURL: `https://gitlab.com/api/v4/projects/${PROJECT_ID}`,
@@ -24,7 +29,8 @@ async function createIssue(email: string) {
     params: {
       title: `New Lead: '${email}'`,
       assignee_ids: ASSIGNEE_IDS,
-      confidential: true
+      confidential: true,
+      labels: ISSUE_LABELS
     }
   });
 
