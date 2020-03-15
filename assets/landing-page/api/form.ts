@@ -8,13 +8,6 @@ const {
   ISSUE_LABELS
 } = process.env;
 
-const gitlab = axios.create({
-  baseURL: `https://gitlab.com/api/v4/projects/${PROJECT_ID}`,
-  headers: {
-    "PRIVATE-TOKEN": `${ACCESS_TOKEN}`
-  }
-});
-
 function log(tag: string, body: any) {
   console.log(
     JSON.stringify({
@@ -23,6 +16,13 @@ function log(tag: string, body: any) {
     })
   );
 }
+
+const gitlab = axios.create({
+  baseURL: `https://gitlab.com/api/v4/projects/${PROJECT_ID}`,
+  headers: {
+    "PRIVATE-TOKEN": `${ACCESS_TOKEN}`
+  }
+});
 
 async function createIssue(email: string) {
   await gitlab.post("/issues", null, {
