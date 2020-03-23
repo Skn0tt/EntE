@@ -4,6 +4,11 @@ exports[`CreateUser doesn't render when show=false 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <CreateUser
+    availableClasses={
+      Array [
+        "2012",
+      ]
+    }
     createUsers={[MockFunction]}
     fullScreen={true}
     getUser={[MockFunction]}
@@ -20,7 +25,7 @@ ShallowWrapper {
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": undefined,
+          "class": undefined,
           "language": undefined,
           "managerNotes": undefined,
           "subscribedToWeeklySummary": undefined,
@@ -45,9 +50,9 @@ ShallowWrapper {
         "submit": "Erstellen",
         "titles": Object {
           "birthday": "Geburtstag",
+          "class": "Klasse / Abschluss-Jahrgang",
           "displayname": "Displayname",
           "email": "Email",
-          "gradYear": "Abschluss-Jahrgang",
           "newUser": "Neuer Nutzer",
           "password": "Passwort",
           "role": "Rolle",
@@ -193,10 +198,13 @@ ShallowWrapper {
                 xs={12}
               >
                 <Unknown
-                  amount={5}
-                  label="Abschluss-Jahrgang"
+                  availableClasses={
+                    Array [
+                      "2012",
+                    ]
+                  }
+                  label="Klasse / Abschluss-Jahrgang"
                   onChange={[Function]}
-                  value={2019}
                 />
               </WithStyles(Grid)>
               <WithStyles(Grid)
@@ -356,10 +364,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -529,10 +540,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -666,10 +680,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -801,10 +818,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>,
                   <WithStyles(Grid)
@@ -1148,10 +1168,13 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />,
                     "item": true,
                     "xs": 12,
@@ -1162,10 +1185,12 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "amount": 5,
-                      "label": "Abschluss-Jahrgang",
+                      "availableClasses": Array [
+                        "2012",
+                      ],
+                      "label": "Klasse / Abschluss-Jahrgang",
                       "onChange": [Function],
-                      "value": 2019,
+                      "value": undefined,
                     },
                     "ref": null,
                     "rendered": null,
@@ -1400,10 +1425,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -1563,10 +1591,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -1736,10 +1767,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -1873,10 +1907,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -2008,10 +2045,13 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
+                        availableClasses={
+                          Array [
+                            "2012",
+                          ]
+                        }
+                        label="Klasse / Abschluss-Jahrgang"
                         onChange={[Function]}
-                        value={2019}
                       />
                     </WithStyles(Grid)>,
                     <WithStyles(Grid)
@@ -2355,10 +2395,13 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
+                        availableClasses={
+                          Array [
+                            "2012",
+                          ]
+                        }
+                        label="Klasse / Abschluss-Jahrgang"
                         onChange={[Function]}
-                        value={2019}
                       />,
                       "item": true,
                       "xs": 12,
@@ -2369,10 +2412,12 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "amount": 5,
-                        "label": "Abschluss-Jahrgang",
+                        "availableClasses": Array [
+                          "2012",
+                        ],
+                        "label": "Klasse / Abschluss-Jahrgang",
                         "onChange": [Function],
-                        "value": 2019,
+                        "value": undefined,
                       },
                       "ref": null,
                       "rendered": null,
@@ -2502,6 +2547,11 @@ exports[`CreateUser renders correctly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <CreateUser
+    availableClasses={
+      Array [
+        "2012",
+      ]
+    }
     createUsers={[MockFunction]}
     fullScreen={true}
     getUser={[MockFunction]}
@@ -2518,7 +2568,7 @@ ShallowWrapper {
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": undefined,
+          "class": undefined,
           "language": undefined,
           "managerNotes": undefined,
           "subscribedToWeeklySummary": undefined,
@@ -2543,9 +2593,9 @@ ShallowWrapper {
         "submit": "Erstellen",
         "titles": Object {
           "birthday": "Geburtstag",
+          "class": "Klasse / Abschluss-Jahrgang",
           "displayname": "Displayname",
           "email": "Email",
-          "gradYear": "Abschluss-Jahrgang",
           "newUser": "Neuer Nutzer",
           "password": "Passwort",
           "role": "Rolle",
@@ -2691,10 +2741,13 @@ ShallowWrapper {
                 xs={12}
               >
                 <Unknown
-                  amount={5}
-                  label="Abschluss-Jahrgang"
+                  availableClasses={
+                    Array [
+                      "2012",
+                    ]
+                  }
+                  label="Klasse / Abschluss-Jahrgang"
                   onChange={[Function]}
-                  value={2019}
                 />
               </WithStyles(Grid)>
               <WithStyles(Grid)
@@ -2854,10 +2907,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -3027,10 +3083,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -3164,10 +3223,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -3299,10 +3361,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>,
                   <WithStyles(Grid)
@@ -3646,10 +3711,13 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />,
                     "item": true,
                     "xs": 12,
@@ -3660,10 +3728,12 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "amount": 5,
-                      "label": "Abschluss-Jahrgang",
+                      "availableClasses": Array [
+                        "2012",
+                      ],
+                      "label": "Klasse / Abschluss-Jahrgang",
                       "onChange": [Function],
-                      "value": 2019,
+                      "value": undefined,
                     },
                     "ref": null,
                     "rendered": null,
@@ -3898,10 +3968,13 @@ ShallowWrapper {
                   xs={12}
                 >
                   <Unknown
-                    amount={5}
-                    label="Abschluss-Jahrgang"
+                    availableClasses={
+                      Array [
+                        "2012",
+                      ]
+                    }
+                    label="Klasse / Abschluss-Jahrgang"
                     onChange={[Function]}
-                    value={2019}
                   />
                 </WithStyles(Grid)>
                 <WithStyles(Grid)
@@ -4061,10 +4134,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -4234,10 +4310,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -4371,10 +4450,13 @@ ShallowWrapper {
                     xs={12}
                   >
                     <Unknown
-                      amount={5}
-                      label="Abschluss-Jahrgang"
+                      availableClasses={
+                        Array [
+                          "2012",
+                        ]
+                      }
+                      label="Klasse / Abschluss-Jahrgang"
                       onChange={[Function]}
-                      value={2019}
                     />
                   </WithStyles(Grid)>
                   <WithStyles(Grid)
@@ -4506,10 +4588,13 @@ ShallowWrapper {
                       xs={12}
                     >
                       <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
+                        availableClasses={
+                          Array [
+                            "2012",
+                          ]
+                        }
+                        label="Klasse / Abschluss-Jahrgang"
                         onChange={[Function]}
-                        value={2019}
                       />
                     </WithStyles(Grid)>,
                     <WithStyles(Grid)
@@ -4853,10 +4938,13 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <Unknown
-                        amount={5}
-                        label="Abschluss-Jahrgang"
+                        availableClasses={
+                          Array [
+                            "2012",
+                          ]
+                        }
+                        label="Klasse / Abschluss-Jahrgang"
                         onChange={[Function]}
-                        value={2019}
                       />,
                       "item": true,
                       "xs": 12,
@@ -4867,10 +4955,12 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "function",
                       "props": Object {
-                        "amount": 5,
-                        "label": "Abschluss-Jahrgang",
+                        "availableClasses": Array [
+                          "2012",
+                        ],
+                        "label": "Klasse / Abschluss-Jahrgang",
                         "onChange": [Function],
-                        "value": 2019,
+                        "value": undefined,
                       },
                       "ref": null,
                       "rendered": null,
