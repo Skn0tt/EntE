@@ -20,6 +20,10 @@ de:
       EntE...
   contact:
     title: Kontakt
+  thanks:
+    title: Vielen Dank für ihre Anfrage!
+    body: >
+      BlaBla TODO:
   index:
     header:
       title: Digitales Entschuldigungs&shy;verfahren für Schulen
