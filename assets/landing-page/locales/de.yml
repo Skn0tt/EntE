@@ -24,6 +24,14 @@ de:
     title: Vielen Dank für ihre Anfrage!
     body: >
       BlaBla TODO:
+  first_contact:
+    title: Erstgespräch vereinbaren
+    body: >
+      Toll, dass Sie sich für EntE interessieren!
+      Verraten Sie uns doch ihre E-Mail-Addresse,
+      damit wir einen Termin zum unverbindlichen
+      Erstgespräch vereinbaren können.
+    send: Abschicken
   index:
     header:
       title: Digitales Entschuldigungs&shy;verfahren für Schulen
