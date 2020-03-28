@@ -91,22 +91,38 @@ de:
     for_students:
       title: EntE für Schüler und Eltern
       body: >
-        Blabla
+        Die Wenigsten haben Freude daran,
+        Entschuldigungsanträge zu unterschreiben.
+        EntE spart Arbeit und schafft Überblick,
+        damit mehr Zeit für Wichtiges bleibt.
+        Wie genau EntE funktioniert, wird im obigen Video anhand 
+        eines Beispiels demonstriert.
     advantages_for_students:
       subtitle: VORTEILE FÜR SCHÜLER & ELTERN
-      title: LAAAAL
+      title: Mehr Zeit für die wirklich wichtigen Sachen.
       more_time:
-        title: Mehr Zeit
+        title: Weniger Arbeit
         body: >
-          BLABLA
+          Kein lästiger Zettel, den man von Lehrer zu Lehrer
+          tragen muss,
+          keine analoge Unterschrift, die hastig morgens
+          am Küchentisch gemacht wird;
+          denn EntE kann komfortabel über den Web-Browser
+          verwendet werden.
       less_worries:
         title: Weniger Ärger
         body: >
-          BLABLA
+          Wie oft hast Du schon vergessen,
+          deinen Zettel rechtzeitig abzugeben?
+          Das passiert dir mit EntE nicht mehr,
+          denn mit dem Erstellen des Eintrags
+          hast Du alles erledigt.
       control:
-        title: Kontrolle für Eltern
+        title: Schafft Überblick
         body: >
-          BLABLA
+          Alle Fehlzeiten können auf einen Blick
+          gesehen werden.
+          So weiß man immer, wo man steht.
       cta: Stell EntE deiner Schule vor!
 
     try_demo:
