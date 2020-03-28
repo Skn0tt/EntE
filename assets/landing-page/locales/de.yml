@@ -23,7 +23,10 @@ de:
   thanks:
     title: Vielen Dank für ihre Anfrage!
     body: >
-      BlaBla TODO:
+      Wir werden uns in Kürze
+      bei Ihnen bezüglich des Ertsgespräches
+      melden.
+    back: Zurück zur Startseite
   first_contact:
     title: Erstgespräch vereinbaren
     body: >

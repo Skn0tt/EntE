@@ -1457,8 +1457,13 @@ a:hover.back-to-top {
   text-align: center;
 }
 
-.ex-header h1 {
+.ex-header h1,
+h4 {
   color: #fff;
+}
+
+.ex-header hr {
+  background-color: #fff;
 }
 
 .ex-basic-1 {
@@ -2105,4 +2110,9 @@ a:hover.back-to-top {
 
 .fullscreen {
   height: 100%;
+}
+
+.thanks-spacer {
+  height: 200px;
+  background-color: $light-gray;
 }
