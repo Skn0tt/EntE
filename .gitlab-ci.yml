@@ -2,7 +2,6 @@ stages:
   - test
   - build
   - test:e2e
-  - generate
   - deploy
   - release
 
@@ -128,48 +127,6 @@ test:e2e:
       - tests/e2e/logs.txt
     reports:
       junit: e2e.xml
-
-generate:test-report:
-  image: skn0tt/allure:e251d33f2ea388f1e2ce97ad9968ba1f03f65d3e320c692dff6ac1d36f9e4ca0
-  stage: generate
-  needs:
-    - test:unit
-    - test:e2e
-  script: "./scripts/ci/generate_allure.sh"
-  artifacts:
-    paths:
-      - allure-report/
-
-.now_deploy_template: &now_deploy_template
-  image: node:10
-  stage: deploy
-  only:
-    - master
-  variables:
-    NOW_SCOPE: "--scope ente"
-    NOW_SECRET: "--token=$NOW_TOKEN"
-  before_script:
-    - yarn global add now@16.7.3
-
-deploy:coverage:
-  <<: *now_deploy_template
-  dependencies:
-    - test:unit
-  script:
-    # coverage/lcov-report contains line coverage report
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name coverage-report coverage/lcov-report/)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT coverage-report.ente.app
-
-deploy:test-report:
-  <<: *now_deploy_template
-  needs:
-    - generate:test-report
-  script:
-    # allure-report/ contains report files
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name test-report allure-report)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT test-report.ente.app
 
 deploy:images:
   image: docker:19.03.5

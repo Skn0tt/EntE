@@ -1,0 +1,199 @@
+---
+de:
+  title: EntE - Digitales Entschuldigungs&shy;verfahren für Schulen
+  html5_video_not_supported: Ihr Browser unterstützt keine HTML5-Videos.
+  seo:
+    og_site_name: EntE
+    og_site: EntE
+    og_title: EntE
+    description: "EntE - Digitales Entschuldigungs&shy;verfahren für Schulen"
+    author: "Simon Knott"
+  navbar:
+    start: Start
+    for_schools: Für Schulen
+    for_students: Für Schüler & Eltern
+    first_contact_small: Erstgespräch
+    first_contact: Erstgespräch vereinbaren
+  about:
+    title: Über EntE
+    body: >
+      Die Idee zu EntE entstand 2017 im Rahmen einer Facharbeit am Ernst-Moritz-Arndt-Gymnasium.
+      2018 erhielt EntE den Dr.-Hans-Riegel-Fachpreis der Universität Bonn,
+      im Schuljahr 2018/19 begannen erste Pilot-Phasen am Ernst-Moritz-Arndt-Gymnasium.
+      Während der Schuljahre 18/19 und 19/20 wurde EntE stetig verbessert.
+      Seit 2020 wird EntE deutschlandweit vertrieben.
+  privacy_policy: Datenschutzerklärung
+  contact:
+    title: Kontakt
+  thanks:
+    title: Vielen Dank für ihre Anfrage!
+    body: >
+      Wir werden uns in Kürze
+      bei Ihnen bezüglich des Ertsgespräches
+      melden.
+    back: Zurück zur Startseite
+  first_contact:
+    title: Erstgespräch vereinbaren
+    body: >
+      Toll, dass Sie sich für EntE interessieren!
+      Verraten Sie uns doch ihre E-Mail-Addresse,
+      damit wir einen Termin zum unverbindlichen
+      Erstgespräch vereinbaren können.
+    send: Abschicken
+  index:
+    header:
+      title: Digitales Entschuldigungs&shy;verfahren für Schulen
+      subtitle: Digitalisierung geht auch einfach.
+      first_contact: Erstgespräch vereinbaren
+    advantages:
+      subtitle: VORTEILE FÜR SCHULEN
+      title: Entlastet Lehrer, Schüler und Eltern und schafft mehr Unterrichtszeit.
+      paperless:
+        title: Papierlos
+        body: >
+          Digitale Abläufe sind zuverlässig, modern und beschleunigen die Verwaltung.
+      time:
+        title: Arbeitserleichterung für Lehrer und Verwaltung
+        body: >
+          Kein lästiges Papierchaos mehr!
+          Mit EntE erledigen alle Beteiligten ihre Arbeit in einem Klick.
+      gdpr:
+        title: Datenschutz & Privatsphäre
+        body: >
+          Im Gegensatz zum Papierverfahren kann mit EntE jeder nur das sehen,
+          was er auch wirklich sehen muss. Und das beste: EntE ist vollständig DSGVO-konform.
+      funding:
+        title: Öffentlich Förderbar
+        body: >
+          Zum Beispiel durch 
+          <a href="https://www.land.nrw/de/guteschule2020">Gute Schule 2020</a>,
+          <a href="https://mf.sachsen-anhalt.de/it/ikt-foerderung-fuer-schulen/">IKT-Förderung an Schulen</a>
+          und viele weitere Förderprojekte.
+    features:
+      subtitle: FUNKTIONEN
+      title: Was EntE bietet
+      body: >
+        EntE basiert ist zeitgemäß, bedient sich aktueller Best-Practices und macht Spaß zu nutzen.
+      easy_to_use:
+        tab: Einfach zu benutzen
+        title: Intuitives, anpassungsfähiges Design.
+        body: >
+          EntE ist <i>responsive</i>, passt sich also auch an kleine Smartphone-Bildschirme gut an.
+          Weil EntE eine Browser-Anwendung ist, gibt es keine Kompatibilitätsprobleme.
+          Wer möchte, kann EntE auch als App oder Desktop-Anwendung benutzen.
+      integrates:
+        tab: Integrationen
+        title: Vernetzt mit bestehenden Lösungen
+        body: >
+          Um die Verwaltung so einfach wie möglich zu gestalten, bietet EntE Integration in bestehnde Schulsoftware an, zum Beispiel zu SchiLD.
+      analytics:
+        tab: Auswertungen
+        title: Detaillierte Auswertungen
+        body: >
+          Eine Aufbereitung der Fehlzeiten ermöglicht ihnen, Unregelmäßigkeiten früh zu erkennen und gegebenfalls pädagogische Maßnahmen einzuleiten.<br/>
+          Einige der Fragen, die EntEs Auswertungen beantworten:
+        questions:
+          - Welche Schüler*innen sind auffällig selten im Unterricht?
+          - Welche Schüler*innen fehlen nur für wenige Stunden?
+          - Zu welchen Zeiten wird viel gefehlt?
+          - In welchen Unterrichtsstunden wird viel gefehlt?
+    slide_tutorial:
+      title: So funktioniert das Verfahren
+      cta: Demo ausprobieren
+      body: >
+        In der folgenden interaktiven Präsentation können Sie selbst einmal die Grundzüge des Entschuldigungsverfahrens durchlaufen.
+        <br/>
+        Des weiteren können Sie über den untenstehenden Button die Demo-Version von EntE ausprobieren, um einen ersten Einblick des Live-Systems zu erhalten.
+    for_students:
+      title: EntE für Schüler und Eltern
+      body: >
+        Die Wenigsten haben Freude daran,
+        Entschuldigungsanträge zu unterschreiben.
+        EntE spart Arbeit und schafft Überblick,
+        damit mehr Zeit für Wichtiges bleibt.
+        Wie genau EntE funktioniert, wird im obigen Video anhand 
+        eines Beispiels demonstriert.
+    advantages_for_students:
+      subtitle: VORTEILE FÜR SCHÜLER & ELTERN
+      title: Mehr Zeit für die wirklich wichtigen Sachen.
+      more_time:
+        title: Weniger Arbeit
+        body: >
+          Kein lästiger Zettel, den man von Lehrer zu Lehrer
+          tragen muss,
+          keine analoge Unterschrift, die hastig morgens
+          am Küchentisch gemacht wird;
+          denn EntE kann komfortabel über den Web-Browser
+          verwendet werden.
+      less_worries:
+        title: Weniger Ärger
+        body: >
+          Wie oft hast Du schon vergessen,
+          deinen Zettel rechtzeitig abzugeben?
+          Das passiert dir mit EntE nicht mehr,
+          denn mit dem Erstellen des Eintrags
+          hast Du alles erledigt.
+      control:
+        title: Schafft Überblick
+        body: >
+          Alle Fehlzeiten können auf einen Blick
+          gesehen werden.
+          So weiß man immer, wo man steht.
+      cta: Stell EntE deiner Schule vor!
+
+    try_demo:
+      title: Demo ausprobieren
+      demo_url: https://demo.ente.app
+      body: > # TODO: Demo-Server auf demo.ente.app umlegen
+        Um sich bereits einen Eindruck
+        von der EntE-Oberfläche zu machen,
+        können Sie den EntE-Demo-Server benutzen.
+        Sie erreichen diesen unter
+        <a href="https://demo.ente.app">demo.ente.app</a>.
+        In der folgenden Tabelle finden sie
+        Anmeldedaten für einige Nutzer:
+      users_head:
+        role: Rolle
+        username: Benutzername
+        password: Passwort
+      users:
+        - role: "Administration"
+          username: "admin"
+          password: "root"
+        - role: "Schüler*in"
+          username: "antonia.müller"
+          password: "p4sswort!"
+        - role: "Erziehungsberechtigt*e"
+          username: "heiner.müller"
+          password: "p4sswort!"
+        - role: "Lehrkraft"
+          username: "lars.lehrerr"
+          password: "p4sswort!"
+      open_demo: Zur Demo
+      back: ZURÜCK
+
+    endorsements:
+      - pic: testimonial-2.jpg
+        name: Roy Smith - Developer
+        body: >
+          Awesome features for the money. I never thought such a
+          low ammount of money would bring me so many leads per
+          month. Before Tivo I used the services of an agency
+          which cost 10x more and delivered far less. Highly
+          recommended to marketers focused on results.
+      - pic: testimonial-3.jpg
+        name: Marsha Singer - Online Marketer
+        body: >
+          Tivo is the best marketing automation app for small and
+          medium sized business. It understands the mindset of
+          young entrepreneurs and provides the necessary data for
+          wise marketing decisions. Just give it a try and you
+          will definitely not regret spending your time.
+      - pic: testimonial-4.jpg
+        name: Ronda Louis - Online Marketer
+        body: >
+          Tivo is one of the greatest marketing automation apps
+          out there. I especially love the Reporting Tools module
+          because it gives me such a great amount of information
+          based on little amounts of input gathered in just few
+          weeks of light weight usage. Recommended!

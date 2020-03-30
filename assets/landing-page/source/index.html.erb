@@ -1,0 +1,660 @@
+---
+layout: layout
+---
+
+<!-- Header -->
+<header id="header" class="header">
+  <div class="header-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 order-lg-2">
+          <div id="header-title" class="text-container">
+            <h2><%= t(:index)[:header][:title] %></h2>
+            <p class="p-large">
+              <%= t(:index)[:header][:subtitle] %>
+            </p>
+            <a class="btn-solid-lg page-scroll popup-with-move-anim" href="#first-contact-lightbox">
+              <%= t(:index)[:header][:first_contact] %>
+            </a>
+          </div>
+          <!-- end of text-container -->
+        </div>
+        <!-- end of col -->
+        <div class="col-lg-6 order-lg-1">
+          <div class="video-container mt-4 mt-lg-0">
+            <div class="image-container">
+              <div class="video-wrapper">
+                <video
+                  class="img-fluid rounded-video"
+                  controls
+                  poster="/images/promo_poster.jpg"
+                >
+                  <source
+                    src="/video/promo.mp4"
+                    type="video/mp4"
+                  >
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+              <!-- end of video-wrapper -->
+            </div>
+            <!-- end of image-container -->
+
+            <div class="logos">
+              <div class="row justify-content-center">
+                <div class="col-4 image-container">
+                  <img class="img-fluid" src="images/potsdam_transfer_logo.svg" alt="Potsdam Transfer">
+                </div>
+                <div class="col-1"></div>
+                <div class="col-4 image-container">
+                  <img class="img-fluid" src="images/hans-riegel-fachpreise-logo.png" alt="Dr. Hans Riegel-Fachpreise">
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <!-- end of col -->
+      </div>
+      <!-- end of row -->
+    </div>
+    <!-- end of container -->
+  </div>
+  <!-- end of header-content -->
+</header>
+<!-- end of header -->
+<svg
+  class="header-frame"
+  data-name="Layer 1"
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="none"
+  viewBox="0 0 1920 310"
+>
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2196f3;
+      }
+    </style>
+  </defs>
+  <title>header-frame</title>
+  <path
+    class="cls-1"
+    d="M0,283.054c22.75,12.98,53.1,15.2,70.635,14.808,92.115-2.077,238.3-79.9,354.895-79.938,59.97-.019,106.17,18.059,141.58,34,47.778,21.511,47.778,21.511,90,38.938,28.418,11.731,85.344,26.169,152.992,17.971,68.127-8.255,115.933-34.963,166.492-67.393,37.467-24.032,148.6-112.008,171.753-127.963,27.951-19.26,87.771-81.155,180.71-89.341,72.016-6.343,105.479,12.388,157.434,35.467,69.73,30.976,168.93,92.28,256.514,89.405,100.992-3.315,140.276-41.7,177-64.9V0.24H0V283.054Z"
+  />
+</svg>
+<!-- end of header -->
+
+<!-- Description -->
+<div id="for-schools" class="cards-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="above-heading"><%= t(:index)[:advantages][:subtitle] %></div>
+        <h2 class="h2-heading">
+          <%= t(:index)[:advantages][:title] %>
+        </h2>
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Card -->
+        <div class="card">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_feeling_proud_qne1.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:paperless][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages][:paperless][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+        <!-- Card -->
+        <div class="card">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_time_management_30iu.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:time][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages][:time][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+        <!-- Card -->
+        <div class="card">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_gdpr_3xfb.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:gdpr][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages][:gdpr][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+        <!-- Card -->
+        <div class="card">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_urban_design_kpu8.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages][:funding][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages][:funding][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container -->
+</div>
+<!-- end of cards-1 -->
+<!-- end of description -->
+
+<!-- Features -->
+<div id="features" class="tabs">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="above-heading"><%= t(:index)[:features][:subtitle] %></div>
+        <h2 class="h2-heading"><%= t(:index)[:features][:title] %></h2>
+        <p class="p-heading">
+          <%= t(:index)[:features][:body] %>
+        </p>
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Tabs Links -->
+        <ul class="nav nav-tabs" id="argoTabs" role="tablist">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              id="nav-tab-1"
+              data-toggle="tab"
+              href="#tab-1"
+              role="tab"
+              aria-controls="tab-1"
+              aria-selected="true"
+              ><i class="fas fa-user-check"></i><%= t(:index)[:features][:easy_to_use][:tab] %></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="nav-tab-2"
+              data-toggle="tab"
+              href="#tab-2"
+              role="tab"
+              aria-controls="tab-2"
+              aria-selected="false"
+              ><i class="fas fa-cog"></i><%= t(:index)[:features][:integrates][:tab] %></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="nav-tab-3"
+              data-toggle="tab"
+              href="#tab-3"
+              role="tab"
+              aria-controls="tab-3"
+              aria-selected="false"
+              ><i class="fas fa-chart-bar"></i><%= t(:index)[:features][:analytics][:tab] %></a
+            >
+          </li>
+        </ul>
+        <!-- end of tabs links -->
+
+        <!-- Tabs Content -->
+        <div class="tab-content" id="argoTabsContent">
+          <!-- Tab -->
+          <div
+            class="tab-pane fade show active"
+            id="tab-1"
+            role="tabpanel"
+            aria-labelledby="tab-1"
+          >
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="image-container">
+                  <img
+                    class="img-fluid features-img mx-auto"
+                    src="images/mobile_tablet_desktop.png"
+                    alt="alternative"
+                  />
+                </div>
+                <!-- end of image-container -->
+              </div>
+              <!-- end of col -->
+              <div class="col-lg-6">
+                <div class="text-container">
+                  <h3><%= t(:index)[:features][:easy_to_use][:title] %></h3>
+                  <p>
+                    <%= t(:index)[:features][:easy_to_use][:body] %>
+                  </p>
+                </div>
+                <!-- end of text-container -->
+              </div>
+              <!-- end of col -->
+            </div>
+            <!-- end of row -->
+          </div>
+          <!-- end of tab-pane -->
+          <!-- end of tab -->
+
+          <!-- Tab -->
+          <div
+            class="tab-pane fade"
+            id="tab-2"
+            role="tabpanel"
+            aria-labelledby="tab-2"
+          >
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="image-container">
+                  <img
+                    class="img-fluid features-img mx-auto"
+                    style="height: 20rem"
+                    src="images/undraw_connected_8wvi.svg"
+                    alt="alternative"
+                  />
+                </div>
+                <!-- end of image-container -->
+              </div>
+              <!-- end of col -->
+              <div class="col-lg-6">
+                <div class="text-container">
+                  <h3>
+                    <%= t(:index)[:features][:integrates][:title] %>
+                  </h3>
+                  <p>
+                    <%= t(:index)[:features][:integrates][:body] %>
+                  </p>
+                </div>
+                <!-- end of text-container -->
+              </div>
+              <!-- end of col -->
+            </div>
+            <!-- end of row -->
+          </div>
+          <!-- end of tab-pane -->
+          <!-- end of tab -->
+
+          <!-- Tab -->
+          <div
+            class="tab-pane fade"
+            id="tab-3"
+            role="tabpanel"
+            aria-labelledby="tab-3"
+          >
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="image-container">
+                  <img
+                    class="img-fluid features-img mx-auto"
+                    src="images/statistics.png"
+                    alt="alternative"
+                  />
+                </div>
+                <!-- end of image-container -->
+              </div>
+              <!-- end of col -->
+              <div class="col-lg-6">
+                <div class="text-container">
+                  <h3>
+                    <%= t(:index)[:features][:analytics][:title] %>
+                  </h3>
+                  <p>
+                    <%= t(:index)[:features][:analytics][:body] %>
+                  </p>
+                  <ul class="checkmark-list">
+                    <% t(:index)[:features][:analytics][:questions].each do |question| %>
+                      <li>
+                        <%= question %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <!-- end of text-container -->
+              </div>
+              <!-- end of col -->
+            </div>
+            <!-- end of row -->
+          </div>
+          <!-- end of tab-pane -->
+          <!-- end of tab -->
+        </div>
+        <!-- end of tab content -->
+        <!-- end of tabs content -->
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container -->
+</div>
+<!-- end of tabs -->
+<!-- end of features -->
+
+<div
+  id="try-demo-lightbox"
+  class="lightbox-basic zoom-anim-dialog mfp-hide"
+>
+  <div class="container">
+    <button title="Close (Esc)" type="button" class="mfp-close x-button">
+      ×
+    </button>
+
+    <h3><%= t(:index)[:try_demo][:title] %></h3>
+    <hr />
+    <p>
+      <%= t(:index)[:try_demo][:body] %>
+    </p>
+    <table>
+      <thead>
+        <th>
+          <%= t(:index)[:try_demo][:users_head][:role] %>
+        </th>
+        <th>
+          <%= t(:index)[:try_demo][:users_head][:username] %>
+        </th>
+        <th>
+          <%= t(:index)[:try_demo][:users_head][:password] %>
+        </th>
+      </thead>
+      <tbody>
+        <% t(:index)[:try_demo][:users].each do |u| %>
+          <tr>
+            <td>
+              <%= u[:role] %>
+            </td>
+            <td>
+              <%= u[:username] %>
+            </td>
+            <td>
+              <%= u[:password] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <a
+      class="btn-solid-reg mfp-close"
+      href="<%= t(:index)[:try_demo][:demo_url] %>">
+      <%= t(:index)[:try_demo][:open_demo] %>
+    </a>
+    <a
+      class="btn-outline-reg mfp-close as-button">
+      <%= t(:index)[:try_demo][:back] %>
+    </a>
+  </div>
+</div>
+
+<!-- Details -->
+<div id="details" class="basic-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="text-container">
+          <h2><%= t(:index)[:slide_tutorial][:title] %></h2>
+          <p>
+            <%= t(:index)[:slide_tutorial][:body] %>
+          </p>
+          <a class="btn-solid-reg page-scroll mt-5 popup-with-move-anim" href="#try-demo-lightbox"
+            ><%= t(:index)[:slide_tutorial][:cta] %></a
+          >
+        </div>
+        <!-- end of text-container -->
+      </div>
+      <!-- end of col -->
+      <div class="col-lg-6">
+        <div class="image-container">
+          <div
+            class="img-fluid"
+            id="interactive-slideshow-root"
+          ></div>
+
+          <script src="/interactive_slideshow/index.js" defer></script>
+          <script src="/javascripts/mountInteractiveSlideshow.js" defer></script>
+        </div>
+        <!-- end of image-container -->
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container -->
+</div>
+<!-- end of basic-1 -->
+<!-- end of details -->
+
+<!-- Video -->
+<div id="video" class="basic-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 pt-4 pt-lg-0">
+        <!-- Video Preview -->
+        <div class="image-container">
+          <div class="video-wrapper">
+            <video
+              class="img-fluid rounded-video"
+              controls
+              poster="images/introduction_poster.png"
+            >
+              <source
+                src="https://glcdn.rawgit.org/skn0tt/EntE/master/assets/video/Einleitung%20EntE.mp4"
+                type="video/mp4"
+              >
+              Your browser does not support HTML5 video.
+            </video>
+          </div>
+          <!-- end of video-wrapper -->
+        </div>
+        <!-- end of image-container -->
+        <!-- end of video preview -->
+      </div>
+
+      <div class="col-lg-6">
+        <div class="text-container">
+          <h2><%= t(:index)[:for_students][:title] %></h2>
+          <p class="p-large">
+            <%= t(:index)[:for_students][:body] %>
+          </p>
+        </div>
+        <!-- end of text-container -->
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container -->
+</div>
+<!-- end of basic-2 -->
+<!-- end of video -->
+
+<div id="for-students" class="cards-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="above-heading"><%= t(:index)[:advantages_for_students][:subtitle] %></div>
+        <h2 class="h2-heading">
+          <%= t(:index)[:advantages_for_students][:title] %>
+        </h2>
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+    <div class="row">
+      <div class="col-lg-12">
+
+        <!-- Card -->
+        <div class="card card-wide">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_track_and_field_33qn.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages_for_students][:less_worries][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages_for_students][:less_worries][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+        <!-- Card -->
+        <div class="card card-wide">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_in_no_time_6igu.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages_for_students][:more_time][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages_for_students][:more_time][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+        <!-- Card -->
+        <div class="card card-wide">
+          <div class="card-image">
+            <img
+              class="img-fluid advantages-img"
+              src="images/undraw_observations_mejb.svg"
+              alt="alternative"
+            />
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">
+              <%= t(:index)[:advantages_for_students][:control][:title] %>
+            </h4>
+            <p>
+              <%= t(:index)[:advantages_for_students][:control][:body] %>
+            </p>
+          </div>
+        </div>
+        <!-- end of card -->
+
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+
+    <div class="row justify-content-center">
+      <div class="col">
+        <a class="btn-solid-lg page-scroll" href="/images/Flyer.pdf" target="_blank">
+          <i style="line-height: unset; margin-right: 10px;" class="fas fa-play"></i>
+          <%= t(:index)[:advantages_for_students][:cta] %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- end of container -->
+</div>
+
+<!-- Testimonials -->
+<div class="slider-2" style="display: none;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Text Slider -->
+        <div class="slider-container">
+          <div class="swiper-container text-slider">
+            <div class="swiper-wrapper">
+              <!-- Slide -->
+              <% t(:index)[:endorsements].each do |e| %>
+                <div class="swiper-slide">
+                  <div class="image-wrapper">
+                    <img
+                      class="img-fluid"
+                      src="images/<%= e[:pic] %>"
+                      alt="alternative"
+                    />
+                  </div>
+                  <!-- end of image-wrapper -->
+                  <div class="text-wrapper">
+                    <div class="testimonial-text">
+                      <%= e[:body] %>
+                    </div>
+                    <div class="testimonial-author">
+                      <%= e[:name] %>
+                    </div>
+                  </div>
+                  <!-- end of text-wrapper -->
+                </div>
+              <% end %>
+
+            </div>
+            <!-- end of swiper-wrapper -->
+
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- end of add arrows -->
+          </div>
+          <!-- end of swiper-container -->
+        </div>
+        <!-- end of slider-container -->
+        <!-- end of text slider -->
+      </div>
+      <!-- end of col -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container -->
+</div>
+<!-- end of slider-2 -->
+<!-- end of testimonials -->

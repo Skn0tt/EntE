@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "build": "./generate_docs.sh"
+    "build": "./build.sh"
   }
 }
