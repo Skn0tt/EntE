@@ -143,8 +143,6 @@ generate:allure:
 .now_deploy_template: &now_deploy_template
   image: node:10
   stage: deploy
-  only:
-    - master
   variables:
     NOW_SCOPE: "--scope ente"
     NOW_SECRET: "--token=$NOW_TOKEN"
