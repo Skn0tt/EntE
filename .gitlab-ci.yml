@@ -141,6 +141,7 @@ test:e2e:
 
 deploy:landing-page:
   <<: *now_deploy_template
+  needs: []
   script:
     - cd assets/landing-page
     - now $NOW_SECRET $NOW_SCOPE -c --prod
