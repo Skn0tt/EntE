@@ -9,9 +9,8 @@ const report = async (error: any): Promise<Maybe<EventId>> => {
   return await client.cata(
     async () => None<string>(),
     async client => {
-      const response = await client.captureException(error);
-      const event = Maybe.fromUndefined(response.event);
-      return event.flatMap(e => Maybe.fromUndefined(e.event_id));
+      const event_id = client.captureException(error);
+      return Maybe.fromUndefined(event_id);
     }
   );
 };

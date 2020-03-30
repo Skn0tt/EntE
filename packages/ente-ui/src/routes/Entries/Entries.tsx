@@ -81,7 +81,7 @@ const mapStateToProps = (state: AppState) => ({
   entries: getEntries(state),
   getUser: (id: string) => getUser(id)(state),
   filterScope: getFilterScope(state),
-  ownRole: getRole(state).some(),
+  ownRole: getRole(state).orSome(Roles.STUDENT),
   canCreateEntries: canCreateEntries(state)
 });
 

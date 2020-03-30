@@ -13,7 +13,7 @@ import { Config } from "./config";
 import { Request } from "express";
 
 @Injectable()
-export class SentryInterceptor implements NestInterceptor, OnModuleInit {
+export class SentryInterceptor implements NestInterceptor {
   private readonly sentryClient: Sentry.NodeClient;
 
   constructor(dsn: string) {
@@ -25,10 +25,6 @@ export class SentryInterceptor implements NestInterceptor, OnModuleInit {
       release: version,
       serverName: baseUrl
     });
-  }
-
-  onModuleInit() {
-    this.sentryClient.install();
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

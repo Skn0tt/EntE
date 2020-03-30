@@ -343,7 +343,7 @@ export class UserRepo {
 
   async setChildren(
     id: string,
-    children: string[]
+    childrenIds: string[]
   ): Promise<Validation<UpdateUserFailure, true>> {
     const user = Maybe.fromUndefined(await this.repo.findOne(id));
     return await user.cata<Promise<Validation<UpdateUserFailure, true>>>(
@@ -353,9 +353,9 @@ export class UserRepo {
           return Fail(UpdateUserFailure.UserWrongRole);
         }
 
-        await this.repo.update(id, {
-          children: children.map(c => ({ _id: c }))
-        });
+        const childrenEntities = await this.repo.findByIds(childrenIds);
+        user.children = childrenEntities;
+        await this.repo.save(user);
         return Success<UpdateUserFailure, true>(true);
       }
     );
