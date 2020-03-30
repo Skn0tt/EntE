@@ -12,6 +12,6 @@ coverage
 ci
 .vscode
 ente.dockerapp
-pages
+landing-page
 scripts
 tests
