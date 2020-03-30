@@ -1,4 +1,5 @@
 {
+  "exclude": ["assets"],
   "compilerOptions": {
     "target": "es2015",
     "module": "commonjs",
