@@ -143,13 +143,13 @@ de:
 
     try_demo:
       title: Demo ausprobieren
-      demo_url: https://bull.ente.app
+      demo_url: https://demo.ente.app
       body: > # TODO: Demo-Server auf demo.ente.app umlegen
         Um sich bereits einen Eindruck
         von der EntE-Oberfläche zu machen,
         können Sie den EntE-Demo-Server benutzen.
         Sie erreichen diesen unter
-        <a href="https://bull.ente.app">bull.ente.app</a>.
+        <a href="https://demo.ente.app">demo.ente.app</a>.
         In der folgenden Tabelle finden sie
         Anmeldedaten für einige Nutzer:
       users_head:
@@ -161,14 +161,14 @@ de:
           username: "admin"
           password: "root"
         - role: "Schüler*in"
-          username: "TODO:"
-          password: "TODO:"
+          username: "antonia.müller"
+          password: "p4sswort!"
         - role: "Erziehungsberechtigt*e"
-          username: "TODO:"
-          password: "TODO:"
+          username: "heiner.müller"
+          password: "p4sswort!"
         - role: "Lehrkraft"
-          username: "TODO:"
-          password: "TODO:"
+          username: "lars.lehrerr"
+          password: "p4sswort!"
       open_demo: Zur Demo
       back: ZURÜCK
 
