@@ -113,6 +113,23 @@ test:e2e:
     reports:
       junit: e2e.xml
 
+.now_deploy_template: &now_deploy_template
+  image: node:10
+  stage: deploy
+  only:
+    - master
+  variables:
+    NOW_SCOPE: "--scope ente"
+    NOW_SECRET: "--token=$NOW_TOKEN"
+  before_script:
+    - yarn global add now@16.7.3
+
+deploy:landing-page:
+  <<: *now_deploy_template
+  script:
+    - cd assets/landing-page
+    - now $NOW_SECRET $NOW_SCOPE -c --prod
+
 deploy:images:
   image: docker:19.03.5
   stage: deploy
