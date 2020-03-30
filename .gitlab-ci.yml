@@ -62,7 +62,11 @@ license_management:
 build:api:
   image: skn0tt/dind-make:298476cb7a58ce49f9bdab4da93529a10e3c6c1ed5fd7264e6e36b726e11dfa8
   stage: build
-  dependencies: []
+  needs:
+    - job: test:unit
+      artifacts: false
+    - job: test:tsc
+      artifacts: false
   services:
     - docker:19.03.2-dind
   before_script:
@@ -72,7 +76,11 @@ build:api:
 build:ui:
   image: skn0tt/dind-make:298476cb7a58ce49f9bdab4da93529a10e3c6c1ed5fd7264e6e36b726e11dfa8
   stage: build
-  dependencies: []
+  needs:
+    - job: test:unit
+      artifacts: false
+    - job: test:tsc
+      artifacts: false
   services:
     - docker:19.03.2-dind
   before_script:
@@ -82,6 +90,7 @@ build:ui:
 build:docker-app:
   image: docker:19.03.5
   stage: build
+  needs: []
   dependencies: []
   services:
     - docker:19.03.2-dind
@@ -90,7 +99,13 @@ build:docker-app:
 test:e2e:
   image: skn0tt/node-browsers-docker-app:node-10-docker-app-v0.6.0
   stage: test:e2e
-  dependencies: []
+  needs:
+    - job: build:api
+      artifacts: false
+    - job: build:ui
+      artifacts: false
+    - job: build:docker-app
+      artifacts: false
   cache:
     key: "test-e2e"
     paths:
@@ -126,6 +141,7 @@ test:e2e:
 
 deploy:landing-page:
   <<: *now_deploy_template
+  needs: []
   script:
     - cd assets/landing-page
     - now $NOW_SECRET $NOW_SCOPE -c --prod
@@ -133,7 +149,13 @@ deploy:landing-page:
 deploy:images:
   image: docker:19.03.5
   stage: deploy
-  dependencies: []
+  needs:
+    - job: build:api
+      artifacts: false
+    - job: build:ui
+      artifacts: false
+    - job: build:docker-app
+      artifacts: false
   services:
     - docker:19.03.5-dind
   before_script:
