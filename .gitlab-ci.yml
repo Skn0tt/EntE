@@ -1,8 +1,9 @@
 stages:
-  - generate
+  - landingpage
   - test
   - build
   - test:e2e
+  - generate
   - deploy
   - release
 
@@ -152,6 +153,7 @@ generate:allure:
 
 deploy:pages:
   <<: *now_deploy_template
+  stage: landingpage
   script:
     - cd assets/landing-page
     - now $NOW_SECRET $NOW_SCOPE --name product-website --prod
