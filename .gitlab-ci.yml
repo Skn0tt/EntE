@@ -1,5 +1,4 @@
 stages:
-  - landingpage
   - test
   - build
   - test:e2e
@@ -149,9 +148,8 @@ generate:allure:
   before_script:
     - yarn global add now
 
-deploy:pages:
+deploy:landing-page:
   <<: *now_deploy_template
-  stage: landingpage
   script:
     - cd assets/landing-page
     - now $NOW_SECRET $NOW_SCOPE -c --prod
