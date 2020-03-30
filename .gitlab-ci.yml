@@ -1,8 +1,8 @@
 stages:
+  - generate
   - test
   - build
   - test:e2e
-  - generate
   - deploy
   - release
 
@@ -139,15 +139,6 @@ generate:allure:
     paths:
       - allure-report/
 
-generate:pages:
-  image: node:10
-  stage: generate
-  dependencies: []
-  script: "./scripts/ci/generate_pages.sh"
-  artifacts:
-    paths:
-      - assets/pages/dist/
-
 .now_deploy_template: &now_deploy_template
   image: node:10
   stage: deploy
@@ -161,14 +152,9 @@ generate:pages:
 
 deploy:pages:
   <<: *now_deploy_template
-  dependencies:
-    - generate:pages
   script:
-    # assets/pages/dist contains pages
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name product-website assets/pages/dist)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT ente.app
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT www.ente.app
+    - cd assets/landing-page
+    - now $NOW_SECRET $NOW_SCOPE --name product-website --prod
 
 deploy:coverage:
   <<: *now_deploy_template
