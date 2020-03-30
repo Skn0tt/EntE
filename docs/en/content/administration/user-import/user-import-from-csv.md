@@ -14,7 +14,7 @@ Each user has different properties that need to be set:
 - role
 - birthday
 - children
-- graduationYear
+- class
 
 If `password` is left blank, the user receives an invitation mail so they can set their password themselves.
 
@@ -23,7 +23,7 @@ If the user doesn't have any children, leave the field blank.
 
 `birthday` needs to be set only for students; set it to their birthday in ISO-8601 format (e.g. "2000-02-01" for Feb. 1st, 2000).
 
-`graduationYear` needs to be set for students and mangers, it matches these by their expected graduation year.
+`class` needs to be set for students and mangers, they are matched by this attribute..
 
 `role` is one of the roles `admin`, `parent`, `student`, `manager`, `teacher`.
 
@@ -32,7 +32,7 @@ The first row of the csv needs to be a header row with the above properties.
 A sample import file could look like this:
 
 ```csv
-username,displayname,email,role,birthday,graduationYear,children
+username,displayname,email,role,birthday,class,children
 maxmueller,Max Mueller,mmueller@gmail.com,student,2000-02-01,2019,
 majamueller,Maja Mueller,maja@mueller.de,student,2001-02-01,2019,
 tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,

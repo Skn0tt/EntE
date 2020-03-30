@@ -33,6 +33,7 @@ describe.skip("SpecificUser", () => {
   const comp = shallow(
     <SpecificUser
       {...getMockRouterProps({ userId })}
+      availableClasses={["2012"]}
       getUser={getUser}
       fullScreen
       classes={{ menuButton: "" }}
@@ -61,6 +62,7 @@ describe.skip("SpecificUser", () => {
     const comp = shallow(
       <SpecificUser
         {...getMockRouterProps({ userId })}
+        availableClasses={["2012"]}
         getUser={getUser}
         fullScreen
         classes={{ menuButton: "" }}

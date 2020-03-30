@@ -263,7 +263,7 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
   const displayname =
     studentsR.length === 1
       ? firstStudent.get("displayname")
-      : firstStudent.get("graduationYear");
+      : firstStudent.get("class");
 
   return (
     <div>

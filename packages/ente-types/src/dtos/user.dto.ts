@@ -5,15 +5,16 @@ import {
   IsArray,
   ValidateNested,
   IsOptional,
-  IsInt,
   IsISO8601,
-  IsString
+  IsString,
+  IsInt
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
   isValidDisplayname,
-  isValidEmail
+  isValidEmail,
+  isValidClass
 } from "../validators";
 import { Type } from "class-transformer";
 import { parseISO, addYears, isAfter } from "date-fns";
@@ -32,7 +33,7 @@ export interface SensitiveUserDto extends BaseUserDto {
   email: string;
   language: Languages;
   children: BlackedUserDto[];
-  graduationYear?: number;
+  class?: string;
   birthday?: string;
   managerNotes: string;
 }
@@ -58,6 +59,13 @@ export class UserDto implements BlackedUserDto {
   @Type(() => UserDto)
   children: UserDto[];
 
+  @IsOptional()
+  @CustomStringValidator(isValidClass)
+  class?: string;
+
+  /**
+   * @deprecated
+   */
   @IsOptional()
   @IsInt()
   graduationYear?: number;

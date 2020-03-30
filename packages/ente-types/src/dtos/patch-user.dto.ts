@@ -1,11 +1,11 @@
-import { Roles, rolesArr } from "ente-types";
-import { IsOptional, IsIn, IsInt, IsISO8601, IsBoolean } from "class-validator";
+import { IsOptional, IsIn, IsISO8601, IsBoolean } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidDisplayname,
   isValidEmail,
   isValidUuidOrUsername,
-  isValidUsername
+  isValidUsername,
+  isValidClass
 } from "../validators";
 import { languagesArr, Languages } from "../languages";
 
@@ -35,8 +35,8 @@ export class PatchUserDto {
   birthday?: string;
 
   @IsOptional()
-  @IsInt()
-  graduationYear?: number;
+  @CustomStringValidator(isValidClass)
+  class?: string;
 
   @IsOptional()
   @IsBoolean()

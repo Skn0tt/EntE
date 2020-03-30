@@ -16,7 +16,7 @@ ShallowWrapper {
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": undefined,
+          "class": undefined,
           "language": undefined,
           "managerNotes": undefined,
           "subscribedToWeeklySummary": undefined,
@@ -30,7 +30,7 @@ ShallowWrapper {
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": undefined,
+          "class": undefined,
           "language": undefined,
           "managerNotes": undefined,
           "subscribedToWeeklySummary": undefined,
@@ -54,7 +54,7 @@ ShallowWrapper {
       "birthday": "2100-01-01",
       "role": "student",
       "childrenIds": Array [],
-      "graduationYear": undefined,
+      "class": undefined,
       "language": undefined,
       "managerNotes": undefined,
       "subscribedToWeeklySummary": undefined,
@@ -124,7 +124,7 @@ ShallowWrapper {
                     "birthday": "2100-01-01",
                     "role": "student",
                     "childrenIds": Array [],
-                    "graduationYear": undefined,
+                    "class": undefined,
                     "language": undefined,
                     "managerNotes": undefined,
                     "subscribedToWeeklySummary": undefined,
@@ -132,7 +132,7 @@ ShallowWrapper {
                 ]
               }
               label="Child"
-              onChange={[Function]}
+              onSelect={[Function]}
             />
           </WithStyles(Grid)>
           <WithStyles(Grid)
@@ -325,7 +325,7 @@ ShallowWrapper {
                       "birthday": "2100-01-01",
                       "role": "student",
                       "childrenIds": Array [],
-                      "graduationYear": undefined,
+                      "class": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
                       "subscribedToWeeklySummary": undefined,
@@ -333,7 +333,7 @@ ShallowWrapper {
                   ]
                 }
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />
             </WithStyles(Grid)>,
             <WithStyles(Grid)
@@ -376,7 +376,7 @@ ShallowWrapper {
                       "birthday": "2100-01-01",
                       "role": "student",
                       "childrenIds": Array [],
-                      "graduationYear": undefined,
+                      "class": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
                       "subscribedToWeeklySummary": undefined,
@@ -384,7 +384,7 @@ ShallowWrapper {
                   ]
                 }
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />,
               "item": true,
               "xs": 11,
@@ -408,14 +408,14 @@ ShallowWrapper {
                     "birthday": "2100-01-01",
                     "role": "student",
                     "childrenIds": Array [],
-                    "graduationYear": undefined,
+                    "class": undefined,
                     "language": undefined,
                     "managerNotes": undefined,
                     "subscribedToWeeklySummary": undefined,
                   },
                 ],
                 "label": "Child",
-                "onChange": [Function],
+                "onSelect": [Function],
               },
               "ref": null,
               "rendered": null,
@@ -530,7 +530,7 @@ ShallowWrapper {
                       "birthday": "2100-01-01",
                       "role": "student",
                       "childrenIds": Array [],
-                      "graduationYear": undefined,
+                      "class": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
                       "subscribedToWeeklySummary": undefined,
@@ -538,7 +538,7 @@ ShallowWrapper {
                   ]
                 }
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />
             </WithStyles(Grid)>
             <WithStyles(Grid)
@@ -731,7 +731,7 @@ ShallowWrapper {
                         "birthday": "2100-01-01",
                         "role": "student",
                         "childrenIds": Array [],
-                        "graduationYear": undefined,
+                        "class": undefined,
                         "language": undefined,
                         "managerNotes": undefined,
                         "subscribedToWeeklySummary": undefined,
@@ -739,7 +739,7 @@ ShallowWrapper {
                     ]
                   }
                   label="Child"
-                  onChange={[Function]}
+                  onSelect={[Function]}
                 />
               </WithStyles(Grid)>,
               <WithStyles(Grid)
@@ -782,7 +782,7 @@ ShallowWrapper {
                         "birthday": "2100-01-01",
                         "role": "student",
                         "childrenIds": Array [],
-                        "graduationYear": undefined,
+                        "class": undefined,
                         "language": undefined,
                         "managerNotes": undefined,
                         "subscribedToWeeklySummary": undefined,
@@ -790,7 +790,7 @@ ShallowWrapper {
                     ]
                   }
                   label="Child"
-                  onChange={[Function]}
+                  onSelect={[Function]}
                 />,
                 "item": true,
                 "xs": 11,
@@ -814,14 +814,14 @@ ShallowWrapper {
                       "birthday": "2100-01-01",
                       "role": "student",
                       "childrenIds": Array [],
-                      "graduationYear": undefined,
+                      "class": undefined,
                       "language": undefined,
                       "managerNotes": undefined,
                       "subscribedToWeeklySummary": undefined,
                     },
                   ],
                   "label": "Child",
-                  "onChange": [Function],
+                  "onSelect": [Function],
                 },
                 "ref": null,
                 "rendered": null,
@@ -916,7 +916,7 @@ ShallowWrapper {
           "birthday": "2100-01-01",
           "role": "student",
           "childrenIds": Array [],
-          "graduationYear": undefined,
+          "class": undefined,
           "language": undefined,
           "managerNotes": undefined,
           "subscribedToWeeklySummary": undefined,
@@ -940,7 +940,7 @@ ShallowWrapper {
       "birthday": "2100-01-01",
       "role": "student",
       "childrenIds": Array [],
-      "graduationYear": undefined,
+      "class": undefined,
       "language": undefined,
       "managerNotes": undefined,
       "subscribedToWeeklySummary": undefined,
@@ -1001,7 +1001,7 @@ ShallowWrapper {
               itemToString={[Function]}
               items={Array []}
               label="Child"
-              onChange={[Function]}
+              onSelect={[Function]}
             />
           </WithStyles(Grid)>
           <WithStyles(Grid)
@@ -1185,7 +1185,7 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={Array []}
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />
             </WithStyles(Grid)>,
             <WithStyles(Grid)
@@ -1219,7 +1219,7 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={Array []}
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />,
               "item": true,
               "xs": 11,
@@ -1235,7 +1235,7 @@ ShallowWrapper {
                 "itemToString": [Function],
                 "items": Array [],
                 "label": "Child",
-                "onChange": [Function],
+                "onSelect": [Function],
               },
               "ref": null,
               "rendered": null,
@@ -1341,7 +1341,7 @@ ShallowWrapper {
                 itemToString={[Function]}
                 items={Array []}
                 label="Child"
-                onChange={[Function]}
+                onSelect={[Function]}
               />
             </WithStyles(Grid)>
             <WithStyles(Grid)
@@ -1525,7 +1525,7 @@ ShallowWrapper {
                   itemToString={[Function]}
                   items={Array []}
                   label="Child"
-                  onChange={[Function]}
+                  onSelect={[Function]}
                 />
               </WithStyles(Grid)>,
               <WithStyles(Grid)
@@ -1559,7 +1559,7 @@ ShallowWrapper {
                   itemToString={[Function]}
                   items={Array []}
                   label="Child"
-                  onChange={[Function]}
+                  onSelect={[Function]}
                 />,
                 "item": true,
                 "xs": 11,
@@ -1575,7 +1575,7 @@ ShallowWrapper {
                   "itemToString": [Function],
                   "items": Array [],
                   "label": "Child",
-                  "onChange": [Function],
+                  "onSelect": [Function],
                 },
                 "ref": null,
                 "rendered": null,

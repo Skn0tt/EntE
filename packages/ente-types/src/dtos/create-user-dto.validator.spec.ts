@@ -13,7 +13,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.true;
     });
@@ -27,7 +27,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.true;
     });
@@ -41,7 +41,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.true;
     });
@@ -116,7 +116,7 @@ describe("CreateUserDtoValidator", () => {
     });
   });
 
-  describe("when passing a graduationYear to a", () => {
+  describe("when passing a class to a", () => {
     describe("student", () => {
       it("returns true", () => {
         expect(
@@ -127,7 +127,7 @@ describe("CreateUserDtoValidator", () => {
             email: "herr@mann.de",
             username: "herrmann",
             birthday: "2000-01-01",
-            graduationYear: 2019
+            class: "2019"
           })
         ).to.be.true;
       });
@@ -141,7 +141,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
-            graduationYear: 2019
+            class: "2019"
           })
         ).to.be.true;
       });
@@ -155,7 +155,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
-            graduationYear: 2019
+            class: "2019"
           })
         ).to.be.false;
       });
@@ -169,7 +169,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
-            graduationYear: 2019
+            class: "2019"
           })
         ).to.be.false;
       });
@@ -217,7 +217,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: undefined,
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.false;
     });
@@ -244,7 +244,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.false;
     });
@@ -271,7 +271,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herrmann.de",
           username: "herrmann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.false;
     });
@@ -285,7 +285,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herr mann",
           birthday: "2000-01-01",
-          graduationYear: 2019
+          class: "2019"
         })
       ).to.be.false;
     });

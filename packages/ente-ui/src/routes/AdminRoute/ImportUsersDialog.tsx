@@ -112,7 +112,7 @@ const toUserN = (u: CreateUserDto): UserN => {
     childrenIds: [],
     email: u.email,
     displayname: u.displayname,
-    graduationYear: u.graduationYear,
+    class: u.class,
     birthday: u.birthday,
     id: u.username,
     role: u.role

@@ -39,6 +39,7 @@ describe("CreateUser", () => {
     const onClose = jest.fn();
     const comp = shallow(
       <CreateUser
+        availableClasses={["2012"]}
         getUser={getUser}
         fullScreen
         translation={lang.de}
@@ -59,6 +60,7 @@ describe("CreateUser", () => {
 
     const comp = shallow(
       <CreateUser
+        availableClasses={["2012"]}
         getUser={getUser}
         fullScreen
         translation={lang.de}
@@ -78,6 +80,7 @@ describe("CreateUser", () => {
 
     const comp = shallow(
       <CreateUser
+        availableClasses={["2012"]}
         getUser={getUser}
         fullScreen
         translation={lang.de}

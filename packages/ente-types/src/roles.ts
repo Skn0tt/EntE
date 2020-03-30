@@ -19,10 +19,9 @@ export enum Roles {
 export const rolesArr = enumToArray(Roles);
 
 export const TEACHING_ROLES = [Roles.TEACHER, Roles.MANAGER];
-export const ROLES_WITH_GRADUATION_YEAR = [Roles.STUDENT, Roles.MANAGER];
+export const ROLES_WITH_CLASS = [Roles.STUDENT, Roles.MANAGER];
 
-export const roleHasGraduationYear = (role: Roles) =>
-  ROLES_WITH_GRADUATION_YEAR.includes(role);
+export const roleHasClass = (role: Roles) => ROLES_WITH_CLASS.includes(role);
 
 export const roleHasChildren = (role: Roles) => role === Roles.PARENT;
 

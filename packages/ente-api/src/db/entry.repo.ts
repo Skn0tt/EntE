@@ -58,12 +58,12 @@ export class EntryRepo {
     return !!entry ? Some(EntryRepo.toDto(entry)) : None();
   }
 
-  async findByYear(
-    year: number,
+  async findByClass(
+    _class: string,
     paginationInfo: PaginationInformation
   ): Promise<EntryDto[]> {
     const entry = await withPagination(paginationInfo)(
-      this._studentsQuery().where("student.graduationYear = :year", { year })
+      this._studentsQuery().where("student.class = :_class", { _class })
     ).getMany();
 
     return entry.map(EntryRepo.toDto);

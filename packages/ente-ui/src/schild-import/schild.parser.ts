@@ -39,8 +39,8 @@ const parseDateToISO = (date: string) => {
   return `${year}-${month}-${day}`;
 };
 
-const parseGradYear = (gradDate: string): number => {
-  return getYear(parseISO(gradDate));
+const parseYear = (date: string): number => {
+  return getYear(parseISO(date));
 };
 
 const renameDuplicateUsernames = <T extends CreateUserDto>(users: T[]): T[] => {
@@ -94,7 +94,7 @@ const parseInput = (input: any[]) => {
         username: deriveUsername(v.firstName, v.lastName),
         displayname: deriveDisplayname(v.firstName, v.lastName),
         birthday: parseDateToISO(v.birthday),
-        graduationYear: parseGradYear(parseDateToISO(v.gradDate)),
+        class: "" + parseYear(parseDateToISO(v.gradDate)),
         email: v.email,
         role: Roles.STUDENT,
         parentEmail: v.parent.email,
@@ -105,7 +105,7 @@ const parseInput = (input: any[]) => {
         displayname: deriveDisplayname(v.parent.firstName, v.parent.lastName),
         email: v.parent.email,
         role: Roles.PARENT,
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         children: []
       }

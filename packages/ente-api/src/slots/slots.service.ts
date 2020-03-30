@@ -40,8 +40,8 @@ export class SlotsService {
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        return await this.slotRepo.findByYearOfStudent(
-          user.graduationYear!,
+        return await this.slotRepo.findByClassOfStudent(
+          user.class!,
           paginationInfo
         );
 
@@ -88,8 +88,7 @@ export class SlotsService {
       s => {
         switch (requestingUser.role) {
           case Roles.MANAGER:
-            const isSameYear =
-              s.student.graduationYear === (user as UserDto).graduationYear!;
+            const isSameYear = s.student.class === (user as UserDto).class!;
             if (!isSameYear) {
               return Fail(FindOneSlotFailure.ForbiddenForUser);
             }

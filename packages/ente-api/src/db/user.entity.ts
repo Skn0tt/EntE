@@ -63,9 +63,9 @@ export class User {
   @IsIn(rolesArr)
   role: Roles;
 
-  @Column("smallint", { nullable: true })
+  @Column("varchar", { nullable: true })
   @IsInt()
-  graduationYear: number | null;
+  class: string | null;
 
   @Column("varchar", { nullable: false, default: "" })
   @IsString()
