@@ -2,7 +2,6 @@ stages:
   - test
   - build
   - test:e2e
-  - generate
   - deploy
   - release
 
@@ -114,40 +113,6 @@ test:e2e:
     reports:
       junit: e2e.xml
 
-generate:docs:
-  image: python:3.8.0
-  stage: generate
-  dependencies: []
-  cache:
-    key: "generate-docs"
-    paths:
-      - .cache/pip
-      - venv/
-  script: "./scripts/ci/generate_docs.sh"
-  artifacts:
-    paths:
-      - docs_dist/
-
-generate:allure:
-  image: skn0tt/allure:e251d33f2ea388f1e2ce97ad9968ba1f03f65d3e320c692dff6ac1d36f9e4ca0
-  stage: generate
-  dependencies:
-    - test:unit
-    - test:e2e
-  script: "./scripts/ci/generate_allure.sh"
-  artifacts:
-    paths:
-      - allure-report/
-
-generate:pages:
-  image: node:10
-  stage: generate
-  dependencies: []
-  script: "./scripts/ci/generate_pages.sh"
-  artifacts:
-    paths:
-      - assets/pages/dist/
-
 .now_deploy_template: &now_deploy_template
   image: node:10
   stage: deploy
@@ -159,45 +124,11 @@ generate:pages:
   before_script:
     - yarn global add now@16.7.3
 
-deploy:pages:
+deploy:landing-page:
   <<: *now_deploy_template
-  dependencies:
-    - generate:pages
   script:
-    # assets/pages/dist contains pages
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name product-website assets/pages/dist)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT ente.app
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT www.ente.app
-
-deploy:coverage:
-  <<: *now_deploy_template
-  dependencies:
-    - test:unit
-  script:
-    # coverage/lcov-report contains line coverage report
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name coverage-report coverage/lcov-report/)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT coverage-report.ente.app
-
-deploy:test-report:
-  <<: *now_deploy_template
-  dependencies:
-    - generate:allure
-  script:
-    # allure-report/ contains report files
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name test-report allure-report)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT test-report.ente.app
-
-deploy:docs:
-  <<: *now_deploy_template
-  dependencies:
-    - generate:docs
-  script:
-    - NOW_DEPLOYMENT=$(now $NOW_SECRET $NOW_SCOPE --name docs docs_dist)
-    - sleep 10
-    - now $NOW_SECRET $NOW_SCOPE alias $NOW_DEPLOYMENT docs.ente.app
+    - cd assets/landing-page
+    - now $NOW_SECRET $NOW_SCOPE -c --prod
 
 deploy:images:
   image: docker:19.03.5

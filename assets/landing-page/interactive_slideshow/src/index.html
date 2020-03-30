@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Slideshow</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: gainsboro;
+      }
+
+      #interactive_slideshow_root {
+        width: 480px;
+        height: 270px;
+        margin: auto;
+        margin-top: 50px;
+      }
+
+      #interactive_slideshow_root_phone {
+        height: 480px;
+        width: 270px;
+        margin: auto;
+        margin-top: 50px;
+      }
+
+      .fullscreen {
+        height: 100%;
+      }
+    </style>
+
+    <div id="interactive_slideshow_root"></div>
+    <div id="interactive_slideshow_root_phone"></div>
+    <script src="./index.tsx"></script>
+    <script>
+      new InteractiveSlideshow(
+        document.getElementById("interactive_slideshow_root"),
+        "landscape"
+      );
+
+      new InteractiveSlideshow(
+        document.getElementById("interactive_slideshow_root_phone"),
+        "portrait"
+      );
+    </script>
+  </body>
+</html>
