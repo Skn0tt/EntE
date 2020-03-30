@@ -154,7 +154,7 @@ deploy:pages:
   stage: landingpage
   script:
     - cd assets/landing-page
-    - now $NOW_SECRET $NOW_SCOPE --name product-website --prod
+    - now $NOW_SECRET $NOW_SCOPE -c --prod
 
 deploy:coverage:
   <<: *now_deploy_template
