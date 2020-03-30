@@ -1,5 +1,0 @@
-{
-  "scripts": {
-    "prepare": "cp ../assets/video/Einleitung\\ EntE.mp4 de/content/manual/introduction.mp4"
-  }
-}
