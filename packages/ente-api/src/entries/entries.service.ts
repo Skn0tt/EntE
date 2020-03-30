@@ -97,7 +97,7 @@ export class EntriesService {
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
         return Success(
-          await this.entryRepo.findByYear(user.graduationYear!, paginationInfo)
+          await this.entryRepo.findByClass(user.class!, paginationInfo)
         );
 
       case Roles.PARENT:
@@ -155,8 +155,7 @@ export class EntriesService {
 
           case Roles.MANAGER:
             const belongsStudentOfYear =
-              e.student.graduationYear ===
-              (user as Maybe<UserDto>).some().graduationYear;
+              e.student.class === (user as Maybe<UserDto>).some().class;
             return belongsStudentOfYear
               ? Success(e)
               : Fail(FindEntryFailure.ForbiddenForUser);
@@ -313,7 +312,7 @@ export class EntriesService {
       const userIsManager = requestingUser.role === Roles.MANAGER;
       if (userIsManager) {
         const entryBelongsManager =
-          entry.some().student.graduationYear === requestingUser.graduationYear;
+          entry.some().student.class === requestingUser.class;
         if (!entryBelongsManager) {
           return Fail(PatchEntryFailure.ForbiddenForUser);
         }

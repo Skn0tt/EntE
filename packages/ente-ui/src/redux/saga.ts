@@ -513,9 +513,9 @@ function* updateManagerNotesSaga(
 
 function* promoteTeacherSaga(action: Action<PromoteTeacherRequestPayload>) {
   try {
-    const { gradYear, id } = action.payload!;
+    const { class: _class, id } = action.payload!;
     const token: Maybe<string> = yield select(selectors.getToken);
-    yield call(api.promoteTeacher, id, gradYear, token.some());
+    yield call(api.promoteTeacher, id, _class, token.some());
     yield put(promoteTeacherSuccess(action.payload!, action));
   } catch (error) {
     yield put(promoteTeacherError(error, action));

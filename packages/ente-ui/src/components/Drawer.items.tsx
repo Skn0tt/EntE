@@ -22,16 +22,16 @@ const useTranslation = makeTranslationHook({
     users: "Users",
     entries: "Entries",
     admin: "Admin",
-    graduationYear: "Grad Year",
-    graduationYears: "Grad Years"
+    class: "Class",
+    classes: "Classes"
   },
   de: {
     slots: "Stunden",
     users: "Nutzer",
     entries: "Einträge",
     admin: "Admin",
-    graduationYear: "Jahrgangsstufe",
-    graduationYears: "Jahrgangsstufen"
+    class: "Klasse / Jahrgangsstufe",
+    classes: "Klassen / Jahrgangsstufen"
   }
 });
 
@@ -102,18 +102,16 @@ const Admin: React.SFC = () => {
   );
 };
 
-const GraduationYear: React.SFC<{ plural?: boolean }> = ({ plural }) => {
+const Class: React.SFC<{ plural?: boolean }> = ({ plural }) => {
   const lang = useTranslation();
   return (
     <Route
       render={({ history }) => (
-        <ListItem button onClick={() => history.push("/graduationYears")}>
+        <ListItem button onClick={() => history.push("/classes")}>
           <ListItemIcon>
             <School />
           </ListItemIcon>
-          <ListItemText
-            primary={plural ? lang.graduationYears : lang.graduationYear}
-          />
+          <ListItemText primary={plural ? lang.classes : lang.class} />
         </ListItem>
       )}
     />
@@ -127,7 +125,7 @@ export const AdminItems: React.SFC = () => (
   <>
     <Entries />
     <Slots />
-    <GraduationYear plural />
+    <Class plural />
     <Users />
     <Admin />
   </>
@@ -154,7 +152,7 @@ export const ParentItems: React.SFC = () => (
 export const ManagerItems: React.SFC = () => (
   <>
     <Entries />
-    <GraduationYear />
+    <Class />
     <Slots />
   </>
 );

@@ -63,13 +63,13 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  async findByYearOfStudent(
-    year: number,
+  async findByClassOfStudent(
+    _class: string,
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
-      this._slotQueryWithTeacher().where("student.graduationYear = :year", {
-        year
+      this._slotQueryWithTeacher().where("student.class = :_class", {
+        _class
       })
     ).getMany();
 

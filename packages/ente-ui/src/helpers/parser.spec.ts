@@ -10,7 +10,7 @@ import parse from "./parser";
 import { Roles, CreateUserDto } from "ente-types";
 
 const sampleData = `
-username,displayname,email,password,role,birthday,graduationYear,children
+username,displayname,email,password,role,birthday,class,children
 schüler,S. Schüler,sschüler@email.com,,student,2100-04-02,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,Piet Vater,pvater@arcor.de,,parent,,,schüler
@@ -18,7 +18,7 @@ leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataError = `
-username,displayname,email,password,role,birthday,graduationYear,children
+username,displayname,email,password,role,birthday,class,children
 schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,PVater,pvaterarcor.de,parent,,,,schüler
@@ -26,7 +26,7 @@ leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataUnknownStudent = `
-username,displayname,email,password,role,birthday,graduationYear,children
+username,displayname,email,password,role,birthday,class,children
 schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
 lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
 vater,Piet Vater,pvater@arcor.de,,parent,,,schüler2
@@ -34,7 +34,7 @@ leiter,l.leiter,leiter@email.de,,manager,,2019,
 `;
 
 const exampleImport = `
-username;displayname;email;password;role;birthday;graduationYear;children
+username;displayname;email;password;role;birthday;class;children
 norahparis;Norah Paris;test@test.com;p4sswort!;student;2000-01-01;2019;
 marcusparis;Marcus Paris;test@test.com;p4sswort!;student;2100-01-01;2021;
 seymourparis;Seymour Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
@@ -58,7 +58,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2019,
+        class: "2019",
         birthday: "2000-01-01",
         role: Roles.STUDENT
       },
@@ -68,7 +68,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2021,
+        class: "2021",
         birthday: "2100-01-01",
         role: Roles.STUDENT
       },
@@ -78,7 +78,7 @@ describe("parse", () => {
         children: ["norahparis", "marcusparis"],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -88,7 +88,7 @@ describe("parse", () => {
         children: ["norahparis", "marcusparis"],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -98,7 +98,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2019,
+        class: "2019",
         birthday: "2100-01-01",
         role: Roles.STUDENT
       },
@@ -108,7 +108,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2021,
+        class: "2021",
         birthday: "2100-01-01",
         role: Roles.STUDENT
       },
@@ -118,7 +118,7 @@ describe("parse", () => {
         children: ["montyabrams", "penabrams"],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -128,7 +128,7 @@ describe("parse", () => {
         children: ["montyabrams", "penabrams"],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -138,7 +138,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.TEACHER
       },
@@ -148,7 +148,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: undefined,
+        class: undefined,
         birthday: undefined,
         role: Roles.TEACHER
       },
@@ -158,7 +158,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2019,
+        class: "2019",
         birthday: undefined,
         role: Roles.MANAGER
       },
@@ -168,7 +168,7 @@ describe("parse", () => {
         children: [],
         email: "test@test.com",
         password: "p4sswort!",
-        graduationYear: 2021,
+        class: "2021",
         birthday: undefined,
         role: Roles.MANAGER
       }
@@ -186,7 +186,7 @@ describe("parse", () => {
         children: [],
         role: Roles.STUDENT,
         birthday: "2100-04-02",
-        graduationYear: 2019,
+        class: "2019",
         password: undefined
       },
       {
@@ -196,7 +196,7 @@ describe("parse", () => {
         children: [],
         role: Roles.TEACHER,
         birthday: undefined,
-        graduationYear: undefined,
+        class: undefined,
         password: undefined
       },
       {
@@ -206,7 +206,7 @@ describe("parse", () => {
         children: ["schüler"],
         role: Roles.PARENT,
         birthday: undefined,
-        graduationYear: undefined,
+        class: undefined,
         password: undefined
       },
       {
@@ -216,7 +216,7 @@ describe("parse", () => {
         birthday: undefined,
         role: Roles.MANAGER,
         children: [],
-        graduationYear: 2019,
+        class: "2019",
         password: undefined
       }
     ];

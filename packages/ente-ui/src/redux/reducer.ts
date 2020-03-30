@@ -573,14 +573,14 @@ const reducer = handleActions<AppState | undefined, any>(
       PROMOTE_TEACHER_ERROR,
       PROMOTE_TEACHER_SUCCESS,
       (state: AppState, action: Action<PromoteTeacherSuccessPayload>) => {
-        const { gradYear, id } = action.payload!;
+        const { class: _class, id } = action.payload!;
         return state.update("usersMap", usersMap => {
           if (!usersMap.has(id)) {
             return usersMap;
           }
 
           return usersMap.update(id, teacher =>
-            teacher.set("role", Roles.MANAGER).set("graduationYear", gradYear)
+            teacher.set("role", Roles.MANAGER).set("class", _class)
           );
         });
       }
@@ -599,7 +599,7 @@ const reducer = handleActions<AppState | undefined, any>(
           }
 
           return usersMap.update(managerId, manager =>
-            manager.set("role", Roles.TEACHER).set("graduationYear", undefined)
+            manager.set("role", Roles.TEACHER).set("class", undefined)
           );
         });
       }

@@ -431,7 +431,7 @@ export const updateManagerNotesError = createMetaAction<
 
 export interface PromoteTeacherRequestPayload {
   id: string;
-  gradYear: number;
+  class: string;
 }
 
 export type PromoteTeacherSuccessPayload = PromoteTeacherRequestPayload;

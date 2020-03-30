@@ -123,9 +123,7 @@ export class UsersService implements OnModuleInit {
 
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        const students = await this.userRepo.findByGraduationYear(
-          user.graduationYear!
-        );
+        const students = await this.userRepo.findByClass(user.class!);
         return Success([...students, user]);
 
       case Roles.PARENT:
@@ -201,8 +199,7 @@ export class UsersService implements OnModuleInit {
 
           case Roles.MANAGER:
             const requestingUser = (await _requestingUser.getDto()).some();
-            const isManagersYear =
-              u.graduationYear === requestingUser.graduationYear!;
+            const isManagersYear = u.class === requestingUser.class!;
             return isManagersYear
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
@@ -394,9 +391,9 @@ export class UsersService implements OnModuleInit {
       user.some().email = patch.email;
     }
 
-    if (!!patch.graduationYear) {
-      await this.userRepo.setYear(id, patch.graduationYear);
-      user.some().graduationYear = patch.graduationYear;
+    if (!!patch.class) {
+      await this.userRepo.setYear(id, patch.class);
+      user.some().class = patch.class;
     }
 
     if (!!patch.language) {
@@ -493,9 +490,7 @@ export class UsersService implements OnModuleInit {
       return Fail(UpdateManagerNotesFailure.ForbiddenForUser);
     }
 
-    const {
-      graduationYear: gradYearOfRequestingManager
-    } = requestingUserDto.some();
+    const { class: classOfRequestingManager } = requestingUserDto.some();
 
     const user = await this.userRepo.findById(studentId);
 
@@ -504,8 +499,7 @@ export class UsersService implements OnModuleInit {
     >(
       async () => Fail(UpdateManagerNotesFailure.StudentNotFound),
       async userDto => {
-        const isStudentOfManager =
-          userDto.graduationYear === gradYearOfRequestingManager;
+        const isStudentOfManager = userDto.class === classOfRequestingManager;
         if (!isStudentOfManager) {
           return Fail(UpdateManagerNotesFailure.ForbiddenForUser);
         }
@@ -519,7 +513,7 @@ export class UsersService implements OnModuleInit {
 
   async promoteTeacher(
     teacherId: string,
-    gradYear: number,
+    _class: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<PromoteTeacherFailure, true>> {
     if (requestingUser.role !== Roles.ADMIN) {
@@ -528,7 +522,7 @@ export class UsersService implements OnModuleInit {
 
     const foundTeacher = await this.userRepo.promoteToManager(
       teacherId,
-      gradYear
+      _class
     );
     if (!foundTeacher) {
       return Fail(PromoteTeacherFailure.TeacherNotFound);
@@ -569,7 +563,7 @@ export class UsersService implements OnModuleInit {
       case Roles.MANAGER:
         return {
           ...baseUser,
-          graduationYear: user.graduationYear,
+          class: user.class,
           email: user.email,
           managerNotes: user.managerNotes
         };

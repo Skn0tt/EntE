@@ -17,6 +17,11 @@ import {
   SyncValidator
 } from "./shared";
 import { containsUnknownChar } from "./containsUnknownChar";
+import { Validator } from "class-validator";
+
+const v = new Validator();
+
+export const isValidClass: SyncValidator<string> = s => v.isAscii(s);
 
 /**
  * Validates a username

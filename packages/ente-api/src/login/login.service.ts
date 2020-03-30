@@ -57,8 +57,8 @@ export class LoginService {
           NO_PAGINATION_INFO
         );
       case Roles.MANAGER:
-        return await this.entryRepo.findByYear(
-          user.graduationYear!,
+        return await this.entryRepo.findByClass(
+          user.class!,
           NO_PAGINATION_INFO
         );
       default:
@@ -79,9 +79,7 @@ export class LoginService {
       case Roles.STUDENT:
         return [...(await this.userRepo.findByRoles(...TEACHING_ROLES)), user];
       case Roles.MANAGER:
-        return [
-          ...(await this.userRepo.findByGraduationYear(user.graduationYear!))
-        ];
+        return [...(await this.userRepo.findByClass(user.class!))];
       case Roles.TEACHER:
         return [user];
       default:

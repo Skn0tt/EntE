@@ -46,10 +46,11 @@ import {
   updateUserRequest,
   UserN,
   deleteUserRequest,
-  roleHasGradYear,
+  roleHasClass,
   getToken,
   demoteManagerRequest,
-  promoteTeacherRequest
+  promoteTeacherRequest,
+  getUsers
 } from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import {
@@ -62,7 +63,6 @@ import {
   Roles
 } from "ente-types";
 import { DeleteModal } from "../components/DeleteModal";
-import { YearPicker } from "../elements/YearPicker";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { DateInput } from "../elements/DateInput";
@@ -70,8 +70,7 @@ import { Link } from "react-router-dom";
 import { useMessages } from "../context/Messages";
 import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 import { useRoleTranslation } from "../roles.translation";
-
-const currentYear = new Date().getFullYear();
+import { ClassPicker } from "../elements/ClassPicker";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -85,7 +84,7 @@ const useTranslation = makeTranslationHook({
       birthday: "Birthday",
       username: "Username",
       role: "Role",
-      gradYear: "Graduation Year",
+      class: "Class",
       areYouSureYouWannaDelete: (username: string) =>
         `Are you sure you want to delete user "${username}"?`
     },
@@ -111,7 +110,7 @@ const useTranslation = makeTranslationHook({
       birthday: "Geburtstag",
       username: "Benutzername",
       role: "Rolle",
-      gradYear: "Abschluss-Jahrgang",
+      class: "Klasse / Abschluss-Jahrgang",
       areYouSureYouWannaDelete: (username: string) =>
         `Sind Sie sicher, dass Sie den Nutzer "${username}" löschen möchten?`
     },
@@ -144,6 +143,7 @@ interface RouteMatch {
 }
 interface SpecificUserStateProps {
   getUser(id: string): Maybe<UserN>;
+  availableClasses: string[];
   loading: boolean;
   students: UserN[];
   token: string;
@@ -154,6 +154,11 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => ({
   getUser: id => getUser(id)(state),
+  availableClasses: _.uniq(
+    getUsers(state)
+      .map(u => u.get("class"))
+      .filter(_.isString)
+  ),
   loading: isLoading(state),
   students: getStudents(state),
   token: getToken(state).some()
@@ -163,7 +168,7 @@ interface SpecificUserDispatchProps {
   requestUser(id: string): void;
   updateUser(id: string, u: PatchUserDto): void;
   deleteUser(id: string): void;
-  promote(id: string, gradYear: number): void;
+  promote(id: string, _class: string): void;
   demote(id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
@@ -173,7 +178,8 @@ const mapDispatchToProps: MapDispatchToPropsParam<
   requestUser: id => dispatch(getUserRequest(id)),
   updateUser: (id, user) => dispatch(updateUserRequest([id, user])),
   deleteUser: id => dispatch(deleteUserRequest(id)),
-  promote: (id, gradYear) => dispatch(promoteTeacherRequest({ id, gradYear })),
+  promote: (id, _class) =>
+    dispatch(promoteTeacherRequest({ id, class: _class })),
   demote: id => dispatch(demoteManagerRequest(id))
 });
 
@@ -209,7 +215,8 @@ export const SpecificUser: React.FunctionComponent<
     requestUser,
     token,
     promote,
-    demote
+    demote,
+    availableClasses
   } = props;
 
   const userId = match.params.userId;
@@ -228,7 +235,8 @@ export const SpecificUser: React.FunctionComponent<
 
   const updatePatch = (key: keyof PatchUserDto) => (value: any) => {
     const clone = Object.assign({}, patch);
-    clone[key] = value;
+    const isSameAsOrigin = user.some().get(key) === value;
+    clone[key] = isSameAsOrigin ? undefined : value;
     setPatch(clone);
   };
 
@@ -310,7 +318,12 @@ export const SpecificUser: React.FunctionComponent<
 
                   {user.get("role") === Roles.TEACHER && (
                     <MenuItem
-                      onClick={() => promote(user.get("id"), currentYear)}
+                      onClick={() =>
+                        promote(
+                          user.get("id"),
+                          availableClasses[0] || "default"
+                        )
+                      }
                     >
                       {lang.promote}
                     </MenuItem>
@@ -378,14 +391,16 @@ export const SpecificUser: React.FunctionComponent<
                   )}
 
                   {/* Graduation Year */}
-                  {roleHasGradYear(user.get("role")) && (
+                  {roleHasClass(user.get("role")) && (
                     <Grid item xs={6}>
-                      <YearPicker
-                        label={lang.titles.gradYear}
-                        onChange={updatePatch("graduationYear")}
-                        amount={5}
+                      <ClassPicker
+                        label={lang.titles.class}
+                        onChange={updatePatch("class")}
+                        availableClasses={availableClasses}
                         value={
-                          patch.graduationYear! || user.get("graduationYear")!
+                          _.isUndefined(patch.class)
+                            ? user.get("class")!
+                            : patch.class
                         }
                       />
                     </Grid>

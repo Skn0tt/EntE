@@ -542,10 +542,10 @@ export const updateManagerNotes = async (
 
 export async function promoteTeacher(
   teacherId: string,
-  gradYear: number,
+  _class: string,
   token: string
 ) {
-  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, gradYear, {
+  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, _class, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain"
@@ -555,9 +555,4 @@ export async function promoteTeacher(
 
 export async function demoteManager(managerId: string, token: string) {
   await post(`${getBaseUrl()}/users/${managerId}/demote`, token);
-  /* TODO: remove
-  await post(`${getBaseUrl()}/users/${managerId}/demote`, token, undefined, {
-    transformResponse: []
-  });
-  */
 }

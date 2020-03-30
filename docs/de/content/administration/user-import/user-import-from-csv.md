@@ -18,7 +18,7 @@ Jeder Nutzer hat verschiedene Eigenschaften, die gesetzt werden müssen:
 - role (Rolle des Nutzers)
 - birthday (Geburtstag)
 - children (Liste der Kinder des Nutzers)
-- graduationYear (vorraussichtliches Abitur-Jahr des Nutzers)
+- class (Klasse bzw. oder Abschlussjahr des Nutzers)
 
 Falls `password` leer ist, erhält der/die Nutzer\*in bei der Erstellung eine Einladungs-Email, mit der er/sie das Passwort selber festlegen kann.
 
@@ -29,7 +29,7 @@ Hat ein*e Nutzer\*in keine Kinder, so wird es einfach freigelassen.
 `birthday` muss nur für Schüler gesetzt werden.
 Tragen sie hier das Geburtstag des Schülers im ISO-8601-Format ein (z.B. "2002-02-01" für den 01. Februar 2002).
 
-`graduationYear` muss für Schüler und Stufenleiter gesetzt werden und enthält das vorraussichtliche Abitur-Jahr des/der Schüler\*in bzw. das Abitur-Jahr der Stufe, die der Stufenleiter betreut.
+`class` muss für Schüler und Stufenleiter gesetzt werden und enthält die Klasse bzw. das vorraussichtliche Abitur-Jahr des/der Schüler\*in bzw. die Klasse / das Abitur-Jahr der Stufe, die der Stufenleiter betreut.
 
 `role` enthält die Rolle des Nutzers: `admin` (Administrator), `parent` (Elternteil), `student` (Schüler), `manager` (Stufenleiter) oder `teacher` (Lehrer).
 
@@ -38,7 +38,7 @@ Die erste Zeile der Import-Datei muss die Spalten-Überschriften enthalten.
 Eine Import-Datei könnte zum Beispiel so aussehen:
 
 ```csv
-username,displayname,email,role,birthday,graduationYear,children
+username,displayname,email,role,birthday,class,children
 maxmueller,Max Mueller,mmueller@gmail.com,student,2000-02-01,2019,
 majamueller,Maja Mueller,maja@mueller.de,student,2001-02-01,2019,
 tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,

@@ -99,7 +99,7 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     birthday: undefined,
     role: Roles.STUDENT,
     childrenIds: [],
-    graduationYear: undefined,
+    class: undefined,
     language: undefined,
     managerNotes: undefined,
     subscribedToWeeklySummary: undefined
@@ -114,7 +114,7 @@ export const userIsTeacher = (u: UserN) => u.get("role") === Roles.TEACHER;
 export const userIsTeaching = (u: UserN) => roleIsTeaching(u.get("role"));
 export const userHasChildren = (u: UserN) => userIsParent(u);
 export const roleHasChildren = (r: Roles) => r === Roles.PARENT;
-export const roleHasGradYear = (r: Roles) =>
+export const roleHasClass = (r: Roles) =>
   [Roles.MANAGER, Roles.STUDENT].includes(r);
 
 export type EntryN = ImmutableRecord<EntryDtoNormalised>;

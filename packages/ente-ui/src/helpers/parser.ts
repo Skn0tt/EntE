@@ -56,9 +56,7 @@ const parseCSV = async (
       birthday: !!row.birthday ? row.birthday : undefined,
       children: !!row.children ? row.children.split(":") : [],
       password: !isBlank(row.password) ? row.password : undefined,
-      graduationYear: isBlank(row.graduationYear)
-        ? undefined
-        : +row.graduationYear
+      class: isBlank(row.class) ? undefined : "" + row.class
     };
 
     return res;
