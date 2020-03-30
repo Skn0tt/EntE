@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "build": "parcel build src/index.tsx --experimental-scope-hoisting",
+    "dev": "parcel src/index.html"
+  },
+  "dependencies": {
+    "@date-io/date-fns": "v1.x",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
+    "@material-ui/styles": "^4.9.0",
+    "date-fns": "^2.10.0",
+    "framer-motion": "^1.9.1",
+    "parcel": "^1.12.4",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-full-screen": "^0.2.4",
+    "typescript": "^3.8.3"
+  }
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="<%= I18n.t(:seo)[:description] %>"
+    />
+    <meta name="author" content="<%= I18n.t(:seo)[:author] %>" />
+
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
+    <meta property="og:site_name" content="<%= I18n.t(:seo)[:og_site_name] %>" />
+    <!-- website name -->
+    <meta property="og:site" content="<%= I18n.t(:seo)[:og_site] %>" />
+    <!-- website link -->
+    <meta property="og:title" content="<%= I18n.t(:seo)[:og_title] %>" />
+    <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="<%= I18n.t(:seo)[:description] %>" />
+    <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="/images/promo_poster.jpg" />
+    <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="https://ente.app" />
+    <!-- where do you want your post to link to -->
+    <meta property="og:type" content="website" />
+
+    <!-- Website Title -->
+    <title><%= t(:title) %></title>
+
+    <!-- Styles -->
+    
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext"
+      rel="stylesheet"
+    />
+    <%= stylesheet_link_tag "bootstrap" %>
+    <%= stylesheet_link_tag "fontawesome-all" %>
+    <%= stylesheet_link_tag "swiper" %>
+    <%= stylesheet_link_tag "magnific-popup" %>
+    <%= stylesheet_link_tag "site" %>
+
+    <!-- FavIcon -->
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+      var _paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setDomains", ["*.new.ente.app"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//matomo.simonknott.de/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '2']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
+  </head>
+  <body data-spy="scroll" data-target=".fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+      <div class="container">
+
+        <!-- Image Logo -->
+        <% link_to '/index.html', :class => "navbar-brand logo-image" do %>
+          <%= image_tag "EntE-Logo.svg", :alt => "alternative" %>
+        <% end %>
+
+
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <a class="navbar-brand logo-text page-scroll" href="index.html">EntE</a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarsExampleDefault"
+          aria-controls="navbarsExampleDefault"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-awesome fas fa-bars"></span>
+          <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+        <!-- end of mobile menu toggle button -->
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="#header"
+                ><%= t(:navbar)[:start] %> <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="#for-schools"><%= t(:navbar)[:for_schools] %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="#for-students"><%= t(:navbar)[:for_students] %></a>
+            </li>
+
+          </ul>
+          <span class="nav-item">
+            <a id="first_contact_button" class="btn-outline-sm popup-with-move-anim" href="#first-contact-lightbox">
+              <span id="first_contact_text_small">
+                <%= t(:navbar)[:first_contact_small] %>
+              </span>
+              <span style="display: none;" id="first_contact_text">
+                <%= t(:navbar)[:first_contact] %>
+              </span>
+            </a>
+          </span>
+        </div>
+      </div>
+      <!-- end of container -->
+    </nav>
+    <!-- end of navbar -->
+    <!-- end of navigation -->
+
+    <div
+      id="first-contact-lightbox"
+      class="lightbox-basic zoom-anim-dialog mfp-hide"
+    >
+      <div class="container">
+        <div class="row justify-content-center">
+          <button title="Close (Esc)" type="button" class="mfp-close x-button">
+            ×
+          </button>
+
+          <div class="col-lg-8">
+
+            <h3>
+              <%= I18n.t(:first_contact)[:title] %>
+            </h3>
+            <hr />
+
+            <p>
+              <%= I18n.t(:first_contact)[:body] %>
+            </p>
+
+            <form
+              action="/api/form"
+              method="POST"
+            >
+              <div class="form-group has-error has-danger">
+                <input
+                  type="email"
+                  class="form-control-input"
+                  name="email"
+                  required
+                >
+
+                <label class="label-control" for="email">Email</label>
+              </div>
+
+              <div class="form-group has-error has-danger">
+                <button
+                  type="submit"
+                  class="btn-solid-reg"
+                >
+                  <%= I18n.t(:first_contact)[:send] %>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </div>
+
+    <%= yield %>
+
+    <!-- Footer -->
+    <svg
+      class="footer-frame"
+      data-name="Layer 2"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="none"
+      viewBox="0 0 1920 79"
+    >
+      <defs>
+        <style>
+          .cls-2 {
+            fill: #2196f3;
+          }
+        </style>
+      </defs>
+      <title>footer-frame</title>
+      <path
+        class="cls-2"
+        d="M0,72.427C143,12.138,255.5,4.577,328.644,7.943c147.721,6.8,183.881,60.242,320.83,53.737,143-6.793,167.826-68.128,293-60.9,109.095,6.3,115.68,54.364,225.251,57.319,113.58,3.064,138.8-47.711,251.189-41.8,104.012,5.474,109.713,50.4,197.369,46.572,89.549-3.91,124.375-52.563,227.622-50.155A338.646,338.646,0,0,1,1920,23.467V79.75H0V72.427Z"
+        transform="translate(0 -0.188)"
+      />
+    </svg>
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="footer-col first">
+              <h4><%= I18n.t(:about)[:title] %></h4>
+              <p class="p-small">
+                <%= I18n.t(:about)[:body] %>
+              </p>
+            </div>
+          </div>
+          <!-- end of col -->
+          <div class="col-md-6">
+            <div class="footer-col last">
+              <h4><%= I18n.t(:contact)[:title] %></h4>
+              <ul class="list-unstyled li-space-lg p-small">
+                <li class="media">
+                  <i class="fas fa-user"></i>
+                  <div class="media-body">
+                    Simon Knott, Stahnsdorfer Straße 142b, 14482 Potsdam
+                  </div>
+                </li>
+                <li class="media">
+                  <i class="fas fa-envelope"></i>
+                  <div class="media-body">
+                    <a class="white" href="mailto:contact@tivo.com"
+                      >info@ente.app</a
+                    >
+                    <i class="fas fa-globe"></i
+                    ><a class="white" href="https://ente.app">ente.app</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of footer -->
+    <!-- end of footer -->
+
+    <!-- Copyright -->
+    <div class="copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <p class="p-small">
+              Copyright Simon Knott © 2020
+              <a href="https://inovatik.com">Template by Inovatik</a>
+              
+              <a class="white" href="privacy-policy.html"
+                ><%= t(:privacy_policy) %></a
+              >
+            </p>
+          </div>
+          <!-- end of col -->
+        </div>
+        <!-- enf of row -->
+      </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of copyright -->
+    <!-- end of copyright -->
+
+    <!-- Scripts -->
+    <%= javascript_include_tag "jquery.min" %>
+    <%= javascript_include_tag "popper.min" %>
+    <%= javascript_include_tag "bootstrap.min" %>
+    <%= javascript_include_tag "jquery.easing.min" %>
+    <%= javascript_include_tag "swiper.min" %>
+    <%= javascript_include_tag "jquery.magnific-popup" %>
+    <%= javascript_include_tag "validator.min" %>
+    <%= javascript_include_tag "scripts" %>
+  </body>
+</html>
+
