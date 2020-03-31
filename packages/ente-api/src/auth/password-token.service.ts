@@ -1,12 +1,11 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RedisService } from "../infrastructure/redis.service";
-import { hours } from "../helpers/time";
 import { randomBytes } from "crypto";
 import { Validation, Success, Fail } from "monet";
 
 interface PasswordResetTokenRedisPayload {
   userId: string;
-  expires: number;
+  expires: number | null;
   isInvitation: boolean;
 }
 
@@ -24,20 +23,26 @@ export class PasswordResetTokenService {
   async createToken(
     userId: string,
     isInvitation: boolean,
-    expiryTimeInMilliSeconds: number = hours(24)
+    expiryTimeInMilliSeconds: number | null
   ) {
     const token = await this.generateToken();
     const payload: PasswordResetTokenRedisPayload = {
       userId,
-      expires: Date.now() + expiryTimeInMilliSeconds,
+      expires: !!expiryTimeInMilliSeconds
+        ? Date.now() + expiryTimeInMilliSeconds
+        : null,
       isInvitation
     };
 
-    await this.redisService.setWithExpiry(
-      token,
-      JSON.stringify(payload),
-      expiryTimeInMilliSeconds
-    );
+    if (!!expiryTimeInMilliSeconds) {
+      await this.redisService.setWithExpiry(
+        token,
+        JSON.stringify(payload),
+        expiryTimeInMilliSeconds
+      );
+    } else {
+      await this.redisService.set(token, JSON.stringify(payload));
+    }
 
     return token;
   }
@@ -56,7 +61,7 @@ export class PasswordResetTokenService {
         const { userId, expires, isInvitation } = JSON.parse(
           v
         ) as PasswordResetTokenRedisPayload;
-        if (Date.now() > expires) {
+        if (!!expires && Date.now() > expires) {
           return Fail(FindTokenFailure.TokenExpired);
         }
         return Success({ userId, isInvitation });
