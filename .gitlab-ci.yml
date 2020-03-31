@@ -134,17 +134,21 @@ test:e2e:
   only:
     - master
   variables:
-    NOW_SCOPE: "--scope ente"
-    NOW_SECRET: "--token=$NOW_TOKEN"
+    NOW_SCOPE: ""
+    NOW_SECRET: ""
   before_script:
-    - yarn global add now@16.7.3
+    -
 
 deploy:landing-page:
-  <<: *now_deploy_template
+  image: node:10
+  stage: deploy
+  only:
+    - master
   needs: []
   script:
+    - yarn global add now@17.1.1
     - cd assets/landing-page
-    - now $NOW_SECRET $NOW_SCOPE -c --prod
+    - now --token=$NOW_TOKEN --scope ente -c --prod
 
 deploy:images:
   image: docker:19.03.5
