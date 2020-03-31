@@ -170,7 +170,7 @@ export function Table<T>(props: TableProps<T>) {
         rowsPerPage: 50,
         rowsPerPageOptions: [20, 50, 100],
         selectableRows: "none",
-        responsive: "scrollFullHeight",
+        responsive: "scrollMaxHeight",
         onRowClick: (d: any[]) => onClick(d[0]),
         textLabels: translation.textLabels,
         viewColumns: false,

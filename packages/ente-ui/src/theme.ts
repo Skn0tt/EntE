@@ -30,9 +30,8 @@ export const createTheme = _.memoize(
             flexDirection: "column",
             justifyContent: "flex-start"
           },
-          responsiveScroll: {
-            flexGrow: 1,
-            maxHeight: undefined
+          responsiveScrollMaxHeight: {
+            maxHeight: "unset !important"
           },
           tableRoot: {
             tableLayout: "fixed"
