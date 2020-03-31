@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.32.0] - 2020-03-31
+
+- Feature: Matching students is now done using "class" instead of "graduationYear".
+  This allows class/tutor-based schools to use EntE effectively. ([#342](https://gitlab.com/Skn0tt/EntE/issues/342))
+
 ## [v0.31.4] - 2020-03-03
 
 - Fix crash where browser crashed because `.some()` was called ([346](https://gitlab.com/Skn0tt/EntE/issues/346)
 - Fix crash where browser crashed because `.some()` was called ([347](https://gitlab.com/Skn0tt/EntE/issues/347)
 - Fix bug where children couldn't be updated ([#344](https://gitlab.com/Skn0tt/EntE/issues/344))
-- Feature: Matching students is now done using "class" instead of "graduationYear".
-  This allows class/tutor-based schools to use EntE effectively. ([#342](https://gitlab.com/Skn0tt/EntE/issues/342))
 
 ## [v0.31.3] - 2020-02-26
 
