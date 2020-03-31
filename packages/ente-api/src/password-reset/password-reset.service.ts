@@ -10,7 +10,7 @@ import { hashPassword } from "../helpers/password-hash";
 import { Config } from "../helpers/config";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { isValidPassword, UserDto } from "ente-types";
-import { days } from "../helpers/time";
+import { days, hours } from "../helpers/time";
 import * as querystring from "querystring";
 
 export enum StartPasswordRoutineFailure {
@@ -36,7 +36,7 @@ export class PasswordResetService {
 
   async invokePasswordResetRoutine(
     username: string,
-    expiry?: number
+    expiry: number = hours(24)
   ): Promise<Validation<StartPasswordRoutineFailure, boolean>> {
     const user = await this.userRepo.findByUsername(username);
     if (user.isNone()) {
@@ -62,7 +62,7 @@ export class PasswordResetService {
     const token = await this.passwordTokenService.createToken(
       user.id,
       true,
-      days(7)
+      null
     );
     await this.emailService.dispatchInvitationLink(
       this.getInvitationLink(token, user.username),

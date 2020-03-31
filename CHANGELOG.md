@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Change: Invitation Links do not expire anymore ([#356](https://gitlab.com/Skn0tt/EntE/issues/356))
+
 ## [v0.32.0] - 2020-03-31
 
 - Feature: Matching students is now done using "class" instead of "graduationYear".

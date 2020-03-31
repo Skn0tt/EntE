@@ -41,12 +41,7 @@ const template = Handlebars.compile(`
           <br /> <br />
           
           <a href="{{linkAddress}}">{{linkDisplay}}</a>
-
-          <br /> <br />
-
-          This link is valid for seven days.
-          If your link is too old, refer to the <a href="https://docs.ente.app/">documentation</a>
-          to find out how you can activate your account.
+          
         </mj-text>
       </mj-column>
     </mj-section>
