@@ -9,6 +9,7 @@ Digital Excuse Workflow for Schools.
 - [Documentation](https://docs.ente.app)
 - [Website](https://ente.app/)
 - [Contributing](https://docs.ente.app/contributing)
+- [Demo Instance](https://demo.ente.app)
 
 ## Get Started
 
@@ -26,9 +27,3 @@ If you're a school and you are wondering how this would fit into your workflow, 
 
 This started as my term paper for the year of 2018 and won the [Dr.-Hans-Riegel-Fachpreis](https://www.hans-riegel-fachpreise.com/).
 You can read the [Whitepaper (German)](assets/paper/src/Paper.md).
-
-## Links
-
-- [Coverage Report](https://coverage-report.ente.app)
-- [Test Report](https://test-report.ente.app)
-- [Demo Instance](https://bull.ente.app)
