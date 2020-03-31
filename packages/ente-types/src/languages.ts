@@ -3,9 +3,7 @@ export enum Languages {
   GERMAN = "de"
 }
 
-export const languagesArr = Object.keys(Languages).map(
-  f => Languages[f as any] as Languages
-);
+export const languagesArr = [Languages.ENGLISH, Languages.GERMAN];
 
 export const isValidLanguage = (v: string): v is Languages =>
   (languagesArr as string[]).includes(v);
