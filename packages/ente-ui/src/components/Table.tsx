@@ -2,7 +2,7 @@ import * as React from "react";
 import MUIDataTable from "mui-datatables";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { useKeyValueStorage } from "../context/KeyValueStorage";
+import { useSessionStorage } from "react-use";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -113,13 +113,13 @@ export function Table<T>(props: TableProps<T>) {
     persistenceKey
   } = props;
 
-  const [searchText = undefined, updateSearchText] = useKeyValueStorage<string>(
+  const [searchText = undefined, updateSearchText] = useSessionStorage<string>(
     `${persistenceKey}-searchText`
   );
-  const [filterLists = [], updateFilterLists] = useKeyValueStorage<string>(
+  const [filterLists = [], updateFilterLists] = useSessionStorage<string>(
     `${persistenceKey}-filterLists`
   );
-  const [sortedColumn = [-1, "asc"], updateSortedColumn] = useKeyValueStorage<
+  const [sortedColumn = [-1, "asc"], updateSortedColumn] = useSessionStorage<
     [string, "asc" | "desc"]
   >(`${persistenceKey}-sortedColumn`);
 

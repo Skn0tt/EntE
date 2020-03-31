@@ -25,7 +25,6 @@ import { Maybe } from "monet";
 import withErrorBoundary from "./hocs/withErrorBoundary";
 import Invitation from "./routes/Invitation/Invitation";
 import InstanceConfigGate from "./components/InstanceConfigGate";
-import { KeyValueStorageProvider } from "./context/KeyValueStorage";
 
 const { ROTATION_PERIOD } = config.get();
 
@@ -67,11 +66,9 @@ const App: React.FunctionComponent<AppProps> = props => {
               isLoggedIn={authValid}
               purgeStaleData={purgeStaleData}
             >
-              <KeyValueStorageProvider>
-                <Drawer>
-                  <Routes role={role.orSome(Roles.STUDENT)} />
-                </Drawer>
-              </KeyValueStorageProvider>
+              <Drawer>
+                <Routes role={role.orSome(Roles.STUDENT)} />
+              </Drawer>
             </AuthenticatedRoute>
           </Switch>
         </>

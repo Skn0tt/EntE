@@ -221,7 +221,9 @@ export class CreateUser extends React.PureComponent<
   /**
    * ## Input Handlers
    */
-  update = (key: keyof CreateUserDto) => (value: any) => {
+  update = <K extends keyof CreateUserDto>(key: K) => (
+    value: CreateUserDto[K]
+  ) => {
     const clone = Object.assign({}, this.state.create);
     clone[key] = value;
     this.setState({ create: clone });

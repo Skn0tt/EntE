@@ -50,8 +50,10 @@ export class KeyValueStoreRepo {
     const items = await this.repo.find({ key: In(keys) });
 
     return _.defaults(
-      _.fromPairs(items.map(item => [item.key, Some(item.value)])),
-      _.fromPairs(keys.map(key => [key, None()]))
+      _.fromPairs(
+        items.map(item => [item.key, Some<string>(item.value)])
+      ) as Record<T, Maybe<string>>,
+      _.fromPairs(keys.map(key => [key, None<string>()]))
     );
   }
 }

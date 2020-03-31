@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix: Escaping modals no longer destroys filters, they're now stored in session storage. ([#355](https://gitlab.com/Skn0tt/EntE/issues/355))
+
 ## [v0.33.0] - 2020-03-31
 
 - Change: Invitation Links do not expire anymore ([#356](https://gitlab.com/Skn0tt/EntE/issues/356))
