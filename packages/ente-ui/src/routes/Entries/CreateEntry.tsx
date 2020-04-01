@@ -35,7 +35,6 @@ import {
   CreateEntryDto,
   CreateSlotDto,
   dateToIsoString,
-  daysBeforeNow,
   EntryReasonDto,
   CreateEntryDtoValidator,
   EntryReasonCategory
@@ -49,11 +48,21 @@ import * as _ from "lodash";
 import { EntryReasonInput } from "./EntryReasonInput";
 import { CreateSlotList } from "./CreateSlotList";
 
+function days(n: number) {
+  return n * 24 * 60 * 60 * 1000;
+}
+
+export function isAfterDeadline(v: Date, deadline: number) {
+  const spentTime = Date.now() - +v;
+  return spentTime > days(deadline + 1);
+}
+
 const useTranslation = makeTranslationHook({
   en: {
     multiday: "Multiday",
     forSchool: "Educational",
     selectChild: "Select the affected child.",
+    deadline: "Beware: You surpassed the entry creation deadline.",
     addSlotsCaption: "Add the missed classes. Create one row per class.",
     titles: {
       slots: "Slots"
@@ -70,6 +79,7 @@ const useTranslation = makeTranslationHook({
     multiday: "Mehrtägig",
     forSchool: "Schulisch",
     selectChild: "Wählen Sie das betroffene Kind aus.",
+    deadline: "Achtung: Die Erstellungs-Frist wurde überschritten.",
     addSlotsCaption: `Fügen Sie die Stunden hinzu, die Sie entschuldigen möchten.
     Erstellen Sie dafür für jede Stunde eine Zeile.`,
     titles: {
@@ -259,8 +269,22 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [createEntry, result]
   );
 
+  const showIsNotInDeadlineWarning = isAfterDeadline(
+    parseISO(isRange ? result.dateEnd! : result.date),
+    createEntryDeadline
+  );
+
   return (
-    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+    <Dialog
+      fullScreen={fullScreen}
+      onClose={onClose}
+      open={show}
+      PaperProps={{
+        style: {
+          backgroundColor: showIsNotInDeadlineWarning ? "#ffceca" : undefined
+        }
+      }}
+    >
       <DialogTitle>{translation.newEntry}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={32}>
@@ -315,6 +339,13 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
               )}
             </Grid>
           </Grid>
+          {showIsNotInDeadlineWarning && (
+            <Grid item xs={12}>
+              <Typography color="error" style={{ marginLeft: "10px" }}>
+                {translation.deadline}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <EntryReasonInput onChange={setReason as any} isRange={isRange} />
           </Grid>

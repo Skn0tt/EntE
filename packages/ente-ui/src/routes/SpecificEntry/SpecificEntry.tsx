@@ -53,7 +53,8 @@ import {
   EntryN,
   SlotN,
   deleteEntryRequest,
-  getParentSignatureExpiryTime
+  getParentSignatureExpiryTime,
+  getEntryCreationDeadline
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -73,6 +74,8 @@ import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
 import { slotTimeComparator } from "../../helpers/slot-time-comparator";
+import { isAfterDeadline } from "../Entries/CreateEntry";
+import { format, parseISO } from "date-fns";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -88,6 +91,7 @@ const useTranslation = makeTranslationHook({
     forSchool: "Educational:",
     reason: "Reason:",
     date: "Date:",
+    deadlineSurpassed: "Surpassed deadline",
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Examen: ${v.from}-${v.to}, ${teacher
@@ -148,6 +152,7 @@ const useTranslation = makeTranslationHook({
     createdAt: "Erstellt:",
     forSchool: "Schulisch:",
     reason: "Grund:",
+    deadlineSurpassed: "Frist überschritten",
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Klausur: ${v.from}-${v.to}, ${teacher
@@ -235,6 +240,7 @@ interface StateProps {
   getSlots(ids: string[]): SlotN[];
   role: Roles;
   entryExpirationTime: number;
+  createEntryDeadline: number;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -247,7 +253,8 @@ const mapStateToProps: MapStateToPropsParam<
     getUser: id => getUser(id)(state),
     getSlots: ids => getSlotsById(ids)(state),
     role: getRole(state).some(),
-    entryExpirationTime: getParentSignatureExpiryTime(state).some()
+    entryExpirationTime: getParentSignatureExpiryTime(state).some(),
+    createEntryDeadline: getEntryCreationDeadline(state).some()
   };
 };
 
@@ -288,7 +295,8 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     entryId,
     onClose,
     getEntry,
-    entryExpirationTime
+    entryExpirationTime,
+    createEntryDeadline
   } = props;
 
   const entry = getEntry(entryId);
@@ -307,6 +315,11 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     () => <LoadingIndicator />,
     entry => {
       const isReviewed = entry.get("isInReviewedRecords");
+
+      const showDeadlineSurpassedWarning = isAfterDeadline(
+        parseISO(entry.get("dateEnd") || entry.get("date")),
+        createEntryDeadline
+      );
 
       return (
         <>
@@ -404,6 +417,11 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                         locale: lang.locale
                       })}
                   <br />
+                  {showDeadlineSurpassedWarning && (
+                    <Typography color="error">
+                      {lang.deadlineSurpassed}
+                    </Typography>
+                  )}
                 </Typography>
               </Grid>
 
