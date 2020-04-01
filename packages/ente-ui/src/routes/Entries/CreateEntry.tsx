@@ -52,8 +52,8 @@ function days(n: number) {
   return n * 24 * 60 * 60 * 1000;
 }
 
-export function isAfterDeadline(v: Date, deadline: number) {
-  const spentTime = Date.now() - +v;
+export function isAfterDeadline(v: Date, creationDate: Date, deadline: number) {
+  const spentTime = +creationDate - +v;
   return spentTime > days(deadline + 1);
 }
 
@@ -271,6 +271,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
 
   const showIsNotInDeadlineWarning = isAfterDeadline(
     parseISO(isRange ? result.dateEnd! : result.date),
+    new Date(),
     createEntryDeadline
   );
 

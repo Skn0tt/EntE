@@ -318,6 +318,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
 
       const showDeadlineSurpassedWarning = isAfterDeadline(
         parseISO(entry.get("dateEnd") || entry.get("date")),
+        parseISO(entry.get("createdAt")),
         createEntryDeadline
       );
 
