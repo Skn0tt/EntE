@@ -12,7 +12,6 @@ import { Roles } from "ente-types";
 import Entries from "./routes/Entries";
 import Slots from "./routes/Slots";
 import Users from "./routes/Users";
-import SpecificUser from "./routes/SpecificUser";
 import SpecificEntry from "./routes/SpecificEntry/SpecificEntryRoute";
 import NotFound from "./routes/NotFound";
 import AdminRoute from "./routes/AdminRoute";
@@ -20,66 +19,81 @@ import AboutRoute from "./routes/About";
 import StudentReportRoute from "./routes/StudentReport/StudentReportRoute";
 import ClassReportRoute from "./routes/ClassReportRoute";
 import _ClassAllStudentsReportRoute from "./routes/ClassAllStudentsReportRoute";
+import SpecificUser from "./routes/SpecificUser";
 
 const ClassAllStudentsReportRoute = () => (
   <Route path="/class/:class/report" component={_ClassAllStudentsReportRoute} />
 );
 
-const AdminRoutes: React.SFC = () => (
-  <>
-    <Route path="/slots" component={Slots} />
-    <Route path="/users" component={Users} />
-    <Route path="/admin" component={AdminRoute} />
-  </>
-);
+interface BaseRoutesProps {
+  isAdmin: boolean;
+  initial: string;
+  general: React.ReactChild[];
+  specific: React.ReactChild[];
+}
 
-const ParentRoutes: React.SFC = props => (
+const BaseRoutes = (props: BaseRoutesProps) => (
   <>
     <Switch>
-      <Redirect exact from="/" to="/entries" />
-      <Route path="/entries" component={Entries} />
+      <Redirect exact from="/" to={props.initial} />
+      {props.general}
+      {props.isAdmin && (
+        <>
+          <Route path="/users" component={Users} />
+          <Route path="/admin" component={AdminRoute} />
+        </>
+      )}
       <Route path="/about" component={AboutRoute} />
-      {props.children}
       <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/entries/:entryId" component={SpecificEntry} />
+      {props.specific}
+      {props.isAdmin && (
+        <Route path="/users/:userId" component={SpecificUser} />
+      )}
     </Switch>
   </>
 );
-const StudentRoutes = ParentRoutes;
 
-const TeacherRoutes: React.SFC = props => (
-  <Switch>
-    <Redirect exact from="/" to="/slots" />
-    <Route path="/slots" component={Slots} />
-    <Route path="/about" component={AboutRoute} />
-    {props.children}
-    <Route component={NotFound} />
-  </Switch>
+const ParentRoutes = ({ isAdmin }: { isAdmin: boolean }) => (
+  <BaseRoutes
+    isAdmin={isAdmin}
+    initial="/entries"
+    general={[<Route path="/entries" component={Entries} />]}
+    specific={[<Route path="/entries/:entryId" component={SpecificEntry} />]}
+  />
 );
 
-const ManagerRoutes: React.SFC = props => (
-  <>
-    <Switch>
-      <Redirect exact from="/" to="/entries" />
-      <Route path="/entries" component={Entries} />
-      <Route path="/slots" component={Slots} />
-      <Route path="/about" component={AboutRoute} />
+const StudentRoutes = ParentRoutes;
+
+const TeacherRoutes = ({ isAdmin }: { isAdmin: boolean }) => (
+  <BaseRoutes
+    isAdmin={isAdmin}
+    initial="/slots"
+    general={[<Route path="/slots" component={Slots} />]}
+    specific={[<Route path="/entries/:entryId" component={SpecificEntry} />]}
+  />
+);
+
+const ManagerRoutes = ({ isAdmin }: { isAdmin: boolean }) => (
+  <BaseRoutes
+    isAdmin={isAdmin}
+    initial="/entries"
+    general={[
+      <Route path="/entries" component={Entries} />,
+      <Route path="/slots" component={Slots} />,
       <Route
         exact
         path={["/classes", "/classes/:class"]}
         component={ClassReportRoute}
       />
-      <ClassAllStudentsReportRoute />
-      {props.children}
-      <Route component={NotFound} />
-    </Switch>
-    <Switch>
-      <Route path="/users/:studentId/report" component={StudentReportRoute} />
+    ]}
+    specific={[
+      <ClassAllStudentsReportRoute />,
+      <Route path="/users/:studentId/report" component={StudentReportRoute} />,
       <Route path="/entries/:entryId" component={SpecificEntry} />
-    </Switch>
-  </>
+    ]}
+  />
 );
 
 interface Props {
@@ -87,17 +101,15 @@ interface Props {
   isAdmin: boolean;
 }
 const Routes: React.FunctionComponent<Props> = props => {
-  const children = props.isAdmin ? <AdminRoutes /> : undefined;
-
   switch (props.role) {
     case Roles.STUDENT:
-      return <StudentRoutes children={children} />;
+      return <StudentRoutes isAdmin={props.isAdmin} />;
     case Roles.TEACHER:
-      return <TeacherRoutes children={children} />;
+      return <TeacherRoutes isAdmin={props.isAdmin} />;
     case Roles.PARENT:
-      return <ParentRoutes children={children} />;
+      return <ParentRoutes isAdmin={props.isAdmin} />;
     case Roles.MANAGER:
-      return <ManagerRoutes children={children} />;
+      return <ManagerRoutes isAdmin={props.isAdmin} />;
     default:
       return null;
   }
