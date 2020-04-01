@@ -30,7 +30,8 @@ export class BasicStrategy extends PassportStrategy(_BasicStrategy) {
           displayname: user.displayname,
           id: user.id,
           role: user.role,
-          username: user.username
+          username: user.username,
+          isAdmin: user.isAdmin
         };
       }
     );

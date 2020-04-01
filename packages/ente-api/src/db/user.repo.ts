@@ -81,6 +81,10 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
+  async countAdmins(): Promise<number> {
+    return this.repo.count({ where: { isAdmin: true } });
+  }
+
   async findAllUserIds(): Promise<Set<string>> {
     const records = await this.repo.find({
       select: ["_id"]
@@ -265,7 +269,7 @@ export class UserRepo {
     if (deleteOthers) {
       await this.repo.delete({
         username: Not(In([...usernames, ...childrenNotInDtos])),
-        role: Not(Roles.ADMIN)
+        isAdmin: false
       });
     }
 

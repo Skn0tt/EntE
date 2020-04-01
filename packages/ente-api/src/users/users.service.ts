@@ -90,8 +90,8 @@ export class UsersService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const admins = await this.userRepo.findAdmins();
-    const noAdminFound = admins.length === 0;
+    const adminCount = await this.userRepo.countAdmins();
+    const noAdminFound = adminCount === 0;
     if (noAdminFound) {
       this.logger.log("No admin user found. Creating one.");
 
@@ -157,7 +157,7 @@ export class UsersService implements OnModuleInit {
   ) {
     const r = await this._findAll(requestingUser, paginationInfo);
     return r.map(users =>
-      users.map(u => UsersService.blackenDto(u, requestingUser.role))
+      users.map(u => UsersService.blackenDto(u, requestingUser))
     );
   }
 
@@ -224,7 +224,7 @@ export class UsersService implements OnModuleInit {
 
   public async findOne(id: string, requestingUser: RequestContextUser) {
     const r = await this._findOne(id, requestingUser);
-    return r.map(r => UsersService.blackenDto(r, requestingUser.role));
+    return r.map(r => UsersService.blackenDto(r, requestingUser));
   }
 
   private async _createUsers(...users: CreateUserDto[]) {
@@ -549,10 +549,9 @@ export class UsersService implements OnModuleInit {
 
   static blackenDto(
     user: UserDto,
-    role: Roles,
-    isAdmin: boolean
+    requestingUser: RequestContextUser
   ): BlackedUserDto {
-    if (isAdmin) {
+    if (requestingUser.isAdmin) {
       const fullUser = user;
       return fullUser;
     }
@@ -565,7 +564,7 @@ export class UsersService implements OnModuleInit {
       isAdmin: user.isAdmin
     };
 
-    switch (role) {
+    switch (requestingUser.role) {
       case Roles.MANAGER:
         return {
           ...baseUser,

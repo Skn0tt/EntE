@@ -70,7 +70,7 @@ export class SlotsService {
     paginationInfo: PaginationInformation
   ) {
     const r = await this._findAll(requestingUser, paginationInfo);
-    return r.map(s => SlotsService.blackenDto(s, requestingUser.role));
+    return r.map(s => SlotsService.blackenDto(s, requestingUser));
   }
 
   private async _findOne(
@@ -126,7 +126,7 @@ export class SlotsService {
 
   public async findOne(id: string, requestingUser: RequestContextUser) {
     const r = await this._findOne(id, requestingUser);
-    return r.map(r => SlotsService.blackenDto(r, requestingUser.role));
+    return r.map(r => SlotsService.blackenDto(r, requestingUser));
   }
 
   async dispatchWeeklySummary() {
@@ -144,12 +144,17 @@ export class SlotsService {
     this.logger.log("Weekly summary successfully dispatched.");
   }
 
-  static blackenDto(slot: SlotDto, role: Roles): BlackedSlotDto {
+  static blackenDto(
+    slot: SlotDto,
+    requestingUser: RequestContextUser
+  ): BlackedSlotDto {
     const { teacher, student } = slot;
     return {
       ...slot,
-      student: UsersService.blackenDto(student, role),
-      teacher: !!teacher ? UsersService.blackenDto(teacher, role) : null
+      student: UsersService.blackenDto(student, requestingUser),
+      teacher: !!teacher
+        ? UsersService.blackenDto(teacher, requestingUser)
+        : null
     };
   }
 }

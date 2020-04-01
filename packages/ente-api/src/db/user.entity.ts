@@ -63,6 +63,10 @@ export class User {
   @IsIn(rolesArr)
   role: Roles;
 
+  @Column("tinyint", { nullable: false, default: false })
+  @IsBoolean()
+  isAdmin: boolean;
+
   @Column("varchar", { nullable: true })
   @IsInt()
   class: string | null;

@@ -31,10 +31,10 @@ export class LoginService {
       token,
       oneSelf,
       onesEntries: (await this.getOnesEntries(oneSelf)).map(e =>
-        EntriesService.blackenDto(e, user.role)
+        EntriesService.blackenDto(e, user)
       ),
       neededUsers: (await this.getNeededUsers(oneSelf)).map(e =>
-        UsersService.blackenDto(e, user.role)
+        UsersService.blackenDto(e, user)
       ),
       reviewedRecords: [
         ...(await this.reviewedRecordsService.getReviewedRecords(oneSelf.id))

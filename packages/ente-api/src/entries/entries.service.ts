@@ -128,7 +128,7 @@ export class EntriesService {
   ) {
     const r = await this._findAll(requestingUser, paginationInfo);
     return r.map(entries =>
-      entries.map(e => EntriesService.blackenDto(e, requestingUser.role))
+      entries.map(e => EntriesService.blackenDto(e, requestingUser))
     );
   }
 
@@ -179,7 +179,7 @@ export class EntriesService {
 
   public async findOne(id: string, requestingUser: RequestContextUser) {
     const r = await this._findOne(id, requestingUser);
-    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+    return r.map(e => EntriesService.blackenDto(e, requestingUser));
   }
 
   private async getCreateEntryDtoValidator() {
@@ -288,7 +288,7 @@ export class EntriesService {
     requestingUser: RequestContextUser
   ) {
     const r = await this._create(entry, requestingUser);
-    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+    return r.map(e => EntriesService.blackenDto(e, requestingUser));
   }
 
   private async _patch(
@@ -398,7 +398,7 @@ export class EntriesService {
     requestingUser: RequestContextUser
   ) {
     const r = await this._patch(id, patch, requestingUser);
-    return r.map(r => EntriesService.blackenDto(r, requestingUser.role));
+    return r.map(r => EntriesService.blackenDto(r, requestingUser));
   }
 
   private async _delete(
@@ -440,7 +440,7 @@ export class EntriesService {
 
   public async delete(id: string, requestingUser: RequestContextUser) {
     const r = await this._delete(id, requestingUser);
-    return r.map(e => EntriesService.blackenDto(e, requestingUser.role));
+    return r.map(e => EntriesService.blackenDto(e, requestingUser));
   }
 
   async sendNotification(entryId: string) {
@@ -478,13 +478,16 @@ export class EntriesService {
     return `${baseUrl}/entries/${entry.id}`;
   }
 
-  static blackenDto(entry: EntryDto, role: Roles): BlackedEntryDto {
+  static blackenDto(
+    entry: EntryDto,
+    requestingUser: RequestContextUser
+  ): BlackedEntryDto {
     const { student, slots } = entry;
 
     return {
       ...entry,
-      student: UsersService.blackenDto(student, role),
-      slots: slots.map(s => SlotsService.blackenDto(s, role))
+      student: UsersService.blackenDto(student, requestingUser),
+      slots: slots.map(s => SlotsService.blackenDto(s, requestingUser))
     };
   }
 }
