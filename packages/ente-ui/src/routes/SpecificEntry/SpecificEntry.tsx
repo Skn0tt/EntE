@@ -75,7 +75,6 @@ import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
 import { slotTimeComparator } from "../../helpers/slot-time-comparator";
 import { isAfterDeadline } from "../Entries/CreateEntry";
-import { format, parseISO } from "date-fns";
 
 const useTranslation = makeTranslationHook({
   en: {
