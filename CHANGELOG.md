@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Fix: Don't ignore failures of password reset ([#350](https://gitlab.com/Skn0tt/EntE/issues/350))
+## [v0.33.1] - 2020-04-01
 
+- Fix: Don't ignore failures of password reset ([#350](https://gitlab.com/Skn0tt/EntE/issues/350))
 - Fix: Escaping modals no longer destroys filters, they're now stored in session storage. ([#355](https://gitlab.com/Skn0tt/EntE/issues/355))
 
 ## [v0.33.0] - 2020-03-31
