@@ -200,7 +200,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
                   .orSome("")
             ),
           options: {
-            filter: false,
+            filter: moreThanOneTeacherInSlots,
             display: moreThanOneTeacherInSlots
           }
         },
