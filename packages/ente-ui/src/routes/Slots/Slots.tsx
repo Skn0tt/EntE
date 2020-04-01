@@ -9,8 +9,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
-import CloseIcon from "@material-ui/icons/Close";
 import SignedAvatar from "../../elements/SignedAvatar";
+import * as _ from "lodash";
 import { Dispatch } from "redux";
 import { Table } from "../../components/Table";
 import {
@@ -38,7 +38,6 @@ import { useTheme } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "ente-types";
-import { Set } from "immutable";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -139,6 +138,9 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
     requestSlots();
   }, []);
 
+  const teacherIds = slots.map(s => s.get("teacherId"));
+  const moreThanOneTeacherInSlots = _.uniq(teacherIds).length > 1;
+
   return (
     <Table<SlotN>
       columns={[
@@ -199,7 +201,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
             ),
           options: {
             filter: false,
-            display: role !== Roles.TEACHER
+            display: moreThanOneTeacherInSlots
           }
         },
         {
