@@ -11,7 +11,8 @@ import {
   getUsers,
   getEntries,
   getSlotsMap,
-  getOneSelvesClass
+  getOneSelvesClass,
+  isAdmin
 } from "../redux";
 import { MapStateToPropsParam, connect } from "react-redux";
 import Table from "../components/Table";
@@ -92,7 +93,7 @@ const mapStateToProps: MapStateToPropsParam<
     getEntriesOfStudent: studentId =>
       getEntries(state).filter(e => e.get("studentId") === studentId),
     slotsMap: getSlotsMap(state),
-    isAdmin: false // TODO:
+    isAdmin: isAdmin(state)
   };
 };
 

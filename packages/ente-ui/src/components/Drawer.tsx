@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { AppState, getRole, isLoading } from "../redux";
+import { AppState, getRole, isLoading, isAdmin } from "../redux";
 import { Roles } from "ente-types";
 import {
   AppBar,
@@ -109,7 +109,7 @@ interface DrawerStateProps {
 const mapStateToProps = (state: AppState): DrawerStateProps => ({
   loading: isLoading(state),
   role: getRole(state),
-  isAdmin: false // TODO:
+  isAdmin: isAdmin(state)
 });
 
 type DrawerProps = DrawerOwnProps & DrawerStateProps;

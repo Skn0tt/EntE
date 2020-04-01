@@ -18,7 +18,7 @@ import Login from "./routes/Login/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
-import { AppState, isAuthValid, getRole, logout } from "./redux";
+import { AppState, isAuthValid, getRole, logout, isAdmin } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
 import { Maybe } from "monet";
@@ -36,7 +36,7 @@ interface AppStateProps {
 const mapStateToProps = (state: AppState) => ({
   authValid: isAuthValid(state),
   role: getRole(state),
-  isAdmin: false // TODO:
+  isAdmin: isAdmin(state)
 });
 
 interface AppDispatchProps {
