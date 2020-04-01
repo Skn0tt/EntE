@@ -537,7 +537,7 @@ export class UserRepo {
       }
     })();
 
-    result.isAdmin = user.isAdmin;
+    result.isAdmin = !!user.isAdmin;
     result.displayname = user.displayname;
     result.email = user.email;
     result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;
