@@ -49,6 +49,7 @@ const parseCSV = async (
 
   const result: CreateUserDto[] = parsed.data.map((row: any) => {
     const res: CreateUserDto = {
+      isAdmin: false,
       username: row.username,
       displayname: row.displayname,
       email: row.email,

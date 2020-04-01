@@ -13,6 +13,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
+          isAdmin: false,
           class: "2019"
         })
       ).to.be.true;
@@ -27,6 +28,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
+          isAdmin: false,
           class: "2019"
         })
       ).to.be.true;
@@ -41,6 +43,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
+          isAdmin: false,
           class: "2019"
         })
       ).to.be.true;
@@ -54,6 +57,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.true;
@@ -68,6 +72,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmänn",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.true;
@@ -82,6 +87,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Männ",
           email: "herr@mann.de",
           username: "herrmänn",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.true;
@@ -96,6 +102,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr-Mann",
           email: "herr@mann.de",
           username: "herrmänn",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.true;
@@ -110,6 +117,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr. Mann",
           email: "herr@mann.de",
           username: "herrmänn",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.true;
@@ -127,6 +135,7 @@ describe("CreateUserDtoValidator", () => {
             email: "herr@mann.de",
             username: "herrmann",
             birthday: "2000-01-01",
+            isAdmin: false,
             class: "2019"
           })
         ).to.be.true;
@@ -141,6 +150,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
+            isAdmin: false,
             class: "2019"
           })
         ).to.be.true;
@@ -155,6 +165,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
+            isAdmin: false,
             class: "2019"
           })
         ).to.be.false;
@@ -169,6 +180,7 @@ describe("CreateUserDtoValidator", () => {
             displayname: "Herr Mann",
             email: "herr@mann.de",
             username: "herrmann",
+            isAdmin: false,
             class: "2019"
           })
         ).to.be.false;
@@ -185,6 +197,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: "2000-01-01"
         })
       ).to.be.false;
@@ -200,6 +213,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: "2000-01-01"
         })
       ).to.be.false;
@@ -217,6 +231,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: undefined,
+          isAdmin: false,
           class: "2019"
         })
       ).to.be.false;
@@ -230,6 +245,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: undefined
         })
       ).to.be.false;
@@ -244,6 +260,7 @@ describe("CreateUserDtoValidator", () => {
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
+          isAdmin: false,
           class: "2019"
         })
       ).to.be.false;
@@ -257,6 +274,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: "2000-01-01"
         })
       ).to.be.false;
@@ -270,6 +288,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herrmann.de",
           username: "herrmann",
+          isAdmin: false,
           birthday: "2000-01-01",
           class: "2019"
         })
@@ -284,6 +303,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herr mann",
+          isAdmin: false,
           birthday: "2000-01-01",
           class: "2019"
         })
@@ -298,6 +318,7 @@ describe("CreateUserDtoValidator", () => {
           displayname: "Herr Mann",
           email: "herr@mann.de",
           username: "herr mann",
+          isAdmin: false,
           birthday: "2000-01-01"
         })
       ).to.be.false;

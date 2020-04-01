@@ -98,6 +98,7 @@ const parseInput = (input: any[]) => {
         email: v.email,
         role: Roles.STUDENT,
         parentEmail: v.parent.email,
+        isAdmin: false,
         children: []
       },
       {
@@ -107,6 +108,7 @@ const parseInput = (input: any[]) => {
         role: Roles.PARENT,
         class: undefined,
         birthday: undefined,
+        isAdmin: false,
         children: []
       }
     ]

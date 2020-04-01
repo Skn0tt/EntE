@@ -56,6 +56,7 @@ describe("parse", () => {
         username: "norahparis",
         displayname: "Norah Paris",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2019",
@@ -66,6 +67,7 @@ describe("parse", () => {
         username: "marcusparis",
         displayname: "Marcus Paris",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2021",
@@ -80,6 +82,7 @@ describe("parse", () => {
         password: "p4sswort!",
         class: undefined,
         birthday: undefined,
+        isAdmin: false,
         role: Roles.PARENT
       },
       {
@@ -90,12 +93,14 @@ describe("parse", () => {
         password: "p4sswort!",
         class: undefined,
         birthday: undefined,
+        isAdmin: false,
         role: Roles.PARENT
       },
       {
         username: "montyabrams",
         displayname: "Monty Abrams",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2019",
@@ -106,6 +111,7 @@ describe("parse", () => {
         username: "penabrams",
         displayname: "Pen Abrams",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2021",
@@ -119,6 +125,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         class: undefined,
+        isAdmin: false,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -129,6 +136,7 @@ describe("parse", () => {
         email: "test@test.com",
         password: "p4sswort!",
         class: undefined,
+        isAdmin: false,
         birthday: undefined,
         role: Roles.PARENT
       },
@@ -136,6 +144,7 @@ describe("parse", () => {
         username: "orvillekeighley",
         displayname: "Orville Keighley",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: undefined,
@@ -146,6 +155,7 @@ describe("parse", () => {
         username: "luannedavidson",
         displayname: "Luanne Davidson",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: undefined,
@@ -156,6 +166,7 @@ describe("parse", () => {
         username: "rufuskay",
         displayname: "Rufus Kay",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2019",
@@ -166,6 +177,7 @@ describe("parse", () => {
         username: "daytonkimberly",
         displayname: "Dayton Kimberly",
         children: [],
+        isAdmin: false,
         email: "test@test.com",
         password: "p4sswort!",
         class: "2021",
@@ -184,6 +196,7 @@ describe("parse", () => {
         displayname: "S. Schüler",
         email: "sschüler@email.com",
         children: [],
+        isAdmin: false,
         role: Roles.STUDENT,
         birthday: "2100-04-02",
         class: "2019",
@@ -194,6 +207,7 @@ describe("parse", () => {
         displayname: "B. Lehrer",
         email: "blehrer@email.de",
         children: [],
+        isAdmin: false,
         role: Roles.TEACHER,
         birthday: undefined,
         class: undefined,
@@ -207,6 +221,7 @@ describe("parse", () => {
         role: Roles.PARENT,
         birthday: undefined,
         class: undefined,
+        isAdmin: false,
         password: undefined
       },
       {
@@ -216,6 +231,7 @@ describe("parse", () => {
         birthday: undefined,
         role: Roles.MANAGER,
         children: [],
+        isAdmin: false,
         class: "2019",
         password: undefined
       }
