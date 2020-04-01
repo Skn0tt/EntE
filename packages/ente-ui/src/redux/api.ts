@@ -385,24 +385,6 @@ export const unsignEntry = async (
   return normalizeEntries(response);
 };
 
-export const resetPassword = async (username: string): Promise<string> => {
-  const result = await axios.post(`${getBaseUrl()}/passwordReset/${username}`);
-  return result.data;
-};
-
-export const setPassword = async (token: string, newPassword: string) => {
-  const result = await axios.put(
-    `${getBaseUrl()}/passwordReset/${token}`,
-    newPassword,
-    {
-      headers: {
-        "Content-Type": "text/plain"
-      }
-    }
-  );
-  return result.data;
-};
-
 export const importUsers = async (
   token: string,
   dtos: CreateUserDto[],

@@ -9,7 +9,6 @@ export type SagaListeners = {
   onUserUpdated: (patch: PatchUserDto) => void;
   onSignedEntry: (entryId: string) => void;
   onUnsignedEntry: (entryId: string) => void;
-  onPasswordResetRequested: (username: string) => void;
   onEntryCreated: (entry: CreateEntryDto) => void;
   onEntryDeleted: (entryId: string) => void;
   onLoginFailedInvalidCredentials: () => void;
@@ -17,8 +16,6 @@ export type SagaListeners = {
   onRequestError: (error: Error) => void;
   onSigningError: (error: Error) => void;
   onUnsigningError: (error: Error) => void;
-  onSetPasswordError: (error: Error) => void;
-  onSetPasswordSuccess: () => void;
   onSyncingLanguageError: (error: Error) => void;
   onSagaError: (err: Error) => void;
 };
@@ -43,17 +40,14 @@ const defaultConfig: ReduxConfig = {
   onUserDeleted: ignore,
   onEntryDeleted: ignore,
   onSignedEntry: ignore,
-  onPasswordResetRequested: ignore,
   onRequestError: ignore,
   onSagaError: ignore,
-  onSetPasswordError: ignore,
   onSigningError: ignore,
   onSyncingLanguageError: ignore,
   onUnsignedEntry: ignore,
   onUnsigningError: ignore,
   onUserUpdated: ignore,
-  onLoginFailedInvalidCredentials: ignore,
-  onSetPasswordSuccess: ignore
+  onLoginFailedInvalidCredentials: ignore
 };
 
 let config: ReduxConfig = defaultConfig;

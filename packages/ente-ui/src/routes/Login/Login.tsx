@@ -31,12 +31,11 @@ import {
   AppState,
   isAuthValid,
   loginRequest,
-  resetPasswordRequest,
   BasicCredentials,
   LOGIN_REQUEST,
   isTypePending,
-  RESET_PASSWORD_REQUEST,
-  getCurrentLoginBanner
+  getCurrentLoginBanner,
+  getLanguage
 } from "../../redux";
 import { withErrorBoundary } from "../../hocs/withErrorBoundary";
 import { PasswordResetModal } from "./PasswordResetModal";
@@ -48,6 +47,9 @@ import * as querystring from "query-string";
 import { Maybe, Some, None } from "monet";
 import * as config from "../../config";
 import { createStyles, withStyles, WithStyles } from "@material-ui/styles";
+import { invokeReset } from "../../passwordReset";
+import { addMessages } from "../../context/Messages";
+import { Languages, DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -87,8 +89,8 @@ interface InjectedProps {
 interface LoginStateProps {
   authValid: boolean;
   loginPending: boolean;
-  passwordResetPending: boolean;
   loginBanner: Maybe<string>;
+  language: Languages;
 }
 const mapStateToProps: MapStateToPropsParam<
   LoginStateProps,
@@ -97,21 +99,18 @@ const mapStateToProps: MapStateToPropsParam<
 > = state => ({
   authValid: isAuthValid(state),
   loginPending: isTypePending(state)(LOGIN_REQUEST),
-  passwordResetPending: isTypePending(state)(RESET_PASSWORD_REQUEST),
-  loginBanner: getCurrentLoginBanner(state)
+  loginBanner: getCurrentLoginBanner(state),
+  language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE)
 });
 
 interface LoginDispatchProps {
   checkAuth(credentials: BasicCredentials): Action;
-  triggerPasswordReset(username: string): Action;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   LoginDispatchProps,
   LoginOwnProps
 > = dispatch => ({
-  checkAuth: (auth: BasicCredentials) => dispatch(loginRequest(auth)),
-  triggerPasswordReset: (username: string) =>
-    dispatch(resetPasswordRequest(username))
+  checkAuth: (auth: BasicCredentials) => dispatch(loginRequest(auth))
 });
 
 type LoginProps = LoginStateProps &
@@ -126,6 +125,7 @@ interface State {
   username: string;
   password: string;
   showPasswordResetModal: boolean;
+  passwordResetPending: boolean;
 }
 
 const extractLoginInfo = (
@@ -143,7 +143,8 @@ class Login extends React.PureComponent<LoginProps, State> {
   state: Readonly<State> = {
     username: this.initialUsername,
     password: "",
-    showPasswordResetModal: false
+    showPasswordResetModal: false,
+    passwordResetPending: false
   };
 
   componentDidMount() {
@@ -162,9 +163,11 @@ class Login extends React.PureComponent<LoginProps, State> {
     return typeof username === "string" ? username : username![0];
   }
 
-  onResetPassword = (username: string) => {
-    this.props.triggerPasswordReset(username);
+  onResetPassword = async (username: string) => {
     this.hidePasswordResetModal();
+    this.setState({ passwordResetPending: true });
+    invokeReset(username, msg => addMessages(msg[this.props.language]));
+    this.setState({ passwordResetPending: false });
   };
 
   handleKeyPress: React.KeyboardEventHandler<{}> = event => {
@@ -200,12 +203,15 @@ class Login extends React.PureComponent<LoginProps, State> {
       location,
       fullScreen,
       loginPending,
-      passwordResetPending,
       translation: lang,
       loginBanner,
       classes
     } = this.props;
-    const { showPasswordResetModal, username } = this.state;
+    const {
+      showPasswordResetModal,
+      username,
+      passwordResetPending
+    } = this.state;
     const { from } = location.state || {
       from: { pathname: "/" }
     };

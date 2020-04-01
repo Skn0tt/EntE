@@ -24,12 +24,6 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_ERROR,
-  RESET_PASSWORD_SUCCESS,
-  SET_PASSWORD_REQUEST,
-  SET_PASSWORD_ERROR,
-  SET_PASSWORD_SUCCESS,
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGIN_SUCCESS,
@@ -112,7 +106,6 @@ import {
   SetLoginBannerSuccessPayload,
   LoginSuccessPayload,
   UpdateManagerNotesSuccessPayload,
-  PromoteTeacherRequestPayload,
   PromoteTeacherSuccessPayload
 } from "./actions";
 import { FilterScope } from "../filter-scope";
@@ -272,13 +265,6 @@ const reducer = handleActions<AppState | undefined, any>(
       action?: Action<ColorScheme>
     ): AppState => state!.set("colorScheme", action!.payload!),
 
-    // ## RESET_PASSWORD
-    ...asyncReducersFull(
-      RESET_PASSWORD_REQUEST,
-      RESET_PASSWORD_ERROR,
-      RESET_PASSWORD_SUCCESS
-    ),
-
     // ## IMPORT_USERS
     ...asyncReducersFull(
       IMPORT_USERS_REQUEST,
@@ -296,13 +282,6 @@ const reducer = handleActions<AppState | undefined, any>(
           .set("usersMap", newState.users)
           .set("slotsMap", newState.slots);
       }
-    ),
-
-    // ## SET_PASSWORD
-    ...asyncReducersFullWithoutMetaPayload(
-      SET_PASSWORD_REQUEST,
-      SET_PASSWORD_ERROR,
-      SET_PASSWORD_SUCCESS
     ),
 
     /**

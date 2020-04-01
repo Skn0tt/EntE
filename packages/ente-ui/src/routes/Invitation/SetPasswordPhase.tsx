@@ -7,17 +7,9 @@ import {
 } from "@material-ui/core";
 import { SetPasswordForm } from "../../components/SetPasswordForm";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import {
-  connect,
-  MapDispatchToPropsParam,
-  MapStateToPropsParam
-} from "react-redux";
-import {
-  setPasswordRequest,
-  AppState,
-  isTypePending,
-  SET_PASSWORD_REQUEST
-} from "../../redux";
+import { setPassword } from "../../passwordReset";
+import { useMessages } from "../../context/Messages";
+import { useLanguage } from "../../helpers/useLanguage";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -30,59 +22,28 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface SetPasswordPhaseOwnProps {
+interface SetPasswordPhaseProps {
   token: string;
   onDone: () => void;
 }
-
-type SetPasswordPhaseProps = SetPasswordPhaseOwnProps;
-
-interface SetPasswordPhaseStateProps {
-  requestPending: boolean;
-}
-const mapStateToProps: MapStateToPropsParam<
-  SetPasswordPhaseStateProps,
-  SetPasswordPhaseOwnProps,
-  AppState
-> = state => ({
-  requestPending: isTypePending(state)(SET_PASSWORD_REQUEST)
-});
-
-interface SetPasswordPhaseDispatchProps {
-  setPassword: (p: string) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  SetPasswordPhaseDispatchProps,
-  SetPasswordPhaseProps
-> = (dispatch, props) => {
-  const { token } = props;
-  return {
-    setPassword: newPassword =>
-      dispatch(setPasswordRequest({ token, newPassword }))
-  };
-};
-
-type SetPasswordPhasePropsConnected = SetPasswordPhaseProps &
-  SetPasswordPhaseDispatchProps &
-  SetPasswordPhaseStateProps;
-
-const SetPasswordPhase: React.FC<SetPasswordPhasePropsConnected> = props => {
-  const { requestPending, setPassword, onDone } = props;
+const SetPasswordPhase: React.FC<SetPasswordPhaseProps> = props => {
+  const { onDone, token } = props;
   const translation = useTranslation();
   const [newPassword, setNewPassword] = React.useState("");
-  const [alreadyRequested, setAlreadyRequested] = React.useState(false);
+  const [requestPending, setRequestPending] = React.useState(false);
+  const language = useLanguage();
+  const { addMessages } = useMessages();
 
   const requestReset = React.useCallback(
-    () => {
-      setPassword(newPassword);
-      setAlreadyRequested(true);
+    async () => {
+      setRequestPending(true);
+      await setPassword(newPassword, token, msgs =>
+        addMessages(msgs[language])
+      );
+      onDone();
     },
-    [newPassword, setPassword]
+    [newPassword, onDone, language, addMessages, token]
   );
-
-  if (!requestPending && alreadyRequested) {
-    onDone();
-  }
 
   return (
     <>
@@ -103,7 +64,4 @@ const SetPasswordPhase: React.FC<SetPasswordPhasePropsConnected> = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SetPasswordPhase);
+export default SetPasswordPhase;

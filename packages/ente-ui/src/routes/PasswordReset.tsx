@@ -7,11 +7,6 @@
  */
 
 import * as React from "react";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
 import { RouteComponentProps, Redirect } from "react-router";
 import {
   Dialog,
@@ -23,16 +18,13 @@ import {
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
-import {
-  setPasswordRequest,
-  AppState,
-  isTypePending,
-  SET_PASSWORD_REQUEST
-} from "../redux";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { SetPasswordForm } from "../components/SetPasswordForm";
 import * as querystring from "query-string";
+import { useMessages } from "../context/Messages";
+import { setPassword } from "../passwordReset";
+import { useLanguage } from "../helpers/useLanguage";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -45,61 +37,45 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface PasswordResetStateProps {
-  resetIsPending: boolean;
-}
-
-const mapStateToProps: MapStateToPropsParam<
-  PasswordResetStateProps,
-  {},
-  AppState
-> = state => ({
-  resetIsPending: isTypePending(state)(SET_PASSWORD_REQUEST)
-});
-
 interface PasswordResetRouteProps {
   token: string;
 }
 
-interface PasswordResetDispatchProps {
-  setPassword: (newPassword: string) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  PasswordResetDispatchProps,
-  PasswordResetProps
-> = (dispatch, props) => {
-  const { token } = props.match.params;
-
-  return {
-    setPassword: (newPassword: string) =>
-      dispatch(setPasswordRequest({ token, newPassword }))
-  };
-};
-
 type PasswordResetProps = RouteComponentProps<PasswordResetRouteProps> &
   InjectedProps;
 
-type PasswordResetPropsConnected = PasswordResetProps &
-  PasswordResetDispatchProps &
-  PasswordResetStateProps;
-
-const PasswordReset: React.FC<PasswordResetPropsConnected> = props => {
-  const { fullScreen, resetIsPending, setPassword, location } = props;
+const PasswordReset: React.FC<PasswordResetProps> = props => {
+  const {
+    fullScreen,
+    location,
+    match: {
+      params: { token }
+    }
+  } = props;
   const [newPassword, setNewPassword] = React.useState("");
-  const [requestedReset, setRequestedReset] = React.useState(false);
   const translation = useTranslation();
   const { username: _username = "" } = querystring.parse(location.search);
   const username = typeof _username === "string" ? _username : _username[0];
 
+  const [resetIsPending, setResetIsPending] = React.useState(false);
+  const [resetSuccessful, setResetSuccessful] = React.useState(false);
+
+  const language = useLanguage();
+  const { addMessages } = useMessages();
+
   const requestReset = React.useCallback(
-    () => {
-      setPassword(newPassword);
-      setRequestedReset(true);
+    async () => {
+      setResetIsPending(true);
+      const isSuccessful = await setPassword(newPassword, token, msgs =>
+        addMessages(msgs[language])
+      );
+      setResetSuccessful(isSuccessful);
+      setResetIsPending(false);
     },
-    [setPassword, setRequestedReset, newPassword]
+    [newPassword, addMessages, language]
   );
 
-  if (requestedReset && !resetIsPending) {
+  if (resetSuccessful) {
     return <Redirect to={`/login?username=${username}`} />;
   }
 
@@ -122,11 +98,6 @@ const PasswordReset: React.FC<PasswordResetPropsConnected> = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  withMobileDialog<PasswordResetPropsConnected>()(
-    withErrorBoundary()(PasswordReset)
-  )
+export default withMobileDialog<PasswordResetProps>()(
+  withErrorBoundary()(PasswordReset)
 );

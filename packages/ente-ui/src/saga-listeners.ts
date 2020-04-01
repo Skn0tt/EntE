@@ -13,8 +13,6 @@ const translation = getByLanguage({
     successfullyCreatedUsers: `Successfully created users.`,
     successfullyUpdatedUser: `Successfully updated users.`,
     importSuccessful: `Import was successful.`,
-    passwordChangedSuccessfuly: `Password was changed successfully.`,
-    successfullyRequestedPasswordReset: `Successfully requested password reset. You will receive an email shortly.`,
     subscriptionChanged: (subscribed: boolean) =>
       subscribed
         ? "Successfully subscribed to weekly summary"
@@ -29,8 +27,6 @@ const translation = getByLanguage({
     successfullyCreatedUsers: `Benutzer*in wurden erfolgreich erstellt.`,
     successfullyUpdatedUser: `Benutzer*in wurde erfolgreich aktualisiert.`,
     importSuccessful: `Der Import wurde erfolgreich durchgeführt.`,
-    passwordChangedSuccessfuly: `Das Passwort wurde erfolgreich zurückgesetzt.`,
-    successfullyRequestedPasswordReset: `Passwort-Zurücksetzung erfolgreich beantragt. Sie erhalten in Kürze eine Email.`,
     subscriptionChanged: (subscribed: boolean) =>
       subscribed
         ? "Anmeldung für den wöchentlichen Newsletter erfolgreich."
@@ -44,9 +40,6 @@ export const getSagaListeners = (
   const t = () => translation(getLanguage());
 
   return {
-    onSetPasswordError: () => {
-      addMessages(t().anErrorOccured);
-    },
     onEntryDeleted: id => {
       addMessages(t().successfullyDeletedEntry(id));
     },
@@ -62,14 +55,8 @@ export const getSagaListeners = (
     onImportSuccessful: () => {
       addMessages(t().importSuccessful);
     },
-    onSetPasswordSuccess: () => {
-      addMessages(t().passwordChangedSuccessfuly);
-    },
     onRequestError: () => {
       addMessages(t().anErrorOccured);
-    },
-    onPasswordResetRequested: () => {
-      addMessages(t().successfullyRequestedPasswordReset);
     },
     onUsersCreated: () => {
       addMessages(t().successfullyCreatedUsers);

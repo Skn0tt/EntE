@@ -34,12 +34,6 @@ import {
   SIGN_ENTRY_REQUEST,
   SIGN_ENTRY_SUCCESS,
   SIGN_ENTRY_ERROR,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_ERROR,
-  SET_PASSWORD_REQUEST,
-  SET_PASSWORD_SUCCESS,
-  SET_PASSWORD_ERROR,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -263,32 +257,6 @@ export const refreshTokenSuccess = createMetaAction<Action<void>, AuthState>(
 );
 export const refreshTokenError = createMetaAction<Action<void>, Error>(
   REFRESH_TOKEN_ERROR
-);
-
-export const resetPasswordRequest = createAction<string>(
-  RESET_PASSWORD_REQUEST
-);
-export const resetPasswordSuccess = createMetaAction<Action<string>, string>(
-  RESET_PASSWORD_SUCCESS
-);
-export const resetPasswordError = createMetaAction<Action<string>, Error>(
-  RESET_PASSWORD_ERROR
-);
-
-export interface INewPassword {
-  token: string;
-  newPassword: string;
-}
-
-export const setPasswordRequest = createAction<INewPassword>(
-  SET_PASSWORD_REQUEST
-);
-export const setPasswordSuccess = createMetaAction<
-  Action<INewPassword>,
-  string
->(SET_PASSWORD_SUCCESS);
-export const setPasswordError = createMetaAction<Action<INewPassword>, Error>(
-  SET_PASSWORD_ERROR
 );
 
 export const setLanguage = createAction<Languages>(SET_LANGUAGE);
