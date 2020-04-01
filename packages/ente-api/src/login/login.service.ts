@@ -43,9 +43,11 @@ export class LoginService {
   }
 
   private async getOnesEntries(user: UserDto): Promise<EntryDto[]> {
+    if (user.isAdmin) {
+      return await this.entryRepo.findAll(NO_PAGINATION_INFO);
+    }
+
     switch (user.role) {
-      case Roles.ADMIN:
-        return await this.entryRepo.findAll(NO_PAGINATION_INFO);
       case Roles.PARENT:
         return await this.entryRepo.findByStudents(
           user.children.map(c => c.id),
@@ -67,9 +69,10 @@ export class LoginService {
   }
 
   private async getNeededUsers(user: UserDto): Promise<UserDto[]> {
+    if (user.isAdmin) {
+      return await this.userRepo.findAll(NO_PAGINATION_INFO);
+    }
     switch (user.role) {
-      case Roles.ADMIN:
-        return await this.userRepo.findAll(NO_PAGINATION_INFO);
       case Roles.PARENT:
         return [
           ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),

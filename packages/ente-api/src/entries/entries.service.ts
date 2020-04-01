@@ -90,10 +90,11 @@ export class EntriesService {
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllEntriesFailure, EntryDto[]>> {
-    switch (requestingUser.role) {
-      case Roles.ADMIN:
-        return Success(await this.entryRepo.findAll(paginationInfo));
+    if (requestingUser.isAdmin) {
+      return Success(await this.entryRepo.findAll(paginationInfo));
+    }
 
+    switch (requestingUser.role) {
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
         return Success(
@@ -143,10 +144,11 @@ export class EntriesService {
     return entry.cata(
       () => Fail(FindEntryFailure.EntryNotFound),
       e => {
-        switch (requestingUser.role) {
-          case Roles.ADMIN:
-            return Success(e);
+        if (requestingUser.isAdmin) {
+          return Success(e);
+        }
 
+        switch (requestingUser.role) {
           case Roles.STUDENT:
             const belongsStudent = e.student.id === requestingUser.id;
             return belongsStudent
@@ -403,11 +405,7 @@ export class EntriesService {
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
-    if (
-      [Roles.PARENT, Roles.STUDENT, Roles.TEACHER, Roles.ADMIN].includes(
-        requestingUser.role
-      )
-    ) {
+    if (requestingUser.role !== Roles.MANAGER) {
       return Fail(DeleteEntryFailure.ForbiddenForRole);
     }
 

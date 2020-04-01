@@ -98,11 +98,14 @@ const ManagerRoutes: React.SFC = () => (
 
 interface Props {
   role: Roles;
+  isAdmin: boolean;
 }
 const Routes: React.FunctionComponent<Props> = props => {
+  if (props.isAdmin) {
+    return <AdminRoutes />;
+  }
+
   switch (props.role) {
-    case Roles.ADMIN:
-      return <AdminRoutes />;
     case Roles.STUDENT:
       return <StudentRoutes />;
     case Roles.TEACHER:

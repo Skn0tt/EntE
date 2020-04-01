@@ -33,10 +33,6 @@ const template = Handlebars.compile(`
           You have been invited to view your students missed lessons on EntE.
           In order to be able to use EntE, please set your password using the following link.
           {{/ifEqual}}
-          {{#ifEqual role "${Roles.ADMIN}"}}
-          You have been invited to administer an EntE-Instance.
-          In order to be able to use EntE, please set your password using the following link.
-          {{/ifEqual}}
           
           <br /> <br />
           

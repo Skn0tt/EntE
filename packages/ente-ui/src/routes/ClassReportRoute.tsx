@@ -71,6 +71,7 @@ interface ClassReportRouteStateProps {
   getStudentsOfClass: (_class: string) => UserN[];
   getEntriesOfStudent: (id: string) => EntryN[];
   slotsMap: Map<string, SlotN>;
+  isAdmin: boolean;
 }
 const mapStateToProps: MapStateToPropsParam<
   ClassReportRouteStateProps,
@@ -90,7 +91,8 @@ const mapStateToProps: MapStateToPropsParam<
         .filter(u => u.get("role") === Roles.STUDENT),
     getEntriesOfStudent: studentId =>
       getEntries(state).filter(e => e.get("studentId") === studentId),
-    slotsMap: getSlotsMap(state)
+    slotsMap: getSlotsMap(state),
+    isAdmin: false // TODO:
   };
 };
 
@@ -113,7 +115,8 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
     existingClasses,
     getEntriesOfStudent,
     history,
-    match
+    match,
+    isAdmin
   } = props;
   const _class = Maybe.fromFalsy(match.params.class)
     .filter(v => existingClasses.includes(v))
@@ -164,7 +167,7 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
               alignItems="center"
               spacing={24}
             >
-              {ownRole === Roles.ADMIN && (
+              {isAdmin && (
                 <Grid item xs={8}>
                   <DropdownInput
                     value={_class.some()}

@@ -90,14 +90,15 @@ export class UsersService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const admins = await this.userRepo.findByRole(Roles.ADMIN);
+    const admins = await this.userRepo.findAdmins();
     const noAdminFound = admins.length === 0;
     if (noAdminFound) {
       this.logger.log("No admin user found. Creating one.");
 
       const admin = {
         children: [],
-        role: Roles.ADMIN,
+        isAdmin: true,
+        role: Roles.TEACHER,
         displayname: "Administrator",
         birthday: undefined,
         password: "root",
@@ -117,10 +118,10 @@ export class UsersService implements OnModuleInit {
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<Validation<FindAllUsersFailure, UserDto[]>> {
+    if (requestingUser.isAdmin) {
+      return Success(await this.userRepo.findAll(paginationInfo));
+    }
     switch (requestingUser.role) {
-      case Roles.ADMIN:
-        return Success(await this.userRepo.findAll(paginationInfo));
-
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
         const students = await this.userRepo.findByClass(user.class!);
@@ -186,6 +187,10 @@ export class UsersService implements OnModuleInit {
           return Success(u);
         }
 
+        if (_requestingUser.isAdmin) {
+          return Success(u);
+        }
+
         switch (_requestingUser.role) {
           // Already Checked for Parent above
           case Roles.PARENT: {
@@ -203,9 +208,6 @@ export class UsersService implements OnModuleInit {
             return isManagersYear
               ? Success(u)
               : Fail(FindOneUserFailure.ForbiddenForUser);
-
-          case Roles.ADMIN:
-            return Success(u);
 
           case Roles.STUDENT: {
             const isTeaching = roleIsTeaching(u.role);
@@ -248,8 +250,7 @@ export class UsersService implements OnModuleInit {
     users: CreateUserDto[],
     requestingUser: RequestContextUser
   ): Promise<Validation<CreateUsersFailure, UserDto[]>> {
-    const userIsAdmin = requestingUser.role === Roles.ADMIN;
-    if (!userIsAdmin) {
+    if (!requestingUser.isAdmin) {
       return Fail(CreateUsersFailure.ForbiddenForUser);
     }
 
@@ -308,7 +309,7 @@ export class UsersService implements OnModuleInit {
       return Fail(SetLanguageFailure.IllegalLanguage);
     }
 
-    const isAdmin = requestingUser.role === Roles.ADMIN;
+    const { isAdmin } = requestingUser;
     const isRequestingUser = requestingUser.id === id;
     if (!(isAdmin || isRequestingUser)) {
       return Fail(SetLanguageFailure.ForbiddenForUser);
@@ -359,8 +360,7 @@ export class UsersService implements OnModuleInit {
       await this.patchOneSelf(patch, requestingUser);
     }
 
-    const userIsAdmin = requestingUser.role === Roles.ADMIN;
-    if (!userIsAdmin) {
+    if (!requestingUser.isAdmin) {
       return (await requestingUser.getDto()).toValidation(
         PatchUserFailure.UserNotFound
       );
@@ -430,7 +430,7 @@ export class UsersService implements OnModuleInit {
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<DeleteUserFailure, UserDto>> {
-    if (requestingUser.role !== Roles.ADMIN) {
+    if (!requestingUser.isAdmin) {
       return Fail(DeleteUserFailure.ForbiddenForRole);
     }
 
@@ -459,7 +459,7 @@ export class UsersService implements OnModuleInit {
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<InvokeInvitationEmailFailure, true>> {
-    if (requestingUser.role !== Roles.ADMIN) {
+    if (!requestingUser.isAdmin) {
       return Fail(InvokeInvitationEmailFailure.ForbiddenForUser);
     }
 
@@ -516,7 +516,7 @@ export class UsersService implements OnModuleInit {
     _class: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<PromoteTeacherFailure, true>> {
-    if (requestingUser.role !== Roles.ADMIN) {
+    if (!requestingUser.isAdmin) {
       return Fail(PromoteTeacherFailure.ForbiddenForUser);
     }
 
@@ -535,7 +535,7 @@ export class UsersService implements OnModuleInit {
     managerId: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<DemoteManagerFailure, true>> {
-    if (requestingUser.role !== Roles.ADMIN) {
+    if (!requestingUser.isAdmin) {
       return Fail(DemoteManagerFailure.ForbiddenForUser);
     }
 
@@ -547,19 +547,25 @@ export class UsersService implements OnModuleInit {
     return Success<DemoteManagerFailure, true>(true);
   }
 
-  static blackenDto(user: UserDto, role: Roles): BlackedUserDto {
-    const fullUser = user;
+  static blackenDto(
+    user: UserDto,
+    role: Roles,
+    isAdmin: boolean
+  ): BlackedUserDto {
+    if (isAdmin) {
+      const fullUser = user;
+      return fullUser;
+    }
+
     const baseUser: BaseUserDto = {
       displayname: user.displayname,
       id: user.id,
       role: user.role,
-      username: user.username
+      username: user.username,
+      isAdmin: user.isAdmin
     };
 
     switch (role) {
-      case Roles.ADMIN:
-        return fullUser;
-
       case Roles.MANAGER:
         return {
           ...baseUser,

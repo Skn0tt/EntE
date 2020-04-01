@@ -34,10 +34,10 @@ export class SlotsService {
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
+    if (requestingUser.isAdmin) {
+      return await this.slotRepo.findAll(paginationInfo);
+    }
     switch (requestingUser.role) {
-      case Roles.ADMIN:
-        return await this.slotRepo.findAll(paginationInfo);
-
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
         return await this.slotRepo.findByClassOfStudent(

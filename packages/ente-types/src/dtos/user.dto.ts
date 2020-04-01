@@ -7,7 +7,8 @@ import {
   IsOptional,
   IsISO8601,
   IsString,
-  IsInt
+  IsInt,
+  IsBoolean
 } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
@@ -26,6 +27,7 @@ export interface BaseUserDto {
   username: string;
   displayname: string;
   role: Roles;
+  isAdmin: boolean;
   subscribedToWeeklySummary?: boolean;
 }
 
@@ -50,6 +52,8 @@ export class UserDto implements BlackedUserDto {
   @CustomStringValidator(isValidEmail) email: string;
 
   @IsIn(rolesArr) role: Roles;
+
+  @IsBoolean() isAdmin: boolean;
 
   @IsIn(languagesArr) language: Languages;
 

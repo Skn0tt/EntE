@@ -121,15 +121,7 @@ const Class: React.SFC<{ plural?: boolean }> = ({ plural }) => {
 /**
  * # Composed
  */
-export const AdminItems: React.SFC = () => (
-  <>
-    <Entries />
-    <Slots />
-    <Class plural />
-    <Users />
-    <Admin />
-  </>
-);
+export const AdminItems = Admin;
 
 export const TeacherItems: React.SFC = () => (
   <>
