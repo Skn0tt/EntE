@@ -168,7 +168,7 @@ export class UserRepo {
       const result: User[] = [];
 
       const insert = async (users: CreateUserDtoWithHash[]) => {
-        const newUsers = await manager.create(
+        const newUsers = manager.create(
           User,
           await Promise.all(
             users.map(async ({ user, hash }) => ({
@@ -185,6 +185,7 @@ export class UserRepo {
               password: hash,
               role: user.role,
               username: user.username,
+              isAdmin: user.isAdmin,
               email: user.email,
               class: user.class
             }))
@@ -285,6 +286,10 @@ export class UserRepo {
 
   async setDisplayName(id: string, displayname: string) {
     await this.repo.update(id, { displayname });
+  }
+
+  async setIsAdmin(id: string, isAdmin: boolean) {
+    await this.repo.update(id, { isAdmin });
   }
 
   async setUsername(id: string, username: string) {

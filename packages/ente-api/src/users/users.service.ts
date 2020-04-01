@@ -376,6 +376,11 @@ export class UsersService implements OnModuleInit {
       user.some().displayname = patch.displayname;
     }
 
+    if (!!patch.isAdmin) {
+      await this.userRepo.setIsAdmin(id, patch.isAdmin);
+      user.some().isAdmin = patch.isAdmin;
+    }
+
     if (!!patch.username) {
       await this.userRepo.setUsername(id, patch.username);
       user.some().username = patch.username;

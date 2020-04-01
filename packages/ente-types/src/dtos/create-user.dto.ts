@@ -1,5 +1,11 @@
 import { rolesArr, Roles } from "ente-types";
-import { IsIn, IsOptional, IsDefined, IsISO8601 } from "class-validator";
+import {
+  IsIn,
+  IsOptional,
+  IsDefined,
+  IsISO8601,
+  IsBoolean
+} from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
@@ -32,6 +38,10 @@ export class CreateUserDto {
   @IsDefined()
   @IsIn(rolesArr)
   role: Roles;
+
+  @IsDefined()
+  @IsBoolean()
+  isAdmin: boolean;
 
   @CustomStringValidator(isValidUuidOrUsername, { each: true })
   children: string[];
