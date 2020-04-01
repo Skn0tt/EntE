@@ -250,9 +250,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [slots, studentId, reason, beginDate, endDate]
   );
 
-  const isValidInput = CreateEntryDtoValidator(createEntryDeadline).validate(
-    result as any
-  );
+  const isValidInput = CreateEntryDtoValidator.validate(result as any);
 
   const handleSubmit = React.useCallback(
     () => {
@@ -301,11 +299,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                 <DateInput
                   label={translation.fromLabel}
                   onChange={handleChangeBeginDate}
-                  minDate={
-                    isRange
-                      ? undefined
-                      : dateToIsoString(daysBeforeNow(createEntryDeadline))
-                  }
                   value={beginDate}
                 />
               </Grid>
@@ -315,9 +308,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                     label={translation.toLabel}
                     isValid={() => isEndDateValid}
                     onChange={handleChangeEndDate}
-                    minDate={dateToIsoString(
-                      daysBeforeNow(createEntryDeadline)
-                    )}
                     value={endDate!}
                     minDateMessage={translation.dateMustBeBiggerThanFrom}
                   />
