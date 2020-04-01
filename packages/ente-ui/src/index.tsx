@@ -39,9 +39,10 @@ import { LocalizedMUIPickersUtilsProvider } from "./components/LocalizedMUIPicke
 installMuiStyles();
 
 const baseUrl = `${location.protocol}//${location.hostname}`;
+export const apiBaseUrl = `${baseUrl}/api`;
 
 const config: Partial<ReduxConfig> = {
-  baseUrl: `${baseUrl}/api`,
+  baseUrl: apiBaseUrl,
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
     const link = document.createElement("a");

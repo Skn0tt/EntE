@@ -29,7 +29,6 @@ import {
   setLanguage,
   getColorScheme,
   setColorScheme,
-  resetPasswordRequest,
   getUsername,
   getRole,
   isSubscribedToWeeklySummary,
@@ -37,6 +36,10 @@ import {
   getOneSelf
 } from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
+import Axios from "axios";
+import { apiBaseUrl } from "../";
+import { invokeReset } from "../passwordReset";
+import { useMessages } from "../context/Messages";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -83,7 +86,6 @@ const mapStateToProps: MapStateToPropsParam<
 interface SettingsMenuDispatchProps {
   setLanguage: (lang: Languages) => void;
   setDarkMode: (on: boolean) => void;
-  resetPassword(username: string): void;
   setWeeklySummary(v: boolean, id: string): void;
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
@@ -92,7 +94,6 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 > = dispatch => ({
   setLanguage: lang => dispatch(setLanguage(lang)),
   setDarkMode: on => dispatch(setColorScheme(on ? "dark" : "light")),
-  resetPassword: username => dispatch(resetPasswordRequest(username)),
   setWeeklySummary: (v, id) =>
     dispatch(updateUserRequest([id, { subscribedToWeeklySummary: v }]))
 });
@@ -107,7 +108,6 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
     setLanguage,
     isDarkModeEnabled,
     setDarkMode,
-    resetPassword,
     username,
     isSubscribedToWeeklySummary,
     role,
@@ -121,6 +121,7 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
   >(false);
   const open = anchorEl.isSome();
   const translation = useTranslation();
+  const { addMessages } = useMessages();
 
   const openMenu: React.MouseEventHandler = React.useCallback(
     event => {
@@ -158,10 +159,10 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
 
   const handleClickResetPassword = React.useCallback(
     () => {
-      resetPassword(username);
+      invokeReset(username, msgs => addMessages(msgs[language]));
       closeMenu();
     },
-    [resetPassword, username, closeMenu]
+    [username, closeMenu, addMessages]
   );
 
   return (

@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Theme, Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
-import { useLanguage } from "ente-ui/src/helpers/useLanguage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   [EntryReasonCategoriesTranslation.en.competition]: {

@@ -144,7 +144,7 @@ de:
     try_demo:
       title: Demo ausprobieren
       demo_url: https://demo.ente.app
-      body: > # TODO: Demo-Server auf demo.ente.app umlegen
+      body: >
         Um sich bereits einen Eindruck
         von der EntE-Oberfläche zu machen,
         können Sie den EntE-Demo-Server benutzen.

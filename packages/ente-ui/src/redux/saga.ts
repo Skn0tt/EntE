@@ -24,8 +24,6 @@ import {
   createUsersSuccess,
   signEntryError,
   signEntrySuccess,
-  resetPasswordError,
-  resetPasswordSuccess,
   loginSuccess,
   refreshTokenSuccess,
   loginError,
@@ -34,15 +32,12 @@ import {
   updateUserSuccess,
   unsignEntryError,
   unsignEntrySuccess,
-  INewPassword,
   deleteUserSuccess,
   deleteEntrySuccess,
   deleteUserError,
   deleteEntryError,
   downloadExcelExportSuccess,
   downloadExcelExportError,
-  setPasswordSuccess,
-  setPasswordError,
   ImportUsersRequestPayload,
   importUsersSuccess,
   ImportUsersSuccessPayload,
@@ -82,8 +77,6 @@ import {
   CREATE_ENTRY_REQUEST,
   UPDATE_USER_REQUEST,
   SIGN_ENTRY_REQUEST,
-  RESET_PASSWORD_REQUEST,
-  SET_PASSWORD_REQUEST,
   REFRESH_TOKEN_REQUEST,
   LOGIN_REQUEST,
   CREATE_USERS_REQUEST,
@@ -362,34 +355,6 @@ function* unsignEntrySaga(action: Action<string>) {
   }
 }
 
-function* resetPasswordSaga(action: Action<string>) {
-  try {
-    const result = yield call(api.resetPassword, action.payload!);
-
-    yield put(resetPasswordSuccess(result, action));
-    getConfig().onPasswordResetRequested(action.payload!);
-  } catch (error) {
-    onRequestError(error);
-    yield put(resetPasswordError(error, action));
-  }
-}
-
-function* setPasswordSaga(action: Action<INewPassword>) {
-  try {
-    const result = yield call(
-      api.setPassword,
-      action.payload!.token,
-      action.payload!.newPassword
-    );
-
-    getConfig().onSetPasswordSuccess();
-    yield put(setPasswordSuccess(result, action));
-  } catch (error) {
-    getConfig().onSetPasswordError(error);
-    yield put(setPasswordError(error, action));
-  }
-}
-
 function* fetchInstanceConfigSaga(action: Action<void>) {
   try {
     const result: FetchInstanceConfigSuccessPayload = yield call(
@@ -542,8 +507,6 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
-  yield takeEvery(RESET_PASSWORD_REQUEST, resetPasswordSaga);
-  yield takeEvery(SET_PASSWORD_REQUEST, setPasswordSaga);
   yield takeEvery(LOGIN_REQUEST, loginSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
