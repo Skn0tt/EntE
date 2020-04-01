@@ -112,7 +112,6 @@ import {
   SetLoginBannerSuccessPayload,
   LoginSuccessPayload,
   UpdateManagerNotesSuccessPayload,
-  PromoteTeacherRequestPayload,
   PromoteTeacherSuccessPayload
 } from "./actions";
 import { FilterScope } from "../filter-scope";
