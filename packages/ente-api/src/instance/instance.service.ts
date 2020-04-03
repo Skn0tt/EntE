@@ -42,8 +42,7 @@ export class InstanceService {
   ): Promise<Validation<ImportUsersFailure, UserDto[]>> {
     const defaultLanguage = await this.instanceConfigService.getDefaultLanguage();
 
-    const { role } = requestingUser;
-    const isAdmin = role === Roles.ADMIN;
+    const { role, isAdmin } = requestingUser;
     if (!isAdmin) {
       return Fail(ImportUsersFailure.ForbiddenForRole);
     }

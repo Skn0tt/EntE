@@ -81,6 +81,10 @@ export class UserRepo {
     return users.map(u => UserRepo.toDto(u));
   }
 
+  async countAdmins(): Promise<number> {
+    return this.repo.count({ where: { isAdmin: true } });
+  }
+
   async findAllUserIds(): Promise<Set<string>> {
     const records = await this.repo.find({
       select: ["_id"]
@@ -164,7 +168,7 @@ export class UserRepo {
       const result: User[] = [];
 
       const insert = async (users: CreateUserDtoWithHash[]) => {
-        const newUsers = await manager.create(
+        const newUsers = manager.create(
           User,
           await Promise.all(
             users.map(async ({ user, hash }) => ({
@@ -181,6 +185,7 @@ export class UserRepo {
               password: hash,
               role: user.role,
               username: user.username,
+              isAdmin: user.isAdmin,
               email: user.email,
               class: user.class
             }))
@@ -265,7 +270,7 @@ export class UserRepo {
     if (deleteOthers) {
       await this.repo.delete({
         username: Not(In([...usernames, ...childrenNotInDtos])),
-        role: Not(Roles.ADMIN)
+        isAdmin: false
       });
     }
 
@@ -281,6 +286,10 @@ export class UserRepo {
 
   async setDisplayName(id: string, displayname: string) {
     await this.repo.update(id, { displayname });
+  }
+
+  async setIsAdmin(id: string, isAdmin: boolean) {
+    await this.repo.update(id, { isAdmin });
   }
 
   async setUsername(id: string, username: string) {
@@ -528,6 +537,7 @@ export class UserRepo {
       }
     })();
 
+    result.isAdmin = !!user.isAdmin;
     result.displayname = user.displayname;
     result.email = user.email;
     result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;

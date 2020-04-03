@@ -15,6 +15,7 @@ const simon: UserDto = {
   birthday: "2100-01-01",
   id: "abc",
   role: Roles.STUDENT,
+  isAdmin: false,
   children: [],
   username: "skn0tt",
   language: Languages.ENGLISH
@@ -25,6 +26,7 @@ const susanne: UserDto = {
   children: [simon],
   email: "susanne@simonknott.de",
   id: "asdaj",
+  isAdmin: false,
   birthday: undefined,
   role: Roles.PARENT,
   username: "susan"
@@ -35,6 +37,7 @@ const benni: UserDto = {
   children: [],
   email: "benni@simonknott.de",
   id: "asjd",
+  isAdmin: false,
   birthday: undefined,
   role: Roles.TEACHER,
   username: "benny"

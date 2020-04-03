@@ -15,7 +15,8 @@ export class TokenService {
       id: user.id,
       role: user.role,
       username: user.username,
-      childrenIds: user.childrenIds
+      childrenIds: user.childrenIds,
+      isAdmin: user.isAdmin
     };
     return await this.signerService.createToken(payload);
   }

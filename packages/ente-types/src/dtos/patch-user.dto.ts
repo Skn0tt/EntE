@@ -41,4 +41,8 @@ export class PatchUserDto {
   @IsOptional()
   @IsBoolean()
   subscribedToWeeklySummary?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isAdmin?: boolean;
 }

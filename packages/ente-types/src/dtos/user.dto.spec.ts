@@ -11,7 +11,8 @@ const baseUser = {
   children: [],
   displayname: "Max",
   role: Roles.STUDENT,
-  email: "max@mustermann.de"
+  email: "max@mustermann.de",
+  isAdmin: false
 };
 
 describe("UserDto", () => {

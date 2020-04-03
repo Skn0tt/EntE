@@ -24,7 +24,9 @@ import {
   WithStyles,
   createStyles,
   Menu,
-  MenuItem
+  MenuItem,
+  Checkbox,
+  FormControlLabel
 } from "@material-ui/core";
 import withMobileDialog, {
   InjectedProps
@@ -85,6 +87,7 @@ const useTranslation = makeTranslationHook({
       username: "Username",
       role: "Role",
       class: "Class",
+      isAdmin: "Administrator",
       areYouSureYouWannaDelete: (username: string) =>
         `Are you sure you want to delete user "${username}"?`
     },
@@ -111,6 +114,7 @@ const useTranslation = makeTranslationHook({
       username: "Benutzername",
       role: "Rolle",
       class: "Klasse / Abschluss-Jahrgang",
+      isAdmin: "Administrator",
       areYouSureYouWannaDelete: (username: string) =>
         `Sind Sie sicher, dass Sie den Nutzer "${username}" löschen möchten?`
     },
@@ -233,11 +237,13 @@ export const SpecificUser: React.FunctionComponent<
     [userId]
   );
 
-  const updatePatch = (key: keyof PatchUserDto) => (value: any) => {
-    const clone = Object.assign({}, patch);
-    const isSameAsOrigin = user.some().get(key) === value;
-    clone[key] = isSameAsOrigin ? undefined : value;
-    setPatch(clone);
+  const updatePatch = <K extends keyof PatchUserDto>(key: K) => (
+    value: PatchUserDto[K]
+  ) => {
+    setPatch(old => ({
+      ...old,
+      [key]: value
+    }));
   };
 
   const onClose = history.goBack;
@@ -349,7 +355,7 @@ export const SpecificUser: React.FunctionComponent<
                     </DialogContentText>
                   </Grid>
 
-                  {/* Displayname */}
+                  {/* Username */}
                   <Grid item xs={12}>
                     <TextInput
                       title={lang.titles.username}
@@ -376,6 +382,26 @@ export const SpecificUser: React.FunctionComponent<
                       value={patch.email || user.get("email")}
                       onChange={updatePatch("email")}
                       validator={isValidEmail}
+                    />
+                  </Grid>
+
+                  {/* IsAdmin */}
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={_.defaultTo(
+                            patch.isAdmin,
+                            user.get("isAdmin")
+                          )}
+                          onChange={evt =>
+                            updatePatch("isAdmin")(evt.target.checked)
+                          }
+                          name="isAdmin"
+                          color="primary"
+                        />
+                      }
+                      label={lang.titles.isAdmin}
                     />
                   </Grid>
 

@@ -16,18 +16,6 @@ describe("InvitationLink", () => {
       });
     });
 
-    describe("Roles.Admin", () => {
-      it("renders an email that suits students", () => {
-        const result = InvitationLink(
-          "https://mylink.de",
-          Roles.ADMIN,
-          Languages.ENGLISH
-        );
-        expect(result.html).toContain("to administer");
-        expect(result.html).not.toContain("your missed lessons");
-      });
-    });
-
     describe("Roles.Manager", () => {
       it("renders an email that suits students", () => {
         const result = InvitationLink(
@@ -50,18 +38,6 @@ describe("InvitationLink", () => {
           Languages.GERMAN
         );
         expect(result.html).toContain("ihre Fehlstunden");
-      });
-    });
-
-    describe("Roles.Admin", () => {
-      it("renders an email that suits students", () => {
-        const result = InvitationLink(
-          "https://mylink.de",
-          Roles.ADMIN,
-          Languages.GERMAN
-        );
-        expect(result.html).toContain("zu administrieren");
-        expect(result.html).toContain("EntE-Instanz");
       });
     });
 

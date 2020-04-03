@@ -1,14 +1,9 @@
 import * as React from "react";
-import { Roles } from "ente-types";
 import { Chip, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { RoleTranslation } from "../../roles.translation";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  [RoleTranslation.de.admin]: {
-    backgroundColor: "rgb(222, 50, 21)",
-    color: theme.palette.common.white
-  },
   [RoleTranslation.de.manager]: {
     backgroundColor: "#f57c00",
     color: theme.palette.common.white
@@ -23,10 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   [RoleTranslation.de.teacher]: {
     backgroundColor: "rgb(69, 90, 100)",
-    color: theme.palette.common.white
-  },
-  [RoleTranslation.en.admin]: {
-    backgroundColor: "rgb(222, 50, 21)",
     color: theme.palette.common.white
   },
   [RoleTranslation.en.manager]: {

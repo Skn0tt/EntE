@@ -31,7 +31,7 @@ Tragen sie hier das Geburtstag des Schülers im ISO-8601-Format ein (z.B. "2002-
 
 `class` muss für Schüler und Stufenleiter gesetzt werden und enthält die Klasse bzw. das vorraussichtliche Abitur-Jahr des/der Schüler\*in bzw. die Klasse / das Abitur-Jahr der Stufe, die der Stufenleiter betreut.
 
-`role` enthält die Rolle des Nutzers: `admin` (Administrator), `parent` (Elternteil), `student` (Schüler), `manager` (Stufenleiter) oder `teacher` (Lehrer).
+`role` enthält die Rolle des Nutzers: `parent` (Elternteil), `student` (Schüler), `manager` (Stufenleiter) oder `teacher` (Lehrer).
 
 Die erste Zeile der Import-Datei muss die Spalten-Überschriften enthalten.
 
