@@ -3,16 +3,7 @@ import { UserN, AppState } from "../../redux/types";
 import { isLoading, updateManagerNotesRequest } from "../../redux";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { fromEvent } from "rxjs";
-import { tap, debounceTime } from "rxjs/operators";
-import { EventEmitter } from "events";
-import {
-  Grid,
-  TextField,
-  CircularProgress,
-  Typography
-} from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
+import { Grid, TextField, Typography } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 
 const useTranslation = makeTranslationHook({
@@ -28,10 +19,7 @@ interface ManagerNotesEditorProps {
   student: UserN;
 }
 
-const mapStateToProps = (
-  state: AppState,
-  ownProps: ManagerNotesEditorProps
-) => ({
+const mapStateToProps = (state: AppState) => ({
   isUpdating: isLoading(state)
 });
 
@@ -60,61 +48,33 @@ const ManagerNotesEditor = (
   props: ManagerNotesEditorProps & StateProps & DispatchProps
 ) => {
   const translation = useTranslation();
-  const { student, update, isUpdating } = props;
-  const [currentValue, setCurrentValue] = React.useState<string>(
-    student.get("managerNotes") || ""
-  );
+  const { student, update } = props;
 
-  const isSynced = currentValue === student.get("managerNotes");
-
-  const input = React.useMemo(
-    () => {
-      const events = new EventEmitter();
-      const $ = fromEvent<string>(events, "next").pipe(
-        tap(v => setCurrentValue(v))
-      );
-
-      return {
-        $,
-        next: (v: string) => events.emit("next", v)
-      };
-    },
-    [setCurrentValue]
-  );
+  const currentValue = React.useRef<string>("");
 
   React.useEffect(
     () => {
-      const subscription = input.$.pipe(debounceTime(500)).subscribe(value => {
-        update(value);
-      });
-
-      return subscription.unsubscribe;
+      return () => {
+        update(currentValue.current);
+      };
     },
-    [input.$]
+    [currentValue]
   );
 
   return (
     <Grid container direction="column" spacing={8}>
       <Grid item>
-        <Grid container direction="row" justify="space-between">
-          <Grid item>
-            <Typography variant="h6">{translation.title}</Typography>
-          </Grid>
-
-          {isSynced ? <DoneIcon /> : <CircularProgress size={24} />}
-        </Grid>
+        <Typography variant="h6">{translation.title}</Typography>
       </Grid>
       <Grid item>
         <TextField
-          value={currentValue}
+          defaultValue={student.get("managerNotes")}
           multiline
           fullWidth
           variant="outlined"
           onChange={el => {
-            const value = el.currentTarget.value;
-            if (typeof value === "string") {
-              input.next(value);
-            }
+            const { value } = el.currentTarget;
+            currentValue.current = value;
           }}
         />
       </Grid>
