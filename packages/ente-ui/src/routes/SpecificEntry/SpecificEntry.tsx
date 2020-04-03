@@ -66,8 +66,6 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MailIcon from "@material-ui/icons/MailRounded";
-import CloseIcon from "@material-ui/icons/Close";
-import DoneIcon from "@material-ui/icons/Done";
 import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
@@ -75,6 +73,7 @@ import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
 import { slotTimeComparator } from "../../helpers/slot-time-comparator";
 import { isAfterDeadline } from "../Entries/CreateEntry";
+import { ErrorBox } from "../../elements/ErrorBox";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -416,14 +415,14 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                     : format(parseISO(entry.get("date")), "PP", {
                         locale: lang.locale
                       })}
-                  <br />
-                  {showDeadlineSurpassedWarning && (
-                    <Typography color="error">
-                      {lang.deadlineSurpassed}
-                    </Typography>
-                  )}
                 </Typography>
               </Grid>
+
+              {showDeadlineSurpassedWarning && (
+                <Grid item>
+                  <ErrorBox>{lang.deadlineSurpassed}</ErrorBox>
+                </Grid>
+              )}
 
               {/* Slots */}
               <Grid item>

@@ -47,6 +47,7 @@ import { CheckboxInput } from "../../elements/CheckboxInput";
 import * as _ from "lodash";
 import { EntryReasonInput } from "./EntryReasonInput";
 import { CreateSlotList } from "./CreateSlotList";
+import { ErrorBox } from "../../elements/ErrorBox";
 
 function days(n: number) {
   return n * 24 * 60 * 60 * 1000;
@@ -276,16 +277,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
 
   return (
-    <Dialog
-      fullScreen={fullScreen}
-      onClose={onClose}
-      open={show}
-      PaperProps={{
-        style: {
-          backgroundColor: showIsNotInDeadlineWarning ? "#ffceca" : undefined
-        }
-      }}
-    >
+    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
       <DialogTitle>{translation.newEntry}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={32}>
@@ -342,9 +334,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
           </Grid>
           {showIsNotInDeadlineWarning && (
             <Grid item xs={12}>
-              <Typography color="error" style={{ marginLeft: "10px" }}>
-                {translation.deadline}
-              </Typography>
+              <ErrorBox>{translation.deadline}</ErrorBox>
             </Grid>
           )}
           <Grid item xs={12}>
