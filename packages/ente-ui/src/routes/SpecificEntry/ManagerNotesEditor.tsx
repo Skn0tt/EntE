@@ -101,8 +101,7 @@ const ManagerNotesEditor = (
             <Typography variant="h6">{translation.title}</Typography>
           </Grid>
 
-          {isUpdating || (!isSynced && <CircularProgress size={24} />)}
-          {isSynced && <DoneIcon />}
+          {isSynced ? <DoneIcon /> : <CircularProgress size={24} />}
         </Grid>
       </Grid>
       <Grid item>
