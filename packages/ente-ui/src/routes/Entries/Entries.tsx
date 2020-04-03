@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import styles from "./Entries.styles";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
+import * as _ from "lodash";
 import {
   AppState,
   getEntries,
@@ -21,7 +22,8 @@ import {
   EntryN,
   getFilterScope,
   getRole,
-  addReviewedRecordRequest
+  addReviewedRecordRequest,
+  getSlots
 } from "../../redux";
 import { Dispatch } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
@@ -43,6 +45,7 @@ import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMe
 import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
+import { Reporting } from "../../reporting/reporting";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -52,6 +55,7 @@ const useTranslation = makeTranslationHook({
       date: "Date",
       created: "Created",
       reason: "Reason",
+      duration: "Duration [Classes]",
       manager: "Manager",
       parents: "Parents",
       reviewed: "Review"
@@ -67,6 +71,7 @@ const useTranslation = makeTranslationHook({
       date: "Datum",
       created: "Erstellt",
       reason: "Grund",
+      duration: "Dauer [Stunden]",
       manager: "Stufenleiter",
       parents: "Eltern",
       reviewed: "Abhaken"
@@ -79,6 +84,7 @@ const useTranslation = makeTranslationHook({
 
 const mapStateToProps = (state: AppState) => ({
   entries: getEntries(state),
+  slots: getSlots(state),
   getUser: (id: string) => getUser(id)(state),
   filterScope: getFilterScope(state),
   ownRole: getRole(state).orSome(Roles.STUDENT),
@@ -109,8 +115,24 @@ export const Entries: React.FunctionComponent<Props> = props => {
     requestEntries,
     filterScope,
     ownRole,
-    addToReviewed
+    addToReviewed,
+    slots
   } = props;
+
+  const slotsByEntryId = React.useMemo(
+    () => {
+      const slotByIds = _.keyBy(slots, slot => slot.get("id"));
+
+      return _.fromPairs(
+        entries.map(entry => {
+          const entryId = entry.get("id");
+          const slots = entry.get("slotIds").map(id => slotByIds[id]);
+          return [entryId, slots];
+        })
+      );
+    },
+    [slots, entries]
+  );
 
   const lang = useTranslation();
 
@@ -205,6 +227,13 @@ export const Entries: React.FunctionComponent<Props> = props => {
               customBodyRender: (s: string) => (
                 <EntryReasonCategoryChip reasonCategoryTranslated={s} />
               )
+            }
+          },
+          {
+            name: lang.headers.duration,
+            extract: e => {
+              const slots = slotsByEntryId[e.get("id")];
+              return _.sumBy(slots, Reporting.getLengthOfSlot);
             }
           },
           {
