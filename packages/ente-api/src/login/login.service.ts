@@ -43,10 +43,6 @@ export class LoginService {
   }
 
   private async getOnesEntries(user: UserDto): Promise<EntryDto[]> {
-    if (user.isAdmin) {
-      return await this.entryRepo.findAll(NO_PAGINATION_INFO);
-    }
-
     switch (user.role) {
       case Roles.PARENT:
         return await this.entryRepo.findByStudents(
