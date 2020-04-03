@@ -397,7 +397,7 @@ export class EntriesService {
     id: string,
     requestingUser: RequestContextUser
   ): Promise<Validation<DeleteEntryFailure, EntryDto>> {
-    if (requestingUser.role !== Roles.MANAGER) {
+    if (![Roles.MANAGER, Roles.STUDENT].includes(requestingUser.role)) {
       return Fail(DeleteEntryFailure.ForbiddenForRole);
     }
 
@@ -408,6 +408,14 @@ export class EntriesService {
           return Fail(DeleteEntryFailure.NotFound);
         default:
           return Fail(DeleteEntryFailure.ForbiddenForUser);
+      }
+    }
+
+    if (requestingUser.role === Roles.STUDENT) {
+      const { signedManager, signedParent } = entryV.success();
+      const isPartiallySigned = signedManager || signedParent;
+      if (isPartiallySigned) {
+        return Fail(DeleteEntryFailure.ForbiddenForUser);
       }
     }
 
