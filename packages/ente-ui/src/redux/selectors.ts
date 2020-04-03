@@ -105,7 +105,7 @@ export const getRole: Selector<Maybe<Roles>> = state => {
 
 export const isAdmin: Selector<boolean> = state => {
   const oneSelf = getOneSelf(state);
-  return oneSelf.map(s => s.get("isAdmin")).orSome(false);
+  return oneSelf.map(s => s.get("isAdmin") || false).orSome(false);
 };
 
 export const hasChildren = createSelector(
