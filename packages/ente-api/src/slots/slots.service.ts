@@ -34,9 +34,6 @@ export class SlotsService {
     requestingUser: RequestContextUser,
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
-    if (requestingUser.isAdmin) {
-      return await this.slotRepo.findAll(paginationInfo);
-    }
     switch (requestingUser.role) {
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
