@@ -174,18 +174,11 @@ export class EntriesService {
     return r.map(e => EntriesService.blackenDto(e, requestingUser));
   }
 
-  private async getCreateEntryDtoValidator() {
-    const deadline = await this.instanceConfigService.getEntryCreationDeadline();
-
-    return CreateEntryDtoValidator(deadline);
-  }
-
   private async _create(
     entry: CreateEntryDto,
     requestingUser: RequestContextUser
   ): Promise<Validation<CreateEntryFailure, EntryDto>> {
-    const validator = await this.getCreateEntryDtoValidator();
-    const isValidDto = validator.validate(entry);
+    const isValidDto = CreateEntryDtoValidator.validate(entry);
     if (!isValidDto) {
       return Fail(CreateEntryFailure.IllegalDto);
     }
