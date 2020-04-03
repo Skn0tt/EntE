@@ -84,7 +84,7 @@ const ManagerNotesEditor = (
 
   React.useEffect(
     () => {
-      const subscription = input.$.pipe(debounceTime(200)).subscribe(value => {
+      const subscription = input.$.pipe(debounceTime(500)).subscribe(value => {
         update(value);
       });
 
