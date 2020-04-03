@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix: Manager notes textarea publishes on exiting modal, fixes sluggish performance ([#357](https://gitlab.com/Skn0tt/EntE/issues/357))
 - Change: Students can now delete entries until they're signed ([#358](https://gitlab.com/Skn0tt/EntE/issues/358))
 - Make deadline weak, such that only a warning is shown ([#354](https://gitlab.com/Skn0tt/EntE/issues/354))
 - Feature: Show duration of entry in table ([#359](https://gitlab.com/Skn0tt/EntE/issues/359))
