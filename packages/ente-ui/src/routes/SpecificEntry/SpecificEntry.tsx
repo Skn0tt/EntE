@@ -314,6 +314,13 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     entry => {
       const isReviewed = entry.get("isInReviewedRecords");
 
+      const isPartiallySigned =
+        entry.get("signedManager") || entry.get("signedParent");
+      const canBeDeletedByStudent = !isPartiallySigned;
+      const showDeleteButton =
+        role === Roles.MANAGER ||
+        (role === Roles.STUDENT && canBeDeletedByStudent);
+
       const showDeadlineSurpassedWarning = isAfterDeadline(
         parseISO(entry.get("dateEnd") || entry.get("date")),
         parseISO(entry.get("createdAt")),
@@ -333,26 +340,25 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
           />
           <DialogContent>
             <Grid container direction="column" spacing={24}>
+              {showDeleteButton && (
+                <IconButton
+                  aria-label={lang.delete}
+                  onClick={() => setShowDelete(true)}
+                  className={classes.deleteButton}
+                >
+                  <DeleteIcon fontSize="default" />
+                </IconButton>
+              )}
               {role === Roles.MANAGER && (
-                <>
-                  <IconButton
-                    aria-label={lang.delete}
-                    onClick={() => setShowDelete(true)}
-                    className={classes.deleteButton}
-                  >
-                    <DeleteIcon fontSize="default" />
-                  </IconButton>
-
-                  <IconButton
-                    aria-label={lang.mail}
-                    href={`mailto:${getUser(entry.get("studentId"))
-                      .some()
-                      .get("email")}`}
-                    className={classes.mailButton}
-                  >
-                    <MailIcon fontSize="default" />
-                  </IconButton>
-                </>
+                <IconButton
+                  aria-label={lang.mail}
+                  href={`mailto:${getUser(entry.get("studentId"))
+                    .some()
+                    .get("email")}`}
+                  className={classes.mailButton}
+                >
+                  <MailIcon fontSize="default" />
+                </IconButton>
               )}
               <div className={classes.printButton}>{printButton}</div>
 
