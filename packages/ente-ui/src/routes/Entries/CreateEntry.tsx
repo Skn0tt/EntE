@@ -35,7 +35,6 @@ import {
   CreateEntryDto,
   CreateSlotDto,
   dateToIsoString,
-  daysBeforeNow,
   EntryReasonDto,
   CreateEntryDtoValidator,
   EntryReasonCategory
@@ -48,12 +47,23 @@ import { CheckboxInput } from "../../elements/CheckboxInput";
 import * as _ from "lodash";
 import { EntryReasonInput } from "./EntryReasonInput";
 import { CreateSlotList } from "./CreateSlotList";
+import { ErrorBox } from "../../elements/ErrorBox";
+
+function days(n: number) {
+  return n * 24 * 60 * 60 * 1000;
+}
+
+export function isAfterDeadline(v: Date, creationDate: Date, deadline: number) {
+  const spentTime = +creationDate - +v;
+  return spentTime > days(deadline + 1);
+}
 
 const useTranslation = makeTranslationHook({
   en: {
     multiday: "Multiday",
     forSchool: "Educational",
     selectChild: "Select the affected child.",
+    deadline: "Beware: You surpassed the entry creation deadline.",
     addSlotsCaption: "Add the missed classes. Create one row per class.",
     titles: {
       slots: "Slots"
@@ -70,6 +80,7 @@ const useTranslation = makeTranslationHook({
     multiday: "Mehrtägig",
     forSchool: "Schulisch",
     selectChild: "Wählen Sie das betroffene Kind aus.",
+    deadline: "Achtung: Die Erstellungs-Frist wurde überschritten.",
     addSlotsCaption: `Fügen Sie die Stunden hinzu, die Sie entschuldigen möchten.
     Erstellen Sie dafür für jede Stunde eine Zeile.`,
     titles: {
@@ -250,15 +261,19 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
     [slots, studentId, reason, beginDate, endDate]
   );
 
-  const isValidInput = CreateEntryDtoValidator(createEntryDeadline).validate(
-    result as any
-  );
+  const isValidInput = CreateEntryDtoValidator.validate(result as any);
 
   const handleSubmit = React.useCallback(
     () => {
       createEntry(result as CreateEntryDto);
     },
     [createEntry, result]
+  );
+
+  const showIsNotInDeadlineWarning = isAfterDeadline(
+    parseISO(isRange ? result.dateEnd! : result.date),
+    new Date(),
+    createEntryDeadline
   );
 
   return (
@@ -301,11 +316,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                 <DateInput
                   label={translation.fromLabel}
                   onChange={handleChangeBeginDate}
-                  minDate={
-                    isRange
-                      ? undefined
-                      : dateToIsoString(daysBeforeNow(createEntryDeadline))
-                  }
                   value={beginDate}
                 />
               </Grid>
@@ -315,9 +325,6 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
                     label={translation.toLabel}
                     isValid={() => isEndDateValid}
                     onChange={handleChangeEndDate}
-                    minDate={dateToIsoString(
-                      daysBeforeNow(createEntryDeadline)
-                    )}
                     value={endDate!}
                     minDateMessage={translation.dateMustBeBiggerThanFrom}
                   />
@@ -325,6 +332,11 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
               )}
             </Grid>
           </Grid>
+          {showIsNotInDeadlineWarning && (
+            <Grid item xs={12}>
+              <ErrorBox>{translation.deadline}</ErrorBox>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <EntryReasonInput onChange={setReason as any} isRange={isRange} />
           </Grid>

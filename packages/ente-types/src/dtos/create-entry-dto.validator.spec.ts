@@ -1,44 +1,18 @@
-import {
-  makeDeadlineValidator,
-  CreateEntryDtoValidator
-} from "./create-entry-dto.validator";
+import { CreateEntryDtoValidator } from "./create-entry-dto.validator";
 import { dateToIsoString } from "../date-to-iso-string";
 import { expect } from "chai";
 import { subDays, addDays, addHours } from "date-fns";
 import { EntryReasonCategory } from "./entry-reason.dto";
-
-describe("makeDeadlineValidator", () => {
-  describe("using 14 days", () => {
-    const validator = makeDeadlineValidator(14);
-    it("exactly 14 days ago", () => {
-      const date = daysBeforeNow(14);
-      const result = validator(date);
-      expect(result).to.be.true;
-    });
-
-    it("less than 14 days ago", () => {
-      const date = daysBeforeNow(13);
-      const result = validator(date);
-      expect(result).to.be.true;
-    });
-
-    it("more than 14 days ago", () => {
-      const date = daysBeforeNow(15);
-      const result = validator(date);
-      expect(result).to.be.false;
-    });
-  });
-});
 
 const now = Date.now();
 
 const daysBeforeNow = (d: number) => subDays(Date.now(), d);
 
 describe("CreateEntryDtoValidator", () => {
-  const validator = CreateEntryDtoValidator(14);
+  const validator = CreateEntryDtoValidator;
   describe("too long ago", () => {
     describe("when given a multi-day entry", () => {
-      describe("with dateEnd too long ago", () => {
+      describe("with dateEnd over deadline", () => {
         const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(30)),
           dateEnd: dateToIsoString(daysBeforeNow(20)),
@@ -56,8 +30,8 @@ describe("CreateEntryDtoValidator", () => {
           ]
         });
 
-        it("returns false", () => {
-          expect(result).to.be.false;
+        it("returns true, because deadlines are weak now", () => {
+          expect(result).to.be.true;
         });
       });
 
@@ -86,7 +60,7 @@ describe("CreateEntryDtoValidator", () => {
     });
 
     describe("when given a single-day entry", () => {
-      describe("with date too long ago", () => {
+      describe("with date over deadline", () => {
         const result = validator.validate({
           date: dateToIsoString(daysBeforeNow(30)),
           reason: {
@@ -102,8 +76,8 @@ describe("CreateEntryDtoValidator", () => {
           ]
         });
 
-        it("returns false", () => {
-          expect(result).to.be.false;
+        it("returns true", () => {
+          expect(result).to.be.true;
         });
       });
 

@@ -53,7 +53,8 @@ import {
   EntryN,
   SlotN,
   deleteEntryRequest,
-  getParentSignatureExpiryTime
+  getParentSignatureExpiryTime,
+  getEntryCreationDeadline
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -65,14 +66,14 @@ import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MailIcon from "@material-ui/icons/MailRounded";
-import CloseIcon from "@material-ui/icons/Close";
-import DoneIcon from "@material-ui/icons/Done";
 import { format, parseISO } from "date-fns";
 import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
 import { slotTimeComparator } from "../../helpers/slot-time-comparator";
+import { isAfterDeadline } from "../Entries/CreateEntry";
+import { ErrorBox } from "../../elements/ErrorBox";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -88,6 +89,7 @@ const useTranslation = makeTranslationHook({
     forSchool: "Educational:",
     reason: "Reason:",
     date: "Date:",
+    deadlineSurpassed: "Surpassed deadline",
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Examen: ${v.from}-${v.to}, ${teacher
@@ -148,6 +150,7 @@ const useTranslation = makeTranslationHook({
     createdAt: "Erstellt:",
     forSchool: "Schulisch:",
     reason: "Grund:",
+    deadlineSurpassed: "Frist überschritten",
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Klausur: ${v.from}-${v.to}, ${teacher
@@ -235,6 +238,7 @@ interface StateProps {
   getSlots(ids: string[]): SlotN[];
   role: Roles;
   entryExpirationTime: number;
+  createEntryDeadline: number;
 }
 const mapStateToProps: MapStateToPropsParam<
   StateProps,
@@ -247,7 +251,8 @@ const mapStateToProps: MapStateToPropsParam<
     getUser: id => getUser(id)(state),
     getSlots: ids => getSlotsById(ids)(state),
     role: getRole(state).some(),
-    entryExpirationTime: getParentSignatureExpiryTime(state).some()
+    entryExpirationTime: getParentSignatureExpiryTime(state).some(),
+    createEntryDeadline: getEntryCreationDeadline(state).some()
   };
 };
 
@@ -288,7 +293,8 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     entryId,
     onClose,
     getEntry,
-    entryExpirationTime
+    entryExpirationTime,
+    createEntryDeadline
   } = props;
 
   const entry = getEntry(entryId);
@@ -311,10 +317,15 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
       const isPartiallySigned =
         entry.get("signedManager") || entry.get("signedParent");
       const canBeDeletedByStudent = !isPartiallySigned;
-
       const showDeleteButton =
         role === Roles.MANAGER ||
         (role === Roles.STUDENT && canBeDeletedByStudent);
+
+      const showDeadlineSurpassedWarning = isAfterDeadline(
+        parseISO(entry.get("dateEnd") || entry.get("date")),
+        parseISO(entry.get("createdAt")),
+        createEntryDeadline
+      );
 
       return (
         <>
@@ -410,9 +421,14 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                     : format(parseISO(entry.get("date")), "PP", {
                         locale: lang.locale
                       })}
-                  <br />
                 </Typography>
               </Grid>
+
+              {showDeadlineSurpassedWarning && (
+                <Grid item>
+                  <ErrorBox>{lang.deadlineSurpassed}</ErrorBox>
+                </Grid>
+              )}
 
               {/* Slots */}
               <Grid item>
