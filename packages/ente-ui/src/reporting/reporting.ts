@@ -162,5 +162,6 @@ export const Reporting = {
   summarize,
   hoursByWeekdayAndTime,
   absentHoursByTeacher,
-  slotsByTeacher
+  slotsByTeacher,
+  getLengthOfSlot
 };

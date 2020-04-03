@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Make deadline weak, such that only a warning is shown ([#354](https://gitlab.com/Skn0tt/EntE/issues/354))
+- Feature: Show duration of entry in table ([#359](https://gitlab.com/Skn0tt/EntE/issues/359))
 
 ## [v0.33.1] - 2020-04-01
 
