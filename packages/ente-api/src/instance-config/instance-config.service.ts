@@ -183,7 +183,7 @@ export class InstanceConfigService implements OnModuleInit {
     value: number,
     user: RequestContextUser
   ): Promise<Validation<SetInstanceConfigValueFail, true>> {
-    if (user.role !== Roles.ADMIN) {
+    if (!user.isAdmin) {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 
@@ -202,7 +202,7 @@ export class InstanceConfigService implements OnModuleInit {
     value: number,
     user: RequestContextUser
   ): Promise<Validation<SetInstanceConfigValueFail, true>> {
-    if (user.role !== Roles.ADMIN) {
+    if (!user.isAdmin) {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 
@@ -221,7 +221,7 @@ export class InstanceConfigService implements OnModuleInit {
     lang: Languages,
     user: RequestContextUser
   ): Promise<Validation<SetInstanceConfigValueFail, true>> {
-    if (user.role !== Roles.ADMIN) {
+    if (!user.isAdmin) {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 
@@ -236,7 +236,7 @@ export class InstanceConfigService implements OnModuleInit {
     days: number,
     user: RequestContextUser
   ): Promise<Validation<SetInstanceConfigValueFail, true>> {
-    if (user.role !== Roles.ADMIN) {
+    if (!user.isAdmin) {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 
@@ -256,7 +256,7 @@ export class InstanceConfigService implements OnModuleInit {
     bannerText: string | null,
     user: RequestContextUser
   ): Promise<Validation<SetInstanceConfigValueFail, true>> {
-    if (user.role !== Roles.ADMIN) {
+    if (!user.isAdmin) {
       return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
     }
 

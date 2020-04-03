@@ -25,7 +25,7 @@ If the user doesn't have any children, leave the field blank.
 
 `class` needs to be set for students and mangers, they are matched by this attribute..
 
-`role` is one of the roles `admin`, `parent`, `student`, `manager`, `teacher`.
+`role` is one of the roles `parent`, `student`, `manager`, `teacher`.
 
 The first row of the csv needs to be a header row with the above properties.
 

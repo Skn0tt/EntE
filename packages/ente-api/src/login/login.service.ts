@@ -31,10 +31,10 @@ export class LoginService {
       token,
       oneSelf,
       onesEntries: (await this.getOnesEntries(oneSelf)).map(e =>
-        EntriesService.blackenDto(e, user.role)
+        EntriesService.blackenDto(e, user)
       ),
       neededUsers: (await this.getNeededUsers(oneSelf)).map(e =>
-        UsersService.blackenDto(e, user.role)
+        UsersService.blackenDto(e, user)
       ),
       reviewedRecords: [
         ...(await this.reviewedRecordsService.getReviewedRecords(oneSelf.id))
@@ -43,9 +43,11 @@ export class LoginService {
   }
 
   private async getOnesEntries(user: UserDto): Promise<EntryDto[]> {
+    if (user.isAdmin) {
+      return await this.entryRepo.findAll(NO_PAGINATION_INFO);
+    }
+
     switch (user.role) {
-      case Roles.ADMIN:
-        return await this.entryRepo.findAll(NO_PAGINATION_INFO);
       case Roles.PARENT:
         return await this.entryRepo.findByStudents(
           user.children.map(c => c.id),
@@ -67,9 +69,10 @@ export class LoginService {
   }
 
   private async getNeededUsers(user: UserDto): Promise<UserDto[]> {
+    if (user.isAdmin) {
+      return await this.userRepo.findAll(NO_PAGINATION_INFO);
+    }
     switch (user.role) {
-      case Roles.ADMIN:
-        return await this.userRepo.findAll(NO_PAGINATION_INFO);
       case Roles.PARENT:
         return [
           ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),

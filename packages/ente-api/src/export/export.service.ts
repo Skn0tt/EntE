@@ -21,8 +21,7 @@ export class ExportService {
   async getExcelExport(
     requestingUser: RequestContextUser
   ): Promise<Validation<ExportExcelFailure, Buffer>> {
-    const userIsAdmin = requestingUser.role === Roles.ADMIN;
-    if (!userIsAdmin) {
+    if (!requestingUser.isAdmin) {
       return Fail(ExportExcelFailure.ForbiddenForRole);
     }
 

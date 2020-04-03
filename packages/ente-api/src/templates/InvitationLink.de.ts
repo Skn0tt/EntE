@@ -33,10 +33,6 @@ const template = Handlebars.compile(`
           Sie wurden eingeladen, auf EntE die Fehlstunden ihrer Schüler einzusehen.
           Um EntE benutzen zu können, setzen Sie bitte ihr Passwort mithilfe des folgenden Links.
           {{/ifEqual}}
-          {{#ifEqual role "${Roles.ADMIN}"}}
-          Sie wurden eingeladen, eine EntE-Instanz zu administrieren.
-          Um EntE benutzen zu können, setzen Sie bitte ihr Passwort mithilfe des folgenden Links.
-          {{/ifEqual}}
           
           <br /> <br />
           

@@ -25,7 +25,8 @@ const admin: UserDto & RequestContextUser = withGetDto({
   id: "1cf900d1-2c1e-4178-907a-23e327f11d05",
   birthday: undefined,
   language: Languages.ENGLISH,
-  role: Roles.ADMIN,
+  role: Roles.MANAGER,
+  isAdmin: true,
   username: "admin"
 });
 
@@ -38,6 +39,7 @@ const tomTallis: UserDto & RequestContextUser = withGetDto({
   birthday: "2000-02-01",
   language: Languages.ENGLISH,
   role: Roles.STUDENT,
+  isAdmin: false,
   username: "tomtallis"
 });
 
@@ -50,6 +52,7 @@ const benBongo: UserDto & RequestContextUser = withGetDto({
   birthday: undefined,
   language: Languages.ENGLISH,
   role: Roles.TEACHER,
+  isAdmin: false,
   username: "benbongo"
 });
 

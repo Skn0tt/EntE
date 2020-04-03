@@ -13,7 +13,15 @@ import {
   MapDispatchToPropsParam
 } from "react-redux";
 
-import { Dialog, Button, Grid, TextField, Typography } from "@material-ui/core";
+import {
+  Dialog,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  FormControlLabel,
+  Checkbox
+} from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -67,7 +75,8 @@ export const lang = {
       password: "Password",
       role: "Role",
       class: "Class / Graduation Year",
-      birthday: "Birthday"
+      birthday: "Birthday",
+      isAdmin: "Administrator"
     },
     helpers: {
       chooseRoleOfUser: "Choose the users's role"
@@ -87,7 +96,8 @@ export const lang = {
       password: "Passwort",
       role: "Rolle",
       class: "Klasse / Abschluss-Jahrgang",
-      birthday: "Geburtstag"
+      birthday: "Geburtstag",
+      isAdmin: "Administrator"
     },
     helpers: {
       chooseRoleOfUser: "Wählen Sie die Rolle des Nutzers aus"
@@ -110,7 +120,8 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
     role,
     username,
     class: _class,
-    language
+    language,
+    isAdmin
   } = dto;
 
   const result: CreateUserDto = {
@@ -120,6 +131,7 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
     role,
     username,
     language,
+    isAdmin,
     children: []
   };
 
@@ -229,6 +241,7 @@ export class CreateUser extends React.PureComponent<
     this.setState({ create: clone });
   };
   handleChangeUsername = this.update("username");
+  handleChangeIsAdmin = this.update("isAdmin");
   handleChangeClass = this.update("class");
   handleChangeDisplayname = this.update("displayname");
   handleChangePassword = (value: string) => {
@@ -354,6 +367,21 @@ export class CreateUser extends React.PureComponent<
                       </option>
                     ))}
                   </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={create.isAdmin}
+                        onChange={evt =>
+                          this.handleChangeIsAdmin(evt.target.checked)
+                        }
+                        name="isAdmin"
+                        color="primary"
+                      />
+                    }
+                    label={translation.titles.isAdmin}
+                  />
                 </Grid>
                 {this.hasChildren() && (
                   <Grid item xs={12}>

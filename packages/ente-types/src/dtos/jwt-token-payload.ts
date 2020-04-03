@@ -5,5 +5,6 @@ export interface JwtTokenPayload {
   username: string;
   displayname: string;
   role: Roles;
+  isAdmin: boolean;
   childrenIds: string[];
 }

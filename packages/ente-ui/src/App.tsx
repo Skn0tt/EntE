@@ -18,7 +18,7 @@ import Login from "./routes/Login/Login";
 import Routes from "./Routes";
 import PasswordReset from "./routes/PasswordReset";
 import { Roles } from "ente-types";
-import { AppState, isAuthValid, getRole, logout } from "./redux";
+import { AppState, isAuthValid, getRole, logout, isAdmin } from "./redux";
 import AuthService from "./AuthService";
 import * as config from "./config";
 import { Maybe } from "monet";
@@ -31,10 +31,12 @@ const { ROTATION_PERIOD } = config.get();
 interface AppStateProps {
   authValid: boolean;
   role: Maybe<Roles>;
+  isAdmin: boolean;
 }
 const mapStateToProps = (state: AppState) => ({
   authValid: isAuthValid(state),
-  role: getRole(state)
+  role: getRole(state),
+  isAdmin: isAdmin(state)
 });
 
 interface AppDispatchProps {
@@ -50,7 +52,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 type AppProps = AppStateProps & AppDispatchProps;
 
 const App: React.FunctionComponent<AppProps> = props => {
-  const { authValid, role, purgeStaleData } = props;
+  const { authValid, role, purgeStaleData, isAdmin } = props;
 
   return (
     <InstanceConfigGate>
@@ -67,7 +69,7 @@ const App: React.FunctionComponent<AppProps> = props => {
               purgeStaleData={purgeStaleData}
             >
               <Drawer>
-                <Routes role={role.orSome(Roles.STUDENT)} />
+                <Routes role={role.orSome(Roles.STUDENT)} isAdmin={isAdmin} />
               </Drawer>
             </AuthenticatedRoute>
           </Switch>

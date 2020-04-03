@@ -6,7 +6,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { AppState, getRole, isLoading } from "../redux";
+import { AppState, getRole, isLoading, isAdmin } from "../redux";
 import { Roles } from "ente-types";
 import {
   AppBar,
@@ -104,16 +104,18 @@ interface DrawerOwnProps {}
 interface DrawerStateProps {
   loading: boolean;
   role: Maybe<Roles>;
+  isAdmin: boolean;
 }
 const mapStateToProps = (state: AppState): DrawerStateProps => ({
   loading: isLoading(state),
-  role: getRole(state)
+  role: getRole(state),
+  isAdmin: isAdmin(state)
 });
 
 type DrawerProps = DrawerOwnProps & DrawerStateProps;
 
 const Drawer: React.FunctionComponent<DrawerProps> = props => {
-  const { role, children } = props;
+  const { role, children, isAdmin } = props;
   const [mobileOpen, toggleMobileOpen] = useToggle(false);
   const classes = useStyles(props);
 
@@ -123,13 +125,13 @@ const Drawer: React.FunctionComponent<DrawerProps> = props => {
       <Divider />
       {
         {
-          [Roles.ADMIN]: <AdminItems />,
           [Roles.TEACHER]: <TeacherItems />,
           [Roles.PARENT]: <ParentItems />,
           [Roles.STUDENT]: <StudentItems />,
           [Roles.MANAGER]: <ManagerItems />
         }[role.orSome(Roles.PARENT)]
       }
+      {isAdmin && <AdminItems />}
     </List>
   );
 
