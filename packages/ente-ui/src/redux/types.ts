@@ -130,6 +130,7 @@ export const EntryN = ImmutableRecord<EntryDtoNormalised>(
     signedManagerDate: null,
     signedParent: false,
     signedParentDate: null,
+    managerReachedOut: false,
     slots: [],
     slotIds: [],
     student: (null as unknown) as UserDto,
