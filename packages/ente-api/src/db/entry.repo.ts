@@ -140,21 +140,22 @@ export class EntryRepo {
   }
 
   async setSignedParent(id: string, value: boolean) {
-    await this.repo.update(id, { managerReachedOut: value });
-  }
-
-  async setManagerReachedOut(id: string, value: boolean) {
     if (value) {
       await this.repo.query(
         `UPDATE entry
-        SET managerReachedOut = ?
-        WHERE _id = ?;
+        SET parentSignatureDate = ?
+        WHERE _id = ?
+        AND parentSignatureDate IS NULL;
         `,
         [dateToIsoString(Date.now()), id]
       );
     } else {
       await this.repo.update(id, { parentSignatureDate: null });
     }
+  }
+
+  async setManagerReachedOut(id: string, value: boolean) {
+    await this.repo.update(id, { managerReachedOut: value });
   }
 
   async delete(id: string) {
