@@ -18,6 +18,7 @@ import { Maybe } from "monet";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 import DoneIcon from "@material-ui/icons/Done";
+import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   card: {
     margin: theme.spacing.unit
   },
+  content: {
+    position: "relative"
+  },
   upRight: {
     position: "relative",
     float: "right"
@@ -42,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "relative",
     float: "right",
     top: "-8px"
+  },
+  downAlmostRight: {
+    position: "absolute",
+    right: "10px",
+    bottom: "10px"
   },
   list: {
     paddingBottom: 0,
@@ -92,7 +101,7 @@ export const EntriesTableSmallCard: React.FC<
 
   return (
     <Card className={classes.card} onClick={handleClick}>
-      <CardContent>
+      <CardContent className={classes.content}>
         <span className={classes.upRight}>
           <EntryReasonCategoryChip
             reasonCategoryTranslated={entry.get("reason").category}
@@ -108,6 +117,12 @@ export const EntriesTableSmallCard: React.FC<
             >
               <DoneIcon />
             </IconButton>
+          </span>
+        )}
+
+        {entry.get("managerReachedOut") && (
+          <span className={classes.downAlmostRight}>
+            <MailOutlinedIcon color="primary" />
           </span>
         )}
 
