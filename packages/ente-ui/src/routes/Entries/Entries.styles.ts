@@ -23,6 +23,12 @@ const styles = (theme: Theme): StyleRules => ({
   },
   table: {
     overflowX: "auto"
+  },
+  mailAvatar: {
+    width: theme.spacing.unit,
+    height: theme.spacing.unit,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
   }
 });
 

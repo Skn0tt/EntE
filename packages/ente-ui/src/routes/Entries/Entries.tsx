@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import styles from "./Entries.styles";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import * as _ from "lodash";
 import {
   AppState,
@@ -189,13 +190,43 @@ export const Entries: React.FunctionComponent<Props> = props => {
         columns={[
           {
             name: lang.headers.name,
-            extract: e =>
-              getUser(e.get("studentId"))
+            extract: e => {
+              const name = getUser(e.get("studentId"))
                 .map(e => e.get("displayname"))
-                .orSome(""),
+                .orSome("");
+
+              const managerReachedOut = e.get("managerReachedOut");
+
+              return { name, managerReachedOut };
+            },
             options: {
               filter: false,
-              display: ownRole !== Roles.STUDENT
+              display: ownRole !== Roles.STUDENT,
+              customBodyRender: ({
+                name,
+                managerReachedOut
+              }: {
+                name: string;
+                managerReachedOut: boolean;
+              }) => {
+                if (managerReachedOut && ownRole === Roles.MANAGER) {
+                  return (
+                    <span
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginRight: "-56px"
+                      }}
+                    >
+                      {name}
+                      <MailOutlineIcon color="primary" />
+                    </span>
+                  );
+                }
+
+                return name;
+              }
             }
           },
           {
