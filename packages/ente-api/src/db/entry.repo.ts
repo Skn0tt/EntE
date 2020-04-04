@@ -140,12 +140,15 @@ export class EntryRepo {
   }
 
   async setSignedParent(id: string, value: boolean) {
+    await this.repo.update(id, { managerReachedOut: value });
+  }
+
+  async setManagerReachedOut(id: string, value: boolean) {
     if (value) {
       await this.repo.query(
         `UPDATE entry
-        SET parentSignatureDate = ?
-        WHERE _id = ?
-        AND parentSignatureDate IS NULL;
+        SET managerReachedOut = ?
+        WHERE _id = ?;
         `,
         [dateToIsoString(Date.now()), id]
       );

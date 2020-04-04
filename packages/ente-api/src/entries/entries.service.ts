@@ -436,6 +436,24 @@ export class EntriesService {
     return r.map(e => EntriesService.blackenDto(e, requestingUser));
   }
 
+  public async managerReachedOut(
+    id: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<FindEntryFailure, BlackedEntryDto>> {
+    if (requestingUser.role !== Roles.MANAGER) {
+      return Fail(FindEntryFailure.ForbiddenForUser);
+    }
+
+    const entry = await this._findOne(id, requestingUser);
+    if (entry.isFail()) {
+      return entry;
+    }
+
+    await this.entryRepo.setManagerReachedOut(id, true);
+
+    return entry.map(e => EntriesService.blackenDto(e, requestingUser));
+  }
+
   async sendNotification(entryId: string) {
     const entry = await this.entryRepo.findById(entryId);
     await entry.cata(
