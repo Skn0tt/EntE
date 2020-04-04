@@ -54,7 +54,8 @@ import {
   SlotN,
   deleteEntryRequest,
   getParentSignatureExpiryTime,
-  getEntryCreationDeadline
+  getEntryCreationDeadline,
+  managerReachedOutRequest
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -262,6 +263,7 @@ const mapDispatchToProps = (
 ) => {
   const { entryId } = ownProps;
   return {
+    managerReachedOut: () => dispatch(managerReachedOutRequest(entryId)),
     requestEntry: () => dispatch(getEntryRequest(entryId)),
     signEntry: () => dispatch(signEntryRequest(entryId)),
     unsignEntry: () => dispatch(unsignEntryRequest(entryId)),
@@ -294,7 +296,8 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     onClose,
     getEntry,
     entryExpirationTime,
-    createEntryDeadline
+    createEntryDeadline,
+    managerReachedOut
   } = props;
 
   const entry = getEntry(entryId);
@@ -355,6 +358,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                   href={`mailto:${getUser(entry.get("studentId"))
                     .some()
                     .get("email")}`}
+                  onClick={managerReachedOut}
                   className={classes.mailButton}
                 >
                   <MailIcon fontSize="default" />
