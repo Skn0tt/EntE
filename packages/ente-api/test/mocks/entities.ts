@@ -77,6 +77,7 @@ const entry: EntryDto = {
     category: EntryReasonCategory.ILLNESS,
     payload: {}
   },
+  managerReachedOut: false,
   signedManager: false,
   signedParent: false,
   signedManagerDate: null,

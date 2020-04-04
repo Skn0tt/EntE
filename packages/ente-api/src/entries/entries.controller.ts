@@ -22,12 +22,7 @@ import {
   PatchEntryFailure
 } from "./entries.service";
 import { AuthGuard } from "@nestjs/passport";
-import {
-  CreateEntryDto,
-  EntryDto,
-  PatchEntryDto,
-  BlackedEntryDto
-} from "ente-types";
+import { CreateEntryDto, PatchEntryDto, BlackedEntryDto } from "ente-types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
   PaginationInfo,
@@ -141,6 +136,24 @@ export class EntriesController {
             throw new NotFoundException();
           case DeleteEntryFailure.ForbiddenForRole:
           case DeleteEntryFailure.ForbiddenForUser:
+            throw new ForbiddenException();
+          default:
+            throw new BadRequestException();
+        }
+      },
+      entry => entry
+    );
+  }
+
+  @Post(":id/managerReachedOut")
+  async managerReachedOut(@Param("id") id: string, @Ctx() ctx: RequestContext) {
+    const result = await this.entriesService.managerReachedOut(id, ctx.user);
+    return result.cata(
+      fail => {
+        switch (fail) {
+          case FindEntryFailure.EntryNotFound:
+            throw new NotFoundException();
+          case FindEntryFailure.ForbiddenForUser:
             throw new ForbiddenException();
           default:
             throw new BadRequestException();

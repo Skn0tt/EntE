@@ -88,7 +88,10 @@ import {
   PROMOTE_TEACHER_SUCCESS,
   DEMOTE_MANAGER_REQUEST,
   DEMOTE_MANAGER_ERROR,
-  DEMOTE_MANAGER_SUCCESS
+  DEMOTE_MANAGER_SUCCESS,
+  MANAGER_REACHED_OUT_REQUEST,
+  MANAGER_REACHED_OUT_SUCCESS,
+  MANAGER_REACHED_OUT_ERROR
 } from "./constants";
 import {
   AppState,
@@ -541,6 +544,25 @@ const reducer = handleActions<AppState | undefined, any>(
 
           return usersMap.update(studentId, student =>
             student.set("managerNotes", value)
+          );
+        });
+      }
+    ),
+
+    // #MANAGER_REACHED_OUT
+    ...asyncReducersFull(
+      MANAGER_REACHED_OUT_REQUEST,
+      MANAGER_REACHED_OUT_ERROR,
+      MANAGER_REACHED_OUT_SUCCESS,
+      (state: AppState, action: Action<string>) => {
+        const entryId = action.payload!;
+        return state.update("entriesMap", entriesMap => {
+          if (!entriesMap.has(entryId)) {
+            return entriesMap;
+          }
+
+          return entriesMap.update(entryId, entry =>
+            entry.set("managerReachedOut", true)
           );
         });
       }

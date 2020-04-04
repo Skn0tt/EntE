@@ -509,6 +509,10 @@ export async function addReviewedRecord(token: string, entryId: string) {
   });
 }
 
+export async function managerReachdOut(token: string, entryId: string) {
+  await post(`${getBaseUrl()}/entries/${entryId}/managerReachedOut`, token);
+}
+
 export const updateManagerNotes = async (
   studentId: string,
   value: string,

@@ -154,6 +154,10 @@ export class EntryRepo {
     }
   }
 
+  async setManagerReachedOut(id: string, value: boolean) {
+    await this.repo.update(id, { managerReachedOut: value });
+  }
+
   async delete(id: string) {
     await this.repo.delete({ _id: id });
   }
@@ -173,6 +177,7 @@ export class EntryRepo {
     result.dateEnd = entry.dateEnd || undefined;
     result.slots = entry.slots.map(SlotRepo.toDto);
     result.student = UserRepo.toDto(entry.student);
+    result.managerReachedOut = !!entry.managerReachedOut;
     result.createdAt = entry.createdAt.toISOString();
     result.updatedAt = entry.updatedAt.toISOString();
     result.signedManager = !!entry.managerSignatureDate;
