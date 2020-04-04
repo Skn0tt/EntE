@@ -43,6 +43,9 @@ export class Entry {
   @Column("date", { nullable: true })
   parentSignatureDate: string | null = null;
 
+  @Column("tinyint", { nullable: false, default: false })
+  managerReachedOut: boolean = false;
+
   /**
    * ## Relations
    */

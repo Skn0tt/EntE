@@ -90,7 +90,10 @@ import {
   PROMOTE_TEACHER_ERROR,
   DEMOTE_MANAGER_REQUEST,
   DEMOTE_MANAGER_SUCCESS,
-  DEMOTE_MANAGER_ERROR
+  DEMOTE_MANAGER_ERROR,
+  MANAGER_REACHED_OUT_REQUEST,
+  MANAGER_REACHED_OUT_SUCCESS,
+  MANAGER_REACHED_OUT_ERROR
 } from "./constants";
 import { APIResponse, AuthState, BasicCredentials, UserN } from "./types";
 import {
@@ -424,4 +427,15 @@ export const demoteManagerSuccess = createMetaAction<Action<string>, string>(
 );
 export const demoteManagerError = createMetaAction<Action<string>, Error>(
   DEMOTE_MANAGER_ERROR
+);
+
+export const managerReachedOutRequest = createAction<string>(
+  MANAGER_REACHED_OUT_REQUEST
+);
+export const managerReachedOutSuccess = createMetaAction<
+  Action<string>,
+  string
+>(MANAGER_REACHED_OUT_SUCCESS);
+export const managerReachedOutError = createMetaAction<Action<string>, Error>(
+  MANAGER_REACHED_OUT_ERROR
 );

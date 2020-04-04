@@ -63,6 +63,7 @@ const entry: EntryDto = {
     payload: { description: "some_description" }
   },
   id: "jkdas",
+  managerReachedOut: false,
   signedManager: false,
   signedParent: false,
   signedManagerDate: null,

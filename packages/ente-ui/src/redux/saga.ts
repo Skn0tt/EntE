@@ -66,7 +66,9 @@ import {
   promoteTeacherSuccess,
   promoteTeacherError,
   demoteManagerSuccess,
-  demoteManagerError
+  demoteManagerError,
+  managerReachedOutSuccess,
+  managerReachedOutError
 } from "./actions";
 import {
   GET_ENTRY_REQUEST,
@@ -95,7 +97,8 @@ import {
   ADD_REVIEWED_RECORD_REQUEST,
   UPDATE_MANAGER_NOTES_REQUEST,
   DEMOTE_MANAGER_REQUEST,
-  PROMOTE_TEACHER_REQUEST
+  PROMOTE_TEACHER_REQUEST,
+  MANAGER_REACHED_OUT_REQUEST
 } from "./constants";
 import * as api from "./api";
 import { Action } from "redux-actions";
@@ -499,6 +502,17 @@ function* demoteManagerSaga(action: Action<string>) {
   }
 }
 
+function* managerReachedOutSaga(action: Action<string>) {
+  try {
+    const token: Maybe<string> = yield select(selectors.getToken);
+    yield call(api.managerReachdOut, token.some(), action.payload!);
+    yield put(managerReachedOutSuccess(action.payload!, action));
+  } catch (error) {
+    yield put(managerReachedOutError(error, action));
+    onRequestError(error);
+  }
+}
+
 function* saga() {
   yield takeEvery<Action<string>>(GET_ENTRY_REQUEST, getEntrySaga);
   yield takeEvery<Action<void>>(GET_ENTRIES_REQUEST, getEntriesSaga);
@@ -542,6 +556,7 @@ function* saga() {
     updateUserSaga
   );
   yield takeEvery(UPDATE_MANAGER_NOTES_REQUEST, updateManagerNotesSaga);
+  yield takeEvery(MANAGER_REACHED_OUT_REQUEST, managerReachedOutSaga);
 }
 
 export default saga;

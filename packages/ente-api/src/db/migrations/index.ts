@@ -16,6 +16,7 @@ import { CreateRecordReviewalTable1573931612000 } from "./1573931612000-CreateRe
 import { AddWeeklySummarySubscriptionFlag1577435990000 } from "./1577435990000-AddWeeklySummarySubscriptionFlag";
 import { GradYearToClass1582734098000 } from "./1582734098000-GradYearToClass";
 import { AddIsAdminField1585738676000 } from "./1585738676000-AddIsAdminField";
+import { AddManagerReachedOutField1585989168000 } from "./1585989168000-AddManagerReachedOutField";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -35,5 +36,6 @@ export const migrations = [
   CreateRecordReviewalTable1573931612000,
   AddWeeklySummarySubscriptionFlag1577435990000,
   GradYearToClass1582734098000,
-  AddIsAdminField1585738676000
+  AddIsAdminField1585738676000,
+  AddManagerReachedOutField1585989168000
 ];
