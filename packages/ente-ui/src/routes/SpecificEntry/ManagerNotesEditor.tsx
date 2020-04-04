@@ -5,6 +5,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
+import { useDebouncedCallback } from "use-debounce";
 
 const useTranslation = makeTranslationHook({
   de: {
@@ -61,6 +62,8 @@ const ManagerNotesEditor = (
     [currentValue]
   );
 
+  const [debouncedUpdate] = useDebouncedCallback(update, 500);
+
   return (
     <Grid container direction="column" spacing={8}>
       <Grid item>
@@ -75,6 +78,7 @@ const ManagerNotesEditor = (
           onChange={el => {
             const { value } = el.currentTarget;
             currentValue.current = value;
+            debouncedUpdate(value);
           }}
         />
       </Grid>
