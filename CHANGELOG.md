@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Feature: Add a visual cue to entries that the manager reached out to ([#361](https://gitlab.com/Skn0tt/EntE/issues/361))
+
 ## [v0.34.0] - 2020-04-04
 
 - Fix: Manager notes textarea publishes on exiting modal, fixes sluggish performance ([#357](https://gitlab.com/Skn0tt/EntE/issues/357))
