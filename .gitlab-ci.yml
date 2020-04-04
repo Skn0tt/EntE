@@ -167,12 +167,12 @@ deploy:images:
   script: "./scripts/ci/publish_images.sh"
 
 release:trigger_deployment:
-  image: tutum/curl
   stage: release
-  dependencies: []
+  trigger: skn0tt/EntE-deployments
+  needs:
+    - job: deploy:images
+      artifacts: false
   variables:
-    GIT_STRATEGY: none
+    NEW_VERSION: $CI_COMMIT_TAG
   only:
     - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$/
-  script:
-    - curl --request POST --form "token=$CI_JOB_TOKEN" --form "variables[NEW_VERSION]=$CI_COMMIT_TAG" --form ref=master https://gitlab.com/api/v4/projects/Skn0tt%2FEntE-deployments/trigger/pipeline
