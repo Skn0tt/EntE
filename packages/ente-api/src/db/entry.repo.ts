@@ -173,6 +173,7 @@ export class EntryRepo {
     result.dateEnd = entry.dateEnd || undefined;
     result.slots = entry.slots.map(SlotRepo.toDto);
     result.student = UserRepo.toDto(entry.student);
+    result.managerReachedOut = !!entry.managerReachedOut;
     result.createdAt = entry.createdAt.toISOString();
     result.updatedAt = entry.updatedAt.toISOString();
     result.signedManager = !!entry.managerSignatureDate;
