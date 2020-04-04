@@ -433,7 +433,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
               {/* Slots */}
               <Grid item>
                 <Typography variant="h6">{lang.slotsTable.title}</Typography>
-                <Table>
+                <Table style={{ tableLayout: "fixed" }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>{lang.slotsTable.date}</TableCell>

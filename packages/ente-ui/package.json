@@ -46,7 +46,8 @@
     "redux-saga": "^0.16.2",
     "reselect": "^4.0.0",
     "rxjs": "^6.3.3",
-    "typeface-roboto": "^0.0.45"
+    "typeface-roboto": "^0.0.45",
+    "use-debounce": "^3.4.1"
   },
   "devDependencies": {
     "@babel/runtime": "^7.1.2",
