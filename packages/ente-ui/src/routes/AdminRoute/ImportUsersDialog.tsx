@@ -21,6 +21,7 @@ import withMobileDialog, {
 import { CreateUserDto } from "ente-types";
 import { Maybe, None } from "monet";
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 import {
   connect,
   MapStateToPropsParam,
@@ -125,10 +126,7 @@ type ImportMethod = "csv" | "schild";
 /**
  * # Component Types
  */
-interface ImportUsersDialogOwnProps {
-  onClose(): void;
-  show: boolean;
-}
+interface ImportUsersDialogOwnProps {}
 
 interface ImportUsersDialogStateProps {
   existingStudentUsernames: string[];
@@ -172,14 +170,10 @@ type ImportUsersDialogProps = ImportUsersDialogOwnProps &
 const ImportUsersDialog: React.FunctionComponent<
   ImportUsersDialogProps
 > = props => {
-  const {
-    fullScreen,
-    show,
-    onClose,
-    importUsers,
-    existingStudentUsernames
-  } = props;
+  const { fullScreen, importUsers, existingStudentUsernames } = props;
   const translation = useTranslation();
+
+  const { goBack } = useHistory();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
@@ -195,7 +189,7 @@ const ImportUsersDialog: React.FunctionComponent<
       users.forEach(dtos =>
         importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
       );
-      onClose();
+      goBack();
     },
     [
       users,
@@ -203,7 +197,7 @@ const ImportUsersDialog: React.FunctionComponent<
       deleteEntries,
       deleteUsers,
       deleteStudentsAndParents,
-      onClose
+      goBack
     ]
   );
 
@@ -215,7 +209,7 @@ const ImportUsersDialog: React.FunctionComponent<
     : existingStudentUsernames;
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+    <Dialog fullScreen={fullScreen} onClose={goBack} open>
       <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
@@ -282,7 +276,7 @@ const ImportUsersDialog: React.FunctionComponent<
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary" className="close">
+        <Button onClick={goBack} color="secondary" className="close">
           {translation.close}
         </Button>
         <Button
