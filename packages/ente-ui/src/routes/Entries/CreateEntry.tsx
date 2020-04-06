@@ -7,13 +7,8 @@
  */
 
 import * as React from "react";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Action } from "redux";
 import { Dialog, Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -97,43 +92,18 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface CreateEntryStateProps {
-  isParent: boolean;
-  children: Maybe<UserN[]>;
-  createEntryDeadline: number;
-}
-const mapStateToProps: MapStateToPropsParam<
-  CreateEntryStateProps,
-  {},
-  AppState
-> = state => ({
-  children: getChildren(state),
-  isParent: isParent(state).some(),
-  createEntryDeadline: getEntryCreationDeadline(state).some()
-});
+type CreateEntryProps = InjectedProps;
 
-interface CreateEntryDispatchProps {
-  createEntry(entry: CreateEntryDto): Action;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  CreateEntryDispatchProps,
-  {}
-> = dispatch => ({
-  createEntry: entry => dispatch(createEntryRequest(entry))
-});
+const CreateEntry = (props: CreateEntryProps) => {
+  const { fullScreen } = props;
 
-type CreateEntryProps = CreateEntryDispatchProps &
-  CreateEntryStateProps &
-  InjectedProps;
+  const dispatch = useDispatch();
 
-const CreateEntry: React.SFC<CreateEntryProps> = props => {
-  const {
-    fullScreen,
-    isParent,
-    children,
-    createEntry,
-    createEntryDeadline
-  } = props;
+  const userIsParent = useSelector<AppState, boolean>(s => isParent(s).some());
+  const children = useSelector<AppState, Maybe<UserN[]>>(getChildren);
+  const createEntryDeadline = useSelector<AppState, number>(s =>
+    getEntryCreationDeadline(s).some()
+  );
 
   const { goBack } = useHistory();
   const translation = useTranslation();
@@ -260,9 +230,9 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
 
   const handleSubmit = React.useCallback(
     () => {
-      createEntry(result as CreateEntryDto);
+      dispatch(createEntryRequest(result as CreateEntryDto));
     },
-    [createEntry, result]
+    [dispatch, result]
   );
 
   const showIsNotInDeadlineWarning = isAfterDeadline(
@@ -287,7 +257,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
               </Grid>
             </Grid>
           </Grid>
-          {isParent && (
+          {userIsParent && (
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -374,12 +344,4 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
 };
 
-export default connect<
-  CreateEntryStateProps,
-  CreateEntryDispatchProps,
-  {},
-  AppState
->(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<CreateEntryProps>()(CreateEntry));
+export default withMobileDialog<CreateEntryProps>()(CreateEntry);
