@@ -13,7 +13,6 @@ import ImportExportIcon from "@material-ui/icons/ImportExport";
 import { downloadExcelExportRequest } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import ImportUsersDialog from "./ImportUsersDialog";
 import LoginBannerEditor from "./LoginBannerEditor";
 import { Languages } from "ente-types";
 import DefaultLanguageUpdater from "./DefaultLanguageUpdater";
