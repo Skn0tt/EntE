@@ -114,7 +114,7 @@ const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
       className={classes.container}
     >
       <Grid item>
-        <Grid container direction="row" spacing={24}>
+        <Grid container direction="row">
           <Grid item>
             <Button variant="outlined" onClick={downloadExcelExport}>
               <AttachmentIcon className={classes.iconLeft} />
