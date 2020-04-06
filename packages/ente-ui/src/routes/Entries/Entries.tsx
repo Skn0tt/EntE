@@ -7,9 +7,7 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
-import styles from "./Entries.styles";
+import { connect, useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
@@ -24,11 +22,14 @@ import {
   getFilterScope,
   getRole,
   addReviewedRecordRequest,
-  getSlots
+  getSlots,
+  getUsers,
+  UserN,
+  SlotN
 } from "../../redux";
 import { Dispatch } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { RouteComponentProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter, useHistory } from "react-router";
 import Fab from "@material-ui/core/Fab";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
@@ -36,10 +37,10 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
-import { getFilterScopeValidator } from "../../filter-scope";
+import { getFilterScopeValidator, FilterScope } from "../../filter-scope";
 import { Roles } from "ente-types";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
-import { useTheme } from "@material-ui/styles";
+import { useTheme, makeStyles } from "@material-ui/styles";
 import { Theme, IconButton } from "@material-ui/core";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
@@ -47,6 +48,8 @@ import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { Reporting } from "../../reporting/reporting";
 import { Link } from "react-router-dom";
+import { useEffectOnce } from "react-use";
+import { Maybe } from "monet";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -83,42 +86,45 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-const mapStateToProps = (state: AppState) => ({
-  entries: getEntries(state),
-  slots: getSlots(state),
-  getUser: (id: string) => getUser(id)(state),
-  filterScope: getFilterScope(state),
-  ownRole: getRole(state).orSome(Roles.STUDENT),
-  canCreateEntries: canCreateEntries(state)
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  searchBar: {
+    padding: 10
+  },
+  fab: {
+    margin: 0,
+    top: "auto",
+    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2,
+    left: "auto",
+    position: "fixed"
+  },
+  table: {
+    overflowX: "auto"
+  }
+}));
 
-type EntriesStateProps = ReturnType<typeof mapStateToProps>;
+export const Entries = () => {
+  const classes = useStyles();
+  const history = useHistory();
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  requestEntries: () => dispatch(getEntriesRequest()),
-  addToReviewed: (id: string) => dispatch(addReviewedRecordRequest(id))
-});
+  const entries = useSelector<AppState, EntryN[]>(getEntries);
+  const usersArr = useSelector<AppState, UserN[]>(getUsers);
+  const users = _.keyBy(usersArr, u => u.get("id"));
+  const filterScope = useSelector<AppState, FilterScope>(getFilterScope);
+  const ownRole = useSelector<AppState, Roles>(s =>
+    getRole(s).orSome(Roles.STUDENT)
+  );
+  const userCanCreateEntries = useSelector<AppState, boolean>(s =>
+    canCreateEntries(s).some()
+  );
+  const slots = useSelector<AppState, SlotN[]>(getSlots);
 
-type EntriesDispatchProps = ReturnType<typeof mapDispatchToProps>;
+  const dispatch = useDispatch();
 
-type Props = EntriesStateProps &
-  EntriesDispatchProps &
-  WithStyles &
-  RouteComponentProps<{}>;
-
-export const Entries: React.FunctionComponent<Props> = props => {
-  const {
-    classes,
-    canCreateEntries,
-    entries,
-    getUser,
-    history,
-    requestEntries,
-    filterScope,
-    ownRole,
-    addToReviewed,
-    slots
-  } = props;
+  const addToReviewed = React.useCallback(
+    (id: string) => dispatch(addReviewedRecordRequest(id)),
+    [dispatch]
+  );
 
   const slotsByEntryId = React.useMemo(
     () => {
@@ -140,20 +146,10 @@ export const Entries: React.FunctionComponent<Props> = props => {
   const theme = useTheme<Theme>();
   const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const [createEntryIsVisible, setCreateEntryIsVisible] = React.useState(false);
+  useEffectOnce(() => {
+    dispatch(getEntriesRequest());
+  });
 
-  React.useEffect(() => {
-    requestEntries();
-  }, []);
-
-  const showCreateEntry = React.useCallback(
-    () => setCreateEntryIsVisible(true),
-    [setCreateEntryIsVisible]
-  );
-  const closeCreateEntry = React.useCallback(
-    () => setCreateEntryIsVisible(false),
-    [setCreateEntryIsVisible]
-  );
   const customBodyRender = React.useMemo(
     () => (v: string) => <SignedAvatar signed={v === lang.yes} />,
     [lang.yes]
@@ -188,10 +184,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
           {
             name: lang.headers.name,
             extract: e => {
-              const name = getUser(e.get("studentId"))
-                .map(e => e.get("displayname"))
-                .orSome("");
-
+              const name = users[e.get("studentId")].get("displayname");
               const managerReachedOut = e.get("managerReachedOut");
 
               return { name, managerReachedOut };
@@ -308,7 +301,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
                 <EntriesTableSmallCard
                   entry={entry}
                   role={ownRole}
-                  student={getUser(entry.get("studentId"))}
+                  student={Maybe.fromUndefined(users[entry.get("studentId")])}
                   onClick={entry => handleClick(entry.get("id"))}
                   showAddToReviewed={
                     [Roles.TEACHER, Roles.MANAGER].includes(ownRole) &&
@@ -323,7 +316,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
       />
 
       {/* FAB */}
-      {canCreateEntries.some() && (
+      {userCanCreateEntries && (
         <Link to="/entries/new">
           <Fab color="primary" className={classes.fab}>
             <AddIcon />
@@ -334,7 +327,4 @@ export const Entries: React.FunctionComponent<Props> = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withErrorBoundary()(withStyles(styles)(Entries))));
+export default withErrorBoundary()(Entries);
