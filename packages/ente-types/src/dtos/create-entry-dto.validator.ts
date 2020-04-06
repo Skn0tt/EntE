@@ -8,7 +8,7 @@ import { isBetweenDates } from "../validators/is-between-dates";
 export const CreateEntryDtoValidator = makeDtoValidator(
   CreateEntryDto,
   (dto, errors) => {
-    const slotsAreNotEmpty = dto.slots.length !== 0;
+    const slotsAreNotEmpty = dto.slots.length !== 0; // check prefiledSlots, implement tests beforehand
     if (!slotsAreNotEmpty) {
       errors.push("`slots` must not be empty");
     }

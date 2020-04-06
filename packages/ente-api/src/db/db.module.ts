@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { EntryRepo } from "./entry.repo";
 import { UserRepo } from "./user.repo";
-import { SlotRepo } from "./slot.repo";
+import { SlotRepo, PrefiledSlotRepo } from "./slot.repo";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Slot } from "./slot.entity";
@@ -20,6 +20,7 @@ import { RecordReviewal } from "./recordReviewal.entity";
     EntryRepo,
     UserRepo,
     SlotRepo,
+    PrefiledSlotRepo,
     KeyValueStoreRepo,
     DbHealthIndicator,
     RecordReviewalRepo
@@ -28,6 +29,7 @@ import { RecordReviewal } from "./recordReviewal.entity";
     EntryRepo,
     UserRepo,
     SlotRepo,
+    PrefiledSlotRepo,
     KeyValueStoreRepo,
     DbHealthIndicator,
     RecordReviewalRepo

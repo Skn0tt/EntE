@@ -117,6 +117,11 @@ export class EntryRepo {
         await manager.save(Entry, newEntry);
         await manager.save(Slot, newEntry.slots);
 
+        await manager.update(Slot, dto.prefiledSlots, {
+          entry: newEntry,
+          prefiled_for: null
+        });
+
         return newEntry;
       }
     );

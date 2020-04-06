@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, Brackets } from "typeorm";
+import { Repository, Brackets, In } from "typeorm";
 import { Some, None, Maybe } from "monet";
 import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
@@ -158,13 +158,6 @@ export class PrefiledSlotRepo {
     return slots.map(PrefiledSlotRepo.toDto);
   }
 
-  public async attachToEntry(slotIds: string[], entryId: string) {
-    await this.repo.update(slotIds, {
-      entry: { _id: entryId },
-      prefiled_for: null
-    });
-  }
-
   public async create(data: PrefiledSlotsCreate, teacherId: string) {
     const { studentIds, date, hour_from, hour_to } = data;
     const slots = this.repo.create(
@@ -180,6 +173,20 @@ export class PrefiledSlotRepo {
     const createdSlots = await this.repo.save(slots);
 
     return createdSlots.map(PrefiledSlotRepo.toDto);
+  }
+
+  public async idsExistForStudent(
+    studentId: string,
+    slotIds: string[]
+  ): Promise<boolean> {
+    const existingSlots = await this.repo.count({
+      where: {
+        prefiled_for: { _id: studentId },
+        _id: In(slotIds)
+      }
+    });
+
+    return existingSlots === slotIds.length;
   }
 
   static toDto(slot: Slot) {

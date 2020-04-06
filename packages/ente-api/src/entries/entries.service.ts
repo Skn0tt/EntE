@@ -28,6 +28,7 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
 import { parseISO } from "date-fns";
+import { PrefiledSlotRepo } from "db/slot.repo";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -39,7 +40,8 @@ export enum CreateEntryFailure {
   IllegalDto,
   StudentIdMissing,
   TeacherUnknown,
-  StudentNotFound
+  StudentNotFound,
+  PrefiledSlotNotFound
 }
 
 export enum SetForSchoolEntryFailure {
@@ -78,6 +80,8 @@ export class EntriesService {
     @Inject(EntryRepo) private readonly entryRepo: EntryRepo,
     @Inject(UserRepo) private readonly userRepo: UserRepo,
     @Inject(EmailService) private readonly emailService: EmailService,
+    @Inject(PrefiledSlotRepo)
+    private readonly prefiledSlotRepo: PrefiledSlotRepo,
     @Inject(InstanceConfigService)
     private readonly instanceConfigService: InstanceConfigService,
     @Inject(EntryNotificationQueue)
@@ -204,6 +208,16 @@ export class EntriesService {
     }
 
     entry.studentId = entry.studentId || requestingUser.id;
+
+    if (entry.prefiledSlots.length > 0) {
+      const slotsExist = await this.prefiledSlotRepo.idsExistForStudent(
+        entry.studentId!,
+        entry.prefiledSlots
+      );
+      if (!slotsExist) {
+        return Fail(CreateEntryFailure.PrefiledSlotNotFound);
+      }
+    }
 
     const teachersExist = await this.userRepo.hasUsersWithRole(
       TEACHING_ROLES,
