@@ -45,4 +45,10 @@ export class Slot {
     onDelete: "CASCADE"
   })
   entry: Entry | null = null;
+
+  @ManyToOne(type => User, user => user.prefiledSlots, {
+    nullable: true,
+    onDelete: "CASCADE"
+  })
+  prefiled_for: User | null = null;
 }
