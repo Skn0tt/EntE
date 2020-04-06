@@ -1,13 +1,6 @@
 import * as React from "react";
-import { connect, MapDispatchToPropsParam } from "react-redux";
-import {
-  Button,
-  WithStyles,
-  withStyles,
-  Theme,
-  Grid,
-  Divider
-} from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { Button, Theme, Grid, Divider } from "@material-ui/core";
 import AttachmentIcon from "@material-ui/icons/Attachment";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import { downloadExcelExportRequest } from "../../redux";
@@ -21,6 +14,7 @@ import ParentSignatureExpiryTimeUpdater from "./ParentSignatureExpiryTimeUpdater
 import ParentSignatureNotificationTimeUpdater from "./ParentSignatureNotificationTimeUpdater";
 import EntryCreationDaysUpdater from "./EntryCreationDaysUpdater";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/styles";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -72,38 +66,21 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   iconLeft: {
     marginRight: theme.spacing.unit
   },
   container: {
     margin: theme.spacing.unit
   }
-});
+}));
 
-interface AdminRouteOwnProps {}
-
-interface AdminRouteStateProps {}
-
-interface AdminRouteDispatchProps {
-  downloadExcelExport: () => void;
-}
-
-const mapDispatchToProps: MapDispatchToPropsParam<
-  AdminRouteDispatchProps,
-  AdminRouteOwnProps
-> = dispatch => ({
-  downloadExcelExport: () => dispatch(downloadExcelExportRequest())
-});
-
-type AdminRouteProps = AdminRouteOwnProps &
-  AdminRouteStateProps &
-  AdminRouteDispatchProps &
-  WithStyles;
-
-const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
-  const { downloadExcelExport, classes } = props;
+const AdminRoute = React.memo(props => {
+  const classes = useStyles();
   const lang = useTranslation();
+
+  const dispatch = useDispatch();
+  const downloadExcelExport = () => dispatch(downloadExcelExportRequest());
 
   return (
     <Grid
@@ -211,7 +188,4 @@ const AdminRoute: React.SFC<AdminRouteProps> = React.memo(props => {
   );
 });
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(withStyles(styles)(withErrorBoundary()(AdminRoute)));
+export default withErrorBoundary()(AdminRoute);
