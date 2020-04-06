@@ -20,6 +20,7 @@ import AboutRoute from "./routes/About";
 import StudentReportRoute from "./routes/StudentReport/StudentReportRoute";
 import ClassReportRoute from "./routes/ClassReportRoute";
 import _ClassAllStudentsReportRoute from "./routes/ClassAllStudentsReportRoute";
+import CreateEntry from "./routes/Entries/CreateEntry";
 
 const ClassAllStudentsReportRoute = () => (
   <Route path="/class/:class/report" component={_ClassAllStudentsReportRoute} />
@@ -45,6 +46,7 @@ const AdminRoutes: React.SFC = () => (
     <Switch>
       <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/users/:userId" component={SpecificUser} />
+      <Route path="/entries/create" component={CreateEntry} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>
@@ -59,6 +61,7 @@ const ParentRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/entries/create" component={CreateEntry} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>

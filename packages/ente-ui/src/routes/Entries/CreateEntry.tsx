@@ -12,6 +12,7 @@ import {
   MapStateToPropsParam,
   MapDispatchToPropsParam
 } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Action } from "redux";
 import { Dialog, Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -96,11 +97,6 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface CreateEntryOwnProps {
-  onClose(): void;
-  show: boolean;
-}
-
 interface CreateEntryStateProps {
   isParent: boolean;
   children: Maybe<UserN[]>;
@@ -108,7 +104,7 @@ interface CreateEntryStateProps {
 }
 const mapStateToProps: MapStateToPropsParam<
   CreateEntryStateProps,
-  CreateEntryOwnProps,
+  {},
   AppState
 > = state => ({
   children: getChildren(state),
@@ -121,26 +117,25 @@ interface CreateEntryDispatchProps {
 }
 const mapDispatchToProps: MapDispatchToPropsParam<
   CreateEntryDispatchProps,
-  CreateEntryOwnProps
+  {}
 > = dispatch => ({
   createEntry: entry => dispatch(createEntryRequest(entry))
 });
 
-type CreateEntryProps = CreateEntryOwnProps &
-  CreateEntryDispatchProps &
+type CreateEntryProps = CreateEntryDispatchProps &
   CreateEntryStateProps &
   InjectedProps;
 
 const CreateEntry: React.SFC<CreateEntryProps> = props => {
   const {
     fullScreen,
-    onClose,
-    show,
     isParent,
     children,
     createEntry,
     createEntryDeadline
   } = props;
+
+  const { goBack } = useHistory();
   const translation = useTranslation();
 
   const [isRange, setIsRange] = React.useState(false);
@@ -277,7 +272,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
   );
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+    <Dialog fullScreen={fullScreen} onClose={goBack} open>
       <DialogTitle>{translation.newEntry}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={32}>
@@ -361,13 +356,13 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={goBack} color="secondary">
           {translation.cancel}
         </Button>
         <Button
           onClick={() => {
             handleSubmit();
-            onClose();
+            goBack();
           }}
           disabled={!isValidInput}
           color="primary"
@@ -382,7 +377,7 @@ const CreateEntry: React.SFC<CreateEntryProps> = props => {
 export default connect<
   CreateEntryStateProps,
   CreateEntryDispatchProps,
-  CreateEntryOwnProps,
+  {},
   AppState
 >(
   mapStateToProps,

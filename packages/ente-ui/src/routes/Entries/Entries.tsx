@@ -30,7 +30,6 @@ import { Dispatch } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { RouteComponentProps, withRouter } from "react-router";
 import Fab from "@material-ui/core/Fab";
-import CreateEntry from "./CreateEntry";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
@@ -38,7 +37,7 @@ import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
 import { getFilterScopeValidator } from "../../filter-scope";
-import { EntryReasonCategory, Roles } from "ente-types";
+import { Roles } from "ente-types";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
 import { useTheme } from "@material-ui/styles";
 import { Theme, IconButton } from "@material-ui/core";
@@ -47,6 +46,7 @@ import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { Reporting } from "../../reporting/reporting";
+import { Link } from "react-router-dom";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -181,10 +181,7 @@ export const Entries: React.FunctionComponent<Props> = props => {
   );
 
   return (
-    <React.Fragment>
-      {/* Modals */}
-      <CreateEntry onClose={closeCreateEntry} show={createEntryIsVisible} />
-
+    <>
       {/* Main */}
       <Table<EntryN>
         columns={[
@@ -327,11 +324,13 @@ export const Entries: React.FunctionComponent<Props> = props => {
 
       {/* FAB */}
       {canCreateEntries.some() && (
-        <Fab color="primary" onClick={showCreateEntry} className={classes.fab}>
-          <AddIcon />
-        </Fab>
+        <Link to="/entries/new">
+          <Fab color="primary" className={classes.fab}>
+            <AddIcon />
+          </Fab>
+        </Link>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
