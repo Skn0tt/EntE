@@ -22,11 +22,7 @@ import { CreateUserDto } from "ente-types";
 import { Maybe, None } from "monet";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { AppState, UserN, importUsersRequest, getStudents } from "../../redux";
 import * as _ from "lodash";
 import { UserTable } from "../Users/UserTable";
@@ -123,54 +119,17 @@ const toUserN = (u: CreateUserDto): UserN => {
 const importMethods: ImportMethod[] = ["csv", "schild"];
 type ImportMethod = "csv" | "schild";
 
-/**
- * # Component Types
- */
-interface ImportUsersDialogOwnProps {}
+type ImportUsersDialogProps = InjectedProps;
 
-interface ImportUsersDialogStateProps {
-  existingStudentUsernames: string[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  ImportUsersDialogStateProps,
-  ImportUsersDialogOwnProps,
-  AppState
-> = state => ({
-  existingStudentUsernames: getStudents(state).map(s => s.get("username"))
-});
+const ImportUsersDialog = (props: ImportUsersDialogProps) => {
+  const { fullScreen } = props;
 
-interface ImportUsersDialogDispatchProps {
-  importUsers: (
-    dtos: CreateUserDto[],
-    deleteEntries: boolean,
-    deleteUsers: boolean,
-    deleteStudentsAndParents: boolean
-  ) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  ImportUsersDialogDispatchProps,
-  ImportUsersDialogOwnProps
-> = dispatch => ({
-  importUsers: (dtos, deleteEntries, deleteUsers, deleteStudentsAndParents) =>
-    dispatch(
-      importUsersRequest({
-        dtos,
-        deleteEntries,
-        deleteUsers,
-        deleteStudentsAndParents
-      })
-    )
-});
+  const dispatch = useDispatch();
 
-type ImportUsersDialogProps = ImportUsersDialogOwnProps &
-  ImportUsersDialogStateProps &
-  ImportUsersDialogDispatchProps &
-  InjectedProps;
+  const existingStudentUsernames = useSelector<AppState, string[]>(state =>
+    getStudents(state).map(s => s.get("username"))
+  );
 
-const ImportUsersDialog: React.FunctionComponent<
-  ImportUsersDialogProps
-> = props => {
-  const { fullScreen, importUsers, existingStudentUsernames } = props;
   const translation = useTranslation();
 
   const { goBack } = useHistory();
@@ -187,13 +146,20 @@ const ImportUsersDialog: React.FunctionComponent<
   const handleSubmit = React.useCallback(
     () => {
       users.forEach(dtos =>
-        importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
+        dispatch(
+          importUsersRequest({
+            dtos,
+            deleteEntries,
+            deleteUsers,
+            deleteStudentsAndParents
+          })
+        )
       );
       goBack();
     },
     [
+      dispatch,
       users,
-      importUsers,
       deleteEntries,
       deleteUsers,
       deleteStudentsAndParents,
@@ -292,12 +258,4 @@ const ImportUsersDialog: React.FunctionComponent<
   );
 };
 
-export default connect<
-  ImportUsersDialogStateProps,
-  ImportUsersDialogDispatchProps,
-  ImportUsersDialogOwnProps,
-  AppState
->(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog));
+export default withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog);
