@@ -30,7 +30,7 @@ const ClassAllStudentsReportRoute = () => (
 const AdminRoutes: React.SFC = () => (
   <>
     <Switch>
-      <Redirect exact from="/" to="/entries" />
+      <Redirect exact from="/" to="/admin" />
       <Route path="/entries" component={Entries} />
       <Route path="/users" component={Users} />
       <Route path="/slots" component={Slots} />
@@ -63,7 +63,7 @@ const ParentRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
-      <Route path="/entries/create" component={CreateEntry} />
+      <Route path="/entries/new" component={CreateEntry} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>
   </>
