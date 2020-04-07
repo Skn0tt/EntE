@@ -165,6 +165,11 @@ export class UsersService implements OnModuleInit {
     id: string,
     _requestingUser: RequestContextUser
   ): Promise<Validation<FindOneUserFailure, UserDto>> {
+    const user = await this.userRepo.findById(id);
+    if (_requestingUser.isAdmin) {
+      return user.toValidation(FindOneUserFailure.UserNotFound);
+    }
+
     switch (_requestingUser.role) {
       case Roles.TEACHER:
         return Fail(FindOneUserFailure.ForbiddenForUser);
@@ -178,7 +183,6 @@ export class UsersService implements OnModuleInit {
         break;
     }
 
-    const user = await this.userRepo.findById(id);
     return await user.cata<Promise<Validation<FindOneUserFailure, UserDto>>>(
       async () => Fail(FindOneUserFailure.UserNotFound),
       async u => {

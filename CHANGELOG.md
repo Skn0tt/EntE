@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Modals were moved to their own routes, so that navigating backwards works again ([#328](https://gitlab.com/Skn0tt/EntE/issues/328))
+- Fix: regression where admins could not delete users ([#362](https://gitlab.com/Skn0tt/EntE/issues/362))
 
 ## [v0.35.0] - 2020-04-04
 
