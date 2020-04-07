@@ -103,7 +103,7 @@ export class ChildrenInput extends React.PureComponent<
     ]);
 
   handleDelete = (index: number) =>
-    this.props.onChange(without(this.props.children, index));
+    this.props.onChange(this.props.children.filter((c, i) => i !== index));
 
   render() {
     const { students, children, text, translation } = this.props;

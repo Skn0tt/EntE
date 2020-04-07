@@ -4,7 +4,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
+  Grid,
+  Typography
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ChildrenInput from "../elements/ChildrenInput";
@@ -16,11 +18,13 @@ import {
   CreatePrefiledSlotDtoValidator
 } from "ente-types";
 import { DateInput } from "../elements/DateInput";
-import { NumberInput } from "../elements/NumberInput";
+import { HourFromToInput } from "../elements/HourFromToInput";
 
 const useTranslation = makeTranslationHook({
   en: {
     title: "Prefile missed classes",
+    description:
+      "This form allows you to file missed classes. Students will be notified and can attach them to their entries.",
     date: "Date",
     hour_from: "Begin of class",
     hour_to: "End of class",
@@ -34,6 +38,8 @@ const useTranslation = makeTranslationHook({
   },
   de: {
     title: "Fehlstundenvoranmeldung",
+    description:
+      "Hier können Sie die Fehlzeit ihrer Schüler*innen notieren. Die Schüler*innen werden über eingetragene Fehlzeiten informiert und können diese dann in ihre Entschuldigungsanträge aufnehmen.",
     date: "Datum",
     hour_from: "Unterrichtsbeginn",
     hour_to: "Unterrichtsende",
@@ -51,8 +57,10 @@ const { useCallback, useState, useMemo } = React;
 
 const CreatePrefiledSlots = () => {
   const [date, setDate] = useState<string>(new Date().toISOString());
-  const [hour_from, setHourFrom] = useState<number | undefined>(1);
-  const [hour_to, setHourTo] = useState<number | undefined>(2);
+  const [{ from: hour_from, to: hour_to }, setHourFromTo] = useState<{
+    from?: number;
+    to?: number;
+  }>({});
 
   const allStudents = useSelector(getStudents);
   const [missingStudents, setMissingStudents] = useState<UserN[]>([]);
@@ -74,6 +82,10 @@ const CreatePrefiledSlots = () => {
     createPrefiledSlotDto
   );
 
+  console.log(
+    CreatePrefiledSlotDtoValidator.validateWithErrors(createPrefiledSlotDto)
+  );
+
   const handleCreate = useCallback(
     () => {
       // TODO: create
@@ -86,26 +98,32 @@ const CreatePrefiledSlots = () => {
       <DialogTitle>{translation.title}</DialogTitle>
 
       <DialogContent>
-        <DateInput label={translation.date} value={date} onChange={setDate} />
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Typography>{translation.description}</Typography>
+          </Grid>
 
-        <NumberInput
-          onChange={setHourFrom}
-          value={hour_from}
-          label={translation.hour_from}
-        />
+          <Grid item xs={12}>
+            <DateInput
+              label={translation.date}
+              value={date}
+              onChange={setDate}
+            />
+          </Grid>
 
-        <NumberInput
-          onChange={setHourTo}
-          value={hour_to}
-          label={translation.hour_to}
-        />
+          <Grid item xs={12}>
+            <HourFromToInput onChange={setHourFromTo} />
+          </Grid>
 
-        <ChildrenInput
-          children={missingStudents}
-          students={allStudents}
-          onChange={setMissingStudents}
-          text={translation.childrenInput}
-        />
+          <Grid item xs={12}>
+            <ChildrenInput
+              children={missingStudents}
+              students={allStudents}
+              onChange={setMissingStudents}
+              text={translation.childrenInput}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
 
       <DialogActions>

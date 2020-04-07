@@ -1,4 +1,14 @@
-import { IsISO8601, IsInt, Max, Min, IsUUID, MinLength } from "class-validator";
+import {
+  IsISO8601,
+  IsInt,
+  Max,
+  Min,
+  IsUUID,
+  MinLength,
+  IsArray,
+  IsNotEmpty,
+  ArrayNotEmpty
+} from "class-validator";
 
 export class CreatePrefiledSlotsDto {
   @IsISO8601()
@@ -14,7 +24,7 @@ export class CreatePrefiledSlotsDto {
   @Max(13)
   hour_to: number;
 
-  @MinLength(1)
+  @ArrayNotEmpty()
   @IsUUID(undefined, { each: true })
   studentIds: string[];
 }
