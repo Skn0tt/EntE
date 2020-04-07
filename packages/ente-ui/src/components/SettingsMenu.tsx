@@ -36,8 +36,6 @@ import {
   getOneSelf
 } from "../redux";
 import { LanguagePicker } from "./LanguagePicker";
-import Axios from "axios";
-import { apiBaseUrl } from "../";
 import { invokeReset } from "../passwordReset";
 import { useMessages } from "../context/Messages";
 
@@ -123,13 +121,6 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
   const translation = useTranslation();
   const { addMessages } = useMessages();
 
-  const openMenu: React.MouseEventHandler = React.useCallback(
-    event => {
-      setAnchorEl(Some(event.currentTarget as HTMLElement));
-    },
-    [setAnchorEl]
-  );
-
   const closeMenu = React.useCallback(
     () => {
       setAnchorEl(None());
@@ -175,7 +166,9 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(props => {
       />
       <div>
         <IconButton
-          onClick={openMenu}
+          onClick={event => {
+            setAnchorEl(Some(event.currentTarget));
+          }}
           color="primary"
           style={{ color: "white" }}
         >
