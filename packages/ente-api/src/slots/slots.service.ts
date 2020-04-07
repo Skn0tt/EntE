@@ -209,7 +209,7 @@ export class SlotsService {
     }
 
     await this.slotRepo.remove(id);
-    return Success(true);
+    return Success<DeletePrefiledSlotsFailure, true>(true);
   }
 
   async dispatchWeeklySummary() {
