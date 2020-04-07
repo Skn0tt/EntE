@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
@@ -16,7 +16,6 @@ import {
   AppState,
   getEntries,
   canCreateEntries,
-  getUser,
   getEntriesRequest,
   EntryN,
   getFilterScope,
@@ -27,9 +26,8 @@ import {
   UserN,
   SlotN
 } from "../../redux";
-import { Dispatch } from "redux";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { RouteComponentProps, withRouter, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import Fab from "@material-ui/core/Fab";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";

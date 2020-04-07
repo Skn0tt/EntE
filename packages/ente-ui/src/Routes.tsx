@@ -22,6 +22,7 @@ import ClassReportRoute from "./routes/ClassReportRoute";
 import _ClassAllStudentsReportRoute from "./routes/ClassAllStudentsReportRoute";
 import CreateEntry from "./routes/Entries/CreateEntry";
 import ImportUsersDialog from "./routes/AdminRoute/ImportUsersDialog";
+import CreatePrefiledSlots from "./routes/CreatePrefiledSlots";
 
 const ClassAllStudentsReportRoute = () => (
   <Route path="/class/:class/report" component={_ClassAllStudentsReportRoute} />
@@ -45,6 +46,7 @@ const AdminRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/slots/prefile" component={CreatePrefiledSlots} />
       <Route path="/admin/import" component={ImportUsersDialog} />
       <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/users/:userId" component={SpecificUser} />
@@ -71,12 +73,17 @@ const ParentRoutes: React.SFC = () => (
 const StudentRoutes = ParentRoutes;
 
 const TeacherRoutes: React.SFC = () => (
-  <Switch>
-    <Redirect exact from="/" to="/slots" />
-    <Route path="/slots" component={Slots} />
-    <Route path="/about" component={AboutRoute} />
-    <Route component={NotFound} />
-  </Switch>
+  <>
+    <Switch>
+      <Redirect exact from="/" to="/slots" />
+      <Route path="/slots" component={Slots} />
+      <Route path="/about" component={AboutRoute} />
+      <Route component={NotFound} />
+    </Switch>
+    <Switch>
+      <Route path="/slots/prefile" component={CreatePrefiledSlots} />
+    </Switch>
+  </>
 );
 
 const ManagerRoutes: React.SFC = () => (
@@ -95,6 +102,7 @@ const ManagerRoutes: React.SFC = () => (
       <Route component={NotFound} />
     </Switch>
     <Switch>
+      <Route path="/slots/prefile" component={CreatePrefiledSlots} />
       <Route path="/users/:studentId/report" component={StudentReportRoute} />
       <Route path="/entries/:entryId" component={SpecificEntry} />
     </Switch>

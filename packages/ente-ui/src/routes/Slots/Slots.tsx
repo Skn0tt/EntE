@@ -9,6 +9,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
+import AddIcon from "@material-ui/icons/Add";
 import SignedAvatar from "../../elements/SignedAvatar";
 import * as _ from "lodash";
 import { Dispatch } from "redux";
@@ -31,13 +32,25 @@ import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { getFilterScopeValidator } from "../../filter-scope";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
-import { Grid, Theme, IconButton } from "@material-ui/core";
+import { Grid, Theme, IconButton, Fab } from "@material-ui/core";
 import { CourseFilterButton } from "../../components/CourseFilterButton";
 import { CourseFilter, isSlotDuringCourse } from "../../helpers/course-filter";
-import { useTheme } from "@material-ui/styles";
+import { useTheme, makeStyles } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "ente-types";
+import { Link } from "react-router-dom";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  fab: {
+    margin: 0,
+    top: "auto",
+    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2,
+    left: "auto",
+    position: "fixed"
+  }
+}));
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -95,6 +108,8 @@ type SlotsDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type SlotsProps = SlotsStateProps & SlotsDispatchProps;
 
 const Slots: React.FunctionComponent<SlotsProps> = props => {
+  const classes = useStyles();
+
   const lang = useTranslation();
   const {
     getUser,
@@ -142,127 +157,134 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
   const moreThanOneTeacherInSlots = _.uniq(teacherIds).length > 1;
 
   return (
-    <Table<SlotN>
-      columns={[
-        {
-          name: lang.headers.name,
-          extract: slot =>
-            getUser(slot.get("studentId"))
-              .map(user => user.get("displayname"))
-              .orSome(""),
-          options: {
-            filter: false,
-            display: role !== Roles.STUDENT
-          }
-        },
-        {
-          name: lang.headers.date,
-          extract: slot => slot.get("date"),
-          options: {
-            filter: false,
-            customBodyRender: (isoTime: string) =>
-              format(parseISO(isoTime), "PP", { locale: lang.locale })
-          }
-        },
-        {
-          name: lang.headers.from,
-          extract: slot => slot.get("from"),
-          options: {
-            filter: false
-          }
-        },
-        {
-          name: lang.headers.to,
-          extract: slot => slot.get("to"),
-          options: {
-            filter: false
-          }
-        },
-        {
-          name: lang.headers.forSchool,
-          extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
-        },
-        {
-          name: lang.headers.signed,
-          extract: slot => (slot.get("signed") ? lang.yes : lang.no),
-          options: {
-            customBodyRender: s => <SignedAvatar signed={s === lang.yes} />
-          }
-        },
-        {
-          name: lang.headers.teacher,
-          extract: slot =>
-            Maybe.fromNull(slot.get("teacherId")).cata(
-              () => lang.deleted,
-              id =>
-                getUser(id)
-                  .map(user => user.get("displayname"))
-                  .orSome("")
-            ),
-          options: {
-            filter: moreThanOneTeacherInSlots,
-            display: moreThanOneTeacherInSlots
-          }
-        },
-        {
-          name: lang.headers.reviewed,
-          extract: (slot: SlotN) => slot.get("id"),
-          options: {
-            filter: false,
-            display:
-              [Roles.MANAGER, Roles.TEACHER].includes(role) &&
-              filterScope === "not_reviewed",
-            customBodyRender: (id: string) => {
-              return (
-                <IconButton onClick={() => addToReviewed(id)}>
-                  <DoneIcon />
-                </IconButton>
-              );
+    <>
+      <Table<SlotN>
+        columns={[
+          {
+            name: lang.headers.name,
+            extract: slot =>
+              getUser(slot.get("studentId"))
+                .map(user => user.get("displayname"))
+                .orSome(""),
+            options: {
+              filter: false,
+              display: role !== Roles.STUDENT
+            }
+          },
+          {
+            name: lang.headers.date,
+            extract: slot => slot.get("date"),
+            options: {
+              filter: false,
+              customBodyRender: (isoTime: string) =>
+                format(parseISO(isoTime), "PP", { locale: lang.locale })
+            }
+          },
+          {
+            name: lang.headers.from,
+            extract: slot => slot.get("from"),
+            options: {
+              filter: false
+            }
+          },
+          {
+            name: lang.headers.to,
+            extract: slot => slot.get("to"),
+            options: {
+              filter: false
+            }
+          },
+          {
+            name: lang.headers.forSchool,
+            extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
+          },
+          {
+            name: lang.headers.signed,
+            extract: slot => (slot.get("signed") ? lang.yes : lang.no),
+            options: {
+              customBodyRender: s => <SignedAvatar signed={s === lang.yes} />
+            }
+          },
+          {
+            name: lang.headers.teacher,
+            extract: slot =>
+              Maybe.fromNull(slot.get("teacherId")).cata(
+                () => lang.deleted,
+                id =>
+                  getUser(id)
+                    .map(user => user.get("displayname"))
+                    .orSome("")
+              ),
+            options: {
+              filter: moreThanOneTeacherInSlots,
+              display: moreThanOneTeacherInSlots
+            }
+          },
+          {
+            name: lang.headers.reviewed,
+            extract: (slot: SlotN) => slot.get("id"),
+            options: {
+              filter: false,
+              display:
+                [Roles.MANAGER, Roles.TEACHER].includes(role) &&
+                filterScope === "not_reviewed",
+              customBodyRender: (id: string) => {
+                return (
+                  <IconButton onClick={() => addToReviewed(id)}>
+                    <DoneIcon />
+                  </IconButton>
+                );
+              }
             }
           }
-        }
-      ]}
-      title={
-        <Grid container direction="row" spacing={16} alignItems="center">
-          <Grid item xs={6}>
-            <FilterScopeSelectionView />
-          </Grid>
+        ]}
+        title={
+          <Grid container direction="row" spacing={16} alignItems="center">
+            <Grid item xs={6}>
+              <FilterScopeSelectionView />
+            </Grid>
 
-          <Grid item xs={6}>
-            <CourseFilterButton onChange={setCourseFilter} />
+            <Grid item xs={6}>
+              <CourseFilterButton onChange={setCourseFilter} />
+            </Grid>
           </Grid>
-        </Grid>
-      }
-      items={slotsInCourse}
-      extractId={user => user.get("id")}
-      key={"SlotsTable" + (filterScope === "not_reviewed")}
-      customRowRender={
-        isNarrow
-          ? slot => (
-              <SlotsTableSmallCard
-                slot={slot}
-                role={role}
-                studentName={getUser(slot.get("studentId"))
-                  .map(s => s.get("displayname"))
-                  .orSome("")}
-                teacherName={
-                  !!slot.get("teacherId")
-                    ? getUser(slot.get("teacherId")!)
-                        .map(t => t.get("displayname"))
-                        .orSome("")
-                    : lang.deleted
-                }
-                addToReviewed={() => addToReviewed(slot.get("id"))}
-                showAddToReviewed={
-                  [Roles.MANAGER, Roles.TEACHER].includes(role) &&
-                  filterScope === "not_reviewed"
-                }
-              />
-            )
-          : undefined
-      }
-      persistenceKey="slots-table"
-    />
+        }
+        items={slotsInCourse}
+        extractId={user => user.get("id")}
+        key={"SlotsTable" + (filterScope === "not_reviewed")}
+        customRowRender={
+          isNarrow
+            ? slot => (
+                <SlotsTableSmallCard
+                  slot={slot}
+                  role={role}
+                  studentName={getUser(slot.get("studentId"))
+                    .map(s => s.get("displayname"))
+                    .orSome("")}
+                  teacherName={
+                    !!slot.get("teacherId")
+                      ? getUser(slot.get("teacherId")!)
+                          .map(t => t.get("displayname"))
+                          .orSome("")
+                      : lang.deleted
+                  }
+                  addToReviewed={() => addToReviewed(slot.get("id"))}
+                  showAddToReviewed={
+                    [Roles.MANAGER, Roles.TEACHER].includes(role) &&
+                    filterScope === "not_reviewed"
+                  }
+                />
+              )
+            : undefined
+        }
+        persistenceKey="slots-table"
+      />
+      <Link to="/slots/prefile">
+        <Fab color="primary" className={classes.fab}>
+          <AddIcon />
+        </Fab>
+      </Link>
+    </>
   );
 };
 
