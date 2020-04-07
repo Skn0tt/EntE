@@ -17,6 +17,7 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { UsersService } from "../users/users.service";
+import * as _ from "lodash";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -161,7 +162,27 @@ export class SlotsService {
     }
 
     const result = await this.slotRepo.createPrefiled(slots, requestingUser.id);
+
+    await this.dispatchPrefiledCreationNotification(slots, requestingUser.id);
+
     return Success(result.map(s => SlotsService.blackenDto(s, requestingUser)));
+  }
+
+  async dispatchPrefiledCreationNotification(
+    data: CreatePrefiledSlotsDto,
+    teacherId: string
+  ) {
+    const users = await this.userRepo.findByIds(teacherId, ...data.studentIds);
+    const [[teacher], students] = _.partition(
+      users,
+      u => u.role === Roles.TEACHER
+    );
+
+    await this.emailService.dispatchSlotPrefiledNotification(
+      data,
+      students,
+      teacher
+    );
   }
 
   public async deletePrefiled(
