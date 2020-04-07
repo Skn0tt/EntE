@@ -20,7 +20,8 @@ export class SlotRepo {
     this.repo
       .createQueryBuilder("slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
-      .innerJoin("slot.entry", "entry")
+      .leftJoinAndSelect("slot.entry", "entry")
+      .leftJoinAndSelect("slot.prefiled_for", "prefiled_for")
       .leftJoinAndSelect("entry.student", "student");
 
   async findAll(paginationInfo: PaginationInformation): Promise<SlotDto[]> {
@@ -42,7 +43,9 @@ export class SlotRepo {
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
-      this._slotQueryWithTeacher().where("student._id IN (:ids)", { ids })
+      this._slotQueryWithTeacher()
+        .where("student._id IN (:ids)", { ids })
+        .orWhere("prefiled_for._id IN (:ids)", { ids })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);
@@ -102,12 +105,62 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
+  public async prefiledSlotsExistForStudent(
+    studentId: string,
+    slotIds: string[]
+  ): Promise<boolean> {
+    const existingSlots = await this.repo.count({
+      where: {
+        prefiled_for: { _id: studentId },
+        _id: In(slotIds)
+      }
+    });
+
+    return existingSlots === slotIds.length;
+  }
+
+  public async findPrefiledCreatedByTeacher(id: string) {
+    const slots = await this._slotQueryWithTeacher()
+      .where("teacher._id = :id", { id })
+      .getMany();
+
+    return slots.map(SlotRepo.toDto);
+  }
+
+  public async createPrefiled(data: PrefiledSlotsCreate, teacherId: string) {
+    const { studentIds, date, hour_from, hour_to } = data;
+    const slots = this.repo.create(
+      studentIds.map(studentId => ({
+        date,
+        hour_from,
+        hour_to,
+        prefiled_for: { _id: studentId },
+        teacher: { _id: teacherId }
+      }))
+    );
+
+    const createdSlots = await this.repo.save(slots);
+
+    return createdSlots.map(SlotRepo.toDto);
+  }
+
+  public async remove(id: string) {
+    await this.repo.delete(id);
+  }
+
   static toDto(slot: Slot): SlotDto {
     const result = new SlotDto();
 
     result.id = slot._id;
 
+    if (slot.prefiled_for) {
+      result.isPrefiled = true;
+      result.student = UserRepo.toDto(slot.prefiled_for!);
+    }
+
     if (slot.entry) {
+      result.isPrefiled = false;
+
       result.date = !!slot.entry.dateEnd ? slot.date! : slot.entry.date;
 
       result.student = UserRepo.toDto(slot.entry.student);
@@ -136,66 +189,4 @@ interface PrefiledSlotsCreate {
   hour_from: number;
   hour_to: number;
   studentIds: string[];
-}
-
-@Injectable()
-export class PrefiledSlotRepo {
-  constructor(
-    @InjectRepository(Slot) private readonly repo: Repository<Slot>
-  ) {}
-
-  private _slotQueryWithTeacher = () =>
-    this.repo
-      .createQueryBuilder("slot")
-      .leftJoinAndSelect("slot.teacher", "teacher")
-      .innerJoin("slot.prefiled_for", "student");
-
-  public async findForStudents(ids: string[]) {
-    const slots = await this._slotQueryWithTeacher()
-      .where("student._id IN (:ids)", { ids })
-      .getMany();
-
-    return slots.map(PrefiledSlotRepo.toDto);
-  }
-
-  public async create(data: PrefiledSlotsCreate, teacherId: string) {
-    const { studentIds, date, hour_from, hour_to } = data;
-    const slots = this.repo.create(
-      studentIds.map(studentId => ({
-        date,
-        hour_from,
-        hour_to,
-        prefiled_for: { _id: studentId },
-        teacher: { _id: teacherId }
-      }))
-    );
-
-    const createdSlots = await this.repo.save(slots);
-
-    return createdSlots.map(PrefiledSlotRepo.toDto);
-  }
-
-  public async idsExistForStudent(
-    studentId: string,
-    slotIds: string[]
-  ): Promise<boolean> {
-    const existingSlots = await this.repo.count({
-      where: {
-        prefiled_for: { _id: studentId },
-        _id: In(slotIds)
-      }
-    });
-
-    return existingSlots === slotIds.length;
-  }
-
-  static toDto(slot: Slot) {
-    const result = SlotRepo.toDto(slot);
-
-    if (slot.prefiled_for) {
-      result.student = UserRepo.toDto(slot.prefiled_for);
-    }
-
-    return result;
-  }
 }

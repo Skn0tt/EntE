@@ -25,6 +25,9 @@ export interface BlackedSlotDto {
 export class SlotDto implements BlackedSlotDto {
   @IsUUID("4") id: string;
 
+  @IsBoolean()
+  isPrefiled: boolean = false;
+
   @IsOptional()
   @Type(() => UserDto)
   @ValidateNested()
