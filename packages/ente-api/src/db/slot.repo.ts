@@ -4,7 +4,11 @@ import { Repository, Brackets, In } from "typeorm";
 import { Some, None, Maybe } from "monet";
 import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
-import { SlotDto, entryReasonCategoryIsEducational } from "ente-types";
+import {
+  SlotDto,
+  entryReasonCategoryIsEducational,
+  CreatePrefiledSlotDto
+} from "ente-types";
 import {
   PaginationInformation,
   withPagination
@@ -127,7 +131,7 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  public async createPrefiled(data: PrefiledSlotsCreate, teacherId: string) {
+  public async createPrefiled(data: CreatePrefiledSlotDto, teacherId: string) {
     const { studentIds, date, hour_from, hour_to } = data;
     const slots = this.repo.create(
       studentIds.map(studentId => ({
@@ -182,11 +186,4 @@ export class SlotRepo {
 
     return result;
   }
-}
-
-interface PrefiledSlotsCreate {
-  date: string;
-  hour_from: number;
-  hour_to: number;
-  studentIds: string[];
 }
