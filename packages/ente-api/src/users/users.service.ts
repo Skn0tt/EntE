@@ -121,11 +121,12 @@ export class UsersService implements OnModuleInit {
     if (requestingUser.isAdmin) {
       return Success(await this.userRepo.findAll(paginationInfo));
     }
+
+    const self = (await requestingUser.getDto()).some();
     switch (requestingUser.role) {
       case Roles.MANAGER:
-        const user = (await requestingUser.getDto()).some();
-        const students = await this.userRepo.findByClass(user.class!);
-        return Success([...students, user]);
+        const students = await this.userRepo.findByRole(Roles.STUDENT);
+        return Success([...students, self]);
 
       case Roles.PARENT:
         const children = await this.userRepo.findByIds(
@@ -134,20 +135,19 @@ export class UsersService implements OnModuleInit {
         const teachingUsers = await this.userRepo.findByRoles(
           ...TEACHING_ROLES
         );
-        return Success([
-          ...children,
-          ...teachingUsers,
-          (await requestingUser.getDto()).some()
-        ]);
+        return Success([...children, ...teachingUsers, self]);
 
       case Roles.STUDENT:
         return Success([
           ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),
-          (await requestingUser.getDto()).some()
+          self
         ]);
 
       case Roles.TEACHER:
-        return Success([(await requestingUser.getDto()).some()]);
+        return Success([
+          ...(await this.userRepo.findByRole(Roles.STUDENT)),
+          self
+        ]);
     }
   }
 
