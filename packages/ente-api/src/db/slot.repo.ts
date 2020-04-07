@@ -7,7 +7,7 @@ import { UserRepo } from "./user.repo";
 import {
   SlotDto,
   entryReasonCategoryIsEducational,
-  CreatePrefiledSlotDto
+  CreatePrefiledSlotsDto
 } from "ente-types";
 import {
   PaginationInformation,
@@ -131,7 +131,7 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  public async createPrefiled(data: CreatePrefiledSlotDto, teacherId: string) {
+  public async createPrefiled(data: CreatePrefiledSlotsDto, teacherId: string) {
     const { studentIds, date, hour_from, hour_to } = data;
     const slots = this.repo.create(
       studentIds.map(studentId => ({

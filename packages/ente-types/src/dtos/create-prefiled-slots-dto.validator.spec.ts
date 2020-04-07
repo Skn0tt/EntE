@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { CreatePrefiledSlotDtoValidator } from "./create-prefiled-slot-dto.validator";
+import { CreatePrefiledSlotDtoValidator } from "./create-prefiled-slots-dto.validator";
 
-describe("CreateSlotDtoValidator", () => {
+describe("CreatePrefiledSlotsDtoValidator", () => {
   it("returns false when times are flipped", () => {
     expect(
       CreatePrefiledSlotDtoValidator.validate({

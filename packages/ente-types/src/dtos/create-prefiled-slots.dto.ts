@@ -1,15 +1,6 @@
-import {
-  IsISO8601,
-  IsInt,
-  Max,
-  Min,
-  IsUUID,
-  IsAlpha,
-  IsArray,
-  MinLength
-} from "class-validator";
+import { IsISO8601, IsInt, Max, Min, IsUUID, MinLength } from "class-validator";
 
-export class CreatePrefiledSlotDto {
+export class CreatePrefiledSlotsDto {
   @IsISO8601()
   date: string;
 

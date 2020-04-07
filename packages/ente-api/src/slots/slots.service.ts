@@ -5,9 +5,11 @@ import {
   Roles,
   SlotDto,
   daysBeforeNow,
-  TEACHING_ROLES,
   BlackedSlotDto,
-  UserDto
+  UserDto,
+  CreatePrefiledSlotsDto,
+  TEACHING_ROLES,
+  CreatePrefiledSlotDtoValidator
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -19,6 +21,11 @@ import { UsersService } from "../users/users.service";
 export enum FindOneSlotFailure {
   SlotNotFound,
   ForbiddenForUser
+}
+
+export enum CreatePrefiledSlotsFailure {
+  ForbiddenForUser,
+  InvalidDto
 }
 
 @Injectable()
@@ -126,8 +133,33 @@ export class SlotsService {
     return r.map(r => SlotsService.blackenDto(r, requestingUser));
   }
 
+  public async createPrefiled(
+    slots: CreatePrefiledSlotsDto,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<CreatePrefiledSlotsFailure, BlackedSlotDto[]>> {
+    if (!TEACHING_ROLES.includes(requestingUser.role)) {
+      return Fail(CreatePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    const isValidDto = CreatePrefiledSlotDtoValidator.validate(slots);
+    if (!isValidDto) {
+      return Fail(CreatePrefiledSlotsFailure.InvalidDto);
+    }
+
+    const studentIdsAreStudents = await this.userRepo.hasUsersWithRole(
+      [Roles.STUDENT],
+      ...slots.studentIds
+    );
+    if (!studentIdsAreStudents) {
+      return Fail(CreatePrefiledSlotsFailure.InvalidDto);
+    }
+
+    const result = await this.slotRepo.createPrefiled(slots, requestingUser.id);
+    return Success(result.map(s => SlotsService.blackenDto(s, requestingUser)));
+  }
+
   async dispatchWeeklySummary() {
-    this.logger.log("Starting do dispatch the weekly summary.");
+    this.logger.log("Starting to dispatch the weekly summary.");
     const teachingUsers = await this.userRepo.findWeeklySummaryRecipients();
     await Promise.all(
       teachingUsers.map(async teacher => {

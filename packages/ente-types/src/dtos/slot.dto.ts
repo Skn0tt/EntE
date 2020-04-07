@@ -12,6 +12,7 @@ import { Type } from "class-transformer";
 
 export interface BlackedSlotDto {
   id: string;
+  isPrefiled: boolean;
   teacher: BlackedUserDto | null;
   student: BlackedUserDto;
   date: string;
