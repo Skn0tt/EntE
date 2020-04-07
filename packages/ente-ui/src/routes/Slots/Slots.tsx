@@ -7,22 +7,20 @@
  */
 
 import * as React from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
 import SignedAvatar from "../../elements/SignedAvatar";
 import * as _ from "lodash";
-import { Dispatch } from "redux";
 import { Table } from "../../components/Table";
 import {
   getSlotsRequest,
-  getUser,
   getSlots,
-  AppState,
   SlotN,
   getFilterScope,
   getRole,
-  addReviewedRecordRequest
+  addReviewedRecordRequest,
+  getUsers
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe, None } from "monet";
@@ -87,38 +85,18 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    slots: getSlots(state),
-    getUser: (id: string) => getUser(id)(state),
-    filterScope: getFilterScope(state),
-    role: getRole(state).some()
-  };
-};
-
-type SlotsStateProps = ReturnType<typeof mapStateToProps>;
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  requestSlots: () => dispatch(getSlotsRequest()),
-  addToReviewed: (id: string) => dispatch(addReviewedRecordRequest(id))
-});
-
-type SlotsDispatchProps = ReturnType<typeof mapDispatchToProps>;
-
-type SlotsProps = SlotsStateProps & SlotsDispatchProps;
-
-const Slots: React.FunctionComponent<SlotsProps> = props => {
+const Slots = () => {
   const classes = useStyles();
 
   const lang = useTranslation();
-  const {
-    getUser,
-    slots,
-    requestSlots,
-    filterScope,
-    role,
-    addToReviewed
-  } = props;
+  const slots = useSelector(getSlots);
+  const filterScope = useSelector(getFilterScope);
+  const role = useSelector(getRole).some();
+  const usersArr = useSelector(getUsers);
+  const users = _.keyBy(usersArr, u => u.get("id"));
+
+  const dispatch = useDispatch();
+
   const theme = useTheme<Theme>();
   const isNarrow = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -149,12 +127,22 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
     [courseFilter, slotsInScope]
   );
 
-  React.useEffect(() => {
-    requestSlots();
-  }, []);
+  React.useEffect(
+    () => {
+      dispatch(getSlotsRequest());
+    },
+    [dispatch]
+  );
 
   const teacherIds = slots.map(s => s.get("teacherId"));
   const moreThanOneTeacherInSlots = _.uniq(teacherIds).length > 1;
+
+  const addToReviewed = React.useCallback(
+    (id: string) => {
+      dispatch(addReviewedRecordRequest(id));
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -162,10 +150,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
         columns={[
           {
             name: lang.headers.name,
-            extract: slot =>
-              getUser(slot.get("studentId"))
-                .map(user => user.get("displayname"))
-                .orSome(""),
+            extract: slot => users[slot.get("studentId")].get("displayname"),
             options: {
               filter: false,
               display: role !== Roles.STUDENT
@@ -210,10 +195,7 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
             extract: slot =>
               Maybe.fromNull(slot.get("teacherId")).cata(
                 () => lang.deleted,
-                id =>
-                  getUser(id)
-                    .map(user => user.get("displayname"))
-                    .orSome("")
+                id => users[id].get("displayname")
               ),
             options: {
               filter: moreThanOneTeacherInSlots,
@@ -258,14 +240,10 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
                 <SlotsTableSmallCard
                   slot={slot}
                   role={role}
-                  studentName={getUser(slot.get("studentId"))
-                    .map(s => s.get("displayname"))
-                    .orSome("")}
+                  studentName={users[slot.get("studentId")].get("displayname")}
                   teacherName={
                     !!slot.get("teacherId")
-                      ? getUser(slot.get("teacherId")!)
-                          .map(t => t.get("displayname"))
-                          .orSome("")
+                      ? users[slot.get("teacherId")!].get("displayname")
                       : lang.deleted
                   }
                   addToReviewed={() => addToReviewed(slot.get("id"))}
@@ -288,7 +266,4 @@ const Slots: React.FunctionComponent<SlotsProps> = props => {
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withErrorBoundary()(Slots));
+export default withErrorBoundary()(Slots);
