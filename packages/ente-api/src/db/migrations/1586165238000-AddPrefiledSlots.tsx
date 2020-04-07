@@ -1,6 +1,18 @@
-import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
+import {
+  MigrationInterface,
+  QueryRunner,
+  TableColumn,
+  TableForeignKey
+} from "typeorm";
 
 export class AddPrefiledSlots1586165238000 implements MigrationInterface {
+  fk = new TableForeignKey({
+    onDelete: "SET NULL",
+    columnNames: ["prefiled_for"],
+    referencedTableName: "user",
+    referencedColumnNames: ["_id"]
+  });
+
   async up(queryRunner: QueryRunner) {
     await queryRunner.query(
       `ALTER TABLE slot
@@ -13,9 +25,12 @@ export class AddPrefiledSlots1586165238000 implements MigrationInterface {
       "slot",
       new TableColumn({
         name: "prefiled_for",
-        type: ""
+        isNullable: true,
+        type: "varchar(255)"
       })
     );
+
+    await queryRunner.createForeignKey("slot", this.fk);
   }
 
   async down(queryRunner: QueryRunner) {
@@ -31,6 +46,8 @@ export class AddPrefiledSlots1586165238000 implements MigrationInterface {
        WHERE prefiled_for IS NOT NULL;
       `
     );
+
+    await queryRunner.dropForeignKey("slot", this.fk);
 
     await queryRunner.dropColumn("slot", "prefiled_for");
   }
