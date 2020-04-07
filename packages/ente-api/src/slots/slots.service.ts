@@ -28,6 +28,12 @@ export enum CreatePrefiledSlotsFailure {
   InvalidDto
 }
 
+export enum DeletePrefiledSlotsFailure {
+  ForbiddenForUser,
+  NotFound,
+  SlotIsNotPrefiled
+}
+
 @Injectable()
 export class SlotsService {
   constructor(
@@ -156,6 +162,33 @@ export class SlotsService {
 
     const result = await this.slotRepo.createPrefiled(slots, requestingUser.id);
     return Success(result.map(s => SlotsService.blackenDto(s, requestingUser)));
+  }
+
+  public async deletePrefiled(
+    id: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<DeletePrefiledSlotsFailure, true>> {
+    if (!TEACHING_ROLES.includes(requestingUser.role)) {
+      return Fail(DeletePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    const slot = await this.slotRepo.findById(id);
+    if (slot.isNone()) {
+      return Fail(DeletePrefiledSlotsFailure.NotFound);
+    }
+
+    const { isPrefiled, teacher } = slot.some();
+    if (!isPrefiled) {
+      return Fail(DeletePrefiledSlotsFailure.SlotIsNotPrefiled);
+    }
+
+    const teacherId = !!teacher && teacher.id;
+    if (teacherId !== requestingUser.id) {
+      return Fail(DeletePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    await this.slotRepo.remove(id);
+    return Success(true);
   }
 
   async dispatchWeeklySummary() {

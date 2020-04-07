@@ -8,13 +8,15 @@ import {
   UseGuards,
   Post,
   Body,
-  BadRequestException
+  BadRequestException,
+  Delete
 } from "@nestjs/common";
 import { RequestContext, Ctx } from "../helpers/request-context";
 import {
   SlotsService,
   FindOneSlotFailure,
-  CreatePrefiledSlotsFailure
+  CreatePrefiledSlotsFailure,
+  DeletePrefiledSlotsFailure
 } from "./slots.service";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -78,5 +80,19 @@ export class SlotsController {
       },
       slots => slots
     );
+  }
+
+  @Delete(":id")
+  async deletePrefiled(@Param("id") id: string, @Ctx() ctx: RequestContext) {
+    const result = await this.slotsService.deletePrefiled(id, ctx.user);
+    result.forEachFail(fail => {
+      switch (fail) {
+        case DeletePrefiledSlotsFailure.SlotIsNotPrefiled:
+        case DeletePrefiledSlotsFailure.ForbiddenForUser:
+          throw new ForbiddenException();
+        case DeletePrefiledSlotsFailure.NotFound:
+          throw new NotFoundException();
+      }
+    });
   }
 }
