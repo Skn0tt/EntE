@@ -15,7 +15,7 @@ import { ManagerSignedInformation } from "../templates/ManagerSignedInformation"
 import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformation";
 import { EntryStillUnsignedNotification } from "../templates/EntryStillUnsignedNotification";
 import { EmailQueue } from "./email.queue";
-import { SlotPrefiledNotification } from "templates/SlotPrefiledNotification";
+import { SlotPrefiledNotification } from "../templates/SlotPrefiledNotification";
 
 @Injectable()
 export class EmailService {

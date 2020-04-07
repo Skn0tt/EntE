@@ -24,7 +24,7 @@ import {
   PaginationInformation
 } from "../helpers/pagination-info";
 import { BlackedSlotDto, CreatePrefiledSlotsDto } from "ente-types";
-import { ValidationPipe } from "helpers/validation.pipe";
+import { ValidationPipe } from "../helpers/validation.pipe";
 
 @Controller("slots")
 @UseGuards(AuthGuard("combined"))

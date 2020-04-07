@@ -7,7 +7,7 @@ import {
   Button
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { ChildrenInput } from "../elements/ChildrenInput";
+import ChildrenInput from "../elements/ChildrenInput";
 import { UserN, getStudents } from "../redux";
 import { useSelector } from "react-redux";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";

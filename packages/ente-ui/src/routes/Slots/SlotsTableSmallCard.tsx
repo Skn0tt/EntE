@@ -91,12 +91,10 @@ export const SlotsTableSmallCard: React.FC<
         </Typography>
 
         {role !== Roles.STUDENT && (
-          <Typography component="p" variant="body1">
-            {teacherName}
-          </Typography>
+          <Typography variant="body1">{teacherName}</Typography>
         )}
 
-        <Typography component="p" variant="body2">
+        <Typography variant="body2">
           {translation.educational}:{" "}
           {slot.get("isEducational") ? translation.yes : translation.no}
         </Typography>

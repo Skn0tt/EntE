@@ -19,6 +19,20 @@ import Typography from "@material-ui/core/Typography/Typography";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
+import { withTranslation, WithTranslation } from "../helpers/with-translation";
+
+export const translation = {
+  en: {
+    title: "Children",
+    addChildren: "Add children",
+    child: "Child"
+  },
+  de: {
+    title: "Kinder",
+    addChildren: "Kinder hinzufügen",
+    child: "Kind"
+  }
+};
 
 /**
  * # Helpers
@@ -39,14 +53,15 @@ interface ChildrenInputOwnProps {
   children: UserN[];
   students: UserN[];
   onChange: (children: UserN[]) => void;
-  text: {
+  text?: {
     title: string;
     addChildren: string;
     child: string;
   };
 }
 
-type ChildrenInputProps = ChildrenInputOwnProps;
+type ChildrenInputProps = ChildrenInputOwnProps &
+  WithTranslation<typeof translation.en>;
 
 interface State {
   selected?: UserN;
@@ -91,13 +106,15 @@ export class ChildrenInput extends React.PureComponent<
     this.props.onChange(without(this.props.children, index));
 
   render() {
-    const { students, children, text } = this.props;
+    const { students, children, text, translation } = this.props;
     const { selected } = this.state;
 
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography variant="h6">{text.title}</Typography>
+          <Typography variant="h6">
+            {!!text ? text.title : translation.title}
+          </Typography>
         </Grid>
         {/* List Children */}
         <Grid item>
@@ -127,8 +144,8 @@ export class ChildrenInput extends React.PureComponent<
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               }
-              helperText={text.addChildren}
-              label={text.child}
+              helperText={!!text ? text.addChildren : translation.addChildren}
+              label={!!text ? text.child : translation.child}
             />
           </Grid>
           <Grid item xs={1}>
@@ -147,3 +164,5 @@ export class ChildrenInput extends React.PureComponent<
     );
   }
 }
+
+export default withTranslation(translation)(ChildrenInput);
