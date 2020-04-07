@@ -10,8 +10,8 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ChildrenInput from "../elements/ChildrenInput";
-import { UserN, getStudents } from "../redux";
-import { useSelector } from "react-redux";
+import { UserN, getStudents, getToken, getSlotsRequest } from "../redux";
+import { useSelector, useDispatch } from "react-redux";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import {
   CreatePrefiledSlotsDto,
@@ -19,6 +19,9 @@ import {
 } from "ente-types";
 import { DateInput } from "../elements/DateInput";
 import { HourFromToInput } from "../elements/HourFromToInput";
+import Axios from "axios";
+import { apiBaseUrl } from "../";
+import { useLoadingFlag } from "../useLoadingFlag";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -55,8 +58,28 @@ const useTranslation = makeTranslationHook({
 
 const { useCallback, useState, useMemo } = React;
 
+function usePrefiledSlotsCreator() {
+  const token = useSelector(getToken);
+  const dispatch = useDispatch();
+
+  return useCallback(
+    async (slot: CreatePrefiledSlotsDto) => {
+      await Axios.post(apiBaseUrl + "/slots/prefiled", slot, {
+        headers: {
+          Authorization: `Bearer ${token.orSome("")}`
+        }
+      });
+
+      dispatch(getSlotsRequest());
+    },
+    [token, dispatch]
+  );
+}
+
+const today = () => new Date().toISOString().split("T")[0];
+
 const CreatePrefiledSlots = () => {
-  const [date, setDate] = useState<string>(new Date().toISOString());
+  const [date, setDate] = useState<string>(today());
   const [{ from: hour_from, to: hour_to }, setHourFromTo] = useState<{
     from?: number;
     to?: number;
@@ -82,16 +105,9 @@ const CreatePrefiledSlots = () => {
     createPrefiledSlotDto
   );
 
-  console.log(
-    CreatePrefiledSlotDtoValidator.validateWithErrors(createPrefiledSlotDto)
-  );
+  const [isLoading, whileLoading] = useLoadingFlag();
 
-  const handleCreate = useCallback(
-    () => {
-      // TODO: create
-    },
-    [createPrefiledSlotDto]
-  );
+  const handleCreate = usePrefiledSlotsCreator();
 
   return (
     <Dialog onClose={history.goBack} open>
@@ -131,11 +147,11 @@ const CreatePrefiledSlots = () => {
           {translation.cancel}
         </Button>
         <Button
-          onClick={() => {
-            handleCreate();
+          onClick={async () => {
+            await whileLoading(() => handleCreate(createPrefiledSlotDto));
             history.goBack();
           }}
-          disabled={!isValidInput}
+          disabled={!isValidInput || isLoading}
           color="primary"
         >
           {translation.ok}
