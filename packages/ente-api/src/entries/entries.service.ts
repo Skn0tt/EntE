@@ -29,6 +29,7 @@ import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
 import { parseISO } from "date-fns";
 import { SlotRepo } from "../db/slot.repo";
+import { isBetweenDates } from "ente-types/src/validators/is-between-dates";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -41,7 +42,8 @@ export enum CreateEntryFailure {
   StudentIdMissing,
   TeacherUnknown,
   StudentNotFound,
-  PrefiledSlotNotFound
+  PrefiledSlotNotFound,
+  PrefiledSlotOutOfRange
 }
 
 export enum SetForSchoolEntryFailure {
@@ -210,12 +212,25 @@ export class EntriesService {
     entry.studentId = entry.studentId || requestingUser.id;
 
     if (entry.prefiledSlots.length > 0) {
-      const slotsExist = await this.slotRepo.prefiledSlotsExistForStudent(
+      const prefiledSlots = await this.slotRepo.findPrefiledForStudentByIds(
         entry.studentId!,
-        entry.prefiledSlots
+        ...entry.prefiledSlots
       );
-      if (!slotsExist) {
+
+      const allSlotsExist = prefiledSlots.length === entry.prefiledSlots.length;
+      if (!allSlotsExist) {
         return Fail(CreateEntryFailure.PrefiledSlotNotFound);
+      }
+
+      const isInEntryRange = !!entry.dateEnd
+        ? isBetweenDates(entry.date, entry.dateEnd)
+        : (d: string) => entry.date === d;
+
+      const allSlotsAreInRange = prefiledSlots.every(slot =>
+        isInEntryRange(slot.date)
+      );
+      if (!allSlotsAreInRange) {
+        return Fail(CreateEntryFailure.PrefiledSlotOutOfRange);
       }
     }
 
