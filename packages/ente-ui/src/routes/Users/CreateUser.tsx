@@ -52,7 +52,7 @@ import {
   roleHasClass
 } from "../../redux";
 import TextInput from "../../elements/TextInput";
-import ChildrenInput from "../../elements/ChildrenInput";
+import { ChildrenInput } from "../../elements/ChildrenInput";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { PasswordRequirementsHint } from "../../elements/PasswordRequirementsHint";
 import * as _ from "lodash";
@@ -85,7 +85,12 @@ export const lang = {
     close: "Close",
     import: "Import",
     passwordSpec: PasswordRequirementsHint.en,
-    roles: RoleTranslation.en
+    roles: RoleTranslation.en,
+    childrenInput: {
+      title: "Children",
+      addChildren: "Add children",
+      child: "Child"
+    }
   },
   de: {
     titles: {
@@ -106,7 +111,12 @@ export const lang = {
     close: "Schließen",
     import: "Importieren",
     passwordSpec: PasswordRequirementsHint.de,
-    roles: RoleTranslation.de
+    roles: RoleTranslation.de,
+    childrenInput: {
+      title: "Kinder",
+      addChildren: "Kinder hinzufügen",
+      child: "Kind"
+    }
   }
 };
 
@@ -391,6 +401,7 @@ export class CreateUser extends React.PureComponent<
                       onChange={(u: UserN[]) =>
                         this.handleChangeChildren(u.map(u => u.get("id")))
                       }
+                      text={translation.childrenInput}
                     />
                   </Grid>
                 )}
