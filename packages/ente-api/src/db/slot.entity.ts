@@ -50,5 +50,5 @@ export class Slot {
     nullable: true,
     onDelete: "CASCADE"
   })
-  prefiled_for: User | null = null;
+  prefiledFor: User | null = null;
 }

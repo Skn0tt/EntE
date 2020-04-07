@@ -119,7 +119,7 @@ export class EntryRepo {
 
         await manager.update(Slot, dto.prefiledSlots, {
           entry: newEntry,
-          prefiled_for: null
+          prefiledFor: null
         });
 
         return newEntry;

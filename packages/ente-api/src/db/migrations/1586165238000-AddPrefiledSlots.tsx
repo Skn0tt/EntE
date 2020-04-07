@@ -8,7 +8,7 @@ import {
 export class AddPrefiledSlots1586165238000 implements MigrationInterface {
   fk = new TableForeignKey({
     onDelete: "SET NULL",
-    columnNames: ["prefiled_for"],
+    columnNames: ["prefiledFor_id"],
     referencedTableName: "user",
     referencedColumnNames: ["_id"]
   });
@@ -24,7 +24,7 @@ export class AddPrefiledSlots1586165238000 implements MigrationInterface {
     await queryRunner.addColumn(
       "slot",
       new TableColumn({
-        name: "prefiled_for",
+        name: "prefiledFor_id",
         isNullable: true,
         type: "varchar(255)"
       })
@@ -43,12 +43,12 @@ export class AddPrefiledSlots1586165238000 implements MigrationInterface {
 
     await queryRunner.query(
       `DELETE FROM slot
-       WHERE prefiled_for IS NOT NULL;
+       WHERE prefiledFor_id IS NOT NULL;
       `
     );
 
     await queryRunner.dropForeignKey("slot", this.fk);
 
-    await queryRunner.dropColumn("slot", "prefiled_for");
+    await queryRunner.dropColumn("slot", "prefiledFor_id");
   }
 }

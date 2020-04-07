@@ -25,7 +25,7 @@ export class SlotRepo {
       .createQueryBuilder("slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
       .leftJoinAndSelect("slot.entry", "entry")
-      .leftJoinAndSelect("slot.prefiled_for", "prefiled_for")
+      .leftJoinAndSelect("slot.prefiledFor", "prefiledFor")
       .leftJoinAndSelect("entry.student", "student");
 
   async findAll(paginationInfo: PaginationInformation): Promise<SlotDto[]> {
@@ -48,7 +48,7 @@ export class SlotRepo {
   ): Promise<SlotDto[]> {
     const slot = await this._slotQueryWithTeacher()
       .whereInIds(ids)
-      .andWhere("prefiled_for._id = :studentId", { studentId })
+      .andWhere("prefiledFor._id = :studentId", { studentId })
       .getMany();
 
     return slot.map(SlotRepo.toDto);
@@ -61,7 +61,7 @@ export class SlotRepo {
     const slots = await withPagination(paginationInfo)(
       this._slotQueryWithTeacher()
         .where("student._id IN (:ids)", { ids })
-        .orWhere("prefiled_for._id IN (:ids)", { ids })
+        .orWhere("prefiledFor._id IN (:ids)", { ids })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);
@@ -69,7 +69,7 @@ export class SlotRepo {
 
   async findPrefiledForStudent(studentId: string): Promise<SlotDto[]> {
     const slots = await this._slotQueryWithTeacher()
-      .orWhere("prefiled_for._id = :studentId", { studentId })
+      .orWhere("prefiledFor._id = :studentId", { studentId })
       .getMany();
 
     return slots.map(SlotRepo.toDto);
@@ -135,7 +135,7 @@ export class SlotRepo {
   ): Promise<boolean> {
     const existingSlots = await this.repo.count({
       where: {
-        prefiled_for: { _id: studentId },
+        prefiledFor: { _id: studentId },
         _id: In(slotIds)
       }
     });
@@ -158,7 +158,7 @@ export class SlotRepo {
         date,
         hour_from,
         hour_to,
-        prefiled_for: { _id: studentId },
+        prefiledFor: { _id: studentId },
         teacher: { _id: teacherId }
       }))
     );
@@ -177,9 +177,9 @@ export class SlotRepo {
 
     result.id = slot._id;
 
-    if (slot.prefiled_for) {
+    if (slot.prefiledFor) {
       result.isPrefiled = true;
-      result.student = UserRepo.toDto(slot.prefiled_for!);
+      result.student = UserRepo.toDto(slot.prefiledFor!);
     }
 
     if (slot.entry) {
