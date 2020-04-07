@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Modals were moved to their own routes, so that navigating backwards works again ([#328](https://gitlab.com/Skn0tt/EntE/issues/328))
+
 ## [v0.35.0] - 2020-04-04
 
 - Feature: Add a visual cue to entries that the manager reached out to ([#361](https://gitlab.com/Skn0tt/EntE/issues/361))
