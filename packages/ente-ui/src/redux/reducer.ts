@@ -613,10 +613,9 @@ const reducer = handleActions<AppState | undefined, any>(
         return state;
       }
 
-      return state!.setIn(
-        ["usersMap", oneSelvesId, "language"],
-        action.payload
-      );
+      return state!
+        .setIn(["usersMap", oneSelvesId, "language"], action.payload)
+        .setIn(["oneSelf", "language"], action.payload);
     }
   },
   initialState
