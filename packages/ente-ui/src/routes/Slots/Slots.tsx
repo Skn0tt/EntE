@@ -22,7 +22,8 @@ import {
   getRole,
   addReviewedRecordRequest,
   getUsers,
-  getOwnUserId
+  getOwnUserId,
+  getToken
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe, None } from "monet";
@@ -40,6 +41,24 @@ import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMe
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "ente-types";
 import { Link } from "react-router-dom";
+import { apiBaseUrl } from "../../";
+import Axios from "axios";
+import { DeleteSlotDialog } from "./DeleteSlotDialog";
+
+function usePrefileDeleter() {
+  const token = useSelector(getToken).some();
+  const dispatch = useDispatch();
+  return React.useCallback(
+    async (prefiledSlotId: string) => {
+      await Axios.delete(`${apiBaseUrl}/slots/${prefiledSlotId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      dispatch(getSlotsRequest());
+    },
+    [token, dispatch]
+  );
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   fab: {
@@ -156,8 +175,23 @@ const Slots = () => {
     [dispatch]
   );
 
+  const deletePrefiledSlot = usePrefileDeleter();
+  const [prefiledSlotToDelete, setPrefiledSlotToDelete] = React.useState<
+    string
+  >();
+
   return (
     <>
+      <DeleteSlotDialog
+        open={!!prefiledSlotToDelete}
+        onClose={confirmed => {
+          if (confirmed && prefiledSlotToDelete) {
+            deletePrefiledSlot(prefiledSlotToDelete);
+          }
+
+          setPrefiledSlotToDelete(undefined);
+        }}
+      />
       <Table<SlotN>
         columns={[
           {
@@ -198,6 +232,7 @@ const Slots = () => {
           {
             name: lang.headers.status,
             extract: slot => {
+              const id = slot.get("id");
               const isOwn = slot.get("teacherId") === ownUserId;
 
               let state;
@@ -208,14 +243,15 @@ const Slots = () => {
                 state = isSigned ? "signed" : "unsigned";
               }
 
-              return { isOwn, state };
+              return { isOwn, state, id };
             },
             options: {
               customBodyRender: (s: {
+                id: string;
                 isOwn: boolean;
                 state: "prefiled" | "signed" | "unsigned";
               }) => {
-                const { isOwn, state } = s;
+                const { isOwn, state, id } = s;
                 const avatar = (
                   <SignedAvatar
                     signed={state === "signed"}
@@ -228,7 +264,7 @@ const Slots = () => {
                     <span className={classes.deleteContainer}>
                       {avatar}
                       <IconButton
-                        onClick={() => alert("whoohoo")}
+                        onClick={() => setPrefiledSlotToDelete(id)}
                         className={classes.deleteIcon}
                       >
                         <DeleteIcon fontSize="small" />
