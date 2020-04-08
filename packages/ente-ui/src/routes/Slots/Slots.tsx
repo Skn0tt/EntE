@@ -333,6 +333,11 @@ const Slots = () => {
                       ? users[slot.get("teacherId")!].get("displayname")
                       : lang.deleted
                   }
+                  showDelete={
+                    slot.get("isPrefiled") &&
+                    slot.get("teacherId") === ownUserId
+                  }
+                  onDelete={() => setPrefiledSlotToDelete(slot.get("id"))}
                   addToReviewed={() => addToReviewed(slot.get("id"))}
                   showAddToReviewed={
                     [Roles.MANAGER, Roles.TEACHER].includes(role) &&

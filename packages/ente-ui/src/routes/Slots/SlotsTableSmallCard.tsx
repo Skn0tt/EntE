@@ -8,6 +8,7 @@ import {
   IconButton
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/styles";
 import { useLocalizedDateFormat } from "../../helpers/use-localized-date-format";
 import { Roles } from "ente-types";
@@ -29,7 +30,8 @@ const useTranslation = makeTranslationHook({
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    position: "relative"
   },
   upRight: {
     position: "relative",
@@ -39,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "relative",
     float: "right",
     top: "-4px"
+  },
+  downRight: {
+    position: "absolute",
+    right: theme.spacing.unit,
+    bottom: theme.spacing.unit
   }
 }));
 
@@ -49,6 +56,8 @@ interface SlotsTableSmallCardProps {
   studentName: string;
   showAddToReviewed: boolean;
   addToReviewed(): void;
+  showDelete: boolean;
+  onDelete(): void;
 }
 
 export const SlotsTableSmallCard: React.FC<
@@ -60,7 +69,9 @@ export const SlotsTableSmallCard: React.FC<
     studentName,
     role,
     addToReviewed,
-    showAddToReviewed
+    showAddToReviewed,
+    onDelete,
+    showDelete
   } = props;
 
   const classes = useStyles();
@@ -80,6 +91,13 @@ export const SlotsTableSmallCard: React.FC<
           <span className={classes.upAlmostRight}>
             <IconButton onClick={addToReviewed}>
               <DoneIcon />
+            </IconButton>
+          </span>
+        )}
+        {showDelete && (
+          <span className={classes.downRight}>
+            <IconButton onClick={onDelete}>
+              <DeleteIcon />
             </IconButton>
           </span>
         )}
