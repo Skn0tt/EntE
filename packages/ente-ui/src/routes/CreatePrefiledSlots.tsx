@@ -64,7 +64,7 @@ function usePrefiledSlotsCreator() {
 
   return useCallback(
     async (slot: CreatePrefiledSlotsDto) => {
-      await Axios.post(apiBaseUrl + "/slots/prefiled", slot, {
+      await Axios.post(`${apiBaseUrl}/slots/prefiled`, slot, {
         headers: {
           Authorization: `Bearer ${token.orSome("")}`
         }

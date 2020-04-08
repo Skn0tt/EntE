@@ -44,6 +44,7 @@ import * as _ from "lodash";
 import { EntryReasonInput } from "./EntryReasonInput";
 import { CreateSlotList } from "./CreateSlotList";
 import { ErrorBox } from "../../elements/ErrorBox";
+import { PrefiledSlotsPicker } from "./PrefiledSlotsPicker";
 
 function days(n: number) {
   return n * 24 * 60 * 60 * 1000;
@@ -118,6 +119,7 @@ const CreateEntry = (props: CreateEntryProps) => {
     category: EntryReasonCategory.ILLNESS,
     payload: {}
   });
+  const [prefiledSlots, setPrefiledSlots] = React.useState<string[]>([]);
 
   const firstChildOfParent: string | undefined = children
     .flatMap(c => Maybe.fromUndefined(c[0]))
@@ -217,13 +219,14 @@ const CreateEntry = (props: CreateEntryProps) => {
 
   const result = React.useMemo(
     () => ({
+      prefiledSlots,
       slots,
       studentId,
       reason,
       date: beginDate,
       dateEnd: endDate
     }),
-    [slots, studentId, reason, beginDate, endDate]
+    [slots, studentId, reason, beginDate, endDate, prefiledSlots]
   );
 
   const isValidInput = CreateEntryDtoValidator.validate(result as any);
@@ -304,6 +307,12 @@ const CreateEntry = (props: CreateEntryProps) => {
           )}
           <Grid item xs={12}>
             <EntryReasonInput onChange={setReason as any} isRange={isRange} />
+          </Grid>
+          <Grid item xs={12}>
+            <PrefiledSlotsPicker
+              range={{ start: beginDate, end: isRange ? endDate! : beginDate }}
+              onChange={setPrefiledSlots}
+            />
           </Grid>
           <Grid item xs={12}>
             <Grid container direction="column" spacing={8}>

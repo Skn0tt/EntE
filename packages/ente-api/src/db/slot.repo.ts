@@ -180,6 +180,7 @@ export class SlotRepo {
     if (slot.prefiledFor) {
       result.isPrefiled = true;
       result.student = UserRepo.toDto(slot.prefiledFor!);
+      result.date = slot.date!;
     }
 
     if (slot.entry) {

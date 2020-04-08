@@ -353,9 +353,7 @@ const reducer = handleActions<AppState | undefined, any>(
       GET_ENTRIES_ERROR,
       GET_ENTRIES_SUCCESS,
       (state, action: Action<APIResponse>) => {
-        const stateWithoutOldData = state
-          .set("entriesMap", Map())
-          .set("slotsMap", Map());
+        const stateWithoutOldData = state.set("entriesMap", Map());
 
         return addResponse(stateWithoutOldData, action.payload!);
       }

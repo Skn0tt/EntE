@@ -29,7 +29,7 @@ import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
 import { parseISO } from "date-fns";
 import { SlotRepo } from "../db/slot.repo";
-import { isBetweenDates } from "ente-types/src/validators/is-between-dates";
+import { isBetweenDates } from "ente-types";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
