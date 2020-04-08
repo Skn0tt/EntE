@@ -16,7 +16,7 @@ import SignedAvatar from "../../elements/SignedAvatar";
 import { format, parseISO } from "date-fns";
 import * as deLocale from "date-fns/locale/de";
 import * as enLocale from "date-fns/locale/en-GB";
-import { getLengthOfSlot } from "../../reporting/reporting";
+import { Reporting } from "../../reporting/reporting";
 import * as _ from "lodash";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { EntryReasonCategory } from "ente-types";
@@ -105,7 +105,9 @@ const EntriesTable: React.FC<EntriesTableProps> = props => {
             {
               name: translation.length,
               extract: entry =>
-                _.sum(getSlots(entry.get("slotIds")).map(getLengthOfSlot)),
+                _.sum(
+                  getSlots(entry.get("slotIds")).map(Reporting.getLengthOfSlot)
+                ),
               options: {
                 filter: false,
                 customBodyRender: length => translation.lengthF(length)

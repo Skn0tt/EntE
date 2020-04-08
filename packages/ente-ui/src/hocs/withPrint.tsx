@@ -17,7 +17,7 @@ export const usePrintButton = () => {
 export const withPrintButton = <P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<P> => props => {
-  const ref = React.useRef<HTMLElement | null>(null);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   const printButton = React.useMemo(
     () => {

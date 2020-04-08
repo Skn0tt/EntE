@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { SlotN } from "../../redux";
-import { Reporting } from "../../new_reporting/reporting";
+import { Reporting } from "../../reporting/reporting";
 
 const useTranslation = makeTranslationHook({
   en: {

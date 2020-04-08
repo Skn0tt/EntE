@@ -22,7 +22,7 @@ import { Typography, Grid, Button, Theme } from "@material-ui/core";
 import { Center } from "../components/Center";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import { makeStyles } from "@material-ui/styles";
-import { Reporting } from "../new_reporting/reporting";
+import { Reporting } from "../reporting/reporting";
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

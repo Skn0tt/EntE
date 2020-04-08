@@ -1,4 +1,4 @@
-import { Weekday, weekdayOfDate } from "../reporting/reporting";
+import { Weekday, Reporting } from "../reporting/reporting";
 import { SlotN } from "../redux";
 
 export type CourseFilter = CourseFilterSlot[];
@@ -11,7 +11,7 @@ export interface CourseFilterSlot {
 export const doCourseSlotAndSlotOverlap = (slot: SlotN) => (
   courseSlot: CourseFilterSlot
 ): boolean => {
-  const weekday = weekdayOfDate(slot.get("date"));
+  const weekday = Reporting.weekdayOfDate(slot.get("date"));
   if (courseSlot.day !== weekday) {
     return false;
   }
