@@ -95,6 +95,9 @@ const useTranslation = makeTranslationHook({
     deleted: "Deleted",
     yes: "Yes",
     no: "No",
+    prefiled: "Prefiled",
+    created: "Created",
+    signed: "Signed",
     locale: enLocale
   },
   de: {
@@ -111,6 +114,9 @@ const useTranslation = makeTranslationHook({
     deleted: "Gelöscht",
     yes: "Ja",
     no: "Nein",
+    prefiled: "Vorgemerkt",
+    created: "Erstellt",
+    signed: "Unterschrieben",
     locale: deLocale
   }
 });
@@ -120,6 +126,7 @@ const Slots = () => {
 
   const lang = useTranslation();
   const slots = useSelector(getSlots);
+  const slotsById = _.keyBy(slots, s => s.get("id"));
   const filterScope = useSelector(getFilterScope);
   const role = useSelector(getRole).some();
   const ownUserId = useSelector(getOwnUserId).some();
@@ -232,34 +239,31 @@ const Slots = () => {
           {
             name: lang.headers.status,
             extract: slot => {
-              const id = slot.get("id");
-              const isOwn = slot.get("teacherId") === ownUserId;
+              const isPrefiled = slot.get("isPrefiled");
+              const isSigned = slot.get("signed");
 
-              let state;
-              if (slot.get("isPrefiled")) {
-                state = "prefiled";
-              } else {
-                const isSigned = slot.get("signed");
-                state = isSigned ? "signed" : "unsigned";
+              if (isPrefiled) {
+                return lang.prefiled;
               }
 
-              return { isOwn, state, id };
+              if (isSigned) {
+                return lang.signed;
+              }
+
+              return lang.created;
             },
             options: {
-              customBodyRender: (s: {
-                id: string;
-                isOwn: boolean;
-                state: "prefiled" | "signed" | "unsigned";
-              }) => {
-                const { isOwn, state, id } = s;
+              customBodyRender: (s: string, { rowData: [id] }) => {
+                const isSigned = s === lang.signed;
+                const isPrefiled = s === lang.prefiled;
                 const avatar = (
-                  <SignedAvatar
-                    signed={state === "signed"}
-                    prefiled={state === "prefiled"}
-                  />
+                  <SignedAvatar signed={isSigned} prefiled={isPrefiled} />
                 );
 
-                if (state === "prefiled" && isOwn) {
+                const slot = slotsById[id];
+                const isOwn = slot.get("teacherId") === ownUserId;
+
+                if (isPrefiled && isOwn) {
                   return (
                     <span className={classes.deleteContainer}>
                       {avatar}
