@@ -15,7 +15,7 @@ const template = Handlebars.compile(`
         </mj-text>
 
         <mj-text>
-          {{teacherDisplayName}} hat eine Fehlstunde für dich eingetragen.
+          {{teacherDisplayName}} hat eine Fehlstunde für dich eingetragen.<br/>
           
           Datum: {{date}}
           Beginn: {{from}}. Stunde

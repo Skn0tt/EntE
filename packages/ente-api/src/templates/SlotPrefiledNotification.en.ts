@@ -15,7 +15,7 @@ const template = Handlebars.compile(`
         </mj-text>
 
         <mj-text>
-          {{teacherDisplayName}} has prefiled a missed class for you.
+          {{teacherDisplayName}} has prefiled a missed class for you.<br/>
           
           Date: {{date}}
           Begin: {{from}}.
