@@ -179,7 +179,6 @@ export function Table<T>(props: TableProps<T>) {
           updateSearchText(newSearchText);
         },
         onFilterChange: (changedColumn: string, filterLists: any) => {
-          console.log(filterLists);
           updateFilterLists(filterLists);
         },
         onColumnSortChange: (

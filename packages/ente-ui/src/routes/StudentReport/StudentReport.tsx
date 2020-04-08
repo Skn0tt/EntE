@@ -25,6 +25,7 @@ import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
 import EntriesTable from "./EntriesTable";
+import { MissedClassesOverTimeChart } from "./MissedClassesOverTimeChart";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -48,6 +49,7 @@ const useTranslation = makeTranslationHook({
     absenceReport: "Absence Report",
     absentHoursByTime: "Absent hours by time",
     absentHoursByTeacher: "Absent hours by teacher",
+    missedClassesOverTime: "Absent hours over time",
     summary: "Summary",
     entries: "Entries",
     modes: {
@@ -61,6 +63,7 @@ const useTranslation = makeTranslationHook({
     absenceReport: "Fehlstundenbericht",
     absentHoursByTime: "Fehlstunden nach Schulstunde",
     absentHoursByTeacher: "Fehlstunden nach Lehrer",
+    missedClassesOverTime: "Fehlstunden über Zeit",
     summary: "Zusammenfassung",
     entries: "Einträge",
     modes: {
@@ -79,7 +82,6 @@ interface StudentReportProps {
 type Mode = "all" | "educational" | "not_educational";
 
 function filterSlotsByMode(mode: Mode, slots: SlotN[]) {
-  console.log(mode);
   switch (mode) {
     case "all":
       return slots;
@@ -188,6 +190,15 @@ const StudentReport = (props: StudentReportProps) => {
               {translation.summary}
             </Typography>
             <SummaryTable slots={slotsToUse} />
+          </Grid>
+
+          <Divider />
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.missedClassesOverTime}
+            </Typography>
+            <MissedClassesOverTimeChart slots={slotsToUse} />
           </Grid>
 
           <Divider />
