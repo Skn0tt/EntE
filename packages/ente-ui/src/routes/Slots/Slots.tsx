@@ -10,7 +10,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
-import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import DeleteIcon from "@material-ui/icons/Delete";
 import SignedAvatar from "../../elements/SignedAvatar";
 import * as _ from "lodash";
 import { Table } from "../../components/Table";
@@ -21,7 +21,8 @@ import {
   getFilterScope,
   getRole,
   addReviewedRecordRequest,
-  getUsers
+  getUsers,
+  getOwnUserId
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe, None } from "monet";
@@ -31,7 +32,7 @@ import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { getFilterScopeValidator } from "../../filter-scope";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
-import { Grid, Theme, IconButton, Fab, Avatar } from "@material-ui/core";
+import { Grid, Theme, IconButton, Fab } from "@material-ui/core";
 import { CourseFilterButton } from "../../components/CourseFilterButton";
 import { CourseFilter, isSlotDuringCourse } from "../../helpers/course-filter";
 import { useTheme, makeStyles } from "@material-ui/styles";
@@ -48,6 +49,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: theme.spacing.unit * 2,
     left: "auto",
     position: "fixed"
+  },
+  deleteContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  deleteIcon: {
+    marginLeft: theme.spacing.unit
   }
 }));
 
@@ -93,6 +103,7 @@ const Slots = () => {
   const slots = useSelector(getSlots);
   const filterScope = useSelector(getFilterScope);
   const role = useSelector(getRole).some();
+  const ownUserId = useSelector(getOwnUserId).some();
   const usersArr = useSelector(getUsers);
   const users = _.keyBy(usersArr, u => u.get("id"));
 
@@ -187,20 +198,47 @@ const Slots = () => {
           {
             name: lang.headers.status,
             extract: slot => {
+              const isOwn = slot.get("teacherId") === ownUserId;
+
+              let state;
               if (slot.get("isPrefiled")) {
-                return "prefiled";
+                state = "prefiled";
+              } else {
+                const isSigned = slot.get("signed");
+                state = isSigned ? "signed" : "unsigned";
               }
 
-              const isSigned = slot.get("signed");
-              return isSigned ? "signed" : "unsigned";
+              return { isOwn, state };
             },
             options: {
-              customBodyRender: (s: "prefiled" | "signed" | "unsigned") => (
-                <SignedAvatar
-                  signed={s === "signed"}
-                  prefiled={s === "prefiled"}
-                />
-              )
+              customBodyRender: (s: {
+                isOwn: boolean;
+                state: "prefiled" | "signed" | "unsigned";
+              }) => {
+                const { isOwn, state } = s;
+                const avatar = (
+                  <SignedAvatar
+                    signed={state === "signed"}
+                    prefiled={state === "prefiled"}
+                  />
+                );
+
+                if (state === "prefiled" && isOwn) {
+                  return (
+                    <span className={classes.deleteContainer}>
+                      {avatar}
+                      <IconButton
+                        onClick={() => alert("whoohoo")}
+                        className={classes.deleteIcon}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </span>
+                  );
+                }
+
+                return avatar;
+              }
             }
           },
           {
