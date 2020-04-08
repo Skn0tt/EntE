@@ -8,19 +8,34 @@ import {
 } from "../../redux";
 import { isBetweenDates } from "ente-types";
 import {
-  FormControl,
-  InputLabel,
   Select,
   Chip,
   MenuItem,
   Checkbox,
-  ListItemText
+  ListItemText,
+  Typography,
+  Grid
 } from "@material-ui/core";
 import { useEffectOnce } from "react-use";
 import * as _ from "lodash";
 import { format, Locale, parseISO } from "date-fns";
 import { useLocalization } from "../../helpers/use-localized-date-format";
+import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 const { useState, useEffect, useCallback, useMemo } = React;
+
+const useTranslation = makeTranslationHook({
+  en: {
+    title: "Prefiled Classes",
+    caption: "These missed classes were prefiled by your teachers.",
+    deleted: "N/A"
+  },
+  de: {
+    title: "Fehlstunden",
+    caption:
+      "Diese Fehlstunden wurden bereits von deinen Lehrer*innen vorgemerkt.",
+    deleted: "N/A"
+  }
+});
 
 function formatLabel(slot: SlotN, locale: Locale, isRange: boolean) {
   const date = slot.get("date");
@@ -66,6 +81,7 @@ interface PrefiledSlotsPickerProps {
 export const PrefiledSlotsPicker = (props: PrefiledSlotsPickerProps) => {
   const { range, onChange } = props;
   const locale = useLocalization();
+  const translation = useTranslation();
 
   const prefiledSlots = usePrefiledSlots();
   const prefiledSlotsInRange = useMemo(
@@ -114,11 +130,16 @@ export const PrefiledSlotsPicker = (props: PrefiledSlotsPickerProps) => {
     [setSelectedSlots]
   );
 
-  const isRange = range.start === range.end;
+  const isRange = range.start !== range.end;
+
+  if (prefiledSlotsInRange.length === 0) {
+    return null;
+  }
 
   return (
-    <FormControl>
-      <InputLabel />
+    <Grid container direction="column" spacing={8}>
+      <Typography variant="h6">{translation.title}</Typography>
+      <Typography variant="caption">{translation.caption}</Typography>
       <Select
         fullWidth
         value={selectedSlots}
@@ -130,7 +151,11 @@ export const PrefiledSlotsPicker = (props: PrefiledSlotsPickerProps) => {
               {slots.map(slot => (
                 <Chip
                   key={slot.get("id")}
-                  label={formatLabel(slot, locale, isRange)}
+                  label={`${formatLabel(slot, locale, isRange)} ${
+                    !!slot.get("teacherId")
+                      ? teachersById[slot.get("teacherId")!].get("displayname")
+                      : ""
+                  }`}
                 />
               ))}
             </div>
@@ -145,12 +170,12 @@ export const PrefiledSlotsPicker = (props: PrefiledSlotsPickerProps) => {
               secondary={
                 !!slot.get("teacherId")
                   ? teachersById[slot.get("teacherId")!].get("displayname")
-                  : "Gelöscht"
+                  : ""
               }
             />
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </Grid>
   );
 };
