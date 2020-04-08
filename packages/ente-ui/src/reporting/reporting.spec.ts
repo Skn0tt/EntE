@@ -5,10 +5,24 @@ import {
   getLengthOfEntry,
   Weekday,
   Reporting,
-  weekdayOfDate
+  weekdayOfDate,
+  getLengthOfSlot
 } from "./reporting";
 import { SlotN, EntryN } from "../redux";
 import { Map } from "immutable";
+
+describe("getLengthOfSlot", () => {
+  it("returns correct time", () => {
+    expect(
+      getLengthOfSlot(
+        new SlotN({
+          from: 1,
+          to: 3
+        })
+      )
+    ).toEqual(3);
+  });
+});
 
 describe("hoursOfSlot", () => {
   it("returns correct hours", () => {
