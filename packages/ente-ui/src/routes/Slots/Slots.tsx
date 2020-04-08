@@ -10,6 +10,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
+import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
 import SignedAvatar from "../../elements/SignedAvatar";
 import * as _ from "lodash";
 import { Table } from "../../components/Table";
@@ -30,7 +31,7 @@ import * as enLocale from "date-fns/locale/en-GB";
 import * as deLocale from "date-fns/locale/de";
 import { getFilterScopeValidator } from "../../filter-scope";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
-import { Grid, Theme, IconButton, Fab } from "@material-ui/core";
+import { Grid, Theme, IconButton, Fab, Avatar } from "@material-ui/core";
 import { CourseFilterButton } from "../../components/CourseFilterButton";
 import { CourseFilter, isSlotDuringCourse } from "../../helpers/course-filter";
 import { useTheme, makeStyles } from "@material-ui/styles";
@@ -58,7 +59,7 @@ const useTranslation = makeTranslationHook({
       from: "From",
       to: "To",
       forSchool: "For School",
-      signed: "Signed",
+      status: "Status",
       teacher: "Teacher",
       reviewed: "Review"
     },
@@ -74,7 +75,7 @@ const useTranslation = makeTranslationHook({
       from: "Von",
       to: "Bis",
       forSchool: "Schulisch",
-      signed: "Unterschrieben",
+      status: "Status",
       teacher: "Lehrer",
       reviewed: "Abhaken"
     },
@@ -184,10 +185,22 @@ const Slots = () => {
             extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
           },
           {
-            name: lang.headers.signed,
-            extract: slot => (slot.get("signed") ? lang.yes : lang.no),
+            name: lang.headers.status,
+            extract: slot => {
+              if (slot.get("isPrefiled")) {
+                return "prefiled";
+              }
+
+              const isSigned = slot.get("signed");
+              return isSigned ? "signed" : "unsigned";
+            },
             options: {
-              customBodyRender: s => <SignedAvatar signed={s === lang.yes} />
+              customBodyRender: (s: "prefiled" | "signed" | "unsigned") => (
+                <SignedAvatar
+                  signed={s === "signed"}
+                  prefiled={s === "prefiled"}
+                />
+              )
             }
           },
           {
@@ -233,7 +246,7 @@ const Slots = () => {
         }
         items={slotsInCourse}
         extractId={user => user.get("id")}
-        key={"SlotsTable" + (filterScope === "not_reviewed")}
+        key={`SlotsTable_${filterScope === "not_reviewed"}`}
         customRowRender={
           isNarrow
             ? slot => (

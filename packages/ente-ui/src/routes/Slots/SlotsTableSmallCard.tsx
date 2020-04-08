@@ -71,7 +71,10 @@ export const SlotsTableSmallCard: React.FC<
     <Card className={classes.card}>
       <CardContent>
         <span className={classes.upRight}>
-          <SignedAvatar signed={slot.get("signed")} />
+          <SignedAvatar
+            signed={slot.get("signed")}
+            prefiled={slot.get("isPrefiled")}
+          />
         </span>
         {showAddToReviewed && (
           <span className={classes.upAlmostRight}>
