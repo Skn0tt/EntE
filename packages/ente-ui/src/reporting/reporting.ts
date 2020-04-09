@@ -71,7 +71,7 @@ export module Reporting {
 
   export const slotsByTeacher = (slots: SlotN[]): Record<string, SlotN[]> => {
     const result = _.groupBy(slots, (slot: SlotN) => slot.get("teacherId"));
-    return result;
+    return _.omit(result, "null");
   };
 
   export const absentHoursByTeacher = (

@@ -24,7 +24,6 @@ import {
 function getLastSeptember(date: number): number {
   const month = getMonth(date);
   const lastSeptemberDistance = 9 - (month + 12);
-  console.log(lastSeptemberDistance, +addMonths(date, lastSeptemberDistance));
   return +setDate(addMonths(date, lastSeptemberDistance), 1);
 }
 
