@@ -14,11 +14,11 @@ import { Reporting } from "../../reporting/reporting";
 import {
   parseISO,
   format,
-  addDays,
   addMonths,
   getMonth,
   setDate,
-  startOfDay
+  startOfWeek,
+  addWeeks
 } from "date-fns";
 
 function getLastSeptember(date: number): number {
@@ -27,10 +27,14 @@ function getLastSeptember(date: number): number {
   return +setDate(addMonths(date, lastSeptemberDistance), 1);
 }
 
-function generateDaysBetween(min: number, max: number) {
+function generateWeeksBetween(min: number, max: number) {
   const result: number[] = [];
-  for (let current = min; current <= max; current = +addDays(current, 1)) {
-    result.push(+startOfDay(current));
+  for (
+    let current = min;
+    current <= +addWeeks(max, 1);
+    current = +addWeeks(current, 1)
+  ) {
+    result.push(+startOfWeek(current));
   }
   return result;
 }
@@ -41,15 +45,18 @@ function computeTimeSeriesFromSlots(slots: SlotN[]) {
 
   const domainStart = Math.min(minDate, getLastSeptember(Date.now()));
 
-  const slotsByDate = _.groupBy(slots, s => +parseISO(s.get("date")));
-  const hoursByDate = _.mapValues(slotsByDate, Reporting.countHours);
+  const slotsByWeek = _.groupBy(
+    slots,
+    s => +startOfWeek(parseISO(s.get("date")))
+  );
+  const hoursByWeek = _.mapValues(slotsByWeek, Reporting.countHours);
 
-  for (const day of generateDaysBetween(domainStart, Date.now())) {
-    hoursByDate[day] = hoursByDate[day] || 0;
+  for (const week of generateWeeksBetween(domainStart, Date.now())) {
+    hoursByWeek[week] = hoursByWeek[week] || 0;
   }
 
-  const xy = _.map(hoursByDate, (hours, date) => ({
-    x: +startOfDay(+date),
+  const xy = _.map(hoursByWeek, (hours, date) => ({
+    x: +date,
     y: hours
   }));
 
@@ -77,10 +84,10 @@ export const MissedClassesOverTimeChart = (
             dataMin => Math.min(dataMin, getLastSeptember(Date.now())),
             Date.now()
           ]}
-          tickFormatter={unixTime => format(unixTime, "dd/MM/yyyy")}
+          tickFormatter={unixTime => format(unixTime, "ww/yy")}
         />
         <YAxis />
-        <Tooltip labelFormatter={label => format(+label, "dd/MM/yyyy")} />
+        <Tooltip labelFormatter={label => format(+label, "ww/yy")} />
         <Line
           dataKey="y"
           type="monotone"
