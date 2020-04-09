@@ -1,7 +1,8 @@
 FROM node:10 as build
 WORKDIR /usr/src/app
 
-ADD package.json yarn.lock tsconfig.json lerna.json patches ./
+ADD package.json yarn.lock tsconfig.json lerna.json ./
+ADD patches ./patches
 ADD packages/ente-ui/package.json ./packages/ente-ui/package.json
 ADD packages/ente-types/package.json ./packages/ente-types/package.json
 
