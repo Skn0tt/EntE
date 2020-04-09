@@ -14,6 +14,7 @@
     "packages/ente-ui"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "precommit": "pretty-quick --staged",
     "preversion": "yarn test:unit",
     "version": "./scripts/dockerapp-version.js update",
@@ -40,6 +41,8 @@
     "jest-junit": "^3.7.0",
     "lerna": "^3.8.4",
     "mockdate": "^2.0.2",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1",
     "react": "^16.13.1",
