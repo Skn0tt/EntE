@@ -131,30 +131,19 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
       return (
         <Table<UserN>
           title={
-            <Grid
-              container
-              justify="flex-start"
-              alignItems="center"
-              spacing={24}
-            >
-              <Route
-                render={({ history }) => (
-                  <Grid item xs={4}>
-                    <Button
-                      onClick={() =>
-                        history.push(`/classes/${_class.orUndefined()}/report`)
-                      }
-                      variant="text"
-                      color="inherit"
-                      className={classes.button}
-                    >
-                      <AssessmentIcon />
-                      {translation.openReport}
-                    </Button>
-                  </Grid>
-                )}
-              />
-            </Grid>
+            <Route
+              render={({ history }) => (
+                <Button
+                  onClick={() => history.push("/class/report")}
+                  variant="text"
+                  color="inherit"
+                  className={classes.button}
+                >
+                  <AssessmentIcon />
+                  {translation.openReport}
+                </Button>
+              )}
+            />
           }
           columns={[
             {
