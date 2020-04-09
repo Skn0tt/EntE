@@ -6,7 +6,8 @@ import {
   YAxis,
   CartesianGrid,
   Line,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Tooltip
 } from "recharts";
 import * as _ from "lodash";
 import { Reporting } from "../../reporting/reporting";
@@ -14,10 +15,10 @@ import {
   parseISO,
   format,
   addDays,
-  subDays,
   addMonths,
   getMonth,
-  setDate
+  setDate,
+  startOfDay
 } from "date-fns";
 
 function getLastSeptember(date: number): number {
@@ -27,19 +28,31 @@ function getLastSeptember(date: number): number {
   return +setDate(addMonths(date, lastSeptemberDistance), 1);
 }
 
+function generateDaysBetween(min: number, max: number) {
+  const result: number[] = [];
+  for (let current = min; current <= max; current = +addDays(current, 1)) {
+    result.push(+startOfDay(current));
+  }
+  return result;
+}
+
 function computeTimeSeriesFromSlots(slots: SlotN[]) {
+  const dates = slots.map(s => +parseISO(s.get("date")));
+  const minDate = _.min(dates) || Number.MAX_SAFE_INTEGER;
+
+  const domainStart = Math.min(minDate, getLastSeptember(Date.now()));
+
   const slotsByDate = _.groupBy(slots, s => +parseISO(s.get("date")));
   const hoursByDate = _.mapValues(slotsByDate, Reporting.countHours);
 
-  Object.keys(hoursByDate).forEach(date => {
-    const dayBefore = +subDays(+date, 1);
-    const dayAfter = +addDays(+date, 1);
+  for (const day of generateDaysBetween(domainStart, Date.now())) {
+    hoursByDate[day] = hoursByDate[day] || 0;
+  }
 
-    hoursByDate[dayBefore] = hoursByDate[dayBefore] || 0;
-    hoursByDate[dayAfter] = hoursByDate[dayAfter] || 0;
-  });
-
-  const xy = _.map(hoursByDate, (hours, date) => ({ x: +date, y: hours }));
+  const xy = _.map(hoursByDate, (hours, date) => ({
+    x: +startOfDay(+date),
+    y: hours
+  }));
 
   return _.sortBy(xy, p => p.x);
 }
@@ -68,9 +81,11 @@ export const MissedClassesOverTimeChart = (
           tickFormatter={unixTime => format(unixTime, "dd/MM/yyyy")}
         />
         <YAxis />
+        <Tooltip labelFormatter={label => format(+label, "dd/MM/yyyy")} />
         <Line
           dataKey="y"
           type="monotone"
+          dot={false}
           stroke="rgb(33, 150, 243)"
           strokeWidth="4px"
         />
