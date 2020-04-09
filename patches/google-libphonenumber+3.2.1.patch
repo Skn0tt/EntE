@@ -1,11 +1,11 @@
 diff --git a/node_modules/google-libphonenumber/dist/libphonenumber.js b/node_modules/google-libphonenumber/dist/libphonenumber.js
-index bd7e07f..7c645e4 100644
+index bd7e07f..22eda86 100644
 --- a/node_modules/google-libphonenumber/dist/libphonenumber.js
 +++ b/node_modules/google-libphonenumber/dist/libphonenumber.js
-@@ -1,5805 +1 @@
--(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.libphonenumber = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
--var COMPILED = !0, goog = goog || {};
--goog.global = this;
+@@ -1,514 +1,7 @@
+ (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.libphonenumber = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+ var COMPILED = !0, goog = goog || {};
+ goog.global = this;
 -goog.isDef = function(a) {
 -  return void 0 !== a;
 -};
@@ -514,20 +514,14 @@ index bd7e07f..7c645e4 100644
 -goog.exportProperty = function(a, b, c) {
 -  a[b] = c;
 -};
--goog.inherits = function(a, b) {
--  function c() {
--  }
--  c.prototype = b.prototype;
--  a.superClass_ = b.prototype;
--  a.prototype = new c;
--  a.prototype.constructor = a;
--  a.base = function(a, c, f) {
--    for (var d = Array(arguments.length - 2), e = 2; e < arguments.length; e++) {
--      d[e - 2] = arguments[e];
--    }
--    return b.prototype[c].apply(a, d);
--  };
--};
++
+ goog.inherits = function(a, b) {
+   function c() {
+   }
+@@ -523,5279 +16,49 @@ goog.inherits = function(a, b) {
+     return b.prototype[c].apply(a, d);
+   };
+ };
 -goog.base = function(a, b, c) {
 -  var d = arguments.callee.caller;
 -  if (goog.STRICT_MODE_COMPATIBLE || goog.DEBUG && !d) {
@@ -554,7 +548,12 @@ index bd7e07f..7c645e4 100644
 -      if (f) {
 -        return g.prototype[b].apply(a, e);
 -      }
--    }
++goog.addSingletonGetter = function(a) {
++  a.instance_ = void 0;
++  a.getInstance = function() {
++    if (a.instance_) {
++      return a.instance_;
+     }
 -  }
 -  if (a[b] === d) {
 -    return a.constructor.prototype[b].apply(a, e);
@@ -591,7 +590,9 @@ index bd7e07f..7c645e4 100644
 -    b[goog.UID_PROPERTY_] = b[goog.UID_PROPERTY_];
 -    this.constructor === d && c && Object.seal instanceof Function && Object.seal(b);
 -    return b;
--  };
++    goog.DEBUG && (goog.instantiatedSingletons_[goog.instantiatedSingletons_.length] = a);
++    return a.instance_ = new a;
+   };
 -  return d;
 -};
 -goog.defineClass.isUnsealable_ = function(a) {
@@ -1187,25 +1188,43 @@ index bd7e07f..7c645e4 100644
 -goog.asserts.assertInstanceof = function(a, b, c, d) {
 -  !goog.asserts.ENABLE_ASSERTS || a instanceof b || goog.asserts.doAssertFailure_("Expected instanceof %s but got %s.", [goog.asserts.getType_(b), goog.asserts.getType_(a)], c, Array.prototype.slice.call(arguments, 3));
 -  return a;
--};
+ };
 -goog.asserts.assertFinite = function(a, b, c) {
 -  !goog.asserts.ENABLE_ASSERTS || "number" == typeof a && isFinite(a) || goog.asserts.doAssertFailure_("Expected %s to be a finite number but it is not.", [a], b, Array.prototype.slice.call(arguments, 2));
 -  return a;
--};
++goog.instantiatedSingletons_ = [];
++
++
++goog.proto2 = {};
++goog.proto2.Message = function() {};
++
++var i18n = {phonenumbers:{}};
++i18n.phonenumbers.NumberFormat = function() {
++  goog.proto2.Message.call(this);
+ };
 -goog.asserts.assertObjectPrototypeIsIntact = function() {
 -  for (var a in Object.prototype) {
 -    goog.asserts.fail(a + " should not be enumerable in Object.prototype.");
 -  }
--};
++goog.inherits(i18n.phonenumbers.NumberFormat, goog.proto2.Message);
++i18n.phonenumbers.PhoneNumberDesc = function() {
++  goog.proto2.Message.call(this);
+ };
 -goog.asserts.getType_ = function(a) {
 -  return a instanceof Function ? a.displayName || a.name || "unknown type name" : a instanceof Object ? a.constructor.displayName || a.constructor.name || Object.prototype.toString.call(a) : null === a ? "null" : typeof a;
--};
++goog.inherits(i18n.phonenumbers.PhoneNumberDesc, goog.proto2.Message);
++i18n.phonenumbers.PhoneMetadata = function() {
++  goog.proto2.Message.call(this);
+ };
 -goog.array = {};
 -goog.NATIVE_ARRAY_PROTOTYPES = goog.TRUSTED_SITE;
 -goog.array.ASSUME_NATIVE_FUNCTIONS = !1;
 -goog.array.peek = function(a) {
 -  return a[a.length - 1];
--};
++goog.inherits(i18n.phonenumbers.PhoneMetadata, goog.proto2.Message);
++i18n.phonenumbers.PhoneMetadataCollection = function() {
++  goog.proto2.Message.call(this);
+ };
 -goog.array.last = goog.array.peek;
 -goog.array.indexOf = goog.NATIVE_ARRAY_PROTOTYPES && (goog.array.ASSUME_NATIVE_FUNCTIONS || Array.prototype.indexOf) ? function(a, b, c) {
 -  goog.asserts.assert(null != a.length);
@@ -1221,7 +1240,10 @@ index bd7e07f..7c645e4 100644
 -    }
 -  }
 -  return -1;
--};
++goog.inherits(i18n.phonenumbers.PhoneMetadataCollection, goog.proto2.Message);
++i18n.phonenumbers.PhoneNumber = function() {
++  goog.proto2.Message.call(this);
+ };
 -goog.array.lastIndexOf = goog.NATIVE_ARRAY_PROTOTYPES && (goog.array.ASSUME_NATIVE_FUNCTIONS || Array.prototype.lastIndexOf) ? function(a, b, c) {
 -  goog.asserts.assert(null != a.length);
 -  return Array.prototype.lastIndexOf.call(a, b, null == c ? a.length - 1 : c);
@@ -1237,7 +1259,11 @@ index bd7e07f..7c645e4 100644
 -    }
 -  }
 -  return -1;
--};
++goog.inherits(i18n.phonenumbers.PhoneNumber, goog.proto2.Message);
++
++i18n.phonenumbers.PhoneNumberUtil = function() {
++  this.regionToMetadataMap = {};
+ };
 -goog.array.forEach = goog.NATIVE_ARRAY_PROTOTYPES && (goog.array.ASSUME_NATIVE_FUNCTIONS || Array.prototype.forEach) ? function(a, b, c) {
 -  goog.asserts.assert(null != a.length);
 -  Array.prototype.forEach.call(a, b, c);
@@ -5587,7 +5613,8 @@ index bd7e07f..7c645e4 100644
 - You may obtain a copy of the License at
 -
 - http://www.apache.org/licenses/LICENSE-2.0
--
++goog.addSingletonGetter(i18n.phonenumbers.PhoneNumberUtil);
+ 
 - Unless required by applicable law or agreed to in writing, software
 - distributed under the License is distributed on an "AS IS" BASIS,
 - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -5801,13 +5828,6 @@ index bd7e07f..7c645e4 100644
 -i18n.phonenumbers.ShortNumberInfo.prototype.matchesPossibleNumberAndNationalNumber_ = function(a, b) {
 -  return 0 < b.possibleLengthArray().length && !goog.array.contains(b.possibleLengthArray(), a.length) ? !1 : i18n.phonenumbers.PhoneNumberUtil.matchesEntirely(b.getNationalNumberPatternOrDefault(), a.toString());
 -};
--Object.defineProperty(exports, "__esModule", {value:!0});
--exports["default"] = i18n.phonenumbers;
--module.exports = exports["default"];
--
--
--},{}]},{},[1])(1)
--});
-\ No newline at end of file
-+export default {};
-\ No newline at end of file
+ Object.defineProperty(exports, "__esModule", {value:!0});
+ exports["default"] = i18n.phonenumbers;
+ module.exports = exports["default"];
