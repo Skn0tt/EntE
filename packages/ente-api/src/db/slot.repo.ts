@@ -94,9 +94,9 @@ export class SlotRepo {
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
-      this._slotQueryWithTeacher().where("student.class = :_class", {
-        _class
-      })
+      this._slotQueryWithTeacher()
+        .where("student.class = :_class", { _class })
+        .orWhere("prefiledFor.class = :_class", { _class })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);
