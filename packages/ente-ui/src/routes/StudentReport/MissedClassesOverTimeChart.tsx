@@ -6,12 +6,43 @@ import {
   YAxis,
   CartesianGrid,
   Line,
-  ResponsiveContainer,
-  Tooltip
+  ResponsiveContainer
 } from "recharts";
 import * as _ from "lodash";
 import { Reporting } from "../../reporting/reporting";
-import { parseISO, format } from "date-fns";
+import {
+  parseISO,
+  format,
+  addDays,
+  subDays,
+  addMonths,
+  getMonth,
+  setDate
+} from "date-fns";
+
+function getLastSeptember(date: number): number {
+  const month = getMonth(date);
+  const lastSeptemberDistance = 9 - (month + 12);
+  console.log(lastSeptemberDistance, +addMonths(date, lastSeptemberDistance));
+  return +setDate(addMonths(date, lastSeptemberDistance), 1);
+}
+
+function computeTimeSeriesFromSlots(slots: SlotN[]) {
+  const slotsByDate = _.groupBy(slots, s => +parseISO(s.get("date")));
+  const hoursByDate = _.mapValues(slotsByDate, Reporting.countHours);
+
+  Object.keys(hoursByDate).forEach(date => {
+    const dayBefore = +subDays(+date, 1);
+    const dayAfter = +addDays(+date, 1);
+
+    hoursByDate[dayBefore] = hoursByDate[dayBefore] || 0;
+    hoursByDate[dayAfter] = hoursByDate[dayAfter] || 0;
+  });
+
+  const xy = _.map(hoursByDate, (hours, date) => ({ x: +date, y: hours }));
+
+  return _.sortBy(xy, p => p.x);
+}
 
 interface MissedClassesOverTimeChartProps {
   slots: SlotN[];
@@ -22,25 +53,18 @@ export const MissedClassesOverTimeChart = (
 ) => {
   const { slots } = props;
 
-  const slotsByDate = _.groupBy(slots, s => s.get("date"));
-
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        data={_.sortBy(
-          _.map(slotsByDate, (slots, date) => ({
-            x: +parseISO(date),
-            y: Reporting.countHours(slots)
-          })),
-          v => v.x
-        )}
-      >
+      <LineChart data={computeTimeSeriesFromSlots(slots)}>
         <CartesianGrid />
         <XAxis
           dataKey="x"
           type="number"
           scale="time"
-          domain={["dataMin", "dataMax"]}
+          domain={[
+            dataMin => Math.min(dataMin, getLastSeptember(Date.now())),
+            Date.now()
+          ]}
           tickFormatter={unixTime => format(unixTime, "dd/MM/yyyy")}
         />
         <YAxis />
