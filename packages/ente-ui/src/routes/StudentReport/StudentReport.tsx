@@ -86,9 +86,9 @@ function filterSlotsByMode(mode: Mode, slots: SlotN[]) {
     case "all":
       return slots;
     case "educational":
-      return slots.filter(s => s.get("forSchool"));
+      return slots.filter(s => !s.get("isPrefiled") && s.get("forSchool"));
     case "not_educational":
-      return slots.filter(s => !s.get("forSchool"));
+      return slots.filter(s => !s.get("isPrefiled") && !s.get("forSchool"));
   }
 }
 
@@ -189,7 +189,7 @@ const StudentReport = (props: StudentReportProps) => {
             <Typography variant="h6" className={classes.heading}>
               {translation.summary}
             </Typography>
-            <SummaryTable slots={slotsToUse} />
+            <SummaryTable slots={slotsToUse} showPrefiled={mode === "all"} />
           </Grid>
 
           <Divider />

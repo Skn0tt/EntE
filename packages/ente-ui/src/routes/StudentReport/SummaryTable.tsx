@@ -37,12 +37,13 @@ const useTranslation = makeTranslationHook({
 
 interface SummaryTableProps {
   slots: SlotN[];
+  showPrefiled: boolean;
 }
 
 export const SummaryTable: React.FC<SummaryTableProps> = props => {
   const translation = useTranslation();
 
-  const { slots } = props;
+  const { slots, showPrefiled } = props;
   const { created, prefiled, signed } = Reporting.partitionSlots(slots);
 
   return (
@@ -54,7 +55,7 @@ export const SummaryTable: React.FC<SummaryTableProps> = props => {
             <TableCell>{translation.total}</TableCell>
             <TableCell>{translation.excused}</TableCell>
             <TableCell>{translation.unexcused}</TableCell>
-            <TableCell>{translation.pendingEntry}</TableCell>
+            {showPrefiled && <TableCell>{translation.pendingEntry}</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,14 +64,18 @@ export const SummaryTable: React.FC<SummaryTableProps> = props => {
             <TableCell>{Reporting.countDays(slots)}</TableCell>
             <TableCell>{Reporting.countDays(signed)}</TableCell>
             <TableCell>{Reporting.countDays(created)}</TableCell>
-            <TableCell>{Reporting.countDays(prefiled)}</TableCell>
+            {showPrefiled && (
+              <TableCell>{Reporting.countDays(prefiled)}</TableCell>
+            )}
           </TableRow>
           <TableRow>
             <TableCell>{translation.absentHours}</TableCell>
             <TableCell>{Reporting.countHours(slots)}</TableCell>
             <TableCell>{Reporting.countHours(signed)}</TableCell>
             <TableCell>{Reporting.countHours(created)}</TableCell>
-            <TableCell>{Reporting.countHours(prefiled)}</TableCell>
+            {showPrefiled && (
+              <TableCell>{Reporting.countHours(prefiled)}</TableCell>
+            )}
           </TableRow>
           <TableRow>
             <Tooltip title={translation.hourRateTooltip} placement="right">
@@ -79,7 +84,7 @@ export const SummaryTable: React.FC<SummaryTableProps> = props => {
             <TableCell>{Reporting.calcHourRate(slots).toFixed(2)}</TableCell>
             <TableCell />
             <TableCell />
-            <TableCell />
+            {showPrefiled && <TableCell />}
           </TableRow>
         </TableBody>
       </Table>
