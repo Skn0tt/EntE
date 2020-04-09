@@ -50,11 +50,15 @@ export class LoginService {
   }
 
   private async getPrefiledSlots(user: UserDto) {
-    if (user.role !== Roles.STUDENT) {
-      return [];
+    switch (user.role) {
+      case Roles.STUDENT:
+        return await this.slotRepo.findPrefiledForStudent(user.id);
+      case Roles.MANAGER:
+      case Roles.TEACHER:
+        return await this.slotRepo.findPrefiledCreatedByTeacher(user.id);
+      default:
+        return [];
     }
-
-    return await this.slotRepo.findPrefiledForStudent(user.id);
   }
 
   private async getOnesEntries(user: UserDto): Promise<EntryDto[]> {
