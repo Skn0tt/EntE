@@ -1,5 +1,11 @@
 import * as React from "react";
-import { getSlotsMap, getStudents, SlotN, getEntries } from "../../redux";
+import {
+  getSlotsMap,
+  getStudents,
+  SlotN,
+  getEntries,
+  EntryN
+} from "../../redux";
 import { Reporting } from "../../reporting/reporting";
 import { useSelector } from "react-redux";
 import {
@@ -26,6 +32,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
 import EntriesTable from "./EntriesTable";
 import { MissedClassesOverTimeChart } from "./MissedClassesOverTimeChart";
+import { entryReasonCategoryIsEducational } from "ente-types";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -89,6 +96,21 @@ function filterSlotsByMode(mode: Mode, slots: SlotN[]) {
       return slots.filter(s => !s.get("isPrefiled") && s.get("forSchool"));
     case "not_educational":
       return slots.filter(s => !s.get("isPrefiled") && !s.get("forSchool"));
+  }
+}
+
+function filterEntriesByMode(mode: Mode, entries: EntryN[]) {
+  switch (mode) {
+    case "all":
+      return entries;
+    case "educational":
+      return entries.filter(e =>
+        entryReasonCategoryIsEducational(e.get("reason").category)
+      );
+    case "not_educational":
+      return entries.filter(
+        e => !entryReasonCategoryIsEducational(e.get("reason").category)
+      );
   }
 }
 
@@ -226,7 +248,7 @@ const StudentReport = (props: StudentReportProps) => {
             <Typography variant="h6" className={classes.heading}>
               {translation.entries}
             </Typography>
-            <EntriesTable entries={entries} />
+            <EntriesTable entries={filterEntriesByMode(mode, entries)} />
           </Grid>
         </Grid>
       </DialogContent>
