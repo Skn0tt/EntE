@@ -312,6 +312,7 @@ const CreateEntry = (props: CreateEntryProps) => {
             <PrefiledSlotsPicker
               range={{ start: beginDate, end: isRange ? endDate! : beginDate }}
               onChange={setPrefiledSlots}
+              studentId={studentId}
             />
           </Grid>
           <Grid item xs={12}>

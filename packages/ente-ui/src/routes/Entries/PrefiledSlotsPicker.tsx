@@ -74,22 +74,29 @@ interface PrefiledSlotsPickerProps {
     start: string;
     end: string;
   };
-
+  studentId?: string;
   onChange: (slotIds: string[]) => void;
 }
 
 export const PrefiledSlotsPicker = (props: PrefiledSlotsPickerProps) => {
-  const { range, onChange } = props;
+  const { range, onChange, studentId } = props;
   const locale = useLocalization();
   const translation = useTranslation();
 
   const prefiledSlots = usePrefiledSlots();
+  const prefiledSlotsByStudent = useMemo(
+    () =>
+      !!studentId
+        ? prefiledSlots.filter(f => f.get("studentId") === studentId)
+        : prefiledSlots,
+    [prefiledSlots, studentId]
+  );
   const prefiledSlotsInRange = useMemo(
     () =>
-      prefiledSlots.filter(slot =>
+      prefiledSlotsByStudent.filter(slot =>
         isBetweenDates(range.start, range.end)(slot.get("date"))
       ),
-    [range.start, range.end, prefiledSlots]
+    [range.start, range.end, prefiledSlotsByStudent]
   );
 
   const slotsById = _.keyBy(prefiledSlots, s => s.get("id"));

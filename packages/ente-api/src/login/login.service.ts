@@ -53,6 +53,10 @@ export class LoginService {
     switch (user.role) {
       case Roles.STUDENT:
         return await this.slotRepo.findPrefiledForStudent(user.id);
+      case Roles.PARENT:
+        return await this.slotRepo.findPrefiledForStudents(
+          ...user.children.map(c => c.id)
+        );
       case Roles.MANAGER:
       case Roles.TEACHER:
         return await this.slotRepo.findPrefiledCreatedByTeacher(user.id);

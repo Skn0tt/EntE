@@ -67,12 +67,16 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  async findPrefiledForStudent(studentId: string): Promise<SlotDto[]> {
+  async findPrefiledForStudents(...studentIds: string[]): Promise<SlotDto[]> {
     const slots = await this._slotQueryWithTeacher()
-      .orWhere("prefiledFor._id = :studentId", { studentId })
+      .orWhere("prefiledFor._id IN (:studentIds)", { studentIds })
       .getMany();
 
     return slots.map(SlotRepo.toDto);
+  }
+
+  async findPrefiledForStudent(studentId: string) {
+    return this.findPrefiledForStudents(studentId);
   }
 
   async findHavingTeacher(

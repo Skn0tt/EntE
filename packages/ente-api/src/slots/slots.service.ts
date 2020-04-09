@@ -173,9 +173,8 @@ export class SlotsService {
     teacherId: string
   ) {
     const users = await this.userRepo.findByIds(teacherId, ...data.studentIds);
-    const [[teacher], students] = _.partition(
-      users,
-      u => u.role === Roles.TEACHER
+    const [[teacher], students] = _.partition(users, u =>
+      TEACHING_ROLES.includes(u.role)
     );
 
     await this.emailService.dispatchSlotPrefiledNotification(
