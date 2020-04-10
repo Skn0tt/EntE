@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Users renders correctly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Users
+    classes={Object {}}
+    getUsers={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 2,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "key": "",
+          "pathname": "",
+          "search": "",
+          "state": Object {},
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+    location={
+      Object {
+        "hash": "",
+        "key": "",
+        "pathname": "",
+        "search": "",
+        "state": Object {},
+      }
+    }
+    match={
+      Object {
+        "isExact": true,
+        "params": Object {},
+        "path": "",
+        "url": "",
+      }
+    }
+    staticContext={Object {}}
+    users={
+      Array [
+        Immutable.UserN {
+          "id": "mystupidid",
+          "username": "simon",
+          "children": undefined,
+          "displayname": "Simon",
+          "email": "email@emai.com",
+          "birthday": "2100-01-01",
+          "role": "student",
+          "isAdmin": false,
+          "childrenIds": Array [],
+          "class": undefined,
+          "language": undefined,
+          "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
+        },
+      ]
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <UNDEFINED
+          onClose={[Function]}
+          show={false}
+        />,
+        <Unknown
+          onClick={[Function]}
+          users={
+            Array [
+              Immutable.UserN {
+                "id": "mystupidid",
+                "username": "simon",
+                "children": undefined,
+                "displayname": "Simon",
+                "email": "email@emai.com",
+                "birthday": "2100-01-01",
+                "role": "student",
+                "isAdmin": false,
+                "childrenIds": Array [],
+                "class": undefined,
+                "language": undefined,
+                "managerNotes": undefined,
+                "subscribedToWeeklySummary": undefined,
+              },
+            ]
+          }
+        />,
+        <WithStyles(Fab)
+          color="primary"
+          onClick={[Function]}
+        >
+          <pure(AddIcon) />
+        </WithStyles(Fab)>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "onClose": [Function],
+          "show": false,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(Component)",
+          "type": [Function],
+          Symbol(Symbol.hasInstance): [Function],
+        },
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "onClick": [Function],
+          "users": Array [
+            Immutable.UserN {
+              "id": "mystupidid",
+              "username": "simon",
+              "children": undefined,
+              "displayname": "Simon",
+              "email": "email@emai.com",
+              "birthday": "2100-01-01",
+              "role": "student",
+              "isAdmin": false,
+              "childrenIds": Array [],
+              "class": undefined,
+              "language": undefined,
+              "managerNotes": undefined,
+              "subscribedToWeeklySummary": undefined,
+            },
+          ],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <pure(AddIcon) />,
+          "className": undefined,
+          "color": "primary",
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <UNDEFINED
+            onClose={[Function]}
+            show={false}
+          />,
+          <Unknown
+            onClick={[Function]}
+            users={
+              Array [
+                Immutable.UserN {
+                  "id": "mystupidid",
+                  "username": "simon",
+                  "children": undefined,
+                  "displayname": "Simon",
+                  "email": "email@emai.com",
+                  "birthday": "2100-01-01",
+                  "role": "student",
+                  "isAdmin": false,
+                  "childrenIds": Array [],
+                  "class": undefined,
+                  "language": undefined,
+                  "managerNotes": undefined,
+                  "subscribedToWeeklySummary": undefined,
+                },
+              ]
+            }
+          />,
+          <WithStyles(Fab)
+            color="primary"
+            onClick={[Function]}
+          >
+            <pure(AddIcon) />
+          </WithStyles(Fab)>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "onClose": [Function],
+            "show": false,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": Object {
+            "$$typeof": Symbol(react.memo),
+            "WrappedComponent": [Function],
+            "compare": null,
+            "displayName": "Connect(Component)",
+            "type": [Function],
+            Symbol(Symbol.hasInstance): [Function],
+          },
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "onClick": [Function],
+            "users": Array [
+              Immutable.UserN {
+                "id": "mystupidid",
+                "username": "simon",
+                "children": undefined,
+                "displayname": "Simon",
+                "email": "email@emai.com",
+                "birthday": "2100-01-01",
+                "role": "student",
+                "isAdmin": false,
+                "childrenIds": Array [],
+                "class": undefined,
+                "language": undefined,
+                "managerNotes": undefined,
+                "subscribedToWeeklySummary": undefined,
+              },
+            ],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <pure(AddIcon) />,
+            "className": undefined,
+            "color": "primary",
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;
