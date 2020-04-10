@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.7",
@@ -17,10 +18,13 @@
     "next": "9.3.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.5"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.8.3",
-    "babel-plugin-parameter-decorator": "^1.0.15"
+    "babel-jest": "^25.3.0",
+    "babel-plugin-parameter-decorator": "^1.0.15",
+    "jest": "^25.3.0"
   }
 }
