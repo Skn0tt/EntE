@@ -1,5 +1,6 @@
 # Parcel
 .cache
+report.html
 
 # Typescript
 dist

@@ -28,6 +28,8 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
 import { parseISO } from "date-fns";
+import { SlotRepo } from "../db/slot.repo";
+import { isBetweenDates } from "ente-types";
 
 export enum FindEntryFailure {
   ForbiddenForUser,
@@ -39,7 +41,9 @@ export enum CreateEntryFailure {
   IllegalDto,
   StudentIdMissing,
   TeacherUnknown,
-  StudentNotFound
+  StudentNotFound,
+  PrefiledSlotNotFound,
+  PrefiledSlotOutOfRange
 }
 
 export enum SetForSchoolEntryFailure {
@@ -78,6 +82,8 @@ export class EntriesService {
     @Inject(EntryRepo) private readonly entryRepo: EntryRepo,
     @Inject(UserRepo) private readonly userRepo: UserRepo,
     @Inject(EmailService) private readonly emailService: EmailService,
+    @Inject(SlotRepo)
+    private readonly slotRepo: SlotRepo,
     @Inject(InstanceConfigService)
     private readonly instanceConfigService: InstanceConfigService,
     @Inject(EntryNotificationQueue)
@@ -204,6 +210,29 @@ export class EntriesService {
     }
 
     entry.studentId = entry.studentId || requestingUser.id;
+
+    if (entry.prefiledSlots.length > 0) {
+      const prefiledSlots = await this.slotRepo.findPrefiledForStudentByIds(
+        entry.studentId!,
+        ...entry.prefiledSlots
+      );
+
+      const allSlotsExist = prefiledSlots.length === entry.prefiledSlots.length;
+      if (!allSlotsExist) {
+        return Fail(CreateEntryFailure.PrefiledSlotNotFound);
+      }
+
+      const isInEntryRange = !!entry.dateEnd
+        ? isBetweenDates(entry.date, entry.dateEnd)
+        : (d: string) => entry.date === d;
+
+      const allSlotsAreInRange = prefiledSlots.every(slot =>
+        isInEntryRange(slot.date)
+      );
+      if (!allSlotsAreInRange) {
+        return Fail(CreateEntryFailure.PrefiledSlotOutOfRange);
+      }
+    }
 
     const teachersExist = await this.userRepo.hasUsersWithRole(
       TEACHING_ROLES,

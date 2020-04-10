@@ -84,7 +84,7 @@ interface ColumnConfig<S, T> {
     display?: boolean;
     filter?: boolean;
     sort?: boolean;
-    customBodyRender?: (v: T) => string | JSX.Element;
+    customBodyRender?: (v: T, meta: any) => string | JSX.Element;
   };
 }
 
@@ -162,11 +162,12 @@ export function Table<T>(props: TableProps<T>) {
 
   return (
     <MUIDataTable
-      key={"mui-datatable-" + ";" + (!!customRowRender ? "a" : "b")}
+      key={`mui-datatable-;${!!customRowRender ? "a" : "b"}`}
       columns={[idColumn, ...columnsWithPersistedFilter]}
       data={data}
       title={title as any}
       options={{
+        searchText,
         rowsPerPage: 50,
         rowsPerPageOptions: [20, 50, 100],
         selectableRows: "none",
@@ -174,7 +175,6 @@ export function Table<T>(props: TableProps<T>) {
         onRowClick: (d: any[]) => onClick(d[0]),
         textLabels: translation.textLabels,
         viewColumns: false,
-        searchText: searchText,
         onSearchChange: (newSearchText: string) => {
           updateSearchText(newSearchText);
         },

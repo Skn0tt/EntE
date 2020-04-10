@@ -150,6 +150,7 @@ export const SlotN = ImmutableRecord<SlotDtoNormalised>(
     signed: false,
     student: (null as unknown) as UserDto,
     teacher: null,
+    isPrefiled: false,
     studentId: "",
     teacherId: null,
     to: 0,

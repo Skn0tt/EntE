@@ -43,9 +43,14 @@ const SlotsByTeacherChart: React.FC<SlotsByTeacherChartProps> = props => {
   const { dataWithTeachers } = props;
 
   return (
-    <FlexibleXYPlot height={250} yType="linear" xType="ordinal">
+    <FlexibleXYPlot
+      margin={{ bottom: 100 }}
+      height={400}
+      yType="linear"
+      xType="ordinal"
+    >
       <YAxis />
-      <XAxis />
+      <XAxis tickLabelAngle={-45} />
       <VerticalBarSeries
         color="#2196f3"
         barWidth={0.5}

@@ -1,45 +1,19 @@
 import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { useHistory } from "react-router";
 import withMobileDialog, {
   InjectedProps
 } from "@material-ui/core/withMobileDialog";
 import StudentReport from "./StudentReport/StudentReport";
 import { Dialog } from "@material-ui/core";
-import { connect, MapStateToPropsParam } from "react-redux";
-import { AppState, getStudentsOfClass } from "../redux";
+import { MapStateToPropsParam, useSelector } from "react-redux";
+import { getStudentsOfClass, getOneSelvesClass } from "../redux";
 
-interface ClassAllStudentsReportRouteParams {
-  class: string;
-}
+const ClassAllStudentsReportRoute = (props: InjectedProps) => {
+  const ownClass = useSelector(getOneSelvesClass);
+  const studentsOfClass = useSelector(getStudentsOfClass(ownClass.orSome("")));
+  const { fullScreen } = props;
 
-type ClassAllStudentsReportRouteOwnProps = RouteComponentProps<
-  ClassAllStudentsReportRouteParams
-> &
-  InjectedProps;
-
-interface ClassAllStudentsReportRouteStateProps {
-  studentIdsOfClass: string[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  ClassAllStudentsReportRouteStateProps,
-  ClassAllStudentsReportRouteOwnProps,
-  AppState
-> = (state, props) => {
-  const { class: _class } = props.match.params;
-
-  return {
-    studentIdsOfClass: getStudentsOfClass(_class)(state).map(s => s.get("id"))
-  };
-};
-
-type ClassAllStudentsReportRouteConnectedProps = ClassAllStudentsReportRouteOwnProps &
-  ClassAllStudentsReportRouteStateProps;
-
-const ClassAllStudentsReportRoute: React.FC<
-  ClassAllStudentsReportRouteConnectedProps
-> = props => {
-  const { studentIdsOfClass } = props;
-  const { fullScreen, history } = props;
+  const history = useHistory();
 
   const handleOnClose = React.useCallback(
     () => {
@@ -56,11 +30,12 @@ const ClassAllStudentsReportRoute: React.FC<
       scroll="body"
       maxWidth="md"
     >
-      <StudentReport studentIds={studentIdsOfClass} onClose={handleOnClose} />
+      <StudentReport
+        studentIds={studentsOfClass.map(s => s.get("id"))}
+        onClose={handleOnClose}
+      />
     </Dialog>
   );
 };
 
-export default withMobileDialog()(
-  withRouter(connect(mapStateToProps)(ClassAllStudentsReportRoute))
-);
+export default withMobileDialog()(ClassAllStudentsReportRoute);

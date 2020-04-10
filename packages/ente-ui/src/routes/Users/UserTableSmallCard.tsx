@@ -45,7 +45,7 @@ export const UserTableSmallCard: React.FC<UserTableSmallCardProps> = props => {
 
         <Typography variant="h6">{user.get("displayname")}</Typography>
 
-        <Typography component="p">{user.get("email")}</Typography>
+        <Typography>{user.get("email")}</Typography>
       </CardContent>
     </Card>
   );

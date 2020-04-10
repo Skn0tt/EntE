@@ -1,25 +1,13 @@
 import * as React from "react";
 import {
-  UserN,
-  EntryN,
+  getSlotsMap,
+  getStudents,
   SlotN,
-  AppState,
-  getUser,
   getEntries,
-  getSlots,
-  getRole,
-  getEntriesRequest,
-  getUserRequest,
-  isLoading,
-  getSlotsMap
+  EntryN
 } from "../../redux";
-import { Either } from "monet";
 import { Reporting } from "../../reporting/reporting";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
+import { useSelector } from "react-redux";
 import {
   DialogContent,
   DialogActions,
@@ -42,11 +30,9 @@ import { HoursByWeekdayAndTimeChart } from "./HoursByWeekdayAndTimeChart";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import MailIcon from "@material-ui/icons/Mail";
 import { makeStyles } from "@material-ui/styles";
-import { Roles, entryReasonCategoryIsEducational } from "ente-types";
-import { NotFound } from "../NotFound";
-import LoadingIndicator from "../../elements/LoadingIndicator";
 import EntriesTable from "./EntriesTable";
-import { Map } from "immutable";
+import { MissedClassesOverTimeChart } from "./MissedClassesOverTimeChart";
+import { entryReasonCategoryIsEducational } from "ente-types";
 
 const useStyles = makeStyles({
   mailButton: {
@@ -70,6 +56,7 @@ const useTranslation = makeTranslationHook({
     absenceReport: "Absence Report",
     absentHoursByTime: "Absent hours by time",
     absentHoursByTeacher: "Absent hours by teacher",
+    missedClassesOverTime: "Absent hours over time",
     summary: "Summary",
     entries: "Entries",
     modes: {
@@ -83,6 +70,7 @@ const useTranslation = makeTranslationHook({
     absenceReport: "Fehlstundenbericht",
     absentHoursByTime: "Fehlstunden nach Schulstunde",
     absentHoursByTeacher: "Fehlstunden nach Lehrer",
+    missedClassesOverTime: "Fehlstunden über Zeit",
     summary: "Zusammenfassung",
     entries: "Einträge",
     modes: {
@@ -93,153 +81,72 @@ const useTranslation = makeTranslationHook({
   }
 });
 
-interface StudentReportOwnProps {
+interface StudentReportProps {
   studentIds: string[];
   onClose: () => void;
 }
 
-type StudentReportProps = StudentReportOwnProps;
-
-interface StudentReportStateProps {
-  students: Either<string, UserN>[];
-  entries: EntryN[];
-  slots: SlotN[];
-  slotsMap: Map<string, SlotN>;
-  role: Roles;
-  isLoading: boolean;
-}
-const mapStateToProps: MapStateToPropsParam<
-  StudentReportStateProps,
-  StudentReportProps,
-  AppState
-> = (state, props) => {
-  const { studentIds } = props;
-
-  const students = studentIds.map(id => {
-    const maybeUser = getUser(id)(state);
-    return maybeUser.toEither(id);
-  });
-  const entries = getEntries(state).filter(f =>
-    studentIds.includes(f.get("studentId"))
-  );
-  const slotsMap = getSlotsMap(state);
-  const slots = getSlots(state).filter(f =>
-    studentIds.includes(f.get("studentId"))
-  );
-
-  const role = getRole(state).some();
-
-  const loading = isLoading(state);
-
-  return {
-    role,
-    students,
-    entries,
-    slots,
-    slotsMap,
-    isLoading: loading
-  };
-};
-
-interface StudentReportDispatchProps {
-  fetchEntries: () => void;
-  fetchStudent: (id: string) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  StudentReportDispatchProps,
-  StudentReportOwnProps
-> = dispatch => ({
-  fetchEntries: () => dispatch(getEntriesRequest()),
-  fetchStudent: id => dispatch(getUserRequest(id))
-});
-
 type Mode = "all" | "educational" | "not_educational";
 
-type StudentReportPropsConnected = StudentReportProps &
-  StudentReportStateProps &
-  StudentReportDispatchProps;
+function filterSlotsByMode(mode: Mode, slots: SlotN[]) {
+  switch (mode) {
+    case "all":
+      return slots;
+    case "educational":
+      return slots.filter(s => !s.get("isPrefiled") && s.get("forSchool"));
+    case "not_educational":
+      return slots.filter(s => !s.get("isPrefiled") && !s.get("forSchool"));
+  }
+}
 
-const StudentReport: React.FC<StudentReportPropsConnected> = props => {
-  const {
-    entries,
-    students,
-    slots,
-    onClose,
-    role,
-    fetchEntries,
-    studentIds,
-    fetchStudent,
-    isLoading,
-    slotsMap
-  } = props;
+function filterEntriesByMode(mode: Mode, entries: EntryN[]) {
+  switch (mode) {
+    case "all":
+      return entries;
+    case "educational":
+      return entries.filter(e =>
+        entryReasonCategoryIsEducational(e.get("reason").category)
+      );
+    case "not_educational":
+      return entries.filter(
+        e => !entryReasonCategoryIsEducational(e.get("reason").category)
+      );
+  }
+}
 
+function useSlotsByStudents(studentIds: string[]) {
+  const allSlots = useSelector(getSlotsMap)
+    .valueSeq()
+    .toArray();
+  const slots = allSlots.filter(s => studentIds.includes(s.get("studentId")));
+  return slots;
+}
+
+function useEntriesByStudents(studentIds: string[]) {
+  const allSlots = useSelector(getEntries);
+  const slots = allSlots.filter(s => studentIds.includes(s.get("studentId")));
+  return slots;
+}
+
+function useStudents(studentIds: string[]) {
+  const allStudents = useSelector(getStudents);
+  const students = allStudents.filter(s => studentIds.includes(s.get("id")));
+  return students;
+}
+
+const StudentReport = (props: StudentReportProps) => {
   const classes = useStyles(props);
   const translation = useTranslation();
   const printButton = usePrintButton();
 
-  const [mode, setMode] = React.useState<Mode>("not_educational");
+  const { onClose, studentIds } = props;
 
-  const handleModeChanged = React.useCallback(
-    (_, value: string) => {
-      setMode(value as Mode);
-    },
-    [setMode]
-  );
+  const students = useStudents(studentIds);
+  const slots = useSlotsByStudents(studentIds);
+  const entries = useEntriesByStudents(studentIds);
 
-  React.useEffect(() => {
-    if (entries.length === 0) {
-      fetchEntries();
-    }
-  }, []);
-
-  React.useEffect(() => {
-    students.forEach(id => {
-      id.forEachLeft(fetchStudent);
-    });
-  }, []);
-
-  const entriesEducational = React.useMemo(
-    () =>
-      entries.filter(e =>
-        entryReasonCategoryIsEducational(e.get("reason").category)
-      ),
-    [entries]
-  );
-
-  const entriesNotForSchool = React.useMemo(
-    () =>
-      entries.filter(
-        e => !entryReasonCategoryIsEducational(e.get("reason").category)
-      ),
-    [entries]
-  );
-
-  const slotsForSchool = React.useMemo(
-    () => slots.filter(e => e.get("forSchool")),
-    [slots]
-  );
-
-  const slotsNotForSchool = React.useMemo(
-    () => slots.filter(e => !e.get("forSchool")),
-    [slots]
-  );
-
-  const entriesToUse = {
-    all: entries,
-    educational: entriesEducational,
-    not_educational: entriesNotForSchool
-  }[mode];
-
-  const slotsToUse = {
-    all: slots,
-    educational: slotsForSchool,
-    not_educational: slotsNotForSchool
-  }[mode];
-
-  const summary = React.useMemo(
-    () => Reporting.summarize(entriesToUse, slotsMap),
-    [entriesToUse]
-  );
+  const [mode, setMode] = React.useState<Mode>("all");
+  const slotsToUse = filterSlotsByMode(mode, slots);
 
   const absentHoursByTeacher = React.useMemo(
     () => Reporting.absentHoursByTeacher(slotsToUse),
@@ -251,26 +158,18 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
     [slotsToUse]
   );
 
-  const allStudentsAvailable = students.every(student => student.isRight());
-
-  if (!allStudentsAvailable) {
-    return isLoading ? <LoadingIndicator /> : <NotFound />;
-  }
-
-  const studentsR = students.map(s => s.right());
-
-  const [firstStudent] = studentsR;
+  const [firstStudent] = students;
   const displayname =
-    studentsR.length === 1
+    students.length === 1
       ? firstStudent.get("displayname")
       : firstStudent.get("class");
 
   return (
-    <div>
+    <>
       <DialogTitle>
         <Typography variant="overline">{translation.absenceReport}</Typography>
         <Typography variant="h5">{displayname}</Typography>
-        {role === Roles.MANAGER && studentsR.length === 1 && (
+        {students.length === 1 && (
           <IconButton
             href={`mailto:${firstStudent.get("email")}`}
             className={classes.mailButton}
@@ -284,7 +183,16 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
         <Grid container direction="column" spacing={24}>
           <Grid item>
             <FormControl>
-              <RadioGroup row value={mode} onChange={handleModeChanged}>
+              <RadioGroup
+                row
+                value={mode}
+                onChange={(evt, selected) => setMode(selected as Mode)}
+              >
+                <FormControlLabel
+                  value="all"
+                  control={<Radio />}
+                  label={translation.modes.all}
+                />
                 <FormControlLabel
                   value="not_educational"
                   control={<Radio />}
@@ -295,11 +203,6 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
                   control={<Radio />}
                   label={translation.modes.educational}
                 />
-                <FormControlLabel
-                  value="all"
-                  control={<Radio />}
-                  label={translation.modes.all}
-                />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -308,7 +211,16 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
             <Typography variant="h6" className={classes.heading}>
               {translation.summary}
             </Typography>
-            <SummaryTable data={summary} />
+            <SummaryTable slots={slotsToUse} showPrefiled={mode === "all"} />
+          </Grid>
+
+          <Divider />
+
+          <Grid item>
+            <Typography variant="h6" className={classes.heading}>
+              {translation.missedClassesOverTime}
+            </Typography>
+            <MissedClassesOverTimeChart slots={slotsToUse} />
           </Grid>
 
           <Divider />
@@ -336,7 +248,7 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
             <Typography variant="h6" className={classes.heading}>
               {translation.entries}
             </Typography>
-            <EntriesTable entries={entries} />
+            <EntriesTable entries={filterEntriesByMode(mode, entries)} />
           </Grid>
         </Grid>
       </DialogContent>
@@ -345,13 +257,8 @@ const StudentReport: React.FC<StudentReportPropsConnected> = props => {
           {translation.close}
         </Button>
       </DialogActions>
-    </div>
+    </>
   );
 };
 
-export default withPrintButton(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(StudentReport)
-) as React.FC<StudentReportOwnProps>;
+export default withPrintButton(StudentReport);

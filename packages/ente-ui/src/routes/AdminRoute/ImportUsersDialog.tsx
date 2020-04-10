@@ -21,11 +21,8 @@ import withMobileDialog, {
 import { CreateUserDto } from "ente-types";
 import { Maybe, None } from "monet";
 import * as React from "react";
-import {
-  connect,
-  MapStateToPropsParam,
-  MapDispatchToPropsParam
-} from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { AppState, UserN, importUsersRequest, getStudents } from "../../redux";
 import * as _ from "lodash";
 import { UserTable } from "../Users/UserTable";
@@ -122,64 +119,20 @@ const toUserN = (u: CreateUserDto): UserN => {
 const importMethods: ImportMethod[] = ["csv", "schild"];
 type ImportMethod = "csv" | "schild";
 
-/**
- * # Component Types
- */
-interface ImportUsersDialogOwnProps {
-  onClose(): void;
-  show: boolean;
-}
+type ImportUsersDialogProps = InjectedProps;
 
-interface ImportUsersDialogStateProps {
-  existingStudentUsernames: string[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  ImportUsersDialogStateProps,
-  ImportUsersDialogOwnProps,
-  AppState
-> = state => ({
-  existingStudentUsernames: getStudents(state).map(s => s.get("username"))
-});
+const ImportUsersDialog = (props: ImportUsersDialogProps) => {
+  const { fullScreen } = props;
 
-interface ImportUsersDialogDispatchProps {
-  importUsers: (
-    dtos: CreateUserDto[],
-    deleteEntries: boolean,
-    deleteUsers: boolean,
-    deleteStudentsAndParents: boolean
-  ) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  ImportUsersDialogDispatchProps,
-  ImportUsersDialogOwnProps
-> = dispatch => ({
-  importUsers: (dtos, deleteEntries, deleteUsers, deleteStudentsAndParents) =>
-    dispatch(
-      importUsersRequest({
-        dtos,
-        deleteEntries,
-        deleteUsers,
-        deleteStudentsAndParents
-      })
-    )
-});
+  const dispatch = useDispatch();
 
-type ImportUsersDialogProps = ImportUsersDialogOwnProps &
-  ImportUsersDialogStateProps &
-  ImportUsersDialogDispatchProps &
-  InjectedProps;
+  const existingStudentUsernames = useSelector<AppState, string[]>(state =>
+    getStudents(state).map(s => s.get("username"))
+  );
 
-const ImportUsersDialog: React.FunctionComponent<
-  ImportUsersDialogProps
-> = props => {
-  const {
-    fullScreen,
-    show,
-    onClose,
-    importUsers,
-    existingStudentUsernames
-  } = props;
   const translation = useTranslation();
+
+  const { goBack } = useHistory();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);
@@ -193,17 +146,24 @@ const ImportUsersDialog: React.FunctionComponent<
   const handleSubmit = React.useCallback(
     () => {
       users.forEach(dtos =>
-        importUsers(dtos, deleteEntries, deleteUsers, deleteStudentsAndParents)
+        dispatch(
+          importUsersRequest({
+            dtos,
+            deleteEntries,
+            deleteUsers,
+            deleteStudentsAndParents
+          })
+        )
       );
-      onClose();
+      goBack();
     },
     [
+      dispatch,
       users,
-      importUsers,
       deleteEntries,
       deleteUsers,
       deleteStudentsAndParents,
-      onClose
+      goBack
     ]
   );
 
@@ -215,7 +175,7 @@ const ImportUsersDialog: React.FunctionComponent<
     : existingStudentUsernames;
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+    <Dialog fullScreen={fullScreen} onClose={goBack} open>
       <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
@@ -282,7 +242,7 @@ const ImportUsersDialog: React.FunctionComponent<
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary" className="close">
+        <Button onClick={goBack} color="secondary" className="close">
           {translation.close}
         </Button>
         <Button
@@ -298,12 +258,4 @@ const ImportUsersDialog: React.FunctionComponent<
   );
 };
 
-export default connect<
-  ImportUsersDialogStateProps,
-  ImportUsersDialogDispatchProps,
-  ImportUsersDialogOwnProps,
-  AppState
->(
-  mapStateToProps,
-  mapDispatchToProps
-)(withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog));
+export default withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog);

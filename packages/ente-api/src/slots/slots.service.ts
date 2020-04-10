@@ -5,9 +5,11 @@ import {
   Roles,
   SlotDto,
   daysBeforeNow,
-  TEACHING_ROLES,
   BlackedSlotDto,
-  UserDto
+  UserDto,
+  CreatePrefiledSlotsDto,
+  TEACHING_ROLES,
+  CreatePrefiledSlotDtoValidator
 } from "ente-types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
@@ -15,10 +17,22 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { UsersService } from "../users/users.service";
+import * as _ from "lodash";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
   ForbiddenForUser
+}
+
+export enum CreatePrefiledSlotsFailure {
+  ForbiddenForUser,
+  InvalidDto
+}
+
+export enum DeletePrefiledSlotsFailure {
+  ForbiddenForUser,
+  NotFound,
+  SlotIsNotPrefiled
 }
 
 @Injectable()
@@ -126,8 +140,79 @@ export class SlotsService {
     return r.map(r => SlotsService.blackenDto(r, requestingUser));
   }
 
+  public async createPrefiled(
+    slots: CreatePrefiledSlotsDto,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<CreatePrefiledSlotsFailure, BlackedSlotDto[]>> {
+    if (!TEACHING_ROLES.includes(requestingUser.role)) {
+      return Fail(CreatePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    const isValidDto = CreatePrefiledSlotDtoValidator.validate(slots);
+    if (!isValidDto) {
+      return Fail(CreatePrefiledSlotsFailure.InvalidDto);
+    }
+
+    const studentIdsAreStudents = await this.userRepo.hasUsersWithRole(
+      [Roles.STUDENT],
+      ...slots.studentIds
+    );
+    if (!studentIdsAreStudents) {
+      return Fail(CreatePrefiledSlotsFailure.InvalidDto);
+    }
+
+    const result = await this.slotRepo.createPrefiled(slots, requestingUser.id);
+
+    await this.dispatchPrefiledCreationNotification(slots, requestingUser.id);
+
+    return Success(result.map(s => SlotsService.blackenDto(s, requestingUser)));
+  }
+
+  async dispatchPrefiledCreationNotification(
+    data: CreatePrefiledSlotsDto,
+    teacherId: string
+  ) {
+    const users = await this.userRepo.findByIds(teacherId, ...data.studentIds);
+    const [[teacher], students] = _.partition(users, u =>
+      TEACHING_ROLES.includes(u.role)
+    );
+
+    await this.emailService.dispatchSlotPrefiledNotification(
+      data,
+      students,
+      teacher
+    );
+  }
+
+  public async deletePrefiled(
+    id: string,
+    requestingUser: RequestContextUser
+  ): Promise<Validation<DeletePrefiledSlotsFailure, true>> {
+    if (!TEACHING_ROLES.includes(requestingUser.role)) {
+      return Fail(DeletePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    const slot = await this.slotRepo.findById(id);
+    if (slot.isNone()) {
+      return Fail(DeletePrefiledSlotsFailure.NotFound);
+    }
+
+    const { isPrefiled, teacher } = slot.some();
+    if (!isPrefiled) {
+      return Fail(DeletePrefiledSlotsFailure.SlotIsNotPrefiled);
+    }
+
+    const teacherId = !!teacher && teacher.id;
+    if (teacherId !== requestingUser.id) {
+      return Fail(DeletePrefiledSlotsFailure.ForbiddenForUser);
+    }
+
+    await this.slotRepo.remove(id);
+    return Success<DeletePrefiledSlotsFailure, true>(true);
+  }
+
   async dispatchWeeklySummary() {
-    this.logger.log("Starting do dispatch the weekly summary.");
+    this.logger.log("Starting to dispatch the weekly summary.");
     const teachingUsers = await this.userRepo.findWeeklySummaryRecipients();
     await Promise.all(
       teachingUsers.map(async teacher => {

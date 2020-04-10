@@ -10,7 +10,6 @@ export async function invokeInvitationRoutine(userId: string, token: string) {
     await post(`${baseUrl}/api/users/${userId}/invokeInvitationRoutine`, token);
     return Success<Error, void>(undefined);
   } catch (error) {
-    console.log(error);
     await ErrorReporting.report(error);
     return Fail<Error, void>(error);
   }

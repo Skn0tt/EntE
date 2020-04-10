@@ -23,6 +23,11 @@ export class CreateEntryDto {
   @Type(() => CreateSlotDto)
   slots: CreateSlotDto[];
 
+  @IsUUID(undefined, {
+    each: true
+  })
+  prefiledSlots: string[];
+
   @IsDefined()
   @ValidateNested()
   @Type(() => EntryReasonDto)

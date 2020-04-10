@@ -17,7 +17,7 @@ export const usePrintButton = () => {
 export const withPrintButton = <P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<P> => props => {
-  const ref = React.useRef<JSX.Element | null>(null);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   const printButton = React.useMemo(
     () => {
@@ -37,7 +37,9 @@ export const withPrintButton = <P extends object>(
 
   return (
     <WithPrintContext.Provider value={printButton}>
-      <Component ref={ref} {...props} />
+      <div ref={ref}>
+        <Component {...props} />
+      </div>
     </WithPrintContext.Provider>
   );
 };

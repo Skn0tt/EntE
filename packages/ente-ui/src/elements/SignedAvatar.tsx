@@ -12,6 +12,7 @@ import { WithStyles, StyleRules } from "@material-ui/core/styles/withStyles";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Close from "@material-ui/icons/Close";
 import Done from "@material-ui/icons/Done";
+import HourglassEmpty from "@material-ui/icons/HourglassEmpty";
 import { green, pink } from "@material-ui/core/colors";
 
 const styles = (): StyleRules => ({
@@ -26,12 +27,22 @@ const styles = (): StyleRules => ({
 interface SignedAvatarOwnProps {
   onClick?(): void;
   signed: boolean;
+  prefiled?: boolean;
 }
 
 type SignedAvatarProps = SignedAvatarOwnProps & WithStyles;
 
 const SignedAvatar: React.SFC<SignedAvatarProps> = props => {
-  const { onClick, signed, classes } = props;
+  const { onClick, signed, classes, prefiled } = props;
+
+  if (prefiled) {
+    return (
+      <Avatar onClick={onClick}>
+        <HourglassEmpty />
+      </Avatar>
+    );
+  }
+
   return (
     <Avatar
       className={signed ? classes.avatarSigned : classes.avatarUnsigned}
