@@ -19,7 +19,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
-import { WithTranslation, withTranslation } from "../helpers/with-translation";
+import { withTranslation, WithTranslation } from "../helpers/with-translation";
 
 export const translation = {
   en: {
@@ -53,6 +53,11 @@ interface ChildrenInputOwnProps {
   children: UserN[];
   students: UserN[];
   onChange: (children: UserN[]) => void;
+  text?: {
+    title: string;
+    addChildren: string;
+    child: string;
+  };
 }
 
 type ChildrenInputProps = ChildrenInputOwnProps &
@@ -98,16 +103,18 @@ export class ChildrenInput extends React.PureComponent<
     ]);
 
   handleDelete = (index: number) =>
-    this.props.onChange(without(this.props.children, index));
+    this.props.onChange(this.props.children.filter((c, i) => i !== index));
 
   render() {
-    const { students, children, translation } = this.props;
+    const { students, children, text, translation } = this.props;
     const { selected } = this.state;
 
     return (
       <Grid container direction="column">
         <Grid item>
-          <Typography variant="h6">{translation.title}</Typography>
+          <Typography variant="h6">
+            {!!text ? text.title : translation.title}
+          </Typography>
         </Grid>
         {/* List Children */}
         <Grid item>
@@ -137,8 +144,8 @@ export class ChildrenInput extends React.PureComponent<
                   .toLowerCase()
                   .includes(searchTerm.toLowerCase())
               }
-              helperText={translation.addChildren}
-              label={translation.child}
+              helperText={!!text ? text.addChildren : translation.addChildren}
+              label={!!text ? text.child : translation.child}
             />
           </Grid>
           <Grid item xs={1}>

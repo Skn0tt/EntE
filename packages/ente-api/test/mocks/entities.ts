@@ -61,6 +61,7 @@ const slot: SlotDto = {
   date: "2018-12-26",
   from: 3,
   to: 4,
+  isPrefiled: false,
   teacher: benBongo,
   signed: false,
   student: tomTallis,
@@ -92,6 +93,7 @@ const createEntry: CreateEntryDto = {
     category: EntryReasonCategory.ILLNESS,
     payload: {}
   },
+  prefiledSlots: [],
   slots: [
     {
       from: 1,

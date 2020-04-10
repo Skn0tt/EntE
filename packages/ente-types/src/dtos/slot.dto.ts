@@ -12,6 +12,7 @@ import { Type } from "class-transformer";
 
 export interface BlackedSlotDto {
   id: string;
+  isPrefiled: boolean;
   teacher: BlackedUserDto | null;
   student: BlackedUserDto;
   date: string;
@@ -24,6 +25,9 @@ export interface BlackedSlotDto {
 
 export class SlotDto implements BlackedSlotDto {
   @IsUUID("4") id: string;
+
+  @IsBoolean()
+  isPrefiled: boolean = false;
 
   @IsOptional()
   @Type(() => UserDto)

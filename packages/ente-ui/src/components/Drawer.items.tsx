@@ -107,7 +107,7 @@ const Class: React.SFC<{ plural?: boolean }> = ({ plural }) => {
   return (
     <Route
       render={({ history }) => (
-        <ListItem button onClick={() => history.push("/classes")}>
+        <ListItem button onClick={() => history.push("/class")}>
           <ListItemIcon>
             <School />
           </ListItemIcon>

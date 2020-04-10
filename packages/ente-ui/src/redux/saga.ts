@@ -108,7 +108,8 @@ import {
   CreateEntryDto,
   CreateUserDto,
   PatchUserDto,
-  Languages
+  Languages,
+  Roles
 } from "ente-types";
 import { Maybe } from "monet";
 import { getConfig } from "./config";
@@ -294,8 +295,12 @@ function* importUsersSaga(action: Action<ImportUsersRequestPayload>) {
 
     responses.push(createdUsers);
 
-    const allEntries: APIResponse = yield call(api.getEntries, token.some());
-    responses.push(allEntries);
+    const role: Maybe<Roles> = yield select(selectors.getRole);
+
+    if (role.contains(Roles.MANAGER)) {
+      const allEntries: APIResponse = yield call(api.getEntries, token.some());
+      responses.push(allEntries);
+    }
 
     const allUsers: APIResponse = yield call(api.getUsers, token.some());
     responses.push(allUsers);

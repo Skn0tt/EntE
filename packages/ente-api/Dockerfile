@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 ADD packages/ente-api/entrypoint.sh ./
 
 ADD package.json yarn.lock tsconfig.json lerna.json ./
+ADD patches ./patches
 ADD packages/ente-api/package.json ./packages/ente-api/package.json
 ADD packages/ente-api/tsconfig.json ./packages/ente-api/tsconfig.json
 ADD packages/ente-types/package.json ./packages/ente-types/package.json

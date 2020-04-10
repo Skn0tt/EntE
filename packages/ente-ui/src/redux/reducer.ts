@@ -353,9 +353,7 @@ const reducer = handleActions<AppState | undefined, any>(
       GET_ENTRIES_ERROR,
       GET_ENTRIES_SUCCESS,
       (state, action: Action<APIResponse>) => {
-        const stateWithoutOldData = state
-          .set("entriesMap", Map())
-          .set("slotsMap", Map());
+        const stateWithoutOldData = state.set("entriesMap", Map());
 
         return addResponse(stateWithoutOldData, action.payload!);
       }
@@ -615,10 +613,9 @@ const reducer = handleActions<AppState | undefined, any>(
         return state;
       }
 
-      return state!.setIn(
-        ["usersMap", oneSelvesId, "language"],
-        action.payload
-      );
+      return state!
+        .setIn(["usersMap", oneSelvesId, "language"], action.payload)
+        .setIn(["oneSelf", "language"], action.payload);
     }
   },
   initialState

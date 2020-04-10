@@ -8,6 +8,8 @@ import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
 import { EntriesService } from "../entries/entries.service";
 import { UsersService } from "../users/users.service";
 import { ReviewedRecordsService } from "../reviewedRecords/reviewedRecords.service";
+import { SlotsService } from "../slots/slots.service";
+import { SlotRepo } from "../db/slot.repo";
 
 @Injectable()
 export class LoginService {
@@ -18,6 +20,8 @@ export class LoginService {
     private readonly entryRepo: EntryRepo,
     @Inject(UserRepo)
     private readonly userRepo: UserRepo,
+    @Inject(SlotRepo)
+    private readonly slotRepo: SlotRepo,
     @Inject(ReviewedRecordsService)
     private readonly reviewedRecordsService: ReviewedRecordsService
   ) {}
@@ -33,6 +37,9 @@ export class LoginService {
       onesEntries: (await this.getOnesEntries(oneSelf)).map(e =>
         EntriesService.blackenDto(e, user)
       ),
+      prefiledSlots: (await this.getPrefiledSlots(oneSelf)).map(s =>
+        SlotsService.blackenDto(s, user)
+      ),
       neededUsers: (await this.getNeededUsers(oneSelf)).map(e =>
         UsersService.blackenDto(e, user)
       ),
@@ -40,6 +47,22 @@ export class LoginService {
         ...(await this.reviewedRecordsService.getReviewedRecords(oneSelf.id))
       ]
     };
+  }
+
+  private async getPrefiledSlots(user: UserDto) {
+    switch (user.role) {
+      case Roles.STUDENT:
+        return await this.slotRepo.findPrefiledForStudent(user.id);
+      case Roles.PARENT:
+        return await this.slotRepo.findPrefiledForStudents(
+          ...user.children.map(c => c.id)
+        );
+      case Roles.MANAGER:
+      case Roles.TEACHER:
+        return await this.slotRepo.findPrefiledCreatedByTeacher(user.id);
+      default:
+        return [];
+    }
   }
 
   private async getOnesEntries(user: UserDto): Promise<EntryDto[]> {

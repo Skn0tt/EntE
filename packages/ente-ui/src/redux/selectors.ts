@@ -150,9 +150,7 @@ export const getOwnUserId: Selector<Maybe<string>> = state => {
 };
 
 export const getOneSelf: Selector<Maybe<UserN>> = state => {
-  return Maybe.fromNull(state.get("oneSelf"))
-    .map(s => s.get("id"))
-    .flatMap(id => Maybe.fromFalsy(state.get("usersMap").get(id)));
+  return Maybe.fromNull(state.get("oneSelf"));
 };
 
 export const getOneSelvesClass: Selector<Maybe<string>> = state => {

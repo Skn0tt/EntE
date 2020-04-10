@@ -3,7 +3,7 @@ import {
   WeeklySummaryRowData,
   WeeklySummary
 } from "../templates/WeeklySummary";
-import { UserDto, SlotDto, EntryDto } from "ente-types";
+import { UserDto, SlotDto, EntryDto, CreatePrefiledSlotsDto } from "ente-types";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";
@@ -15,6 +15,7 @@ import { ManagerSignedInformation } from "../templates/ManagerSignedInformation"
 import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformation";
 import { EntryStillUnsignedNotification } from "../templates/EntryStillUnsignedNotification";
 import { EmailQueue } from "./email.queue";
+import { SlotPrefiledNotification } from "../templates/SlotPrefiledNotification";
 
 @Injectable()
 export class EmailService {
@@ -27,7 +28,7 @@ export class EmailService {
   async dispatchSignRequest(link: string, recipients: UserDto[]) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await SignRequest(link, recipient.language);
+        const { html, subject } = SignRequest(link, recipient.language);
         await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
@@ -48,10 +49,7 @@ export class EmailService {
   async dispatchSignedInformation(link: string, recipients: UserDto[]) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await SignedInformation(
-          link,
-          recipient.language
-        );
+        const { html, subject } = SignedInformation(link, recipient.language);
         await this.emailQueue.sendMail({
           recipients: [recipient.email],
           body: {
@@ -72,7 +70,7 @@ export class EmailService {
   async dispatchManagerSignedInformation(link: string, recipients: UserDto[]) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await ManagerSignedInformation(
+        const { html, subject } = ManagerSignedInformation(
           link,
           recipient.language
         );
@@ -99,7 +97,7 @@ export class EmailService {
   ) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await ManagerUnsignedInformation(
+        const { html, subject } = ManagerUnsignedInformation(
           link,
           recipient.language
         );
@@ -125,7 +123,7 @@ export class EmailService {
   ) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await EntryDeletedNotification(
+        const { html, subject } = EntryDeletedNotification(
           entry,
           recipient,
           recipient.language
@@ -147,13 +145,44 @@ export class EmailService {
     );
   }
 
+  async dispatchSlotPrefiledNotification(
+    data: CreatePrefiledSlotsDto,
+    students: UserDto[],
+    teacher: UserDto
+  ) {
+    await Promise.all(
+      students.map(async recipient => {
+        const { html, subject } = SlotPrefiledNotification(
+          teacher.displayname,
+          data.date,
+          data.hour_from,
+          data.hour_to,
+          recipient.language
+        );
+        await this.emailQueue.sendMail({
+          recipients: [recipient.email],
+          body: {
+            html
+          },
+          subject
+        });
+        this.logger.log(
+          `Successfully enqueued SlotPrefiledNotification to ${JSON.stringify([
+            recipient.username,
+            recipient.email
+          ])}`
+        );
+      })
+    );
+  }
+
   async dispatchEntryStillUnsignedNotification(
     link: string,
     recipients: UserDto[]
   ) {
     await Promise.all(
       recipients.map(async recipient => {
-        const { html, subject } = await EntryStillUnsignedNotification(
+        const { html, subject } = EntryStillUnsignedNotification(
           link,
           recipient.language
         );
@@ -174,7 +203,7 @@ export class EmailService {
   }
 
   async dispatchPasswordResetLink(link: string, user: UserDto) {
-    const { subject, html } = await PasswordResetLink(
+    const { subject, html } = PasswordResetLink(
       link,
       user.username,
       user.language
@@ -194,11 +223,7 @@ export class EmailService {
   }
 
   async dispatchInvitationLink(link: string, user: UserDto) {
-    const { subject, html } = await InvitationLink(
-      link,
-      user.role,
-      user.language
-    );
+    const { subject, html } = InvitationLink(link, user.role, user.language);
     await this.emailQueue.sendMail({
       recipients: [user.email],
       body: {
@@ -212,7 +237,7 @@ export class EmailService {
   }
 
   async dispatchPasswordResetSuccess(user: UserDto) {
-    const { subject, html } = await PasswordResetSuccess(
+    const { subject, html } = PasswordResetSuccess(
       user.username,
       user.language
     );
@@ -239,7 +264,7 @@ export class EmailService {
       signed: s.signed,
       educational: s.forSchool
     }));
-    const { html, subject } = await WeeklySummary(data, teacher.language);
+    const { html, subject } = WeeklySummary(data, teacher.language);
     await this.emailQueue.sendMail({
       recipients: [teacher.email],
       body: {

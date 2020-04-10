@@ -20,6 +20,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -43,6 +44,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -67,6 +69,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -88,6 +91,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -103,6 +107,38 @@ describe("CreateEntryDtoValidator", () => {
     });
   });
 
+  describe("when passing neither slots nor prefiledSlots", () => {
+    it("returns false", () => {
+      expect(
+        validator.validate({
+          date: dateToIsoString(now),
+          reason: {
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
+            payload: { description: "test" }
+          },
+          prefiledSlots: [],
+          slots: []
+        })
+      ).to.be.false;
+    });
+  });
+
+  describe("when passing only prefiledSlots", () => {
+    it("returns true", () => {
+      expect(
+        validator.validate({
+          date: dateToIsoString(now),
+          reason: {
+            category: EntryReasonCategory.OTHER_EDUCATIONAL,
+            payload: { description: "test" }
+          },
+          prefiledSlots: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
+          slots: []
+        })
+      ).to.be.true;
+    });
+  });
+
   describe("when passing valid entries", () => {
     it("returns true", () => {
       expect(
@@ -112,6 +148,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -131,6 +168,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 3,
@@ -151,6 +189,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
+          prefiledSlots: [],
           slots: [
             {
               date: dateToIsoString(now),
@@ -172,6 +211,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "my_random_reason" }
           },
+          prefiledSlots: [],
           slots: [
             {
               date: dateToIsoString(now),
@@ -192,6 +232,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.OTHER_EDUCATIONAL,
             payload: { description: "test" }
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 1,
@@ -213,6 +254,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 2,
@@ -232,6 +274,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 5,
@@ -252,6 +295,7 @@ describe("CreateEntryDtoValidator", () => {
             category: EntryReasonCategory.ILLNESS,
             payload: {}
           },
+          prefiledSlots: [],
           slots: [
             {
               from: 5,
@@ -268,6 +312,7 @@ describe("CreateEntryDtoValidator", () => {
         validator.validate({
           date: dateToIsoString(now),
           reason: undefined as any,
+          prefiledSlots: [],
           slots: [
             {
               from: 3,

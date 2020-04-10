@@ -3,29 +3,26 @@ import { Maybe } from "monet";
 import { Roles } from "ente-types";
 import {
   UserN,
-  EntryN,
-  SlotN,
   AppState,
-  getRole,
-  getUser,
   getUsers,
-  getEntries,
   getSlotsMap,
-  getOneSelvesClass,
-  isAdmin
+  getOneSelvesClass
 } from "../redux";
-import { MapStateToPropsParam, connect } from "react-redux";
+import { MapStateToPropsParam, connect, useSelector } from "react-redux";
 import Table from "../components/Table";
 import * as _ from "lodash";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { Map } from "immutable";
-import { Reporting, EntrySummary } from "../reporting/reporting";
-import { RouteComponentProps, Route } from "react-router";
-import { DropdownInput } from "../elements/DropdownInput";
+import {
+  RouteComponentProps,
+  Route,
+  useRouteMatch,
+  useHistory
+} from "react-router";
 import { Typography, Grid, Button, Theme } from "@material-ui/core";
 import { Center } from "../components/Center";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import { makeStyles } from "@material-ui/styles";
+import { Reporting } from "../reporting/reporting";
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -65,14 +62,8 @@ const extractId = (u: UserN) => u.get("id");
 interface ClassReportRouteOwnProps {}
 
 interface ClassReportRouteStateProps {
-  ownClass: Maybe<string>;
-  ownRole: Roles;
   existingClasses: string[];
-  getUser: (id: string) => Maybe<UserN>;
   getStudentsOfClass: (_class: string) => UserN[];
-  getEntriesOfStudent: (id: string) => EntryN[];
-  slotsMap: Map<string, SlotN>;
-  isAdmin: boolean;
 }
 const mapStateToProps: MapStateToPropsParam<
   ClassReportRouteStateProps,
@@ -80,20 +71,13 @@ const mapStateToProps: MapStateToPropsParam<
   AppState
 > = state => {
   return {
-    ownRole: getRole(state).some(),
-    ownClass: getOneSelvesClass(state),
     existingClasses: _.uniq(getUsers(state).map(u => u.get("class")!))
       .filter(v => !!v)
       .sort(),
-    getUser: id => getUser(id)(state),
     getStudentsOfClass: c =>
       getUsers(state)
         .filter(u => u.get("class") === c)
-        .filter(u => u.get("role") === Roles.STUDENT),
-    getEntriesOfStudent: studentId =>
-      getEntries(state).filter(e => e.get("studentId") === studentId),
-    slotsMap: getSlotsMap(state),
-    isAdmin: isAdmin(state)
+        .filter(u => u.get("role") === Roles.STUDENT)
   };
 };
 
@@ -108,18 +92,19 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
   const translation = useTranslation();
   const classes = useStyles();
 
-  const {
-    slotsMap,
-    getStudentsOfClass,
-    ownClass,
-    ownRole,
-    existingClasses,
-    getEntriesOfStudent,
-    history,
-    match,
-    isAdmin
-  } = props;
-  const _class = Maybe.fromFalsy(match.params.class)
+  const { getStudentsOfClass, existingClasses } = props;
+
+  const { params } = useRouteMatch<ClassReportRouteParams>();
+  const history = useHistory();
+
+  const slotsMap = useSelector(getSlotsMap);
+  const ownClass = useSelector(getOneSelvesClass);
+
+  const slotsByStudent = _.groupBy(slotsMap.valueSeq().toArray(), s =>
+    s.get("studentId")
+  );
+
+  const _class = Maybe.fromFalsy(params.class)
     .filter(v => existingClasses.includes(v))
     .orElse(ownClass)
     .orElse(Maybe.fromUndefined(existingClasses[0]));
@@ -128,13 +113,6 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
     getStudentsOfClass,
     _class.orUndefined()
   ]);
-
-  const handleChangeClass = React.useCallback(
-    (_class: string) => {
-      history.replace(`/classes/${_class}`);
-    },
-    [history]
-  );
 
   const handleRowClicked = React.useCallback(
     (userId: string) => {
@@ -150,57 +128,22 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
       </Center>
     ),
     users => {
-      const results: Record<string, EntrySummary> = _.fromPairs(
-        users.map(user => {
-          const userId = user.get("id");
-          const entries = getEntriesOfStudent(userId);
-          const summary = Reporting.summarize(entries, slotsMap);
-          return [userId, summary];
-        })
-      );
-
       return (
         <Table<UserN>
           title={
-            <Grid
-              container
-              justify="flex-start"
-              alignItems="center"
-              spacing={24}
-            >
-              {isAdmin && (
-                <Grid item xs={8}>
-                  <DropdownInput
-                    value={_class.some()}
-                    options={existingClasses}
-                    getOptionLabel={String}
-                    onChange={handleChangeClass}
-                    fullWidth
-                    variant="outlined"
-                    margin="dense"
-                    label={translation.year}
-                  />
-                </Grid>
+            <Route
+              render={({ history }) => (
+                <Button
+                  onClick={() => history.push("/class/report")}
+                  variant="text"
+                  color="inherit"
+                  className={classes.button}
+                >
+                  <AssessmentIcon />
+                  {translation.openReport}
+                </Button>
               )}
-
-              <Route
-                render={({ history }) => (
-                  <Grid item xs={4}>
-                    <Button
-                      onClick={() =>
-                        history.push(`/classes/${_class.orUndefined()}/report`)
-                      }
-                      variant="text"
-                      color="inherit"
-                      className={classes.button}
-                    >
-                      <AssessmentIcon />
-                      {translation.openReport}
-                    </Button>
-                  </Grid>
-                )}
-              />
-            </Grid>
+            />
           }
           columns={[
             {
@@ -213,8 +156,8 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
             {
               name: translation.headers.absentDays,
               extract: u => {
-                const record = results[u.get("id")];
-                return record.absentDays.total;
+                const slots = slotsByStudent[u.get("id")] || [];
+                return Reporting.countDays(slots);
               },
               options: {
                 filter: false
@@ -223,8 +166,8 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
             {
               name: translation.headers.absentHours,
               extract: u => {
-                const record = results[u.get("id")];
-                return record.absentSlots.total;
+                const slots = slotsByStudent[u.get("id")] || [];
+                return Reporting.countHours(slots);
               },
               options: {
                 filter: false
@@ -233,8 +176,9 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
             {
               name: translation.headers.unexcusedAbsentHours,
               extract: u => {
-                const record = results[u.get("id")];
-                return record.absentSlots.unexcused;
+                const slots = slotsByStudent[u.get("id")] || [];
+                const { created } = Reporting.partitionSlots(slots);
+                return Reporting.countHours(created);
               },
               options: {
                 filter: false
@@ -243,8 +187,8 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
             {
               name: translation.headers.hourRate,
               extract: u => {
-                const record = results[u.get("id")];
-                return record.slotsPerDay;
+                const slots = slotsByStudent[u.get("id")] || [];
+                return Reporting.calcHourRate(slots);
               },
               options: {
                 filter: false

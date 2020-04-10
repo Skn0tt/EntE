@@ -126,12 +126,10 @@ export const EntriesTableSmallCard: React.FC<
           </span>
         )}
 
-        <Typography variant="h6" component="h2">
-          {dateText}
-        </Typography>
+        <Typography variant="h6">{dateText}</Typography>
 
         {role !== Roles.STUDENT && (
-          <Typography variant="body1" component="p">
+          <Typography variant="body1">
             {student.map(s => s.get("displayname")).orSome("")}
           </Typography>
         )}

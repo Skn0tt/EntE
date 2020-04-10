@@ -1,10 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, Brackets } from "typeorm";
+import { Repository, Brackets, In } from "typeorm";
 import { Some, None, Maybe } from "monet";
 import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
-import { SlotDto, entryReasonCategoryIsEducational } from "ente-types";
+import {
+  SlotDto,
+  entryReasonCategoryIsEducational,
+  CreatePrefiledSlotsDto
+} from "ente-types";
 import {
   PaginationInformation,
   withPagination
@@ -21,6 +25,7 @@ export class SlotRepo {
       .createQueryBuilder("slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
       .leftJoinAndSelect("slot.entry", "entry")
+      .leftJoinAndSelect("slot.prefiledFor", "prefiledFor")
       .leftJoinAndSelect("entry.student", "student");
 
   async findAll(paginationInfo: PaginationInformation): Promise<SlotDto[]> {
@@ -37,20 +42,41 @@ export class SlotRepo {
     return !!slot ? Some(SlotRepo.toDto(slot)) : None();
   }
 
+  async findPrefiledForStudentByIds(
+    studentId: string,
+    ...ids: string[]
+  ): Promise<SlotDto[]> {
+    const slot = await this._slotQueryWithTeacher()
+      .whereInIds(ids)
+      .andWhere("prefiledFor._id = :studentId", { studentId })
+      .getMany();
+
+    return slot.map(SlotRepo.toDto);
+  }
+
   async findByStudents(
     ids: string[],
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
-      this.repo
-        .createQueryBuilder("slot")
-        .leftJoinAndSelect("slot.entry", "entry")
-        .leftJoinAndSelect("entry.student", "student")
-        .leftJoinAndSelect("slot.teacher", "teacher")
+      this._slotQueryWithTeacher()
         .where("student._id IN (:ids)", { ids })
+        .orWhere("prefiledFor._id IN (:ids)", { ids })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);
+  }
+
+  async findPrefiledForStudents(...studentIds: string[]): Promise<SlotDto[]> {
+    const slots = await this._slotQueryWithTeacher()
+      .orWhere("prefiledFor._id IN (:studentIds)", { studentIds })
+      .getMany();
+
+    return slots.map(SlotRepo.toDto);
+  }
+
+  async findPrefiledForStudent(studentId: string) {
+    return this.findPrefiledForStudents(studentId);
   }
 
   async findHavingTeacher(
@@ -68,9 +94,9 @@ export class SlotRepo {
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
-      this._slotQueryWithTeacher().where("student.class = :_class", {
-        _class
-      })
+      this._slotQueryWithTeacher()
+        .where("student.class = :_class", { _class })
+        .orWhere("prefiledFor.class = :_class", { _class })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);
@@ -107,22 +133,82 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
+  public async prefiledSlotsExistForStudent(
+    studentId: string,
+    slotIds: string[]
+  ): Promise<boolean> {
+    const existingSlots = await this.repo.count({
+      where: {
+        prefiledFor: { _id: studentId },
+        _id: In(slotIds)
+      }
+    });
+
+    return existingSlots === slotIds.length;
+  }
+
+  public async findPrefiledCreatedByTeacher(id: string) {
+    const slots = await this._slotQueryWithTeacher()
+      .where("teacher._id = :id", { id })
+      .getMany();
+
+    return slots.map(SlotRepo.toDto);
+  }
+
+  public async createPrefiled(data: CreatePrefiledSlotsDto, teacherId: string) {
+    const { studentIds, date, hour_from, hour_to } = data;
+    const slots = this.repo.create(
+      studentIds.map(studentId => ({
+        date,
+        hour_from,
+        hour_to,
+        prefiledFor: { _id: studentId },
+        teacher: { _id: teacherId }
+      }))
+    );
+
+    const createdSlots = await this.repo.save(slots);
+
+    return createdSlots.map(SlotRepo.toDto);
+  }
+
+  public async remove(id: string) {
+    await this.repo.delete(id);
+  }
+
   static toDto(slot: Slot): SlotDto {
     const result = new SlotDto();
 
     result.id = slot._id;
-    result.date = !!slot.entry.dateEnd ? slot.date! : slot.entry.date;
+
+    if (slot.prefiledFor) {
+      result.isPrefiled = true;
+      result.student = UserRepo.toDto(slot.prefiledFor!);
+      result.date = slot.date!;
+      result.signed = false;
+    }
+
+    if (slot.entry) {
+      result.isPrefiled = false;
+
+      result.date = !!slot.entry.dateEnd ? slot.date! : slot.entry.date;
+
+      result.student = UserRepo.toDto(slot.entry.student);
+
+      result.forSchool = entryReasonCategoryIsEducational(
+        slot.entry.reason.category
+      );
+
+      result.isEducational = result.forSchool;
+
+      result.signed =
+        !!slot.entry.managerSignatureDate && !!slot.entry.parentSignatureDate;
+    }
+
     result.from = slot.hour_from;
     result.to = slot.hour_to;
     result.teacher =
       slot.teacher === null ? null : UserRepo.toDto(slot.teacher);
-    result.student = UserRepo.toDto(slot.entry.student);
-    result.forSchool = entryReasonCategoryIsEducational(
-      slot.entry.reason.category
-    );
-    result.isEducational = result.forSchool;
-    result.signed =
-      !!slot.entry.managerSignatureDate && !!slot.entry.parentSignatureDate;
 
     return result;
   }

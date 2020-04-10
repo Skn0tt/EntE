@@ -15,3 +15,5 @@ export * from "./patch-user-dto.validator";
 export * from "./entry-reason-dto.validator";
 export * from "./instance-config.dto";
 export * from "./login.dto";
+export * from "./create-prefiled-slots.dto";
+export * from "./create-prefiled-slots-dto.validator";

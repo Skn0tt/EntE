@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Feature: Teachers can now prefile slots for their students ([#348](https://gitlab.com/Skn0tt/EntE/issues/348))
+- Modals were moved to their own routes, so that navigating backwards works again ([#328](https://gitlab.com/Skn0tt/EntE/issues/328))
 - Fix: regression where admins could not delete users ([#362](https://gitlab.com/Skn0tt/EntE/issues/362))
 
 ## [v0.35.0] - 2020-04-04

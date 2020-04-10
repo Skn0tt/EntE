@@ -101,6 +101,9 @@ export class User {
   @OneToMany(type => Slot, slot => slot.teacher)
   slots?: Slot[];
 
+  @OneToMany(type => Slot, slot => slot.prefiledFor)
+  prefiledSlots?: Slot[];
+
   @OneToMany(type => RecordReviewal, reviewedRecord => reviewedRecord.user)
   reviewedRecords?: RecordReviewal[];
 }

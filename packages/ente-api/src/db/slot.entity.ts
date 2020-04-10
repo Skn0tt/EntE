@@ -38,11 +38,17 @@ export class Slot {
     nullable: true,
     onDelete: "SET NULL"
   })
-  teacher: User | null;
+  teacher: User | null = null;
 
   @ManyToOne(type => Entry, entry => entry.slots, {
-    nullable: false,
+    nullable: true,
     onDelete: "CASCADE"
   })
-  entry: Entry;
+  entry: Entry | null = null;
+
+  @ManyToOne(type => User, user => user.prefiledSlots, {
+    nullable: true,
+    onDelete: "CASCADE"
+  })
+  prefiledFor: User | null = null;
 }

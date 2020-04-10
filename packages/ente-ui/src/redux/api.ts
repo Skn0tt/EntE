@@ -175,13 +175,15 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
     oneSelf,
     neededUsers,
     onesEntries,
-    reviewedRecords = []
+    reviewedRecords = [],
+    prefiledSlots
   } = response.data;
   const authState = getAuthState(token);
 
   const apiResponse = mergeAPIResponses(
     normalizeUsers(...neededUsers, oneSelf),
-    normalizeEntries(...onesEntries)
+    normalizeEntries(...onesEntries),
+    normalizeSlots(...prefiledSlots)
   );
 
   return {
