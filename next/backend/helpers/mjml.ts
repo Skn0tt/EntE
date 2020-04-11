@@ -1,4 +1,4 @@
-import * as _mjml2html from "mjml";
+import _mjml2html from "mjml";
 
 interface MjmlOptions {
   keepComments: boolean;

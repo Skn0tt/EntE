@@ -1,8 +1,7 @@
 import * as Handlebars from "handlebars";
-import moment = require("moment");
 import { WeeklySummaryOptions, WeeklySummaryRowData } from "./WeeklySummary";
 import * as enLocale from "date-fns/locale/en-GB";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, getISOWeek } from "date-fns";
 
 const tableRow = (data: WeeklySummaryRowData) => `
   <tr>
@@ -56,7 +55,7 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = Handlebars.co
 </mjml>
 `);
 
-const getTitle = () => `Weekly Summary cw${moment().week()}`;
+const getTitle = () => `Weekly Summary cw${getISOWeek(Date.now())}`;
 
 export const WeeklySummaryEN = {
   getTitle,

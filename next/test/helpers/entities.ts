@@ -6,7 +6,7 @@ import {
   SlotDto,
   Languages,
   EntryReasonCategory,
-} from "ente-types";
+} from "../../types";
 import { Some, Maybe } from "monet";
 import { RequestContextUser } from "backend/helpers/request-context";
 
