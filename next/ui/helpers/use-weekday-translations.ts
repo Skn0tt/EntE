@@ -10,8 +10,8 @@ export const useWeekdayTranslations = makeTranslationHook({
       [Weekday.THURSDAY]: "Thursday",
       [Weekday.FRIDAY]: "Friday",
       [Weekday.SATURDAY]: "Saturday",
-      [Weekday.SUNDAY]: "Sunday"
-    } as Record<string, string>,
+      [Weekday.SUNDAY]: "Sunday",
+    } as Record<Weekday, string>,
     twoCharacter: {
       [Weekday.MONDAY]: "Mo",
       [Weekday.TUESDAY]: "Tu",
@@ -19,8 +19,8 @@ export const useWeekdayTranslations = makeTranslationHook({
       [Weekday.THURSDAY]: "Thu",
       [Weekday.FRIDAY]: "Fri",
       [Weekday.SATURDAY]: "Sat",
-      [Weekday.SUNDAY]: "Sun"
-    } as Record<string, string>
+      [Weekday.SUNDAY]: "Sun",
+    } as Record<Weekday, string>,
   },
   de: {
     full: {
@@ -30,8 +30,8 @@ export const useWeekdayTranslations = makeTranslationHook({
       [Weekday.THURSDAY]: "Donnerstag",
       [Weekday.FRIDAY]: "Freitag",
       [Weekday.SATURDAY]: "Samstag",
-      [Weekday.SUNDAY]: "Sonntag"
-    } as Record<string, string>,
+      [Weekday.SUNDAY]: "Sonntag",
+    } as Record<Weekday, string>,
     twoCharacter: {
       [Weekday.MONDAY]: "Mo",
       [Weekday.TUESDAY]: "Di",
@@ -39,7 +39,7 @@ export const useWeekdayTranslations = makeTranslationHook({
       [Weekday.THURSDAY]: "Do",
       [Weekday.FRIDAY]: "Fr",
       [Weekday.SATURDAY]: "Sa",
-      [Weekday.SUNDAY]: "So"
-    } as Record<string, string>
-  }
+      [Weekday.SUNDAY]: "So",
+    } as Record<Weekday, string>,
+  },
 });

@@ -12,7 +12,7 @@ import DoneIcon from "@material-ui/icons/Done";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SignedAvatar from "../../elements/SignedAvatar";
-import * as _ from "lodash";
+import _ from "lodash";
 import { Table } from "../../components/Table";
 import {
   getSlotsRequest,
@@ -23,14 +23,14 @@ import {
   addReviewedRecordRequest,
   getUsers,
   getOwnUserId,
-  getToken
+  getToken,
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { Maybe, None } from "monet";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
-import * as enLocale from "date-fns/locale/en-GB";
-import * as deLocale from "date-fns/locale/de";
+import enLocale from "date-fns/locale/en-GB";
+import deLocale from "date-fns/locale/de";
 import { getFilterScopeValidator } from "../../filter-scope";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
 import { Grid, Theme, IconButton, Fab } from "@material-ui/core";
@@ -51,7 +51,7 @@ function usePrefileDeleter() {
   return React.useCallback(
     async (prefiledSlotId: string) => {
       await Axios.delete(`${apiBaseUrl}/slots/${prefiledSlotId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       dispatch(getSlotsRequest());
@@ -67,17 +67,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: theme.spacing.unit * 2,
     bottom: theme.spacing.unit * 2,
     left: "auto",
-    position: "fixed"
+    position: "fixed",
   },
   deleteContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   deleteIcon: {
-    marginLeft: theme.spacing.unit
-  }
+    marginLeft: theme.spacing.unit,
+  },
 }));
 
 const useTranslation = makeTranslationHook({
@@ -90,7 +90,7 @@ const useTranslation = makeTranslationHook({
       forSchool: "For School",
       status: "Status",
       teacher: "Teacher",
-      reviewed: "Review"
+      reviewed: "Review",
     },
     deleted: "Deleted",
     yes: "Yes",
@@ -98,7 +98,7 @@ const useTranslation = makeTranslationHook({
     prefiled: "Prefiled",
     created: "Created",
     signed: "Signed",
-    locale: enLocale
+    locale: enLocale,
   },
   de: {
     headers: {
@@ -109,7 +109,7 @@ const useTranslation = makeTranslationHook({
       forSchool: "Schulisch",
       status: "Status",
       teacher: "Lehrer",
-      reviewed: "Abhaken"
+      reviewed: "Abhaken",
     },
     deleted: "Gelöscht",
     yes: "Ja",
@@ -117,21 +117,21 @@ const useTranslation = makeTranslationHook({
     prefiled: "Vorgemerkt",
     created: "Erstellt",
     signed: "Unterschrieben",
-    locale: deLocale
-  }
+    locale: deLocale,
+  },
 });
 
 const Slots = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
 
   const lang = useTranslation();
   const slots = useSelector(getSlots);
-  const slotsById = _.keyBy(slots, s => s.get("id"));
+  const slotsById = _.keyBy(slots, (s) => s.get("id"));
   const filterScope = useSelector(getFilterScope);
   const role = useSelector(getRole).some();
   const ownUserId = useSelector(getOwnUserId).some();
   const usersArr = useSelector(getUsers);
-  const users = _.keyBy(usersArr, u => u.get("id"));
+  const users = _.keyBy(usersArr, (u) => u.get("id"));
 
   const dispatch = useDispatch();
 
@@ -142,37 +142,31 @@ const Slots = () => {
     None()
   );
 
-  const slotsInScope = React.useMemo(
-    () => {
-      const validator = getFilterScopeValidator(filterScope);
-      return slots.filter(s =>
-        validator({
-          id: s.get("id"),
-          date: parseISO(s.get("date")),
-          isInReviewedRecords: s.get("isInReviewedRecords")
-        })
-      );
-    },
-    [slots, filterScope]
-  );
+  const slotsInScope = React.useMemo(() => {
+    const validator = getFilterScopeValidator(filterScope);
+    return slots.filter((s) =>
+      validator({
+        id: s.get("id"),
+        date: parseISO(s.get("date")),
+        isInReviewedRecords: s.get("isInReviewedRecords"),
+      })
+    );
+  }, [slots, filterScope]);
 
   const slotsInCourse = React.useMemo(
     () =>
       courseFilter.cata(
         () => slotsInScope,
-        course => slotsInScope.filter(isSlotDuringCourse(course))
+        (course) => slotsInScope.filter(isSlotDuringCourse(course))
       ),
     [courseFilter, slotsInScope]
   );
 
-  React.useEffect(
-    () => {
-      dispatch(getSlotsRequest());
-    },
-    [dispatch]
-  );
+  React.useEffect(() => {
+    dispatch(getSlotsRequest());
+  }, [dispatch]);
 
-  const teacherIds = slots.map(s => s.get("teacherId"));
+  const teacherIds = slots.map((s) => s.get("teacherId"));
   const moreThanOneTeacherInSlots = _.uniq(teacherIds).length > 1;
 
   const addToReviewed = React.useCallback(
@@ -191,7 +185,7 @@ const Slots = () => {
     <>
       <DeleteSlotDialog
         open={!!prefiledSlotToDelete}
-        onClose={confirmed => {
+        onClose={(confirmed) => {
           if (confirmed && prefiledSlotToDelete) {
             deletePrefiledSlot(prefiledSlotToDelete);
           }
@@ -203,42 +197,42 @@ const Slots = () => {
         columns={[
           {
             name: lang.headers.name,
-            extract: slot => users[slot.get("studentId")].get("displayname"),
+            extract: (slot) => users[slot.get("studentId")].get("displayname"),
             options: {
               filter: false,
-              display: role !== Roles.STUDENT
-            }
+              display: role !== Roles.STUDENT,
+            },
           },
           {
             name: lang.headers.date,
-            extract: slot => slot.get("date"),
+            extract: (slot) => slot.get("date"),
             options: {
               filter: false,
               customBodyRender: (isoTime: string) =>
-                format(parseISO(isoTime), "PP", { locale: lang.locale })
-            }
+                format(parseISO(isoTime), "PP", { locale: lang.locale }),
+            },
           },
           {
             name: lang.headers.from,
-            extract: slot => slot.get("from"),
+            extract: (slot) => slot.get("from"),
             options: {
-              filter: false
-            }
+              filter: false,
+            },
           },
           {
             name: lang.headers.to,
-            extract: slot => slot.get("to"),
+            extract: (slot) => slot.get("to"),
             options: {
-              filter: false
-            }
+              filter: false,
+            },
           },
           {
             name: lang.headers.forSchool,
-            extract: slot => (slot.get("forSchool") ? lang.yes : lang.no)
+            extract: (slot) => (slot.get("forSchool") ? lang.yes : lang.no),
           },
           {
             name: lang.headers.status,
-            extract: slot => {
+            extract: (slot) => {
               const isPrefiled = slot.get("isPrefiled");
               const isSigned = slot.get("signed");
 
@@ -278,20 +272,20 @@ const Slots = () => {
                 }
 
                 return avatar;
-              }
-            }
+              },
+            },
           },
           {
             name: lang.headers.teacher,
-            extract: slot =>
+            extract: (slot) =>
               Maybe.fromNull(slot.get("teacherId")).cata(
                 () => lang.deleted,
-                id => users[id].get("displayname")
+                (id) => users[id].get("displayname")
               ),
             options: {
               filter: moreThanOneTeacherInSlots,
-              display: moreThanOneTeacherInSlots
-            }
+              display: moreThanOneTeacherInSlots,
+            },
           },
           {
             name: lang.headers.reviewed,
@@ -307,9 +301,9 @@ const Slots = () => {
                     <DoneIcon />
                   </IconButton>
                 );
-              }
-            }
-          }
+              },
+            },
+          },
         ]}
         title={
           <Grid container direction="row" spacing={16} alignItems="center">
@@ -323,11 +317,11 @@ const Slots = () => {
           </Grid>
         }
         items={slotsInCourse}
-        extractId={user => user.get("id")}
+        extractId={(user) => user.get("id")}
         key={`SlotsTable_${filterScope === "not_reviewed"}`}
         customRowRender={
           isNarrow
-            ? slot => (
+            ? (slot) => (
                 <SlotsTableSmallCard
                   slot={slot}
                   role={role}

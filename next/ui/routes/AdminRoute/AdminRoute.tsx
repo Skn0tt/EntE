@@ -31,14 +31,14 @@ const useTranslation = makeTranslationHook({
       expiry: {
         title: "Signature expiry",
         description:
-          "Duration after which an entry is not signable anymore (in days). Set to '0' to disable expiration."
+          "Duration after which an entry is not signable anymore (in days). Set to '0' to disable expiration.",
       },
       notification: {
         title: "Signature notification delay",
         description:
-          "Duration after which parents receive a notification to sign an entry (in days). Set to '0' to disable."
-      }
-    }
+          "Duration after which parents receive a notification to sign an entry (in days). Set to '0' to disable.",
+      },
+    },
   },
   de: {
     downloadExcel: "Excel Export downloaden",
@@ -55,28 +55,28 @@ const useTranslation = makeTranslationHook({
       expiry: {
         title: "Auslaufzeit Unterschrift",
         description:
-          "Frist, nach der ein Eintrag nicht mehr unterschrieben werden kann (in Tagen). Auf '0' setzen, um zu deaktivieren."
+          "Frist, nach der ein Eintrag nicht mehr unterschrieben werden kann (in Tagen). Auf '0' setzen, um zu deaktivieren.",
       },
       notification: {
         title: "Erinnerungs-Email Verzögerung",
         description:
-          "Zeitdauer, nach der die Eltern eine Erinnerungs-Email erhalten, falls ein Eintrag noch nicht unterschrieben wurde (in Tagen). Auf '0' setzen, um zu deaktivieren."
-      }
-    }
-  }
+          "Zeitdauer, nach der die Eltern eine Erinnerungs-Email erhalten, falls ein Eintrag noch nicht unterschrieben wurde (in Tagen). Auf '0' setzen, um zu deaktivieren.",
+      },
+    },
+  },
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
   iconLeft: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   container: {
-    margin: theme.spacing.unit
-  }
+    margin: theme.spacing.unit,
+  },
 }));
 
-const AdminRoute = React.memo(props => {
-  const classes = useStyles();
+const AdminRoute = React.memo((props) => {
+  const classes = useStyles({});
   const lang = useTranslation();
 
   const dispatch = useDispatch();

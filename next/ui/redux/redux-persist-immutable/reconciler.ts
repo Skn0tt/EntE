@@ -1,5 +1,5 @@
-import { Map, fromJS } from "immutable";
-import { AppState } from "@@types";
+import { fromJS } from "immutable";
+import { AppState } from "../types";
 
 export function stateReconciler(
   state: AppState,

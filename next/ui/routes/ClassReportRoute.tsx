@@ -6,7 +6,7 @@ import {
   AppState,
   getUsers,
   getSlotsMap,
-  getOneSelvesClass
+  getOneSelvesClass,
 } from "../redux";
 import { MapStateToPropsParam, connect, useSelector } from "react-redux";
 import Table from "../components/Table";
@@ -16,7 +16,7 @@ import {
   RouteComponentProps,
   Route,
   useRouteMatch,
-  useHistory
+  useHistory,
 } from "react-router";
 import { Typography, Grid, Button, Theme } from "@material-ui/core";
 import { Center } from "../components/Center";
@@ -26,8 +26,8 @@ import { Reporting } from "../reporting/reporting";
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
-    color: theme.palette.grey[600]
-  }
+    color: theme.palette.grey[600],
+  },
 }));
 
 const useTranslation = makeTranslationHook({
@@ -37,11 +37,11 @@ const useTranslation = makeTranslationHook({
       absentDays: "Absent days",
       absentHours: "Absent hours",
       unexcusedAbsentHours: "Unexcused absent hours",
-      hourRate: "Hour rate"
+      hourRate: "Hour rate",
     },
     year: "Graduation year",
     noUsers: "No students found.",
-    openReport: "Open Report"
+    openReport: "Open Report",
   },
   de: {
     headers: {
@@ -49,12 +49,12 @@ const useTranslation = makeTranslationHook({
       absentDays: "Fehltage",
       absentHours: "Fehlstunden",
       unexcusedAbsentHours: "Unentschuldigte Fehlstunden",
-      hourRate: "Stundenrate"
+      hourRate: "Stundenrate",
     },
     year: "Jahrgangsstufe",
     noUsers: "Keine Schüler*innen gefunden.",
-    openReport: "Bericht öffnen"
-  }
+    openReport: "Bericht öffnen",
+  },
 });
 
 const extractId = (u: UserN) => u.get("id");
@@ -69,15 +69,15 @@ const mapStateToProps: MapStateToPropsParam<
   ClassReportRouteStateProps,
   ClassReportRouteOwnProps,
   AppState
-> = state => {
+> = (state) => {
   return {
-    existingClasses: _.uniq(getUsers(state).map(u => u.get("class")!))
-      .filter(v => !!v)
+    existingClasses: _.uniq(getUsers(state).map((u) => u.get("class")!))
+      .filter((v) => !!v)
       .sort(),
-    getStudentsOfClass: c =>
+    getStudentsOfClass: (c) =>
       getUsers(state)
-        .filter(u => u.get("class") === c)
-        .filter(u => u.get("role") === Roles.STUDENT)
+        .filter((u) => u.get("class") === c)
+        .filter((u) => u.get("role") === Roles.STUDENT),
   };
 };
 
@@ -88,9 +88,9 @@ interface ClassReportRouteParams {
 type ClassReportRouteProps = ClassReportRouteStateProps &
   RouteComponentProps<ClassReportRouteParams>;
 
-const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
+const ClassReportRoute: React.FC<ClassReportRouteProps> = (props) => {
   const translation = useTranslation();
-  const classes = useStyles();
+  const classes = useStyles({});
 
   const { getStudentsOfClass, existingClasses } = props;
 
@@ -100,18 +100,18 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
   const slotsMap = useSelector(getSlotsMap);
   const ownClass = useSelector(getOneSelvesClass);
 
-  const slotsByStudent = _.groupBy(slotsMap.valueSeq().toArray(), s =>
+  const slotsByStudent = _.groupBy(slotsMap.valueSeq().toArray(), (s) =>
     s.get("studentId")
   );
 
   const _class = Maybe.fromFalsy(params.class)
-    .filter(v => existingClasses.includes(v))
+    .filter((v) => existingClasses.includes(v))
     .orElse(ownClass)
     .orElse(Maybe.fromUndefined(existingClasses[0]));
 
   const usersOfClass = React.useMemo(() => _class.map(getStudentsOfClass), [
     getStudentsOfClass,
-    _class.orUndefined()
+    _class.orUndefined(),
   ]);
 
   const handleRowClicked = React.useCallback(
@@ -127,7 +127,7 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
         <Typography>{translation.noUsers}</Typography>
       </Center>
     ),
-    users => {
+    (users) => {
       return (
         <Table<UserN>
           title={
@@ -148,52 +148,52 @@ const ClassReportRoute: React.FC<ClassReportRouteProps> = props => {
           columns={[
             {
               name: translation.headers.name,
-              extract: u => u.get("displayname"),
+              extract: (u) => u.get("displayname"),
               options: {
-                filter: false
-              }
+                filter: false,
+              },
             },
             {
               name: translation.headers.absentDays,
-              extract: u => {
+              extract: (u) => {
                 const slots = slotsByStudent[u.get("id")] || [];
                 return Reporting.countDays(slots);
               },
               options: {
-                filter: false
-              }
+                filter: false,
+              },
             },
             {
               name: translation.headers.absentHours,
-              extract: u => {
+              extract: (u) => {
                 const slots = slotsByStudent[u.get("id")] || [];
                 return Reporting.countHours(slots);
               },
               options: {
-                filter: false
-              }
+                filter: false,
+              },
             },
             {
               name: translation.headers.unexcusedAbsentHours,
-              extract: u => {
+              extract: (u) => {
                 const slots = slotsByStudent[u.get("id")] || [];
                 const { created } = Reporting.partitionSlots(slots);
                 return Reporting.countHours(created);
               },
               options: {
-                filter: false
-              }
+                filter: false,
+              },
             },
             {
               name: translation.headers.hourRate,
-              extract: u => {
+              extract: (u) => {
                 const slots = slotsByStudent[u.get("id")] || [];
                 return Reporting.calcHourRate(slots);
               },
               options: {
-                filter: false
-              }
-            }
+                filter: false,
+              },
+            },
           ]}
           onClick={handleRowClicked}
           extractId={extractId}

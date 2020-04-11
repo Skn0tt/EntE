@@ -1,7 +1,7 @@
 // tslint:disable:function-name
 
 import { isImmutable } from "immutable";
-import { AppState, IAppState } from "@@types";
+import { AppState, IAppState } from "../types";
 
 export function _stateIterator(
   state: AppState,

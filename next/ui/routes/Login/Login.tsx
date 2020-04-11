@@ -10,7 +10,7 @@ import * as React from "react";
 import {
   connect,
   MapDispatchToPropsParam,
-  MapStateToPropsParam
+  MapStateToPropsParam,
 } from "react-redux";
 import { Action } from "redux";
 import { Redirect, RouteComponentProps, withRouter } from "react-router";
@@ -24,7 +24,7 @@ import {
   TextField,
   Grid,
   Typography,
-  Theme
+  Theme,
 } from "@material-ui/core";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
 import {
@@ -35,13 +35,13 @@ import {
   LOGIN_REQUEST,
   isTypePending,
   getCurrentLoginBanner,
-  getLanguage
+  getLanguage,
 } from "../../redux";
 import { withErrorBoundary } from "../../hocs/withErrorBoundary";
 import { PasswordResetModal } from "./PasswordResetModal";
 import {
   WithTranslation,
-  withTranslation
+  withTranslation,
 } from "../../helpers/with-translation";
 import * as querystring from "query-string";
 import { Maybe, Some, None } from "monet";
@@ -57,8 +57,8 @@ const styles = (theme: Theme) =>
       bottom: 0,
       left: 0,
       margin: theme.spacing.unit,
-      position: "absolute"
-    }
+      position: "absolute",
+    },
   });
 
 const lang = {
@@ -68,7 +68,7 @@ const lang = {
     username: "Username",
     password: "Password",
     passwordForgot: "Forgot Password?",
-    defaultBanner: "In order to use EntE, log in."
+    defaultBanner: "In order to use EntE, log in.",
   },
   de: {
     title: "Anmelden",
@@ -76,8 +76,8 @@ const lang = {
     username: "Benutzername",
     password: "Passwort",
     passwordForgot: "Passwort Vergessen?",
-    defaultBanner: "Bitte melden Sie sich an, um EntE zu nutzen."
-  }
+    defaultBanner: "Bitte melden Sie sich an, um EntE zu nutzen.",
+  },
 };
 
 interface LoginOwnProps {}
@@ -96,11 +96,11 @@ const mapStateToProps: MapStateToPropsParam<
   LoginStateProps,
   LoginOwnProps,
   AppState
-> = state => ({
+> = (state) => ({
   authValid: isAuthValid(state),
   loginPending: isTypePending(state)(LOGIN_REQUEST),
   loginBanner: getCurrentLoginBanner(state),
-  language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE)
+  language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE),
 });
 
 interface LoginDispatchProps {
@@ -109,15 +109,15 @@ interface LoginDispatchProps {
 const mapDispatchToProps: MapDispatchToPropsParam<
   LoginDispatchProps,
   LoginOwnProps
-> = dispatch => ({
-  checkAuth: (auth: BasicCredentials) => dispatch(loginRequest(auth))
+> = (dispatch) => ({
+  checkAuth: (auth: BasicCredentials) => dispatch(loginRequest(auth)),
 });
 
 type LoginProps = LoginStateProps &
   LoginOwnProps &
   LoginDispatchProps &
   InjectedProps &
-  RouteComponentProps<{ user?: string; pass?: string }> &
+  RouteComponentProps<{ user?: string; pass?: string }, {}, { from: any }> &
   WithTranslation<typeof lang.en> &
   WithStyles<"versionCode">;
 
@@ -144,12 +144,12 @@ class Login extends React.PureComponent<LoginProps, State> {
     username: this.initialUsername,
     password: "",
     showPasswordResetModal: false,
-    passwordResetPending: false
+    passwordResetPending: false,
   };
 
   componentDidMount() {
     const {
-      location: { hash }
+      location: { hash },
     } = this.props;
     extractLoginInfo(hash).forEach(({ username, password }) => {
       this.setState({ username, password });
@@ -166,30 +166,30 @@ class Login extends React.PureComponent<LoginProps, State> {
   onResetPassword = async (username: string) => {
     this.hidePasswordResetModal();
     this.setState({ passwordResetPending: true });
-    invokeReset(username, msg => addMessages(msg[this.props.language]));
+    invokeReset(username, (msg) => addMessages(msg[this.props.language]));
     this.setState({ passwordResetPending: false });
   };
 
-  handleKeyPress: React.KeyboardEventHandler<{}> = event => {
+  handleKeyPress: React.KeyboardEventHandler<{}> = (event) => {
     if (event.key === "Enter") {
       this.handleSignIn();
     }
   };
 
-  handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = event =>
+  handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (event) =>
     this.setState({
-      username: event.target.value
+      username: event.target.value,
     });
 
-  handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = event =>
+  handleChangePassword: React.ChangeEventHandler<HTMLInputElement> = (event) =>
     this.setState({
-      password: event.target.value
+      password: event.target.value,
     });
 
   handleSignIn = (username?: string, password?: string) => {
     this.props.checkAuth({
       username: username || this.state.username,
-      password: password || this.state.password
+      password: password || this.state.password,
     });
   };
 
@@ -205,15 +205,15 @@ class Login extends React.PureComponent<LoginProps, State> {
       loginPending,
       translation: lang,
       loginBanner,
-      classes
+      classes,
     } = this.props;
     const {
       showPasswordResetModal,
       username,
-      passwordResetPending
+      passwordResetPending,
     } = this.state;
     const { from } = location.state || {
-      from: { pathname: "/" }
+      from: { pathname: "/" },
     };
 
     if (authValid) {
@@ -234,7 +234,7 @@ class Login extends React.PureComponent<LoginProps, State> {
               dangerouslySetInnerHTML={{
                 __html: loginBanner
                   .orSome(lang.defaultBanner)
-                  .replace(/(?:\r\n|\r|\n)/g, "<br />")
+                  .replace(/(?:\r\n|\r|\n)/g, "<br />"),
               }}
             />
             <Grid container direction="column">

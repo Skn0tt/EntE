@@ -3,7 +3,7 @@ import { WinstonLoggerService } from "./winston-logger.service";
 
 export class CustomTypeOrmLogger implements Logger {
   logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
-    // ignore
+    throw new Error("Method not implemented.");
   }
 
   logQueryError(

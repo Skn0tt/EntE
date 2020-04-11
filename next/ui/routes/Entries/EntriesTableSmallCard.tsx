@@ -8,7 +8,7 @@ import {
   ListItem,
   ListItemText,
   List,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { makeStyles } from "@material-ui/styles";
@@ -23,39 +23,39 @@ import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
 const useTranslation = makeTranslationHook({
   en: {
     parent: "Parent",
-    manager: "Manager"
+    manager: "Manager",
   },
   de: {
     parent: "Eltern",
-    manager: "Stufenleiter"
-  }
+    manager: "Stufenleiter",
+  },
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   content: {
-    position: "relative"
+    position: "relative",
   },
   upRight: {
     position: "relative",
-    float: "right"
+    float: "right",
   },
   upAlmostRight: {
     position: "relative",
     float: "right",
-    top: "-8px"
+    top: "-8px",
   },
   downAlmostRight: {
     position: "absolute",
     right: "10px",
-    bottom: "10px"
+    bottom: "10px",
   },
   list: {
     paddingBottom: 0,
-    paddingTop: theme.spacing.unit * 2
-  }
+    paddingTop: theme.spacing.unit * 2,
+  },
 }));
 
 interface EntriesTableSmallCardProps {
@@ -67,30 +67,27 @@ interface EntriesTableSmallCardProps {
   addToReviewed(): void;
 }
 
-export const EntriesTableSmallCard: React.FC<
-  EntriesTableSmallCardProps
-> = props => {
+export const EntriesTableSmallCard: React.FC<EntriesTableSmallCardProps> = (
+  props
+) => {
   const {
     entry,
     role,
     student,
     onClick,
     showAddToReviewed,
-    addToReviewed
+    addToReviewed,
   } = props;
 
   const translation = useTranslation();
 
-  const handleClick = React.useCallback(
-    () => {
-      onClick(entry);
-    },
-    [onClick, entry]
-  );
+  const handleClick = React.useCallback(() => {
+    onClick(entry);
+  }, [onClick, entry]);
 
   const format = useLocalizedDateFormat();
 
-  const classes = useStyles();
+  const classes = useStyles({});
 
   const startDate = entry.get("date");
   const endDate = entry.get("dateEnd");
@@ -110,7 +107,7 @@ export const EntriesTableSmallCard: React.FC<
         {showAddToReviewed && (
           <span className={classes.upAlmostRight}>
             <IconButton
-              onClick={evt => {
+              onClick={(evt) => {
                 evt.stopPropagation();
                 addToReviewed();
               }}
@@ -130,7 +127,7 @@ export const EntriesTableSmallCard: React.FC<
 
         {role !== Roles.STUDENT && (
           <Typography variant="body1">
-            {student.map(s => s.get("displayname")).orSome("")}
+            {student.map((s) => s.get("displayname")).orSome("")}
           </Typography>
         )}
 

@@ -1,4 +1,4 @@
-import * as Bull from "bull";
+import Bull from "bull";
 import { Config } from "./helpers/config";
 import { LoggerService } from "@nestjs/common";
 import { Maybe, None, Some, Validation } from "monet";

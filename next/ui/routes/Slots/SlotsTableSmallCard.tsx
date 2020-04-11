@@ -5,7 +5,7 @@ import {
   Theme,
   CardContent,
   Typography,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -19,34 +19,34 @@ const useTranslation = makeTranslationHook({
   en: {
     educational: "Educational",
     yes: "Yes",
-    no: "No"
+    no: "No",
   },
   de: {
     educational: "Schulisch",
     yes: "Ja",
-    no: "Nein"
-  }
+    no: "Nein",
+  },
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     margin: theme.spacing.unit,
-    position: "relative"
+    position: "relative",
   },
   upRight: {
     position: "relative",
-    float: "right"
+    float: "right",
   },
   upAlmostRight: {
     position: "relative",
     float: "right",
-    top: "-4px"
+    top: "-4px",
   },
   downRight: {
     position: "absolute",
     right: theme.spacing.unit,
-    bottom: theme.spacing.unit
-  }
+    bottom: theme.spacing.unit,
+  },
 }));
 
 interface SlotsTableSmallCardProps {
@@ -60,9 +60,9 @@ interface SlotsTableSmallCardProps {
   onDelete(): void;
 }
 
-export const SlotsTableSmallCard: React.FC<
-  SlotsTableSmallCardProps
-> = props => {
+export const SlotsTableSmallCard: React.FC<SlotsTableSmallCardProps> = (
+  props
+) => {
   const {
     slot,
     teacherName,
@@ -71,10 +71,10 @@ export const SlotsTableSmallCard: React.FC<
     addToReviewed,
     showAddToReviewed,
     onDelete,
-    showDelete
+    showDelete,
   } = props;
 
-  const classes = useStyles();
+  const classes = useStyles({});
   const format = useLocalizedDateFormat();
   const translation = useTranslation();
 

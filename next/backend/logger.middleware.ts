@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware, Inject } from "@nestjs/common";
 import { WinstonLoggerService } from "./winston-logger.service";
-import * as morgan from "morgan";
+import morgan from "morgan";
 import { RequestHandler, Request, Response, NextFunction } from "express";
 
 @Injectable()

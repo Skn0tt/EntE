@@ -7,7 +7,7 @@ interface ErrorBoxProps {
   children: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing.unit * 2,
     borderStyle: "solid",
@@ -16,15 +16,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: theme.palette.error.main,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   icon: {
-    marginRight: "16px"
-  }
+    marginRight: "16px",
+  },
 }));
 
 export const ErrorBox = (props: ErrorBoxProps) => {
-  const styles = useStyles();
+  const styles = useStyles({});
 
   return (
     <div className={styles.container}>

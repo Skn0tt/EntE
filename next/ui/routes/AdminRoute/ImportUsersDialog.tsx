@@ -12,11 +12,11 @@ import {
   Grid,
   DialogTitle,
   DialogContent,
-  DialogContentText
+  DialogContentText,
 } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import withMobileDialog, {
-  InjectedProps
+  InjectedProps,
 } from "@material-ui/core/withMobileDialog";
 import { CreateUserDto } from "@@types";
 import { Maybe, None } from "monet";
@@ -42,22 +42,22 @@ const useTranslation = makeTranslationHook({
     deleteEntries: {
       title: "Delete all entries",
       caption:
-        "Delete all entries and the corresponding slots, for example at the start of a term."
+        "Delete all entries and the corresponding slots, for example at the start of a term.",
     },
     importMethods: {
       schild: "SchiLD",
-      csv: "CSV"
-    },
+      csv: "CSV",
+    } as Record<ImportMethod, string>,
     importMethodLabel: "Format",
     deleteUsers: {
       title: "Delete all users",
       caption:
-        "Delete all users that are not contained nor referenced by the import."
+        "Delete all users that are not contained nor referenced by the import.",
     },
     deleteStudentsAndParents: {
       title: "Delete students and parents",
       caption:
-        "Delete students and parents that are neither contained nor referenced by the import, for example at the start of a term."
+        "Delete students and parents that are neither contained nor referenced by the import, for example at the start of a term.",
     },
     description: `
       Users whose usernames are already present in the database are updated using the data from the import.
@@ -65,7 +65,7 @@ const useTranslation = makeTranslationHook({
       If a new user's import data contains no password, he will receive an invitation email.
 
       Beware: In order for the update to work, usernames need to be consistent with the last import.
-    `.trim()
+    `.trim(),
   },
   de: {
     submit: "Importieren",
@@ -76,22 +76,22 @@ const useTranslation = makeTranslationHook({
     deleteEntries: {
       title: "Alle Einträge löschen",
       caption:
-        "Alle bestehenden Einträge sowie die zugehörigen Stunden löschen, zum Beispiel am Schuljahresbeginn."
+        "Alle bestehenden Einträge sowie die zugehörigen Stunden löschen, zum Beispiel am Schuljahresbeginn.",
     },
     importMethodLabel: "Datenformat",
     importMethods: {
       schild: "SchiLD",
-      csv: "CSV"
-    },
+      csv: "CSV",
+    } as Record<ImportMethod, string>,
     deleteUsers: {
       title: "Alle Nutzer löschen",
       caption:
-        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden. Nützlich, um den Server zurückzusetzen."
+        "Alle Nutzer löschen, die nicht im Import enthalten sind oder referenziert werden. Nützlich, um den Server zurückzusetzen.",
     },
     deleteStudentsAndParents: {
       title: "Schüler und Eltern löschen",
       caption:
-        "Schüler und Eltern löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn."
+        "Schüler und Eltern löschen, die nicht im Import enthalten sind oder referenziert werden, zum Beispiel am Schuljahresbeginn.",
     },
     description: `
       Nutzer, deren Nutzernamen schon in der Datenbank enthalten sind, werden mit den Daten aus dem Import aktualisiert.
@@ -99,8 +99,8 @@ const useTranslation = makeTranslationHook({
       Enthalten die Import-Daten eines neuen Nutzers kein Passwort, so erhält er eine Einladungs-Email.
 
       Achtung: Damit die Aktualisierung fehlerfrei funktionieren kann, muss die Vergabe der Nutzernamen identisch zum letzten Import sein.
-    `.trim()
-  }
+    `.trim(),
+  },
 });
 
 const toUserN = (u: CreateUserDto): UserN => {
@@ -112,7 +112,7 @@ const toUserN = (u: CreateUserDto): UserN => {
     class: u.class,
     birthday: u.birthday,
     id: u.username,
-    role: u.role
+    role: u.role,
   });
 };
 
@@ -126,8 +126,8 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
 
   const dispatch = useDispatch();
 
-  const existingStudentUsernames = useSelector<AppState, string[]>(state =>
-    getStudents(state).map(s => s.get("username"))
+  const existingStudentUsernames = useSelector<AppState, string[]>((state) =>
+    getStudents(state).map((s) => s.get("username"))
   );
 
   const translation = useTranslation();
@@ -138,34 +138,31 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
   const [deleteUsers, setDeleteUsers] = React.useState(false);
   const [
     deleteStudentsAndParents,
-    setDeleteStudentsAndParents
+    setDeleteStudentsAndParents,
   ] = React.useState(false);
   const [importMethod, setImportMethod] = React.useState<ImportMethod>("csv");
   const [users, setUsers] = React.useState<Maybe<CreateUserDto[]>>(None());
 
-  const handleSubmit = React.useCallback(
-    () => {
-      users.forEach(dtos =>
-        dispatch(
-          importUsersRequest({
-            dtos,
-            deleteEntries,
-            deleteUsers,
-            deleteStudentsAndParents
-          })
-        )
-      );
-      goBack();
-    },
-    [
-      dispatch,
-      users,
-      deleteEntries,
-      deleteUsers,
-      deleteStudentsAndParents,
-      goBack
-    ]
-  );
+  const handleSubmit = React.useCallback(() => {
+    users.forEach((dtos) =>
+      dispatch(
+        importUsersRequest({
+          dtos,
+          deleteEntries,
+          deleteUsers,
+          deleteStudentsAndParents,
+        })
+      )
+    );
+    goBack();
+  }, [
+    dispatch,
+    users,
+    deleteEntries,
+    deleteUsers,
+    deleteStudentsAndParents,
+    goBack,
+  ]);
 
   const inputIsValid = users.isSome();
 
@@ -209,11 +206,11 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
           </Grid>
 
           <Grid item xs={12}>
-            <DropdownInput
+            <DropdownInput<ImportMethod>
               options={importMethods}
               fullWidth
               label={translation.importMethodLabel}
-              getOptionLabel={k => translation.importMethods[k]}
+              getOptionLabel={(k) => translation.importMethods[k]}
               value={importMethod}
               onChange={setImportMethod}
             />
@@ -233,7 +230,7 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
           )}
 
           {users
-            .map(users => (
+            .map((users) => (
               <Grid item xs={12}>
                 <UserTable users={users.map(toUserN)} />
               </Grid>

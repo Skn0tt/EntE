@@ -13,13 +13,13 @@ import {
   IconButton,
   Grid,
   Tooltip,
-  DialogContentText
+  DialogContentText,
 } from "@material-ui/core";
 import withMobileDialog, {
-  InjectedProps
+  InjectedProps,
 } from "@material-ui/core/withMobileDialog";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import * as _ from "lodash";
+import _ from "lodash";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useWeekdayTranslations } from "../helpers/use-weekday-translations";
 import { DropdownInput } from "../elements/DropdownInput";
@@ -32,25 +32,25 @@ const useTranslation = makeTranslationHook({
     title: "Filter by class",
     hour: (h: number) => `Class ${h}`,
     weekdayDropdown: {
-      title: "Weekday"
+      title: "Weekday",
     },
     numberInput: "Hour",
     add: "Add",
     description:
-      "Filtering by class allows you to only see slots of a specific class. Specify all hours that your class takes place (e.g. Monday 1st, Monday 2nd, Thursday 5th)."
+      "Filtering by class allows you to only see slots of a specific class. Specify all hours that your class takes place (e.g. Monday 1st, Monday 2nd, Thursday 5th).",
   },
   de: {
     ok: "OK",
     title: "Kursfilter",
     hour: (h: number) => `${h}. Stunde`,
     weekdayDropdown: {
-      title: "Wochentag"
+      title: "Wochentag",
     },
     numberInput: "Stunde",
     add: "Hinzufügen",
     description:
-      "Der Kursfilter ermöglicht es, nur die Stunden eines bestimmten Kurses anzuzeigen. Geben sie die Stunden an, in denen ihr Kurs stattfindet (z.B. Montag 1., Montag 2., Donnerstag 5.)."
-  }
+      "Der Kursfilter ermöglicht es, nur die Stunden eines bestimmten Kurses anzuzeigen. Geben sie die Stunden an, in denen ihr Kurs stattfindet (z.B. Montag 1., Montag 2., Donnerstag 5.).",
+  },
 });
 
 interface CourseFilterModalOwnProps {
@@ -60,19 +60,19 @@ interface CourseFilterModalOwnProps {
   value: CourseFilter;
 }
 
-const CourseFilterModal: React.FC<
-  CourseFilterModalOwnProps & InjectedProps
-> = props => {
+const CourseFilterModal: React.FC<CourseFilterModalOwnProps & InjectedProps> = (
+  props
+) => {
   const { show, onChange, onClose, fullScreen, value } = props;
   const translation = useTranslation();
   const weekdays = useWeekdayTranslations().full;
 
   const deduplicatedValue = React.useMemo(
-    () => _.uniqBy(value, c => c.day + ";" + c.hour),
+    () => _.uniqBy(value, (c) => c.day + ";" + c.hour),
     [value]
   );
   const sortedValue = React.useMemo(
-    () => _.sortBy(deduplicatedValue, c => c.day + ";" + c.hour),
+    () => _.sortBy(deduplicatedValue, (c) => c.day + ";" + c.hour),
     [deduplicatedValue]
   );
 
@@ -86,13 +86,10 @@ const CourseFilterModal: React.FC<
   const [weekday, setWeekday] = React.useState(Weekday.MONDAY);
   const [hour, setHour] = React.useState(1);
 
-  const handleAdd = React.useCallback(
-    () => {
-      const newItems = [...sortedValue, { hour, day: weekday }];
-      onChange(_.uniqBy(newItems, c => c.day + ";" + c.hour));
-    },
-    [sortedValue, onChange, weekday, hour]
-  );
+  const handleAdd = React.useCallback(() => {
+    const newItems = [...sortedValue, { hour, day: weekday }];
+    onChange(_.uniqBy(newItems, (c) => c.day + ";" + c.hour));
+  }, [sortedValue, onChange, weekday, hour]);
 
   return (
     <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
@@ -104,7 +101,7 @@ const CourseFilterModal: React.FC<
         <Grid container direction="column" spacing={24}>
           <Grid item xs={12}>
             <List>
-              {sortedValue.map(c => (
+              {sortedValue.map((c) => (
                 <ListItem>
                   <ListItemText>
                     {weekdays[c.day]}, {translation.hour(c.hour)}
@@ -122,7 +119,7 @@ const CourseFilterModal: React.FC<
           <Grid item xs={12}>
             <Grid container direction="row" spacing={16}>
               <Grid item xs={5}>
-                <DropdownInput
+                <DropdownInput<Weekday>
                   options={[
                     Weekday.MONDAY,
                     Weekday.TUESDAY,
@@ -130,18 +127,18 @@ const CourseFilterModal: React.FC<
                     Weekday.THURSDAY,
                     Weekday.FRIDAY,
                     Weekday.SATURDAY,
-                    Weekday.SUNDAY
+                    Weekday.SUNDAY,
                   ]}
                   value={weekday}
                   onChange={setWeekday}
-                  getOptionLabel={w => weekdays[w]}
+                  getOptionLabel={(w) => weekdays[w]}
                   label={translation.weekdayDropdown.title}
                   fullWidth
                 />
               </Grid>
               <Grid item xs={3}>
                 <NumberInput
-                  onChange={h => {
+                  onChange={(h) => {
                     if (_.isUndefined(h)) {
                       return;
                     }

@@ -9,11 +9,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   roleDiv: {
     float: "right",
     top: 0,
-    right: 0
+    right: 0,
   },
   card: {
-    margin: theme.spacing.unit
-  }
+    margin: theme.spacing.unit,
+  },
 }));
 
 interface UserTableSmallCardProps {
@@ -21,18 +21,17 @@ interface UserTableSmallCardProps {
   onClick: (user: UserN) => void;
 }
 
-export const UserTableSmallCard: React.FC<UserTableSmallCardProps> = props => {
+export const UserTableSmallCard: React.FC<UserTableSmallCardProps> = (
+  props
+) => {
   const { user, onClick } = props;
 
   const roleTranslation = useRoleTranslation();
-  const classes = useStyles();
+  const classes = useStyles({});
 
-  const handleClick = React.useCallback(
-    () => {
-      onClick(user);
-    },
-    [onClick, user]
-  );
+  const handleClick = React.useCallback(() => {
+    onClick(user);
+  }, [onClick, user]);
 
   return (
     <Card onClick={handleClick} className={classes.card} elevation={1}>

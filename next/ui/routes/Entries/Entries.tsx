@@ -24,7 +24,7 @@ import {
   getSlots,
   getUsers,
   UserN,
-  SlotN
+  SlotN,
 } from "../../redux";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { useHistory } from "react-router";
@@ -33,8 +33,8 @@ import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { format, parseISO } from "date-fns";
-import * as deLocale from "date-fns/locale/de";
-import * as enLocale from "date-fns/locale/en-GB";
+import deLocale from "date-fns/locale/de";
+import enLocale from "date-fns/locale/en-GB";
 import { getFilterScopeValidator, FilterScope } from "../../filter-scope";
 import { Roles } from "@@types";
 import FilterScopeSelectionView from "../../components/FilterScopeSelectionView";
@@ -60,11 +60,11 @@ const useTranslation = makeTranslationHook({
       duration: "Duration [Classes]",
       manager: "Manager",
       parents: "Parents",
-      reviewed: "Review"
+      reviewed: "Review",
     },
     yes: "Yes",
     no: "No",
-    locale: enLocale
+    locale: enLocale,
   },
   de: {
     reason: EntryReasonCategoriesTranslation.de,
@@ -76,17 +76,17 @@ const useTranslation = makeTranslationHook({
       duration: "Dauer [Stunden]",
       manager: "Stufenleiter",
       parents: "Eltern",
-      reviewed: "Abhaken"
+      reviewed: "Abhaken",
     },
     yes: "Ja",
     no: "Nein",
-    locale: deLocale
-  }
+    locale: deLocale,
+  },
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
   searchBar: {
-    padding: 10
+    padding: 10,
   },
   fab: {
     margin: 0,
@@ -94,25 +94,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: theme.spacing.unit * 2,
     bottom: theme.spacing.unit * 2,
     left: "auto",
-    position: "fixed"
+    position: "fixed",
   },
   table: {
-    overflowX: "auto"
-  }
+    overflowX: "auto",
+  },
 }));
 
 export const Entries = () => {
-  const classes = useStyles();
+  const classes = useStyles({});
   const history = useHistory();
 
   const entries = useSelector<AppState, EntryN[]>(getEntries);
   const usersArr = useSelector<AppState, UserN[]>(getUsers);
-  const users = _.keyBy(usersArr, u => u.get("id"));
+  const users = _.keyBy(usersArr, (u) => u.get("id"));
   const filterScope = useSelector<AppState, FilterScope>(getFilterScope);
-  const ownRole = useSelector<AppState, Roles>(s =>
+  const ownRole = useSelector<AppState, Roles>((s) =>
     getRole(s).orSome(Roles.STUDENT)
   );
-  const userCanCreateEntries = useSelector<AppState, boolean>(s =>
+  const userCanCreateEntries = useSelector<AppState, boolean>((s) =>
     canCreateEntries(s).some()
   );
   const slots = useSelector<AppState, SlotN[]>(getSlots);
@@ -124,20 +124,17 @@ export const Entries = () => {
     [dispatch]
   );
 
-  const slotsByEntryId = React.useMemo(
-    () => {
-      const slotByIds = _.keyBy(slots, slot => slot.get("id"));
+  const slotsByEntryId = React.useMemo(() => {
+    const slotByIds = _.keyBy(slots, (slot) => slot.get("id"));
 
-      return _.fromPairs(
-        entries.map(entry => {
-          const entryId = entry.get("id");
-          const slots = entry.get("slotIds").map(id => slotByIds[id]);
-          return [entryId, slots];
-        })
-      );
-    },
-    [slots, entries]
-  );
+    return _.fromPairs(
+      entries.map((entry) => {
+        const entryId = entry.get("id");
+        const slots = entry.get("slotIds").map((id) => slotByIds[id]);
+        return [entryId, slots];
+      })
+    );
+  }, [slots, entries]);
 
   const lang = useTranslation();
 
@@ -153,19 +150,16 @@ export const Entries = () => {
     [lang.yes]
   );
 
-  const entriesInScope = React.useMemo(
-    () => {
-      const validator = getFilterScopeValidator(filterScope);
-      return entries.filter(e =>
-        validator({
-          date: parseISO(e.get("createdAt")),
-          id: e.get("id"),
-          isInReviewedRecords: e.get("isInReviewedRecords")
-        })
-      );
-    },
-    [entries, filterScope]
-  );
+  const entriesInScope = React.useMemo(() => {
+    const validator = getFilterScopeValidator(filterScope);
+    return entries.filter((e) =>
+      validator({
+        date: parseISO(e.get("createdAt")),
+        id: e.get("id"),
+        isInReviewedRecords: e.get("isInReviewedRecords"),
+      })
+    );
+  }, [entries, filterScope]);
 
   const handleClick = React.useCallback(
     (id: string) => {
@@ -181,7 +175,7 @@ export const Entries = () => {
         columns={[
           {
             name: lang.headers.name,
-            extract: e => {
+            extract: (e) => {
               const name = users[e.get("studentId")].get("displayname");
               const managerReachedOut = e.get("managerReachedOut");
 
@@ -192,7 +186,7 @@ export const Entries = () => {
               display: ownRole !== Roles.STUDENT,
               customBodyRender: ({
                 name,
-                managerReachedOut
+                managerReachedOut,
               }: {
                 name: string;
                 managerReachedOut: boolean;
@@ -204,7 +198,7 @@ export const Entries = () => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginRight: "-56px"
+                        marginRight: "-56px",
                       }}
                     >
                       {name}
@@ -214,30 +208,30 @@ export const Entries = () => {
                 }
 
                 return name;
-              }
-            }
+              },
+            },
           },
           {
             name: lang.headers.date,
-            extract: e => e.get("date"),
+            extract: (e) => e.get("date"),
             options: {
               filter: false,
               customBodyRender: (isoTime: string) =>
-                format(parseISO(isoTime), "PP", { locale: lang.locale })
-            }
+                format(parseISO(isoTime), "PP", { locale: lang.locale }),
+            },
           },
           {
             name: lang.headers.created,
-            extract: e => e.get("createdAt"),
+            extract: (e) => e.get("createdAt"),
             options: {
               filter: false,
               customBodyRender: (isoTime: string) =>
-                format(parseISO(isoTime), "PPpp", { locale: lang.locale })
-            }
+                format(parseISO(isoTime), "PPpp", { locale: lang.locale }),
+            },
           },
           {
             name: lang.headers.reason,
-            extract: e => {
+            extract: (e) => {
               const category = e.get("reason").category;
               return lang.reason[category];
             },
@@ -245,25 +239,25 @@ export const Entries = () => {
               filter: true,
               customBodyRender: (s: string) => (
                 <EntryReasonCategoryChip reasonCategoryTranslated={s} />
-              )
-            }
+              ),
+            },
           },
           {
             name: lang.headers.duration,
-            extract: e => {
+            extract: (e) => {
               const slots = slotsByEntryId[e.get("id")];
               return _.sumBy(slots, Reporting.getLengthOfSlot);
-            }
+            },
           },
           {
             name: lang.headers.manager,
-            extract: e => (e.get("signedManager") ? lang.yes : lang.no),
-            options: { customBodyRender, filter: true }
+            extract: (e) => (e.get("signedManager") ? lang.yes : lang.no),
+            options: { customBodyRender, filter: true },
           },
           {
             name: lang.headers.parents,
-            extract: e => (e.get("signedParent") ? lang.yes : lang.no),
-            options: { customBodyRender, filter: true }
+            extract: (e) => (e.get("signedParent") ? lang.yes : lang.no),
+            options: { customBodyRender, filter: true },
           },
           {
             name: lang.headers.reviewed,
@@ -276,7 +270,7 @@ export const Entries = () => {
               customBodyRender: (id: string) => {
                 return (
                   <IconButton
-                    onClick={evt => {
+                    onClick={(evt) => {
                       evt.stopPropagation();
                       addToReviewed(id);
                     }}
@@ -284,23 +278,23 @@ export const Entries = () => {
                     <DoneIcon />
                   </IconButton>
                 );
-              }
-            }
-          }
+              },
+            },
+          },
         ]}
         key={"EntriesTable" + (filterScope === "not_reviewed")}
         title={<FilterScopeSelectionView />}
         items={entriesInScope}
-        extractId={entry => entry.get("id")}
+        extractId={(entry) => entry.get("id")}
         onClick={handleClick}
         customRowRender={
           isNarrow
-            ? entry => (
+            ? (entry) => (
                 <EntriesTableSmallCard
                   entry={entry}
                   role={ownRole}
                   student={Maybe.fromUndefined(users[entry.get("studentId")])}
-                  onClick={entry => handleClick(entry.get("id"))}
+                  onClick={(entry) => handleClick(entry.get("id"))}
                   showAddToReviewed={
                     [Roles.TEACHER, Roles.MANAGER].includes(ownRole) &&
                     filterScope === "not_reviewed"

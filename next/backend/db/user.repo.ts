@@ -21,7 +21,7 @@ import {
   withPagination,
 } from "../helpers/pagination-info";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";
-import * as assert from "assert";
+import assert from "assert";
 
 interface UserAndPasswordHash {
   user: UserDto;

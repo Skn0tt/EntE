@@ -24,7 +24,7 @@ import {
   ListItemSecondaryAction,
   DialogActions,
   DialogContent,
-  ListItem
+  ListItem,
 } from "@material-ui/core";
 import SignedAvatar from "../../elements/SignedAvatar";
 import LoadingIndicator from "../../elements/LoadingIndicator";
@@ -38,7 +38,7 @@ import {
   EntryReasonCategory,
   getEntryExpirationTime,
   isParentSignatureExpiryEnabled,
-  canEntryStillBeSigned
+  canEntryStillBeSigned,
 } from "@@types";
 import {
   AppState,
@@ -55,7 +55,7 @@ import {
   deleteEntryRequest,
   getParentSignatureExpiryTime,
   getEntryCreationDeadline,
-  managerReachedOutRequest
+  managerReachedOutRequest,
 } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { DeleteModal } from "../../components/DeleteModal";
@@ -68,8 +68,8 @@ import AssignmentReturnedIcon from "@material-ui/icons/AssignmentReturned";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MailIcon from "@material-ui/icons/MailRounded";
 import { format, parseISO } from "date-fns";
-import * as enLocale from "date-fns/locale/en-GB";
-import * as deLocale from "date-fns/locale/de";
+import enLocale from "date-fns/locale/en-GB";
+import deLocale from "date-fns/locale/de";
 import { withPrintButton, usePrintButton } from "../../hocs/withPrint";
 import ManagerNotesEditor from "./ManagerNotesEditor";
 import { slotTimeComparator } from "../../helpers/slot-time-comparator";
@@ -94,7 +94,7 @@ const useTranslation = makeTranslationHook({
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Examen: ${v.from}-${v.to}, ${teacher
-          .map(t => t.get("displayname"))
+          .map((t) => t.get("displayname"))
           .orSome("Teacher Deleted")}`,
       [EntryReasonCategory.OTHER_EDUCATIONAL]: (v: OtherEducationalPayload) =>
         `Other (educational): ${v.description}`,
@@ -107,36 +107,34 @@ const useTranslation = makeTranslationHook({
         teacher: Maybe<UserN>
       ) =>
         `Field Trip: ${v.from}-${v.to}, ${teacher
-          .map(t => t.get("displayname"))
+          .map((t) => t.get("displayname"))
           .orSome("Teacher Deleted")}`,
       [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
-        `Competition: ${v.from}-${v.to}, ${v.name}`
+        `Competition: ${v.from}-${v.to}, ${v.name}`,
     },
     dateRange: (start: string, end: string) =>
-      `From ${format(parseISO(start), "PP", { locale: enLocale })} to ${format(
-        parseISO(end),
-        "PP",
-        { locale: enLocale }
-      )}`,
+      `From ${format(parseISO(start), "PP", {
+        locale: enLocale,
+      })} to ${format(parseISO(end), "PP", { locale: enLocale })}`,
     slotsTable: {
       title: "Slots",
       date: "Date",
       from: "From",
       to: "To",
       teacher: "Teacher",
-      deleted: "Deleted"
+      deleted: "Deleted",
     },
     signed: {
       manager: "Manager",
-      parents: "Parents"
+      parents: "Parents",
     },
     locale: enLocale,
     titles: {
       info: "Information",
-      signed: "Signed"
+      signed: "Signed",
     },
     possibleUntil: "possible until",
-    signatureExpired: "This entry can not be signed anymore."
+    signatureExpired: "This entry can not be signed anymore.",
   },
   de: {
     sign: "Unterschreiben",
@@ -155,7 +153,7 @@ const useTranslation = makeTranslationHook({
     reasonPayloads: {
       [EntryReasonCategory.EXAMEN]: (v: ExamenPayload, teacher: Maybe<UserN>) =>
         `Klausur: ${v.from}-${v.to}, ${teacher
-          .map(t => t.get("displayname"))
+          .map((t) => t.get("displayname"))
           .orSome("Lehrer gelöscht")}`,
       [EntryReasonCategory.OTHER_EDUCATIONAL]: (v: OtherEducationalPayload) =>
         `Sonstiges (schulisch): ${v.description}`,
@@ -168,69 +166,67 @@ const useTranslation = makeTranslationHook({
         teacher: Maybe<UserN>
       ) =>
         `Exkursion: ${v.from}-${v.to}, ${teacher
-          .map(t => t.get("displayname"))
+          .map((t) => t.get("displayname"))
           .orSome("Lehrer gelöscht")}`,
       [EntryReasonCategory.COMPETITION]: (v: CompetitionPayload) =>
-        `Wettbewerb: ${v.from}-${v.to}, ${v.name}`
+        `Wettbewerb: ${v.from}-${v.to}, ${v.name}`,
     },
     date: "Datum:",
     dateRange: (start: string, end: string) =>
-      `Von ${format(parseISO(start), "PP", { locale: deLocale })} bis ${format(
-        parseISO(end),
-        "PP",
-        { locale: deLocale }
-      )}`,
+      `Von ${format(parseISO(start), "PP", {
+        locale: deLocale,
+      })} bis ${format(parseISO(end), "PP", { locale: deLocale })}`,
     slotsTable: {
       title: "Stunden",
       date: "Datum",
       from: "Von",
       to: "Bis",
       teacher: "Lehrer",
-      deleted: "Gelöscht"
+      deleted: "Gelöscht",
     },
     signed: {
       manager: "Stufenleiter",
-      parents: "Eltern"
+      parents: "Eltern",
     },
     locale: deLocale,
     titles: {
       info: "Info",
-      signed: "Signiert"
+      signed: "Signiert",
     },
     possibleUntil: "möglich bis",
-    signatureExpired: "Dieser Eintrag kann nicht mehr unterschrieben werden."
-  }
+    signatureExpired: "Dieser Eintrag kann nicht mehr unterschrieben werden.",
+  },
 });
 
 const useStyles = makeStyles({
   list: {
-    width: "100%"
+    width: "100%",
   },
   listItem: {
-    width: "100%"
+    width: "100%",
   },
   signEntryButton: {
     backgroundColor: green[500],
-    color: common.white
+    color: common.white,
   },
   unsignEntryButton: {
-    color: red[500]
+    color: red[500],
   },
   mailButton: {
     position: "absolute",
     top: 0,
-    right: 46
+    right: 46,
   },
   deleteButton: {
     position: "absolute",
     top: 0,
-    right: 92
+    right: 92,
   },
   printButton: {
     position: "absolute",
     top: 0,
-    right: 0
-  }
+    right: 0,
+  },
 });
 
 interface StateProps {
@@ -248,12 +244,12 @@ const mapStateToProps: MapStateToPropsParam<
 > = (state, props) => {
   const { entryId } = props;
   return {
-    getEntry: id => getEntry(id)(state),
-    getUser: id => getUser(id)(state),
-    getSlots: ids => getSlotsById(ids)(state),
+    getEntry: (id) => getEntry(id)(state),
+    getUser: (id) => getUser(id)(state),
+    getSlots: (ids) => getSlotsById(ids)(state),
     role: getRole(state).some(),
     entryExpirationTime: getParentSignatureExpiryTime(state).some(),
-    createEntryDeadline: getEntryCreationDeadline(state).some()
+    createEntryDeadline: getEntryCreationDeadline(state).some(),
   };
 };
 
@@ -267,7 +263,7 @@ const mapDispatchToProps = (
     requestEntry: () => dispatch(getEntryRequest(entryId)),
     signEntry: () => dispatch(signEntryRequest(entryId)),
     unsignEntry: () => dispatch(unsignEntryRequest(entryId)),
-    deleteEntry: () => dispatch(deleteEntryRequest(entryId))
+    deleteEntry: () => dispatch(deleteEntryRequest(entryId)),
   };
 };
 
@@ -280,7 +276,7 @@ interface SpecificEntryOwnProps {
 
 type SpecificEntryProps = StateProps & DispatchProps & SpecificEntryOwnProps;
 
-const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
+const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = (props) => {
   const lang = useTranslation();
   const classes = useStyles(props);
 
@@ -297,7 +293,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
     getEntry,
     entryExpirationTime,
     createEntryDeadline,
-    managerReachedOut
+    managerReachedOut,
   } = props;
 
   const entry = getEntry(entryId);
@@ -314,7 +310,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
 
   return entry.cata(
     () => <LoadingIndicator />,
-    entry => {
+    (entry) => {
       const isReviewed = entry.get("isInReviewedRecords");
 
       const isPartiallySigned =
@@ -415,15 +411,13 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                     <br />
                   </>
                   <i>{lang.student}</i>{" "}
-                  {getUser(entry.get("studentId"))
-                    .some()
-                    .get("displayname")}{" "}
+                  {getUser(entry.get("studentId")).some().get("displayname")}{" "}
                   <br />
                   <i>{lang.date}</i>{" "}
                   {!!entry.get("dateEnd")
                     ? lang.dateRange(entry.get("date"), entry.get("dateEnd")!)
                     : format(parseISO(entry.get("date")), "PP", {
-                        locale: lang.locale
+                        locale: lang.locale,
                       })}
                 </Typography>
               </Grid>
@@ -449,11 +443,11 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                   <TableBody>
                     {getSlots(entry.get("slotIds"))
                       .sort(slotTimeComparator)
-                      .map(slot => (
+                      .map((slot) => (
                         <TableRow key={slot.get("id")}>
                           <TableCell>
                             {format(parseISO(slot.get("date")), "PP", {
-                              locale: lang.locale
+                              locale: lang.locale,
                             })}
                           </TableCell>
                           <TableCell>{slot.get("from")}</TableCell>
@@ -461,10 +455,7 @@ const SpecificEntry: React.FunctionComponent<SpecificEntryProps> = props => {
                           <TableCell>
                             {Maybe.fromFalsy(slot.get("teacherId")).cata(
                               () => lang.slotsTable.deleted,
-                              id =>
-                                getUser(id)
-                                  .some()
-                                  .get("displayname")
+                              (id) => getUser(id).some().get("displayname")
                             )}
                           </TableCell>
                         </TableRow>

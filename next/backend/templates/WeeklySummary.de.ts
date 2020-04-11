@@ -1,6 +1,6 @@
-import * as Handlebars from "handlebars";
+import Handlebars from "handlebars";
 import { WeeklySummaryOptions, WeeklySummaryRowData } from "./WeeklySummary";
-import * as deLocale from "date-fns/locale/de";
+import deLocale from "date-fns/locale/de";
 import { format, parseISO, getISOWeek } from "date-fns";
 
 const tableRow = (data: WeeklySummaryRowData) => `
