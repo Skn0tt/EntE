@@ -7,7 +7,7 @@ import {
   DialogActions,
   withMobileDialog,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
@@ -31,7 +31,7 @@ const useTranslation = makeTranslationHook({
         Your username is <i>{username}</i>. To start using EntE, click the{" "}
         <i>OK</i>-Button. You can log in using the password you just set.
       </>
-    )
+    ),
   },
   de: {
     title: "Willkommen bei EntE.",
@@ -49,8 +49,8 @@ const useTranslation = makeTranslationHook({
         den <i>OK</i>-Button an. Sie können sich dann mit dem Passwort, das Sie
         gerade gesetzt haben, anmelden.
       </>
-    )
-  }
+    ),
+  },
 });
 
 interface InvitationRouteParams {
@@ -62,10 +62,10 @@ type InvitationProps = RouteComponentProps<InvitationRouteParams> &
 
 enum InvitationPhase {
   SetPassword,
-  Introduction
+  Introduction,
 }
 
-const Invitation: React.FC<InvitationProps> = props => {
+const Invitation: React.FC<InvitationProps> = (props) => {
   const { fullScreen, match, history, location } = props;
   const { token } = match.params;
   const translation = useTranslation();
@@ -73,7 +73,7 @@ const Invitation: React.FC<InvitationProps> = props => {
     InvitationPhase.SetPassword
   );
   const { username: _username = "" } = querystring.parse(location.search);
-  const username = typeof _username === "string" ? _username : _username[0];
+  const username = _username as string;
 
   return (
     <Dialog fullScreen={fullScreen} open>

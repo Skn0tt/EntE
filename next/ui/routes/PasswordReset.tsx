@@ -13,10 +13,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
 import withMobileDialog, {
-  InjectedProps
+  InjectedProps,
 } from "@material-ui/core/withMobileDialog";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
@@ -29,12 +29,12 @@ import { useLanguage } from "../helpers/useLanguage";
 const useTranslation = makeTranslationHook({
   en: {
     submit: "Reset Password",
-    title: "Reset Password"
+    title: "Reset Password",
   },
   de: {
     submit: "Passwort zurücksetzen",
-    title: "Passwort zurücksetzen"
-  }
+    title: "Passwort zurücksetzen",
+  },
 });
 
 interface PasswordResetRouteProps {
@@ -44,18 +44,18 @@ interface PasswordResetRouteProps {
 type PasswordResetProps = RouteComponentProps<PasswordResetRouteProps> &
   InjectedProps;
 
-const PasswordReset: React.FC<PasswordResetProps> = props => {
+const PasswordReset: React.FC<PasswordResetProps> = (props) => {
   const {
     fullScreen,
     location,
     match: {
-      params: { token }
-    }
+      params: { token },
+    },
   } = props;
   const [newPassword, setNewPassword] = React.useState("");
   const translation = useTranslation();
   const { username: _username = "" } = querystring.parse(location.search);
-  const username = typeof _username === "string" ? _username : _username[0];
+  const username = _username as string;
 
   const [resetIsPending, setResetIsPending] = React.useState(false);
   const [resetSuccessful, setResetSuccessful] = React.useState(false);
@@ -63,17 +63,14 @@ const PasswordReset: React.FC<PasswordResetProps> = props => {
   const language = useLanguage();
   const { addMessages } = useMessages();
 
-  const requestReset = React.useCallback(
-    async () => {
-      setResetIsPending(true);
-      const isSuccessful = await setPassword(newPassword, token, msgs =>
-        addMessages(msgs[language])
-      );
-      setResetSuccessful(isSuccessful);
-      setResetIsPending(false);
-    },
-    [newPassword, addMessages, language]
-  );
+  const requestReset = React.useCallback(async () => {
+    setResetIsPending(true);
+    const isSuccessful = await setPassword(newPassword, token, (msgs) =>
+      addMessages(msgs[language])
+    );
+    setResetSuccessful(isSuccessful);
+    setResetIsPending(false);
+  }, [newPassword, addMessages, language]);
 
   if (resetSuccessful) {
     return <Redirect to={`/login?username=${username}`} />;

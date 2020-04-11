@@ -7,16 +7,16 @@ import {
   MarkSeries,
   XAxis,
   YAxis,
-  makeVisFlexible
+  makeVisFlexible,
 } from "react-vis";
 import { useWeekdayTranslations } from "../../helpers/use-weekday-translations";
 
 const FlexibleXYPlot = makeVisFlexible(XYPlot);
 
-const defaultDay = _.fromPairs(_.times(12, hour => [hour + 1, 0]));
+const defaultDay = _.fromPairs(_.times(12, (hour) => [hour + 1, 0]));
 
 const defaultWeek = _.fromPairs(
-  _.times(7, weekday => {
+  _.times(7, (weekday) => {
     return [weekday + 1, defaultDay];
   })
 );
@@ -26,9 +26,9 @@ interface HoursByWeekdayAndTimeChartOwnProps {
   variant: "scatterplot" | "heatmap";
 }
 
-export const HoursByWeekdayAndTimeChart: React.FC<
-  HoursByWeekdayAndTimeChartOwnProps
-> = props => {
+export const HoursByWeekdayAndTimeChart: React.FC<HoursByWeekdayAndTimeChartOwnProps> = (
+  props
+) => {
   const weekdayTranslation = useWeekdayTranslations().twoCharacter;
 
   const { data, variant } = props;
@@ -38,20 +38,17 @@ export const HoursByWeekdayAndTimeChart: React.FC<
     [data]
   );
 
-  const transformedData = React.useMemo(
-    () => {
-      return _.flatMap(dataWithDefaultDays, (values, weekday) => {
-        return _.flatMap(values, (amount, hour) => {
-          return {
-            x: weekdayTranslation[weekday],
-            y: +hour,
-            size: +amount
-          };
-        });
+  const transformedData = React.useMemo(() => {
+    return _.flatMap(dataWithDefaultDays, (values, weekday) => {
+      return _.flatMap(values, (amount, hour) => {
+        return {
+          x: weekdayTranslation[+weekday as Weekday],
+          y: +hour,
+          size: +amount,
+        };
       });
-    },
-    [dataWithDefaultDays]
-  );
+    });
+  }, [dataWithDefaultDays]);
 
   return (
     <FlexibleXYPlot height={250} xType="ordinal" yType="ordinal">
@@ -62,7 +59,7 @@ export const HoursByWeekdayAndTimeChart: React.FC<
       ) : (
         <HeatmapSeries
           colorRange={["#2196f3", "#ff9800"]}
-          data={transformedData.map(d => ({ ...d, color: d.size }))}
+          data={transformedData.map((d) => ({ ...d, color: d.size }))}
         />
       )}
     </FlexibleXYPlot>
