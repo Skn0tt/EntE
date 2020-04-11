@@ -2,7 +2,7 @@ import { UserRepo } from "../db/user.repo";
 import { EntryRepo } from "../db/entry.repo";
 import { SlotRepo } from "../db/slot.repo";
 import { createSpreadsheet } from "../helpers/excel";
-import { Roles, dateToIsoString } from "ente-types";
+import { Roles, dateToIsoString } from "@@types";
 import { Fail, Validation, Success, None, Maybe } from "monet";
 import { Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";

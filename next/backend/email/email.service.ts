@@ -3,7 +3,7 @@ import {
   WeeklySummaryRowData,
   WeeklySummary,
 } from "../templates/WeeklySummary";
-import { UserDto, SlotDto, EntryDto, CreatePrefiledSlotsDto } from "ente-types";
+import { UserDto, SlotDto, EntryDto, CreatePrefiledSlotsDto } from "@@types";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { StatusService } from "./status.service";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 
 describe("StatusService", () => {
   let service: StatusService;

@@ -8,7 +8,7 @@
 
 import { expect } from "chai";
 import { PasswordResetSuccess } from "./PasswordResetSuccess";
-import { Languages } from "ente-types";
+import { Languages } from "@@types";
 
 describe("PasswordResetSuccess", () => {
   const user = "skn0tt";

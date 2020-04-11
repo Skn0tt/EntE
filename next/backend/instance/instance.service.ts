@@ -1,10 +1,5 @@
 import { Injectable, Inject } from "@nestjs/common";
-import {
-  UserDto,
-  CreateUserDto,
-  Roles,
-  CreateUserDtoValidator,
-} from "ente-types";
+import { UserDto, CreateUserDto, Roles, CreateUserDtoValidator } from "@@types";
 import { RequestContextUser } from "../helpers/request-context";
 import { Fail, Validation, Success } from "monet";
 import {

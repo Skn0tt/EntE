@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UsersService } from "./users.service";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 
 describe("UsersService", () => {
   let service: UsersService;

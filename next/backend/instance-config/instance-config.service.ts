@@ -11,7 +11,7 @@ import {
   isValidParentSignatureNotificationTime,
   isValidParentSignatureExpiryTime,
   DEFAULT_ENTRY_CREATION_DEADLINE,
-} from "ente-types";
+} from "@@types";
 import * as _ from "lodash";
 import { Maybe, Validation, Success, Fail } from "monet";
 import { RequestContextUser } from "../helpers/request-context";

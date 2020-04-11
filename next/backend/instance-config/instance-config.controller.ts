@@ -15,7 +15,7 @@ import {
   InstanceConfigService,
   SetInstanceConfigValueFail,
 } from "./instance-config.service";
-import { InstanceConfigDto, Languages, isValidLanguage } from "ente-types";
+import { InstanceConfigDto, Languages, isValidLanguage } from "@@types";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { Request } from "express";
 

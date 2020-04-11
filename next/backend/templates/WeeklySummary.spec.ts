@@ -8,7 +8,7 @@
 
 import { WeeklySummary } from "./WeeklySummary";
 import { expect } from "chai";
-import { Languages, dateToIsoString } from "ente-types";
+import { Languages, dateToIsoString } from "@@types";
 
 describe("WeeklySummary", () => {
   describe("de", () => {

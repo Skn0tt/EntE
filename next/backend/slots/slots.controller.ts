@@ -23,7 +23,7 @@ import {
   PaginationInfo,
   PaginationInformation,
 } from "../helpers/pagination-info";
-import { BlackedSlotDto, CreatePrefiledSlotsDto } from "ente-types";
+import { BlackedSlotDto, CreatePrefiledSlotsDto } from "@@types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 
 @Controller("slots")

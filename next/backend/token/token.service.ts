@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { SignerService } from "../infrastructure/signer.service";
-import { JwtTokenPayload } from "ente-types";
+import { JwtTokenPayload } from "@@types";
 import { RequestContextUser } from "../helpers/request-context";
 
 @Injectable()

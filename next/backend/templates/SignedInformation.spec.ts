@@ -7,7 +7,7 @@
  */
 import { SignedInformation } from "./SignedInformation";
 import { expect } from "chai";
-import { Languages } from "ente-types";
+import { Languages } from "@@types";
 
 describe("SignedInformation", () => {
   const link = "https://simonknott.de";

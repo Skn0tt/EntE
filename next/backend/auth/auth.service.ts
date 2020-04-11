@@ -3,7 +3,7 @@ import { Maybe, None, Some } from "monet";
 import { SignerService } from "../infrastructure/signer.service";
 import { UserRepo } from "../db/user.repo";
 import { checkPassword } from "../helpers/password-hash";
-import { UserDto, JwtTokenPayload } from "ente-types";
+import { UserDto, JwtTokenPayload } from "@@types";
 import { WinstonLoggerService } from "../winston-logger.service";
 
 @Injectable()

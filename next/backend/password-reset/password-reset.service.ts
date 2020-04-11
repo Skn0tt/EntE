@@ -9,7 +9,7 @@ import { EmailService } from "../email/email.service";
 import { hashPassword } from "../helpers/password-hash";
 import { Config } from "../helpers/config";
 import { WinstonLoggerService } from "../winston-logger.service";
-import { isValidPassword, UserDto } from "ente-types";
+import { isValidPassword, UserDto } from "@@types";
 import { days, hours } from "../helpers/time";
 import * as querystring from "querystring";
 

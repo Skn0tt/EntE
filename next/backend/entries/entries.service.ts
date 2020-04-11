@@ -15,7 +15,7 @@ import {
   CreateEntryDtoValidator,
   BlackedEntryDto,
   UserDto,
-} from "ente-types";
+} from "@@types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { Config } from "../helpers/config";
@@ -29,7 +29,7 @@ import { SlotsService } from "../slots/slots.service";
 import { UsersService } from "../users/users.service";
 import { parseISO } from "date-fns";
 import { SlotRepo } from "../db/slot.repo";
-import { isBetweenDates } from "ente-types";
+import { isBetweenDates } from "@@types";
 
 export enum FindEntryFailure {
   ForbiddenForUser,

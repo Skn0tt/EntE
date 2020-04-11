@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { PasswordResetService } from "./password-reset.service";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 
 describe("PasswordResetService", () => {
   let service: PasswordResetService;

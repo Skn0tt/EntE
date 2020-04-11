@@ -7,7 +7,7 @@
  */
 import { expect } from "chai";
 import { PasswordResetLink } from "./PasswordResetLink";
-import { Languages } from "ente-types";
+import { Languages } from "@@types";
 
 describe("PasswordResetLink", () => {
   describe("en", () => {

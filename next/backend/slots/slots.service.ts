@@ -10,7 +10,7 @@ import {
   CreatePrefiledSlotsDto,
   TEACHING_ROLES,
   CreatePrefiledSlotDtoValidator,
-} from "ente-types";
+} from "@@types";
 import { UserRepo } from "../db/user.repo";
 import { EmailService } from "../email/email.service";
 import { WinstonLoggerService } from "../winston-logger.service";

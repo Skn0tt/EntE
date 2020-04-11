@@ -1,9 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntriesController } from "./entries.controller";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 import { EntriesService } from "./entries.service";
 import { Success } from "monet";
-import { mocks } from "../../test/mocks/entities";
+import { mocks } from "../../test/helpers/entities";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
 
 const s: EntriesService = {

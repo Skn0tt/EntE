@@ -1,4 +1,4 @@
-import { CustomStringValidator, isValidUuid } from "ente-types";
+import { CustomStringValidator, isValidUuid } from "@@types";
 import { Entity, PrimaryColumn, ManyToOne } from "typeorm";
 import { User } from "./user.entity";
 import { IsString } from "class-validator";

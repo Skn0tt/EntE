@@ -39,7 +39,7 @@ import {
   Languages,
   BlackedUserDto,
   isValidClass,
-} from "ente-types";
+} from "@@types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
   PaginationInfo,

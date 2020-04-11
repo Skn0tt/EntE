@@ -1,4 +1,4 @@
-import { getByLanguage, Languages } from "ente-types";
+import { getByLanguage, Languages } from "@@types";
 import { SignRequestDE } from "./SignRequest.de";
 import { SignRequestEN } from "./SignRequest.en";
 import { mjml2html } from "../helpers/mjml";

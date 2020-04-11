@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UsersController } from "./users.controller";
-import { setupEnvVars } from "../../test/setup";
-import { mocks } from "../../test/mocks/entities";
+import { setupEnvVars } from "../../test/helpers/backend";
+import { mocks } from "../../test/helpers/entities";
 import { UsersService } from "./users.service";
 import { Success } from "monet";
 import * as _ from "lodash";

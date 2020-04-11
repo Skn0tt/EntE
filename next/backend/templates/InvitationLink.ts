@@ -7,7 +7,7 @@
  */
 
 // tslint:disable-next-line:no-var-requires
-import { Languages, getByLanguage, Roles } from "ente-types";
+import { Languages, getByLanguage, Roles } from "@@types";
 import { InvitationLinkEN } from "./InvitationLink.en";
 import { InvitationLinkDE } from "./InvitationLink.de";
 import { mjml2html } from "../helpers/mjml";

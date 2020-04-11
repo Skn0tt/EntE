@@ -7,7 +7,7 @@ import {
   FieldTripPayload,
   OtherEducationalPayload,
   OtherNonEducationalPayload,
-} from "ente-types";
+} from "@@types";
 import { User } from "./user.entity";
 
 export class EntryReasonRepo {

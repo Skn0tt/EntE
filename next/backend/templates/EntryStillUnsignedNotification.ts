@@ -1,4 +1,4 @@
-import { getByLanguage, Languages, UserDto, EntryDto } from "ente-types";
+import { getByLanguage, Languages, UserDto, EntryDto } from "@@types";
 import { mjml2html } from "../helpers/mjml";
 import { EntryStillUnsignedNotificationDE } from "./EntryStillUnsignedNotification.de";
 import { EntryStillUnsignedNotificationEN } from "./EntryStillUnsignedNotification.en";

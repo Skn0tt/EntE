@@ -15,7 +15,7 @@ import {
   CustomStringValidator,
   Languages,
   languagesArr,
-} from "ente-types";
+} from "@@types";
 import {
   Entity,
   ManyToMany,

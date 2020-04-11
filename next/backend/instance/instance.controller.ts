@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ValidationPipe } from "../helpers/validation.pipe";
-import { CreateUserDto } from "ente-types";
+import { CreateUserDto } from "@@types";
 import { ArrayBodyTransformPipe } from "../pipes/array-body-transform.pipe";
 import { RequestContext, Ctx } from "../helpers/request-context";
 import { InstanceService, ImportUsersFailure } from "./instance.service";

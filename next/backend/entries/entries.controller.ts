@@ -22,7 +22,7 @@ import {
   PatchEntryFailure,
 } from "./entries.service";
 import { AuthGuard } from "@nestjs/passport";
-import { CreateEntryDto, PatchEntryDto, BlackedEntryDto } from "ente-types";
+import { CreateEntryDto, PatchEntryDto, BlackedEntryDto } from "@@types";
 import { ValidationPipe } from "../helpers/validation.pipe";
 import {
   PaginationInfo,

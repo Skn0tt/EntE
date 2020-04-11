@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EmailService } from "./email.service";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 
 describe.only("EmailService", () => {
   let service: EmailService;

@@ -9,7 +9,7 @@
 import * as React from "react";
 import { Users } from "./Users";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../../testHelpers/mockRouter";
+import { getMockRouterProps } from "../../../test/helpers/mockRouter";
 import { Roles } from "@@types";
 import { UserN } from "../../redux";
 
@@ -21,8 +21,8 @@ describe("Users", () => {
       email: "email@emai.com",
       birthday: "2100-01-01",
       role: Roles.STUDENT,
-      id: "mystupidid"
-    })
+      id: "mystupidid",
+    }),
   ];
   const getUsers = jest.fn();
   const comp = shallow(

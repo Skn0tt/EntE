@@ -1,5 +1,5 @@
 import * as bcrypt from "bcrypt";
-import { UserDto, CreateUserDto } from "ente-types";
+import { UserDto, CreateUserDto } from "@@types";
 import { CreateUserDtoWithHash } from "../db/user.repo";
 
 const saltRounds = 12;

@@ -8,7 +8,7 @@ import {
   SlotDto,
   entryReasonCategoryIsEducational,
   CreatePrefiledSlotsDto,
-} from "ente-types";
+} from "@@types";
 import {
   PaginationInformation,
   withPagination,

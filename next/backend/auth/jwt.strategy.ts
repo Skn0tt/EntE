@@ -3,7 +3,7 @@ import { Strategy } from "passport-http-bearer";
 import { UnauthorizedException, Inject, Injectable } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 import { SignerService } from "../infrastructure/signer.service";
-import { JwtTokenPayload } from "ente-types";
+import { JwtTokenPayload } from "@@types";
 import { UserRepo } from "../db/user.repo";
 
 @Injectable()

@@ -7,7 +7,7 @@
  */
 import { expect } from "chai";
 import { SignRequest } from "./SignRequest";
-import { Languages } from "ente-types";
+import { Languages } from "@@types";
 
 describe("SignRequest", () => {
   const link = "https://simonknott.de";

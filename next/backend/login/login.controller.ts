@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, UseGuards } from "@nestjs/common";
 import { RequestContext, Ctx } from "../helpers/request-context";
-import { LoginDto } from "ente-types";
+import { LoginDto } from "@@types";
 import { LoginService } from "./login.service";
 import { AuthGuard } from "@nestjs/passport";
 

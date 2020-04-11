@@ -1,4 +1,4 @@
-import { getByLanguage, Languages } from "ente-types";
+import { getByLanguage, Languages } from "@@types";
 import { mjml2html } from "../helpers/mjml";
 import { SlotPrefiledNotificationDE } from "./SlotPrefiledNotification.de";
 import { SlotPrefiledNotificationEN } from "./SlotPrefiledNotification.en";

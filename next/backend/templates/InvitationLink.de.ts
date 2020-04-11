@@ -1,6 +1,6 @@
 import * as Handlebars from "handlebars";
 import "./register-helpers";
-import { Roles } from "ente-types";
+import { Roles } from "@@types";
 
 const title = "Sie wurden zu EntE eingeladen.";
 

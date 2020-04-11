@@ -5,7 +5,7 @@
  * This source code is licensed under the GNU Affero General Public License
  * found in the LICENSE file in the root directory of this source tree.
  */
-import { Languages, getByLanguage } from "ente-types";
+import { Languages, getByLanguage } from "@@types";
 import { PasswordResetLinkEN } from "./PasswordResetLink.en";
 import { PasswordResetLinkDE } from "./PasswordResetLink.de";
 import { mjml2html } from "../helpers/mjml";

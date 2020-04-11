@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { PasswordResetController } from "./password-reset.controller";
-import { setupEnvVars } from "../../test/setup";
+import { setupEnvVars } from "../../test/helpers/backend";
 import { PasswordResetService } from "./password-reset.service";
 import { Success } from "monet";
 

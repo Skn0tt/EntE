@@ -1,5 +1,5 @@
 import { InvitationLink } from "./InvitationLink";
-import { Roles, Languages } from "ente-types";
+import { Roles, Languages } from "@@types";
 
 describe("InvitationLink", () => {
   describe("en", () => {

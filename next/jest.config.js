@@ -1,3 +1,30 @@
+/**
+ * Source: https://gist.github.com/timosadchiy/87a5c3799ed44837c4d9de48a02a10bc
+ * Converts paths defined in tsconfig.json to the format of
+ * moduleNameMapper in jest.config.js.
+ *
+ * For example, {'@alias/*': [ 'path/to/alias/*' ]}
+ * Becomes {'@alias/(.*)': [ '<rootDir>/path/to/alias/$1' ]}
+ *
+ * @param {string} srcPath
+ * @param {string} tsconfigPath
+ */
+function makeModuleNameMapper() {
+  // Get paths from tsconfig
+  const { paths } = require("./tsconfig.json").compilerOptions;
+
+  const aliases = {};
+
+  // Iterate over paths and convert them into moduleNameMapper format
+  Object.keys(paths).forEach((item) => {
+    const key = item.replace("/*", "/(.*)");
+    const path = paths[item][0].replace("/*", "/$1");
+    aliases[key] = "<rootDir>/" + path;
+  });
+
+  return aliases;
+}
+
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -79,7 +106,7 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: makeModuleNameMapper(),
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -129,10 +156,10 @@ module.exports = {
   // setupFilesAfterEnv: [],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
-  // snapshotSerializers: [],
+  snapshotSerializers: ["enzyme-to-json/serializer"],
 
   // The test environment that will be used for testing
-  testEnvironment: "node"
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
-import { DEFAULT_DEFAULT_LANGUAGE } from "ente-types";
+import { DEFAULT_DEFAULT_LANGUAGE } from "@@types";
 
 const languageColumnNullable = new TableColumn({
   name: "language",

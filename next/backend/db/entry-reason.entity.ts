@@ -1,4 +1,4 @@
-import { EntryReasonCategory, entryReasonCategoryArray } from "ente-types";
+import { EntryReasonCategory, entryReasonCategoryArray } from "@@types";
 import { Entity, Column, ManyToOne } from "typeorm";
 import { IsIn } from "class-validator";
 import { User } from "./user.entity";

@@ -10,7 +10,7 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ReviewedRecordsService } from "./reviewedRecords.service";
 import { Ctx, RequestContext } from "../helpers/request-context";
-import { isValidUuid } from "ente-types";
+import { isValidUuid } from "@@types";
 
 @Controller("reviewedRecords")
 @UseGuards(AuthGuard("combined"))

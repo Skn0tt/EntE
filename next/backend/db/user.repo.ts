@@ -13,7 +13,7 @@ import {
   Languages,
   ROLES_WITH_CLASS,
   TEACHING_ROLES,
-} from "ente-types";
+} from "@@types";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as _ from "lodash";
 import {

@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
-import { LoginDto, Roles, EntryDto, TEACHING_ROLES, UserDto } from "ente-types";
+import { LoginDto, Roles, EntryDto, TEACHING_ROLES, UserDto } from "@@types";
 import { TokenService } from "../token/token.service";
 import { EntryRepo } from "../db/entry.repo";
 import { UserRepo } from "../db/user.repo";

@@ -9,7 +9,7 @@
 import * as React from "react";
 import { SpecificUser } from "./SpecificUser";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../testHelpers/mockRouter";
+import { getMockRouterProps } from "../../test/helpers/mockRouter";
 import { Roles } from "@@types";
 import * as sinon from "sinon";
 import { UserN } from "../redux";
@@ -25,7 +25,7 @@ describe.skip("SpecificUser", () => {
     email: "hort@hansen.de",
     birthday: "2100-01-01",
     role: Roles.STUDENT,
-    username: "hhansen"
+    username: "hhansen",
   });
   const getUser = sinon.stub().returns(Some(user));
   const requestUser = sinon.spy();

@@ -7,7 +7,7 @@ import { User } from "./user.entity";
 import { Slot } from "./slot.entity";
 import { UserRepo } from "./user.repo";
 import { SlotRepo } from "./slot.repo";
-import { EntryDto, CreateEntryDto, dateToIsoString } from "ente-types";
+import { EntryDto, CreateEntryDto, dateToIsoString } from "@@types";
 import {
   PaginationInformation,
   withPagination,

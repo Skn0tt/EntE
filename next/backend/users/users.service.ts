@@ -15,7 +15,7 @@ import {
   CreateUserDtoValidator,
   BaseUserDto,
   BlackedUserDto,
-} from "ente-types";
+} from "@@types";
 import { PasswordResetService } from "../password-reset/password-reset.service";
 import * as _ from "lodash";
 import { hashPasswordsOfUsers } from "../helpers/password-hash";

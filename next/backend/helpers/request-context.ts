@@ -1,6 +1,6 @@
 import { createParamDecorator } from "@nestjs/common";
 import { Request } from "express";
-import { UserDto, Roles } from "ente-types";
+import { UserDto, Roles } from "@@types";
 import { Maybe } from "monet";
 
 export interface WithId {

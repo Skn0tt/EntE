@@ -1,4 +1,4 @@
-import { getByLanguage, Languages } from "ente-types";
+import { getByLanguage, Languages } from "@@types";
 import { ManagerUnsignedInformationDE } from "./ManagerUnsignedInformation.de";
 import { ManagerUnsignedInformationEN } from "./ManagerUnsignedInformation.en";
 import { mjml2html } from "../helpers/mjml";
