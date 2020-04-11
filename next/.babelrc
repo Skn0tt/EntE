@@ -1,7 +1,18 @@
 {
   "presets": [ "next/babel" ],
   "plugins": [
-    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+    [
+      "@babel/plugin-transform-typescript",
+      {
+        "allowNamespaces": true
+      }
+    ],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["module-resolver", {
+      "alias": {
+        "@@types": "./src/types"
+      }
+    }],
     "babel-plugin-parameter-decorator"
   ]
 }
