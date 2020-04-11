@@ -1,5 +1,5 @@
 import { PassportStrategy, AuthGuard } from "@nestjs/passport";
-import * as CustomStrategy from "passport-custom";
+import { Strategy as CustomStrategy } from "passport-custom";
 import {
   UnauthorizedException,
   Inject,
@@ -20,7 +20,7 @@ const BASIC_REGEX = /(?<=Basic )(\S+)/gm;
 @Injectable()
 @UseGuards(AuthGuard("combined"))
 export class CombinedStrategy extends PassportStrategy(
-  CustomStrategy,
+  CustomStrategy as any,
   "combined"
 ) {
   constructor(
