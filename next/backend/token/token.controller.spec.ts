@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { TokenController } from "./token.controller";
 import { setupEnvVars } from "../../test/helpers/backend";
+import { TokenController } from "./token.controller";
 import { TokenService } from "./token.service";
 import { RequestContextUser } from "../helpers/request-context";
 

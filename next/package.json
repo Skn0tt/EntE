@@ -71,6 +71,7 @@
     "winston": "^3.1.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
     "@babel/preset-typescript": "^7.9.0",
     "@nestjs/testing": "^7.0.7",

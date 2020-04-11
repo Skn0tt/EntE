@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { StatusController } from "./status.controller";
 import { setupEnvVars } from "../../test/helpers/backend";
+import { StatusController } from "./status.controller";
 import { StatusService, HealthReport } from "./status.service";
 
 const mockReport = {

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { SlotsController } from "./slots.controller";
 import { setupEnvVars } from "../../test/helpers/backend";
+import { SlotsController } from "./slots.controller";
 import { SlotsService } from "./slots.service";
 import { Success } from "monet";
 import { mocks } from "../../test/helpers/entities";

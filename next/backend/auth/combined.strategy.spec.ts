@@ -1,6 +1,11 @@
+import { setupEnvVars } from "../../test/helpers/backend";
 import { CombinedStrategy } from "./combined.strategy";
 
 describe("CombinedStrategy", () => {
+  beforeAll(() => {
+    setupEnvVars();
+  });
+
   describe("extractCredentials", () => {
     it("returns credentials", () => {
       const creds = CombinedStrategy.extractCredentials("admin:root");

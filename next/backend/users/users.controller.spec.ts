@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { UsersController } from "./users.controller";
 import { setupEnvVars } from "../../test/helpers/backend";
+import { UsersController } from "./users.controller";
 import { mocks } from "../../test/helpers/entities";
 import { UsersService } from "./users.service";
 import { Success } from "monet";

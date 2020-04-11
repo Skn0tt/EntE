@@ -2,10 +2,10 @@ import { PassportStrategy, AuthGuard } from "@nestjs/passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import {
   UnauthorizedException,
-  Inject,
   Injectable,
   UseGuards,
   BadRequestException,
+  Inject,
 } from "@nestjs/common";
 import { BasicStrategy } from "./basic.strategy";
 import { JwtStrategy } from "./jwt.strategy";
