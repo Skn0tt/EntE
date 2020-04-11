@@ -37,8 +37,4 @@ describe("Users", () => {
   it("renders correctly", () => {
     expect(comp).toMatchSnapshot();
   });
-
-  it("requests all users", () => {
-    expect(getUsers).toBeCalled();
-  });
 });

@@ -9,7 +9,7 @@
 import * as React from "react";
 import { AuthenticatedRoute } from "./AuthenticatedRoute";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "test/helpers/mockRouter";
+import { getMockRouterProps } from "../../test/helpers/mockRouter";
 
 describe.skip("AuthenticatedRoute", () => {
   const text = "hallo";
