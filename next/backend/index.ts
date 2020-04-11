@@ -1,18 +1,14 @@
 import "reflect-metadata";
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app/app.module";
-import * as http from "http";
-import { NextApiHandler } from "next";
+import type * as http from "http";
+import type { NextApiHandler } from "next";
+import { bootstrap } from "./main";
 
 export module Backend {
   let listener: NextApiHandler | null = null;
 
   export async function getListener() {
     if (!listener) {
-      const app = await NestFactory.create(AppModule);
-      app.setGlobalPrefix("api");
-
-      await app.init();
+      const app = await bootstrap();
 
       const server: http.Server = app.getHttpServer();
       [listener] = server.listeners("request") as NextApiHandler[];
