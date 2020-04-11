@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
-import { DEFAULT_DEFAULT_LANGUAGE } from "@@types";
 
 const languageColumnNullable = new TableColumn({
   name: "language",
@@ -16,7 +15,7 @@ const languageColumn = new TableColumn({
 export class AddLanguageFieldToUser1545942329000 implements MigrationInterface {
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumn("user", languageColumnNullable);
-    const defaultLanguage = DEFAULT_DEFAULT_LANGUAGE;
+    const defaultLanguage = "en";
     await queryRunner.query("UPDATE user SET `language` = ?", [
       defaultLanguage,
     ]);
