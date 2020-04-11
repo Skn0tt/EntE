@@ -13,3 +13,5 @@ export function setupEnvVars() {
     REDIS_PORT: "6379",
   };
 }
+
+setupEnvVars();
