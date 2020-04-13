@@ -1,5 +1,4 @@
-import { createParamDecorator } from "@nestjs/common";
-import { Request } from "express";
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { UserDto, Roles } from "@@types";
 import { Maybe } from "monet";
 
@@ -42,7 +41,8 @@ export type RequestContext<T = {}> = T & {
 };
 
 export const Ctx = createParamDecorator(
-  (_, req: Request): RequestContext => {
+  (_, ctx: ExecutionContext): RequestContext => {
+    const req = ctx.switchToHttp().getRequest();
     const user = req.user as RequestContextUser;
     return { user };
   }

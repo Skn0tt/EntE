@@ -1,7 +1,6 @@
 import { Maybe, None } from "monet";
 import { SelectQueryBuilder } from "typeorm";
-import { createParamDecorator } from "@nestjs/common";
-import { Request } from "express";
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import * as _ from "lodash";
 
 export interface PaginationInformation {
@@ -33,8 +32,9 @@ export const withPagination = (info: PaginationInformation) => <T>(
 const fromQuery = (q: any) => Maybe.fromUndefined(Number(q)).filterNot(_.isNaN);
 
 export const PaginationInfo = createParamDecorator(
-  (_, req: Request): PaginationInformation => {
-    const { limit, offset } = req.query || {};
+  (_, ctx: ExecutionContext): PaginationInformation => {
+    const req = ctx.switchToHttp().getRequest();
+    const { limit, offset } = req.query;
     return {
       limit: fromQuery(limit),
       offset: fromQuery(offset),
