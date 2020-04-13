@@ -19,13 +19,13 @@ export const withPagination = (info: PaginationInformation) => <T>(
 ): SelectQueryBuilder<T> => {
   let qB = _qB;
 
-  if (info.offset.isSome()) {
-    qB = qB.skip(info.offset.some());
-  }
+  info.offset.forEach((offset) => {
+    qB = qB.skip(offset);
+  });
 
-  if (info.limit.isSome()) {
-    qB = qB.take(info.limit.some());
-  }
+  info.limit.forEach((limit) => {
+    qB = qB.take(limit);
+  });
 
   return qB;
 };
