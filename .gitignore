@@ -1,6 +1,7 @@
 lib
 site
 docs_dist
+.env
 
 # Tests
 /e2e.xml

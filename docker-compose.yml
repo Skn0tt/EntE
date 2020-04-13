@@ -25,3 +25,9 @@ services:
     image: redis:4.0.10
     ports:
       - 6379:6379
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - 1025:1025
+      - 8025:8025
