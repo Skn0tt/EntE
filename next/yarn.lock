@@ -2294,9 +2294,9 @@ babel-plugin-jest-hoist@^25.2.6:
   dependencies:
     "@types/babel__traverse" "^7.0.6"
 
-"babel-plugin-parameter-decorator@https://github.com/Skn0tt/babel-plugin-parameter-decorator#98bd20836be32b2ae413c7700c33accac7df63c8":
+"babel-plugin-parameter-decorator@https://github.com/Skn0tt/babel-plugin-parameter-decorator#b8a0e47a463f6d0c2ace566cbe7187da72d90d80":
   version "1.0.15"
-  resolved "https://github.com/Skn0tt/babel-plugin-parameter-decorator#98bd20836be32b2ae413c7700c33accac7df63c8"
+  resolved "https://github.com/Skn0tt/babel-plugin-parameter-decorator#b8a0e47a463f6d0c2ace566cbe7187da72d90d80"
 
 babel-plugin-syntax-jsx@6.18.0:
   version "6.18.0"

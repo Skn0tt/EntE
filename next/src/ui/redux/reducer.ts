@@ -251,7 +251,7 @@ const reducer = handleActions<AppState | undefined, any>(
 
     // ## LOGOUT
     [LOGOUT]: (state?: AppState): AppState =>
-      new AppState({
+      AppState({
         pendingActions: state!.get("pendingActions"),
         colorScheme: state!.get("colorScheme"),
       }),
