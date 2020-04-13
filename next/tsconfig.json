@@ -18,7 +18,7 @@
     "downlevelIteration": true,
     "baseUrl": "./src",
     "paths": {
-      "@@types": ["./src/types"]
+      "@@types": ["types"]
     }
   },
   "exclude": ["node_modules"],

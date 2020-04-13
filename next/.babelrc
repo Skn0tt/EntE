@@ -1,18 +1,25 @@
 {
-  "presets": [ "next/babel" ],
-  "plugins": [
+  "presets": [
     [
-      "@babel/plugin-transform-typescript",
+      "next/babel",
       {
-        "allowNamespaces": true
+        "class-properties": {
+          "loose": true
+        },
+        "preset-typescript": {
+          "onlyRemoveTypeImports": true
+        }
       }
-    ],
+    ]
+  ],
+  "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
     ["module-resolver", {
+      "root": ["./src"],
       "alias": {
         "@@types": "./src/types"
       }
     }],
-    "babel-plugin-parameter-decorator"
   ]
 }

@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { Backend } from "../../backend";
+import type { IncomingMessage, ServerResponse } from "http";
 
-export default (req: NextApiRequest, res: NextApiResponse) =>
+export default (req: IncomingMessage, res: ServerResponse) =>
   new Promise(async (resolve) => {
     const listener = await Backend.getListener();
     listener(req, res);

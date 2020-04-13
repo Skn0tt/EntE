@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { UserDto, CreateUserDto } from "@@types";
 import { CreateUserDtoWithHash } from "../db/user.repo";
 
