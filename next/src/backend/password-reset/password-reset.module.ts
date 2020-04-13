@@ -6,7 +6,7 @@ import { EmailModule } from "../email/email.module";
 import { DbModule } from "../db/db.module";
 
 @Module({
-  imports: [EmailModule, DbModule],
+  imports: [EmailModule, DbModule, AuthModule],
   providers: [PasswordResetService],
   controllers: [PasswordResetController],
   exports: [PasswordResetService],
