@@ -34,6 +34,6 @@ export class CustomTypeOrmLogger implements Logger {
   }
 
   log(level: "log" | "info" | "warn", message: any, queryRunner?: QueryRunner) {
-    WinstonLoggerService.logger.log(level, message);
+    WinstonLoggerService.log(level, message);
   }
 }
