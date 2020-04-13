@@ -6,53 +6,25 @@ import { StatusModule } from "./status/status.module";
 import { WinstonLoggerService } from "./winston-logger.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Config } from "./helpers/config";
-import { User } from "./db/user.entity";
-import { Slot } from "./db/slot.entity";
-import { Entry } from "./db/entry.entity";
-import { RecordReviewal } from "./db/recordReviewal.entity";
 import { LoggerMiddleware } from "./logger.middleware";
 import { UsersModule } from "./users/users.module";
 import { PasswordResetModule } from "./password-reset/password-reset.module";
 import { ExportModule } from "./export/export.module";
-import { migrations } from "./db/migrations";
-import { CustomTypeOrmLogger } from "./custom-typeorm-logger";
 import { DevModule } from "./dev/dev.module";
 import { InstanceModule } from "./instance/instance.module";
 import { InstanceConfigModule } from "./instance-config/instance-config.module";
 import { LoginModule } from "./login/login.module";
-import { KeyValueStore } from "./db/keyvaluestore.entity";
 import { WeeklyUpdatesSchedulerModule } from "./weekly-updates-scheduler/weekly-updates-scheduler.module";
 import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module";
-
-const {
-  database,
-  host,
-  password,
-  port,
-  username,
-  timezone,
-} = Config.getMysqlConfig();
+import { TypeOrmOptionsFactory } from "./typeorm-options.factory";
 
 const isDevMode = Config.isDevMode();
 
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: "mysql",
-      username,
-      migrations,
-      port,
-      password,
-      host,
-      database,
-      timezone,
-      dateStrings: ["DATE"],
-      entities: [User, Slot, Entry, KeyValueStore, RecordReviewal],
-      synchronize: false,
-      logger: new CustomTypeOrmLogger(),
-      logging: "all",
-      keepConnectionAlive: true,
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmOptionsFactory,
     }),
     InstanceConfigModule,
     SlotsModule,
