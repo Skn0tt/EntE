@@ -34,7 +34,7 @@ const fromQuery = (q: any) => Maybe.fromUndefined(Number(q)).filterNot(_.isNaN);
 
 export const PaginationInfo = createParamDecorator(
   (_, req: Request): PaginationInformation => {
-    const { limit, offset } = req.query;
+    const { limit, offset } = req.query || {};
     return {
       limit: fromQuery(limit),
       offset: fromQuery(offset),
