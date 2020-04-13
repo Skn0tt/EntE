@@ -2,9 +2,7 @@ import { Logger, QueryRunner } from "typeorm";
 import { WinstonLoggerService } from "./winston-logger.service";
 
 export class CustomTypeOrmLogger implements Logger {
-  logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
-    throw new Error("Method not implemented.");
-  }
+  logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {}
 
   logQueryError(
     error: string,

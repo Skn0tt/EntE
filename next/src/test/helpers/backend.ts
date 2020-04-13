@@ -2,7 +2,6 @@ export function setupEnvVars() {
   process.env = {
     NODE_ENV: "development",
     BASE_URL: "localhost",
-    RAILMAIL_HOST: "http://railmail",
     SIGNER_BASEURL: "http://signer:3000",
     MYSQL_HOST: "localhost",
     MYSQL_PORT: "3306",

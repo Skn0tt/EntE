@@ -52,6 +52,7 @@ const isDevMode = Config.isDevMode();
       synchronize: false,
       logger: new CustomTypeOrmLogger(),
       logging: "all",
+      keepConnectionAlive: true,
     }),
     InstanceConfigModule,
     SlotsModule,

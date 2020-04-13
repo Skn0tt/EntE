@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  mariadb:
+    image: mariadb:10.4
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ente
+      MYSQL_PASSWORD: root
+      MYSQL_USER: ente
+
+  signer:
+    image: skn0tt/signer:v0.7.0
+    ports:
+      - 4000:3000
+    environment:
+      REDIS_HOSTNAME: redis
+      TOKEN_EXPIRY: 900
+      ROTATION_INTERVAL: 900
+      ROTATE_ON_STARTUP: "true"
+      ASYMMETRIC_SIGNING: "true"
+
+  redis:
+    image: redis:4.0.10
+    ports:
+      - 6379:6379
