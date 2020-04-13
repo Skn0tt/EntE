@@ -14,12 +14,6 @@
   ],
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    "babel-plugin-parameter-decorator",
-    ["module-resolver", {
-      "root": ["./src"],
-      "alias": {
-        "@@types": "./src/types"
-      }
-    }],
+    "babel-plugin-parameter-decorator"
   ]
 }
