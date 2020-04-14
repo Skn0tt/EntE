@@ -8,8 +8,6 @@
 
 import "reflect-metadata";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { get as getConfig } from "./config";
 import { install as installMuiStyles } from "@material-ui/styles";
@@ -35,6 +33,9 @@ import { getSagaListeners } from "./saga-listeners";
 import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
 import { LocalizedMUIPickersUtilsProvider } from "./components/LocalizedMUIPickersUtilsProvider";
 import { DEFAULT_DEFAULT_LANGUAGE } from "@@types";
+import MessageStream from "./components/MessageStream";
+import AuthService from "./AuthService";
+import InstanceConfigGate from "./components/InstanceConfigGate";
 
 installMuiStyles();
 
@@ -54,7 +55,7 @@ const config: Partial<ReduxConfig> = {
   middlewares: [],
 };
 
-const { SENTRY_DSN, ALLOW_INSECURE, VERSION } = getConfig();
+const { SENTRY_DSN, ALLOW_INSECURE, VERSION, ROTATION_PERIOD } = getConfig();
 
 const setupSentry = (dsn: string) => {
   if (!isSentryDsn(dsn)) {
@@ -78,8 +79,9 @@ const setupSentry = (dsn: string) => {
   config.onSagaError = ErrorReporting.report;
 };
 
-if (!!SENTRY_DSN) {
-  setupSentry(SENTRY_DSN);
+if (false && !!SENTRY_DSN) {
+  // TODO: enable sentr yagain
+  setupSentry(SENTRY_DSN!);
 }
 
 const setupSagaListeners = (store: Store<AppState>) => {
@@ -90,33 +92,32 @@ const setupSagaListeners = (store: Store<AppState>) => {
   updateConfig(sagaListeners);
 };
 
-const bootstrap = async () => {
-  const store = await setupRedux(config);
+export function Wrapper(props: React.PropsWithChildren<{}>) {
+  const store = React.useMemo(() => {
+    const store = setupRedux(config);
+    setupSagaListeners(store);
+    return store;
+  }, []);
 
-  setupSagaListeners(store);
+  return (
+    <StoreContext.Provider value={store}>
+      <Provider store={store}>
+        <ConnectedCombinedThemeProvider>
+          <LocalizedMUIPickersUtilsProvider>
+            <HttpsGate disable={ALLOW_INSECURE}>
+              <InstanceConfigGate>
+                <MessagesProvider>
+                  <CssBaseline />
+                  <MessageStream />
+                  <AuthService period={ROTATION_PERIOD} />
 
-  const Index = () => (
-    <div>
-      <React.StrictMode>
-        <CssBaseline />
-        <StoreContext.Provider value={store}>
-          <Provider store={store}>
-            <ConnectedCombinedThemeProvider>
-              <LocalizedMUIPickersUtilsProvider>
-                <HttpsGate disable={ALLOW_INSECURE}>
-                  <MessagesProvider>
-                    <App />
-                  </MessagesProvider>
-                </HttpsGate>
-              </LocalizedMUIPickersUtilsProvider>
-            </ConnectedCombinedThemeProvider>
-          </Provider>
-        </StoreContext.Provider>
-      </React.StrictMode>
-    </div>
+                  {props.children}
+                </MessagesProvider>
+              </InstanceConfigGate>
+            </HttpsGate>
+          </LocalizedMUIPickersUtilsProvider>
+        </ConnectedCombinedThemeProvider>
+      </Provider>
+    </StoreContext.Provider>
   );
-
-  ReactDOM.render(<Index />, document.getElementById("root"));
-};
-
-bootstrap();
+}

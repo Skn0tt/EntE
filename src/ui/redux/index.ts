@@ -15,7 +15,7 @@ export * from "./types";
 export * from "./constants";
 export * from "./config";
 
-const setup = async (conf: Partial<ReduxConfig>) => {
+const setup = (conf: Partial<ReduxConfig>) => {
   updateConfig(conf);
 
   return await createStore();

@@ -40,7 +40,7 @@ import { useTheme, makeStyles } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "@@types";
-import { apiBaseUrl } from "../../";
+import { apiBaseUrl } from "../../Wrapper";
 import Axios from "axios";
 import { DeleteSlotDialog } from "./DeleteSlotDialog";
 import Link from "next/link";

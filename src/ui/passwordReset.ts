@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "./";
+import { apiBaseUrl } from "./Wrapper";
 import Axios from "axios";
 import { ByLanguage } from "@@types";
 
