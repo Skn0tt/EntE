@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import type * as http from "http";
 import type { RequestListener } from "http";
 import { bootstrap } from "./main";

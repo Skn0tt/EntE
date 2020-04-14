@@ -1,4 +1,7 @@
-module.exports = {
+const withSvgr = require("next-svgr");
+
+module.exports = withSvgr({
+  target: "serverless",
   experimental: {
     jsconfigPaths: true,
   },
@@ -6,4 +9,4 @@ module.exports = {
     SENTRY_DSN: process.env.SENTRY_DSN,
     ROTATION_PERIOD: process.env.ROTATION_PERIOD,
   },
-};
+});
