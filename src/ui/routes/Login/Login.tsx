@@ -290,4 +290,4 @@ export default withRouter(
       )
     )
   )
-);
+) as React.ComponentType<{}>;

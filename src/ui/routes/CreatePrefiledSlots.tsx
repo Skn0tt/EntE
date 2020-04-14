@@ -19,7 +19,6 @@ import {
 import { DateInput } from "../elements/DateInput";
 import { HourFromToInput } from "../elements/HourFromToInput";
 import Axios from "axios";
-import { apiBaseUrl } from "../Wrapper";
 import { useLoadingFlag } from "../useLoadingFlag";
 import { useRouter } from "next/router";
 
@@ -64,7 +63,7 @@ function usePrefiledSlotsCreator() {
 
   return useCallback(
     async (slot: CreatePrefiledSlotsDto) => {
-      await Axios.post(`${apiBaseUrl}/slots/prefiled`, slot, {
+      await Axios.post(`/api/slots/prefiled`, slot, {
         headers: {
           Authorization: `Bearer ${token.orSome("")}`,
         },
@@ -143,13 +142,13 @@ const CreatePrefiledSlots = () => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={history.goBack} color="secondary">
+        <Button onClick={router.back} color="secondary">
           {translation.cancel}
         </Button>
         <Button
           onClick={async () => {
             await whileLoading(() => handleCreate(createPrefiledSlotDto));
-            history.goBack();
+            router.back();
           }}
           disabled={!isValidInput || isLoading}
           color="primary"

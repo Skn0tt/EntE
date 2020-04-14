@@ -1,4 +1,3 @@
-import { apiBaseUrl } from "./Wrapper";
 import Axios from "axios";
 import { ByLanguage } from "@@types";
 
@@ -6,7 +5,7 @@ export async function invokeReset(
   username: string,
   addMessage: (msg: ByLanguage<string>) => void
 ) {
-  await Axios.post(`${apiBaseUrl}/passwordReset/${username}`);
+  await Axios.post(`/api/passwordReset/${username}`);
 
   addMessage({
     de:
@@ -22,7 +21,7 @@ export async function setPassword(
   addMessage: (msg: ByLanguage<string>) => void
 ) {
   try {
-    await Axios.put(`${apiBaseUrl}/passwordReset/${token}`, newPassword, {
+    await Axios.put(`/api/passwordReset/${token}`, newPassword, {
       headers: {
         "Content-Type": "text/plain",
       },

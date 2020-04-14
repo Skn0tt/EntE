@@ -40,7 +40,6 @@ import { useTheme, makeStyles } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "@@types";
-import { apiBaseUrl } from "../../Wrapper";
 import Axios from "axios";
 import { DeleteSlotDialog } from "./DeleteSlotDialog";
 import Link from "next/link";
@@ -50,7 +49,7 @@ function usePrefileDeleter() {
   const dispatch = useDispatch();
   return React.useCallback(
     async (prefiledSlotId: string) => {
-      await Axios.delete(`${apiBaseUrl}/slots/${prefiledSlotId}`, {
+      await Axios.delete(`/api/slots/${prefiledSlotId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
