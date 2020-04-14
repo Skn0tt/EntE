@@ -7,8 +7,11 @@ interface IConfig {
   production: boolean;
   baseUrl: string;
   DSN: Maybe<string>;
-  signerBaseUrl: string;
   version: string;
+  signer: {
+    rotationInterval: number;
+    tokenExpiry: number;
+  };
   mail: {
     address: string;
     sender: string;
@@ -54,6 +57,8 @@ const config = ((): Readonly<IConfig> => {
     SMTP_ADDRESS,
     SMTP_RETRY_DELAY,
     SENTRY_DSN,
+    JWT_ROTATION_INTERVAL,
+    JWT_EXPIRY,
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL!),
@@ -63,7 +68,10 @@ const config = ((): Readonly<IConfig> => {
     },
     DSN: Maybe.fromUndefined(SENTRY_DSN).filter((s) => s !== "<nil>"),
     version: pack.version,
-    signerBaseUrl: envVars.SIGNER_BASEURL!,
+    signer: {
+      rotationInterval: +(JWT_ROTATION_INTERVAL || 900),
+      tokenExpiry: +(JWT_EXPIRY || 900),
+    },
     mail: {
       address: SMTP_ADDRESS!,
       host: SMTP_HOST!,
@@ -106,11 +114,11 @@ const getConfig = () => config;
 
 const getWeeklySummaryCron = () => config.cron.weeklySummary;
 
-const getSignerBaseUrl = () => config.signerBaseUrl;
-
 const getVersion = () => config.version;
 
 const getMailConfig = () => config.mail;
+
+const getSignerConfig = () => config.signer;
 
 export const Config = {
   getRedisConfig,
@@ -122,6 +130,6 @@ export const Config = {
   getSentryDsn,
   getConfig,
   getWeeklySummaryCron,
-  getSignerBaseUrl,
   getVersion,
+  getSignerConfig,
 };

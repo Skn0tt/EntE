@@ -1,55 +1,41 @@
-import { Injectable } from "@nestjs/common";
-import Axios from "axios";
-import { Maybe, Some, None } from "monet";
+import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
+import { Maybe } from "monet";
+import { RedisService } from "./redis.service";
+import Signer, { JWTRepository } from "@skn0tt/signer";
 import { Config } from "../helpers/config";
 
 @Injectable()
-export class SignerService {
-  private readonly client = Axios.create({
-    baseURL: Config.getSignerBaseUrl(),
-  });
+export class SignerService<T extends object> implements OnModuleInit {
+  private signer: Signer<T>;
+  private jwtRepo: JWTRepository<T>;
+
+  constructor(
+    @Inject(RedisService) private readonly redisService: RedisService
+  ) {}
+
+  async onModuleInit() {
+    const { rotationInterval, tokenExpiry } = Config.getSignerConfig();
+
+    this.signer = await Signer.fromRedis(this.redisService.getClient(), {
+      rotationInterval,
+      tokenExpiry,
+      mode: "asymmetric",
+      secretLength: 96,
+    });
+
+    this.jwtRepo = this.signer.getJwtRepository();
+  }
 
   async createToken(payload: any): Promise<string> {
-    const result = await this.client.post<string>("/tokens", payload);
-    return result.data;
+    return await this.jwtRepo.sign(payload);
   }
 
-  async validateToken(token: string): Promise<boolean> {
-    const result = await this.client.head(`/tokens/${token}`, {
-      validateStatus: (status) => [200, 404].includes(status),
-    });
-    if (result.status === 200) {
-      return true;
-    }
-    if (result.status === 404) {
-      return false;
-    }
-    throw new Error(`Contract with Signer broken: Returned ${result.status}`);
-  }
-
-  async decryptToken<T>(token: string): Promise<Maybe<T>> {
-    const result = await this.client.get(`/tokens/${token}`, {
-      validateStatus: (status) => [200, 404].includes(status),
-    });
-    if (result.status === 200) {
-      return Some(result.data);
-    }
-    if (result.status === 404) {
-      return None();
-    }
-    throw new Error(`Contract with Signer broken: Returned ${result.status}`);
+  async decryptToken(token: string): Promise<Maybe<T>> {
+    const payload = await this.jwtRepo.verify(token);
+    return Maybe.fromNull(payload);
   }
 
   async blockToken(token: string) {
-    await this.client.delete(`/tokens/${token}`);
-  }
-
-  async isHealthy(): Promise<boolean> {
-    try {
-      const res = await this.client.get("/status");
-      return res.status === 200;
-    } catch (e) {
-      return false;
-    }
+    await this.jwtRepo.block(token);
   }
 }

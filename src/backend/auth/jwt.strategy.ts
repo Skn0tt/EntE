@@ -9,16 +9,15 @@ import { UserRepo } from "../db/user.repo";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(SignerService) private readonly signerService: SignerService,
+    @Inject(SignerService)
+    private readonly signerService: SignerService<JwtTokenPayload>,
     @Inject(UserRepo) private readonly userRepo: UserRepo
   ) {
     super();
   }
 
   async validate(token: string): Promise<RequestContextUser> {
-    const payload = await this.signerService.decryptToken<JwtTokenPayload>(
-      token
-    );
+    const payload = await this.signerService.decryptToken(token);
 
     return payload.cata<RequestContextUser>(
       () => {

@@ -1,6 +1,5 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RedisService } from "../infrastructure/redis.service";
-import { SignerService } from "../infrastructure/signer.service";
 import { DbHealthIndicator } from "../db/db-health-indicator";
 
 export interface HealthReport {
@@ -16,7 +15,6 @@ export interface HealthReport {
 export class StatusService {
   constructor(
     @Inject(RedisService) private readonly redisService: RedisService,
-    @Inject(SignerService) private readonly signerService: SignerService,
     @Inject(DbHealthIndicator)
     private readonly dbHealthIndicator: DbHealthIndicator
   ) {}
@@ -25,7 +23,6 @@ export class StatusService {
     // TODO: email check
 
     const redisIsHealthy = await this.redisService.isHealthy();
-    const signerIsHealthy = await this.signerService.isHealthy();
     const dbIsHealthy = await this.dbHealthIndicator.isHealthy();
 
     const enteIsHealthy = redisIsHealthy && signerIsHealthy && dbIsHealthy;

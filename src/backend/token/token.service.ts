@@ -6,7 +6,8 @@ import { RequestContextUser } from "../helpers/request-context";
 @Injectable()
 export class TokenService {
   constructor(
-    @Inject(SignerService) private readonly signerService: SignerService
+    @Inject(SignerService)
+    private readonly signerService: SignerService<JwtTokenPayload>
   ) {}
 
   async createToken(user: RequestContextUser): Promise<string> {

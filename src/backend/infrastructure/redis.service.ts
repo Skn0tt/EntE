@@ -15,6 +15,10 @@ export class RedisService {
     this.prefix = prefix;
   }
 
+  public getClient() {
+    return this.client;
+  }
+
   removeFromSet = (key: string, value: string) =>
     new Promise<void>((resolve, reject) => {
       this.client.srem(this.prefixedKey(key), value, (err) => {
