@@ -34,6 +34,7 @@ import { Maybe } from "monet";
 import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
+import Logo from "../assets/Logo.svg";
 
 const drawerWidth = 240;
 
@@ -147,11 +148,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <img
-              className={classes.logo}
-              src={require("../assets/Logo.svg")}
-              height={24}
-            />
+            <Logo height={24} className={classes.logo} />
             <div className={classes.grow} />
 
             <RefreshButton />

@@ -8,8 +8,7 @@
 
 import * as React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { get as getConfig } from "./config";
-import { install as installMuiStyles } from "@material-ui/styles";
+import * as config from "./config";
 
 // Fonts
 
@@ -28,16 +27,15 @@ import { MessagesProvider } from "./context/Messages";
 import { StoreContext } from "./helpers/store-context";
 import { Store } from "redux";
 import { getSagaListeners } from "./saga-listeners";
-import ConnectedCombinedThemeProvider from "./components/ConnectedCombinedThemeProvider";
+import ConnectedThemeProvider from "./components/ConnectedThemeProvider";
 import { LocalizedMUIPickersUtilsProvider } from "./components/LocalizedMUIPickersUtilsProvider";
 import { DEFAULT_DEFAULT_LANGUAGE } from "@@types";
 import MessageStream from "./components/MessageStream";
 import AuthService from "./AuthService";
 import InstanceConfigGate from "./components/InstanceConfigGate";
+import { useEffectOnce } from "react-use";
 
-installMuiStyles();
-
-const config: Partial<ReduxConfig> = {
+const reduxConfig: Partial<ReduxConfig> = {
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
     const link = document.createElement("a");
@@ -49,7 +47,7 @@ const config: Partial<ReduxConfig> = {
   middlewares: [],
 };
 
-const { SENTRY_DSN, VERSION, ROTATION_PERIOD } = getConfig();
+const { SENTRY_DSN, VERSION, ROTATION_PERIOD } = config.get();
 
 const setupSentry = (dsn: string) => {
   if (!isSentryDsn(dsn)) {
@@ -69,12 +67,12 @@ const setupSentry = (dsn: string) => {
 
   const sentryMiddleware = createSentryMiddleware(sentryClient);
 
-  config.middlewares!.push(sentryMiddleware);
-  config.onSagaError = ErrorReporting.report;
+  reduxConfig.middlewares!.push(sentryMiddleware);
+  reduxConfig.onSagaError = ErrorReporting.report;
 };
 
 if (false && !!SENTRY_DSN) {
-  // TODO: enable sentr yagain
+  // TODO: enable sentry again
   setupSentry(SENTRY_DSN!);
 }
 
@@ -87,16 +85,22 @@ const setupSagaListeners = (store: Store<AppState>) => {
 };
 
 export function Wrapper(props: React.PropsWithChildren<{}>) {
-  const store = React.useMemo(() => {
-    const store = setupRedux(config);
-    setupSagaListeners(store);
-    return store;
-  }, []);
+  const [store, setStore] = React.useState<Store>();
+  useEffectOnce(() => {
+    setupRedux(reduxConfig).then((store) => {
+      setupSagaListeners(store);
+      setStore(store);
+    });
+  });
+
+  if (!store) {
+    return null;
+  }
 
   return (
     <StoreContext.Provider value={store}>
       <Provider store={store}>
-        <ConnectedCombinedThemeProvider>
+        <ConnectedThemeProvider>
           <LocalizedMUIPickersUtilsProvider>
             <InstanceConfigGate>
               <MessagesProvider>
@@ -108,7 +112,7 @@ export function Wrapper(props: React.PropsWithChildren<{}>) {
               </MessagesProvider>
             </InstanceConfigGate>
           </LocalizedMUIPickersUtilsProvider>
-        </ConnectedCombinedThemeProvider>
+        </ConnectedThemeProvider>
       </Provider>
     </StoreContext.Provider>
   );

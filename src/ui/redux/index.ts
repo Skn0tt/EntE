@@ -15,10 +15,10 @@ export * from "./types";
 export * from "./constants";
 export * from "./config";
 
-const setup = (conf: Partial<ReduxConfig>) => {
+const setup = async (conf: Partial<ReduxConfig>) => {
   updateConfig(conf);
 
-  return createStore();
+  return await createStore();
 };
 
 export default setup;

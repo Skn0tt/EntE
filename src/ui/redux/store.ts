@@ -40,29 +40,33 @@ const removeUnneededTransform = createTransform(
 );
 
 const startPersistance = (store: Store) => {
-  return persistStore(
-    store,
-    {
-      storage: getConfig().storage,
-      transforms: [removeUnneededTransform],
-      records: [
-        UserN,
-        SlotN,
-        AuthState,
-        AppState,
-        EntryN,
-        InstanceConfigN,
-        ParentSignatureTimesN,
-      ],
-    },
-    () => {}
-  );
+  return new Promise<Persistor>((resolve) => {
+    const persistor = persistStore(
+      store,
+      {
+        storage: getConfig().storage,
+        transforms: [removeUnneededTransform],
+        records: [
+          UserN,
+          SlotN,
+          AuthState,
+          AppState,
+          EntryN,
+          InstanceConfigN,
+          ParentSignatureTimesN,
+        ],
+      },
+      () => {
+        resolve(persistor);
+      }
+    );
+  });
 };
 
 let store: Store | null = null;
 let persistor: Persistor;
 
-export const createStore = () => {
+export const createStore = async () => {
   const sagaMiddleware = reduxSaga({
     onError: getConfig().onSagaError,
   });
@@ -80,7 +84,7 @@ export const createStore = () => {
 
   sagaMiddleware.run(saga);
 
-  persistor = startPersistance(store);
+  persistor = await startPersistance(store);
 
   return store;
 };
