@@ -13,8 +13,8 @@ import InsertDriveFile from "@material-ui/icons/InsertDriveFile";
 import Person from "@material-ui/icons/Person";
 import Settings from "@material-ui/icons/Settings";
 import School from "@material-ui/icons/School";
-import { Route } from "react-router-dom";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import Link from "next/link";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -35,85 +35,60 @@ const useTranslation = makeTranslationHook({
   },
 });
 
+interface ListItemLinkProps {
+  href: string;
+  icon: JSX.Element;
+  text: string;
+}
+
+function ListItemLink(props: ListItemLinkProps) {
+  const { href, icon, text } = props;
+  return (
+    <Link href={href}>
+      <ListItem button>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItem>
+    </Link>
+  );
+}
+
 /**
  * # Items
  */
 const Slots: React.FunctionComponent = () => {
   const lang = useTranslation();
-  return (
-    <Route
-      render={({ history }) => (
-        <ListItem button onClick={() => history.push("/slots")}>
-          <ListItemIcon>
-            <WatchLater />
-          </ListItemIcon>
-          <ListItemText primary={lang.slots} />
-        </ListItem>
-      )}
-    />
-  );
+  return <ListItemLink href="/slots" icon={<WatchLater />} text={lang.slots} />;
 };
 
 const Users: React.FunctionComponent = () => {
   const lang = useTranslation();
-  return (
-    <Route
-      render={({ history }) => (
-        <ListItem button onClick={() => history.push("/users")}>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText primary={lang.users} />
-        </ListItem>
-      )}
-    />
-  );
+  return <ListItemLink href="/users" icon={<Person />} text={lang.users} />;
 };
 
 const Entries: React.SFC = () => {
   const lang = useTranslation();
   return (
-    <Route
-      render={({ history }) => (
-        <ListItem button onClick={() => history.push("/entries")}>
-          <ListItemIcon>
-            <InsertDriveFile />
-          </ListItemIcon>
-          <ListItemText primary={lang.entries} />
-        </ListItem>
-      )}
+    <ListItemLink
+      href="/entries"
+      icon={<InsertDriveFile />}
+      text={lang.entries}
     />
   );
 };
 
 const Admin: React.SFC = () => {
   const lang = useTranslation();
-  return (
-    <Route
-      render={({ history }) => (
-        <ListItem button onClick={() => history.push("/admin")}>
-          <ListItemIcon>
-            <Settings />
-          </ListItemIcon>
-          <ListItemText primary={lang.admin} />
-        </ListItem>
-      )}
-    />
-  );
+  return <ListItemLink href="/admin" icon={<Settings />} text={lang.admin} />;
 };
 
 const Class: React.SFC<{ plural?: boolean }> = ({ plural }) => {
   const lang = useTranslation();
   return (
-    <Route
-      render={({ history }) => (
-        <ListItem button onClick={() => history.push("/class")}>
-          <ListItemIcon>
-            <School />
-          </ListItemIcon>
-          <ListItemText primary={plural ? lang.classes : lang.class} />
-        </ListItem>
-      )}
+    <ListItemLink
+      href="/class"
+      icon={<School />}
+      text={plural ? lang.classes : lang.class}
     />
   );
 };

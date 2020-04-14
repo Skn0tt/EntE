@@ -1,22 +1,18 @@
 import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
 import { withMobileDialog, Dialog } from "@material-ui/core";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import SpecificEntry from "./SpecificEntry";
+import { useRouter } from "next/router";
 
-interface SpecificEntryRouteMatch {
-  entryId: string;
-}
-
-type SpecificEntryRouteProps = RouteComponentProps<SpecificEntryRouteMatch> &
-  InjectedProps;
+type SpecificEntryRouteProps = InjectedProps;
 
 const SpecificEntryRoute: React.FC<SpecificEntryRouteProps> = (props) => {
-  const { fullScreen, match, history } = props;
-  const { entryId } = match.params;
+  const { fullScreen } = props;
+  const router = useRouter();
+  const entryId = router.query.entryId as string;
 
   const handleClose = React.useCallback(() => {
-    history.push("/entries");
+    router.push("/entries");
   }, [history]);
 
   return (
@@ -32,4 +28,4 @@ const SpecificEntryRoute: React.FC<SpecificEntryRouteProps> = (props) => {
   );
 };
 
-export default withMobileDialog()(withRouter(SpecificEntryRoute));
+export default withMobileDialog()(SpecificEntryRoute);

@@ -1,21 +1,17 @@
 import * as React from "react";
-import { useRouteMatch, useHistory } from "react-router";
 import { Dialog, withMobileDialog } from "@material-ui/core";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import StudentReport from "./StudentReport";
-
-interface StudentReportRouteParams {
-  studentId: string;
-}
+import { useRouter } from "next/router";
 
 const StudentReportRoute = (props: InjectedProps) => {
   const { fullScreen } = props;
-  const {
-    params: { studentId },
-  } = useRouteMatch<StudentReportRouteParams>();
-  const history = useHistory();
 
-  const handleOnClose = history.goBack;
+  const router = useRouter();
+
+  const studentId = router.query.studentId as string;
+
+  const handleOnClose = router.back;
 
   return (
     <Dialog

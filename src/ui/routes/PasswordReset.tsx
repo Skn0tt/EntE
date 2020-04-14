@@ -7,7 +7,6 @@
  */
 
 import * as React from "react";
-import { RouteComponentProps, Redirect } from "react-router";
 import {
   Dialog,
   DialogTitle,
@@ -25,6 +24,7 @@ import * as querystring from "query-string";
 import { useMessages } from "../context/Messages";
 import { setPassword } from "../passwordReset";
 import { useLanguage } from "../helpers/useLanguage";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -37,21 +37,14 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-interface PasswordResetRouteProps {
-  token: string;
-}
+type PasswordResetProps = InjectedProps;
 
-type PasswordResetProps = RouteComponentProps<PasswordResetRouteProps> &
-  InjectedProps;
+const PasswordReset = (props: PasswordResetProps) => {
+  const { fullScreen } = props;
 
-const PasswordReset: React.FC<PasswordResetProps> = (props) => {
-  const {
-    fullScreen,
-    location,
-    match: {
-      params: { token },
-    },
-  } = props;
+  const router = useRouter();
+  const token = router.query.token as string;
+
   const [newPassword, setNewPassword] = React.useState("");
   const translation = useTranslation();
   const { username: _username = "" } = querystring.parse(location.search);
@@ -73,7 +66,7 @@ const PasswordReset: React.FC<PasswordResetProps> = (props) => {
   }, [newPassword, addMessages, language]);
 
   if (resetSuccessful) {
-    return <Redirect to={`/login?username=${username}`} />;
+    router.push(`/login?username=${username}`);
   }
 
   return (

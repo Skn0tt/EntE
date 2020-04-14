@@ -27,7 +27,6 @@ import {
   SlotN,
 } from "../../redux";
 import SignedAvatar from "../../elements/SignedAvatar";
-import { useHistory } from "react-router";
 import Fab from "@material-ui/core/Fab";
 import { Table } from "../../components/Table";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
@@ -45,9 +44,10 @@ import { EntriesTableSmallCard } from "./EntriesTableSmallCard";
 import { EntryReasonCategoryChip } from "./EntryReasonCategoryChip";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { Reporting } from "../../reporting/reporting";
-import { Link } from "react-router-dom";
 import { useEffectOnce } from "react-use";
 import { Maybe } from "monet";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const Entries = () => {
   const classes = useStyles({});
-  const history = useHistory();
+  const router = useRouter();
 
   const entries = useSelector<AppState, EntryN[]>(getEntries);
   const usersArr = useSelector<AppState, UserN[]>(getUsers);
@@ -163,9 +163,9 @@ export const Entries = () => {
 
   const handleClick = React.useCallback(
     (id: string) => {
-      history.push(`/entries/${id}`);
+      router.push(`/entries/${id}`);
     },
-    [history]
+    [router]
   );
 
   return (
@@ -309,7 +309,7 @@ export const Entries = () => {
 
       {/* FAB */}
       {userCanCreateEntries && (
-        <Link to="/entries/new">
+        <Link href="/entries/new">
           <Fab color="primary" className={classes.fab}>
             <AddIcon />
           </Fab>

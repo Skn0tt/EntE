@@ -8,7 +8,6 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import ChildrenInput from "../elements/ChildrenInput";
 import { UserN, getStudents, getToken, getSlotsRequest } from "../redux";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +21,7 @@ import { HourFromToInput } from "../elements/HourFromToInput";
 import Axios from "axios";
 import { apiBaseUrl } from "../";
 import { useLoadingFlag } from "../useLoadingFlag";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -89,7 +89,7 @@ const CreatePrefiledSlots = () => {
   const [missingStudents, setMissingStudents] = useState<UserN[]>([]);
 
   const translation = useTranslation();
-  const history = useHistory();
+  const router = useRouter();
 
   const createPrefiledSlotDto: CreatePrefiledSlotsDto = useMemo(
     () => ({
@@ -110,7 +110,7 @@ const CreatePrefiledSlots = () => {
   const handleCreate = usePrefiledSlotsCreator();
 
   return (
-    <Dialog onClose={history.goBack} open>
+    <Dialog onClose={router.back} open>
       <DialogTitle>{translation.title}</DialogTitle>
 
       <DialogContent>

@@ -9,8 +9,6 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { None, Some, Maybe } from "monet";
-import { Route } from "react-router";
-import { History } from "history";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import {
   Languages,
@@ -38,6 +36,7 @@ import {
 import { LanguagePicker } from "./LanguagePicker";
 import { invokeReset } from "../passwordReset";
 import { useMessages } from "../context/Messages";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -121,6 +120,7 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(
     const open = anchorEl.isSome();
     const translation = useTranslation();
     const { addMessages } = useMessages();
+    const router = useRouter();
 
     const closeMenu = React.useCallback(() => {
       setAnchorEl(None());
@@ -135,10 +135,10 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(
       closeMenu();
     }, [setLanguagePickerIsOpen]);
 
-    const navigateToPathFactory = (path: string, history: History) => () => {
+    const handleClickAbout = React.useCallback(() => {
       closeMenu();
-      history.push(path);
-    };
+      router.push("/about");
+    }, [router, closeMenu]);
 
     const handleClickResetPassword = React.useCallback(() => {
       invokeReset(username, (msgs) => addMessages(msgs[language]));
@@ -200,13 +200,7 @@ export const SettingsMenu: React.SFC<SettingsMenuProps> = React.memo(
               </MenuItem>
             )}
 
-            <Route
-              render={({ history }) => (
-                <MenuItem onClick={navigateToPathFactory("/about", history)}>
-                  {translation.about}
-                </MenuItem>
-              )}
-            />
+            <MenuItem onClick={handleClickAbout}>{translation.about}</MenuItem>
           </Menu>
         </div>
       </>

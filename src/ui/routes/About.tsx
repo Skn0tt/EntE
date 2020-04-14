@@ -1,5 +1,4 @@
 import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router";
 import {
   DialogTitle,
   DialogContent,
@@ -11,6 +10,7 @@ import {
 import { withErrorBoundary } from "../hocs/withErrorBoundary";
 import * as config from "../config";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
+import { useRouter } from "next/router";
 
 const { VERSION } = config.get();
 
@@ -27,15 +27,12 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-interface AboutOwnProps {}
-
-type AboutProps = AboutOwnProps & RouteComponentProps;
-
-export const About: React.SFC<AboutProps> = (props) => {
-  const { history } = props;
+export const About = (props: {}) => {
   const lang = useTranslation();
 
-  const onClose = history.goBack;
+  const router = useRouter();
+
+  const onClose = router.back;
 
   return (
     <Dialog open onClose={onClose}>
@@ -50,4 +47,4 @@ export const About: React.SFC<AboutProps> = (props) => {
   );
 };
 
-export default withRouter(withErrorBoundary()(About));
+export default withErrorBoundary()(About);

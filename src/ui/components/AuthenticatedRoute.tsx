@@ -7,7 +7,7 @@
  */
 
 import * as React from "react";
-import { Redirect, RouteComponentProps, withRouter } from "react-router";
+import { useRouter } from "next/router";
 
 /**
  * # Component Types
@@ -17,16 +17,17 @@ interface AuthenticatedRouteOwnProps {
   purgeStaleData: () => void;
 }
 
-type AuthenticatedRouteProps = AuthenticatedRouteOwnProps &
-  RouteComponentProps<{}>;
+type AuthenticatedRouteProps = AuthenticatedRouteOwnProps;
 
 /**
  * # Component
  */
-export const AuthenticatedRoute: React.SFC<AuthenticatedRouteProps> = (
-  props
+export const AuthenticatedRoute = (
+  props: React.PropsWithChildren<AuthenticatedRouteProps>
 ) => {
-  const { location, children, isLoggedIn, purgeStaleData } = props;
+  const { children, isLoggedIn, purgeStaleData } = props;
+
+  const router = useRouter();
 
   React.useEffect(() => {
     if (!isLoggedIn) {
@@ -38,7 +39,7 @@ export const AuthenticatedRoute: React.SFC<AuthenticatedRouteProps> = (
     return <>{children}</>;
   }
 
-  return <Redirect to={{ pathname: "/login", state: { from: location } }} />;
+  router.push(`/login?from=${router.pathname}`, "/login");
 };
 
-export default withRouter(AuthenticatedRoute);
+export default AuthenticatedRoute;

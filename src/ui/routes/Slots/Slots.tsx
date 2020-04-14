@@ -40,10 +40,10 @@ import { useTheme, makeStyles } from "@material-ui/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { SlotsTableSmallCard } from "./SlotsTableSmallCard";
 import { Roles } from "@@types";
-import { Link } from "react-router-dom";
 import { apiBaseUrl } from "../../";
 import Axios from "axios";
 import { DeleteSlotDialog } from "./DeleteSlotDialog";
+import Link from "next/link";
 
 function usePrefileDeleter() {
   const token = useSelector(getToken).some();
@@ -347,7 +347,7 @@ const Slots = () => {
         }
         persistenceKey="slots-table"
       />
-      <Link to="/slots/prefile">
+      <Link href="/slots/prefile">
         <Fab color="primary" className={classes.fab}>
           <AddIcon />
         </Fab>

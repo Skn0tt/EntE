@@ -10,7 +10,6 @@ import {
 import { Maybe } from "monet";
 import { MapStateToPropsParam, connect } from "react-redux";
 import Table from "../../components/Table";
-import { Route } from "react-router";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import SignedAvatar from "../../elements/SignedAvatar";
 import { format, parseISO } from "date-fns";
@@ -20,6 +19,7 @@ import { Reporting } from "../../reporting/reporting";
 import _ from "lodash";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 import { EntryReasonCategory } from "@@types";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -76,60 +76,57 @@ type EntriesTableProps = EntriesTableOwnProps & EntriesTableStateProps;
 const EntriesTable: React.FC<EntriesTableProps> = (props) => {
   const translation = useTranslation();
   const { entries, getSlots } = props;
+  const router = useRouter();
   return (
-    <Route
-      render={(f) => (
-        <Table<EntryN>
-          items={entries}
-          columns={[
-            {
-              name: translation.date,
-              extract: (entry) => entry.get("date"),
-              options: {
-                filter: false,
-                customBodyRender: (isoTime: string) =>
-                  format(parseISO(isoTime), "PP", {
-                    locale: translation.locale,
-                  }),
-              },
-            },
-            {
-              name: translation.reason,
-              extract: (e) => e.get("reason").category,
-              options: {
-                filter: true,
-                customBodyRender: (category: EntryReasonCategory) =>
-                  translation.categories[category],
-              },
-            },
-            {
-              name: translation.length,
-              extract: (entry) =>
-                _.sum(
-                  getSlots(entry.get("slotIds")).map(Reporting.getLengthOfSlot)
-                ),
-              options: {
-                filter: false,
-                customBodyRender: (length) => translation.lengthF(length),
-              },
-            },
-            {
-              name: translation.signedManager,
-              extract: (e) => "" + e.get("signedManager"),
-              options: { customBodyRender, filter: true },
-            },
-            {
-              name: translation.signedParent,
-              extract: (e) => "" + e.get("signedParent"),
-              options: { customBodyRender, filter: true },
-            },
-          ]}
-          extractId={(e) => e.get("id")}
-          onClick={(e) => {
-            f.history.push(`/entries/${e}`);
-          }}
-        />
-      )}
+    <Table<EntryN>
+      items={entries}
+      columns={[
+        {
+          name: translation.date,
+          extract: (entry) => entry.get("date"),
+          options: {
+            filter: false,
+            customBodyRender: (isoTime: string) =>
+              format(parseISO(isoTime), "PP", {
+                locale: translation.locale,
+              }),
+          },
+        },
+        {
+          name: translation.reason,
+          extract: (e) => e.get("reason").category,
+          options: {
+            filter: true,
+            customBodyRender: (category: EntryReasonCategory) =>
+              translation.categories[category],
+          },
+        },
+        {
+          name: translation.length,
+          extract: (entry) =>
+            _.sum(
+              getSlots(entry.get("slotIds")).map(Reporting.getLengthOfSlot)
+            ),
+          options: {
+            filter: false,
+            customBodyRender: (length) => translation.lengthF(length),
+          },
+        },
+        {
+          name: translation.signedManager,
+          extract: (e) => "" + e.get("signedManager"),
+          options: { customBodyRender, filter: true },
+        },
+        {
+          name: translation.signedParent,
+          extract: (e) => "" + e.get("signedParent"),
+          options: { customBodyRender, filter: true },
+        },
+      ]}
+      extractId={(e) => e.get("id")}
+      onClick={(e) => {
+        router.push(`/entries/${e}`);
+      }}
     />
   );
 };

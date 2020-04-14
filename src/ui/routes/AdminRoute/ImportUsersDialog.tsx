@@ -21,7 +21,6 @@ import withMobileDialog, {
 import { CreateUserDto } from "@@types";
 import { Maybe, None } from "monet";
 import * as React from "react";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AppState, UserN, importUsersRequest, getStudents } from "../../redux";
 import * as _ from "lodash";
@@ -31,6 +30,7 @@ import { CheckboxWithDescription } from "../../components/CheckboxWithDescriptio
 import CsvImportMethod from "./CsvImportMethod";
 import { DropdownInput } from "../../elements/DropdownInput";
 import { SchiLDImportMethod } from "./SchiLDImportMethod";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -132,7 +132,7 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
 
   const translation = useTranslation();
 
-  const { goBack } = useHistory();
+  const { back: goBack } = useRouter();
 
   const [deleteEntries, setDeleteEntries] = React.useState(false);
   const [deleteUsers, setDeleteUsers] = React.useState(false);

@@ -14,7 +14,6 @@ import {
 } from "react-redux";
 import ChildrenInput from "../elements/ChildrenInput";
 import TextInput from "../elements/TextInput";
-import { withRouter, RouteComponentProps } from "react-router";
 import {
   Button,
   Dialog,
@@ -68,11 +67,11 @@ import { DeleteModal } from "../components/DeleteModal";
 import { Maybe } from "monet";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { DateInput } from "../elements/DateInput";
-import { Link } from "react-router-dom";
 import { useMessages } from "../context/Messages";
 import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 import { useRoleTranslation } from "../roles.translation";
 import { ClassPicker } from "../elements/ClassPicker";
+import { useRouter } from "next/router";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -191,7 +190,6 @@ interface SpecificUserOwnProps {}
 
 type SpecificUserProps = SpecificUserStateProps &
   SpecificUserOwnProps &
-  RouteComponentProps<RouteMatch> &
   SpecificUserDispatchProps &
   WithStyles<"menuButton"> &
   InjectedProps;
@@ -214,8 +212,6 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
     deleteUser,
     classes,
     updateUser,
-    history,
-    match,
     requestUser,
     token,
     promote,
@@ -223,7 +219,9 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
     availableClasses,
   } = props;
 
-  const userId = match.params.userId;
+  const router = useRouter();
+
+  const userId = router.query.userId as string;
   const user = getUser(userId);
 
   React.useEffect(() => {
@@ -243,7 +241,7 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
     }));
   };
 
-  const onClose = history.goBack;
+  const onClose = router.back;
   const onGoBack = onClose;
   const onSubmit = () => {
     updateUser(userId, patch);
@@ -453,16 +451,11 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
           )}
           <DialogActions>
             {user.get("role") === "student" && (
-              <Button
-                size="small"
-                color="default"
-                {...({
-                  to: `${userId}/report`,
-                  component: Link,
-                } as any)}
-              >
-                {lang.openReport}
-              </Button>
+              <Link href={`${userId}/report`}>
+                <Button size="small" color="default">
+                  {lang.openReport}
+                </Button>
+              </Link>
             )}
 
             <Button size="small" color="secondary" onClick={onClose}>
@@ -484,13 +477,11 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
   );
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(
-    withStyles(styles)(
-      withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
-    )
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
   )
 );

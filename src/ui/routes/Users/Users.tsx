@@ -7,90 +7,68 @@
  */
 
 import * as React from "react";
-import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { connect } from "react-redux";
-import styles from "./Users.styles";
-import { Action, Dispatch } from "redux";
+import { useDispatch, useSelector } from "react-redux";
 import CreateUser from "./CreateUser";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import { AppState, getUsers, getUsersRequest, UserN } from "../../redux";
-import { withRouter, RouteComponentProps } from "react-router";
+import { getUsers, getUsersRequest } from "../../redux";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { UserTable } from "./UserTable";
+import { useEffectOnce } from "react-use";
+import { makeStyles } from "@material-ui/styles";
+import { Theme } from "@material-ui/core";
+import { useRouter } from "next/router";
 
-/**
- * # Component Types
- */
-interface StateProps {
-  users: UserN[];
-}
-const mapStateToProps = (state: AppState) => ({
-  users: getUsers(state),
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  searchBar: {
+    padding: 10,
+  },
+  fab: {
+    margin: 0,
+    top: "auto",
+    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2,
+    left: "auto",
+    position: "fixed",
+  },
+  table: {
+    overflowX: "auto",
+  },
+}));
 
-interface DispatchProps {
-  getUsers(): Action;
-}
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  getUsers: () => dispatch(getUsersRequest()),
-});
+export function Users(props: {}) {
+  const [showCreateModal, setShowCreateModal] = React.useState(false);
 
-type UsersProps = StateProps &
-  DispatchProps &
-  WithStyles &
-  RouteComponentProps<{}>;
+  const classes = useStyles();
+  const users = useSelector(getUsers);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-interface UsersState {
-  showCreateModal: boolean;
-}
+  useEffectOnce(() => {
+    dispatch(getUsersRequest());
+  });
 
-/**
- * # Component
- */
-export class Users extends React.PureComponent<UsersProps, UsersState> {
-  state: UsersState = {
-    showCreateModal: false,
-  };
+  return (
+    <React.Fragment>
+      {/* Modals */}
+      <CreateUser
+        onClose={() => setShowCreateModal(false)}
+        show={showCreateModal}
+      />
 
-  componentDidMount() {
-    this.props.getUsers();
-  }
+      {/* Main */}
+      <UserTable users={users} onClick={(id) => router.push(`/users/${id}`)} />
 
-  showCreateModal = () => this.setState({ showCreateModal: true });
-  closeCreateModal = () => this.setState({ showCreateModal: false });
-
-  render() {
-    const { users, history, classes } = this.props;
-
-    return (
-      <React.Fragment>
-        {/* Modals */}
-        <CreateUser
-          onClose={this.closeCreateModal}
-          show={this.state.showCreateModal}
-        />
-
-        {/* Main */}
-        <UserTable
-          users={users}
-          onClick={(id) => history.push(`/users/${id}`)}
-        />
-
-        {/* FAB */}
-        <Fab
-          color="primary"
-          onClick={this.showCreateModal}
-          className={classes.fab}
-        >
-          <AddIcon />
-        </Fab>
-      </React.Fragment>
-    );
-  }
+      {/* FAB */}
+      <Fab
+        color="primary"
+        onClick={() => setShowCreateModal(true)}
+        className={classes.fab}
+      >
+        <AddIcon />
+      </Fab>
+    </React.Fragment>
+  );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(withStyles(styles)(withErrorBoundary()(Users))));
+export default withErrorBoundary()(Users);

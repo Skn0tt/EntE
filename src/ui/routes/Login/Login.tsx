@@ -13,7 +13,6 @@ import {
   MapStateToPropsParam,
 } from "react-redux";
 import { Action } from "redux";
-import { Redirect, RouteComponentProps, withRouter } from "react-router";
 import {
   Dialog,
   DialogTitle,
@@ -50,6 +49,7 @@ import { createStyles, withStyles, WithStyles } from "@material-ui/styles";
 import { invokeReset } from "../../passwordReset";
 import { addMessages } from "../../context/Messages";
 import { Languages, DEFAULT_DEFAULT_LANGUAGE } from "@@types";
+import { withRouter, Router } from "next/router";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -115,9 +115,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 
 type LoginProps = LoginStateProps &
   LoginOwnProps &
-  LoginDispatchProps &
-  InjectedProps &
-  RouteComponentProps<{ user?: string; pass?: string }, {}, { from: any }> &
+  LoginDispatchProps & { router: Router } & InjectedProps &
   WithTranslation<typeof lang.en> &
   WithStyles<"versionCode">;
 
@@ -148,18 +146,14 @@ class Login extends React.PureComponent<LoginProps, State> {
   };
 
   componentDidMount() {
-    const {
-      location: { hash },
-    } = this.props;
-    extractLoginInfo(hash).forEach(({ username, password }) => {
+    extractLoginInfo(location.hash).forEach(({ username, password }) => {
       this.setState({ username, password });
       this.handleSignIn(username, password);
     });
   }
 
   get initialUsername() {
-    const { search } = this.props.location;
-    const { username = "" } = querystring.parse(search);
+    const { username = "" } = querystring.parse(location.search);
     return typeof username === "string" ? username : username![0];
   }
 
@@ -200,24 +194,23 @@ class Login extends React.PureComponent<LoginProps, State> {
   render() {
     const {
       authValid,
-      location,
       fullScreen,
       loginPending,
       translation: lang,
       loginBanner,
       classes,
+      router,
     } = this.props;
     const {
       showPasswordResetModal,
       username,
       passwordResetPending,
     } = this.state;
-    const { from } = location.state || {
-      from: { pathname: "/" },
-    };
+
+    const from = (router.query.from as string) ?? "/";
 
     if (authValid) {
-      return <Redirect to={from.pathname} />;
+      router.push(from);
     }
 
     return (

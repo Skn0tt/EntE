@@ -13,8 +13,8 @@ import { Description } from "../../components/Description";
 import ParentSignatureExpiryTimeUpdater from "./ParentSignatureExpiryTimeUpdater";
 import ParentSignatureNotificationTimeUpdater from "./ParentSignatureNotificationTimeUpdater";
 import EntryCreationDaysUpdater from "./EntryCreationDaysUpdater";
-import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
+import Link from "next/link";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -99,7 +99,7 @@ const AdminRoute = React.memo((props) => {
           </Grid>
 
           <Grid item>
-            <Link to="/admin/import">
+            <Link href="/admin/import">
               <Button variant="outlined">
                 <ImportExportIcon className={classes.iconLeft} />
                 {lang.importUsers}

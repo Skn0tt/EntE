@@ -1,5 +1,4 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router";
 import {
   Dialog,
   DialogTitle,
@@ -14,6 +13,8 @@ import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import SetPasswordPhase from "./SetPasswordPhase";
 import * as querystring from "query-string";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -53,21 +54,18 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-interface InvitationRouteParams {
-  token: string;
-}
-
-type InvitationProps = RouteComponentProps<InvitationRouteParams> &
-  InjectedProps;
+type InvitationProps = InjectedProps;
 
 enum InvitationPhase {
   SetPassword,
   Introduction,
 }
 
-const Invitation: React.FC<InvitationProps> = (props) => {
-  const { fullScreen, match, history, location } = props;
-  const { token } = match.params;
+const Invitation = (props: InvitationProps) => {
+  const { fullScreen } = props;
+  const router = useRouter();
+  const token = router.query.token as string;
+
   const translation = useTranslation();
   const [phase, setPhase] = React.useState<InvitationPhase>(
     InvitationPhase.SetPassword
@@ -91,14 +89,9 @@ const Invitation: React.FC<InvitationProps> = (props) => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button
-              variant="raised"
-              onClick={() => {
-                history.push(`/login?username=${encodeURIComponent(username)}`);
-              }}
-            >
-              {translation.done}
-            </Button>
+            <Link href={`/login?username=${encodeURIComponent(username)}`}>
+              <Button variant="raised">{translation.done}</Button>
+            </Link>
           </DialogActions>
         </>
       )}

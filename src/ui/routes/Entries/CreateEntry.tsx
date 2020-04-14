@@ -8,7 +8,6 @@
 
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Dialog, Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -45,6 +44,7 @@ import { EntryReasonInput } from "./EntryReasonInput";
 import { CreateSlotList } from "./CreateSlotList";
 import { ErrorBox } from "../../elements/ErrorBox";
 import { PrefiledSlotsPicker } from "./PrefiledSlotsPicker";
+import { useRouter } from "next/router";
 
 function days(n: number) {
   return n * 24 * 60 * 60 * 1000;
@@ -108,7 +108,7 @@ const CreateEntry = (props: CreateEntryProps) => {
     getEntryCreationDeadline(s).some()
   );
 
-  const { goBack } = useHistory();
+  const { back: goBack } = useRouter();
   const translation = useTranslation();
 
   const [isRange, setIsRange] = React.useState(false);
