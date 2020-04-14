@@ -164,7 +164,7 @@ export interface LoginInfo {
 }
 
 export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
-  const response = await axios.get<LoginDto>("/login", {
+  const response = await axios.get<LoginDto>("/api/login", {
     auth,
   });
 
@@ -198,7 +198,10 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
 
 export const refreshToken = async (token: string): Promise<AuthState> => {
   try {
-    const result = await axios.get<string>("/token", axiosTokenParams(token));
+    const result = await axios.get<string>(
+      "/api/token",
+      axiosTokenParams(token)
+    );
 
     return getAuthState(result.data);
   } catch (error) {
@@ -207,12 +210,12 @@ export const refreshToken = async (token: string): Promise<AuthState> => {
 };
 
 export const getChildren = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`/users?filter=children`, token);
+  const data = await get<UserDto[]>(`/api/users?filter=children`, token);
   return normalizeUsers(...data);
 };
 
 export const downloadExcelExport = async (token: string): Promise<void> => {
-  const response = await axios.get<Blob>(`/export/excel`, {
+  const response = await axios.get<Blob>(`/api/export/excel`, {
     ...axiosTokenParams(token),
     responseType: "blob",
   });
@@ -223,17 +226,17 @@ export const getEntry = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<EntryDto>(`/entries/${id}`, token);
+  const data = await get<EntryDto>(`/api/entries/${id}`, token);
   return normalizeEntries(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
-  const data = await get<EntryDto[]>(`/entries`, token);
+  const data = await get<EntryDto[]>(`/api/entries`, token);
   return normalizeEntries(...data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
-  const data = await get<SlotDto[]>(`/slots`, token);
+  const data = await get<SlotDto[]>(`/api/slots`, token);
   return normalizeSlots(...data);
 };
 
@@ -241,7 +244,7 @@ export const getUser = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<UserDto>(`/users/${id}`, token);
+  const data = await get<UserDto>(`/api/users/${id}`, token);
   return normalizeUsers(data);
 };
 
@@ -251,15 +254,15 @@ const _delete = async <T>(url: string, token: string) => {
 };
 
 export const deleteUser = async (id: string, token: string) => {
-  await _delete(`/users/${id}`, token);
+  await _delete(`/api/users/${id}`, token);
 };
 
 export const deleteEntry = async (id: string, token: string) => {
-  await _delete(`/entries/${id}`, token);
+  await _delete(`/api/entries/${id}`, token);
 };
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`/users`, token);
+  const data = await get<UserDto[]>(`/api/users`, token);
   return normalizeUsers(...data);
 };
 
@@ -281,7 +284,7 @@ export const createEntry = async (
   entry: CreateEntryDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await post<EntryDto>(`/entries/`, token, entry);
+  const response = await post<EntryDto>(`/api/entries/`, token, entry);
   return normalizeEntries(response);
 };
 
@@ -289,7 +292,7 @@ export const createUsers = async (
   users: CreateUserDto[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post<UserDto[]>(`/users/`, token, users);
+  const response = await post<UserDto[]>(`/api/users/`, token, users);
   return normalizeUsers(...response);
 };
 
@@ -303,7 +306,7 @@ export const updateUser = async (
   user: PatchUserDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch<UserDto>(`/users/${userId}`, token, user);
+  const response = await patch<UserDto>(`/api/users/${userId}`, token, user);
   return normalizeUsers(response);
 };
 
@@ -326,7 +329,7 @@ export const signEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `/entries/${id}`,
+    `/api/entries/${id}`,
     token,
     {
       signed: true,
@@ -340,7 +343,7 @@ export const setLanguage = async (
   language: Languages,
   token: string
 ): Promise<void> => {
-  await put<void, Languages>(`/users/${id}/language`, token, language, {
+  await put<void, Languages>(`/api/users/${id}/language`, token, language, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain",
@@ -353,7 +356,7 @@ export const unsignEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `/entries/${id}`,
+    `/api/entries/${id}`,
     token,
     {
       signed: false,
@@ -376,7 +379,7 @@ export const importUsers = async (
   }
 ) => {
   const result = await post<UserDto[]>(
-    `/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}&deleteStudentsAndParents=${deleteStudentsAndParents}`,
+    `/api/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}&deleteStudentsAndParents=${deleteStudentsAndParents}`,
     token,
     dtos
   );
@@ -384,7 +387,7 @@ export const importUsers = async (
 };
 
 export const fetchInstanceConfig = async (): Promise<InstanceConfigDto> => {
-  const response = await axios.get<InstanceConfigDto>(`/instanceConfig`);
+  const response = await axios.get<InstanceConfigDto>(`/api/instanceConfig`);
   const { data } = response;
   return data;
 };
@@ -395,7 +398,7 @@ export const setLoginBanner = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `/instanceConfig/loginBanners/${language}`,
+    `/api/instanceConfig/loginBanners/${language}`,
     token,
     text,
     {
@@ -412,7 +415,7 @@ export const setDefaultLanguage = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `/instanceConfig/defaultLanguage`,
+    `/api/instanceConfig/defaultLanguage`,
     token,
     language,
     {
@@ -429,7 +432,7 @@ export const setParentSignatureNotificationTime = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `/instanceConfig/parentSignatureTimes/notification`,
+    `/api/instanceConfig/parentSignatureTimes/notification`,
     token,
     "" + value,
     {
@@ -446,7 +449,7 @@ export const setParentSignatureExpiryTime = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `/instanceConfig/parentSignatureTimes/expiry`,
+    `/api/instanceConfig/parentSignatureTimes/expiry`,
     token,
     "" + value,
     {
@@ -463,7 +466,7 @@ export const setEntryCreationDays = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `/instanceConfig/entryCreationDeadline`,
+    `/api/instanceConfig/entryCreationDeadline`,
     token,
     "" + value,
     {
@@ -476,7 +479,7 @@ export const setEntryCreationDays = async (
 };
 
 export async function addReviewedRecord(token: string, entryId: string) {
-  await axios.post(`/reviewedRecords`, entryId, {
+  await axios.post(`/api/reviewedRecords`, entryId, {
     headers: {
       ...axiosStandardParams(token).headers,
       "Content-Type": "text/plain",
@@ -485,7 +488,7 @@ export async function addReviewedRecord(token: string, entryId: string) {
 }
 
 export async function managerReachdOut(token: string, entryId: string) {
-  await post(`/entries/${entryId}/managerReachedOut`, token);
+  await post(`/api/entries/${entryId}/managerReachedOut`, token);
 }
 
 export const updateManagerNotes = async (
@@ -493,7 +496,7 @@ export const updateManagerNotes = async (
   value: string,
   token: string
 ): Promise<void> => {
-  await put(`/users/${studentId}/managerNotes`, token, value, {
+  await put(`/api/users/${studentId}/managerNotes`, token, value, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain",
@@ -506,7 +509,7 @@ export async function promoteTeacher(
   _class: string,
   token: string
 ) {
-  await post(`/users/${teacherId}/promote`, token, _class, {
+  await post(`/api/users/${teacherId}/promote`, token, _class, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain",
@@ -515,5 +518,5 @@ export async function promoteTeacher(
 }
 
 export async function demoteManager(managerId: string, token: string) {
-  await post(`/users/${managerId}/demote`, token);
+  await post(`/api/users/${managerId}/demote`, token);
 }
