@@ -37,8 +37,6 @@ import { Base64 } from "../helpers/base64";
 import { getConfig } from "./config";
 import { Map, Set } from "immutable";
 
-const getBaseUrl = () => getConfig().baseUrl;
-
 const axiosStandardParams = (token: string): AxiosRequestConfig => ({
   ...axiosTokenParams(token),
   validateStatus: (s) => s >= 200 && s < 300,
@@ -166,7 +164,7 @@ export interface LoginInfo {
 }
 
 export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
-  const response = await axios.get<LoginDto>(`${getBaseUrl()}/login`, {
+  const response = await axios.get<LoginDto>("/login", {
     auth,
   });
 
@@ -200,10 +198,7 @@ export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
 
 export const refreshToken = async (token: string): Promise<AuthState> => {
   try {
-    const result = await axios.get<string>(
-      `${getBaseUrl()}/token`,
-      axiosTokenParams(token)
-    );
+    const result = await axios.get<string>("/token", axiosTokenParams(token));
 
     return getAuthState(result.data);
   } catch (error) {
@@ -212,15 +207,12 @@ export const refreshToken = async (token: string): Promise<AuthState> => {
 };
 
 export const getChildren = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(
-    `${getBaseUrl()}/users?filter=children`,
-    token
-  );
+  const data = await get<UserDto[]>(`/users?filter=children`, token);
   return normalizeUsers(...data);
 };
 
 export const downloadExcelExport = async (token: string): Promise<void> => {
-  const response = await axios.get<Blob>(`${getBaseUrl()}/export/excel`, {
+  const response = await axios.get<Blob>(`/export/excel`, {
     ...axiosTokenParams(token),
     responseType: "blob",
   });
@@ -231,17 +223,17 @@ export const getEntry = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<EntryDto>(`${getBaseUrl()}/entries/${id}`, token);
+  const data = await get<EntryDto>(`/entries/${id}`, token);
   return normalizeEntries(data);
 };
 
 export const getEntries = async (token: string): Promise<APIResponse> => {
-  const data = await get<EntryDto[]>(`${getBaseUrl()}/entries`, token);
+  const data = await get<EntryDto[]>(`/entries`, token);
   return normalizeEntries(...data);
 };
 
 export const getSlots = async (token: string): Promise<APIResponse> => {
-  const data = await get<SlotDto[]>(`${getBaseUrl()}/slots`, token);
+  const data = await get<SlotDto[]>(`/slots`, token);
   return normalizeSlots(...data);
 };
 
@@ -249,7 +241,7 @@ export const getUser = async (
   id: string,
   token: string
 ): Promise<APIResponse> => {
-  const data = await get<UserDto>(`${getBaseUrl()}/users/${id}`, token);
+  const data = await get<UserDto>(`/users/${id}`, token);
   return normalizeUsers(data);
 };
 
@@ -259,15 +251,15 @@ const _delete = async <T>(url: string, token: string) => {
 };
 
 export const deleteUser = async (id: string, token: string) => {
-  await _delete(`${getBaseUrl()}/users/${id}`, token);
+  await _delete(`/users/${id}`, token);
 };
 
 export const deleteEntry = async (id: string, token: string) => {
-  await _delete(`${getBaseUrl()}/entries/${id}`, token);
+  await _delete(`/entries/${id}`, token);
 };
 
 export const getUsers = async (token: string): Promise<APIResponse> => {
-  const data = await get<UserDto[]>(`${getBaseUrl()}/users`, token);
+  const data = await get<UserDto[]>(`/users`, token);
   return normalizeUsers(...data);
 };
 
@@ -289,11 +281,7 @@ export const createEntry = async (
   entry: CreateEntryDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await post<EntryDto>(
-    `${getBaseUrl()}/entries/`,
-    token,
-    entry
-  );
+  const response = await post<EntryDto>(`/entries/`, token, entry);
   return normalizeEntries(response);
 };
 
@@ -301,11 +289,7 @@ export const createUsers = async (
   users: CreateUserDto[],
   token: string
 ): Promise<APIResponse> => {
-  const response = await post<UserDto[]>(
-    `${getBaseUrl()}/users/`,
-    token,
-    users
-  );
+  const response = await post<UserDto[]>(`/users/`, token, users);
   return normalizeUsers(...response);
 };
 
@@ -319,11 +303,7 @@ export const updateUser = async (
   user: PatchUserDto,
   token: string
 ): Promise<APIResponse> => {
-  const response = await patch<UserDto>(
-    `${getBaseUrl()}/users/${userId}`,
-    token,
-    user
-  );
+  const response = await patch<UserDto>(`/users/${userId}`, token, user);
   return normalizeUsers(response);
 };
 
@@ -346,7 +326,7 @@ export const signEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `${getBaseUrl()}/entries/${id}`,
+    `/entries/${id}`,
     token,
     {
       signed: true,
@@ -360,17 +340,12 @@ export const setLanguage = async (
   language: Languages,
   token: string
 ): Promise<void> => {
-  await put<void, Languages>(
-    `${getBaseUrl()}/users/${id}/language`,
-    token,
-    language,
-    {
-      transformResponse: [],
-      headers: {
-        "Content-Type": "text/plain",
-      },
-    }
-  );
+  await put<void, Languages>(`/users/${id}/language`, token, language, {
+    transformResponse: [],
+    headers: {
+      "Content-Type": "text/plain",
+    },
+  });
 };
 
 export const unsignEntry = async (
@@ -378,7 +353,7 @@ export const unsignEntry = async (
   token: string
 ): Promise<APIResponse> => {
   const response = await patch<EntryDto, PatchEntryDto>(
-    `${getBaseUrl()}/entries/${id}`,
+    `/entries/${id}`,
     token,
     {
       signed: false,
@@ -401,7 +376,7 @@ export const importUsers = async (
   }
 ) => {
   const result = await post<UserDto[]>(
-    `${getBaseUrl()}/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}&deleteStudentsAndParents=${deleteStudentsAndParents}`,
+    `/instance/import?deleteUsers=${deleteUsers}&deleteEntries=${deleteEntries}&deleteStudentsAndParents=${deleteStudentsAndParents}`,
     token,
     dtos
   );
@@ -409,9 +384,7 @@ export const importUsers = async (
 };
 
 export const fetchInstanceConfig = async (): Promise<InstanceConfigDto> => {
-  const response = await axios.get<InstanceConfigDto>(
-    `${getBaseUrl()}/instanceConfig`
-  );
+  const response = await axios.get<InstanceConfigDto>(`/instanceConfig`);
   const { data } = response;
   return data;
 };
@@ -422,7 +395,7 @@ export const setLoginBanner = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `${getBaseUrl()}/instanceConfig/loginBanners/${language}`,
+    `/instanceConfig/loginBanners/${language}`,
     token,
     text,
     {
@@ -439,7 +412,7 @@ export const setDefaultLanguage = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `${getBaseUrl()}/instanceConfig/defaultLanguage`,
+    `/instanceConfig/defaultLanguage`,
     token,
     language,
     {
@@ -456,7 +429,7 @@ export const setParentSignatureNotificationTime = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `${getBaseUrl()}/instanceConfig/parentSignatureTimes/notification`,
+    `/instanceConfig/parentSignatureTimes/notification`,
     token,
     "" + value,
     {
@@ -473,7 +446,7 @@ export const setParentSignatureExpiryTime = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `${getBaseUrl()}/instanceConfig/parentSignatureTimes/expiry`,
+    `/instanceConfig/parentSignatureTimes/expiry`,
     token,
     "" + value,
     {
@@ -490,7 +463,7 @@ export const setEntryCreationDays = async (
   token: string
 ): Promise<void> => {
   const response = await put(
-    `${getBaseUrl()}/instanceConfig/entryCreationDeadline`,
+    `/instanceConfig/entryCreationDeadline`,
     token,
     "" + value,
     {
@@ -503,7 +476,7 @@ export const setEntryCreationDays = async (
 };
 
 export async function addReviewedRecord(token: string, entryId: string) {
-  await axios.post(`${getBaseUrl()}/reviewedRecords`, entryId, {
+  await axios.post(`/reviewedRecords`, entryId, {
     headers: {
       ...axiosStandardParams(token).headers,
       "Content-Type": "text/plain",
@@ -512,7 +485,7 @@ export async function addReviewedRecord(token: string, entryId: string) {
 }
 
 export async function managerReachdOut(token: string, entryId: string) {
-  await post(`${getBaseUrl()}/entries/${entryId}/managerReachedOut`, token);
+  await post(`/entries/${entryId}/managerReachedOut`, token);
 }
 
 export const updateManagerNotes = async (
@@ -520,7 +493,7 @@ export const updateManagerNotes = async (
   value: string,
   token: string
 ): Promise<void> => {
-  await put(`${getBaseUrl()}/users/${studentId}/managerNotes`, token, value, {
+  await put(`/users/${studentId}/managerNotes`, token, value, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain",
@@ -533,7 +506,7 @@ export async function promoteTeacher(
   _class: string,
   token: string
 ) {
-  await post(`${getBaseUrl()}/users/${teacherId}/promote`, token, _class, {
+  await post(`/users/${teacherId}/promote`, token, _class, {
     transformResponse: [],
     headers: {
       "Content-Type": "text/plain",
@@ -542,5 +515,5 @@ export async function promoteTeacher(
 }
 
 export async function demoteManager(managerId: string, token: string) {
-  await post(`${getBaseUrl()}/users/${managerId}/demote`, token);
+  await post(`/users/${managerId}/demote`, token);
 }

@@ -6,14 +6,13 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import "reflect-metadata";
 import * as React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { get as getConfig } from "./config";
 import { install as installMuiStyles } from "@material-ui/styles";
 
 // Fonts
-import "typeface-roboto";
+
 import setupRedux, {
   ReduxConfig,
   AppState,
@@ -22,7 +21,6 @@ import setupRedux, {
 } from "./redux";
 import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
-import { HttpsGate } from "./components/HttpsGate";
 import { isSentryDsn } from "./helpers/isSentryDsn";
 import { createSentryMiddleware } from "./sentry.middleware";
 import { ErrorReporting } from "./ErrorReporting";
@@ -39,11 +37,7 @@ import InstanceConfigGate from "./components/InstanceConfigGate";
 
 installMuiStyles();
 
-const baseUrl = `${location.protocol}//${location.hostname}`;
-export const apiBaseUrl = `${baseUrl}/api`;
-
 const config: Partial<ReduxConfig> = {
-  baseUrl: apiBaseUrl,
   onFileDownload: (file, filename) => {
     const url = window.URL.createObjectURL(file);
     const link = document.createElement("a");
@@ -55,7 +49,7 @@ const config: Partial<ReduxConfig> = {
   middlewares: [],
 };
 
-const { SENTRY_DSN, ALLOW_INSECURE, VERSION, ROTATION_PERIOD } = getConfig();
+const { SENTRY_DSN, VERSION, ROTATION_PERIOD } = getConfig();
 
 const setupSentry = (dsn: string) => {
   if (!isSentryDsn(dsn)) {
@@ -104,17 +98,15 @@ export function Wrapper(props: React.PropsWithChildren<{}>) {
       <Provider store={store}>
         <ConnectedCombinedThemeProvider>
           <LocalizedMUIPickersUtilsProvider>
-            <HttpsGate disable={ALLOW_INSECURE}>
-              <InstanceConfigGate>
-                <MessagesProvider>
-                  <CssBaseline />
-                  <MessageStream />
-                  <AuthService period={ROTATION_PERIOD} />
+            <InstanceConfigGate>
+              <MessagesProvider>
+                <CssBaseline />
+                <MessageStream />
+                <AuthService period={ROTATION_PERIOD} />
 
-                  {props.children}
-                </MessagesProvider>
-              </InstanceConfigGate>
-            </HttpsGate>
+                {props.children}
+              </MessagesProvider>
+            </InstanceConfigGate>
           </LocalizedMUIPickersUtilsProvider>
         </ConnectedCombinedThemeProvider>
       </Provider>

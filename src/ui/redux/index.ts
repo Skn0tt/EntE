@@ -18,7 +18,7 @@ export * from "./config";
 const setup = (conf: Partial<ReduxConfig>) => {
   updateConfig(conf);
 
-  return await createStore();
+  return createStore();
 };
 
 export default setup;

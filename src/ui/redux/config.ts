@@ -22,7 +22,6 @@ export type SagaListeners = {
 
 export type ReduxConfig = {
   onFileDownload: (file: Blob, filename: string) => void;
-  baseUrl: string;
   middlewares: Middleware[];
   storage: any;
 } & SagaListeners;
@@ -31,7 +30,6 @@ const ignore = () => {};
 
 const defaultConfig: ReduxConfig = {
   storage: asyncLocalStorage,
-  baseUrl: "",
   middlewares: [],
   onFileDownload: ignore,
   onImportSuccessful: ignore,

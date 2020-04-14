@@ -9,7 +9,7 @@ const StudentReportRoute = (props: InjectedProps) => {
 
   const router = useRouter();
 
-  const studentId = router.query.studentId as string;
+  const studentId = router.query.userId as string;
 
   const handleOnClose = router.back;
 
