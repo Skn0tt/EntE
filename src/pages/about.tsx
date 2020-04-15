@@ -1,5 +1,6 @@
 import AboutRoute from "../ui/routes/About";
 import Drawer from "../ui/components/Drawer";
+import { withAuthenticatedGuard } from "../ui/withRouteGuard";
 
 function About() {
   return (
@@ -9,4 +10,4 @@ function About() {
   );
 }
 
-export default About;
+export default withAuthenticatedGuard()(About);

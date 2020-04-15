@@ -1,5 +1,6 @@
 import UsersRoute from "../ui/routes/Users";
 import Drawer from "../ui/components/Drawer";
+import { withAdminGuard } from "../ui/withRouteGuard";
 
 function Users() {
   return (
@@ -9,4 +10,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default withAdminGuard(Users);

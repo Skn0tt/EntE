@@ -1,5 +1,6 @@
 import AdminRoute from "../ui/routes/AdminRoute";
 import Drawer from "../ui/components/Drawer";
+import { withAdminGuard } from "../ui/withRouteGuard";
 
 function Admin() {
   return (
@@ -9,4 +10,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default withAdminGuard(Admin);

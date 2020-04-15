@@ -14,42 +14,29 @@ import {
   ListItem,
   ListItemIcon,
 } from "@material-ui/core";
-import { connect, MapDispatchToPropsParam } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import { logout, AppState, getDisplayname } from "../redux";
-import { Maybe } from "monet";
-
-interface LoginStatusOwnProps {}
-
-interface LoginStatusStateProps {
-  displayname: Maybe<string>;
-}
-const mapStateToProps = (state: AppState): LoginStatusStateProps => ({
-  displayname: getDisplayname(state),
-});
-
-interface LoginStatusDispatchProps {
-  logout(): void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  LoginStatusDispatchProps,
-  LoginStatusOwnProps
-> = (dispatch) => ({
-  logout: () => dispatch(logout()),
-});
-
-type LoginStatusProps = LoginStatusStateProps & LoginStatusDispatchProps;
+import { logout, getDisplayname } from "../redux";
+import { useRouter } from "next/router";
 
 /**
  * # Component
  */
-export const LoginStatus: React.SFC<LoginStatusProps> = (props) => {
-  const { displayname, logout } = props;
+export const LoginStatus = (props: {}) => {
+  const displayname = useSelector(getDisplayname);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleLogout = React.useCallback(() => {
+    dispatch(logout());
+    router.push("/login");
+  }, [router, dispatch]);
 
   return (
     <ListItem>
       <ListItemIcon>
-        <IconButton aria-label="logout" onClick={logout} id="logout">
+        <IconButton aria-label="logout" onClick={handleLogout} id="logout">
           <PowerSettingsNewIcon />
         </IconButton>
       </ListItemIcon>
@@ -58,4 +45,4 @@ export const LoginStatus: React.SFC<LoginStatusProps> = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginStatus);
+export default LoginStatus;
