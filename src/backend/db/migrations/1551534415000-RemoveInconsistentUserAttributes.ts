@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class RemoveInconsistentUserAttributes1551534415000
   implements MigrationInterface {
+  name = "RemoveInconsistentUserAttributes1551534415000";
   async up(queryRunner: QueryRunner) {
     await this.removeInconsistentBirthdays(queryRunner);
     await this.removeInconsistentGradYears(queryRunner);

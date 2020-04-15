@@ -41,6 +41,8 @@ const recordReviewalTable = (charset: string) =>
 
 export class CreateRecordReviewalTable1573931612000
   implements MigrationInterface {
+  name = "CreateRecordReviewalTable1573931612000";
+
   async getCharSetOfUserIdColumn(qr: QueryRunner) {
     const [{ character_set_name }] = await qr.query(
       'SELECT character_set_name FROM information_schema.`COLUMNS` WHERE table_name = "user" AND column_name = "_id";'

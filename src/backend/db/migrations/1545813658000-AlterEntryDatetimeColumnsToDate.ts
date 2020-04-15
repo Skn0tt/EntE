@@ -38,6 +38,7 @@ const transitionalOldDateEndColumn = new TableColumn({
 
 export class AlterEntryDatetimeColumnsToDate1545813658000
   implements MigrationInterface {
+  name = "AlterEntryDatetimeColumnsToDate1545813658000";
   async up(queryRunner: QueryRunner) {
     // `date`
     await queryRunner.addColumn("entry", transitionalNewDateColumn);

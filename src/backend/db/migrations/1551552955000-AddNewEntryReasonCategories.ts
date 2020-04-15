@@ -16,6 +16,7 @@ const jointCategories = _.uniq(oldCategories.concat(newCategories));
 
 export class AddNewEntryReasonCategories1551552955000
   implements MigrationInterface {
+  name = "AddNewEntryReasonCategories1551552955000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.query(
       `

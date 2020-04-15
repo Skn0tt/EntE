@@ -6,6 +6,8 @@ import {
 } from "typeorm";
 
 export class AddPrefiledSlots1586165238000 implements MigrationInterface {
+  name = "AddPrefiledSlots1586165238000";
+
   fk = new TableForeignKey({
     onDelete: "SET NULL",
     columnNames: ["prefiledFor_id"],

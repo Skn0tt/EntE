@@ -1,6 +1,8 @@
 import { MigrationInterface, TableColumn, QueryRunner } from "typeorm";
 
 export class AddIsAdminField1585738676000 implements MigrationInterface {
+  name = "AddIsAdminField1585738676000";
+
   isAdmin = new TableColumn({
     name: "isAdmin",
     type: "tinyint",

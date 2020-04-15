@@ -17,6 +17,7 @@ const keyValueStoreTable = new Table({
 });
 
 export class AddKeyValueStoreTable1551014417000 implements MigrationInterface {
+  name = "AddKeyValueStoreTable1551014417000";
   async up(queryRunner: QueryRunner) {
     queryRunner.createTable(keyValueStoreTable);
   }

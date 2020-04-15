@@ -198,6 +198,7 @@ const userChildrenJoinTable = new Table({
 });
 
 export class Init1514764800000 implements MigrationInterface {
+  name = "Init1514764800000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.createTable(userTable, false, true);
     await queryRunner.createTable(userChildrenJoinTable, false, true);

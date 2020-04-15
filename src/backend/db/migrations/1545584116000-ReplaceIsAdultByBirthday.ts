@@ -17,6 +17,7 @@ const userTable = new Table({
 
 export class ReplaceIsAdultByBirthday1545584116000
   implements MigrationInterface {
+  name = "ReplaceIsAdultByBirthday1545584116000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumn(userTable, birthdayColumn);
     queryRunner.query(

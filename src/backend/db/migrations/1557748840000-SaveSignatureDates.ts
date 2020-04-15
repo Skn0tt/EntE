@@ -25,6 +25,7 @@ const newParentSignatureDateColumn = new TableColumn({
 });
 
 export class SaveSignatureDates1557748840000 implements MigrationInterface {
+  name = "SaveSignatureDates1557748840000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumn("entry", newManagerSignatureDateColumn);
     await queryRunner.addColumn("entry", newParentSignatureDateColumn);

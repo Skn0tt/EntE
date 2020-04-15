@@ -1,6 +1,8 @@
 import { MigrationInterface, TableColumn, QueryRunner } from "typeorm";
 
 export class GradYearToClass1582734098000 implements MigrationInterface {
+  name = "GradYearToClass1582734098000";
+
   class = new TableColumn({
     name: "class",
     type: "varchar",

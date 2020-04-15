@@ -10,6 +10,7 @@ const entryReasonCategoriesAtThatPoint = [
 ];
 
 export class UseEnumType1551372175000 implements MigrationInterface {
+  name = "UseEnumType1551372175000";
   async up(queryRunner: QueryRunner) {
     // role
     await queryRunner.query(

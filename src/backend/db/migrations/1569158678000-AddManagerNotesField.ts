@@ -8,6 +8,7 @@ const newManagerNotesColumn = new TableColumn({
 });
 
 export class AddManagerNotesField1569158678000 implements MigrationInterface {
+  name = "AddManagerNotesField1569158678000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumn("user", newManagerNotesColumn);
   }

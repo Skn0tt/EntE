@@ -20,6 +20,18 @@ module.exports = withSvgr({
       loader: "null-loader",
     });
 
+    // https://github.com/aliksend/bull_webpack_issue/issues/1
+    config.module.rules.push({
+      test: /node_modules\/bull\/lib\/commands\/index\.js$/,
+      use: {
+        loader: "string-replace-loader",
+        options: {
+          search: "__dirname",
+          replace: `"${path.dirname(require.resolve("bull"))}/lib/commands"`,
+        },
+      },
+    });
+
     config.plugins.push(
       new webpack.IgnorePlugin(/.spec.[t|j]sx?/),
       new webpack.IgnorePlugin(/@nestjs\/microservices/),

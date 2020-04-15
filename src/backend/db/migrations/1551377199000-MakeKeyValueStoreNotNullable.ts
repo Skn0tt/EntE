@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class MakeKeyValueStoreNotNullable1551377199000
   implements MigrationInterface {
+  name = "MakeKeyValueStoreNotNullable1551377199000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.query(
       `DELETE FROM key_value_store

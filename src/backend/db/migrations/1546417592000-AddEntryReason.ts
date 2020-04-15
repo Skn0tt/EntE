@@ -55,6 +55,7 @@ const teacherForeignKey = new TableForeignKey({
 });
 
 export class AddEntryReason1546417592000 implements MigrationInterface {
+  name = "AddEntryReason1546417592000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumns("entry", [
       categoryColumn,

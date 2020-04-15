@@ -13,6 +13,7 @@ const languageColumn = new TableColumn({
 });
 
 export class AddLanguageFieldToUser1545942329000 implements MigrationInterface {
+  name = "AddLanguageFieldToUser1545942329000";
   async up(queryRunner: QueryRunner) {
     await queryRunner.addColumn("user", languageColumnNullable);
     const defaultLanguage = "en";
