@@ -33,6 +33,7 @@ import { DEFAULT_DEFAULT_LANGUAGE } from "@@types";
 import MessageStream from "./components/MessageStream";
 import AuthService from "./AuthService";
 import InstanceConfigGate from "./components/InstanceConfigGate";
+import { DrawerStateProvider } from "./components/Drawer";
 import { useEffectOnce } from "react-use";
 
 const reduxConfig: Partial<ReduxConfig> = {
@@ -102,15 +103,17 @@ export function Wrapper(props: React.PropsWithChildren<{}>) {
       <Provider store={store}>
         <ConnectedThemeProvider>
           <LocalizedMUIPickersUtilsProvider>
-            <InstanceConfigGate>
-              <MessagesProvider>
-                <CssBaseline />
-                <MessageStream />
-                <AuthService period={ROTATION_PERIOD} />
+            <DrawerStateProvider>
+              <InstanceConfigGate>
+                <MessagesProvider>
+                  <CssBaseline />
+                  <MessageStream />
+                  <AuthService period={ROTATION_PERIOD} />
 
-                {props.children}
-              </MessagesProvider>
-            </InstanceConfigGate>
+                  {props.children}
+                </MessagesProvider>
+              </InstanceConfigGate>
+            </DrawerStateProvider>
           </LocalizedMUIPickersUtilsProvider>
         </ConnectedThemeProvider>
       </Provider>

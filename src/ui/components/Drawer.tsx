@@ -36,6 +36,41 @@ import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
 import Logo from "../assets/Logo.svg";
 
+interface DrawerStateContextType {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const DrawerStateContext = React.createContext<DrawerStateContextType>({
+  open: false,
+  setOpen: () => {},
+});
+
+function useDrawerState(): [
+  boolean,
+  React.Dispatch<React.SetStateAction<boolean>>
+] {
+  const { open, setOpen } = React.useContext(DrawerStateContext);
+  return [open, setOpen];
+}
+
+export function DrawerStateProvider(props: React.PropsWithChildren<{}>) {
+  const [open, setOpen] = React.useState(false);
+  const value = React.useMemo(
+    () => ({
+      open,
+      setOpen,
+    }),
+    [open, setOpen]
+  );
+
+  return (
+    <DrawerStateContext.Provider value={value}>
+      {props.children}
+    </DrawerStateContext.Provider>
+  );
+}
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(
@@ -117,8 +152,12 @@ type DrawerProps = DrawerOwnProps & DrawerStateProps;
 
 const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
   const { role, children, isAdmin } = props;
-  const [mobileOpen, toggleMobileOpen] = useToggle(false);
+  const [mobileOpen, setMobileOpen] = useDrawerState();
   const classes = useStyles(props);
+
+  const toggleMobileOpen = React.useCallback(() => {
+    setMobileOpen((v) => !v);
+  }, [setMobileOpen]);
 
   const drawer = (
     <List disablePadding>
