@@ -6,7 +6,6 @@ export interface HealthReport {
   isHealthy: boolean;
   dependencies: {
     redis: boolean;
-    signer: boolean;
     db: boolean;
   };
 }
@@ -25,11 +24,10 @@ export class StatusService {
     const redisIsHealthy = await this.redisService.isHealthy();
     const dbIsHealthy = await this.dbHealthIndicator.isHealthy();
 
-    const enteIsHealthy = redisIsHealthy && signerIsHealthy && dbIsHealthy;
+    const enteIsHealthy = redisIsHealthy && dbIsHealthy;
     const healthReport: HealthReport = {
       isHealthy: enteIsHealthy,
       dependencies: {
-        signer: signerIsHealthy,
         redis: redisIsHealthy,
         db: dbIsHealthy,
       },

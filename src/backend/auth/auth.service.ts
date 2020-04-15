@@ -9,7 +9,8 @@ import { WinstonLoggerService } from "../winston-logger.service";
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(SignerService) private readonly signerService: SignerService,
+    @Inject(SignerService)
+    private readonly signerService: SignerService<JwtTokenPayload>,
     @Inject(forwardRef(() => UserRepo))
     private readonly userRepo: UserRepo,
     @Inject(WinstonLoggerService) private readonly logger: LoggerService
@@ -47,7 +48,7 @@ export class AuthService {
   }
 
   async findUserByToken(token: string): Promise<Maybe<UserDto>> {
-    const jwt = await this.signerService.decryptToken<JwtTokenPayload>(token);
+    const jwt = await this.signerService.decryptToken(token);
     if (jwt.isNone()) {
       return None();
     }

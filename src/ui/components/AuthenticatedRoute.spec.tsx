@@ -9,16 +9,11 @@
 import * as React from "react";
 import { AuthenticatedRoute } from "./AuthenticatedRoute";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../test/helpers/mockRouter";
 
 describe.skip("AuthenticatedRoute", () => {
   const text = "hallo";
   const comp = shallow(
-    <AuthenticatedRoute
-      {...getMockRouterProps<{}>({})}
-      isLoggedIn={true}
-      purgeStaleData={() => {}}
-    >
+    <AuthenticatedRoute isLoggedIn={true} purgeStaleData={() => {}}>
       {text}
     </AuthenticatedRoute>
   );
@@ -35,11 +30,7 @@ describe.skip("AuthenticatedRoute", () => {
 
   describe("when is not LoggedIn", () => {
     const notLoggedIn = shallow(
-      <AuthenticatedRoute
-        {...getMockRouterProps<{}>({})}
-        isLoggedIn={false}
-        purgeStaleData={() => {}}
-      >
+      <AuthenticatedRoute isLoggedIn={false} purgeStaleData={() => {}}>
         {text}
       </AuthenticatedRoute>
     );

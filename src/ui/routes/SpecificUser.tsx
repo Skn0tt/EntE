@@ -72,6 +72,7 @@ import { invokeInvitationRoutine } from "../redux/invokeInvitationRoutine";
 import { useRoleTranslation } from "../roles.translation";
 import { ClassPicker } from "../elements/ClassPicker";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useTranslation = makeTranslationHook({
   en: {

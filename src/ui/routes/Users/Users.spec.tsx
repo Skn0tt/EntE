@@ -9,7 +9,6 @@
 import * as React from "react";
 import { Users } from "./Users";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../../test/helpers/mockRouter";
 import { Roles } from "@@types";
 import { UserN } from "../../redux";
 
@@ -25,14 +24,7 @@ describe("Users", () => {
     }),
   ];
   const getUsers = jest.fn();
-  const comp = shallow(
-    <Users
-      {...getMockRouterProps({})}
-      classes={{}}
-      users={users}
-      getUsers={getUsers}
-    />
-  );
+  const comp = shallow(<Users />);
 
   it("renders correctly", () => {
     expect(comp).toMatchSnapshot();

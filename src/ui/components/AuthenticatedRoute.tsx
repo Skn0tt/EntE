@@ -40,6 +40,7 @@ export const AuthenticatedRoute = (
   }
 
   router.push(`/login?from=${router.pathname}`, "/login");
+  return null;
 };
 
 export default AuthenticatedRoute;

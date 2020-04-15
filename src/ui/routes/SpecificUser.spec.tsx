@@ -9,7 +9,6 @@
 import * as React from "react";
 import { SpecificUser } from "./SpecificUser";
 import { shallow } from "enzyme";
-import { getMockRouterProps } from "../../test/helpers/mockRouter";
 import { Roles } from "@@types";
 import * as sinon from "sinon";
 import { UserN } from "../redux";
@@ -32,7 +31,6 @@ describe.skip("SpecificUser", () => {
 
   const comp = shallow(
     <SpecificUser
-      {...getMockRouterProps({ userId })}
       availableClasses={["2012"]}
       getUser={getUser}
       fullScreen
@@ -61,7 +59,6 @@ describe.skip("SpecificUser", () => {
     const requestUser = sinon.spy();
     const comp = shallow(
       <SpecificUser
-        {...getMockRouterProps({ userId })}
         availableClasses={["2012"]}
         getUser={getUser}
         fullScreen

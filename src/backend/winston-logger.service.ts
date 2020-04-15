@@ -9,15 +9,15 @@ const logger = winston.createLogger({
 });
 
 export class WinstonLoggerService implements LoggerService {
-  static log(message: any, context?: string | undefined) {
+  static log(message: any, context?: any) {
     logger.info(message, context);
   }
 
-  static error(message: any, trace?: any, context?: string | undefined) {
+  static error(message: any, trace?: any, context?: any) {
     logger.error(message, trace, context);
   }
 
-  static warn(message: any, context?: string | undefined) {
+  static warn(message: any, context?: any) {
     logger.warn(message, context);
   }
 
