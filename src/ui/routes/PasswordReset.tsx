@@ -66,7 +66,7 @@ const PasswordReset = (props: PasswordResetProps) => {
   }, [newPassword, addMessages, language]);
 
   if (resetSuccessful) {
-    router.push(`/login?username=${username}`);
+    router.push("/login", `/login?username=${username}`);
   }
 
   return (

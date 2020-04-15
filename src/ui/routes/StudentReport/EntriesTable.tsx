@@ -125,7 +125,7 @@ const EntriesTable: React.FC<EntriesTableProps> = (props) => {
       ]}
       extractId={(e) => e.get("id")}
       onClick={(e) => {
-        router.push(`/entries/${e}`);
+        router.push("/entries/[entryId]", `/entries/${e}`);
       }}
     />
   );

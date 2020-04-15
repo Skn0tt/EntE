@@ -163,7 +163,7 @@ export const Entries = () => {
 
   const handleClick = React.useCallback(
     (id: string) => {
-      router.push(`/entries/${id}`);
+      router.push("/entries/[entryId]", `/entries/${id}`);
     },
     [router]
   );

@@ -452,7 +452,10 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
           )}
           <DialogActions>
             {user.get("role") === "student" && (
-              <Link href={`${userId}/report`}>
+              <Link
+                href="/users/[userId]/report"
+                as={`/users/${userId}/report`}
+              >
                 <Button size="small" color="default">
                   {lang.openReport}
                 </Button>

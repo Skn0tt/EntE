@@ -57,7 +57,10 @@ export function Users(props: {}) {
       />
 
       {/* Main */}
-      <UserTable users={users} onClick={(id) => router.push(`/users/${id}`)} />
+      <UserTable
+        users={users}
+        onClick={(id) => router.push("/users/[userId]", `/users/${id}`)}
+      />
 
       {/* FAB */}
       <Fab

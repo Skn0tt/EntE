@@ -1,5 +1,15 @@
+import { withAdminGuard } from "../../ui/withRouteGuard";
+import Drawer from "../../ui/components/Drawer";
+import UsersRoute from "../../ui/routes/Users";
+import SpecificUserRoute from "../../ui/routes/SpecificUser";
+
 function FuncNameHere() {
-  return null;
+  return (
+    <Drawer>
+      <SpecificUserRoute />
+      <UsersRoute />
+    </Drawer>
+  );
 }
 
-export default FuncNameHere;
+export default withAdminGuard(FuncNameHere);

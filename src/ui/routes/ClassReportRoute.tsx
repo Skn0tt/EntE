@@ -66,7 +66,7 @@ const ClassReportRoute = (props: {}) => {
 
   const handleRowClicked = React.useCallback(
     (userId: string) => {
-      router.push(`/users/${userId}/report`);
+      router.push("/users/[userId]/report", `/users/${userId}/report`);
     },
     [router]
   );

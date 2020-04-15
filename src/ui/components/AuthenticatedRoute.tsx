@@ -39,7 +39,7 @@ export const AuthenticatedRoute = (
     return <>{children}</>;
   }
 
-  router.push(`/login?from=${router.pathname}`, "/login");
+  router.push("/login", `/login?from=${router.pathname}`);
   return null;
 };
 

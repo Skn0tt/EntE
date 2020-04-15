@@ -89,7 +89,10 @@ const Invitation = (props: InvitationProps) => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Link href={`/login?username=${encodeURIComponent(username)}`}>
+            <Link
+              href="/login"
+              as={`/login?username=${encodeURIComponent(username)}`}
+            >
               <Button variant="raised">{translation.done}</Button>
             </Link>
           </DialogActions>
