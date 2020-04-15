@@ -1567,10 +1567,10 @@
   dependencies:
     type-detect "4.0.8"
 
-"@skn0tt/signer@^0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.5.tgz#f987c575ad9e1b4b5e3f183b3d9c0b5ccff06ca8"
-  integrity sha512-dMz8+1qdJimHBEVu01fEqWv6WJKUM106xeNMZ8jy8y/WjNGdK6NplQbkHwYMfy+uVtwxhE0cBXHuTgxf8HgWsQ==
+"@skn0tt/signer@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.6.tgz#fa13aeae04d523b2d17d50d18e40217f91f8fbf4"
+  integrity sha512-ujFrhduMhXB+wJHaWF40k3f1JN2Vsy3THxHC3pNBWcxN6GmEsy5lrrlIW6v/s8aqQp5CvQfLf7E5cWDbQG8WkQ==
   dependencies:
     jsonwebtoken "^8.5.1"
     keypair "^1.0.1"

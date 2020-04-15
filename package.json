@@ -21,7 +21,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "@sentry/browser": "^5.12.4",
     "@sentry/node": "^5.15.4",
-    "@skn0tt/signer": "^0.8.5",
+    "@skn0tt/signer": "^0.8.6",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
