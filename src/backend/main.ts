@@ -1,7 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { WinstonLoggerService } from "./winston-logger.service";
-import * as bodyParser from "body-parser";
 import { Config } from "./helpers/config";
 import { SentryInterceptor } from "./helpers/sentry-interceptor";
 import { getConnectionToken } from "@nestjs/typeorm";

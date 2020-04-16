@@ -69,8 +69,8 @@ const config = ((): Readonly<IConfig> => {
     DSN: Maybe.fromUndefined(SENTRY_DSN).filter((s) => s !== "<nil>"),
     version: pack.version,
     signer: {
-      rotationInterval: +(JWT_ROTATION_INTERVAL || 900),
-      tokenExpiry: +(JWT_EXPIRY || 900),
+      rotationInterval: +(JWT_ROTATION_INTERVAL || 900 * 1000),
+      tokenExpiry: +(JWT_EXPIRY || 900 * 1000),
     },
     mail: {
       address: SMTP_ADDRESS!,
