@@ -21,6 +21,26 @@ RUN yarn build
 ADD entrypoint.sh ./
 ENTRYPOINT ["/app/entrypoint.sh"]
 
+# Environment Variabel Defaults
+ENV BASE_URL=localhost:3000
+ENV REDIS_HOST=localhost
+ENV REDIS_PORT=6379
+ENV REDIS_PREFIX=ente
+ENV CRON_WEEKLY_SUMMARY="0 16 * * 5"
+ENV SMTP_HOST=localhost
+ENV SMTP_PORT=1025
+ENV SMTP_USERNAME=admin
+ENV SMTP_PASSWORD=root
+ENV SMTP_POOL=
+ENV SMTP_ADDRESS=ente@ente.app
+ENV SMTP_RETRY_DELAY=3600000
+ENV JWT_ROTATION_INTERVAL=900
+ENV JWT_EXPIRY=900
+
+# More available env vars:
+## ENV SENTRY_DSN=
+## ENV ROTATION_PERIOD=
+
 # Run
 EXPOSE 3000
 HEALTHCHECK --timeout=1s --start-period=5s CMD curl --fail localhost:3000/api/status && curl --fail localhost:3000/ || exit 1
