@@ -8,7 +8,7 @@ import {
   EntryReasonCategory,
 } from "../../types";
 import { Some, Maybe } from "monet";
-import { RequestContextUser } from "backend/helpers/request-context";
+import { RequestContextUser } from "../../backend/helpers/request-context";
 
 const withGetDto = <T extends {}>(
   object: T
