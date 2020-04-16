@@ -1,5 +1,5 @@
 import { Roles } from "@@types";
-import { withRoleGuard } from "ui/withRouteGuard";
+import { withRoleGuard } from "../../ui/withRouteGuard";
 import Drawer from "../../ui/components/Drawer";
 import EntriesRoute from "../../ui/routes/Entries";
 import SpecificEntryRoute from "../../ui/routes/SpecificEntry/SpecificEntryRoute";
