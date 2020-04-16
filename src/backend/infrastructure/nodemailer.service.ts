@@ -3,6 +3,7 @@ import {
   OnModuleInit,
   LoggerService,
   Inject,
+  OnModuleDestroy,
 } from "@nestjs/common";
 import { Config } from "../helpers/config";
 import * as nodemailer from "nodemailer";
@@ -11,7 +12,8 @@ import { EmailTransportService, Envelope } from "./email-transport.service";
 import { Success, Fail, Validation } from "monet";
 
 @Injectable()
-export class NodemailerService implements EmailTransportService, OnModuleInit {
+export class NodemailerService
+  implements EmailTransportService, OnModuleInit, OnModuleDestroy {
   private readonly transport: nodemailer.Transporter;
   private readonly sender: string;
 
@@ -38,6 +40,10 @@ export class NodemailerService implements EmailTransportService, OnModuleInit {
     } catch (error) {
       this.logger.error("SMTP connection does not work.");
     }
+  }
+
+  async onModuleDestroy() {
+    this.transport.close();
   }
 
   async sendMail(envelope: Envelope): Promise<Validation<string, void>> {

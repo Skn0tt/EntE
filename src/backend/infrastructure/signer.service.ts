@@ -1,11 +1,17 @@
-import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
+import {
+  Injectable,
+  Inject,
+  OnModuleInit,
+  OnModuleDestroy,
+} from "@nestjs/common";
 import { Maybe } from "monet";
 import { RedisService } from "./redis.service";
 import Signer, { JWTRepository } from "@skn0tt/signer";
 import { Config } from "../helpers/config";
 
 @Injectable()
-export class SignerService<T extends object> implements OnModuleInit {
+export class SignerService<T extends object>
+  implements OnModuleInit, OnModuleDestroy {
   private signer: Signer<T>;
   private jwtRepo: JWTRepository<T>;
 
@@ -24,6 +30,10 @@ export class SignerService<T extends object> implements OnModuleInit {
     });
 
     this.jwtRepo = this.signer.getJwtRepository();
+  }
+
+  async onModuleDestroy() {
+    this.signer.close();
   }
 
   async createToken(payload: any): Promise<string> {
