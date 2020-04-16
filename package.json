@@ -47,7 +47,7 @@
     "mui-datatables": "^2.14.0",
     "mui-downshift": "^1.2.1",
     "mysql": "^2.16.0",
-    "next": "9.3.4",
+    "next": "9.3.5",
     "nodemailer": "^4.6.8",
     "papaparse": "^4.6.1",
     "passport": "^0.4.0",
