@@ -1,0 +1,9 @@
+.git
+.next
+.vscode
+assets
+docs
+node_modules
+scripts
+tests
+*.sql
