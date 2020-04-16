@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "run-p dev:* --print-label",
     "dev:next": "next dev",
-    "dev:deps": "docker-compose up",
+    "dev:deps": "docker-compose up --force-recreate",
     "build": "next build",
     "start": "next start",
     "test": "run-s test:tsc test:unit test:e2e",
