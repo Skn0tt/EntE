@@ -7,7 +7,9 @@
     "dev:deps": "docker-compose up",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "run-s test:tsc test:unit",
+    "test:unit": "jest",
+    "test:tsc": "tsc",
     "postinstall": "patch-package"
   },
   "dependencies": {
