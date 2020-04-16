@@ -23,4 +23,5 @@ ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Run
 EXPOSE 3000
+HEALTHCHECK --timeout=1s --start-period=5s CMD curl --fail localhost:3000/api/status && curl --fail localhost:3000/ || exit 1
 CMD ./node_modules/.bin/next start
