@@ -36,18 +36,6 @@ export async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
-  app.use(
-    bodyParser.json({
-      type: "application/json",
-    })
-  );
-
-  app.use(
-    bodyParser.text({
-      type: "text/*",
-    })
-  );
-
   const dbConnection: Connection = app.get(getConnectionToken() as string);
 
   await dbConnection.runMigrations();

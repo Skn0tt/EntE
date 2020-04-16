@@ -115,10 +115,12 @@ export class EntryRepo {
         await manager.save(Entry, newEntry);
         await manager.save(Slot, newEntry.slots);
 
-        await manager.update(Slot, dto.prefiledSlots, {
-          entry: newEntry,
-          prefiledFor: null,
-        });
+        if (dto.prefiledSlots.length > 0) {
+          await manager.update(Slot, dto.prefiledSlots, {
+            entry: newEntry,
+            prefiledFor: null,
+          });
+        }
 
         return newEntry;
       }
