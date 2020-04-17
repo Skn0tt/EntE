@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -21,6 +20,7 @@ import { HourFromToInput } from "../elements/HourFromToInput";
 import Axios from "axios";
 import { useLoadingFlag } from "../useLoadingFlag";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -109,7 +109,7 @@ const CreatePrefiledSlots = () => {
   const handleCreate = usePrefiledSlotsCreator();
 
   return (
-    <Dialog onClose={router.back} open>
+    <ResponsiveFullscreenDialog onClose={router.back} open>
       <DialogTitle>{translation.title}</DialogTitle>
 
       <DialogContent>
@@ -156,7 +156,7 @@ const CreatePrefiledSlots = () => {
           {translation.ok}
         </Button>
       </DialogActions>
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
