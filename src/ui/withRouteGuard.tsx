@@ -1,21 +1,24 @@
 import { useSelector } from "react-redux";
-import { getOneSelf, UserN } from "./redux";
+import { getOneSelf, UserN, isAuthValid } from "./redux";
 import { Maybe } from "monet";
 import { useRouter } from "next/router";
 import { Roles } from "@@types";
 
-export function withRouteGuard(allow: (user: Maybe<UserN>) => boolean) {
+export function withRouteGuard(
+  allow: (user: Maybe<UserN>, authValid: boolean) => boolean
+) {
   return function <T>(
     Component: React.ComponentType<T>
   ): React.ComponentType<T> {
     return function WithRouteGuard(props: T) {
       const router = useRouter();
 
+      const authValid = useSelector(isAuthValid);
       const oneSelf = useSelector(getOneSelf);
-      const isAllowed = allow(oneSelf);
+      const isAllowed = allow(oneSelf, authValid);
 
       if (!isAllowed) {
-        router.replace("/");
+        router.push("/");
         return null;
       }
 
@@ -27,7 +30,9 @@ export function withRouteGuard(allow: (user: Maybe<UserN>) => boolean) {
 export function withAuthenticatedGuard(
   allow: (user: UserN) => boolean = () => true
 ) {
-  return withRouteGuard((u) => u.map(allow).orSome(false));
+  return withRouteGuard(
+    (u, authValid) => authValid && u.map(allow).orSome(false)
+  );
 }
 
 export const withAdminGuard = withAuthenticatedGuard((u) => u.get("isAdmin"));
