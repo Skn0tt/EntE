@@ -1,20 +1,18 @@
 import * as React from "react";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  withMobileDialog,
   Button,
   Typography,
 } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
-import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import SetPasswordPhase from "./SetPasswordPhase";
 import * as querystring from "query-string";
 import withErrorBoundary from "../../hocs/withErrorBoundary";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -54,15 +52,12 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-type InvitationProps = InjectedProps;
-
 enum InvitationPhase {
   SetPassword,
   Introduction,
 }
 
-const Invitation = (props: InvitationProps) => {
-  const { fullScreen } = props;
+const Invitation = (props: {}) => {
   const router = useRouter();
   const token = router.query.token as string;
 
@@ -74,7 +69,7 @@ const Invitation = (props: InvitationProps) => {
   const username = _username as string;
 
   return (
-    <Dialog fullScreen={fullScreen} open>
+    <ResponsiveFullscreenDialog open>
       {phase === InvitationPhase.SetPassword ? (
         <SetPasswordPhase
           token={token}
@@ -98,10 +93,8 @@ const Invitation = (props: InvitationProps) => {
           </DialogActions>
         </>
       )}
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withErrorBoundary()(
-  withMobileDialog<InvitationProps>()(Invitation)
-);
+export default withErrorBoundary()(Invitation);

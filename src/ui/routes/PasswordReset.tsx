@@ -8,15 +8,11 @@
 
 import * as React from "react";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
 } from "@material-ui/core";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { SetPasswordForm } from "../components/SetPasswordForm";
@@ -25,6 +21,7 @@ import { useMessages } from "../context/Messages";
 import { setPassword } from "../passwordReset";
 import { useLanguage } from "../helpers/useLanguage";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "../components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -37,11 +34,7 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-type PasswordResetProps = InjectedProps;
-
-const PasswordReset = (props: PasswordResetProps) => {
-  const { fullScreen } = props;
-
+const PasswordReset = (props: {}) => {
   const router = useRouter();
   const token = router.query.token as string;
 
@@ -70,7 +63,7 @@ const PasswordReset = (props: PasswordResetProps) => {
   }
 
   return (
-    <Dialog fullScreen={fullScreen} open>
+    <ResponsiveFullscreenDialog open>
       <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <SetPasswordForm onValidPassword={setNewPassword} />
@@ -84,10 +77,8 @@ const PasswordReset = (props: PasswordResetProps) => {
           {translation.submit}
         </Button>
       </DialogActions>
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog<PasswordResetProps>()(
-  withErrorBoundary()(PasswordReset)
-);
+export default withErrorBoundary()(PasswordReset);

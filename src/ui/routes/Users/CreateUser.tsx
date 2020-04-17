@@ -12,9 +12,7 @@ import {
   MapStateToPropsParam,
   MapDispatchToPropsParam,
 } from "react-redux";
-
 import {
-  Dialog,
   Button,
   Grid,
   TextField,
@@ -25,9 +23,6 @@ import {
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import { Action } from "redux";
 import {
   Roles,
@@ -64,6 +59,7 @@ import {
 import { DateInput } from "../../elements/DateInput";
 import { RoleTranslation } from "../../roles.translation";
 import { ClassPicker } from "../../elements/ClassPicker";
+import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 
 export const lang = {
   en: {
@@ -198,8 +194,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 type CreateUserProps = OwnProps &
   CreateUserStateProps &
   CreateUserDispatchProps &
-  WithTranslation<typeof lang.en> &
-  InjectedProps;
+  WithTranslation<typeof lang.en>;
 
 /**
  * # Component
@@ -298,7 +293,6 @@ export class CreateUser extends React.PureComponent<
   render() {
     const {
       show,
-      fullScreen,
       getUser,
       students,
       translation,
@@ -308,7 +302,7 @@ export class CreateUser extends React.PureComponent<
 
     return (
       <>
-        <Dialog fullScreen={fullScreen} onClose={this.handleGoBack} open={show}>
+        <ResponsiveFullscreenDialog onClose={this.handleGoBack} open={show}>
           <DialogTitle>{translation.titles.newUser}</DialogTitle>
           <DialogContent>
             <form onKeyPress={this.handleKeyPress}>
@@ -440,7 +434,7 @@ export class CreateUser extends React.PureComponent<
               {translation.submit}
             </Button>
           </DialogActions>
-        </Dialog>
+        </ResponsiveFullscreenDialog>
       </>
     );
   }
@@ -454,8 +448,4 @@ export default connect<
 >(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withTranslation(lang)(
-    withMobileDialog<CreateUserProps>()(withErrorBoundary()(CreateUser))
-  )
-);
+)(withTranslation(lang)(withErrorBoundary()(CreateUser)));

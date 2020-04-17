@@ -14,7 +14,6 @@ import {
 } from "react-redux";
 import { Action } from "redux";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
@@ -25,7 +24,6 @@ import {
   Typography,
   Theme,
 } from "@material-ui/core";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
 import {
   AppState,
   isAuthValid,
@@ -50,6 +48,7 @@ import { invokeReset } from "../../passwordReset";
 import { addMessages } from "../../context/Messages";
 import { Languages, DEFAULT_DEFAULT_LANGUAGE } from "@@types";
 import { withRouter, Router } from "next/router";
+import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -82,10 +81,6 @@ const lang = {
 
 interface LoginOwnProps {}
 
-interface InjectedProps {
-  fullScreen: boolean;
-}
-
 interface LoginStateProps {
   authValid: boolean;
   loginPending: boolean;
@@ -115,8 +110,7 @@ const mapDispatchToProps: MapDispatchToPropsParam<
 
 type LoginProps = LoginStateProps &
   LoginOwnProps &
-  LoginDispatchProps & { router: Router } & InjectedProps &
-  WithTranslation<typeof lang.en> &
+  LoginDispatchProps & { router: Router } & WithTranslation<typeof lang.en> &
   WithStyles<"versionCode">;
 
 interface State {
@@ -194,7 +188,6 @@ class Login extends React.PureComponent<LoginProps, State> {
   render() {
     const {
       authValid,
-      fullScreen,
       loginPending,
       translation: lang,
       loginBanner,
@@ -220,7 +213,7 @@ class Login extends React.PureComponent<LoginProps, State> {
           show={showPasswordResetModal}
           onClose={this.hidePasswordResetModal}
         />
-        <Dialog fullScreen={fullScreen} open onKeyPress={this.handleKeyPress}>
+        <ResponsiveFullscreenDialog open onKeyPress={this.handleKeyPress}>
           <DialogTitle>{lang.title}</DialogTitle>
           <DialogContent>
             <DialogContentText
@@ -269,7 +262,7 @@ class Login extends React.PureComponent<LoginProps, State> {
               {lang.submit}
             </Button>
           </DialogActions>
-        </Dialog>
+        </ResponsiveFullscreenDialog>
 
         <Typography color="default" className={classes.versionCode}>
           v{config.get().VERSION}
@@ -283,11 +276,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(
-    withTranslation(lang)(
-      withStyles(styles)(
-        withMobileDialog<LoginProps>()(withErrorBoundary()(Login))
-      )
-    )
-  )
+  )(withTranslation(lang)(withStyles(styles)(withErrorBoundary()(Login))))
 ) as React.ComponentType<{}>;

@@ -41,7 +41,6 @@ describe("CreateUser", () => {
       <CreateUser
         availableClasses={["2012"]}
         getUser={getUser}
-        fullScreen
         translation={lang.de}
         createUsers={createUser}
         onClose={onClose}
@@ -62,7 +61,6 @@ describe("CreateUser", () => {
       <CreateUser
         availableClasses={["2012"]}
         getUser={getUser}
-        fullScreen
         translation={lang.de}
         createUsers={createUser}
         onClose={onClose}
@@ -82,7 +80,6 @@ describe("CreateUser", () => {
       <CreateUser
         availableClasses={["2012"]}
         getUser={getUser}
-        fullScreen
         translation={lang.de}
         createUsers={createUser}
         onClose={onClose}

@@ -33,7 +33,6 @@ describe.skip("SpecificUser", () => {
     <SpecificUser
       availableClasses={["2012"]}
       getUser={getUser}
-      fullScreen
       classes={{ menuButton: "" }}
       loading={false}
       token=""
@@ -61,7 +60,6 @@ describe.skip("SpecificUser", () => {
       <SpecificUser
         availableClasses={["2012"]}
         getUser={getUser}
-        fullScreen
         classes={{ menuButton: "" }}
         token=""
         loading={false}

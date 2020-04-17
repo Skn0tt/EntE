@@ -16,7 +16,6 @@ import ChildrenInput from "../elements/ChildrenInput";
 import TextInput from "../elements/TextInput";
 import {
   Button,
-  Dialog,
   Grid,
   IconButton,
   withStyles,
@@ -27,9 +26,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -73,6 +69,7 @@ import { useRoleTranslation } from "../roles.translation";
 import { ClassPicker } from "../elements/ClassPicker";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { ResponsiveFullscreenDialog } from "../components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -192,8 +189,7 @@ interface SpecificUserOwnProps {}
 type SpecificUserProps = SpecificUserStateProps &
   SpecificUserOwnProps &
   SpecificUserDispatchProps &
-  WithStyles<"menuButton"> &
-  InjectedProps;
+  WithStyles<"menuButton">;
 
 /**
  * # Component
@@ -206,7 +202,6 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
   const [showDelete, setShowDelete] = React.useState(false);
   const [patch, setPatch] = React.useState(new PatchUserDto());
   const {
-    fullScreen,
     loading,
     getUser,
     students,
@@ -285,7 +280,7 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
           }}
           text={lang.titles.areYouSureYouWannaDelete(user.get("username"))}
         />
-        <Dialog open onClose={onGoBack} fullScreen={fullScreen} scroll="body">
+        <ResponsiveFullscreenDialog open onClose={onGoBack} scroll="body">
           {!!user ? (
             <>
               <DialogTitle>
@@ -475,7 +470,7 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
               {lang.submit}
             </Button>
           </DialogActions>
-        </Dialog>
+        </ResponsiveFullscreenDialog>
       </>
     )
   );
@@ -484,8 +479,4 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withStyles(styles)(
-    withErrorBoundary()(withMobileDialog<SpecificUserProps>()(SpecificUser))
-  )
-);
+)(withStyles(styles)(withErrorBoundary()(SpecificUser)));

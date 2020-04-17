@@ -8,15 +8,12 @@
 
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Dialog, Button, TextField, Grid } from "@material-ui/core";
+import { Button, TextField, Grid } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import SlotEntry from "./SlotEntry";
 import MenuItem from "@material-ui/core/MenuItem";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import Typography from "@material-ui/core/Typography/Typography";
 import {
   createEntryRequest,
@@ -45,6 +42,7 @@ import { CreateSlotList } from "./CreateSlotList";
 import { ErrorBox } from "../../elements/ErrorBox";
 import { PrefiledSlotsPicker } from "./PrefiledSlotsPicker";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 
 function days(n: number) {
   return n * 24 * 60 * 60 * 1000;
@@ -93,11 +91,7 @@ const useTranslation = makeTranslationHook({
   },
 });
 
-type CreateEntryProps = InjectedProps;
-
-const CreateEntry = (props: CreateEntryProps) => {
-  const { fullScreen } = props;
-
+const CreateEntry = (props: {}) => {
   const dispatch = useDispatch();
 
   const userIsParent = useSelector<AppState, boolean>((s) =>
@@ -244,7 +238,7 @@ const CreateEntry = (props: CreateEntryProps) => {
   );
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={goBack} open>
+    <ResponsiveFullscreenDialog onClose={goBack} open>
       <DialogTitle>{translation.newEntry}</DialogTitle>
       <DialogContent>
         <Grid container direction="column" spacing={32}>
@@ -349,8 +343,8 @@ const CreateEntry = (props: CreateEntryProps) => {
           {translation.ok}
         </Button>
       </DialogActions>
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog<CreateEntryProps>()(CreateEntry);
+export default CreateEntry;

@@ -1,13 +1,10 @@
 import * as React from "react";
-import { withMobileDialog, Dialog } from "@material-ui/core";
 import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import SpecificEntry from "./SpecificEntry";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 
-type SpecificEntryRouteProps = InjectedProps;
-
-const SpecificEntryRoute: React.FC<SpecificEntryRouteProps> = (props) => {
-  const { fullScreen } = props;
+const SpecificEntryRoute: React.FC<{}> = (props) => {
   const router = useRouter();
   const entryId = router.query.entryId as string;
 
@@ -16,16 +13,15 @@ const SpecificEntryRoute: React.FC<SpecificEntryRouteProps> = (props) => {
   }, [history]);
 
   return (
-    <Dialog
+    <ResponsiveFullscreenDialog
       open
-      fullScreen={fullScreen}
       onClose={handleClose}
       fullWidth
       scroll="body"
     >
       <SpecificEntry entryId={entryId} onClose={handleClose} />
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog()(SpecificEntryRoute);
+export default SpecificEntryRoute;

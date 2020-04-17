@@ -8,16 +8,12 @@
 
 import {
   Button,
-  Dialog,
   Grid,
   DialogTitle,
   DialogContent,
   DialogContentText,
 } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import { CreateUserDto } from "@@types";
 import { Maybe, None } from "monet";
 import * as React from "react";
@@ -31,6 +27,7 @@ import CsvImportMethod from "./CsvImportMethod";
 import { DropdownInput } from "../../elements/DropdownInput";
 import { SchiLDImportMethod } from "./SchiLDImportMethod";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -119,11 +116,7 @@ const toUserN = (u: CreateUserDto): UserN => {
 const importMethods: ImportMethod[] = ["csv", "schild"];
 type ImportMethod = "csv" | "schild";
 
-type ImportUsersDialogProps = InjectedProps;
-
-const ImportUsersDialog = (props: ImportUsersDialogProps) => {
-  const { fullScreen } = props;
-
+const ImportUsersDialog = (props: {}) => {
   const dispatch = useDispatch();
 
   const existingStudentUsernames = useSelector<AppState, string[]>((state) =>
@@ -172,7 +165,7 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
     : existingStudentUsernames;
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={goBack} open>
+    <ResponsiveFullscreenDialog onClose={goBack} open>
       <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
@@ -251,8 +244,8 @@ const ImportUsersDialog = (props: ImportUsersDialogProps) => {
           {translation.submit}
         </Button>
       </DialogActions>
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog<ImportUsersDialogProps>()(ImportUsersDialog);
+export default ImportUsersDialog;

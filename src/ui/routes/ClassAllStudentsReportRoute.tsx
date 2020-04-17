@@ -1,26 +1,22 @@
 import * as React from "react";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
+import { InjectedProps } from "@material-ui/core/withMobileDialog";
 import StudentReport from "./StudentReport/StudentReport";
-import { Dialog } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { getStudentsOfClass, getOneSelvesClass } from "../redux";
 import { useRouter } from "next/router";
+import { ResponsiveFullscreenDialog } from "../components/ResponsiveFullscreenDialog";
 
 const ClassAllStudentsReportRoute = (props: InjectedProps) => {
   const ownClass = useSelector(getOneSelvesClass);
   const studentsOfClass = useSelector(getStudentsOfClass(ownClass.orSome("")));
-  const { fullScreen } = props;
 
   const router = useRouter();
 
   const handleOnClose = router.back;
 
   return (
-    <Dialog
+    <ResponsiveFullscreenDialog
       open
-      fullScreen={fullScreen}
       onClose={handleOnClose}
       scroll="body"
       maxWidth="md"
@@ -29,8 +25,8 @@ const ClassAllStudentsReportRoute = (props: InjectedProps) => {
         studentIds={studentsOfClass.map((s) => s.get("id"))}
         onClose={handleOnClose}
       />
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog()(ClassAllStudentsReportRoute);
+export default ClassAllStudentsReportRoute;

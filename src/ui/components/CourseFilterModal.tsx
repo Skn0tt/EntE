@@ -1,7 +1,6 @@
 import * as React from "react";
 import { CourseFilter, CourseFilterSlot } from "../helpers/course-filter";
 import {
-  Dialog,
   DialogActions,
   Button,
   DialogTitle,
@@ -15,9 +14,6 @@ import {
   Tooltip,
   DialogContentText,
 } from "@material-ui/core";
-import withMobileDialog, {
-  InjectedProps,
-} from "@material-ui/core/withMobileDialog";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import _ from "lodash";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,6 +21,7 @@ import { useWeekdayTranslations } from "../helpers/use-weekday-translations";
 import { DropdownInput } from "../elements/DropdownInput";
 import { Weekday } from "../reporting/reporting";
 import { NumberInput } from "../elements/NumberInput";
+import { ResponsiveFullscreenDialog } from "./ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -60,10 +57,8 @@ interface CourseFilterModalOwnProps {
   value: CourseFilter;
 }
 
-const CourseFilterModal: React.FC<CourseFilterModalOwnProps & InjectedProps> = (
-  props
-) => {
-  const { show, onChange, onClose, fullScreen, value } = props;
+const CourseFilterModal: React.FC<CourseFilterModalOwnProps> = (props) => {
+  const { show, onChange, onClose, value } = props;
   const translation = useTranslation();
   const weekdays = useWeekdayTranslations().full;
 
@@ -92,7 +87,7 @@ const CourseFilterModal: React.FC<CourseFilterModalOwnProps & InjectedProps> = (
   }, [sortedValue, onChange, weekday, hour]);
 
   return (
-    <Dialog fullScreen={fullScreen} onClose={onClose} open={show}>
+    <ResponsiveFullscreenDialog onClose={onClose} open={show}>
       <DialogTitle>{translation.title}</DialogTitle>
 
       <DialogContent>
@@ -168,8 +163,8 @@ const CourseFilterModal: React.FC<CourseFilterModalOwnProps & InjectedProps> = (
           {translation.ok}
         </Button>
       </DialogActions>
-    </Dialog>
+    </ResponsiveFullscreenDialog>
   );
 };
 
-export default withMobileDialog<CourseFilterModalOwnProps>()(CourseFilterModal);
+export default CourseFilterModal;

@@ -20,7 +20,7 @@ import { HourFromToInput } from "../elements/HourFromToInput";
 import Axios from "axios";
 import { useLoadingFlag } from "../useLoadingFlag";
 import { useRouter } from "next/router";
-import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
+import { ResponsiveFullscreenDialog } from "../components/ResponsiveFullscreenDialog";
 
 const useTranslation = makeTranslationHook({
   en: {
