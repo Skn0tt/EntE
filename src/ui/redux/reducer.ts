@@ -211,6 +211,7 @@ const asyncReducersFull = (
   },
 });
 
+// console.log(AppState)
 export const initialState = new AppState({});
 
 const reducer = handleActions<AppState | undefined, any>(

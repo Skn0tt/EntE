@@ -1,4 +1,4 @@
-import { SlotN, EntryN } from "../redux/";
+import { SlotN, EntryN } from "../redux/types";
 import * as _ from "lodash";
 import { getDay, differenceInCalendarDays, parseISO } from "date-fns";
 import { fillRange } from "../helpers/fillRange";

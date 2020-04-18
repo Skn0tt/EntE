@@ -6,7 +6,6 @@ import {
   subWeeks,
 } from "date-fns";
 import { Weekday } from "./reporting/reporting";
-import { Set } from "immutable";
 
 export type FilterScope =
   | "everything"
