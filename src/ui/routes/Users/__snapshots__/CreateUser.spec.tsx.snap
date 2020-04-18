@@ -2,8 +2,7 @@
 
 exports[`CreateUser doesn't render when show=false 1`] = `
 <Fragment>
-  <WithStyles(Dialog)
-    fullScreen={true}
+  <ResponsiveFullscreenDialog
     onClose={[Function]}
     open={false}
   >
@@ -178,14 +177,13 @@ exports[`CreateUser doesn't render when show=false 1`] = `
         Erstellen
       </WithStyles(Button)>
     </WithStyles(DialogActions)>
-  </WithStyles(Dialog)>
+  </ResponsiveFullscreenDialog>
 </Fragment>
 `;
 
 exports[`CreateUser renders correctly 1`] = `
 <Fragment>
-  <WithStyles(Dialog)
-    fullScreen={true}
+  <ResponsiveFullscreenDialog
     onClose={[Function]}
     open={true}
   >
@@ -360,6 +358,6 @@ exports[`CreateUser renders correctly 1`] = `
         Erstellen
       </WithStyles(Button)>
     </WithStyles(DialogActions)>
-  </WithStyles(Dialog)>
+  </ResponsiveFullscreenDialog>
 </Fragment>
 `;

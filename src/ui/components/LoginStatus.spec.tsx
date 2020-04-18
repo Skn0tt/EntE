@@ -9,9 +9,14 @@
 import * as React from "react";
 import { shallow } from "enzyme";
 import { LoginStatus } from "./LoginStatus";
+import { TestWrapper } from "test/TestWrapper";
 
 describe("LoginStatus", () => {
-  const comp = shallow(<LoginStatus />);
+  const comp = shallow(
+    <TestWrapper>
+      <LoginStatus />
+    </TestWrapper>
+  );
 
   it("renders correctly", () => {
     expect(comp).toMatchSnapshot();

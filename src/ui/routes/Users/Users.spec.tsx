@@ -9,22 +9,14 @@
 import * as React from "react";
 import { Users } from "./Users";
 import { shallow } from "enzyme";
-import { Roles } from "@@types";
-import { UserN } from "../../redux";
+import { TestWrapper } from "test/TestWrapper";
 
 describe("Users", () => {
-  const users: UserN[] = [
-    new UserN({
-      username: "simon",
-      displayname: "Simon",
-      email: "email@emai.com",
-      birthday: "2100-01-01",
-      role: Roles.STUDENT,
-      id: "mystupidid",
-    }),
-  ];
-  const getUsers = jest.fn();
-  const comp = shallow(<Users />);
+  const comp = shallow(
+    <TestWrapper>
+      <Users />
+    </TestWrapper>
+  );
 
   it("renders correctly", () => {
     expect(comp).toMatchSnapshot();
