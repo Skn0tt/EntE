@@ -23,5 +23,5 @@ test("Login", async () => {
     .pressKey("enter");
 
   const getPathname = ClientFunction(() => document.location!.pathname);
-  await t.expect(getPathname()).contains("/admin");
+  await t.expect(getPathname()).contains("/slots");
 });
