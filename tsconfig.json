@@ -22,6 +22,6 @@
       "@@types": ["types"]
     }
   },
-  "exclude": ["node_modules", "assets"],
+  "exclude": ["node_modules", "assets", "e2e"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
