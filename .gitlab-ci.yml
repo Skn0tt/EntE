@@ -35,6 +35,7 @@ test:e2e:
     - yarn build
     - echo "dist_size $(du --human-readable --apparent-size --summarize .next | cut -f1)" > metrics.txt
     - yarn start > e2e.log &
+    - sleep 1
     - curl localhost:3000/api/status # warm up server
     - yarn test:e2e:headless --app "echo i've already been started earlier"
   needs: []
