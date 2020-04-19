@@ -24,6 +24,7 @@ test:e2e:
     BASE_URL: localhost:3000
     REDIS_HOST: redis
     MYSQL_HOST: mariadb
+    MYSQL_ROOT_PASSWORD: root
     MYSQL_DATABASE: ente
     MYSQL_USERNAME: root
     MYSQL_PASSWORD: root
