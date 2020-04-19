@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 # Replace config env vars
 printf "Replacing config env vars ..."
