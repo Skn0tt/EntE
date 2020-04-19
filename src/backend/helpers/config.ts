@@ -66,7 +66,7 @@ const config = ((): Readonly<IConfig> => {
     cron: {
       weeklySummary: CRON_WEEKLY_SUMMARY!,
     },
-    DSN: Maybe.fromUndefined(SENTRY_DSN).filter((s) => s !== "<nil>"),
+    DSN: Maybe.fromFalsy(SENTRY_DSN).filter((s) => s !== "<nil>"),
     version: pack.version,
     signer: {
       rotationInterval: +(JWT_ROTATION_INTERVAL || 900 * 1000),
