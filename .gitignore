@@ -8,7 +8,6 @@ docs_dist
 /e2e.xml
 /junit.xml
 /allure-report/
-/public/
 
 /tests/e2e/logs.txt
 
