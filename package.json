@@ -7,10 +7,11 @@
     "dev:deps": "docker-compose up --force-recreate",
     "build": "next build",
     "start": "next start",
-    "test": "run-s test:tsc test:unit test:e2e",
+    "test": "run-s test:tsc test:unit test:e2e:headless",
     "test:unit": "jest",
     "test:tsc": "tsc",
     "test:e2e": "BASE_URL=localhost:3000 testcafe path:$(node getChromiumPath.js)",
+    "test:e2e:headless": "BASE_URL=localhost:3000 testcafe chrome:$(node getChromiumPath.js):headless",
     "postinstall": "patch-package"
   },
   "dependencies": {
