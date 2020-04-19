@@ -32,7 +32,7 @@ test:e2e:
     MYSQL_DATABASE: ente
     MYSQL_USERNAME: root
     MYSQL_PASSWORD: root
-    SMTP_HOST: mailhog
+    SMTP_HOST: mailhog-mailhog
     SMTP_PORT: 1025
   script:
     - yarn
