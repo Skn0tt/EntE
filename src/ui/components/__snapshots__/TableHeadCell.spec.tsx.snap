@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableHeadCell renders correctly 1`] = `
+<WithStyles(TableCell)>
+  <WithStyles(Tooltip)
+    enterDelay={300}
+    title="I bims"
+  >
+    <WithStyles(TableSortLabel)
+      active={true}
+      className="tableSortLabel"
+      direction="asc"
+      onClick={[MockFunction]}
+    />
+  </WithStyles(Tooltip)>
+</WithStyles(TableCell)>
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwitchInput renders correctly 1`] = `
+<WithStyles(Grid)
+  container={true}
+  direction="column"
+>
+  <WithStyles(Grid)
+    item={true}
+  >
+    <WithStyles(Typography)
+      variant="h6"
+    >
+      Switch
+    </WithStyles(Typography)>
+  </WithStyles(Grid)>
+  <WithStyles(Grid)
+    item={true}
+  >
+    <WithStyles(Switch)
+      checked={false}
+      className="updateSwitch"
+      onChange={[Function]}
+    />
+  </WithStyles(Grid)>
+</WithStyles(Grid)>
+`;

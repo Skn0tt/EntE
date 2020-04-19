@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFound renders correctly 1`] = `
+<Center>
+  <WithStyles(Grid)
+    item={true}
+  >
+    <img
+      height={400}
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+    />
+  </WithStyles(Grid)>
+  <WithStyles(Grid)
+    item={true}
+  >
+    <WithStyles(Typography)
+      variant="h6"
+    >
+      Die Seite wurde nicht gefunden.
+    </WithStyles(Typography)>
+  </WithStyles(Grid)>
+</Center>
+`;

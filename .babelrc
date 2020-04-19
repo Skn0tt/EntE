@@ -1,0 +1,19 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "class-properties": {
+          "loose": true
+        },
+        "preset-typescript": {
+          "onlyRemoveTypeImports": true
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator"
+  ]
+}

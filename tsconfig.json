@@ -1,21 +1,27 @@
 {
-  "exclude": ["assets"],
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "baseUrl": "./packages/",
-    "skipLibCheck": true, // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16825,
-    "paths": {
-      "ente-api": ["./ente-api/src"],
-      "ente-types": ["./ente-types/src"],
-      "ente-ui": ["./ente-ui/src"]
-    },
-    "noEmit": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "lib": ["es2015", "es2016", "dom"],
-    "resolveJsonModule": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
     "strict": true,
-    "strictPropertyInitialization": false
-  }
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@@types": ["types"]
+    }
+  },
+  "exclude": ["node_modules", "assets", "e2e"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

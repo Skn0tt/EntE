@@ -1,7 +1,0 @@
-{
-  "lerna": "2.9.0",
-  "useWorkspaces": true,
-  "packages": ["packages/ente-api", "packages/ente-types", "packages/ente-ui"],
-  "version": "0.36.0",
-  "npmClient": "yarn"
-}

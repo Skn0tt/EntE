@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Migrated to Next.js ([!370](https://gitlab.com/Skn0tt/EntE/-/merge_requests/370))
+
 ## [v0.36.0] - 2020-04-13
 
 - Feature: Teachers can now prefile slots for their students ([#348](https://gitlab.com/Skn0tt/EntE/issues/348))

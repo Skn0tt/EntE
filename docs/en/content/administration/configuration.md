@@ -1,32 +1,34 @@
-_EntE_ is configured through a docker-app config file.
+_EntE_ is configured using environment variables.
 
-# Example Config File
+# Example Config
 
 ```yml
-config:
-  baseUrl: https://ente.simonknott.de
-  port: 80
-  rotation_period:
-    keys: 900
-    ui: 300
+NODE_ENV=production
+BASE_URL=localhost:3000
+CRON_WEEKLY_SUMMARY="0 16 * * 5"
 
-sentry: # sentry DSNs, optional
-  api: my_sentry_dsn_api
-  ui: my_sentry_dsn_ui
+JWT_ROTATION_INTERVAL=900000
+JWT_EXPIRY=900000
 
-mysql: # mysql config
-  host:
-  port:
-  username:
-  password:
-  database:
-  timezone: "+01:00" # timezone of the database, specified as in ISO 8601
+REDIS_HOST=host.docker.internal # required to use localhost
+REDIS_PORT=6379
+REDIS_PREFIX=ente
 
-smtp: # smtp config
-  host:
-  port:
-  username:
-  password:
-  address: ente@simonknott.de # address that is used ("ente@simonknott.de")
-  sender: Example-EntE # display of address ("EntE")
+MYSQL_HOST=host.docker.internal # required to use localhost
+MYSQL_PORT=3306
+MYSQL_USERNAME=root
+MYSQL_PASSWORD=root
+MYSQL_DATABASE=ente
+MYSQL_TIMEZONE=Z
+
+SMTP_HOST=host.docker.internal # required to use localhost
+SMTP_PORT=1025
+SMTP_USERNAME=admin
+SMTP_PASSWORD=root
+SMTP_POOL=
+SMTP_ADDRESS=ente@ente.app
+SMTP_RETRY_DELAY=3600000
+
+SENTRY_DSN=
+ROTATION_PERIOD=
 ```
