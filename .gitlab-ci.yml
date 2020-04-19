@@ -12,6 +12,7 @@ test:
   paths:
     - node_modules/
     - .yarn
+    - .next/cache
 
 test:e2e:
   stage: test
