@@ -11,8 +11,11 @@ test:
   key: "test-yarn"
   paths:
     - node_modules/
-    - .yarn
+    - .yarn-cache
     - .next/cache
+
+variables:
+  YARN_CACHE_FOLDER: .yarn-cache
 
 test:e2e:
   stage: test
