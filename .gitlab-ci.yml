@@ -3,8 +3,9 @@ include:
 
 # Disable Auto-DevOps 'test' job
 test:
-  rules:
-    - when: never
+  only:
+    variables:
+      - $UNSET_VARIABLE == "how am I set? i must not be set."
 
 .yarn_cache: &yarn_cache
   key: "test-yarn"
