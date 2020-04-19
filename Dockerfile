@@ -1,4 +1,7 @@
-FROM node:12.16-alpine as build
+FROM node:12.16-alpine
+
+# alpine is naked by default, so we'll add curl for our healthcheck
+RUN apk add --no-cache curl
 
 WORKDIR /app
 
@@ -18,19 +21,7 @@ ENV ROTATION_PERIOD=1415626180484145813288575
 
 RUN yarn build
 
-## New stage for running, keeps image size low
-FROM node:12.16-alpine as run
-
-WORKDIR /app
-
-# alpine is naked by default, so we'll add curl for our healthcheck
-RUN apk add --no-cache curl
-
-RUN yarn add next@^9.3.5 react@16.13.1 react-dom@16.13.1 && yarn cache clean
 RUN echo 'module.exports = { target: "serverless" }' > next.config.js
-
-# Get dist files
-COPY --from=build /app/.next /app/.next
 
 # Replace env var placeholders before running
 ADD entrypoint.sh ./
