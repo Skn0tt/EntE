@@ -1,5 +1,7 @@
 {
   "src": "e2e",
+  "appCommand": "run-p dev:deps start --print-label > e2e.log",
+  "appInitDelay": 1000,
   "screenshots": {
     "takeOnFails": true
   },

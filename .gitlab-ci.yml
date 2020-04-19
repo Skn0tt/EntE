@@ -35,7 +35,7 @@ test:e2e:
     - yarn
     - yarn build
     - echo "dist_size $(du --human-readable --apparent-size --summarize .next | cut -f1)" > metrics.txt
-    - yarn test:e2e:ci
+    - yarn test:e2e:headless --app "yarn start > e2e.log"
   needs: []
   cache:
     <<: *yarn_cache
@@ -44,6 +44,7 @@ test:e2e:
     when: always
     paths:
       - screenshots/
+      - e2e.log
     reports:
       junit: e2e.xml
       metrics: metrics.txt
