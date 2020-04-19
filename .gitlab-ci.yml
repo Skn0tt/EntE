@@ -43,6 +43,9 @@ test:e2e:
   cache:
     <<: *yarn_cache
   interruptible: true
+  only:
+    - branches
+    - tags
   artifacts:
     when: always
     paths:
@@ -64,6 +67,9 @@ test:unit:
     <<: *yarn_cache
   interruptible: true
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  only:
+    - branches
+    - tags
   artifacts:
     when: always
     paths:
