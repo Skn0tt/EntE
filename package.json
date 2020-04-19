@@ -7,11 +7,11 @@
     "dev:deps": "docker-compose up --force-recreate",
     "build": "next build",
     "start": "next start",
-    "test": "run-s test:tsc test:unit test:e2e:headless",
+    "test": "run-s test:tsc test:unit test:e2e",
     "test:unit": "jest",
     "test:tsc": "tsc",
-    "test:e2e": "BASE_URL=localhost:3000 testcafe path:$(node getChromiumPath.js)",
-    "test:e2e:headless": "BASE_URL=localhost:3000 testcafe \"chrome:$(node getChromiumPath.js):headless --no-sandbox\"",
+    "test:e2e": "BASE_URL=localhost:3000 testcafe path:$(node getChromiumPath.js) --app \"run-p dev:deps start --print-label > e2e.log\" --app-init-delay 1000",
+    "test:e2e:ci": "testcafe \"chrome:$(node getChromiumPath.js):headless --no-sandbox\" --app \"start > e2e.log\" --app-init-delay 1000",
     "postinstall": "patch-package"
   },
   "dependencies": {
