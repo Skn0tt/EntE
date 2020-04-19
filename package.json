@@ -11,7 +11,7 @@
     "test:unit": "jest",
     "test:tsc": "tsc",
     "test:e2e": "BASE_URL=localhost:3000 testcafe path:$(node getChromiumPath.js)",
-    "test:e2e:headless": "BASE_URL=localhost:3000 testcafe chrome:$(node getChromiumPath.js):headless",
+    "test:e2e:headless": "BASE_URL=localhost:3000 testcafe \"chrome:$(node getChromiumPath.js):headless --no-sandbox\"",
     "postinstall": "patch-package"
   },
   "dependencies": {
