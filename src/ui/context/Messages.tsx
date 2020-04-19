@@ -38,7 +38,9 @@ export const MessagesProvider: React.FunctionComponent<{}> = (props) => {
     const subscription = messages$.subscribe((msgs) => {
       updateMessages(msgs);
     });
-    return subscription.unsubscribe;
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (

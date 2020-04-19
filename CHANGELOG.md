@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed crash: .closed is undefined
+
 ## [v0.37.0] - 2020-04-19
 
 - Migrated to Next.js ([!370](https://gitlab.com/Skn0tt/EntE/-/merge_requests/370))
