@@ -18,16 +18,11 @@ Ich werde diesen dann gerne reviewen und mergen! :)
 
 ## Was sollte ich wissen?
 
-EntE besteht aus einer Reihe an NPM-Paketen, die von [Lerna](https://github.com/lerna/lerna) verwaltet werden.
-Nachdem du das Repo geklont hast, führe `lerna bootstrap` aus, um alle Abhängigkeiten zu installieren und die Pakete untereinander zu verlinken.
+Benötigte Abhängigkeiten:
 
-Die Pakete sind im `/packages`-Ordner enthalten und nach Zuständigkeitsbereich aufgeteilt:
+- Node.js
+- Yarn
+- Docker
 
-| Package    | Zweck                                         |
-| ---------- | --------------------------------------------- |
-| ente-api   | REST-API, stellt Nutzer, Einträge usw. bereit |
-| ente-types | Geteilte Typen und Validierungs-Logik         |
-| ente-ui    | React SPA die dem Browser ausgeliefert wird   |
-
-Um eine lokale Entwicklungsumgebug zu starten, baue alle Docker-Images mit `make build-docker` und starte sie dann mit dem Skript `/scripts/dev/start.sh`.
-Wenn du an der UI arbeitest, führe zusätzlich `yarn watch` in `packages/ente-ui` aus.
+Um eine lokale Entwicklungsumgebung zu starten, installiere mit `yarn install` die Abhängigkeiten und
+starte mit `yarn dev` den Entwicklungsserver.
