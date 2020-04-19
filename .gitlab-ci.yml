@@ -1,0 +1,50 @@
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+
+# Disable Auto-DevOps 'test' job
+test:
+  when: never
+
+.yarn_cache: &yarn_cache
+  key: "test-yarn"
+  paths:
+    - node_modules/
+    - .yarn
+
+test:e2e:
+  image: circleci/node:12.16-browsers
+  script:
+    - yarn
+    - yarn build
+    - echo "dist_size $(du --human-readable --apparent-size --summarize .next | cut -f1)" > metrics.txt
+    - yarn test:e2e:headless
+  needs: []
+  cache:
+    <<: *yarn_cache
+  interruptible: true
+  artifacts:
+    when: always
+    paths:
+      - screenshots/
+    reports:
+      junit: e2e.xml
+      metrics: metrics.txt
+
+test:unit:
+  image: node:12.16
+  script:
+    - yarn
+    - yarn test:tsc
+    - yarn test:unit --ci --reporters=default --reporters=jest-junit --collect-coverage
+  needs: []
+  cache:
+    <<: *yarn_cache
+  interruptible: true
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    when: always
+    paths:
+      - coverage/lcov-report/
+      - junit.xml
+    reports:
+      junit: junit.xml
