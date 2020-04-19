@@ -33,7 +33,7 @@ test:e2e:
     - yarn
     - yarn build
     - echo "dist_size $(du --human-readable --apparent-size --summarize .next | cut -f1)" > metrics.txt
-    - yarn test:e2e:headless
+    - yarn test:e2e:ci
   needs: []
   cache:
     <<: *yarn_cache
