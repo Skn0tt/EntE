@@ -3,8 +3,8 @@ include:
 
 variables:
   YARN_CACHE_FOLDER: .yarn-cache
-  DAST_DISABLED: true
-  TEST_DISABLED: true
+  DAST_DISABLED: "true"
+  TEST_DISABLED: "true"
 
 .yarn_cache: &yarn_cache
   key: "test-yarn"
