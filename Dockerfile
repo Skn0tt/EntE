@@ -10,6 +10,7 @@ RUN yarn install --frozen-lockfile
 # Copy over sources
 ADD next.config.js tsconfig.json next-env.d.ts .babelrc ./
 ADD src/ ./src/
+ADD public/ ./public/
 
 # Build with placeholder env vars
 ENV SENTRY_DSN=__SENTRY_DSN_HERE__
@@ -18,7 +19,7 @@ ENV ROTATION_PERIOD=1415626180484145813288575
 RUN yarn build
 
 # Remove unneeded node_modules
-RUN rm -rf node_modules patches src
+RUN rm -rf node_modules patches src public
 RUN rm package.json yarn.lock next-env.d.ts tsconfig.json
 RUN yarn add next@^9.3.5 react@16.13.1 react-dom@16.13.1
 RUN echo 'module.exports = { target: "serverless" }' > next.config.js
