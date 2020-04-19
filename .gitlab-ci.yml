@@ -34,7 +34,9 @@ test:e2e:
     - yarn
     - yarn build
     - echo "dist_size $(du --human-readable --apparent-size --summarize .next | cut -f1)" > metrics.txt
-    - yarn test:e2e:headless --app "yarn start > e2e.log"
+    - yarn start > e2e.log &
+    - yarn wait-on http-get://localhost:3000/api/status
+    - yarn test:e2e:headless --app "echo i've already been started earlier"
   needs: []
   cache:
     <<: *yarn_cache
