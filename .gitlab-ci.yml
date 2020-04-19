@@ -37,7 +37,7 @@ test:e2e:
     - yarn start > e2e.log &
     - sleep 1
     - curl localhost:3000/api/status # warm up server
-    - yarn test:e2e:headless --app "echo i've already been started earlier"
+    - yarn test:e2e:headless --app "echo ive already been started earlier"
   needs: []
   cache:
     <<: *yarn_cache
