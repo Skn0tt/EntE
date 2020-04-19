@@ -3,7 +3,8 @@ include:
 
 # Disable Auto-DevOps 'test' job
 test:
-  when: never
+  rules:
+    - when: never
 
 .yarn_cache: &yarn_cache
   key: "test-yarn"
