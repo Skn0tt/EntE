@@ -3,6 +3,7 @@ site
 docs_dist
 .env
 /screenshots
+.vscode
 
 # Tests
 /e2e.xml
