@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v0.37.2] - 2020-04-20
+## [v0.37.3] - 2020-04-20
 
 - Fixed crash: ROTATION_INTERVAL too high
 
