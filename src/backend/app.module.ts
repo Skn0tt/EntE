@@ -17,8 +17,10 @@ import { LoginModule } from "./login/login.module";
 import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module";
 import { TypeOrmOptionsFactory } from "./typeorm-options.factory";
 import { ScheduleModule } from "@nestjs/schedule";
+import { BullModule } from "@nestjs/bull";
 
 const isDevMode = Config.isDevMode();
+const redis = Config.getRedisConfig();
 
 @Global()
 @Module({
@@ -27,6 +29,14 @@ const isDevMode = Config.isDevMode();
       useClass: TypeOrmOptionsFactory,
     }),
     ScheduleModule.forRoot(),
+    BullModule.registerQueue({
+      name: "email",
+      redis: {
+        host: redis.host,
+        port: redis.port,
+        keyPrefix: redis.prefix,
+      },
+    }),
     InstanceConfigModule,
     SlotsModule,
     EntriesModule,
