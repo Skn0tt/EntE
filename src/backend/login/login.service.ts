@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
-import { LoginDto, Roles, EntryDto, TEACHING_ROLES, UserDto } from "@@types";
+import { LoginDto, Roles, EntryDto, UserDto } from "@@types";
 import { TokenService } from "../token/token.service";
 import { EntryRepo } from "../db/entry.repo";
 import { UserRepo } from "../db/user.repo";
@@ -20,6 +20,8 @@ export class LoginService {
     private readonly entryRepo: EntryRepo,
     @Inject(UserRepo)
     private readonly userRepo: UserRepo,
+    @Inject(UsersService)
+    private readonly usersService: UsersService,
     @Inject(SlotRepo)
     private readonly slotRepo: SlotRepo,
     @Inject(ReviewedRecordsService)
@@ -40,9 +42,9 @@ export class LoginService {
       prefiledSlots: (await this.getPrefiledSlots(oneSelf)).map((s) =>
         SlotsService.blackenDto(s, user)
       ),
-      neededUsers: (await this.getNeededUsers(oneSelf)).map((e) =>
-        UsersService.blackenDto(e, user)
-      ),
+      neededUsers: (
+        await this.usersService.findAll(user, NO_PAGINATION_INFO)
+      ).success(),
       reviewedRecords: [
         ...(await this.reviewedRecordsService.getReviewedRecords(oneSelf.id)),
       ],
@@ -82,28 +84,6 @@ export class LoginService {
           user.class!,
           NO_PAGINATION_INFO
         );
-      default:
-        return [];
-    }
-  }
-
-  private async getNeededUsers(user: UserDto): Promise<UserDto[]> {
-    if (user.isAdmin) {
-      return await this.userRepo.findAll(NO_PAGINATION_INFO);
-    }
-    switch (user.role) {
-      case Roles.PARENT:
-        return [
-          ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),
-          ...(await this.userRepo.findByIds(...user.children.map((c) => c.id))),
-          user,
-        ];
-      case Roles.STUDENT:
-        return [...(await this.userRepo.findByRoles(...TEACHING_ROLES)), user];
-      case Roles.MANAGER:
-        return [...(await this.userRepo.findByClass(user.class!))];
-      case Roles.TEACHER:
-        return [user];
       default:
         return [];
     }
