@@ -5,8 +5,9 @@ import {
 } from "../infrastructure/email-transport.service";
 import { NodemailerService } from "../infrastructure/nodemailer.service";
 import { Processor, Process, InjectQueue } from "@nestjs/bull";
-import { EMAIL_QUEUE_KEY } from "../app.module";
 import { Job, Queue } from "bull";
+
+export const EMAIL_QUEUE_KEY = "email";
 
 @Injectable()
 export class EmailQueue {

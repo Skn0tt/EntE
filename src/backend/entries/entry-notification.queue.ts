@@ -3,7 +3,8 @@ import * as Bull from "bull";
 import { WinstonLoggerService } from "../winston-logger.service";
 import { EntriesService } from "./entries.service";
 import { InjectQueue, Processor, Process } from "@nestjs/bull";
-import { ENTRY_NOTIFICATION_QUEUE_KEY } from "../app.module";
+
+export const ENTRY_NOTIFICATION_QUEUE_KEY = "entry-notification";
 
 interface EntryNotificationJobPayload {
   entryId: string;
