@@ -2,9 +2,10 @@
   "version": "0.37.4",
   "private": true,
   "scripts": {
-    "dev": "run-p dev:* --print-label",
+    "dev": "run-p dev:deps:up dev:next --print-label",
     "dev:next": "next dev",
-    "dev:deps": "docker-compose -f docker-compose.dev.yml up --force-recreate",
+    "dev:deps": "docker-compose -f docker-compose.dev.yml",
+    "dev:deps:up": "yarn dev:deps up --force-recreate",
     "build": "next build",
     "start": "next start",
     "test": "run-s test:tsc test:unit test:e2e",
