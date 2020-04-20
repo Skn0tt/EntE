@@ -1522,6 +1522,14 @@
     multer "1.4.2"
     tslib "1.11.1"
 
+"@nestjs/schedule@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/schedule/-/schedule-0.3.1.tgz#ffd450c0089b8976791be56c4ae385d232f97bce"
+  integrity sha512-B8lKHQAS3pUxwas8ykJCf+BVCllepTUwOJgHxA+2UPuBXPkRhzBVC/QFrjWgkO9nDHGJkoqLzR0B4kKT7va4Uw==
+  dependencies:
+    cron "1.7.2"
+    uuid "7.0.3"
+
 "@nestjs/testing@^7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.0.7.tgz#c734ec7927efeccf24a6c58582ee0ee910d3045a"
@@ -1694,10 +1702,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@skn0tt/signer@^0.8.7":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.7.tgz#56ffa4e90e83fd22b97065c41b828d16621715ab"
-  integrity sha512-qwECZF/bFl/FhXTu/Re+tpkU5ATDIrAlTyjhipduLOLUcllwOajAP4k0xqeVfJgqGa6wuth5FJEhXgACbBsUcg==
+"@skn0tt/signer@^0.8.8":
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.8.tgz#c6d9d5e72d0bb5a09799c5d2b316d4199f520d02"
+  integrity sha512-E+v9Qi4kj5YTGOJG/Meltp4J8AFT26ZRXbvLx2A2vY693slCrBpQa0TS3ghlS56YQffYQcMioe2eoWDdFSr0Zg==
   dependencies:
     jsonwebtoken "^8.5.1"
     keypair "^1.0.1"
@@ -4700,6 +4708,13 @@ cron-parser@^2.13.0:
   dependencies:
     is-nan "^1.2.1"
     moment-timezone "^0.5.25"
+
+cron@1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/cron/-/cron-1.7.2.tgz#2ea1f35c138a07edac2ac5af5084ed6fee5723db"
+  integrity sha512-+SaJ2OfeRvfQqwXQ2kgr0Y5pzBR/lijf5OpnnaruwWnmI799JfWr2jN2ItOV9s3A/+TFOt6mxvKzQq5F0Jp6VQ==
+  dependencies:
+    moment-timezone "^0.5.x"
 
 cross-fetch@3.0.4:
   version "3.0.4"
@@ -9434,7 +9449,7 @@ moment-duration-format-commonjs@^1.0.0:
   resolved "https://registry.yarnpkg.com/moment-duration-format-commonjs/-/moment-duration-format-commonjs-1.0.0.tgz#dc5de612e6d6ff41f774d03772a139a363563bc3"
   integrity sha512-MVFR4hIh4jfuwSCPBEE5CCwn3refvTsxK/Yv/DpKJ6YcNnCimlVJ6DQeTJG1KVQPw1o8m3tkbHE9gVjivyv9iA==
 
-moment-timezone@^0.5.25:
+moment-timezone@^0.5.25, moment-timezone@^0.5.x:
   version "0.5.28"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.28.tgz#f093d789d091ed7b055d82aa81a82467f72e4338"
   integrity sha512-TDJkZvAyKIVWg5EtVqRzU97w0Rb0YVbfpqyjgu6GwXCAohVRqwZjf4fOzDE6p1Ch98Sro/8hQQi65WDXW5STPw==
@@ -13686,6 +13701,11 @@ uuid@7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
   integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
+
+uuid@7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
+  integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
 uuid@^3.3.2, uuid@^3.3.3, uuid@^3.4.0:
   version "3.4.0"

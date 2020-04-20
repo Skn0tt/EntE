@@ -18,6 +18,8 @@ import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { UsersService } from "../users/users.service";
 import * as _ from "lodash";
+import { Cron } from "@nestjs/schedule";
+import { Config } from "../helpers/config";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -213,6 +215,7 @@ export class SlotsService {
     return Success<DeletePrefiledSlotsFailure, true>(true);
   }
 
+  @Cron(Config.getWeeklySummaryCron())
   async dispatchWeeklySummary() {
     this.logger.log("Starting to dispatch the weekly summary.");
     const teachingUsers = await this.userRepo.findWeeklySummaryRecipients();
