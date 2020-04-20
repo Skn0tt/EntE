@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed: Teachers can now see students in the prefile form ([!369](https://gitlab.com/Skn0tt/EntE/-/merge_requests/369))
+
 ## [v0.37.4] - 2020-04-20
 
 - Enabled Sentry again
