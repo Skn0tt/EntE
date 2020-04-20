@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.37.5] - 2020-04-20
+
 - Fixed: API error on password reset ([#371](https://gitlab.com/Skn0tt/EntE/-/issues/371))
 - Migrated jobs queue to use @nestjs/bull ([#364](https://gitlab.com/Skn0tt/EntE/-/issues/364))
 - Migrated scheduled jobs to use @nestjs/schedule ([#363](https://gitlab.com/Skn0tt/EntE/-/issues/363))
