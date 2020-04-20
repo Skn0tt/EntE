@@ -3,7 +3,6 @@ import { RequestContextUser } from "../helpers/request-context";
 import { LoginDto, Roles, EntryDto, UserDto } from "@@types";
 import { TokenService } from "../token/token.service";
 import { EntryRepo } from "../db/entry.repo";
-import { UserRepo } from "../db/user.repo";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
 import { EntriesService } from "../entries/entries.service";
 import { UsersService } from "../users/users.service";
@@ -18,8 +17,6 @@ export class LoginService {
     private readonly tokenService: TokenService,
     @Inject(EntryRepo)
     private readonly entryRepo: EntryRepo,
-    @Inject(UserRepo)
-    private readonly userRepo: UserRepo,
     @Inject(UsersService)
     private readonly usersService: UsersService,
     @Inject(SlotRepo)
