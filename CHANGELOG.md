@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Migrated scheduled jobs to use @nestjs/schedule ([#363](https://gitlab.com/Skn0tt/EntE/-/issues/363))
 - Fixed: Teachers can now see students in the prefile form ([#369](https://gitlab.com/Skn0tt/EntE/-/issues/369))
+- Fixed: Crash on opening Datepicker ([#370](https://gitlab.com/Skn0tt/EntE/issues/370))
+- Fixed: Teachers can now see students in the prefile form ([!369](https://gitlab.com/Skn0tt/EntE/-/merge_requests/369))
 
 ## [v0.37.4] - 2020-04-20
 
