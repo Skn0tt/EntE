@@ -18,9 +18,19 @@ import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module"
 import { TypeOrmOptionsFactory } from "./typeorm-options.factory";
 import { ScheduleModule } from "@nestjs/schedule";
 import { BullModule } from "@nestjs/bull";
+import type { RedisOptions } from "ioredis";
 
 const isDevMode = Config.isDevMode();
 const redis = Config.getRedisConfig();
+
+export const EMAIL_QUEUE_KEY = "email";
+export const ENTRY_NOTIFICATION_QUEUE_KEY = "entry-notification";
+
+const redisConfig: RedisOptions = {
+  host: redis.host,
+  port: redis.port,
+  keyPrefix: redis.prefix,
+};
 
 @Global()
 @Module({
@@ -29,14 +39,16 @@ const redis = Config.getRedisConfig();
       useClass: TypeOrmOptionsFactory,
     }),
     ScheduleModule.forRoot(),
-    BullModule.registerQueue({
-      name: "email",
-      redis: {
-        host: redis.host,
-        port: redis.port,
-        keyPrefix: redis.prefix,
+    BullModule.registerQueue(
+      {
+        name: EMAIL_QUEUE_KEY,
+        redis: redisConfig,
       },
-    }),
+      {
+        name: ENTRY_NOTIFICATION_QUEUE_KEY,
+        redis: redisConfig,
+      }
+    ),
     InstanceConfigModule,
     SlotsModule,
     EntriesModule,
