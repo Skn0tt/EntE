@@ -14,7 +14,6 @@ import { DevModule } from "./dev/dev.module";
 import { InstanceModule } from "./instance/instance.module";
 import { InstanceConfigModule } from "./instance-config/instance-config.module";
 import { LoginModule } from "./login/login.module";
-import { WeeklyUpdatesSchedulerModule } from "./weekly-updates-scheduler/weekly-updates-scheduler.module";
 import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module";
 import { TypeOrmOptionsFactory } from "./typeorm-options.factory";
 import { ScheduleModule } from "@nestjs/schedule";
@@ -36,7 +35,6 @@ const isDevMode = Config.isDevMode();
     TokenModule,
     StatusModule,
     InstanceModule,
-    WeeklyUpdatesSchedulerModule,
     LoginModule,
     ExportModule,
     ReviewedRecordsModule,
