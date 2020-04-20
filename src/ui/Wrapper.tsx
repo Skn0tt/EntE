@@ -48,7 +48,7 @@ const reduxConfig: Partial<ReduxConfig> = {
   middlewares: [],
 };
 
-const { SENTRY_DSN, VERSION, ROTATION_PERIOD } = config.get();
+const { SENTRY_DSN, VERSION } = config.get();
 
 const setupSentry = (dsn: string) => {
   if (!isSentryDsn(dsn)) {
@@ -108,7 +108,7 @@ export function Wrapper(props: React.PropsWithChildren<{}>) {
                 <MessagesProvider>
                   <CssBaseline />
                   <MessageStream />
-                  <AuthService period={ROTATION_PERIOD} />
+                  <AuthService />
 
                   {props.children}
                 </MessagesProvider>

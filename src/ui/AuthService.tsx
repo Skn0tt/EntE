@@ -1,38 +1,24 @@
 import * as React from "react";
-import { MapDispatchToPropsParam } from "react-redux";
+import { useDispatch } from "react-redux";
 import { refreshTokenRequest } from "./redux";
-import { connect } from "react-redux";
+import * as config from "./config";
 
-interface AuthServiceOwnProps {
-  period: number;
-}
+const { ROTATION_PERIOD } = config.get();
 
-interface AuthServiceDispatchProps {
-  refreshToken: () => void;
-}
-
-const mapDispatchToProps: MapDispatchToPropsParam<
-  AuthServiceDispatchProps,
-  AuthServiceOwnProps
-> = (dispatch) => ({
-  refreshToken: () => dispatch(refreshTokenRequest()),
-});
-
-type AuthServiceProps = AuthServiceOwnProps & AuthServiceDispatchProps;
-
-const AuthService: React.FC<AuthServiceProps> = (props) => {
-  const { period, refreshToken } = props;
+function AuthService(props: {}) {
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    console.log(`Starting token refresh cycle: Period is '${period}'.`);
-    const timer = setInterval(refreshToken, period);
+    console.log(
+      `Starting token refresh cycle: Period is '${ROTATION_PERIOD}'.`
+    );
+    const timer = setInterval(() => {
+      dispatch(refreshTokenRequest());
+    }, ROTATION_PERIOD);
     return () => clearInterval(timer);
-  }, [period, refreshToken]);
+  }, [dispatch]);
 
   return null;
-};
+}
 
-export default connect<{}, AuthServiceDispatchProps, AuthServiceOwnProps>(
-  undefined,
-  mapDispatchToProps
-)(AuthService);
+export default AuthService;
