@@ -24,9 +24,7 @@ import {
   createUsersSuccess,
   signEntryError,
   signEntrySuccess,
-  loginSuccess,
   refreshTokenSuccess,
-  loginError,
   refreshTokenError,
   logout,
   updateUserSuccess,
@@ -80,7 +78,6 @@ import {
   UPDATE_USER_REQUEST,
   SIGN_ENTRY_REQUEST,
   REFRESH_TOKEN_REQUEST,
-  LOGIN_REQUEST,
   CREATE_USERS_REQUEST,
   UNSIGN_ENTRY_REQUEST,
   DELETE_USER_REQUEST,
@@ -115,24 +112,6 @@ import { Maybe } from "monet";
 import { getConfig } from "./config";
 
 const onRequestError = (error: Error) => getConfig().onRequestError(error);
-
-function* loginSaga(action: Action<BasicCredentials>) {
-  try {
-    const {
-      apiResponse,
-      authState,
-      oneSelf,
-      reviewedRecords,
-    }: api.LoginInfo = yield call(api.login, action.payload!);
-
-    yield put(
-      loginSuccess({ authState, apiResponse, oneSelf, reviewedRecords }, action)
-    );
-  } catch (error) {
-    getConfig().onLoginFailedInvalidCredentials();
-    yield put(loginError(error, action));
-  }
-}
 
 function* refreshTokenSaga(action: Action<void>) {
   try {
@@ -526,7 +505,6 @@ function* saga() {
   yield takeEvery(GET_SLOTS_REQUEST, getSlotsSaga);
   yield takeEvery(SIGN_ENTRY_REQUEST, signEntrySaga);
   yield takeEvery(UNSIGN_ENTRY_REQUEST, unsignEntrySaga);
-  yield takeEvery(LOGIN_REQUEST, loginSaga);
   yield takeEvery(REFRESH_TOKEN_REQUEST, refreshTokenSaga);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserSaga);
   yield takeEvery(DELETE_ENTRY_REQUEST, deleteEntrySaga);

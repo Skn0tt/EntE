@@ -34,9 +34,7 @@ import {
   SIGN_ENTRY_REQUEST,
   SIGN_ENTRY_SUCCESS,
   SIGN_ENTRY_ERROR,
-  LOGIN_REQUEST,
   LOGIN_SUCCESS,
-  LOGIN_ERROR,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_ERROR,
@@ -245,14 +243,10 @@ export interface LoginSuccessPayload {
   reviewedRecords: Set<string>;
 }
 
-export const loginRequest = createAction<BasicCredentials>(LOGIN_REQUEST);
 export const loginSuccess = createMetaAction<
   Action<BasicCredentials>,
   LoginSuccessPayload
 >(LOGIN_SUCCESS);
-export const loginError = createMetaAction<Action<BasicCredentials>, Error>(
-  LOGIN_ERROR
-);
 
 export const refreshTokenRequest = createAction(REFRESH_TOKEN_REQUEST);
 export const refreshTokenSuccess = createMetaAction<Action<void>, AuthState>(
