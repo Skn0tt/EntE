@@ -17,7 +17,7 @@ type Config = {
 
 const config: Config = {
   SENTRY_DSN: process.env.SENTRY_DSN,
-  ROTATION_PERIOD: toNumber(process.env.ROTATION_PERIOD)!,
+  ROTATION_PERIOD: toNumber(process.env.ROTATION_PERIOD || 300000),
   VERSION: pack.version,
 };
 
