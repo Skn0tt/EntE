@@ -3,9 +3,8 @@ import { AppModule } from "./app.module";
 import { WinstonLoggerService } from "./winston-logger.service";
 import { Config } from "./helpers/config";
 import { SentryInterceptor } from "./helpers/sentry-interceptor";
-import { getConnectionToken } from "@nestjs/typeorm";
-import type { Connection } from "typeorm";
 import * as Sentry from "@sentry/node";
+import { DontSendUndefinedInterceptor } from "./dont-send-undefined.interceptor";
 
 const sentryDsn = Config.getSentryDsn();
 
@@ -16,6 +15,10 @@ export async function bootstrap() {
     logger,
     bodyParser: false,
   });
+
+  // is required for Next.JS's way of handling
+  // `res.send(undefined)`
+  app.useGlobalInterceptors(new DontSendUndefinedInterceptor());
 
   sentryDsn.forEach((dsn) => {
     console.log(dsn);
@@ -29,10 +32,6 @@ export async function bootstrap() {
   });
 
   app.setGlobalPrefix("api");
-
-  const dbConnection: Connection = app.get(getConnectionToken() as string);
-
-  await dbConnection.runMigrations();
   await app.init();
 
   return app;
