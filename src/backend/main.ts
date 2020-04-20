@@ -3,8 +3,6 @@ import { AppModule } from "./app.module";
 import { WinstonLoggerService } from "./winston-logger.service";
 import { Config } from "./helpers/config";
 import { SentryInterceptor } from "./helpers/sentry-interceptor";
-import { getConnectionToken } from "@nestjs/typeorm";
-import type { Connection } from "typeorm";
 import * as Sentry from "@sentry/node";
 
 const sentryDsn = Config.getSentryDsn();
@@ -29,10 +27,6 @@ export async function bootstrap() {
   });
 
   app.setGlobalPrefix("api");
-
-  const dbConnection: Connection = app.get(getConnectionToken() as string);
-
-  await dbConnection.runMigrations();
   await app.init();
 
   return app;
