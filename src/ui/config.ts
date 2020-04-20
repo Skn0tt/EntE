@@ -1,7 +1,13 @@
 const pack = require("../../package.json");
 
-const SECOND = 1000;
-const MINUTE = 60 * SECOND;
+// this is required for our
+// config replacement tool to work
+// if we inlined this, Terser
+// would mangle the numbers
+// and break it.
+function toNumber(v: any) {
+  return Number(v);
+}
 
 type Config = {
   SENTRY_DSN?: string;
@@ -9,17 +15,9 @@ type Config = {
   VERSION: string;
 };
 
-function getRotationPeriod() {
-  if (process.env.ROTATION_PERIOD) {
-    return +process.env.ROTATION_PERIOD * 1000;
-  }
-
-  return 5 * MINUTE;
-}
-
 const config: Config = {
   SENTRY_DSN: process.env.SENTRY_DSN,
-  ROTATION_PERIOD: getRotationPeriod(),
+  ROTATION_PERIOD: toNumber(process.env.ROTATION_PERIOD)!,
   VERSION: pack.version,
 };
 

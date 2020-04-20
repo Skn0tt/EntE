@@ -14,7 +14,7 @@ fix_linux_internal_host
 
 # Replace config env vars
 printf "Replacing config env vars ..."
-find .next/static -type f -exec sed -i -e "s/__SENTRY_DSN_HERE__/$SENTRY_DSN/g" -e "s/1415626180484145813288575/${ROTATION_PERIOD-300}/g" {} \;
+find .next/static -type f -exec sed -i -e "s/__SENTRY_DSN_HERE__/$SENTRY_DSN/g" -e "s/__ROTATION_PERIOD_HERE__/${ROTATION_PERIOD-300000}/g" {} \;
 printf " done.\n"
 
 # Run CMD
