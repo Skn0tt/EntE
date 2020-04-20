@@ -50,7 +50,7 @@ const reduxConfig: Partial<ReduxConfig> = {
 
 const { SENTRY_DSN, VERSION } = config.get();
 
-const setupSentry = (dsn: string) => {
+function setupSentry(dsn: string) {
   if (!isSentryDsn(dsn)) {
     console.error("Invalid Sentry DSN passed.");
     return;
@@ -70,10 +70,9 @@ const setupSentry = (dsn: string) => {
 
   reduxConfig.middlewares!.push(sentryMiddleware);
   reduxConfig.onSagaError = ErrorReporting.report;
-};
+}
 
-if (false && !!SENTRY_DSN) {
-  // TODO: enable sentry again
+if (!!SENTRY_DSN) {
   setupSentry(SENTRY_DSN!);
 }
 
