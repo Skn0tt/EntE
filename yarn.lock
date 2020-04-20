@@ -1482,6 +1482,11 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@nestjs/bull@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/bull/-/bull-0.1.1.tgz#538131aa2e1df45e7b0dc4bbc4a3f4f8ab0d9505"
+  integrity sha512-E7NA2ukUbeBJZIH5d1HufCmOmH63ZjlG96XQEr8BWgZpgHk38M3V5sukhBnPLL8fHvBYxZnaKpDbGfXRX8VlPQ==
+
 "@nestjs/common@^7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.0.7.tgz#c79b742d9181dc5c8fda51b60bbf69c553cec3cf"
@@ -1859,7 +1864,7 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/bull@^3.5.8":
+"@types/bull@^3.12.2":
   version "3.12.2"
   resolved "https://registry.yarnpkg.com/@types/bull/-/bull-3.12.2.tgz#544a9c345531eabb8a961615297746cfea95b18b"
   integrity sha512-OmAW/G0Fj+ySE/2xo1nJOzpR2XUKIym0Tzuh4rQGL/Jf6xiwafdkDe3lop6RmpKTZ+GrGi1Cz6zLtX2L8xmsOA==

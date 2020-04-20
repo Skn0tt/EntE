@@ -1,6 +1,8 @@
 import { Maybe } from "monet";
 import { ensureNotEnding } from "./ensure-not-ending";
 import _ from "lodash";
+import type { RedisOptions as IORedisOptions } from "ioredis";
+
 const pack = require("../../../package.json");
 
 interface IConfig {
@@ -99,6 +101,11 @@ const config = ((): Readonly<IConfig> => {
 })();
 
 const getRedisConfig = () => config.redis;
+const getIORedisConfig = (): IORedisOptions => ({
+  host: config.redis.host,
+  port: config.redis.port,
+  keyPrefix: config.redis.prefix,
+});
 
 const isDevMode = () => !config.production;
 
@@ -132,4 +139,5 @@ export const Config = {
   getWeeklySummaryCron,
   getVersion,
   getSignerConfig,
+  getIORedisConfig,
 };
