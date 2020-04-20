@@ -70,7 +70,7 @@ const mapStateToProps: MapStateToPropsParam<
   SettingsMenuOwnProps,
   AppState
 > = (state) => ({
-  language: getLanguage(state).orSome(DEFAULT_DEFAULT_LANGUAGE),
+  language: getLanguage(state),
   role: getRole(state),
   ownId: getOneSelf(state)
     .map((u) => u.get("id"))

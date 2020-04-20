@@ -8,7 +8,6 @@ const translation = getByLanguage({
     anErrorOccured: "An error occured.",
     successfullyDeletedEntry: (id: string) => `Successfully deleted entry.`,
     successfullyDeletedUser: (id: string) => `Successfully deleted user.`,
-    invalidCredentials: "Login failed: Invalid credentials",
     successfullyCreatedEntry: `Successfully created entry.`,
     successfullyCreatedUsers: `Successfully created users.`,
     successfullyUpdatedUser: `Successfully updated users.`,
@@ -22,7 +21,6 @@ const translation = getByLanguage({
     anErrorOccured: "Ein Fehler ist aufgetreten.",
     successfullyDeletedEntry: (id: string) => `Eintrag erfolgreich entfernt.`,
     successfullyDeletedUser: (id: string) => `Nutzer*in erfolgreich entfernt.`,
-    invalidCredentials: "Anmeldung fehlgeschlagen: Falsche Anmeldedaten",
     successfullyCreatedEntry: `Eintrag wurde erfolgreich erstellt.`,
     successfullyCreatedUsers: `Benutzer*in wurden erfolgreich erstellt.`,
     successfullyUpdatedUser: `Benutzer*in wurde erfolgreich aktualisiert.`,
@@ -42,9 +40,6 @@ export const getSagaListeners = (
   return {
     onEntryDeleted: (id) => {
       addMessages(t().successfullyDeletedEntry(id));
-    },
-    onLoginFailedInvalidCredentials: () => {
-      addMessages(t().invalidCredentials);
     },
     onEntryCreated: () => {
       addMessages(t().successfullyCreatedEntry);

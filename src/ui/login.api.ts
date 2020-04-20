@@ -9,6 +9,7 @@ import {
   normalizeSlots,
 } from "./redux/api";
 import { Set } from "immutable";
+import { None, Some, Maybe } from "monet";
 
 export module LoginAPI {
   export interface LoginInfo {
@@ -18,7 +19,7 @@ export module LoginAPI {
     reviewedRecords: Set<string>;
   }
 
-  export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
+  async function _login(auth: BasicCredentials): Promise<LoginInfo> {
     const response = await Axios.get<LoginDto>("/api/login", {
       auth,
     });
@@ -49,5 +50,16 @@ export module LoginAPI {
       }),
       reviewedRecords: Set(reviewedRecords),
     };
-  };
+  }
+
+  export async function login(
+    auth: BasicCredentials
+  ): Promise<Maybe<LoginInfo>> {
+    try {
+      const response = await _login(auth);
+      return Some(response);
+    } catch (error) {
+      return None();
+    }
+  }
 }
