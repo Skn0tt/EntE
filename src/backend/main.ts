@@ -10,18 +10,6 @@ import * as Sentry from "@sentry/node";
 const sentryDsn = Config.getSentryDsn();
 
 export async function bootstrap() {
-  async function setupSentry(dsn: string) {
-    Sentry.init({
-      dsn,
-      release: Config.getVersion(),
-      serverName: Config.getBaseUrl(),
-    });
-  }
-
-  if (sentryDsn.isSome()) {
-    setupSentry(sentryDsn.some());
-  }
-
   const logger = new WinstonLoggerService();
 
   const app = await NestFactory.create(AppModule, {
@@ -29,9 +17,16 @@ export async function bootstrap() {
     bodyParser: false,
   });
 
-  if (sentryDsn.isSome()) {
-    app.useGlobalInterceptors(new SentryInterceptor(sentryDsn.some()));
-  }
+  sentryDsn.forEach((dsn) => {
+    console.log(dsn);
+    Sentry.init({
+      dsn,
+      release: Config.getVersion(),
+      serverName: Config.getBaseUrl(),
+    });
+
+    app.useGlobalInterceptors(new SentryInterceptor(dsn));
+  });
 
   app.setGlobalPrefix("api");
 
