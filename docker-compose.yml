@@ -1,22 +1,14 @@
 version: "3.7"
 services:
-  mariadb:
-    image: mariadb:10.4
-    ports:
-      - 3306:3306
+  ente:
+    build: .
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ente
+      MYSQL_HOST: mariadb
+      MYSQL_USERNAME: ente
       MYSQL_PASSWORD: root
-      MYSQL_USER: ente
-
-  redis:
-    image: redis:4.0.10
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      REDIS_HOST: redis
+      BASE_URL: "http://localhost:3000"
     ports:
-      - 6379:6379
-
-  mailhog:
-    image: mailhog/mailhog:v1.0.0
-    ports:
-      - 1025:1025
-      - 8025:8025
+      - 3000:3000
