@@ -7,5 +7,5 @@
  */
 
 export default {
-  baseUrl: process.env.BASE_URL,
+  baseUrl: process.env.BASE_URL || "localhost:3000",
 };
