@@ -167,7 +167,7 @@ de:
           username: "heiner.müller"
           password: "p4sswort!"
         - role: "Lehrkraft"
-          username: "lars.lehrerr"
+          username: "lars.lehrer"
           password: "p4sswort!"
       open_demo: Zur Demo
       back: ZURÜCK
