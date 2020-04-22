@@ -1,0 +1,11 @@
+English:
+
+Welcome to the EntE demo!
+<table style="padding: 10px;margin: 0 auto;"><thead><tr><th>Username</th><th>Password</th></tr></thead><tbody><tr><td>admin</td><td>root</td></tr><tr><td>antonia.m&uuml;ller</td><td>p4sswort!</td></tr><tr><td>heiner.m&uuml;ller</td><td>p4sswort!</td></tr><tr><td>lars.lehrer</td><td>p4sswort!</td></tr></tbody></table>
+Use one of the above user accounts to try out EntE.
+
+German:
+
+Herzlich willkommen EntEs Demo-Instanz!
+<table style="padding: 10px;margin: 0 auto;"><thead><tr><th>Benutzername</th><th>Passwort</th></tr></thead><tbody><tr><td>admin</td><td>root</td></tr><tr><td>antonia.m&uuml;ller</td><td>p4sswort!</td></tr><tr><td>heiner.m&uuml;ller</td><td>p4sswort!</td></tr><tr><td>lars.lehrer</td><td>p4sswort!</td></tr></tbody></table>
+Melden Sie sich mit einem der oben stehenden Accounts an, um EntE auszuprobieren.
