@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.37.6] - 2020-04-22
+
 - Fixed: Sentry DSN replacement breaking ([#373](https://gitlab.com/Skn0tt/EntE/-/issues/373))
 
 ## [v0.37.5] - 2020-04-20
