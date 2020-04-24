@@ -4,17 +4,17 @@ import { AuthService, FindUserByCredentialsFail } from "./auth.service";
 import { UnauthorizedException, Inject, Injectable } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 import { Some } from "monet";
-import { NextApiRequest } from "next";
 import basicAuth from "basic-auth";
 import _ from "lodash";
+import type { IncomingMessage } from "http";
 
 @Injectable()
-export class BasicStrategy extends PassportStrategy(CustomStrategy) {
+export class BasicStrategy extends PassportStrategy(CustomStrategy, "basic") {
   constructor(@Inject(AuthService) private readonly authService: AuthService) {
     super();
   }
 
-  async validate(req: NextApiRequest): Promise<RequestContextUser> {
+  async validate(req: IncomingMessage): Promise<RequestContextUser> {
     const authHeader = basicAuth(req);
     if (!authHeader) {
       throw new UnauthorizedException();

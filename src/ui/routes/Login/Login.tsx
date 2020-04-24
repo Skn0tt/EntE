@@ -84,7 +84,7 @@ function Login(prosp: {}) {
   const [username, setUsername] = React.useState(getInitalUsername());
   const [password, setPassword] = React.useState("");
   const [showPasswordReset, togglePasswordReset] = useBoolean(false);
-  const [showTOTPModal, toggleTOTPModal] = useBoolean(true);
+  const [showTOTPModal, toggleTOTPModal] = useBoolean(false);
 
   const [passwordResetPending, setPasswordResetPending] = useBoolean(false);
   const [loginPending, setLoginPending] = useBoolean(false);

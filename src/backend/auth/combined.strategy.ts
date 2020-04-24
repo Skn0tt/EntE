@@ -4,15 +4,12 @@ import {
   UnauthorizedException,
   Injectable,
   UseGuards,
-  BadRequestException,
   Inject,
 } from "@nestjs/common";
 import { BasicStrategy } from "./basic.strategy";
 import { JwtStrategy } from "./jwt.strategy";
-import { Request } from "express";
-import { Base64, CharacterSets } from "../helpers/base64";
-import { Maybe, Some, None } from "monet";
 import { RequestContextUser } from "../helpers/request-context";
+import type { IncomingMessage } from "http";
 
 const BEARER_REGEX = /(?<=Bearer )(\S+)/gm;
 const BASIC_REGEX = /(?<=Basic )(\S+)/gm;
@@ -20,7 +17,7 @@ const BASIC_REGEX = /(?<=Basic )(\S+)/gm;
 @Injectable()
 @UseGuards(AuthGuard("combined"))
 export class CombinedStrategy extends PassportStrategy(
-  CustomStrategy as any,
+  CustomStrategy,
   "combined"
 ) {
   constructor(
@@ -30,21 +27,12 @@ export class CombinedStrategy extends PassportStrategy(
     super();
   }
 
-  async validate(req: Request): Promise<RequestContextUser> {
+  async validate(req: IncomingMessage): Promise<RequestContextUser> {
     const authorization = req.headers.authorization as string;
 
     const isBasicAuth = BASIC_REGEX.test(authorization);
     if (isBasicAuth) {
-      const b64 = authorization.match(BASIC_REGEX)![0];
-      const text = Base64.decode(b64, CharacterSets.LATIN_1);
-      const creds = CombinedStrategy.extractCredentials(text);
-      if (creds.isNone()) {
-        throw new BadRequestException();
-      }
-
-      const { username, password } = creds.some();
-
-      return await this.basicStrategy.validate(username, password);
+      return await this.basicStrategy.validate(req);
     }
 
     const isBearerAuth = BEARER_REGEX.test(authorization);
@@ -55,18 +43,5 @@ export class CombinedStrategy extends PassportStrategy(
     }
 
     throw new UnauthorizedException();
-  }
-
-  static extractCredentials(
-    s: string
-  ): Maybe<{ username: string; password: string }> {
-    if (s.indexOf(":") === -1) {
-      return None();
-    }
-
-    const username = s.slice(0, s.indexOf(":"));
-    const password = s.slice(s.indexOf(":") + 1);
-
-    return Some({ username, password });
   }
 }

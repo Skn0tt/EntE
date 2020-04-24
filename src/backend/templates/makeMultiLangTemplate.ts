@@ -10,6 +10,7 @@ type TemplatesByLanguage<T> = Record<Languages, Template<T>>;
 
 export function makeMultiLangTemplate<T>(templates: TemplatesByLanguage<T>) {
   return function (lang: Languages, payload: T) {
+    console.log(templates, lang);
     const { template, title } = templates[lang];
     const mjml = template(payload);
     const { errors, html } = mjml2html(mjml);

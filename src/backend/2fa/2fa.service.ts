@@ -21,9 +21,9 @@ export class TwoFAService {
   ) {}
 
   async enable(
-    user: RequestContextUser
+    rcUser: RequestContextUser
   ): Promise<Validation<TwoFAEnableFail, string>> {
-    const itsAlreadyEnabled = await this.userRepo.hasTOTPSecret(user.id);
+    const itsAlreadyEnabled = await this.userRepo.hasTOTPSecret(rcUser.id);
     if (itsAlreadyEnabled.isNone()) {
       return Fail(TwoFAEnableFail.NotFound);
     }
@@ -32,12 +32,12 @@ export class TwoFAService {
       return Fail(TwoFAEnableFail.AlreadyEnabled);
     }
 
+    const user = (await rcUser.getDto()).some();
+
     const { secret, qrcode_url } = TOTP.generateSecret();
     await this.userRepo.setTOTPSecret(user.id, secret);
 
-    await this.emailService.dispatch2FAEnabledNotification(
-      (user as unknown) as UserDto
-    );
+    await this.emailService.dispatch2FAEnabledNotification(user);
 
     return Success(qrcode_url);
   }
