@@ -25,7 +25,8 @@ import assert from "assert";
 
 interface UserAndPasswordHash {
   user: UserDto;
-  hash: string;
+  hash: string | null;
+  totpSecret: string | null;
 }
 
 interface UserWithRole {
@@ -388,6 +389,7 @@ export class UserRepo {
       return Some({
         user: UserRepo.toDto(u),
         hash: u.password,
+        totpSecret: u.totpSecret,
       });
     });
   }

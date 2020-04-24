@@ -1851,6 +1851,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/basic-auth@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@types/basic-auth/-/basic-auth-1.1.3.tgz#a787ede8310804174fbbf3d6c623ab1ccedb02cd"
+  integrity sha512-W3rv6J0IGlxqgE2eQ2pTb0gBjaGtejQpJ6uaCjz3UQ65+TFTPC5/lAE+POfx1YLdjtxvejJzsIAfd3MxWiVmfg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/bcryptjs@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
@@ -2072,14 +2079,6 @@
     "@types/express" "*"
     "@types/passport" "*"
 
-"@types/passport-http@^0.3.6":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@types/passport-http/-/passport-http-0.3.8.tgz#e6f58eebbc22a9c92b9a5b9ec45419d3714c8d3f"
-  integrity sha512-PRjqOljk7pkOqXNTEL0SWS1wTxwuMGPkAjLJjg4wKpH2NPdSo0Z1rGndawMbqbB4/WaR6odwO3G8XEmR2FBk4g==
-  dependencies:
-    "@types/express" "*"
-    "@types/passport" "*"
-
 "@types/passport@*":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.3.tgz#e459ed6c262bf0686684d1b05901be0d0b192a9c"
@@ -2210,6 +2209,13 @@
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.1.tgz#681df970358c82836b42f989188d133e218c458e"
   integrity sha512-yYezQwGWty8ziyYLdZjwxyMb0CZR49h8JALHGrxjQHWlqGgc8kLdHEgWrgL0uZ29DMvEVBDnHU2Wg36zKSIUtA==
+
+"@types/speakeasy@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/speakeasy/-/speakeasy-2.0.5.tgz#dd7654110dcf6bb05d5ba16ca015319f617131e9"
+  integrity sha512-8jnDuZM/q77cd3naF5T3VRlNbNuYUvnixYYSu0dhpPxc9UNrBNubDlXoyVIyQgfvOd7pSc0cs4ETB5kygtpWZQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3617,7 +3623,7 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-basic-auth@~2.0.1:
+basic-auth@^2.0.1, basic-auth@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
   integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
@@ -10367,13 +10373,6 @@ passport-http-bearer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/passport-http-bearer/-/passport-http-bearer-1.0.1.tgz#147469ea3669e2a84c6167ef99dbb77e1f0098a8"
   integrity sha1-FHRp6jZp4qhMYWfvmdu3fh8AmKg=
-  dependencies:
-    passport-strategy "1.x.x"
-
-passport-http@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/passport-http/-/passport-http-0.3.0.tgz#8ee53d4380be9c60df2151925029826f77115603"
-  integrity sha1-juU9Q4C+nGDfIVGSUCmCb3cRVgM=
   dependencies:
     passport-strategy "1.x.x"
 
