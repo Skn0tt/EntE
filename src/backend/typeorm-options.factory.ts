@@ -40,6 +40,7 @@ export class TypeOrmOptionsFactory implements _TypeOrmOptionsFactory {
         synchronize: false,
         logger: new CustomTypeOrmLogger(),
         logging: "all",
+        migrationsRun: true,
       };
     }
 

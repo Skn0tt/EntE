@@ -1,32 +1,41 @@
-import { Injectable, Inject, LoggerService } from "@nestjs/common";
-import { WinstonLoggerService } from "../winston-logger.service";
+import { Injectable, Inject } from "@nestjs/common";
 import {
   EmailTransportService,
   Envelope,
 } from "../infrastructure/email-transport.service";
-import { SubscribeableRetryBullQueue } from "../bull.queue";
 import { NodemailerService } from "../infrastructure/nodemailer.service";
-import { Config } from "../helpers/config";
+import { Processor, Process, InjectQueue } from "@nestjs/bull";
+import { Job, Queue } from "bull";
+
+export const EMAIL_QUEUE_KEY = "email";
 
 @Injectable()
 export class EmailQueue {
-  private queue: SubscribeableRetryBullQueue<Envelope>;
-
   constructor(
-    @Inject(WinstonLoggerService) private readonly logger: LoggerService,
-    @Inject(NodemailerService) emailTransport: EmailTransportService
-  ) {
-    const { retryDelay } = Config.getMailConfig();
-    this.queue = new SubscribeableRetryBullQueue(
-      "emailQueue",
-      this.logger,
-      retryDelay
-    );
-
-    this.queue.subscribe((envelope) => emailTransport.sendMail(envelope));
-  }
+    @InjectQueue(EMAIL_QUEUE_KEY) private readonly queue: Queue<Envelope>
+  ) {}
 
   async sendMail(envelope: Envelope): Promise<void> {
-    await this.queue.enqueue(envelope);
+    await this.queue.add(envelope, {
+      attempts: 10,
+      backoff: {
+        type: "exponential",
+        delay: 500,
+      },
+    });
+  }
+}
+
+@Processor(EMAIL_QUEUE_KEY)
+export class EmailProcessor {
+  constructor(
+    @Inject(NodemailerService)
+    private readonly emailTransport: EmailTransportService
+  ) {}
+
+  @Process()
+  async process(job: Job<Envelope>) {
+    const response = await this.emailTransport.sendMail(job.data);
+    response.success(); // throw exception
   }
 }

@@ -25,17 +25,14 @@ export class PasswordResetController {
   @Post("/:username")
   async forgotPassword(@Param("username") username: string) {
     const result = await this.authService.invokePasswordResetRoutine(username);
-    return result.cata(
-      (fail) => {
-        switch (fail) {
-          case StartPasswordRoutineFailure.UserNotFound:
-            throw new NotFoundException();
-          default:
-            throw new ForbiddenException();
-        }
-      },
-      () => {}
-    );
+    result.forEachFail((fail) => {
+      switch (fail) {
+        case StartPasswordRoutineFailure.UserNotFound:
+          throw new NotFoundException();
+        default:
+          throw new ForbiddenException();
+      }
+    });
   }
 
   @Put("/:token")
