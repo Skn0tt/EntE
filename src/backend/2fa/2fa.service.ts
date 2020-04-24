@@ -3,6 +3,8 @@ import { RequestContextUser } from "../helpers/request-context";
 import { UserRepo } from "../db/user.repo";
 import { Fail, Success, Validation } from "monet";
 import { TOTP } from "../auth/TOTP";
+import { EmailService } from "../email/email.service";
+import { UserDto } from "@@types";
 
 export enum TwoFAEnableFail {
   NotFound,
@@ -13,7 +15,9 @@ export enum TwoFAEnableFail {
 export class TwoFAService {
   constructor(
     @Inject(UserRepo)
-    private readonly userRepo: UserRepo
+    private readonly userRepo: UserRepo,
+    @Inject(EmailService)
+    private readonly emailService: EmailService
   ) {}
 
   async enable(
@@ -31,10 +35,17 @@ export class TwoFAService {
     const { secret, qrcode_url } = TOTP.generateSecret();
     await this.userRepo.setTOTPSecret(user.id, secret);
 
+    await this.emailService.dispatch2FAEnabledNotification(
+      (user as unknown) as UserDto
+    );
+
     return Success(qrcode_url);
   }
 
   async disable(user: RequestContextUser) {
     await this.userRepo.removeTOTPSecret(user.id);
+    await this.emailService.dispatch2FADisabledNotification(
+      (user as unknown) as UserDto
+    );
   }
 }
