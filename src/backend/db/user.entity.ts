@@ -85,6 +85,9 @@ export class User {
   @Column("varchar", { nullable: true })
   password: string | null;
 
+  @Column("varchar", { nullable: true })
+  totpSecret: string | null;
+
   /**
    * ## Relations
    */
