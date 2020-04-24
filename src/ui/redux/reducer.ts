@@ -24,7 +24,6 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
-  LOGIN_SUCCESS,
   REFRESH_TOKEN_ERROR,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_REQUEST,
@@ -209,7 +208,6 @@ const asyncReducersFull = (
   },
 });
 
-// console.log(AppState)
 export const initialState = new AppState({});
 
 const reducer = handleActions<AppState, any>(

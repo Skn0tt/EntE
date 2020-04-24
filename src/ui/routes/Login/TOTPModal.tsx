@@ -23,7 +23,6 @@ export function TOTPModal(props: TOTPModalProps) {
 
   const handleChange = useCallback(
     (token: string) => {
-      console.log(token);
       setToken(token);
       if (token.length === 6) {
         onDone(token);
