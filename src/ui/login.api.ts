@@ -1,5 +1,5 @@
 import { AuthState, APIResponse, UserN, BasicCredentials } from "./redux";
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 import { LoginDto } from "@@types";
 import {
   getAuthState,
@@ -26,7 +26,7 @@ export module LoginAPI {
     totpToken: string | undefined
   ): Promise<Validation<LoginFailedReason, LoginInfo>> {
     const headers = !!totpToken ? { "X-TOTP-Token": totpToken } : undefined;
-    const response = await Axios.get<LoginDto | "totp_missing" | undefined>(
+    const response = await Axios.get<LoginDto | { message?: "totp_missing" }>(
       "/api/login",
       {
         auth,
@@ -36,7 +36,8 @@ export module LoginAPI {
     );
 
     if (response.status === 401) {
-      if (response.data === "totp_missing") {
+      const { message } = response.data as { message?: "totp_missing" };
+      if (message === "totp_missing") {
         return Fail("totp_missing");
       } else {
         return Fail("auth_invalid");

@@ -27,9 +27,10 @@ export function TOTPModal(props: TOTPModalProps) {
       setToken(token);
       if (token.length === 6) {
         onDone(token);
+        setToken("");
       }
     },
-    [setToken]
+    [setToken, onDone]
   );
 
   return (

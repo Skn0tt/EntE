@@ -1,5 +1,3 @@
-import { PassportStrategy } from "@nestjs/passport";
-import { Strategy } from "passport-http-bearer";
 import { UnauthorizedException, Inject, Injectable } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 import { SignerService } from "../infrastructure/signer.service";
@@ -7,14 +5,12 @@ import { JwtTokenPayload } from "@@types";
 import { UserRepo } from "../db/user.repo";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy {
   constructor(
     @Inject(SignerService)
     private readonly signerService: SignerService<JwtTokenPayload>,
     @Inject(UserRepo) private readonly userRepo: UserRepo
-  ) {
-    super();
-  }
+  ) {}
 
   async validate(token: string): Promise<RequestContextUser> {
     const payload = await this.signerService.decryptToken(token);

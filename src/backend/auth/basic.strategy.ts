@@ -1,27 +1,20 @@
-import { PassportStrategy } from "@nestjs/passport";
-import { Strategy as CustomStrategy } from "passport-custom";
 import { AuthService, FindUserByCredentialsFail } from "./auth.service";
 import { UnauthorizedException, Inject, Injectable } from "@nestjs/common";
 import { RequestContextUser } from "../helpers/request-context";
 import { Some } from "monet";
-import basicAuth from "basic-auth";
 import _ from "lodash";
 import type { IncomingMessage } from "http";
 
 @Injectable()
-export class BasicStrategy extends PassportStrategy(CustomStrategy, "basic") {
-  constructor(@Inject(AuthService) private readonly authService: AuthService) {
-    super();
-  }
+export class BasicStrategy {
+  constructor(@Inject(AuthService) private readonly authService: AuthService) {}
 
-  async validate(req: IncomingMessage): Promise<RequestContextUser> {
-    const authHeader = basicAuth(req);
-    if (!authHeader) {
-      throw new UnauthorizedException();
-    }
-
-    const { name, pass } = authHeader;
-    let totpToken = req.headers["X-TOTP-Token"];
+  async validate(
+    name: string,
+    pass: string,
+    req: IncomingMessage
+  ): Promise<RequestContextUser> {
+    const totpToken = req.headers["x-totp-token"];
     if (_.isArray(totpToken)) {
       throw new UnauthorizedException(
         "Don't provide multiple X-TOTP-Token headers."
