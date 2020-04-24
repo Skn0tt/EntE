@@ -6,7 +6,7 @@ export module TOTP {
       name: "EntE",
     });
 
-    return { qrcode_url: otpauth_url, secret: base32 };
+    return { qrcode_url: otpauth_url!, secret: base32 };
   }
 
   export function verifyToken(secret: string, token: string) {

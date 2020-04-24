@@ -17,6 +17,7 @@ import { LoginModule } from "./login/login.module";
 import { ReviewedRecordsModule } from "./reviewedRecords/reviewedRecords.module";
 import { TypeOrmOptionsFactory } from "./typeorm-options.factory";
 import { ScheduleModule } from "@nestjs/schedule";
+import { TwoFAModule } from "./2fa/2fa.module";
 
 const isDevMode = Config.isDevMode();
 
@@ -38,6 +39,7 @@ const isDevMode = Config.isDevMode();
     LoginModule,
     ExportModule,
     ReviewedRecordsModule,
+    TwoFAModule,
     ...(isDevMode ? [DevModule] : []),
   ],
   providers: [WinstonLoggerService],

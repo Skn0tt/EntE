@@ -523,6 +523,19 @@ export class UserRepo {
     return updatedUsers === 1;
   }
 
+  async hasTOTPSecret(id: string) {
+    const user = await this.repo.findOne(id);
+    return Maybe.fromUndefined(user).map((u) => !!u.totpSecret);
+  }
+
+  async setTOTPSecret(id: string, totpSecret: string) {
+    await this.repo.update(id, { totpSecret });
+  }
+
+  async removeTOTPSecret(id: string) {
+    await this.repo.update(id, { totpSecret: null });
+  }
+
   static toDto(user: User): UserDto {
     const result = new UserDto();
 
