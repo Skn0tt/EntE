@@ -32,6 +32,7 @@ import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscree
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { useBoolean } from "react-use";
 import { LoginAPI } from "../../login.api";
+import { TOTPModal } from "./TOTPModal";
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionCode: {
@@ -83,6 +84,7 @@ function Login(prosp: {}) {
   const [username, setUsername] = React.useState(getInitalUsername());
   const [password, setPassword] = React.useState("");
   const [showPasswordReset, togglePasswordReset] = useBoolean(false);
+  const [showTOTPModal, toggleTOTPModal] = useBoolean(true);
 
   const [passwordResetPending, setPasswordResetPending] = useBoolean(false);
   const [loginPending, setLoginPending] = useBoolean(false);
@@ -97,33 +99,47 @@ function Login(prosp: {}) {
     [togglePasswordReset, setPasswordResetPending, currentLanguage]
   );
 
-  const handleSignIn = React.useCallback(async () => {
-    setLoginPending(true);
-    const response = await LoginAPI.login({ username, password });
-    setLoginPending(false);
+  const handleSignIn = React.useCallback(
+    async (totpToken?: string) => {
+      toggleTOTPModal(false);
 
-    response.cata(
-      () => {
-        setPassword("");
-        addMessages(lang.invalidCredentials);
-      },
-      (response) => {
-        dispatch(loginSuccess(response));
+      setLoginPending(true);
+      const response = await LoginAPI.login({ username, password }, totpToken);
+      setLoginPending(false);
 
-        const from = (router.query.from as string) ?? "/";
-        router.push(from);
-      }
-    );
-  }, [
-    dispatch,
-    username,
-    password,
-    setPassword,
-    router,
-    setLoginPending,
-    addMessages,
-    lang,
-  ]);
+      response.cata(
+        (fail) => {
+          switch (fail) {
+            case "auth_invalid":
+              setPassword("");
+              toggleTOTPModal(false);
+              addMessages(lang.invalidCredentials);
+              break;
+            case "totp_missing":
+              toggleTOTPModal(true);
+              break;
+          }
+        },
+        (response) => {
+          dispatch(loginSuccess(response));
+
+          const from = (router.query.from as string) ?? "/";
+          router.push(from);
+        }
+      );
+    },
+    [
+      dispatch,
+      username,
+      password,
+      setPassword,
+      router,
+      setLoginPending,
+      addMessages,
+      toggleTOTPModal,
+      lang,
+    ]
+  );
 
   const handleKeyPress: React.KeyboardEventHandler<{}> = React.useCallback(
     (event) => {
@@ -141,6 +157,7 @@ function Login(prosp: {}) {
         show={showPasswordReset}
         onClose={togglePasswordReset}
       />
+      <TOTPModal onDone={handleSignIn} open={showTOTPModal} />
       <ResponsiveFullscreenDialog open onKeyPress={handleKeyPress}>
         <DialogTitle>{lang.title}</DialogTitle>
         <DialogContent>
@@ -182,7 +199,7 @@ function Login(prosp: {}) {
           </Button>
           <Button
             color="primary"
-            onClick={handleSignIn}
+            onClick={() => handleSignIn()}
             disabled={loginPending}
           >
             {lang.submit}

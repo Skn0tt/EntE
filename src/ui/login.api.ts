@@ -9,7 +9,9 @@ import {
   normalizeSlots,
 } from "./redux/api";
 import { Set } from "immutable";
-import { None, Some, Maybe } from "monet";
+import { Validation, Fail, Success } from "monet";
+
+type LoginFailedReason = "totp_missing" | "auth_invalid";
 
 export module LoginAPI {
   export interface LoginInfo {
@@ -19,10 +21,27 @@ export module LoginAPI {
     reviewedRecords: Set<string>;
   }
 
-  async function _login(auth: BasicCredentials): Promise<LoginInfo> {
-    const response = await Axios.get<LoginDto>("/api/login", {
-      auth,
-    });
+  export async function login(
+    auth: BasicCredentials,
+    totpToken: string | undefined
+  ): Promise<Validation<LoginFailedReason, LoginInfo>> {
+    const headers = !!totpToken ? { "X-TOTP-Token": totpToken } : undefined;
+    const response = await Axios.get<LoginDto | "totp_missing" | undefined>(
+      "/api/login",
+      {
+        auth,
+        headers,
+        validateStatus: (s) => [200, 401].includes(s),
+      }
+    );
+
+    if (response.status === 401) {
+      if (response.data === "totp_missing") {
+        return Fail("totp_missing");
+      } else {
+        return Fail("auth_invalid");
+      }
+    }
 
     const {
       token,
@@ -31,7 +50,7 @@ export module LoginAPI {
       onesEntries,
       reviewedRecords = [],
       prefiledSlots,
-    } = response.data;
+    } = response.data as LoginDto;
     const authState = getAuthState(token);
 
     const apiResponse = mergeAPIResponses(
@@ -40,7 +59,7 @@ export module LoginAPI {
       normalizeSlots(...prefiledSlots)
     );
 
-    return {
+    return Success({
       authState,
       apiResponse,
       oneSelf: UserN({
@@ -49,17 +68,6 @@ export module LoginAPI {
         childrenIds: oneSelf.children.map((c) => c.id),
       }),
       reviewedRecords: Set(reviewedRecords),
-    };
-  }
-
-  export async function login(
-    auth: BasicCredentials
-  ): Promise<Maybe<LoginInfo>> {
-    try {
-      const response = await _login(auth);
-      return Some(response);
-    } catch (error) {
-      return None();
-    }
+    });
   }
 }
