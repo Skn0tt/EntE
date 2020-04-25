@@ -207,7 +207,7 @@ export const AppState = ImmutableRecord<IAppState>(
     instanceConfig: null,
     pendingActions: Set<Action>(),
     timeScope: "everything",
-    colorScheme: "light",
+    colorScheme: "system",
     reviewedRecords: null,
   },
   "AppState"

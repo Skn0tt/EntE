@@ -164,7 +164,7 @@ export function Preferences() {
           fullWidth
           variant="outlined"
         >
-          {/*<MenuItem value="system">{lang.system}</MenuItem>*/}
+          <MenuItem value="system">{lang.system}</MenuItem>
           <MenuItem value="light">{lang.light}</MenuItem>
           <MenuItem value="dark">{lang.dark}</MenuItem>
         </TextField>

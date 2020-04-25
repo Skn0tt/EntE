@@ -10,14 +10,24 @@ import { createMuiTheme, Theme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import * as _ from "lodash";
 
-export type ColorScheme = "light" | "dark";
+function getSystemTheme(): "light" | "dark" {
+  if (!window.matchMedia) {
+    return "light";
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+export type ColorScheme = "light" | "dark" | "system";
 
 export const createTheme = _.memoize(
   (scheme: ColorScheme): Theme => {
     return createMuiTheme({
       palette: {
         primary: blue,
-        type: scheme,
+        type: scheme === "system" ? getSystemTheme() : scheme,
       },
       typography: {
         useNextVariants: true,
