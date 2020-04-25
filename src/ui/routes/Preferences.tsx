@@ -11,9 +11,23 @@ import {
 import { Description } from "ui/components/Description";
 import { makeStyles } from "@material-ui/styles";
 import { makeTranslationHook } from "ui/helpers/makeTranslationHook";
-import { useCallback } from "react";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { Languages } from "@@types";
+import { Languages, TEACHING_ROLES } from "@@types";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getLanguage,
+  getRole,
+  setLanguage,
+  setColorScheme,
+  getColorScheme,
+  getUsername,
+  isSubscribedToWeeklySummary,
+  getOwnUserId,
+  updateUserRequest,
+} from "ui/redux";
+import { ColorScheme } from "ui/theme";
+import { useMessages } from "ui/context/Messages";
+import { invokeReset } from "ui/passwordReset";
 
 const useLang = makeTranslationHook({
   de: {
@@ -82,14 +96,19 @@ function PreferenceItem(props: React.PropsWithChildren<PreferenceItemProps>) {
 export function Preferences() {
   const classes = useStyles();
   const lang = useLang();
+  const { addMessages } = useMessages();
 
-  const currentLanguage = Languages.ENGLISH;
+  const dispatch = useDispatch();
+  const currentLanguage = useSelector(getLanguage);
+  const colorScheme = useSelector(getColorScheme);
+  const ownRole = useSelector(getRole).some();
+  const ownUsername = useSelector(getUsername).some();
+  const ownId = useSelector(getOwnUserId).some();
+  const weeklySummarySubscribed = useSelector(
+    isSubscribedToWeeklySummary
+  ).orSome(true);
 
-  const handleResetPassword = useCallback(() => {}, []);
-
-  const handleChangeLanguage = useCallback((lang: Languages) => {}, []);
-
-  const isTeacher = true;
+  const isTeacher = TEACHING_ROLES.includes(ownRole);
 
   return (
     <Grid
@@ -101,7 +120,14 @@ export function Preferences() {
       <Grid item>
         <Grid container direction="row">
           <Grid item>
-            <Button variant="outlined" onClick={handleResetPassword}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                invokeReset(ownUsername, (msgs) =>
+                  addMessages(msgs[currentLanguage])
+                );
+              }}
+            >
               <VpnKeyIcon className={classes.iconLeft} />
               {lang.resetPassword}
             </Button>
@@ -117,9 +143,9 @@ export function Preferences() {
         <TextField
           select
           value={currentLanguage}
-          onChange={(evt) =>
-            handleChangeLanguage(evt.target.value as Languages)
-          }
+          onChange={(evt) => {
+            dispatch(setLanguage(evt.target.value as Languages));
+          }}
           fullWidth
           variant="outlined"
         >
@@ -129,8 +155,16 @@ export function Preferences() {
       </PreferenceItem>
 
       <PreferenceItem title={lang.appearance}>
-        <TextField select fullWidth variant="outlined">
-          <MenuItem value="system">{lang.system}</MenuItem>
+        <TextField
+          value={colorScheme}
+          onChange={(evt) => {
+            dispatch(setColorScheme(evt.target.value as ColorScheme));
+          }}
+          select
+          fullWidth
+          variant="outlined"
+        >
+          {/*<MenuItem value="system">{lang.system}</MenuItem>*/}
           <MenuItem value="light">{lang.light}</MenuItem>
           <MenuItem value="dark">{lang.dark}</MenuItem>
         </TextField>
@@ -142,8 +176,20 @@ export function Preferences() {
           description={lang.weeklySummarySubscriptionDescription}
         >
           <FormControlLabel
-            control={<Switch />}
-            label={true ? lang.on : lang.off}
+            control={
+              <Switch
+                value={weeklySummarySubscribed}
+                onChange={(_, newValue) => {
+                  dispatch(
+                    updateUserRequest([
+                      ownId,
+                      { subscribedToWeeklySummary: newValue },
+                    ])
+                  );
+                }}
+              />
+            }
+            label={weeklySummarySubscribed ? lang.on : lang.off}
           />
         </PreferenceItem>
       )}
