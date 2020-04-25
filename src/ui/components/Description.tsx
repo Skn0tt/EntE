@@ -3,7 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 
 interface DescriptionProps {
   title: string;
-  children: string;
+  children?: string;
 }
 
 export const Description: React.FC<DescriptionProps> = (props) => {
@@ -14,9 +14,11 @@ export const Description: React.FC<DescriptionProps> = (props) => {
       <Grid>
         <Typography variant="body1">{title}</Typography>
       </Grid>
-      <Grid>
-        <Typography variant="body2">{children}</Typography>
-      </Grid>
+      {children && (
+        <Grid>
+          <Typography variant="body2">{children}</Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };
