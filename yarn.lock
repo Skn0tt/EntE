@@ -1707,10 +1707,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@skn0tt/signer@^0.8.8":
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.8.tgz#c6d9d5e72d0bb5a09799c5d2b316d4199f520d02"
-  integrity sha512-E+v9Qi4kj5YTGOJG/Meltp4J8AFT26ZRXbvLx2A2vY693slCrBpQa0TS3ghlS56YQffYQcMioe2eoWDdFSr0Zg==
+"@skn0tt/signer@^0.8.9":
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/@skn0tt/signer/-/signer-0.8.9.tgz#fc624f8e66777cf8b193f8ebdc08e1b347d63a66"
+  integrity sha512-oaUGfVCPuhl2bKGaXzP3hmodUB+V/O9swTltNO7bi4fpSlAInAETnwOGVnzrry8APJO/r5KedejmHTRm40a9LQ==
   dependencies:
     jsonwebtoken "^8.5.1"
     keypair "^1.0.1"

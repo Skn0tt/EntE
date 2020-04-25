@@ -30,7 +30,7 @@
     "@next/bundle-analyzer": "^9.3.5",
     "@sentry/browser": "^5.12.4",
     "@sentry/node": "^5.15.4",
-    "@skn0tt/signer": "^0.8.8",
+    "@skn0tt/signer": "^0.8.9",
     "axios": "^0.18.0",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
