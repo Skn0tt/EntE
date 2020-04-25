@@ -3,8 +3,8 @@ import {
   UseGuards,
   Inject,
   Post,
-  UnauthorizedException,
   ConflictException,
+  Get,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { TwoFAService, TwoFAEnableFail } from "./2fa.service";
@@ -18,14 +18,18 @@ export class TwoFAController {
     private readonly twoFAService: TwoFAService
   ) {}
 
+  @Get()
+  async isEnabled(@Ctx() ctx: RequestContext) {
+    const result = await this.twoFAService.isEnabled(ctx.user);
+    return result ? "enabled" : "disabled";
+  }
+
   @Post("enable")
   async enable(@Ctx() ctx: RequestContext) {
     const result = await this.twoFAService.enable(ctx.user);
     return result.cata(
       (fail) => {
         switch (fail) {
-          case TwoFAEnableFail.NotFound:
-            throw new UnauthorizedException();
           case TwoFAEnableFail.AlreadyEnabled:
             throw new ConflictException("already enabled");
         }

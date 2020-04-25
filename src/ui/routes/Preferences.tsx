@@ -24,10 +24,14 @@ import {
   isSubscribedToWeeklySummary,
   getOwnUserId,
   updateUserRequest,
+  getToken,
 } from "ui/redux";
 import { ColorScheme } from "ui/theme";
 import { useMessages } from "ui/context/Messages";
 import { invokeReset } from "ui/passwordReset";
+import { useCallback, useState } from "react";
+import Axios from "axios";
+import { useBoolean, useEffectOnce } from "react-use";
 
 const useLang = makeTranslationHook({
   de: {
@@ -39,6 +43,9 @@ const useLang = makeTranslationHook({
     system: "Systemeinstellung",
     dark: "Dunkel",
     light: "Hell",
+    twoFa: "Zwei-Faktor-Authentifizierung",
+    twoFaDescription:
+      "Mit der Zwei-Faktor-Authentifizierung können Sie ihren Account zusätzlich schützen. Dafür benötigen Sie eine Authenticator-App auf ihrem Smartphone, z.B. Google Authenticator.",
     weeklySummarySubscription: "Wöchentliche Zusammenfassungs-Mail",
     weeklySummarySubscriptionDescription:
       "Einmal in der Woche sendet EntE ihnen eine Zusammenfassung der Fehlstunden per E-Mail. Möchten Sie diese erhalten?",
@@ -54,6 +61,9 @@ const useLang = makeTranslationHook({
     system: "System preference",
     dark: "Dark",
     light: "Light",
+    twoFa: "Two-Factor-Authentication",
+    twoFaDescription:
+      "Enabling Two-Factor-Authentification provides additional security measures to your account. To use it, an authenticator app is required (e.g. Google Authenticator).",
     weeklySummarySubscription: "Weekly summary mail",
     weeklySummarySubscriptionDescription:
       "Once a week, EntE sends a summary of missed classes via email. Do you want to receive them?",
@@ -61,6 +71,26 @@ const useLang = makeTranslationHook({
     off: "Off",
   },
 });
+
+async function get2FAState(token: string): Promise<boolean> {
+  const response = await Axios.get<"enabled" | "disabled">("/api/2fa", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data === "enabled";
+}
+
+async function enable2FA(token: string): Promise<string> {
+  const response = await Axios.post<string>("/api/2fa/enable", undefined, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+}
+
+async function disable2FA(token: string): Promise<void> {
+  await Axios.post<string>("/api/2fa/disable", undefined, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   iconLeft: {
@@ -104,11 +134,30 @@ export function Preferences() {
   const ownRole = useSelector(getRole).some();
   const ownUsername = useSelector(getUsername).some();
   const ownId = useSelector(getOwnUserId).some();
+  const token = useSelector(getToken).some();
   const weeklySummarySubscribed = useSelector(
     isSubscribedToWeeklySummary
   ).orSome(true);
 
   const isTeacher = TEACHING_ROLES.includes(ownRole);
+
+  const [twoFAEnabled, set2FAEnabled] = useBoolean(false);
+  const [twoFAOTPUrl, set2FAOTPUrl] = useState<string>();
+
+  useEffectOnce(() => {
+    get2FAState(token).then(set2FAEnabled);
+  });
+
+  const handleTwoFAEnabling = useCallback(async () => {
+    const url = await enable2FA(token);
+    set2FAOTPUrl(url);
+    set2FAEnabled(true);
+  }, [token, set2FAEnabled, set2FAOTPUrl]);
+
+  const handleTwoFADisabling = useCallback(async () => {
+    await disable2FA(token);
+    set2FAEnabled(false);
+  }, [token, set2FAEnabled]);
 
   return (
     <Grid
@@ -170,6 +219,24 @@ export function Preferences() {
         </TextField>
       </PreferenceItem>
 
+      <PreferenceItem title={lang.twoFa} description={lang.twoFaDescription}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={twoFAEnabled}
+              onChange={(_, newValue) => {
+                if (newValue) {
+                  handleTwoFAEnabling();
+                } else {
+                  handleTwoFADisabling();
+                }
+              }}
+            />
+          }
+          label={twoFAEnabled ? lang.on : lang.off}
+        />
+      </PreferenceItem>
+
       {isTeacher && (
         <PreferenceItem
           title={lang.weeklySummarySubscription}
@@ -178,7 +245,7 @@ export function Preferences() {
           <FormControlLabel
             control={
               <Switch
-                value={weeklySummarySubscribed}
+                checked={weeklySummarySubscribed}
                 onChange={(_, newValue) => {
                   dispatch(
                     updateUserRequest([

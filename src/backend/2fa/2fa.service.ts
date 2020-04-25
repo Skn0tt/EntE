@@ -7,7 +7,6 @@ import { EmailService } from "../email/email.service";
 import { UserDto } from "@@types";
 
 export enum TwoFAEnableFail {
-  NotFound,
   AlreadyEnabled,
 }
 
@@ -23,12 +22,11 @@ export class TwoFAService {
   async enable(
     rcUser: RequestContextUser
   ): Promise<Validation<TwoFAEnableFail, string>> {
-    const itsAlreadyEnabled = await this.userRepo.hasTOTPSecret(rcUser.id);
-    if (itsAlreadyEnabled.isNone()) {
-      return Fail(TwoFAEnableFail.NotFound);
-    }
+    const itsAlreadyEnabled = (
+      await this.userRepo.hasTOTPSecret(rcUser.id)
+    ).some();
 
-    if (itsAlreadyEnabled.contains(true)) {
+    if (itsAlreadyEnabled === true) {
       return Fail(TwoFAEnableFail.AlreadyEnabled);
     }
 
@@ -42,10 +40,13 @@ export class TwoFAService {
     return Success(qrcode_url);
   }
 
-  async disable(user: RequestContextUser) {
+  async disable(rcUser: RequestContextUser) {
+    const user = (await rcUser.getDto()).some();
     await this.userRepo.removeTOTPSecret(user.id);
-    await this.emailService.dispatch2FADisabledNotification(
-      (user as unknown) as UserDto
-    );
+    await this.emailService.dispatch2FADisabledNotification(user);
+  }
+
+  async isEnabled(user: RequestContextUser) {
+    return (await this.userRepo.hasTOTPSecret(user.id)).some();
   }
 }
