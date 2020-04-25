@@ -15,6 +15,7 @@ import Settings from "@material-ui/icons/Settings";
 import School from "@material-ui/icons/School";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import Link from "next/link";
+import { makeStyles } from "@material-ui/styles";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -41,12 +42,21 @@ interface ListItemLinkProps {
   text: string;
 }
 
+const useStyles = makeStyles({
+  icon: {
+    margin: "0px 12px",
+  },
+});
+
 function ListItemLink(props: ListItemLinkProps) {
   const { href, icon, text } = props;
+
+  const classes = useStyles();
+
   return (
     <Link href={href}>
       <ListItem button>
-        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>
         <ListItemText primary={text} />
       </ListItem>
     </Link>
