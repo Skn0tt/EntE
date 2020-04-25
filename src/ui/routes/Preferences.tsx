@@ -7,6 +7,10 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
 } from "@material-ui/core";
 import { Description } from "ui/components/Description";
 import { makeStyles } from "@material-ui/styles";
@@ -32,6 +36,8 @@ import { invokeReset } from "ui/passwordReset";
 import { useCallback, useState } from "react";
 import Axios from "axios";
 import { useBoolean, useEffectOnce } from "react-use";
+import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
+import { QRCode } from "ui/components/QRCode";
 
 const useLang = makeTranslationHook({
   de: {
@@ -51,6 +57,13 @@ const useLang = makeTranslationHook({
       "Einmal in der Woche sendet EntE ihnen eine Zusammenfassung der Fehlstunden per E-Mail. Möchten Sie diese erhalten?",
     on: "An",
     off: "Aus",
+    authenticator: {
+      title: "Authenticator einrichten",
+      description:
+        "Um ihren Authenticator einzurichten, scannen Sie diesen QR-Code.",
+      manual: (key: string) => `Für manuelle Eingabe: ${key}; Zeitbasiert.`,
+      done: "OK",
+    },
   },
   en: {
     language: "Language",
@@ -69,6 +82,12 @@ const useLang = makeTranslationHook({
       "Once a week, EntE sends a summary of missed classes via email. Do you want to receive them?",
     on: "On",
     off: "Off",
+    authenticator: {
+      title: "Setup Authenticator",
+      description: "To setup your Authenticator, scan this QR code.",
+      manual: (key: string) => `For manual setup, use: ${key}; Time-based.`,
+      done: "OK",
+    },
   },
 });
 
@@ -218,6 +237,27 @@ export function Preferences() {
           <MenuItem value="dark">{lang.dark}</MenuItem>
         </TextField>
       </PreferenceItem>
+
+      <ResponsiveFullscreenDialog
+        open={!!twoFAOTPUrl}
+        onClose={() => set2FAOTPUrl(undefined)}
+      >
+        <DialogTitle>{lang.authenticator.title}</DialogTitle>
+        <DialogContent>
+          <Typography>{lang.authenticator.description}</Typography>
+
+          <QRCode url={twoFAOTPUrl ?? "my_random_text"} />
+
+          <Typography>
+            {lang.authenticator.manual(twoFAOTPUrl?.split("=")[1] ?? "")}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={() => set2FAOTPUrl(undefined)}>
+            {lang.authenticator.done}
+          </Button>
+        </DialogActions>
+      </ResponsiveFullscreenDialog>
 
       <PreferenceItem title={lang.twoFa} description={lang.twoFaDescription}>
         <FormControlLabel
