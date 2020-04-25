@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Rearranged Preferences Pane
 - Added "System" option to Dark mode
+- Feature: Two-Factor-Authentication ([#351](https://gitlab.com/Skn0tt/EntE/-/issues/351))
 
 ## [v0.37.6] - 2020-04-22
 
