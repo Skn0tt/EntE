@@ -35,6 +35,7 @@ import SettingsMenu from "./SettingsMenu";
 import { useToggle } from "../helpers/useToggle";
 import { makeStyles } from "@material-ui/styles";
 import Logo from "../assets/Logo.svg";
+import { LogoutButton } from "./LogoutButton";
 
 interface DrawerStateContextType {
   open: boolean;
@@ -95,6 +96,7 @@ const useStyles = makeStyles(
     },
     toolBar: {
       paddingRight: 0,
+      height: "64px",
     },
     grow: {
       flex: "1 1 auto",
@@ -123,12 +125,10 @@ const useStyles = makeStyles(
     },
     content: {
       width: "100%",
-      minHeight: "calc(100vh - 56px)",
-      marginTop: 56,
+      minHeight: "calc(100vh - 64px)",
+      marginTop: "64px",
       backgroundColor: theme.palette.background.default,
       [theme.breakpoints.up("md")]: {
-        height: "calc(100vh - 64px)",
-        marginTop: 64,
         marginLeft: drawerWidth,
       },
     },
@@ -191,7 +191,7 @@ const Drawer: React.FunctionComponent<DrawerProps> = (props) => {
             <div className={classes.grow} />
 
             <RefreshButton />
-            <SettingsMenu />
+            <LogoutButton />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>

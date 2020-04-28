@@ -21,7 +21,6 @@ export async function bootstrap() {
   app.useGlobalInterceptors(new DontSendUndefinedInterceptor());
 
   sentryDsn.forEach((dsn) => {
-    console.log(dsn);
     Sentry.init({
       dsn,
       release: Config.getVersion(),

@@ -78,7 +78,7 @@ if (!!SENTRY_DSN) {
 
 const setupSagaListeners = (store: Store<AppState>) => {
   const getLanguageOfStore = () => {
-    return getLanguage(store.getState()).orSome(DEFAULT_DEFAULT_LANGUAGE);
+    return getLanguage(store.getState());
   };
   const sagaListeners = getSagaListeners(getLanguageOfStore);
   updateConfig(sagaListeners);

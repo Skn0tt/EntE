@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.37.7] - 2020-04-25
 
 - Fixed flawed JWT expiry dates ([!383](https://gitlab.com/Skn0tt/EntE/-/merge_requests/383))
+- Rearranged Preferences Pane
+- Added "System" option to Dark mode
+- Feature: Two-Factor-Authentication ([#351](https://gitlab.com/Skn0tt/EntE/-/issues/351))
 
 ## [v0.37.6] - 2020-04-22
 

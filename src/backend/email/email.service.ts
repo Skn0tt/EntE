@@ -1,10 +1,9 @@
-import { Injectable, Inject, LoggerService } from "@nestjs/common";
+import { Injectable, Inject } from "@nestjs/common";
 import {
   WeeklySummaryRowData,
   WeeklySummary,
 } from "../templates/WeeklySummary";
 import { UserDto, SlotDto, EntryDto, CreatePrefiledSlotsDto } from "@@types";
-import { WinstonLoggerService } from "../winston-logger.service";
 import { SignedInformation } from "../templates/SignedInformation";
 import { PasswordResetLink } from "../templates/PasswordResetLink";
 import { PasswordResetSuccess } from "../templates/PasswordResetSuccess";
@@ -16,78 +15,77 @@ import { ManagerUnsignedInformation } from "../templates/ManagerUnsignedInformat
 import { EntryStillUnsignedNotification } from "../templates/EntryStillUnsignedNotification";
 import { EmailQueue } from "./email.queue";
 import { SlotPrefiledNotification } from "../templates/SlotPrefiledNotification";
+import { EmailTransportService } from "../infrastructure/email-transport.service";
+import { TwoFAEnabledNotification } from "../templates/2FAEnabledNotification";
+import { TwoFADisabledNotification } from "../templates/2FADisabledNotification";
 
 @Injectable()
 export class EmailService {
   constructor(
     @Inject(EmailQueue)
-    private readonly emailQueue: EmailQueue,
-    @Inject(WinstonLoggerService) private readonly logger: LoggerService
+    private readonly emailTransport: EmailTransportService
   ) {}
 
-  async dispatchSignRequest(link: string, recipients: UserDto[]) {
+  private async dispatch(
+    mail: { html: string; subject: string },
+    recipients: UserDto[]
+  ) {
     await Promise.all(
       recipients.map(async (recipient) => {
-        const { html, subject } = SignRequest(link, recipient.language);
-        await this.emailQueue.sendMail({
+        await this.emailTransport.sendMail({
           recipients: [recipient.email],
+          subject: mail.subject,
           body: {
-            html,
+            html: mail.html,
           },
-          subject,
         });
-        this.logger.log(
-          `Successfully enqueued SignRequest to ${JSON.stringify([
-            recipient.username,
-            recipient.email,
-          ])}`
-        );
       })
+    );
+  }
+
+  private async dispatchTemplate(
+    getMail: (recipient: UserDto) => { html: string; subject: string },
+    recipient: UserDto[]
+  ) {
+    await Promise.all(
+      recipient.map((recipient) =>
+        this.dispatch(getMail(recipient), [recipient])
+      )
+    );
+  }
+
+  async dispatch2FAEnabledNotification(user: UserDto) {
+    await this.dispatchTemplate(
+      (r) => TwoFAEnabledNotification(r.language, {}),
+      [user]
+    );
+  }
+
+  async dispatch2FADisabledNotification(user: UserDto) {
+    await this.dispatchTemplate(
+      (r) => TwoFADisabledNotification(r.language, {}),
+      [user]
+    );
+  }
+
+  async dispatchSignRequest(link: string, recipients: UserDto[]) {
+    await this.dispatchTemplate(
+      (r) => SignRequest(link, r.language),
+      recipients
     );
   }
 
   async dispatchSignedInformation(link: string, recipients: UserDto[]) {
-    await Promise.all(
-      recipients.map(async (recipient) => {
-        const { html, subject } = SignedInformation(link, recipient.language);
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued SignedInformation to ${JSON.stringify([
-            recipient.username,
-            recipient.email,
-          ])}`
-        );
-      })
+    await this.dispatchTemplate(
+      (r) => SignedInformation(link, r.language),
+      recipients
     );
   }
 
   async dispatchManagerSignedInformation(link: string, recipients: UserDto[]) {
-    await Promise.all(
-      recipients.map(async (recipient) => {
-        const { html, subject } = ManagerSignedInformation(
-          link,
-          recipient.language
-        );
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued ManagerSignedInformation to ${JSON.stringify([
-            recipient.username,
-            recipient.email,
-          ])}`
-        );
-      })
+    await this.dispatchTemplate(
+      (r) => ManagerSignedInformation(link, r.language),
+      recipients
     );
   }
 
@@ -95,25 +93,9 @@ export class EmailService {
     link: string,
     recipients: UserDto[]
   ) {
-    await Promise.all(
-      recipients.map(async (recipient) => {
-        const { html, subject } = ManagerUnsignedInformation(
-          link,
-          recipient.language
-        );
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued ManagerUnsignedInformation to ${JSON.stringify(
-            [recipient.username, recipient.email]
-          )}`
-        );
-      })
+    await this.dispatchTemplate(
+      (r) => ManagerUnsignedInformation(link, r.language),
+      recipients
     );
   }
 
@@ -121,27 +103,9 @@ export class EmailService {
     entry: EntryDto,
     recipients: UserDto[]
   ) {
-    await Promise.all(
-      recipients.map(async (recipient) => {
-        const { html, subject } = EntryDeletedNotification(
-          entry,
-          recipient,
-          recipient.language
-        );
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued EntryDeletedInformation to ${JSON.stringify([
-            recipient.username,
-            recipient.email,
-          ])}`
-        );
-      })
+    await this.dispatchTemplate(
+      (r) => EntryDeletedNotification(entry, r, r.language),
+      recipients
     );
   }
 
@@ -150,29 +114,16 @@ export class EmailService {
     students: UserDto[],
     teacher: UserDto
   ) {
-    await Promise.all(
-      students.map(async (recipient) => {
-        const { html, subject } = SlotPrefiledNotification(
+    await this.dispatchTemplate(
+      (r) =>
+        SlotPrefiledNotification(
           teacher.displayname,
           data.date,
           data.hour_from,
           data.hour_to,
-          recipient.language
-        );
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued SlotPrefiledNotification to ${JSON.stringify([
-            recipient.username,
-            recipient.email,
-          ])}`
-        );
-      })
+          r.language
+        ),
+      students
     );
   }
 
@@ -180,74 +131,30 @@ export class EmailService {
     link: string,
     recipients: UserDto[]
   ) {
-    await Promise.all(
-      recipients.map(async (recipient) => {
-        const { html, subject } = EntryStillUnsignedNotification(
-          link,
-          recipient.language
-        );
-        await this.emailQueue.sendMail({
-          recipients: [recipient.email],
-          body: {
-            html,
-          },
-          subject,
-        });
-        this.logger.log(
-          `Successfully enqueued EntryStillUnsignedNotification to ${JSON.stringify(
-            [recipient.username, recipient.email]
-          )}`
-        );
-      })
+    await this.dispatchTemplate(
+      (r) => EntryStillUnsignedNotification(link, r.language),
+      recipients
     );
   }
 
   async dispatchPasswordResetLink(link: string, user: UserDto) {
-    const { subject, html } = PasswordResetLink(
-      link,
-      user.username,
-      user.language
-    );
-    await this.emailQueue.sendMail({
-      recipients: [user.email],
-      body: {
-        html,
-      },
-      subject,
-    });
-    this.logger.log(
-      `Successfully enqueued PasswordResetLink to ${user.username}, ${user.email}`
+    await this.dispatchTemplate(
+      (r) => PasswordResetLink(link, r.username, r.language),
+      [user]
     );
   }
 
   async dispatchInvitationLink(link: string, user: UserDto) {
-    const { subject, html } = InvitationLink(link, user.role, user.language);
-    await this.emailQueue.sendMail({
-      recipients: [user.email],
-      body: {
-        html,
-      },
-      subject,
-    });
-    this.logger.log(
-      `Successfully enqueued InvitationLink to ${user.username}, ${user.email}`
+    await this.dispatchTemplate(
+      (r) => InvitationLink(link, user.role, r.language),
+      [user]
     );
   }
 
   async dispatchPasswordResetSuccess(user: UserDto) {
-    const { subject, html } = PasswordResetSuccess(
-      user.username,
-      user.language
-    );
-    await this.emailQueue.sendMail({
-      recipients: [user.email],
-      body: {
-        html,
-      },
-      subject,
-    });
-    this.logger.log(
-      `Successfully enqueued PasswordResetSuccess to ${user.username}, ${user.email}`
+    await this.dispatchTemplate(
+      (r) => PasswordResetSuccess(r.username, r.language),
+      [user]
     );
   }
 
@@ -260,16 +167,9 @@ export class EmailService {
       signed: s.signed,
       educational: s.forSchool,
     }));
-    const { html, subject } = WeeklySummary(data, teacher.language);
-    await this.emailQueue.sendMail({
-      recipients: [teacher.email],
-      body: {
-        html,
-      },
-      subject,
-    });
-    this.logger.log(
-      `Successfully enqueued WeeklySummary to ${teacher.username}, ${teacher.email}`
-    );
+
+    await this.dispatchTemplate((r) => WeeklySummary(data, teacher.language), [
+      teacher,
+    ]);
   }
 }

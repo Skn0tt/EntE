@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, LoggerService } from "@nestjs/common";
 import {
   EmailTransportService,
   Envelope,
@@ -6,16 +6,19 @@ import {
 import { NodemailerService } from "../infrastructure/nodemailer.service";
 import { Processor, Process, InjectQueue } from "@nestjs/bull";
 import { Job, Queue } from "bull";
+import { Validation, Success } from "monet";
+import { WinstonLoggerService } from "../winston-logger.service";
 
 export const EMAIL_QUEUE_KEY = "email";
 
 @Injectable()
-export class EmailQueue {
+export class EmailQueue implements EmailTransportService {
   constructor(
-    @InjectQueue(EMAIL_QUEUE_KEY) private readonly queue: Queue<Envelope>
+    @InjectQueue(EMAIL_QUEUE_KEY) private readonly queue: Queue<Envelope>,
+    @Inject(WinstonLoggerService) private readonly logger: LoggerService
   ) {}
 
-  async sendMail(envelope: Envelope): Promise<void> {
+  async sendMail(envelope: Envelope): Promise<Validation<string, void>> {
     await this.queue.add(envelope, {
       attempts: 10,
       backoff: {
@@ -23,6 +26,14 @@ export class EmailQueue {
         delay: 500,
       },
     });
+
+    this.logger.log(
+      `Successfully enqueued '${
+        envelope.subject
+      }' to ${envelope.recipients.join(", ")}`
+    );
+
+    return Success(undefined);
   }
 }
 

@@ -224,8 +224,10 @@ export const getDefaultLanguage: Selector<Maybe<Languages>> = (state) => {
   return instanceConfig.map((i) => i.get("defaultLanguage"));
 };
 
-export const getLanguage: Selector<Maybe<Languages>> = (state) =>
-  getOneSelvesLanguage(state).orElse(getDefaultLanguage(state));
+export const getLanguage: Selector<Languages> = (state) =>
+  getOneSelvesLanguage(state)
+    .orElse(getDefaultLanguage(state))
+    .orSome(DEFAULT_DEFAULT_LANGUAGE);
 
 export const getParentSignatureTimes: Selector<Maybe<ParentSignatureTimesN>> = (
   state
@@ -270,7 +272,7 @@ export const getLoginBannerForLanguage = (
 
 export const getCurrentLoginBanner: Selector<Maybe<string>> = (state) => {
   const currentLanguage = getLanguage(state);
-  const lang = currentLanguage.orSome(DEFAULT_DEFAULT_LANGUAGE);
+  const lang = currentLanguage;
   const result = getLoginBannerForLanguage(lang)(state);
   return result;
 };

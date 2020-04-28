@@ -1,17 +1,13 @@
 import { Middleware } from "redux";
 import * as Sentry from "@sentry/browser";
 import * as selectors from "./redux/selectors";
-import { LOGIN_REQUEST, LOGIN_SUCCESS, REFRESH_TOKEN_SUCCESS } from "./redux";
+import { LOGIN_SUCCESS, REFRESH_TOKEN_SUCCESS } from "./redux";
 
 enum SentryBreadcrumbCategories {
   REDUX_ACTION = "redux-action",
 }
 
-const IGNORED_ACTION_TYPES = [
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  REFRESH_TOKEN_SUCCESS,
-];
+const IGNORED_ACTION_TYPES = [LOGIN_SUCCESS, REFRESH_TOKEN_SUCCESS];
 
 export const createSentryMiddleware = (
   sentryClient: Sentry.BrowserClient

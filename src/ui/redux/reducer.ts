@@ -24,9 +24,6 @@ import {
   GET_SLOTS_REQUEST,
   GET_SLOTS_ERROR,
   GET_SLOTS_SUCCESS,
-  LOGIN_REQUEST,
-  LOGIN_ERROR,
-  LOGIN_SUCCESS,
   REFRESH_TOKEN_ERROR,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_REQUEST,
@@ -211,35 +208,29 @@ const asyncReducersFull = (
   },
 });
 
-// console.log(AppState)
 export const initialState = new AppState({});
 
-const reducer = handleActions<AppState | undefined, any>(
+const reducer = handleActions<AppState, any>(
   {
     /**
      * # Auth
      */
     // ## LOGIN
-    ...asyncReducersFullWithoutMetaPayload(
-      LOGIN_REQUEST,
-      LOGIN_ERROR,
-      LOGIN_SUCCESS,
-      (state, action: Action<LoginSuccessPayload>) => {
-        const {
-          apiResponse,
-          authState,
-          oneSelf,
-          reviewedRecords,
-        } = action.payload!;
+    LOGIN_SUCCESS: (state, action: Action<LoginSuccessPayload>) => {
+      const {
+        apiResponse,
+        authState,
+        oneSelf,
+        reviewedRecords,
+      } = action.payload!;
 
-        const newState = state
-          .set("auth", authState)
-          .set("oneSelf", oneSelf)
-          .set("reviewedRecords", reviewedRecords);
+      const newState = state
+        .set("auth", authState)
+        .set("oneSelf", oneSelf)
+        .set("reviewedRecords", reviewedRecords);
 
-        return addResponse(newState, apiResponse);
-      }
-    ),
+      return addResponse(newState, apiResponse);
+    },
 
     // ## REFRESH_TOKEN
     ...asyncReducersFull(
@@ -605,11 +596,8 @@ const reducer = handleActions<AppState | undefined, any>(
       }
     ),
 
-    [SET_LANGUAGE]: (
-      state: AppState | undefined,
-      action: Action<Languages>
-    ) => {
-      const oneSelvesId = state!.getIn(["oneSelf", "id"]);
+    [SET_LANGUAGE]: (state: AppState, action: Action<Languages>) => {
+      const oneSelvesId = state.getIn(["oneSelf", "id"]);
       if (!oneSelvesId) {
         return state;
       }

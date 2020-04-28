@@ -11,7 +11,6 @@ export type SagaListeners = {
   onUnsignedEntry: (entryId: string) => void;
   onEntryCreated: (entry: CreateEntryDto) => void;
   onEntryDeleted: (entryId: string) => void;
-  onLoginFailedInvalidCredentials: () => void;
   onUserDeleted: (userId: string) => void;
   onRequestError: (error: Error) => void;
   onSigningError: (error: Error) => void;
@@ -45,7 +44,6 @@ const defaultConfig: ReduxConfig = {
   onUnsignedEntry: ignore,
   onUnsigningError: ignore,
   onUserUpdated: ignore,
-  onLoginFailedInvalidCredentials: ignore,
 };
 
 let config: ReduxConfig = defaultConfig;

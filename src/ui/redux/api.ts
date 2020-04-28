@@ -148,52 +148,12 @@ export const getTokenPayload = (token: string): JwtTokenPayload => {
   return decodedPayload;
 };
 
-const getAuthState = (token: string): AuthState => {
+export const getAuthState = (token: string): AuthState => {
   const payload = getTokenPayload(token);
   return new AuthState({
     token,
     exp: new Date((payload as any).exp * 1000),
   });
-};
-
-export interface LoginInfo {
-  authState: AuthState;
-  apiResponse: APIResponse;
-  oneSelf: UserN;
-  reviewedRecords: Set<string>;
-}
-
-export const login = async (auth: BasicCredentials): Promise<LoginInfo> => {
-  const response = await axios.get<LoginDto>("/api/login", {
-    auth,
-  });
-
-  const {
-    token,
-    oneSelf,
-    neededUsers,
-    onesEntries,
-    reviewedRecords = [],
-    prefiledSlots,
-  } = response.data;
-  const authState = getAuthState(token);
-
-  const apiResponse = mergeAPIResponses(
-    normalizeUsers(...neededUsers, oneSelf),
-    normalizeEntries(...onesEntries),
-    normalizeSlots(...prefiledSlots)
-  );
-
-  return {
-    authState,
-    apiResponse,
-    oneSelf: UserN({
-      ...oneSelf,
-      children: [],
-      childrenIds: oneSelf.children.map((c) => c.id),
-    }),
-    reviewedRecords: Set(reviewedRecords),
-  };
 };
 
 export const refreshToken = async (token: string): Promise<AuthState> => {
