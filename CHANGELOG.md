@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Relicensed EntE to Business Source License. This likely does not have any impact on you.([#372](https://gitlab.com/Skn0tt/EntE/-/issues/372))
 - Rearranged Preferences Pane
 - Added "System" option to Dark mode
 - Feature: Two-Factor-Authentication ([#351](https://gitlab.com/Skn0tt/EntE/-/issues/351))
