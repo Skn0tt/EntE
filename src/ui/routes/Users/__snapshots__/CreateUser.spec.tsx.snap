@@ -126,6 +126,7 @@ exports[`CreateUser doesn't render when show=false 1`] = `
             <WithStyles(WithFormControlContext(FormControlLabel))
               control={
                 <WithStyles(Checkbox)
+                  checked={false}
                   color="primary"
                   name="isAdmin"
                   onChange={[Function]}
@@ -307,6 +308,7 @@ exports[`CreateUser renders correctly 1`] = `
             <WithStyles(WithFormControlContext(FormControlLabel))
               control={
                 <WithStyles(Checkbox)
+                  checked={false}
                   color="primary"
                   name="isAdmin"
                   onChange={[Function]}
