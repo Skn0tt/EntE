@@ -104,7 +104,12 @@ export class EmailService {
     recipients: UserDto[]
   ) {
     await this.dispatchTemplate(
-      (r) => EntryDeletedNotification(entry, r, r.language),
+      (r) =>
+        EntryDeletedNotification(r.language, {
+          entryId: entry.id,
+          entryDate: entry.date,
+          entryStudentDisplayname: entry.student.displayname,
+        }),
       recipients
     );
   }
