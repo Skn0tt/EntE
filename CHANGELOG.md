@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed a loophole where students could remove preregistered slots by deleting them after creating an entry ([#375](https://gitlab.com/Skn0tt/EntE/-/issues/375))
+
 ## [v0.38.0] - 2020-04-28
 
 - Relicensed EntE to Business Source License. This likely does not have any impact on you.([#372](https://gitlab.com/Skn0tt/EntE/-/issues/372))
