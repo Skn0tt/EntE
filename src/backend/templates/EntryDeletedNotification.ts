@@ -3,7 +3,7 @@ import { makeMultiLangTemplate } from "./makeMultiLangTemplate";
 import * as Handlebars from "handlebars";
 
 const DE = {
-  title: "Ihr Stufenleiter hat einen Eintrag gelöscht.",
+  title: "Ein Eintrag wurde gelöscht.",
   template: Handlebars.compile(`
   <mjml>
     <mj-body>
@@ -13,7 +13,7 @@ const DE = {
           <mj-divider border-color="black" />
 
           <mj-text font-size="20px" font-family="helvetica">
-            Ihr Stufenleiter hat einen Eintrag gelöscht.
+            Ein Eintrag wurde gelöscht.
           </mj-text>
 
           <mj-text>
@@ -29,7 +29,7 @@ const DE = {
 };
 
 const EN = {
-  title: "Your manager deleted an entry.",
+  title: "An entry was deleted.",
   template: Handlebars.compile(`
   <mjml>
     <mj-body>
@@ -39,7 +39,7 @@ const EN = {
           <mj-divider border-color="black" />
   
           <mj-text font-size="20px" font-family="helvetica">
-            Your manager deleted an entry.
+            An entry was deleted.
           </mj-text>
   
           <mj-text>
