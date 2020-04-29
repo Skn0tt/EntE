@@ -29,6 +29,7 @@ export class EntryRepo {
       .leftJoinAndSelect("entry.slots", "slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
       .leftJoinAndSelect("slot.entry", "slotEntry")
+      .leftJoinAndSelect("slot.prefiledFor", "slotPrefiledFor")
       .leftJoinAndSelect("slotEntry.student", "slotEntryStudent");
 
   async findAll(paginationInfo: PaginationInformation): Promise<EntryDto[]> {
@@ -163,7 +164,20 @@ export class EntryRepo {
   }
 
   async delete(id: string) {
-    await this.repo.delete({ _id: id });
+    const entry = await this.findById(id);
+    await entry
+      .map(async (entry) => {
+        const unprefiledSlots = entry.slots
+          .filter((s) => !s.hasBeenPrefiled)
+          .map((s) => s.id);
+
+        if (unprefiledSlots.length > 0) {
+          await this.repo.manager.delete(Slot, unprefiledSlots);
+        }
+
+        await this.repo.delete(id);
+      })
+      .orUndefined();
   }
 
   async deleteAll() {
