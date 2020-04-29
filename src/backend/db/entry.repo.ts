@@ -81,7 +81,7 @@ export class EntryRepo {
 
         const isMultiDayEntry = !!dto.dateEnd;
 
-        const newEntry = await manager.create(Entry, {
+        const newEntry = manager.create(Entry, {
           student,
           reason: !!dto.reason
             ? EntryReasonRepo.fromCreationDto(dto.reason)
@@ -96,7 +96,7 @@ export class EntryRepo {
               const [teacher] = await manager.findByIds(User, [s.teacherId], {
                 relations: ["children"],
               });
-              return await manager.create(Slot, {
+              return manager.create(Slot, {
                 date: isMultiDayEntry
                   ? dateToIsoString(parseISO(s.date!))
                   : null,
@@ -118,7 +118,6 @@ export class EntryRepo {
         if (dto.prefiledSlots.length > 0) {
           await manager.update(Slot, dto.prefiledSlots, {
             entry: newEntry,
-            prefiledFor: null,
           });
         }
 
