@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed bug where admin checkbox needed to be checked and unchecked before creating a user works ([#376](https://gitlab.com/Skn0tt/EntE/-/issues/376))
+
 ## [v0.38.0] - 2020-04-28
 
-- Relicensed EntE to Business Source License. This likely does not have any impact on you.([#372](https://gitlab.com/Skn0tt/EntE/-/issues/372))
+- Relicensed EntE to Business Source License. This likely does not have any impact on you. ([#372](https://gitlab.com/Skn0tt/EntE/-/issues/372))
 - Rearranged Preferences Pane
 - Added "System" option to Dark mode
 - Feature: Two-Factor-Authentication ([#351](https://gitlab.com/Skn0tt/EntE/-/issues/351))
