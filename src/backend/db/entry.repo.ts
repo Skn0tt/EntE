@@ -29,6 +29,7 @@ export class EntryRepo {
       .leftJoinAndSelect("entry.slots", "slot")
       .leftJoinAndSelect("slot.teacher", "teacher")
       .leftJoinAndSelect("slot.entry", "slotEntry")
+      .leftJoinAndSelect("slot.prefiledFor", "slotPrefiledFor")
       .leftJoinAndSelect("slotEntry.student", "slotEntryStudent");
 
   async findAll(paginationInfo: PaginationInformation): Promise<EntryDto[]> {
@@ -81,7 +82,7 @@ export class EntryRepo {
 
         const isMultiDayEntry = !!dto.dateEnd;
 
-        const newEntry = await manager.create(Entry, {
+        const newEntry = manager.create(Entry, {
           student,
           reason: !!dto.reason
             ? EntryReasonRepo.fromCreationDto(dto.reason)
@@ -96,7 +97,7 @@ export class EntryRepo {
               const [teacher] = await manager.findByIds(User, [s.teacherId], {
                 relations: ["children"],
               });
-              return await manager.create(Slot, {
+              return manager.create(Slot, {
                 date: isMultiDayEntry
                   ? dateToIsoString(parseISO(s.date!))
                   : null,
@@ -118,7 +119,6 @@ export class EntryRepo {
         if (dto.prefiledSlots.length > 0) {
           await manager.update(Slot, dto.prefiledSlots, {
             entry: newEntry,
-            prefiledFor: null,
           });
         }
 
@@ -164,7 +164,20 @@ export class EntryRepo {
   }
 
   async delete(id: string) {
-    await this.repo.delete({ _id: id });
+    const entry = await this.findById(id);
+    await entry
+      .map(async (entry) => {
+        const unprefiledSlots = entry.slots
+          .filter((s) => !s.hasBeenPrefiled)
+          .map((s) => s.id);
+
+        if (unprefiledSlots.length > 0) {
+          await this.repo.manager.delete(Slot, unprefiledSlots);
+        }
+
+        await this.repo.delete(id);
+      })
+      .orUndefined();
   }
 
   async deleteAll() {

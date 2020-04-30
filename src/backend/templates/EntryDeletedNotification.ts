@@ -1,32 +1,64 @@
-import { getByLanguage, Languages, UserDto, EntryDto } from "@@types";
-import { mjml2html } from "../helpers/mjml";
-import { EntryDeletedNotificationDE } from "./EntryDeletedNotification.de";
-import { EntryDeletedNotificationEN } from "./EntryDeletedNotification.en";
+import { Languages } from "@@types";
+import { makeMultiLangTemplate } from "./makeMultiLangTemplate";
+import * as Handlebars from "handlebars";
 
-/**
- * EntE
- * (c) 2017-present, Simon Knott <info@simonknott.de>
- *
- * This source code is licensed under the GNU Affero General Public License
- * found in the LICENSE file in the root directory of this source tree.
- */
-const getTemplate = getByLanguage({
-  [Languages.GERMAN]: EntryDeletedNotificationDE,
-  [Languages.ENGLISH]: EntryDeletedNotificationEN,
-});
+const DE = {
+  title: "Ein Eintrag wurde gelöscht.",
+  template: Handlebars.compile(`
+  <mjml>
+    <mj-body>
+      <mj-section>
+        <mj-column>
 
-export const EntryDeletedNotification = (
-  entry: EntryDto,
-  recipient: UserDto,
-  lang: Languages
-) => {
-  const { template, title } = getTemplate(lang);
-  const mjml = template({
-    entryId: entry.id,
-    entryDate: entry.date,
-    entryStudentDisplayname: entry.student.displayname,
-  });
-  const { errors, html } = mjml2html(mjml);
-  if (errors.length > 0) throw new Error("MJML Error");
-  return { html, subject: title };
+          <mj-divider border-color="black" />
+
+          <mj-text font-size="20px" font-family="helvetica">
+            Ein Eintrag wurde gelöscht.
+          </mj-text>
+
+          <mj-text>
+            ID: '{{entryId}}'
+            Datum: '{{entryDate}}'
+            Schüler: '{{entryStudentDisplayname}}'
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-body>
+  </mjml>
+  `),
 };
+
+const EN = {
+  title: "An entry was deleted.",
+  template: Handlebars.compile(`
+  <mjml>
+    <mj-body>
+      <mj-section>
+        <mj-column>
+  
+          <mj-divider border-color="black" />
+  
+          <mj-text font-size="20px" font-family="helvetica">
+            An entry was deleted.
+          </mj-text>
+  
+          <mj-text>
+            ID: '{{entryId}}'
+            Date: '{{entryDate}}'
+            Student: '{{entryStudentDisplayname}}'
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-body>
+  </mjml>
+  `),
+};
+
+export const EntryDeletedNotification = makeMultiLangTemplate<{
+  entryId: string;
+  entryDate: string;
+  entryStudentDisplayname: string;
+}>({
+  [Languages.GERMAN]: DE,
+  [Languages.ENGLISH]: EN,
+});

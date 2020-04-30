@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed bug where admin checkbox needed to be checked and unchecked before creating a user works ([#376](https://gitlab.com/Skn0tt/EntE/-/issues/376))
+- Fixed a loophole where students could remove preregistered slots by deleting them after creating an entry ([#375](https://gitlab.com/Skn0tt/EntE/-/issues/375))
 
 ## [v0.38.0] - 2020-04-28
 

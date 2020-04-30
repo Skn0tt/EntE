@@ -444,7 +444,7 @@ export class EntriesService {
 
       if (!userIsAdult(entry.student)) {
         const parents = await this.userRepo.getParentsOfUser(entry.student.id);
-        parents.forEach((parents) => recipients.push(...parents));
+        recipients.push(...parents.orSome([]));
       }
 
       await this.emailService.dispatchEntryDeletedNotification(

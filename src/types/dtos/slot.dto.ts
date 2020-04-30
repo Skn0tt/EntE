@@ -29,6 +29,9 @@ export class SlotDto implements BlackedSlotDto {
   @IsBoolean()
   isPrefiled: boolean = false;
 
+  @IsBoolean()
+  hasBeenPrefiled: boolean = false;
+
   @IsOptional()
   @Type(() => UserDto)
   @ValidateNested()
