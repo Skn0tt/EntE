@@ -56,16 +56,12 @@ export class CreateUserDto {
 }
 
 export const createDefaultCreateUserDto = (): CreateUserDto => {
-  const result = new CreateUserDto();
-
-  result.username = "";
-  result.password = undefined;
-  result.displayname = "";
-  result.email = "";
-  result.role = Roles.STUDENT;
-  result.children = [];
-  result.birthday = undefined;
-  result.class = undefined;
-
-  return result;
+  return {
+    username: "",
+    children: [],
+    displayname: "",
+    email: "",
+    isAdmin: false,
+    role: Roles.STUDENT,
+  };
 };
