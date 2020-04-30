@@ -178,8 +178,6 @@ export class SlotRepo {
 
     result.id = slot._id;
 
-    result.hasBeenPrefiled = !!slot.prefiledFor;
-
     if (!slot.entry) {
       result.isPrefiled = true;
       result.student = UserRepo.toDto(slot.prefiledFor!);

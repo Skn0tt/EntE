@@ -62,6 +62,7 @@ const slot: SlotDto = {
   from: 3,
   to: 4,
   isPrefiled: false,
+  hasBeenPrefiled: false,
   teacher: benBongo,
   signed: false,
   student: tomTallis,

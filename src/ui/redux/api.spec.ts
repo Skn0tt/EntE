@@ -49,6 +49,7 @@ const slot: SlotDto = {
   id: "jkdas",
   signed: false,
   isPrefiled: false,
+  hasBeenPrefiled: false,
   teacher: benni,
   student: simon,
   forSchool: true,

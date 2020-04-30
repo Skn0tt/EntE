@@ -7,7 +7,7 @@
     "dev:deps": "docker-compose -f docker-compose.dev.yml",
     "build": "next build",
     "start": "next start",
-    "test": "test:tsc && test:unit && test:e2e",
+    "test": "yarn test:tsc && yarn test:unit && yarn test:e2e",
     "test:unit": "jest",
     "test:tsc": "tsc",
     "test:e2e": "testcafe chrome",
