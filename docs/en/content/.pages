@@ -1,5 +1,6 @@
 arrange:
   - index.md
+  - faq.md
   - manual
   - administration
   - contributing.md
