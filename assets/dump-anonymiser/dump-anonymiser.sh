@@ -98,7 +98,7 @@ function construct_displayname () {
 function construct_email () {
   firstname=$1
   lastname=$2
-  echo "$firstname.$lastname@ente.de"
+  echo "$firstname.$lastname@ente.app"
 }
 
 function anonymise_user () {
@@ -112,14 +112,14 @@ function anonymise_user () {
   new_displayname=$(construct_displayname $new_firstname $new_lastname);
   new_email=$(construct_email $new_firstname $new_lastname);
 
-  echo $($mysql_bin -u $mysql_username -p$mysql_password $tmp_db_name -N -e "
+  printf "$($mysql_bin -u $mysql_username -p$mysql_password $tmp_db_name -N -e "
     UPDATE user
     SET username = '$new_username',
         displayname = '$new_displayname',
         email = '$new_email',
         password = NULL
     WHERE _id = '$user_id';
-  ");
+  ")";
 
   printf "Done\n"
 }
@@ -142,7 +142,6 @@ echo
 # for every user
 for uid in "${user_ids[@]}"
 do
-  
   anonymise_user $uid;
 done
 

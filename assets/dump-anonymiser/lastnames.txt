@@ -58,7 +58,7 @@ Agostinelli
 Agrawal
 Agren
 Agresti
-Agro'
+Agro
 Agterberg
 Aguilar
 Aguilera
@@ -1665,7 +1665,7 @@ Cesar
 Cesare
 Cespedes
 Cezeaux
-Ch'oe
+Choe
 Cha
 Chabris
 Chackel
@@ -2235,30 +2235,30 @@ Cybulski
 Cyders
 Cyert
 Cyr
-D'Agostino
-D'Alessio
-D'Alfonso
-D'Ambra
-D'Angelo
-D'Angiolini
-D'Arcangelo
-D'Elia
-D'Epifanio
-D'Esposito
-D'Ovidio
-D'albertis
-D'ambrosio
-D'amico
-D'andria
-D'angelo
-D'arcangelo
-D'arco
-D'aristotle
-D'escrivan
-D'ettore
-D'fini
-D'oyley
-D'souza
+DAgostino
+DAlessio
+DAlfonso
+DAmbra
+DAngelo
+DAngiolini
+DArcangelo
+DElia
+DEpifanio
+DEsposito
+DOvidio
+Dalbertis
+Dambrosio
+Damico
+Dandria
+Dangelo
+Darcangelo
+Darco
+Daristotle
+Descrivan
+Dettore
+Dfini
+Doyley
+Dsouza
 Da
 Da Costa
 Da Silva
@@ -2291,7 +2291,7 @@ Daldalian
 Dale
 Daley
 Dalgarno
-Dall'Aglio
+DallAglio
 Dalla
 Dalle Ore
 Dalrymple
@@ -2357,7 +2357,7 @@ Davies
 Davis
 Davison-Keis
 Davisson
-Davo'
+Davo
 Davol
 Davy
 Dawkins
@@ -2444,9 +2444,9 @@ Delaper
 Delattre
 Deleon-Rendon
 Delger
-Dell'Atti
-Dell'acqua
-Dell'antonio
+DellAtti
+Dellacqua
+Dellantonio
 Della Terza
 Dellal
 Delmerico
@@ -3099,7 +3099,7 @@ Farver
 Farwell
 Fasciano
 Fassnacht
-Fasso'
+Fasso
 Fata
 Fates
 Fath
@@ -3379,7 +3379,7 @@ Frayser
 Frazee
 Frazier
 Frazier-Davis
-Fre\'de\'ric
+Fre\de\ric
 Frech
 Frechette
 Fredberg
@@ -5705,7 +5705,7 @@ Lavoie
 Lavoie-Beebe
 Lavon
 Law
-Law''
+Law
 Lawler
 Lawless
 Lawley
@@ -7150,7 +7150,7 @@ Mulroy
 Mumford
 Mumm
 Mumme
-Munao'
+Munao
 Munchausen
 Mundt
 Muneio
@@ -7321,7 +7321,7 @@ Nguyen
 Ni
 Ni Chuiv
 Nibert
-Nichilo'
+Nichilo
 Nichipor
 Nicholas
 Nicholl
@@ -7425,41 +7425,41 @@ Nyhagen
 Nyhan
 Nykrog
 Nystrom
-O'Brien
-O'Casey
-O'Hara-Hines
-O'Malley
-O'Neill
-O'Rourke
-O'Shaughnessy
-O'brien
-O'connell
-O'connor
-O'day
-O'donnell
-O'dwyer
-O'gara
-O'grady
-O'hagan
-O'hara
-O'hare
-O'kane
-O'leary
-O'loughlin
-O'malley
-O'mara
-O'marley
-O'meara
-O'neal
-O'neil
-O'neill
-O'pray
-O'regan
-O'rourke
-O'shea
-O'steen
-O'sullivan
-O'sullivan-Snow
+OBrien
+OCasey
+OHara-Hines
+OMalley
+ONeill
+ORourke
+OShaughnessy
+Obrien
+Oconnell
+Oconnor
+Oday
+Odonnell
+Odwyer
+Ogara
+Ogrady
+Ohagan
+Ohara
+Ohare
+Okane
+Oleary
+Oloughlin
+Omalley
+Omara
+Omarley
+Omeara
+Oneal
+Oneil
+Oneill
+Opray
+Oregan
+Orourke
+Oshea
+Osteen
+Osullivan
+Osullivan-Snow
 Oatis-Skinner
 Oberacker
 Oberfield
@@ -7555,7 +7555,7 @@ Ormond
 Ornelas
 Oro
 Orr
-Orru'
+Orru
 Orsher
 Orsi
 Orsua
@@ -7804,7 +7804,7 @@ Peckham
 Pedersen
 Pederson
 Pedreira
-Pedulla'
+Pedulla
 Peebles
 Peede
 Peeler
@@ -9272,7 +9272,7 @@ Shavelson
 Shaw
 Shayegan
 Shea
-Shea-O'connor
+Shea-Oconnor
 Shea-simonds
 Sheahan
 Shearer
@@ -11346,7 +11346,7 @@ de Tocqueville
 de Unamuno
 de Veyra
 de Wilde
-de l'Enclos
+de lEnclos
 de la Cruz
 dean
 del Chiaro
@@ -11398,7 +11398,7 @@ keller
 kelley
 kennedy
 king
-l'Enclos
+lEnclos
 lane
 le Blanc
 le Cam
