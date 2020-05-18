@@ -32,7 +32,11 @@ describe("WeeklySummary", () => {
         },
       ];
 
-      const { html, subject } = WeeklySummary(items, Languages.GERMAN);
+      const { html, subject } = WeeklySummary(
+        items,
+        "https://demo.ente.app",
+        Languages.GERMAN
+      );
 
       for (const i of items) {
         expect(html).to.contain(i.displayname);
@@ -63,7 +67,11 @@ describe("WeeklySummary", () => {
         },
       ];
 
-      const { html, subject } = WeeklySummary(items, Languages.ENGLISH);
+      const { html, subject } = WeeklySummary(
+        items,
+        "https://demo.ente.app",
+        Languages.ENGLISH
+      );
 
       for (const i of items) {
         expect(html).to.contain(i.displayname);

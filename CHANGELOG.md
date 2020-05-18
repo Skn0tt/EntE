@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fixed a bug where clicking on a statistic crashed ([#382](https://gitlab.com/Skn0tt/EntE/-/issues/382))
+- Place instanceUrl in weekly summary ([#383](https://gitlab.com/Skn0tt/EntE/-/issues/383))
 
 ## [v0.38.1] - 2020-04-30
 

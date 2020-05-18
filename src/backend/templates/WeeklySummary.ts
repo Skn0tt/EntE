@@ -13,6 +13,7 @@ import { mjml2html } from "../helpers/mjml";
 export interface WeeklySummaryOptions {
   subject: string;
   preview: string;
+  instanceUrl: string;
   items: string[];
 }
 
@@ -32,6 +33,7 @@ const getTemplate = getByLanguage({
 
 export const WeeklySummary = (
   items: WeeklySummaryRowData[],
+  instanceUrl: string,
   lang: Languages
 ) => {
   const { template, getTitle, tableRow } = getTemplate(lang);
@@ -39,6 +41,7 @@ export const WeeklySummary = (
   const title = getTitle();
 
   const mjml = template({
+    instanceUrl,
     items: rows,
     preview: title,
     subject: title,
