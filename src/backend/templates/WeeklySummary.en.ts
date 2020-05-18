@@ -47,7 +47,7 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = Handlebars.co
     <mj-section background-color="#fbfbfb">
       <mj-column>
         <mj-text>
-					Further information on EntE: <a href="https://ente.app/en">ente.app</a>
+          Visit your EntE instance to find out more: <a href="{{{ instanceUrl }}}">{{{ instanceUrl }}}</a>
         </mj-text>
       </mj-column>
     </mj-section>

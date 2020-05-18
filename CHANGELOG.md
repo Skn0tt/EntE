@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Place instanceUrl in weekly summary ([#383](https://gitlab.com/Skn0tt/EntE/-/issues/383))
+
 ## [v0.38.1] - 2020-04-30
 
 - Fixed bug where admin checkbox needed to be checked and unchecked before creating a user works ([#376](https://gitlab.com/Skn0tt/EntE/-/issues/376))

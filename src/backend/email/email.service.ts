@@ -18,6 +18,7 @@ import { SlotPrefiledNotification } from "../templates/SlotPrefiledNotification"
 import { EmailTransportService } from "../infrastructure/email-transport.service";
 import { TwoFAEnabledNotification } from "../templates/2FAEnabledNotification";
 import { TwoFADisabledNotification } from "../templates/2FADisabledNotification";
+import { Config } from "backend/helpers/config";
 
 @Injectable()
 export class EmailService {
@@ -173,8 +174,9 @@ export class EmailService {
       educational: s.forSchool,
     }));
 
-    await this.dispatchTemplate((r) => WeeklySummary(data, teacher.language), [
-      teacher,
-    ]);
+    await this.dispatchTemplate(
+      (r) => WeeklySummary(data, Config.getBaseUrl(), teacher.language),
+      [teacher]
+    );
   }
 }
