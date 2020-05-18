@@ -123,32 +123,25 @@ export class UsersService implements OnModuleInit {
     }
 
     const self = (await requestingUser.getDto()).some();
-    switch (requestingUser.role) {
-      case Roles.MANAGER:
-        const students = await this.userRepo.findByRole(Roles.STUDENT);
-        return Success([...students, self]);
 
-      case Roles.PARENT:
-        const children = await this.userRepo.findByIds(
-          ...requestingUser.childrenIds
-        );
-        const teachingUsers = await this.userRepo.findByRoles(
-          ...TEACHING_ROLES
-        );
-        return Success([...children, ...teachingUsers, self]);
+    const teachers = await this.userRepo.findByRoles(...TEACHING_ROLES);
 
-      case Roles.STUDENT:
-        return Success([
-          ...(await this.userRepo.findByRoles(...TEACHING_ROLES)),
-          self,
-        ]);
+    const result: UserDto[] = [self, ...teachers];
 
-      case Roles.TEACHER:
-        return Success([
-          ...(await this.userRepo.findByRole(Roles.STUDENT)),
-          self,
-        ]);
+    if (TEACHING_ROLES.includes(self.role)) {
+      const students = await this.userRepo.findByRole(Roles.STUDENT);
+      result.push(...students);
     }
+
+    if (self.role === Roles.PARENT) {
+      const children = await this.userRepo.findByIds(
+        ...requestingUser.childrenIds
+      );
+
+      result.push(...children);
+    }
+
+    return Success(result);
   }
 
   public async findAll(
