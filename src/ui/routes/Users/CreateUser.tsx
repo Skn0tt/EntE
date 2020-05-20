@@ -48,6 +48,8 @@ import { RoleTranslation } from "../../roles.translation";
 import { ClassPicker } from "../../elements/ClassPicker";
 import { ResponsiveFullscreenDialog } from "../../components/ResponsiveFullscreenDialog";
 import { makeTranslationHook } from "ui/helpers/makeTranslationHook";
+import { useDocsLink } from "ui/useDocsLink";
+import { DialogInfoButton } from "ui/elements/DialogInfoButton";
 
 export const lang = {
   en: {
@@ -184,135 +186,134 @@ function CreateUser(props: CreateUserOwnProps) {
   );
 
   return (
-    <>
-      <ResponsiveFullscreenDialog onClose={props.onClose} open={props.show}>
-        <DialogTitle>{translation.titles.newUser}</DialogTitle>
-        <DialogContent>
-          <form onKeyPress={handleKeyPress}>
-            <Grid container direction="row">
-              <Grid item xs={12} lg={6}>
-                <TextInput
-                  value={create.username || ""}
-                  label={translation.titles.username}
-                  onChange={update("username")}
-                  validator={isValidUsername}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} lg={6}>
-                <TextInput
-                  label={translation.titles.displayname}
-                  value={create.displayname || ""}
-                  onChange={update("displayname")}
-                  validator={isValidDisplayname}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} lg={6}>
-                <TextInput
-                  label={translation.titles.email}
-                  value={create.email || ""}
-                  onChange={update("email")}
-                  validator={isValidEmail}
-                  type="email"
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextInput
-                  label={translation.titles.password}
-                  value={create.password || ""}
-                  onChange={(pw) => update("password")(pw || undefined)}
-                  validator={isValidPassword}
-                  type="password"
-                />
-              </Grid>
-              <Typography variant="body1">
-                <translation.passwordSpec />
-              </Typography>
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  label={translation.titles.role}
-                  value={create.role || Roles.STUDENT}
-                  onChange={(evt) => update("role")(evt.target.value as Roles)}
-                  fullWidth
-                  SelectProps={{ native: true }}
-                  helperText={translation.helpers.chooseRoleOfUser}
-                >
-                  {Object.keys(Roles).map((k) => (
-                    <option key={(Roles as any)[k]} value={(Roles as any)[k]}>
-                      {(translation.roles as any)[(Roles as any)[k]]}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={create.isAdmin}
-                      onChange={(evt) => update("isAdmin")(evt.target.checked)}
-                      name="isAdmin"
-                      color="primary"
-                    />
-                  }
-                  label={translation.titles.isAdmin}
-                />
-              </Grid>
-              {roleHasChildren(create.role) && (
-                <Grid item xs={12}>
-                  <ChildrenInput
-                    children={create.children.map((uid) => usersById[uid])}
-                    students={users.filter(
-                      (u) => u.get("role") === Roles.STUDENT
-                    )}
-                    onChange={(u: UserN[]) =>
-                      update("children")(u.map((u) => u.get("id")))
-                    }
-                  />
-                </Grid>
-              )}
-              {roleHasClass(create.role) && (
-                <Grid item xs={12}>
-                  <ClassPicker
-                    label={translation.titles.class}
-                    availableClasses={availableClasses}
-                    onChange={update("class")}
-                    value={create.class!}
-                  />
-                </Grid>
-              )}
-              {roleHasBirthday(create.role) && (
-                <Grid item xs={12}>
-                  <DateInput
-                    value={create.birthday!}
-                    label={translation.titles.birthday}
-                    onChange={update("birthday")}
-                    maxDate={dateToIsoString(new Date())}
-                  />
-                </Grid>
-              )}
+    <ResponsiveFullscreenDialog onClose={props.onClose} open={props.show}>
+      <DialogInfoButton href={useDocsLink("administration/user-management")} />
+      <DialogTitle>{translation.titles.newUser}</DialogTitle>
+      <DialogContent>
+        <form onKeyPress={handleKeyPress}>
+          <Grid container direction="row">
+            <Grid item xs={12} lg={6}>
+              <TextInput
+                value={create.username || ""}
+                label={translation.titles.username}
+                onChange={update("username")}
+                validator={isValidUsername}
+                required
+              />
             </Grid>
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.onClose} color="secondary" className="close">
-            {translation.close}
-          </Button>
-          <Button
-            onClick={() => {
-              handleSubmit();
-              props.onClose();
-            }}
-            disabled={!createIsValid}
-            color="primary"
-          >
-            {translation.submit}
-          </Button>
-        </DialogActions>
-      </ResponsiveFullscreenDialog>
-    </>
+            <Grid item xs={12} lg={6}>
+              <TextInput
+                label={translation.titles.displayname}
+                value={create.displayname || ""}
+                onChange={update("displayname")}
+                validator={isValidDisplayname}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <TextInput
+                label={translation.titles.email}
+                value={create.email || ""}
+                onChange={update("email")}
+                validator={isValidEmail}
+                type="email"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextInput
+                label={translation.titles.password}
+                value={create.password || ""}
+                onChange={(pw) => update("password")(pw || undefined)}
+                validator={isValidPassword}
+                type="password"
+              />
+            </Grid>
+            <Typography variant="body1">
+              <translation.passwordSpec />
+            </Typography>
+            <Grid item xs={12}>
+              <TextField
+                select
+                label={translation.titles.role}
+                value={create.role || Roles.STUDENT}
+                onChange={(evt) => update("role")(evt.target.value as Roles)}
+                fullWidth
+                SelectProps={{ native: true }}
+                helperText={translation.helpers.chooseRoleOfUser}
+              >
+                {Object.keys(Roles).map((k) => (
+                  <option key={(Roles as any)[k]} value={(Roles as any)[k]}>
+                    {(translation.roles as any)[(Roles as any)[k]]}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={create.isAdmin}
+                    onChange={(evt) => update("isAdmin")(evt.target.checked)}
+                    name="isAdmin"
+                    color="primary"
+                  />
+                }
+                label={translation.titles.isAdmin}
+              />
+            </Grid>
+            {roleHasChildren(create.role) && (
+              <Grid item xs={12}>
+                <ChildrenInput
+                  children={create.children.map((uid) => usersById[uid])}
+                  students={users.filter(
+                    (u) => u.get("role") === Roles.STUDENT
+                  )}
+                  onChange={(u: UserN[]) =>
+                    update("children")(u.map((u) => u.get("id")))
+                  }
+                />
+              </Grid>
+            )}
+            {roleHasClass(create.role) && (
+              <Grid item xs={12}>
+                <ClassPicker
+                  label={translation.titles.class}
+                  availableClasses={availableClasses}
+                  onChange={update("class")}
+                  value={create.class!}
+                />
+              </Grid>
+            )}
+            {roleHasBirthday(create.role) && (
+              <Grid item xs={12}>
+                <DateInput
+                  value={create.birthday!}
+                  label={translation.titles.birthday}
+                  onChange={update("birthday")}
+                  maxDate={dateToIsoString(new Date())}
+                />
+              </Grid>
+            )}
+          </Grid>
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.onClose} color="secondary" className="close">
+          {translation.close}
+        </Button>
+        <Button
+          onClick={() => {
+            handleSubmit();
+            props.onClose();
+          }}
+          disabled={!createIsValid}
+          color="primary"
+        >
+          {translation.submit}
+        </Button>
+      </DialogActions>
+    </ResponsiveFullscreenDialog>
   );
 }
 
