@@ -12,8 +12,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  IconButton,
 } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
+import InfoIcon from "@material-ui/icons/Info";
 import { CreateUserDto } from "@@types";
 import { Maybe, None } from "monet";
 import * as React from "react";
@@ -28,6 +30,7 @@ import { DropdownInput } from "../../elements/DropdownInput";
 import { SchiLDImportMethod } from "./SchiLDImportMethod";
 import { useRouter } from "next/router";
 import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
+import { useDocsLink } from "ui/useDocsLink";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -166,7 +169,22 @@ const ImportUsersDialog = (props: {}) => {
 
   return (
     <ResponsiveFullscreenDialog onClose={goBack} open>
-      <DialogTitle>{translation.title}</DialogTitle>
+      <DialogTitle>
+        {translation.title}
+        <IconButton
+          href={useDocsLink(
+            `administration/user-import/user-import-from-${importMethod}`
+          )}
+          target="_blank"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+          }}
+        >
+          <InfoIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
           <Grid item xs={12}>

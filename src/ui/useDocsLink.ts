@@ -8,6 +8,14 @@ function omitLeadingSlash(v: string): string {
   return v;
 }
 
+function appendTrailingDotHTML(v: string): string {
+  if (v.endsWith(".html")) {
+    return v;
+  }
+
+  return v + ".html";
+}
+
 const useBaseUrl = makeTranslationHook({
   en: "https://docs.ente.app/en/",
   de: "https://docs.ente.app/de/",
@@ -15,5 +23,5 @@ const useBaseUrl = makeTranslationHook({
 
 export function useDocsLink(page: string) {
   const baseUrl = useBaseUrl();
-  return baseUrl + omitLeadingSlash(page);
+  return baseUrl + appendTrailingDotHTML(omitLeadingSlash(page));
 }
