@@ -103,7 +103,7 @@ export class UsersService implements OnModuleInit {
         birthday: undefined,
         password: "root",
         username: "admin",
-        email: "admin@ente.de",
+        email: "default-admin@ente.app",
       };
 
       const [created] = await this._createUsers(admin);
