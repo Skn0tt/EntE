@@ -12,10 +12,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  IconButton,
 } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
-import InfoIcon from "@material-ui/icons/Info";
 import { CreateUserDto } from "@@types";
 import { Maybe, None } from "monet";
 import * as React from "react";
@@ -169,22 +167,12 @@ const ImportUsersDialog = (props: {}) => {
 
   return (
     <ResponsiveFullscreenDialog onClose={goBack} open>
-      <DialogTitle>
-        {translation.title}
-        <IconButton
-          href={useDocsLink(
-            `administration/user-import/user-import-from-${importMethod}`
-          )}
-          target="_blank"
-          style={{
-            position: "absolute",
-            top: "12px",
-            right: "12px",
-          }}
-        >
-          <InfoIcon />
-        </IconButton>
-      </DialogTitle>
+      <DialogInfoButton
+        href={useDocsLink(
+          `administration/user-import/user-import-from-${importMethod}`
+        )}
+      />
+      <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
           <Grid item xs={12}>
