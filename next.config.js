@@ -8,9 +8,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = withBundleAnalyzer(
   withSvgr({
     target: "serverless",
-    experimental: {
-      jsconfigPaths: true,
-    },
     env: {
       SENTRY_DSN: process.env.SENTRY_DSN,
       ROTATION_PERIOD: process.env.ROTATION_PERIOD,
