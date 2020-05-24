@@ -29,6 +29,7 @@ import { SchiLDImportMethod } from "./SchiLDImportMethod";
 import { useRouter } from "next/router";
 import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
 import { useDocsLink } from "ui/useDocsLink";
+import { DialogInfoButton } from "ui/elements/DialogInfoButton";
 
 const useTranslation = makeTranslationHook({
   en: {
