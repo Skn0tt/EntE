@@ -22,15 +22,18 @@ import { DropdownInput } from "../elements/DropdownInput";
 import { Weekday } from "../reporting/reporting";
 import { NumberInput } from "../elements/NumberInput";
 import { ResponsiveFullscreenDialog } from "./ResponsiveFullscreenDialog";
+import TextInput from "ui/elements/TextInput";
 
 const useTranslation = makeTranslationHook({
   en: {
     ok: "OK",
+    cancel: "Cancel",
     title: "Filter by class",
     hour: (h: number) => `Class ${h}`,
     weekdayDropdown: {
       title: "Weekday",
     },
+    class: "Name of class",
     numberInput: "Hour",
     add: "Add",
     description:
@@ -38,8 +41,10 @@ const useTranslation = makeTranslationHook({
   },
   de: {
     ok: "OK",
+    cancel: "Zurück",
     title: "Kursfilter",
     hour: (h: number) => `${h}. Stunde`,
+    class: "Name des Kurses",
     weekdayDropdown: {
       title: "Wochentag",
     },
@@ -53,38 +58,46 @@ const useTranslation = makeTranslationHook({
 interface CourseFilterModalOwnProps {
   show: boolean;
   onClose: () => void;
-  onChange: (c: CourseFilter) => void;
-  value: CourseFilter;
+  onCreate: (c: CourseFilter) => void;
 }
 
-const CourseFilterModal: React.FC<CourseFilterModalOwnProps> = (props) => {
-  const { show, onChange, onClose, value } = props;
+const CreateCourseFilterModal: React.FC<CourseFilterModalOwnProps> = (
+  props
+) => {
+  const { show, onClose, onCreate } = props;
   const translation = useTranslation();
   const weekdays = useWeekdayTranslations().full;
-
-  const deduplicatedValue = React.useMemo(
-    () => _.uniqBy(value, (c) => c.day + ";" + c.hour),
-    [value]
-  );
-  const sortedValue = React.useMemo(
-    () => _.sortBy(deduplicatedValue, (c) => c.day + ";" + c.hour),
-    [deduplicatedValue]
-  );
-
-  const handleDelete = React.useCallback(
-    (c: CourseFilterSlot) => {
-      onChange(_.without(sortedValue, c));
-    },
-    [sortedValue, onChange]
-  );
 
   const [weekday, setWeekday] = React.useState(Weekday.MONDAY);
   const [hour, setHour] = React.useState(1);
 
+  const [slots, setSlots] = React.useState<CourseFilterSlot[]>([]);
+
+  const sortedSlots = React.useMemo(
+    () => _.sortBy(slots, (c) => c.day + ";" + c.hour),
+    [slots]
+  );
+
   const handleAdd = React.useCallback(() => {
-    const newItems = [...sortedValue, { hour, day: weekday }];
-    onChange(_.uniqBy(newItems, (c) => c.day + ";" + c.hour));
-  }, [sortedValue, onChange, weekday, hour]);
+    setSlots((oldSlots) => {
+      return [
+        ...oldSlots,
+        {
+          day: weekday,
+          hour,
+        },
+      ];
+    });
+  }, [weekday, hour, setSlots]);
+
+  const handleDelete = React.useCallback(
+    (c: CourseFilterSlot) => {
+      setSlots((oldSlots) => _.without(oldSlots, c));
+    },
+    [setSlots]
+  );
+
+  const [name, setName] = React.useState<string>();
 
   return (
     <ResponsiveFullscreenDialog onClose={onClose} open={show}>
@@ -95,8 +108,16 @@ const CourseFilterModal: React.FC<CourseFilterModalOwnProps> = (props) => {
 
         <Grid container direction="column" spacing={24}>
           <Grid item xs={12}>
+            <TextInput
+              value={name}
+              onChange={setName}
+              label={translation.class}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
             <List>
-              {sortedValue.map((c) => (
+              {sortedSlots.map((c) => (
                 <ListItem>
                   <ListItemText>
                     {weekdays[c.day]}, {translation.hour(c.hour)}
@@ -159,7 +180,16 @@ const CourseFilterModal: React.FC<CourseFilterModalOwnProps> = (props) => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} color="secondary">
+          {translation.cancel}
+        </Button>
+        <Button
+          onClick={() => {
+            onCreate({ name: name!, slots });
+          }}
+          disabled={!name || slots.length === 0}
+          color="primary"
+        >
           {translation.ok}
         </Button>
       </DialogActions>
@@ -167,4 +197,4 @@ const CourseFilterModal: React.FC<CourseFilterModalOwnProps> = (props) => {
   );
 };
 
-export default CourseFilterModal;
+export default CreateCourseFilterModal;

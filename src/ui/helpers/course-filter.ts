@@ -1,7 +1,10 @@
 import { Weekday, Reporting } from "../reporting/reporting";
 import { SlotN } from "../redux";
 
-export type CourseFilter = CourseFilterSlot[];
+export type CourseFilter = {
+  name: string;
+  slots: CourseFilterSlot[];
+};
 
 export interface CourseFilterSlot {
   day: Weekday;
@@ -24,5 +27,5 @@ export const doCourseSlotAndSlotOverlap = (slot: SlotN) => (
 };
 
 export const isSlotDuringCourse = (course: CourseFilter) => (slot: SlotN) => {
-  return course.some(doCourseSlotAndSlotOverlap(slot));
+  return course.slots.some(doCourseSlotAndSlotOverlap(slot));
 };

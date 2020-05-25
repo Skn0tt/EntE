@@ -6,6 +6,7 @@ import { UsersService } from "./users.service";
 import { Success } from "monet";
 import * as _ from "lodash";
 import { NO_PAGINATION_INFO } from "../helpers/pagination-info";
+import { UIStateService } from "./ui-state.service";
 
 const usersServiceMock: UsersService = {
   async createUsers() {
@@ -29,6 +30,13 @@ const usersServiceMock: UsersService = {
   },
 } as any;
 
+const uiStateServiceMock: UIStateService = {
+  async get() {
+    return "";
+  },
+  async set() {},
+} as any;
+
 describe("Users Controller", () => {
   let module: TestingModule;
   beforeAll(async () => {
@@ -39,6 +47,10 @@ describe("Users Controller", () => {
         {
           provide: UsersService,
           useValue: usersServiceMock,
+        },
+        {
+          provide: UIStateService,
+          useValue: uiStateServiceMock,
         },
       ],
     }).compile();
