@@ -45,12 +45,14 @@ import {
   PaginationInfo,
   PaginationInformation,
 } from "../helpers/pagination-info";
+import { UIStateService } from "./ui-state.service";
 
 @Controller("users")
 @UseGuards(AuthGuard("combined"))
 export class UsersController {
   constructor(
-    @Inject(UsersService) private readonly usersService: UsersService
+    @Inject(UsersService) private readonly usersService: UsersService,
+    @Inject(UIStateService) private readonly uiStateService: UIStateService
   ) {}
 
   @Get()
@@ -280,5 +282,31 @@ export class UsersController {
       },
       () => value
     );
+  }
+
+  @Get(":id/uiState")
+  async getUIConfig(
+    @Param("id") id: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<string> {
+    const userId = ctx.user.id;
+    if (id !== userId) {
+      throw new ForbiddenException();
+    }
+    const uiState = await this.uiStateService.get(userId);
+    return uiState;
+  }
+
+  @Put(":id/uiState")
+  async settUIConfig(
+    @Param("id") id: string,
+    @Body() value: string,
+    @Ctx() ctx: RequestContext
+  ): Promise<void> {
+    const userId = ctx.user.id;
+    if (id !== userId) {
+      throw new ForbiddenException();
+    }
+    await this.uiStateService.set(userId, value);
   }
 }

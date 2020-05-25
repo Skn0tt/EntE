@@ -1,18 +1,22 @@
 import * as React from "react";
 import { CourseFilter } from "../helpers/course-filter";
 import { Maybe, None, Some } from "monet";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton, Menu, MenuItem, Divider } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
-import { useWeekdayTranslations } from "../helpers/use-weekday-translations";
-import CourseFilterModal from "./CourseFilterModal";
+import CreateCourseFilterModal from "./CreateCourseFilterModal";
+import TrashIcon from "@material-ui/icons/Delete";
+import _ from "lodash";
+import { useUserMeta } from "ui/useUserMeta";
 
 const useTranslation = makeTranslationHook({
   en: {
     filterByClass: "Filter by class",
+    add: "Add class",
   },
   de: {
     filterByClass: "Kursfilter",
+    add: "Kurs hinzufügen",
   },
 });
 
@@ -23,47 +27,106 @@ interface CourseFilterButtonOwnProps {
 export const CourseFilterButton: React.FC<CourseFilterButtonOwnProps> = (
   props
 ) => {
-  const { onChange } = props;
   const translation = useTranslation();
-  const weekdayTranslations = useWeekdayTranslations().twoCharacter;
+  const { onChange } = props;
 
-  const [value, setValue] = React.useState<Maybe<CourseFilter>>(None());
-  const [showCourseFilterModal, setShowCourseFilterModal] = React.useState(
-    false
-  );
+  const [existingCourseFilters, setExistingCourseFilters] = useUserMeta<
+    CourseFilter[]
+  >("course-filters", []);
 
-  React.useEffect(() => {
-    onChange(value);
-  }, [onChange, value]);
+  const [selectedCourse, setSelectedCourse] = React.useState<CourseFilter>();
+
+  const [menuAnchor, setMenuAnchor] = React.useState<HTMLElement>();
+
+  const [
+    createCourseFilterModalIsShown,
+    showCreateCourseFilterModal,
+  ] = React.useState(false);
 
   return (
     <>
-      <CourseFilterModal
-        show={showCourseFilterModal}
-        onClose={() => setShowCourseFilterModal(false)}
-        onChange={(c) => setValue(Some(c).filter((c) => c.length !== 0))}
-        value={value.orSome([])}
+      <CreateCourseFilterModal
+        show={createCourseFilterModalIsShown}
+        onClose={() => showCreateCourseFilterModal(false)}
+        onCreate={(c) => {
+          setExistingCourseFilters((old) => [...old, c]);
+          onChange(Some(c));
+          setSelectedCourse(c);
+          setMenuAnchor(undefined);
+          showCreateCourseFilterModal(false);
+        }}
       />
 
       <Button
         variant="outlined"
         size="medium"
-        onClick={() => setShowCourseFilterModal(true)}
+        onClick={(evt) => {
+          if (existingCourseFilters.length === 0) {
+            showCreateCourseFilterModal(true);
+          } else {
+            setMenuAnchor(evt.currentTarget);
+          }
+        }}
       >
-        {value.cata(
-          () => translation.filterByClass,
-          (course) =>
-            course
-              .map((c) => weekdayTranslations[c.day] + ", " + c.hour)
-              .join("; ")
-        )}
+        {selectedCourse?.name ?? translation.filterByClass}
       </Button>
 
-      {value.isSome() && (
-        <IconButton onClick={() => setValue(None())}>
+      {selectedCourse && (
+        <IconButton
+          onClick={() => {
+            setSelectedCourse(undefined);
+            onChange(None());
+          }}
+        >
           <CancelIcon />
         </IconButton>
       )}
+
+      <Menu
+        anchorEl={menuAnchor}
+        open={!!menuAnchor}
+        onClose={() => setMenuAnchor(undefined)}
+      >
+        {existingCourseFilters.map((courseFilter) => (
+          <MenuItem
+            key={courseFilter.name}
+            onClick={() => {
+              setSelectedCourse(courseFilter);
+              onChange(Some(courseFilter));
+              setMenuAnchor(undefined);
+            }}
+          >
+            {courseFilter.name}
+
+            <IconButton
+              onClick={(evt) => {
+                evt.stopPropagation();
+                // this won't work
+                setExistingCourseFilters((old) => _.without(old, courseFilter));
+
+                setSelectedCourse((old) => {
+                  if (old?.name === courseFilter.name) {
+                    return undefined;
+                  }
+
+                  return old;
+                });
+              }}
+              style={{
+                float: "right",
+              }}
+            >
+              <TrashIcon />
+            </IconButton>
+          </MenuItem>
+        ))}
+
+        <Divider />
+
+        <MenuItem onClick={() => showCreateCourseFilterModal(true)}>
+          {translation.add}
+        </MenuItem>
+      </Menu>
     </>
   );
 };
