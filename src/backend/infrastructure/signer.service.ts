@@ -7,18 +7,31 @@ import {
 } from "@nestjs/common";
 import { Maybe } from "monet";
 import { RedisService } from "./redis.service";
-import Signer, { JWTRepository } from "@skn0tt/signer";
+import Signer from "@skn0tt/signer";
 import { Config } from "../helpers/config";
-import { Interval } from "@nestjs/schedule";
 import { WinstonLoggerService } from "../winston-logger.service";
 
-const { rotationInterval, tokenExpiry } = Config.getSignerConfig();
+let globalSigner: Signer<any>;
 
 @Injectable()
 export class SignerService<T extends object>
   implements OnModuleInit, OnModuleDestroy {
-  private signer: Signer<T>;
-  private jwtRepo: JWTRepository<T>;
+  get signer(): Signer<T> {
+    return globalSigner;
+  }
+
+  set signer(s: Signer<T>) {
+    if (globalSigner) {
+      globalSigner.close();
+      this.logger.log("Closed existing Signer.");
+    }
+
+    globalSigner = s;
+  }
+
+  get jwtRepo() {
+    return this.signer.getJwtRepository();
+  }
 
   constructor(
     @Inject(RedisService) private readonly redisService: RedisService,
@@ -26,20 +39,16 @@ export class SignerService<T extends object>
   ) {}
 
   async onModuleInit() {
+    const { rotationInterval, tokenExpiry } = Config.getSignerConfig();
+
     this.signer = await Signer.fromRedis(this.redisService.getClient(), {
-      rotationInterval: null,
+      rotationInterval,
       tokenExpiry,
       mode: "asymmetric",
       secretLength: 96,
+      onRotate: () => this.logger.log("Successfully rotated JWT secrets."),
     });
-
-    this.jwtRepo = this.signer.getJwtRepository();
-  }
-
-  @Interval(rotationInterval)
-  private async rotate() {
-    await this.signer.rotate();
-    this.logger.log("Successfully rotated JWT secrets.");
+    this.logger.log("Started JWT rotation.");
   }
 
   async onModuleDestroy() {
