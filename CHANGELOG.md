@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug where users were logged out randomly, b/c JWT secrets were rotated too often
 - Add support for storing class filters, synchronized across devices ([#380](https://gitlab.com/Skn0tt/EntE/-/issues/380))
 - Updated Next.js to v9.4, which adds support for React Refresh (making dev a lot smoother) and includes my PR ([#379](https://gitlab.com/Skn0tt/EntE/-/issues/379))
 - Fixed a bug where clicking on a statistic crashed ([#382](https://gitlab.com/Skn0tt/EntE/-/issues/382))
