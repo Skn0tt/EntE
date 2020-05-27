@@ -28,6 +28,8 @@ import { DropdownInput } from "../../elements/DropdownInput";
 import { SchiLDImportMethod } from "./SchiLDImportMethod";
 import { useRouter } from "next/router";
 import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
+import { useDocsLink } from "ui/useDocsLink";
+import { DialogInfoButton } from "ui/elements/DialogInfoButton";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -166,6 +168,11 @@ const ImportUsersDialog = (props: {}) => {
 
   return (
     <ResponsiveFullscreenDialog onClose={goBack} open>
+      <DialogInfoButton
+        href={useDocsLink(
+          `administration/user-import/user-import-from-${importMethod}`
+        )}
+      />
       <DialogTitle>{translation.title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={24} direction="column">
