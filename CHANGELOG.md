@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix regression where users with an umlaut in their username couldn't log in
+
 ## [v0.39.0] - 2020-05-27
 
 - Fix bug where users were logged out randomly, b/c JWT secrets were rotated too often
