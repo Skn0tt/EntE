@@ -10,6 +10,7 @@ import {
 } from "./redux/api";
 import { Set } from "immutable";
 import { Validation, Fail, Success } from "monet";
+import { Base64 } from "./helpers/base64";
 
 type LoginFailedReason = "totp_missing" | "auth_invalid";
 
@@ -25,11 +26,19 @@ export module LoginAPI {
     auth: BasicCredentials,
     totpToken: string | undefined
   ): Promise<Validation<LoginFailedReason, LoginInfo>> {
-    const headers = !!totpToken ? { "X-TOTP-Token": totpToken } : undefined;
+    const headers: Record<string, string> = {
+      Authorization: `Basic ${Base64.encode(
+        `${auth.username}:${auth.password}`
+      )}`,
+    };
+
+    if (totpToken) {
+      headers["X-TOTP-Token"] = totpToken;
+    }
+
     const response = await Axios.get<LoginDto | { message?: "totp_missing" }>(
       "/api/login",
       {
-        auth,
         headers,
         validateStatus: (s) => [200, 401].includes(s),
       }
