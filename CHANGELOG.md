@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Show both current and latest EntE version on preferences page ([#387](https://gitlab.com/Skn0tt/EntE/-/issues/387))
+- Fix bug where table search term was lost on navigation ([#388](https://gitlab.com/Skn0tt/EntE/-/issues/388)
 
 ## [v0.39.1] - 2020-05-29
 
