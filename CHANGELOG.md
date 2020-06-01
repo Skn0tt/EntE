@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Show both current and latest EntE version on preferences page ([#387](https://gitlab.com/Skn0tt/EntE/-/issues/387))
+
 ## [v0.39.1] - 2020-05-29
 
 - Fix regression where users with an umlaut in their username couldn't log in
