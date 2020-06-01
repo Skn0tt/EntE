@@ -38,6 +38,26 @@ import Axios from "axios";
 import { useBoolean, useEffectOnce } from "react-use";
 import { ResponsiveFullscreenDialog } from "ui/components/ResponsiveFullscreenDialog";
 import { QRCode } from "ui/components/QRCode";
+import * as config from "ui/config";
+
+function useLatestEntEVersion() {
+  const [version, setVersion] = useState<string>();
+
+  useEffectOnce(() => {
+    async function doIt() {
+      const resp = await Axios.get<{ version: string }>(
+        "https://gitlab.com/api/v4/projects/5030367/repository/files/package.json/raw",
+        { params: { ref: "master" } }
+      );
+      const { version } = resp.data;
+      setVersion(version);
+    }
+
+    doIt().catch(console.error);
+  });
+
+  return version;
+}
 
 const useLang = makeTranslationHook({
   de: {
@@ -57,6 +77,8 @@ const useLang = makeTranslationHook({
       "Einmal in der Woche sendet EntE ihnen eine Zusammenfassung der Fehlstunden per E-Mail. Möchten Sie diese erhalten?",
     on: "An",
     off: "Aus",
+    installedVersion: "EntE-Version",
+    latestEntEVersion: (v: string) => `Neueste Version: v${v}`,
     authenticator: {
       title: "Authenticator einrichten",
       description:
@@ -82,6 +104,8 @@ const useLang = makeTranslationHook({
       "Once a week, EntE sends a summary of missed classes via email. Do you want to receive them?",
     on: "On",
     off: "Off",
+    installedVersion: "EntE Version",
+    latestEntEVersion: (v: string) => `Latest version: v${v}`,
     authenticator: {
       title: "Setup Authenticator",
       description: "To setup your Authenticator, scan this QR code.",
@@ -146,6 +170,7 @@ export function Preferences() {
   const classes = useStyles();
   const lang = useLang();
   const { addMessages } = useMessages();
+  const latestEntEVersion = useLatestEntEVersion();
 
   const dispatch = useDispatch();
   const currentLanguage = useSelector(getLanguage);
@@ -300,6 +325,17 @@ export function Preferences() {
           />
         </PreferenceItem>
       )}
+
+      <PreferenceItem
+        title={lang.installedVersion}
+        description={
+          !!latestEntEVersion
+            ? lang.latestEntEVersion(latestEntEVersion)
+            : undefined
+        }
+      >
+        <Typography>v{config.get().VERSION}</Typography>
+      </PreferenceItem>
     </Grid>
   );
 }
