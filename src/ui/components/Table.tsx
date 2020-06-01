@@ -175,9 +175,7 @@ export function Table<T>(props: TableProps<T>) {
         onRowClick: (d: any[]) => onClick(d[0]),
         textLabels: translation.textLabels,
         viewColumns: false,
-        onSearchChange: (newSearchText: string) => {
-          updateSearchText(newSearchText);
-        },
+        onSearchChange: updateSearchText,
         onFilterChange: (changedColumn: string, filterLists: any) => {
           updateFilterLists(filterLists);
         },
