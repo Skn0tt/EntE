@@ -4,12 +4,12 @@
    Description: Custom JS file
 */
 
-(function($) {
+(function ($) {
   "use strict";
 
   /* Navbar Scripts */
   // jQuery to collapse the navbar on scroll
-  $(window).on("scroll load", function() {
+  $(window).on("scroll load", function () {
     if ($(".navbar").offset().top > 60) {
       $(".fixed-top").addClass("top-nav-collapse");
     } else {
@@ -18,14 +18,14 @@
   });
 
   // jQuery for page scrolling feature - requires jQuery Easing plugin
-  $(function() {
-    $(document).on("click", "a.page-scroll", function(event) {
+  $(function () {
+    $(document).on("click", "a.page-scroll", function (event) {
       var $anchor = $(this);
       $("html, body")
         .stop()
         .animate(
           {
-            scrollTop: $($anchor.attr("href")).offset().top - 50
+            scrollTop: $($anchor.attr("href")).offset().top - 50,
           },
           600,
           "easeInOutExpo"
@@ -35,12 +35,8 @@
   });
 
   // closes the responsive menu on menu item click
-  $(".navbar-nav li a").on("click", function(event) {
-    if (
-      !$(this)
-        .parent()
-        .hasClass("dropdown")
-    )
+  $(".navbar-nav li a").on("click", function (event) {
+    if (!$(this).parent().hasClass("dropdown"))
       $(".navbar-collapse").collapse("hide");
   });
 
@@ -48,7 +44,7 @@
   var imageSlider = new Swiper(".image-slider", {
     autoplay: {
       delay: 2000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
     },
     loop: true,
     spaceBetween: 30,
@@ -57,37 +53,24 @@
       // when window is <= 580px
       580: {
         slidesPerView: 1,
-        spaceBetween: 10
+        spaceBetween: 10,
       },
       // when window is <= 768px
       768: {
         slidesPerView: 2,
-        spaceBetween: 20
+        spaceBetween: 20,
       },
       // when window is <= 992px
       992: {
         slidesPerView: 3,
-        spaceBetween: 20
+        spaceBetween: 20,
       },
       // when window is <= 1200px
       1200: {
         slidesPerView: 4,
-        spaceBetween: 20
-      }
-    }
-  });
-
-  /* Text Slider - Swiper */
-  var textSlider = new Swiper(".text-slider", {
-    autoplay: {
-      delay: 6000,
-      disableOnInteraction: false
+        spaceBetween: 20,
+      },
     },
-    loop: true,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev"
-    }
   });
 
   /* Video Lightbox - Magnific Popup */
@@ -102,26 +85,26 @@
       patterns: {
         youtube: {
           index: "youtube.com/",
-          id: function(url) {
+          id: function (url) {
             var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
             if (!m || !m[1]) return null;
             return m[1];
           },
-          src: "https://www.youtube.com/embed/%id%?autoplay=1"
+          src: "https://www.youtube.com/embed/%id%?autoplay=1",
         },
         vimeo: {
           index: "vimeo.com/",
-          id: function(url) {
+          id: function (url) {
             var m = url.match(
               /(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/
             );
             if (!m || !m[5]) return null;
             return m[5];
           },
-          src: "https://player.vimeo.com/video/%id%?autoplay=1"
-        }
-      }
-    }
+          src: "https://player.vimeo.com/video/%id%?autoplay=1",
+        },
+      },
+    },
   });
 
   /* Details Lightbox - Magnific Popup */
@@ -134,12 +117,12 @@
     preloader: false,
     midClick: true,
     removalDelay: 300,
-    mainClass: "my-mfp-slide-bottom"
+    mainClass: "my-mfp-slide-bottom",
   });
 
   /* Move Form Fields Label When User Types */
   // for input and textarea fields
-  $("input, textarea").keyup(function() {
+  $("input, textarea").keyup(function () {
     if ($(this).val() != "") {
       $(this).addClass("notEmpty");
     } else {
@@ -204,16 +187,16 @@
 window.cookieconsent.initialise({
   palette: {
     popup: { background: "white", text: "#555" },
-    button: { background: "#fd7e14", text: "white" }
+    button: { background: "#fd7e14", text: "white" },
   },
   content: {
     message:
       "Wir benutzen Cookies 🍪, um unsere Seite weiter optimieren zu können.",
-    dismiss: "Verstanden!"
+    dismiss: "Verstanden!",
   },
   showLink: false,
   position: "bottom-center",
   theme: "edgeless",
   revokable: false,
-  onStatusChange: console.log
+  onStatusChange: console.log,
 });
