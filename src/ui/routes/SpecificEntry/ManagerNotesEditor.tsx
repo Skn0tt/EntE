@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Grid, TextField, Typography } from "@material-ui/core";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { useDebouncedCallback } from "use-debounce";
+import * as _ from "lodash";
 
 const useTranslation = makeTranslationHook({
   de: {
@@ -51,11 +52,13 @@ const ManagerNotesEditor = (
   const translation = useTranslation();
   const { student, update } = props;
 
-  const currentValue = React.useRef<string>("");
+  const currentValue = React.useRef<string>();
 
   React.useEffect(() => {
     return () => {
-      update(currentValue.current);
+      if (!_.isUndefined(currentValue.current)) {
+        update(currentValue.current);
+      }
     };
   }, [currentValue]);
 
