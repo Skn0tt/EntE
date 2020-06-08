@@ -14,14 +14,14 @@ export class DeleteCascadePrefiledFor1591612977000
 
   oldFk = new AddPrefiledSlots1586165238000().fk;
 
-  async dropConstraint(constraint: string, queryRunner: QueryRunner) {
+  async dropForeignKey(fk: string, queryRunner: QueryRunner) {
     await queryRunner.query(
       `ALTER TABLE slot
-      DROP CONSTRAINT ${constraint};`
+      DROP FOREIGN_KEY ${fk};`
     );
   }
 
-  async dropExistingConstraint(queryRunner: QueryRunner) {
+  async dropExistingFk(queryRunner: QueryRunner) {
     const [{ CONSTRAINT_NAME }] = await queryRunner.query(
       `SELECT CONSTRAINT_NAME
       FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
@@ -29,11 +29,11 @@ export class DeleteCascadePrefiledFor1591612977000
       AND COLUMN_NAME = 'prefiledFor_id';`
     );
 
-    await this.dropConstraint(CONSTRAINT_NAME, queryRunner);
+    await this.dropForeignKey(CONSTRAINT_NAME, queryRunner);
   }
 
   async up(queryRunner: QueryRunner) {
-    await this.dropExistingConstraint(queryRunner);
+    await this.dropExistingFk(queryRunner);
     await queryRunner.query(
       `ALTER TABLE slot
       ADD CONSTRAINT FK_prefiledFor_id
@@ -42,7 +42,7 @@ export class DeleteCascadePrefiledFor1591612977000
   }
 
   async down(queryRunner: QueryRunner) {
-    await this.dropConstraint("FK_prefiledFor_id", queryRunner);
+    await this.dropForeignKey("FK_prefiledFor_id", queryRunner);
     await queryRunner.query(
       `ALTER TABLE slot
       ADD CONSTRAINT FK_prefiledFor_id
