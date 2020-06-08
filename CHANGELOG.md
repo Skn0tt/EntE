@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.39.3] - 2020-06-08
+
 - Fix bug where student notes disappeared when they weren't edited ([#390](https://gitlab.com/Skn0tt/EntE/-/issues/390))
 - Changed wording on "Eintragserstellungsfrist" to better match warning-semantics ([#389](https://gitlab.com/Skn0tt/EntE/-/issues/389))
 - Fix: When a student is deleted, take their prefiled slots with them ([#393](https://gitlab.com/Skn0tt/EntE/-/issues/393))
