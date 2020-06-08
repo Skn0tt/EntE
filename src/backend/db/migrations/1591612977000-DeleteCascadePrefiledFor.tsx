@@ -17,7 +17,7 @@ export class DeleteCascadePrefiledFor1591612977000
   async dropForeignKey(fk: string, queryRunner: QueryRunner) {
     await queryRunner.query(
       `ALTER TABLE slot
-      DROP FOREIGN_KEY ${fk};`
+      DROP FOREIGN KEY ${fk};`
     );
   }
 
