@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed wording on "Eintragserstellungsfrist" to better match warning-semantics ([#389](https://gitlab.com/Skn0tt/EntE/-/issues/389))
+
 ## [v0.39.2] - 2020-06-01
 
 - Show both current and latest EntE version on preferences page ([#387](https://gitlab.com/Skn0tt/EntE/-/issues/387))

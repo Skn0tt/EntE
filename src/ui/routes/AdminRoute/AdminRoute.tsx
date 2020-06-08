@@ -24,7 +24,7 @@ const useTranslation = makeTranslationHook({
     defaultLanguageDescription: "New users have this language set",
     entryCreationDeadline: "Entry creation deadline",
     entryCreationDeadlineDescription:
-      "Duration after which an entry can not be created anymore (in days).",
+      "Duration after which an entry is annotated as being too late (in days).",
     loginBanner: "Login-Banner",
     loginBannerDescription: "This text is shown on the login page.",
     parentSignature: {
@@ -48,7 +48,7 @@ const useTranslation = makeTranslationHook({
       "Neue Nutzer haben diese Sprache voreingestellt",
     entryCreationDeadline: "Eintrags-Erstellungs-Frist",
     entryCreationDeadlineDescription:
-      "Frist, nach der ein Eintrag nicht mehr erstellt werden kann (in Tagen).",
+      "Frist, nach der bei der Erstellung eines Eintrags angemahnt wird, dass er zu spät erstellt wurde (in Tagen).",
     loginBanner: "Login-Banner",
     loginBannerDescription: "Dieser Text wird auf der Login-Seite angezeigt.",
     parentSignature: {
