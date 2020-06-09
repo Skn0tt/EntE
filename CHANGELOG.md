@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix: Run migrations in transactions so nothing is destroyed on a faulty migration
+
 ## [v0.39.5] - 2020-06-08
 
 - Fix bug where student notes disappeared when they weren't edited ([#390](https://gitlab.com/Skn0tt/EntE/-/issues/390))

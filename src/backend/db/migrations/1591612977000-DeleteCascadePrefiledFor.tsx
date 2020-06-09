@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
 import { AddPrefiledSlots1586165238000 } from "./1586165238000-AddPrefiledSlots";
+import { TransactionMigration } from "./AsTransaction";
 
+@TransactionMigration()
 export class DeleteCascadePrefiledFor1591612977000
   implements MigrationInterface {
   name = "DeleteCascadePrefiledFor1591612977000";
