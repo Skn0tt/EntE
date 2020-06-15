@@ -1,5 +1,5 @@
 import { Injectable, Inject, OnModuleInit } from "@nestjs/common";
-import { Validation, Success, Fail, Maybe } from "monet";
+import { Validation, Success, Fail } from "monet";
 import { UserRepo } from "../db/user.repo";
 import {
   Roles,
@@ -23,6 +23,7 @@ import { WinstonLoggerService } from "../winston-logger.service";
 import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
+import { Config } from "../helpers/config";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -101,16 +102,14 @@ export class UsersService implements OnModuleInit {
         role: Roles.TEACHER,
         displayname: "Administrator",
         birthday: undefined,
-        password: "root",
-        username: "admin",
+        password: Config.getAdmin().password,
+        username: Config.getAdmin().username,
         email: "default-admin@ente.app",
       };
 
       const [created] = await this._createUsers(admin);
 
-      this.logger.log(
-        `Created admin user. Credentials: ${created.username}:${admin.password}`
-      );
+      this.logger.log(`Created admin user. Username: ${created.username}`);
     }
   }
 

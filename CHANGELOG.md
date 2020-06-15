@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Made default admin credentials configurable
 - Fix: Run migrations in transactions so nothing is destroyed on a faulty migration
 
 ## [v0.39.5] - 2020-06-08

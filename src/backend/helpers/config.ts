@@ -14,6 +14,10 @@ interface IConfig {
     rotationInterval: number;
     tokenExpiry: number;
   };
+  admin: {
+    username: string;
+    password: string;
+  };
   mail: {
     address: string;
     sender: string;
@@ -61,6 +65,8 @@ const config = ((): Readonly<IConfig> => {
     SENTRY_DSN,
     JWT_ROTATION_INTERVAL,
     JWT_EXPIRY,
+    ADMIN_USERNAME,
+    ADMIN_PASSWORD,
   } = envVars;
   return {
     baseUrl: ensureNotEnding("/")(BASE_URL ?? "http://localhost"),
@@ -73,6 +79,10 @@ const config = ((): Readonly<IConfig> => {
     signer: {
       rotationInterval: +(JWT_ROTATION_INTERVAL ?? 900 * 1000),
       tokenExpiry: +(JWT_EXPIRY ?? 900 * 1000),
+    },
+    admin: {
+      username: ADMIN_USERNAME ?? "admin",
+      password: ADMIN_PASSWORD ?? "root",
     },
     mail: {
       address: SMTP_ADDRESS ?? "ente@ente.app",
@@ -127,9 +137,12 @@ const getMailConfig = () => config.mail;
 
 const getSignerConfig = () => config.signer;
 
+const getAdmin = () => config.admin;
+
 export const Config = {
   getRedisConfig,
   isDevMode,
+  getAdmin,
   isProduction,
   getMailConfig,
   getMysqlConfig,
