@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added a new option to disable weekly summaries for a while ([#394](https://gitlab.com/Skn0tt/EntE/-/issues/394))
+
 ## [v0.39.6] - 2020-06-15
 
 - Made default admin credentials configurable

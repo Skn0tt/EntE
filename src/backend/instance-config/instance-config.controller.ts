@@ -31,6 +31,21 @@ export class InstanceConfigController {
     return await this.instanceConfigService.getInstanceConfig();
   }
 
+  @Get("isWeeklySummaryDisabled")
+  async isWeeklySummaryDisabled(): Promise<boolean> {
+    return await this.instanceConfigService.isWeeklySummaryDisabled();
+  }
+
+  @Put("isWeeklySummaryDisabled")
+  @UseGuards(AuthGuard("combined"))
+  async setIsWeeklySummaryDisabled(
+    @Req() req: Request,
+    @Ctx() ctx: RequestContext
+  ) {
+    const value = req.body === "true";
+    await this.instanceConfigService.setWeeklySummaryDisabled(value, ctx.user);
+  }
+
   @Get("entryCreationDeadline")
   async getEntryCreationDeadline(): Promise<number> {
     return await this.instanceConfigService.getEntryCreationDeadline();

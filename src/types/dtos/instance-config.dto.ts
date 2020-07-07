@@ -10,6 +10,7 @@ export class InstanceConfigDto {
   loginBanners: Record<Languages, string | null>;
   parentSignatureTimes: ParentSignatureTimesDto;
   entryCreationDeadline: number;
+  isWeeklySummaryDisabled: boolean;
 }
 
 export const DEFAULT_ENTRY_CREATION_DEADLINE = 14;
