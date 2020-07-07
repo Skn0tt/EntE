@@ -29,6 +29,7 @@ const INSTANCE_CONFIG_KEYS = {
   PARENT_SIGNATURE_NOTIFICATION_TIME:
     "INSTANCE_CONFIG__PARENT_SIGNATURE_NOTIFICATION_TIME",
   ENTRY_CREATION_DEADLINE: "INSTANCE_CONFIG__ENTRY_CREATION_DEADLINE",
+  DISABLE_WEEKLY_SUMMARY: "INSTANCE_CONFIG__DISABLE_WEEKLY_SUMMARY",
 };
 
 @Injectable()
@@ -63,7 +64,8 @@ export class InstanceConfigService implements OnModuleInit {
       ...languagesArr.map(INSTANCE_CONFIG_KEYS.LOGIN_BANNER),
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME,
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME,
-      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE
+      INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE,
+      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY
     );
 
     const loginBanners = _.fromPairs(
@@ -88,9 +90,16 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE
     ].map((s) => +s);
 
+    const isWeeklySummaryDisabled = values[
+      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY
+    ]
+      .map((s) => s === "true")
+      .orSome(false);
+
     return {
       defaultLanguage,
       loginBanners,
+      isWeeklySummaryDisabled,
       entryCreationDeadline: entryCreationDeadline.orSome(
         DEFAULT_ENTRY_CREATION_DEADLINE
       ),
@@ -268,5 +277,23 @@ export class InstanceConfigService implements OnModuleInit {
     }
 
     return Success<SetInstanceConfigValueFail, true>(true);
+  }
+
+  async isWeeklySummaryDisabled() {
+    const res = await this.keyValueStoreRepo.get(
+      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY
+    );
+    return res.contains("true");
+  }
+
+  async setWeeklySummaryDisabled(disabled: boolean, user: RequestContextUser) {
+    if (!user.isAdmin) {
+      return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
+    }
+
+    await this.keyValueStoreRepo.set(
+      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY,
+      disabled ? "true" : "false"
+    );
   }
 }

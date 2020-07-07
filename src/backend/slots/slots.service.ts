@@ -20,6 +20,7 @@ import { UsersService } from "../users/users.service";
 import * as _ from "lodash";
 import { Cron } from "@nestjs/schedule";
 import { Config } from "../helpers/config";
+import { InstanceConfigService } from "../instance-config/instance-config.service";
 
 export enum FindOneSlotFailure {
   SlotNotFound,
@@ -43,7 +44,9 @@ export class SlotsService {
     @Inject(SlotRepo) private readonly slotRepo: SlotRepo,
     @Inject(UserRepo) private readonly userRepo: UserRepo,
     @Inject(EmailService) private readonly emailService: EmailService,
-    @Inject(WinstonLoggerService) private readonly logger: LoggerService
+    @Inject(WinstonLoggerService) private readonly logger: LoggerService,
+    @Inject(InstanceConfigService)
+    private readonly instanceConfig: InstanceConfigService
   ) {}
 
   private async _findAll(
@@ -217,6 +220,11 @@ export class SlotsService {
 
   @Cron(Config.getWeeklySummaryCron())
   async dispatchWeeklySummary() {
+    if (await this.instanceConfig.isWeeklySummaryDisabled()) {
+      this.logger.log("Weekly summary is disabled. Skipping.");
+      return;
+    }
+
     this.logger.log("Starting to dispatch the weekly summary.");
     const teachingUsers = await this.userRepo.findWeeklySummaryRecipients();
     await Promise.all(
