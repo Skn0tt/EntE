@@ -87,14 +87,16 @@ export class SlotRepo {
     return slots.map(SlotRepo.toDto);
   }
 
-  async findByClassOfStudent(
+  async findByClassOfStudentOrPrefiledBy(
     _class: string,
+    teacherId: string,
     paginationInfo: PaginationInformation
   ): Promise<SlotDto[]> {
     const slots = await withPagination(paginationInfo)(
       this._slotQueryWithTeacher()
         .where("student.class = :_class", { _class })
         .orWhere("prefiledFor.class = :_class", { _class })
+        .orWhere("teacher._id = :teacherId", { teacherId })
     ).getMany();
 
     return slots.map(SlotRepo.toDto);

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug where managers couldn't see their own prefiled slots
+
 ## [v0.40.0] - 2020-07-07
 
 - Added a new option to disable weekly summaries for a while ([#394](https://gitlab.com/Skn0tt/EntE/-/issues/394))
