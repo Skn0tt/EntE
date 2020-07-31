@@ -56,8 +56,9 @@ export class SlotsService {
     switch (requestingUser.role) {
       case Roles.MANAGER:
         const user = (await requestingUser.getDto()).some();
-        return await this.slotRepo.findByClassOfStudent(
+        return await this.slotRepo.findByClassOfStudentOrPrefiledBy(
           user.class!,
+          requestingUser.id,
           paginationInfo
         );
 
