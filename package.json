@@ -52,7 +52,7 @@
     "mui-datatables": "^2.15.0",
     "mui-downshift": "^1.2.1",
     "mysql": "^2.16.0",
-    "next": "^9.4.1",
+    "next": "^9.5.1",
     "nodemailer": "^4.6.8",
     "otp-input-react": "0.2.0",
     "papaparse": "^4.6.1",
