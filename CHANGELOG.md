@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fix bug where managers couldn't see their own prefiled slots
+- Add support for ETag-based caching on API requests ([#368](https://gitlab.com/Skn0tt/EntE/-/issues/368))
 
 ## [v0.40.0] - 2020-07-07
 
