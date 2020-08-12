@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug where old class filters were overriden when creating a new one
 - Fix bug where managers couldn't see their own prefiled slots
 - Add support for ETag-based caching on API requests ([#368](https://gitlab.com/Skn0tt/EntE/-/issues/368))
 

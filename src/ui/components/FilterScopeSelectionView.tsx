@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FilterScope } from "../filter-scope";
-import { MapStateToProps, MapDispatchToPropsParam, connect } from "react-redux";
-import { AppState, getFilterScope, setFilterScope, getRole } from "../redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getFilterScope, setFilterScope, getRole } from "../redux";
 import { DropdownInput } from "../elements/DropdownInput";
 import { makeTranslationHook } from "../helpers/makeTranslationHook";
 import { Roles } from "@@types";
@@ -40,40 +40,11 @@ const ALL_FILTER_TYPES: FilterScope[] = [
   "not_reviewed",
 ];
 
-interface FilterScopeSelectionViewOwnProps {}
-
-interface FilterScopeSelectionViewStateProps {
-  filterScope: FilterScope;
-  role: Roles;
-}
-const mapStateToProps: MapStateToProps<
-  FilterScopeSelectionViewStateProps,
-  FilterScopeSelectionViewOwnProps,
-  AppState
-> = (state) => ({
-  filterScope: getFilterScope(state),
-  role: getRole(state).some(),
-});
-
-interface FilterScopeSelectionViewDispatchProps {
-  setFilterScope: (FilterScope: FilterScope) => void;
-}
-const mapDispatchToProps: MapDispatchToPropsParam<
-  FilterScopeSelectionViewDispatchProps,
-  FilterScopeSelectionViewOwnProps
-> = (dispatch) => ({
-  setFilterScope: (scope) => dispatch(setFilterScope(scope)),
-});
-
-type FilterScopeSelectionViewProps = FilterScopeSelectionViewOwnProps &
-  FilterScopeSelectionViewDispatchProps &
-  FilterScopeSelectionViewStateProps;
-
-const FilterScopeSelectionView: React.FC<FilterScopeSelectionViewProps> = (
-  props
-) => {
+function FilterScopeSelectionView() {
+  const filterScope = useSelector(getFilterScope);
+  const role = useSelector(getRole).some();
+  const dispatch = useDispatch();
   const translation = useTranslation();
-  const { filterScope, setFilterScope, role } = props;
 
   const availableFilterTypes = [Roles.MANAGER, Roles.TEACHER].includes(role)
     ? ALL_FILTER_TYPES
@@ -84,16 +55,13 @@ const FilterScopeSelectionView: React.FC<FilterScopeSelectionViewProps> = (
       options={availableFilterTypes}
       getOptionLabel={(o) => translation[o]}
       value={filterScope}
-      onChange={setFilterScope}
+      onChange={(scope) => dispatch(setFilterScope(scope))}
       label={translation.label}
       fullWidth
       variant="outlined"
       margin="dense"
     />
   );
-};
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterScopeSelectionView);
+export default FilterScopeSelectionView;

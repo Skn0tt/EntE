@@ -101,7 +101,7 @@ function useUserMetaJSON(): UseUserMetaJSONResult {
   >> = useCallback(
     (action) => {
       setMeta((prevMeta) => {
-        const prevMetaJson = parseJsonWithFallback(meta, {});
+        const prevMetaJson = parseJsonWithFallback(prevMeta, {});
         const nextMeta =
           typeof action === "function" ? action(prevMetaJson) : action;
 
