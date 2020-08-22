@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Extend SchiLD-Import to support two parents
+
 ## [v0.40.1] - 2020-08-12
 
 - Fix bug where old class filters were overriden when creating a new one
