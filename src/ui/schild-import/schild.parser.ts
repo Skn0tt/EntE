@@ -9,6 +9,10 @@ const NACHNAME = "Nachname";
 const ABSCHLUSS_DATUM = "vorauss. Abschlussdatum";
 const ERZIEHER_1_VORNAME = "Erzieher 1: Vorname";
 const ERZIEHER_1_NACHNAME = "Erzieher 1: Nachname";
+const ERZIEHER_2_VORNAME = "Erzieher 2: Vorname";
+const ERZIEHER_2_NACHNAME = "Erzieher 2: Nachname";
+const ERZIEHER_1_EMAIL = "Erzieher 1: E-Mail";
+const ERZIEHER_2_EMAIL = "Erzieher 2: E-Mail";
 const ERZIEHER_EMAIL = "Erzieher: E-Mail";
 const EMAIL_PRIVAT = "E-Mail (privat)";
 const GEBURTSDATUM = "Geburtsdatum";
@@ -80,39 +84,81 @@ const parseInput = (input: any[]) => {
     gradDate: v[ABSCHLUSS_DATUM],
     email: v[EMAIL_PRIVAT],
     birthday: v[GEBURTSDATUM],
-    parent: {
+    parent1: {
       firstName: v[ERZIEHER_1_VORNAME],
       lastName: v[ERZIEHER_1_NACHNAME],
-      email: v[ERZIEHER_EMAIL],
+      email: v[ERZIEHER_1_EMAIL],
     },
+    parent2: {
+      firstName: v[ERZIEHER_2_VORNAME],
+      lastName: v[ERZIEHER_2_NACHNAME],
+      email: v[ERZIEHER_2_EMAIL],
+    },
+    parentEmail: v[ERZIEHER_EMAIL]
   }));
 
-  const users = _.flatMap<any, CreateUserDto & { parentEmail?: string }>(
-    inputRows,
-    (v) => [
-      {
-        username: deriveUsername(v.firstName, v.lastName),
-        displayname: deriveDisplayname(v.firstName, v.lastName),
-        birthday: parseDateToISO(v.birthday),
-        class: "" + parseYear(parseDateToISO(v.gradDate)),
-        email: v.email,
-        role: Roles.STUDENT,
-        parentEmail: v.parent.email,
-        isAdmin: false,
-        children: [],
-      },
-      {
-        username: sanitizeName(v.parent.lastName),
-        displayname: deriveDisplayname(v.parent.firstName, v.parent.lastName),
-        email: v.parent.email,
+  const users = _.flatMap<
+    typeof inputRows[0],
+    CreateUserDto & { parentEmail?: string[] }
+  >(inputRows, (v: typeof inputRows[0]) => {
+    const child = {
+      username: deriveUsername(v.firstName, v.lastName),
+      displayname: deriveDisplayname(v.firstName, v.lastName),
+      birthday: parseDateToISO(v.birthday),
+      class: "" + parseYear(parseDateToISO(v.gradDate)),
+      email: v.email,
+      role: Roles.STUDENT,
+      parentEmail: [] as string[],
+      isAdmin: false,
+      children: [],
+    };
+
+    const result: (CreateUserDto & { parentEmail?: string[] })[] = [child];
+
+    if (v.parent1.email) {
+      child.parentEmail.push(v.parent1.email);
+      result.push({
+        username: deriveUsername(v.parent1.firstName, v.parent1.lastName),
+        displayname: deriveDisplayname(v.parent1.firstName, v.parent1.lastName),
+        email: v.parent1.email,
         role: Roles.PARENT,
         class: undefined,
         birthday: undefined,
         isAdmin: false,
         children: [],
-      },
-    ]
-  );
+      });
+    }
+
+    if (v.parent2.email) {
+      child.parentEmail.push(v.parent2.email);
+      result.push({
+        username: deriveUsername(v.parent2.firstName, v.parent2.lastName),
+        displayname: deriveDisplayname(v.parent2.firstName, v.parent2.lastName),
+        email: v.parent2.email,
+        role: Roles.PARENT,
+        class: undefined,
+        birthday: undefined,
+        isAdmin: false,
+        children: [],
+      });
+    }
+
+    if (child.parentEmail.length === 0 && v.parentEmail) {
+      child.parentEmail.push(v.parentEmail);
+      result.push({
+        username: deriveUsername(v.parent1.firstName, v.parent1.lastName),
+        displayname: deriveDisplayname(v.parent1.firstName, v.parent1.lastName),
+        email: v.parentEmail,
+        role: Roles.PARENT,
+        class: undefined,
+        birthday: undefined,
+        isAdmin: false,
+        children: [],
+      });
+    }
+    
+    return result;
+  });
 
   const uniqueUsers = _.uniqBy(users, (u) =>
     [u.username, u.displayname, u.email].join(";")
@@ -130,7 +176,7 @@ const parseInput = (input: any[]) => {
   const parentsWithChildrenUsernames = parents.map((p) => ({
     ...p,
     children: students
-      .filter((s) => s.parentEmail === p.email)
+      .filter((s) => s.parentEmail!.includes(p.email))
       .map((s) => s.username),
   }));
 
