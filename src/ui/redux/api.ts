@@ -45,6 +45,7 @@ const axiosStandardParams = (token: string): AxiosRequestConfig => ({
 const axiosTokenParams = (token: string): AxiosRequestConfig => ({
   headers: {
     Authorization: "Bearer " + token,
+    "X-Authorization": "Bearer " + token
   },
 });
 

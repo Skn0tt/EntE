@@ -38,7 +38,7 @@ export class CombinedStrategy extends PassportStrategy(
       );
     }
 
-    const { authorization = "" } = req.headers;
+    const authorization = (req.headers["x-authorization"] ?? req.headers.authorization ?? "") as string;
     const isBearerAuth = BEARER_REGEX.test(authorization);
     if (isBearerAuth) {
       const token = authorization.match(BEARER_REGEX)![0];
