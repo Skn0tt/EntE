@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Temporarily fix bug where entries could not be created
+
 ## [v0.40.2] - 2020-08-22
 
 - Extend SchiLD-Import to support two parents

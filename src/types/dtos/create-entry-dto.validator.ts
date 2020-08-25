@@ -8,8 +8,10 @@ import { isBetweenDates } from "../validators/is-between-dates";
 export const CreateEntryDtoValidator = makeDtoValidator(
   CreateEntryDto,
   (dto, errors) => {
-    const amountOfSlots = dto.slots.length + dto.prefiledSlots.length;
-    if (amountOfSlots <= 0) {
+    const numSlots = dto.slots.length;
+    const numPrefiledSlots = dto.prefiledSlots?.length ?? 0; // TODO: find out why this can be undefined
+    const totalSlots = numSlots + numPrefiledSlots;
+    if (totalSlots <= 0) {
       errors.push("Please provide slots or prefiledSlots");
     }
 
