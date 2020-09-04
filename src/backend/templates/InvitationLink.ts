@@ -30,7 +30,11 @@ const DE = {
             Sie wurden eingeladen, auf EntE die Fehlstunden ihrer Schüler einzusehen.
             {{/ifEqual}}
 
+            <br />
+
             Ihr Benutzername lautet <b>{{username}}</b>.
+
+            <br />
 
             Um EntE benutzen zu können, setzen Sie bitte ihr Passwort mithilfe des folgenden Links.
             
@@ -74,7 +78,12 @@ const EN = {
             You have been invited to view your students missed lessons on EntE.
             {{/ifEqual}}
 
+            <br />
+
             Your username is <b>{{username}}</b>.
+
+            <br />
+            
             In order to be able to use EntE, please set your password using the following link.
 
             <br /> <br />
