@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added username to invitation link
+
 ## [v0.40.3] - 2020-08-25
 
 - Temporarily fix bug where entries could not be created

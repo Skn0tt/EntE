@@ -29,6 +29,9 @@ const DE = {
             {{#ifEqual role "${Roles.TEACHER}"}}
             Sie wurden eingeladen, auf EntE die Fehlstunden ihrer Schüler einzusehen.
             {{/ifEqual}}
+
+            Ihr Benutzername lautet <b>{{username}}</b>.
+
             Um EntE benutzen zu können, setzen Sie bitte ihr Passwort mithilfe des folgenden Links.
             
             <br /> <br />
@@ -70,6 +73,8 @@ const EN = {
             {{#ifEqual role "${Roles.TEACHER}"}}
             You have been invited to view your students missed lessons on EntE.
             {{/ifEqual}}
+
+            Your username is <b>{{username}}</b>.
             In order to be able to use EntE, please set your password using the following link.
 
             <br /> <br />
@@ -87,6 +92,7 @@ const EN = {
 interface InvitationLinkVariables {
   role: Roles;
   link: string;
+  username: string;
 }
 
 export const InvitationLink = makeMultiLangTemplate<InvitationLinkVariables>({
