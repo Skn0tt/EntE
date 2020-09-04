@@ -1,5 +1,5 @@
 {
-  "version": "0.40.3",
+  "version": "0.40.4",
   "private": true,
   "scripts": {
     "dev": "concurrently --raw \"yarn:dev:deps up > /dev/null\" \"yarn:dev:next\"",
