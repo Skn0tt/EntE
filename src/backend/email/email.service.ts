@@ -152,7 +152,7 @@ export class EmailService {
 
   async dispatchInvitationLink(link: string, user: UserDto) {
     await this.dispatchTemplate(
-      (r) => InvitationLink(link, user.role, r.language),
+      (r) => InvitationLink(r.language, { role: user.role, link }),
       [user]
     );
   }
