@@ -50,6 +50,11 @@ export const createTheme = _.memoize(
         MUIDataTableHeadCell: {
           toolButton: { display: "flex" },
         },
+        MuiTableCell: {
+          root: {
+            padding: "4px 4px 4px 24px",
+          },
+        },
         MUIDataTableToolbar: {
           root: { minHeight: "auto" },
         },

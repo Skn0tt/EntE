@@ -4,6 +4,13 @@ import { makeStyles } from "@material-ui/styles";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
 
 const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    maxWidth: "100%",
+  },
+  label: {
+    whiteSpace: "normal",
+    textAlign: "center",
+  },
   [EntryReasonCategoriesTranslation.en.competition]: {
     backgroundColor: "rgb(222, 50, 21)",
     color: theme.palette.common.white,
@@ -66,7 +73,10 @@ export const EntryReasonCategoryChip: React.FC<EntryReasonCategoryChipProps> = (
 
   return (
     <Chip
-      className={classes[reasonCategoryTranslated]}
+      className={classes.root + " " + classes[reasonCategoryTranslated]}
+      classes={{
+        label: classes.label,
+      }}
       label={reasonCategoryTranslated}
     />
   );

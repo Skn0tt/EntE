@@ -14,7 +14,7 @@ export class WinstonLoggerService implements LoggerService {
   }
 
   static error(message: any, trace?: any, context?: any) {
-    logger.error(message, trace, context);
+    logger.error(trace, message, context);
   }
 
   static warn(message: any, context?: any) {

@@ -213,11 +213,28 @@ export const Entries = () => {
           },
           {
             name: lang.headers.date,
-            extract: (e) => e.get("date"),
+            extract: (e) => {
+              if (e.get("dateEnd")) {
+                return e.get("date") + ";" + e.get("dateEnd");
+              }
+
+              return e.get("date");
+            },
             options: {
               filter: false,
-              customBodyRender: (isoTime: string) =>
-                format(parseISO(isoTime), "PP", { locale: lang.locale }),
+              customBodyRender: (isoTime: string) => {
+                if (isoTime.includes(";")) {
+                  const [date, dateEnd] = isoTime.split(";");
+
+                  return (
+                    format(parseISO(date), "PP", { locale: lang.locale }) +
+                    " - " +
+                    format(parseISO(dateEnd), "PP", { locale: lang.locale })
+                  );
+                }
+
+                return format(parseISO(isoTime), "PP", { locale: lang.locale });
+              },
             },
           },
           {
