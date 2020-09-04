@@ -1,5 +1,6 @@
 import { Languages } from "@@types";
 import { mjml2html } from "../helpers/mjml";
+import "./register-helpers";
 
 interface Template<T> {
   title: string;
