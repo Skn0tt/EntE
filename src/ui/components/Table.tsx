@@ -122,6 +122,9 @@ export function Table<T>(props: TableProps<T>) {
   const [sortedColumn = [-1, "asc"], updateSortedColumn] = useSessionStorage<
     [string, "asc" | "desc"]
   >(`${persistenceKey}-sortedColumn`);
+  const [rowsPerPage = 20, updateRowsPerPage] = useSessionStorage<number>(
+    `${persistenceKey}-rowsPerPage`
+  );
 
   const columnsWithPersistedFilter = columns.map((column, i) => {
     const { name } = column;
@@ -168,7 +171,7 @@ export function Table<T>(props: TableProps<T>) {
       title={title as any}
       options={{
         searchText,
-        rowsPerPage: 50,
+        rowsPerPage,
         rowsPerPageOptions: [20, 50, 100],
         selectableRows: "none",
         responsive: "scrollMaxHeight",
@@ -176,6 +179,7 @@ export function Table<T>(props: TableProps<T>) {
         textLabels: translation.textLabels,
         viewColumns: false,
         onSearchChange: updateSearchText,
+        onChangeRowsPerPage: updateRowsPerPage,
         onFilterChange: (changedColumn: string, filterLists: any) => {
           updateFilterLists(filterLists);
         },
