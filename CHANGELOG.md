@@ -8,14 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Added username to invitation link
-
-## [v0.40.3] - 2020-08-25
-
-- Temporarily fix bug where entries could not be created
 - Persist number of rows per page
 - display end of entry in table
 - fix styling of column "reason"
 - improve error loggin
+
+## [v0.40.3] - 2020-08-25
+
+- Temporarily fix bug where entries could not be created
 
 ## [v0.40.2] - 2020-08-22
 
