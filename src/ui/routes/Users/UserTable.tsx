@@ -16,6 +16,7 @@ const useTranslation = makeTranslationHook({
       firstName: "First Name",
       lastName: "Last Name",
       email: "Email",
+      class: "Class",
       role: "Role",
     },
   },
@@ -25,6 +26,7 @@ const useTranslation = makeTranslationHook({
       firstName: "Vorname",
       lastName: "Nachname",
       email: "Email",
+      class: "Klasse / Stufe",
       role: "Rolle",
     },
   },
@@ -73,6 +75,13 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = (
           extract: (user) => user.get("email"),
           options: {
             filter: false,
+          },
+        },
+        {
+          name: lang.headers.class,
+          extract: (user) => user.get("class"),
+          options: {
+            filter: true,
           },
         },
         {
