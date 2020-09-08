@@ -15,6 +15,7 @@ const baseUser = {
   role: Roles.STUDENT,
   email: "max@mustermann.de",
   isAdmin: false,
+  twoFAenabled: false,
 };
 
 describe("UserDto", () => {

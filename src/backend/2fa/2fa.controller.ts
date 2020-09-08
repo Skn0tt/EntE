@@ -5,6 +5,7 @@ import {
   Post,
   ConflictException,
   Get,
+  Param,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { TwoFAService, TwoFAEnableFail } from "./2fa.service";
@@ -40,6 +41,14 @@ export class TwoFAController {
 
   @Post("disable")
   async disable(@Ctx() ctx: RequestContext) {
-    await this.twoFAService.disable(ctx.user);
+    await this.twoFAService.disable(ctx.user.id);
+  }
+
+  @Post("disable/:userId")
+  async disableForUser(
+    @Param("userId") id: string,
+    @Ctx() ctx: RequestContext
+  ) {
+    await this.twoFAService.disableForUser(id, ctx.user);
   }
 }

@@ -30,6 +30,7 @@ const admin: UserDto & RequestContextUser = withGetDto({
   role: Roles.MANAGER,
   isAdmin: true,
   username: "admin",
+  twoFAenabled: false,
 });
 
 const tomTallis: UserDto & RequestContextUser = withGetDto({
@@ -45,6 +46,7 @@ const tomTallis: UserDto & RequestContextUser = withGetDto({
   role: Roles.STUDENT,
   isAdmin: false,
   username: "tomtallis",
+  twoFAenabled: false,
 });
 
 const benBongo: UserDto & RequestContextUser = withGetDto({
@@ -60,6 +62,7 @@ const benBongo: UserDto & RequestContextUser = withGetDto({
   role: Roles.TEACHER,
   isAdmin: false,
   username: "benbongo",
+  twoFAenabled: false,
 });
 
 const slot: SlotDto = {

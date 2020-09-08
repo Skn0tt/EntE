@@ -40,6 +40,7 @@ export interface SensitiveUserDto extends BaseUserDto {
   class?: string;
   birthday?: string;
   managerNotes: string;
+  twoFAenabled: boolean;
 }
 
 export type BlackedUserDto = BaseUserDto & Partial<SensitiveUserDto>;
@@ -90,6 +91,10 @@ export class UserDto implements BlackedUserDto {
   @IsOptional()
   @IsString()
   subscribedToWeeklySummary?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  twoFAenabled: boolean;
 }
 
 const ADULTHOOD_AGE = 18;
