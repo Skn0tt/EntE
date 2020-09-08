@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Allow filtering by class
+
 - Added username to invitation link
 - Persist number of rows per page
 - display end of entry in table
