@@ -10,43 +10,43 @@ import parse from "./parser";
 import { Roles, CreateUserDto } from "@@types";
 
 const sampleData = `
-username,displayname,email,password,role,birthday,class,children
-schüler,S. Schüler,sschüler@email.com,,student,2100-04-02,2019,
-lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
-vater,Piet Vater,pvater@arcor.de,,parent,,,schüler
-leiter,l.leiter,leiter@email.de,,manager,,2019,
+username,firstName,lastName,email,password,role,birthday,class,children
+schüler,S,Schüler,sschüler@email.com,,student,2100-04-02,2019,
+lehrer,B,Lehrer,blehrer@email.de,,teacher,,,
+vater,Piet,Vater,pvater@arcor.de,,parent,,,schüler
+leiter,L,leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataError = `
-username,displayname,email,password,role,birthday,class,children
-schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
-lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
-vater,PVater,pvaterarcor.de,parent,,,,schüler
-leiter,l.leiter,leiter@email.de,,manager,,2019,
+username,firstName,lastName,email,password,role,birthday,class,children
+schüler,S,Schüler,sschüler@email.com,,student,2100-01-01,2019,
+lehrer,B,Lehrer,blehrer@email.de,,teacher,,,
+vater,P,Vater,pvaterarcor.de,parent,,,,schüler
+leiter,l,leiter,leiter@email.de,,manager,,2019,
 `;
 
 const sampleDataUnknownStudent = `
-username,displayname,email,password,role,birthday,class,children
-schüler,S. Schüler,sschüler@email.com,,student,2100-01-01,2019,
-lehrer,B. Lehrer,blehrer@email.de,,teacher,,,
-vater,Piet Vater,pvater@arcor.de,,parent,,,schüler2
-leiter,l.leiter,leiter@email.de,,manager,,2019,
+username,firstName,lastName,email,password,role,birthday,class,children
+schüler,S,Schüler,sschüler@email.com,,student,2100-01-01,2019,
+lehrer,B,Lehrer,blehrer@email.de,,teacher,,,
+vater,Piet,Vater,pvater@arcor.de,,parent,,,schüler2
+leiter,l,Leiter,leiter@email.de,,manager,,2019,
 `;
 
 const exampleImport = `
-username;displayname;email;password;role;birthday;class;children
-norahparis;Norah Paris;test@test.com;p4sswort!;student;2000-01-01;2019;
-marcusparis;Marcus Paris;test@test.com;p4sswort!;student;2100-01-01;2021;
-seymourparis;Seymour Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
-candaceparis;Candace Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
-montyabrams;Monty Abrams;test@test.com;p4sswort!;student;2100-01-01;2019;
-penabrams;Pen Abrams;test@test.com;p4sswort!;student;2100-01-01;2021;
-hermanabrams;Herman Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
-claudabrams;Claud Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
-orvillekeighley;Orville Keighley;test@test.com;p4sswort!;teacher;;;
-luannedavidson;Luanne Davidson;test@test.com;p4sswort!;teacher;;;
-rufuskay;Rufus Kay;test@test.com;p4sswort!;manager;;2019;
-daytonkimberly;Dayton Kimberly;test@test.com;p4sswort!;manager;;2021;
+username;firstName;lastName;email;password;role;birthday;class;children
+norahparis;Norah;Paris;test@test.com;p4sswort!;student;2000-01-01;2019;
+marcusparis;Marcus;Paris;test@test.com;p4sswort!;student;2100-01-01;2021;
+seymourparis;Seymour;Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
+candaceparis;Candace;Paris;test@test.com;p4sswort!;parent;;;norahparis:marcusparis
+montyabrams;Monty;Abrams;test@test.com;p4sswort!;student;2100-01-01;2019;
+penabrams;Pen;Abrams;test@test.com;p4sswort!;student;2100-01-01;2021;
+hermanabrams;Herman;Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
+claudabrams;Claud;Abrams;test@test.com;p4sswort!;parent;;;montyabrams:penabrams
+orvillekeighley;Orville;Keighley;test@test.com;p4sswort!;teacher;;;
+luannedavidson;Luanne;Davidson;test@test.com;p4sswort!;teacher;;;
+rufuskay;Rufus;Kay;test@test.com;p4sswort!;manager;;2019;
+daytonkimberly;Dayton;Kimberly;test@test.com;p4sswort!;manager;;2021;
 `;
 
 describe("parse", () => {
@@ -54,7 +54,8 @@ describe("parse", () => {
     const expectedResult: CreateUserDto[] = [
       {
         username: "norahparis",
-        displayname: "Norah Paris",
+        firstName: "Norah",
+        lastName: "Paris",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -65,7 +66,8 @@ describe("parse", () => {
       },
       {
         username: "marcusparis",
-        displayname: "Marcus Paris",
+        firstName: "Marcus",
+        lastName: "Paris",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -76,7 +78,8 @@ describe("parse", () => {
       },
       {
         username: "seymourparis",
-        displayname: "Seymour Paris",
+        firstName: "Seymour",
+        lastName: "Paris",
         children: ["norahparis", "marcusparis"],
         email: "test@test.com",
         password: "p4sswort!",
@@ -87,7 +90,8 @@ describe("parse", () => {
       },
       {
         username: "candaceparis",
-        displayname: "Candace Paris",
+        firstName: "Candace",
+        lastName: "Paris",
         children: ["norahparis", "marcusparis"],
         email: "test@test.com",
         password: "p4sswort!",
@@ -98,7 +102,8 @@ describe("parse", () => {
       },
       {
         username: "montyabrams",
-        displayname: "Monty Abrams",
+        firstName: "Monty",
+        lastName: "Abrams",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -109,7 +114,8 @@ describe("parse", () => {
       },
       {
         username: "penabrams",
-        displayname: "Pen Abrams",
+        firstName: "Pen",
+        lastName: "Abrams",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -120,7 +126,8 @@ describe("parse", () => {
       },
       {
         username: "hermanabrams",
-        displayname: "Herman Abrams",
+        firstName: "Herman",
+        lastName: "Abrams",
         children: ["montyabrams", "penabrams"],
         email: "test@test.com",
         password: "p4sswort!",
@@ -131,7 +138,8 @@ describe("parse", () => {
       },
       {
         username: "claudabrams",
-        displayname: "Claud Abrams",
+        firstName: "Claud",
+        lastName: "Abrams",
         children: ["montyabrams", "penabrams"],
         email: "test@test.com",
         password: "p4sswort!",
@@ -142,7 +150,8 @@ describe("parse", () => {
       },
       {
         username: "orvillekeighley",
-        displayname: "Orville Keighley",
+        firstName: "Orville",
+        lastName: "Keighley",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -153,7 +162,8 @@ describe("parse", () => {
       },
       {
         username: "luannedavidson",
-        displayname: "Luanne Davidson",
+        firstName: "Luanne",
+        lastName: "Davidson",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -164,7 +174,8 @@ describe("parse", () => {
       },
       {
         username: "rufuskay",
-        displayname: "Rufus Kay",
+        firstName: "Rufus",
+        lastName: "Kay",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -175,7 +186,8 @@ describe("parse", () => {
       },
       {
         username: "daytonkimberly",
-        displayname: "Dayton Kimberly",
+        firstName: "Dayton",
+        lastName: "Kimberly",
         children: [],
         isAdmin: false,
         email: "test@test.com",
@@ -193,7 +205,8 @@ describe("parse", () => {
     const expectedResult: CreateUserDto[] = [
       {
         username: "schüler",
-        displayname: "S. Schüler",
+        firstName: "S",
+        lastName: "Schüler",
         email: "sschüler@email.com",
         children: [],
         isAdmin: false,
@@ -204,7 +217,8 @@ describe("parse", () => {
       },
       {
         username: "lehrer",
-        displayname: "B. Lehrer",
+        firstName: "B",
+        lastName: "Lehrer",
         email: "blehrer@email.de",
         children: [],
         isAdmin: false,
@@ -215,7 +229,8 @@ describe("parse", () => {
       },
       {
         username: "vater",
-        displayname: "Piet Vater",
+        firstName: "Piet",
+        lastName: "Vater",
         email: "pvater@arcor.de",
         children: ["schüler"],
         role: Roles.PARENT,
@@ -226,7 +241,8 @@ describe("parse", () => {
       },
       {
         username: "leiter",
-        displayname: "l.leiter",
+        firstName: "L",
+        lastName: "leiter",
         email: "leiter@email.de",
         birthday: undefined,
         role: Roles.MANAGER,

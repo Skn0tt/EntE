@@ -22,7 +22,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import {
   Roles,
   CreateUserDto,
-  isValidDisplayname,
+  isValidName,
   isValidUsername,
   isValidEmail,
   isValidPassword,
@@ -56,7 +56,8 @@ export const lang = {
     titles: {
       newUser: "New User",
       username: "Username",
-      displayname: "Displayname",
+      firstName: "First Name",
+      lastName: "Last Name",
       email: "Email",
       password: "Password",
       role: "Role",
@@ -77,7 +78,8 @@ export const lang = {
     titles: {
       newUser: "Neuer Nutzer",
       username: "Nutzername",
-      displayname: "Displayname",
+      firstName: "Vorname",
+      lastName: "Nachname",
       email: "Email",
       password: "Passwort",
       role: "Rolle",
@@ -101,7 +103,8 @@ const useLang = makeTranslationHook(lang);
 const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
   const {
     birthday,
-    displayname,
+    firstName,
+    lastName,
     email,
     children,
     password,
@@ -113,7 +116,8 @@ const cleanUpDtoByRole = (dto: CreateUserDto): CreateUserDto => {
   } = dto;
 
   const result: CreateUserDto = {
-    displayname,
+    firstName,
+    lastName,
     email,
     password,
     role,
@@ -191,22 +195,31 @@ function CreateUser(props: CreateUserOwnProps) {
       <DialogTitle>{translation.titles.newUser}</DialogTitle>
       <DialogContent>
         <form onKeyPress={handleKeyPress}>
-          <Grid container direction="row">
+          <Grid container direction="row" spacing={8}>
+            <Grid item xs={12} lg={6}>
+              <TextInput
+                label={translation.titles.firstName}
+                value={create.firstName || ""}
+                onChange={update("firstName")}
+                validator={isValidName}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} lg={6}>
+              <TextInput
+                label={translation.titles.lastName}
+                value={create.lastName || ""}
+                onChange={update("lastName")}
+                validator={isValidName}
+                required
+              />
+            </Grid>
             <Grid item xs={12} lg={6}>
               <TextInput
                 value={create.username || ""}
                 label={translation.titles.username}
                 onChange={update("username")}
                 validator={isValidUsername}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} lg={6}>
-              <TextInput
-                label={translation.titles.displayname}
-                value={create.displayname || ""}
-                onChange={update("displayname")}
-                validator={isValidDisplayname}
                 required
               />
             </Grid>

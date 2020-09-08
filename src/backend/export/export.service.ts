@@ -44,7 +44,8 @@ export class ExportService {
         headers: [
           "id",
           "username",
-          "displayname",
+          "firstName",
+          "lastName",
           "email",
           "role",
           "birthday",
@@ -54,7 +55,8 @@ export class ExportService {
         rows: users.map((u) => [
           u.id,
           u.username,
-          u.displayname,
+          u.firstName,
+          u.lastName,
           u.email,
           u.role,
           "" + u.birthday,

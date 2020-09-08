@@ -89,12 +89,6 @@ function construct_username () {
   echo "$firstname.$lastname"
 }
 
-function construct_displayname () {
-  firstname=$1
-  lastname=$2
-  echo "$firstname $lastname"
-}
-
 function construct_email () {
   firstname=$1
   lastname=$2
@@ -109,13 +103,13 @@ function anonymise_user () {
   new_lastname=$(draw_lastname $user_id);
 
   new_username=$(construct_username $new_firstname $new_lastname);
-  new_displayname=$(construct_displayname $new_firstname $new_lastname);
   new_email=$(construct_email $new_firstname $new_lastname);
 
   printf "$($mysql_bin -u $mysql_username -p$mysql_password $tmp_db_name -N -e "
     UPDATE user
     SET username = '$new_username',
-        displayname = '$new_displayname',
+        firstName = '$new_firstname',
+        lastName = '$new_lastname',
         email = '$new_email',
         password = NULL
     WHERE _id = '$user_id';

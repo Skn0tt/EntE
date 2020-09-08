@@ -21,6 +21,8 @@ describe.skip("SpecificUser", () => {
     id: userId,
     children: [],
     displayname: "Horst Hansen",
+    firstName: "Horst",
+    lastName: "Hansen",
     email: "hort@hansen.de",
     birthday: "2100-01-01",
     role: Roles.STUDENT,

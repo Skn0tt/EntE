@@ -53,7 +53,8 @@ const parseCSV = async (
     const res: CreateUserDto = {
       isAdmin: false,
       username: row.username,
-      displayname: row.displayname,
+      firstName: row.firstName,
+      lastName: row.lastName,
       email: row.email,
       role: row.role,
       birthday: !!row.birthday ? row.birthday : undefined,

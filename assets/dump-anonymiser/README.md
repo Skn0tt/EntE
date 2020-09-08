@@ -3,7 +3,8 @@
 This CLI tool takes an SQL-Dump of EntE's database and anonymises the following fields:
 
 - username
-- displayname
+- firstName
+- lastName
 - email-address
 
 It sets the password to NULL for all accounts, so they can be reset using the password reset feature.

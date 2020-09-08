@@ -17,6 +17,8 @@ const userId = "fdas90ß9sß0";
 const user = new UserN({
   id: userId,
   children: [],
+  firstName: "Horst",
+  lastName: "Hansen",
   displayname: "Horst Hansen",
   email: "hort@hansen.de",
   birthday: "2100-01-01",
@@ -26,6 +28,8 @@ const user = new UserN({
 const user2 = new UserN({
   id: "jkldsfjlk",
   children: [],
+  firstName: "Hanni",
+  lastName: "Ball",
   displayname: "Hanni Ball",
   email: "hanni@ball.de",
   birthday: "2100-01-01",

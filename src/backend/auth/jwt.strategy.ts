@@ -25,7 +25,6 @@ export class JwtStrategy {
           childrenIds: payload.childrenIds,
           id: payload.id,
           role: payload.role,
-          displayname: payload.displayname,
           username: payload.username,
           isAdmin: payload.isAdmin,
         };

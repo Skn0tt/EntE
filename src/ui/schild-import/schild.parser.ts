@@ -28,10 +28,6 @@ export const deriveUsername = (firstname: string, lastname: string) => {
   return sanitizeName(username);
 };
 
-const deriveDisplayname = (firstname: string, lastname: string) => {
-  return `${firstname} ${lastname}`;
-};
-
 const parseDateToISO = (date: string) => {
   const isISO = /\d{4}-\d{2}-\d{2}/.test(date);
   if (isISO) {
@@ -94,7 +90,7 @@ const parseInput = (input: any[]) => {
       lastName: v[ERZIEHER_2_NACHNAME],
       email: v[ERZIEHER_2_EMAIL],
     },
-    parentEmail: v[ERZIEHER_EMAIL]
+    parentEmail: v[ERZIEHER_EMAIL],
   }));
 
   const users = _.flatMap<
@@ -103,7 +99,8 @@ const parseInput = (input: any[]) => {
   >(inputRows, (v: typeof inputRows[0]) => {
     const child = {
       username: deriveUsername(v.firstName, v.lastName),
-      displayname: deriveDisplayname(v.firstName, v.lastName),
+      firstName: v.firstName,
+      lastName: v.lastName,
       birthday: parseDateToISO(v.birthday),
       class: "" + parseYear(parseDateToISO(v.gradDate)),
       email: v.email,
@@ -119,7 +116,8 @@ const parseInput = (input: any[]) => {
       child.parentEmail.push(v.parent1.email);
       result.push({
         username: deriveUsername(v.parent1.firstName, v.parent1.lastName),
-        displayname: deriveDisplayname(v.parent1.firstName, v.parent1.lastName),
+        firstName: v.parent1.firstName,
+        lastName: v.parent1.lastName,
         email: v.parent1.email,
         role: Roles.PARENT,
         class: undefined,
@@ -133,7 +131,8 @@ const parseInput = (input: any[]) => {
       child.parentEmail.push(v.parent2.email);
       result.push({
         username: deriveUsername(v.parent2.firstName, v.parent2.lastName),
-        displayname: deriveDisplayname(v.parent2.firstName, v.parent2.lastName),
+        firstName: v.parent2.firstName,
+        lastName: v.parent2.lastName,
         email: v.parent2.email,
         role: Roles.PARENT,
         class: undefined,
@@ -147,7 +146,8 @@ const parseInput = (input: any[]) => {
       child.parentEmail.push(v.parentEmail);
       result.push({
         username: deriveUsername(v.parent1.firstName, v.parent1.lastName),
-        displayname: deriveDisplayname(v.parent1.firstName, v.parent1.lastName),
+        firstName: v.parent1.firstName,
+        lastName: v.parent1.lastName,
         email: v.parentEmail,
         role: Roles.PARENT,
         class: undefined,
@@ -156,12 +156,12 @@ const parseInput = (input: any[]) => {
         children: [],
       });
     }
-    
+
     return result;
   });
 
   const uniqueUsers = _.uniqBy(users, (u) =>
-    [u.username, u.displayname, u.email].join(";")
+    [u.username, u.firstName, u.lastName, u.email].join(";")
   );
 
   const uniqueUsersWithoutDuplicateNames = renameDuplicateUsernames(
