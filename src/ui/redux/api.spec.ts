@@ -20,6 +20,7 @@ const simon: UserDto = {
   isAdmin: false,
   children: [],
   username: "skn0tt",
+  twoFAenabled: false,
   language: Languages.ENGLISH,
 };
 const susanne: UserDto = {
@@ -33,6 +34,7 @@ const susanne: UserDto = {
   isAdmin: false,
   birthday: undefined,
   role: Roles.PARENT,
+  twoFAenabled: false,
   username: "susan",
 };
 const benni: UserDto = {
@@ -46,6 +48,7 @@ const benni: UserDto = {
   isAdmin: false,
   birthday: undefined,
   role: Roles.TEACHER,
+  twoFAenabled: false,
   username: "benny",
 };
 

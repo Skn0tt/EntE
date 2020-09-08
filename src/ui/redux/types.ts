@@ -106,6 +106,7 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     language: undefined,
     managerNotes: undefined,
     subscribedToWeeklySummary: undefined,
+    twoFAenabled: false,
   },
   "UserN"
 );

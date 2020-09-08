@@ -40,10 +40,19 @@ export class TwoFAService {
     return Success(qrcode_url);
   }
 
-  async disable(rcUser: RequestContextUser) {
-    const user = (await rcUser.getDto()).some();
-    await this.userRepo.removeTOTPSecret(user.id);
+  async disable(userId: string) {
+    const user = (await this.userRepo.findById(userId)).some();
+    await this.userRepo.removeTOTPSecret(userId);
     await this.emailService.dispatch2FADisabledNotification(user);
+  }
+
+  async disableForUser(userId: string, requestingUser: RequestContextUser) {
+    if (!requestingUser.isAdmin) {
+      return "not_authorized";
+    }
+
+    await this.disable(userId);
+    return "ok";
   }
 
   async isEnabled(user: RequestContextUser) {

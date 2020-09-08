@@ -64,6 +64,7 @@ exports[`ChildrenInput renders correctly 1`] = `
               "language": undefined,
               "managerNotes": undefined,
               "subscribedToWeeklySummary": undefined,
+              "twoFAenabled": false,
             },
           ]
         }
