@@ -12,7 +12,6 @@ export class TokenService {
 
   async createToken(user: RequestContextUser): Promise<string> {
     const payload: JwtTokenPayload = {
-      displayname: user.displayname,
       id: user.id,
       role: user.role,
       username: user.username,

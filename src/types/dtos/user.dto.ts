@@ -13,7 +13,7 @@ import {
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
-  isValidDisplayname,
+  isValidName,
   isValidEmail,
   isValidClass,
 } from "../validators";
@@ -26,6 +26,8 @@ export interface BaseUserDto {
   id: string;
   username: string;
   displayname: string;
+  firstName: string;
+  lastName: string;
   role: Roles;
   isAdmin: boolean;
   subscribedToWeeklySummary?: boolean;
@@ -47,7 +49,11 @@ export class UserDto implements BlackedUserDto {
 
   @CustomStringValidator(isValidUsername) username: string;
 
-  @CustomStringValidator(isValidDisplayname) displayname: string;
+  @CustomStringValidator(isValidName) displayname: string;
+
+  @CustomStringValidator(isValidName) firstName: string;
+
+  @CustomStringValidator(isValidName) lastName: string;
 
   @CustomStringValidator(isValidEmail) email: string;
 

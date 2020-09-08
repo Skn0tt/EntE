@@ -138,6 +138,16 @@ export const getDisplayname: Selector<Maybe<string>> = (state) => {
   return oneSelf.map((s) => s.get("displayname"));
 };
 
+export const getFirstName: Selector<Maybe<string>> = (state) => {
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map((s) => s.get("firstName"));
+};
+
+export const getLastName: Selector<Maybe<string>> = (state) => {
+  const oneSelf = getOneSelf(state);
+  return oneSelf.map((s) => s.get("lastName"));
+};
+
 export const getUsername: Selector<Maybe<string>> = (state) => {
   const oneSelf = getOneSelf(state);
   return oneSelf.map((s) => s.get("username"));

@@ -10,7 +10,7 @@ import {
   rolesArr,
   Roles,
   isValidUsername,
-  isValidDisplayname,
+  isValidName,
   isValidEmail,
   CustomStringValidator,
   Languages,
@@ -43,9 +43,13 @@ export class User {
   @CustomStringValidator(isValidUsername)
   username: string;
 
-  @Column("varchar", { length: 80 })
-  @CustomStringValidator(isValidDisplayname)
-  displayname: string;
+  @Column("varchar")
+  @CustomStringValidator(isValidName)
+  firstName: string;
+
+  @Column("varchar")
+  @CustomStringValidator(isValidName)
+  lastName: string;
 
   @Column("varchar", { length: 80 })
   @CustomStringValidator(isValidEmail)

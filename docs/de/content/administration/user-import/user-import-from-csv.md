@@ -12,7 +12,8 @@ Um den Nutzer-Import einfacher zu gestalten, kann man Nutzer aus einer `.csv`-Da
 Jeder Nutzer hat verschiedene Eigenschaften, die gesetzt werden müssen:
 
 - username (Benutzername)
-- displayname (Anzeigename)
+- firstName (Vorname)
+- lastName (Vorname)
 - password (Password des Nutzers)
 - email (Email-Addresse)
 - role (Rolle des Nutzers)
@@ -38,14 +39,14 @@ Die erste Zeile der Import-Datei muss die Spalten-Überschriften enthalten.
 Eine Import-Datei könnte zum Beispiel so aussehen:
 
 ```csv
-username,displayname,email,role,birthday,class,children
-maxmueller,Max Mueller,mmueller@gmail.com,student,2000-02-01,2019,
-majamueller,Maja Mueller,maja@mueller.de,student,2001-02-01,2019,
-tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,
-gerdmueller,Gerd Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
-gabimueller,Gabi Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
-bertboesreich,Bert Boesreich,boesreich@your-school.com,manager,,2019,
-ralphreicht,Ralph Reicht,reicht@your-school.com,teacher,,
+username,firstName,lastName,email,role,birthday,class,children
+maxmueller,Max,Mueller,mmueller@gmail.com,student,2000-02-01,2019,
+majamueller,Maja,Mueller,maja@mueller.de,student,2001-02-01,2019,
+tomtoblerone,Tom,Toblerone,toblerone@your-school.com,teacher,,,
+gerdmueller,Gerd,Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
+gabimueller,Gabi,Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
+bertboesreich,Bert,Boesreich,boesreich@your-school.com,manager,,2019,
+ralphreicht,Ralph,Reicht,reicht@your-school.com,teacher,,
 ```
 
 Damit würden die folgenden Nutzer erstellt:

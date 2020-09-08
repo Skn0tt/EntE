@@ -22,17 +22,12 @@ export interface WithUsername {
   username: string;
 }
 
-export interface WithDisplayname {
-  displayname: string;
-}
-
 export interface RequestContextUser
   extends WithId,
     WithChildrenIds,
     WithRole,
     WithUsername,
-    WithAdminState,
-    WithDisplayname {
+    WithAdminState {
   getDto: () => Promise<Maybe<UserDto>>;
 }
 

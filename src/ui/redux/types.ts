@@ -94,6 +94,8 @@ export const UserN = ImmutableRecord<UserDtoNormalised>(
     id: "",
     username: "",
     children: undefined,
+    firstName: "",
+    lastName: "",
     displayname: "",
     email: undefined,
     birthday: undefined,

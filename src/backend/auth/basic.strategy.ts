@@ -39,7 +39,6 @@ export class BasicStrategy {
         return {
           getDto: async () => Some(user),
           childrenIds: user.children.map((c) => c.id),
-          displayname: user.displayname,
           id: user.id,
           role: user.role,
           username: user.username,

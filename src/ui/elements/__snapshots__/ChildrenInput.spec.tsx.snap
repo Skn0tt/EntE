@@ -52,6 +52,8 @@ exports[`ChildrenInput renders correctly 1`] = `
               "id": "jkldsfjlk",
               "username": "hball",
               "children": Array [],
+              "firstName": "Hanni",
+              "lastName": "Ball",
               "displayname": "Hanni Ball",
               "email": "hanni@ball.de",
               "birthday": "2100-01-01",

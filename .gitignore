@@ -4,6 +4,7 @@ docs_dist
 .env
 /screenshots
 .vscode
+*.sql
 
 # Tests
 /e2e.xml

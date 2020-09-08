@@ -9,7 +9,7 @@ import {
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
   isValidUsername,
-  isValidDisplayname,
+  isValidName,
   isValidEmail,
   isValidUuidOrUsername,
   isValidClass,
@@ -25,8 +25,11 @@ export class CreateUserDto {
   @CustomStringValidator(isValidPassword, { message: "Illegal password" })
   password?: string;
 
-  @CustomStringValidator(isValidDisplayname, { message: "Illegal displayname" })
-  displayname: string;
+  @CustomStringValidator(isValidName, { message: "Illegal firstName" })
+  firstName: string;
+
+  @CustomStringValidator(isValidName, { message: "Illegal lastName" })
+  lastName: string;
 
   @CustomStringValidator(isValidEmail, { message: "Illegal email address" })
   email: string;
@@ -59,7 +62,8 @@ export const createDefaultCreateUserDto = (): CreateUserDto => {
   return {
     username: "",
     children: [],
-    displayname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     isAdmin: false,
     role: Roles.STUDENT,

@@ -9,7 +9,8 @@ describe("CreateUserDtoValidator", () => {
         CreateUserDtoValidator.validate({
           children: [],
           role: Roles.STUDENT,
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
@@ -24,7 +25,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
@@ -39,7 +41,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
@@ -54,7 +57,8 @@ describe("CreateUserDtoValidator", () => {
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           isAdmin: false,
@@ -69,7 +73,8 @@ describe("CreateUserDtoValidator", () => {
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmänn",
           isAdmin: false,
@@ -78,13 +83,14 @@ describe("CreateUserDtoValidator", () => {
       ).to.be.true;
     });
 
-    it("umlauts in displayname", () => {
+    it("umlauts in lastName", () => {
       expect(
         CreateUserDtoValidator.validate({
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr Männ",
+          firstName: "Manfred",
+          lastName: "Männ",
           email: "herr@mann.de",
           username: "herrmänn",
           isAdmin: false,
@@ -93,13 +99,14 @@ describe("CreateUserDtoValidator", () => {
       ).to.be.true;
     });
 
-    it("Special Chars in displayname", () => {
+    it("Special Chars in lastName", () => {
       expect(
         CreateUserDtoValidator.validate({
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr-Mann",
+          firstName: "Manfred",
+          lastName: "Herr-Mann",
           email: "herr@mann.de",
           username: "herrmänn",
           isAdmin: false,
@@ -108,13 +115,14 @@ describe("CreateUserDtoValidator", () => {
       ).to.be.true;
     });
 
-    it("Special Chars in displayname", () => {
+    it("Special Chars in lastName", () => {
       expect(
         CreateUserDtoValidator.validate({
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr. Mann",
+          firstName: "Manfred",
+          lastName: "Herr. Mann",
           email: "herr@mann.de",
           username: "herrmänn",
           isAdmin: false,
@@ -131,7 +139,8 @@ describe("CreateUserDtoValidator", () => {
           CreateUserDtoValidator.validate({
             children: [],
             role: Roles.STUDENT,
-            displayname: "Herr Mann",
+            firstName: "Manfred",
+            lastName: "Mann",
             email: "herr@mann.de",
             username: "herrmann",
             birthday: "2000-01-01",
@@ -147,7 +156,8 @@ describe("CreateUserDtoValidator", () => {
           CreateUserDtoValidator.validate({
             children: [],
             role: Roles.MANAGER,
-            displayname: "Herr Mann",
+            firstName: "Manfred",
+            lastName: "Mann",
             email: "herr@mann.de",
             username: "herrmann",
             isAdmin: false,
@@ -162,7 +172,8 @@ describe("CreateUserDtoValidator", () => {
           CreateUserDtoValidator.validate({
             children: [],
             role: Roles.PARENT,
-            displayname: "Herr Mann",
+            firstName: "Manfred",
+            lastName: "Mann",
             email: "herr@mann.de",
             username: "herrmann",
             isAdmin: false,
@@ -177,7 +188,8 @@ describe("CreateUserDtoValidator", () => {
           CreateUserDtoValidator.validate({
             children: [],
             role: Roles.TEACHER,
-            displayname: "Herr Mann",
+            firstName: "Manfred",
+            lastName: "Mann",
             email: "herr@mann.de",
             username: "herrmann",
             isAdmin: false,
@@ -194,7 +206,8 @@ describe("CreateUserDtoValidator", () => {
         CreateUserDtoValidator.validate({
           children: [],
           role: Roles.TEACHER,
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           isAdmin: false,
@@ -210,7 +223,8 @@ describe("CreateUserDtoValidator", () => {
         CreateUserDtoValidator.validate({
           children: ["mychild"],
           role: Roles.TEACHER,
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           isAdmin: false,
@@ -227,7 +241,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "zukurz",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           birthday: undefined,
@@ -242,7 +257,8 @@ describe("CreateUserDtoValidator", () => {
           children: ["2e239ff6-9f40-48e6-9cec!"],
           role: Roles.PARENT,
           password: "m!e1passwofrt",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           isAdmin: false,
@@ -256,7 +272,8 @@ describe("CreateUserDtoValidator", () => {
           children: ["2e239ff6-9f40-48e6-9cec-cae9f983ee50"],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           birthday: "2000-01-01",
@@ -271,7 +288,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herrmann",
           isAdmin: false,
@@ -285,7 +303,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herrmann.de",
           username: "herrmann",
           isAdmin: false,
@@ -300,7 +319,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.STUDENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herr mann",
           isAdmin: false,
@@ -315,7 +335,8 @@ describe("CreateUserDtoValidator", () => {
           children: [],
           role: Roles.PARENT,
           password: "m!e1passwort",
-          displayname: "Herr Mann",
+          firstName: "Manfred",
+          lastName: "Mann",
           email: "herr@mann.de",
           username: "herr mann",
           isAdmin: false,

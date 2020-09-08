@@ -1,7 +1,7 @@
 import { IsOptional, IsIn, IsISO8601, IsBoolean } from "class-validator";
 import { CustomStringValidator } from "../helpers/custom-string-validator";
 import {
-  isValidDisplayname,
+  isValidName,
   isValidEmail,
   isValidUuidOrUsername,
   isValidUsername,
@@ -15,8 +15,12 @@ export class PatchUserDto {
   username?: string;
 
   @IsOptional()
-  @CustomStringValidator(isValidDisplayname)
-  displayname?: string;
+  @CustomStringValidator(isValidName)
+  firstName?: string;
+
+  @IsOptional()
+  @CustomStringValidator(isValidName)
+  lastName?: string;
 
   @IsOptional()
   @CustomStringValidator(isValidEmail)

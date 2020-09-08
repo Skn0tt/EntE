@@ -100,7 +100,8 @@ export class UsersService implements OnModuleInit {
         children: [],
         isAdmin: true,
         role: Roles.TEACHER,
-        displayname: "Administrator",
+        firstName: "Achim",
+        lastName: "Administrator",
         birthday: undefined,
         password: Config.getAdmin().password,
         username: Config.getAdmin().username,
@@ -368,9 +369,14 @@ export class UsersService implements OnModuleInit {
       return Fail(PatchUserFailure.UserNotFound);
     }
 
-    if (!!patch.displayname) {
-      await this.userRepo.setDisplayName(id, patch.displayname);
-      user.some().displayname = patch.displayname;
+    if (!!patch.firstName) {
+      await this.userRepo.setFirstName(id, patch.firstName);
+      user.some().firstName = patch.firstName;
+    }
+
+    if (!!patch.lastName) {
+      await this.userRepo.setFirstName(id, patch.lastName);
+      user.some().lastName = patch.lastName;
     }
 
     if (!!patch.isAdmin) {
@@ -559,6 +565,8 @@ export class UsersService implements OnModuleInit {
     }
 
     const baseUser: BaseUserDto = {
+      firstName: user.firstName,
+      lastName: user.lastName,
       displayname: user.displayname,
       id: user.id,
       role: user.role,

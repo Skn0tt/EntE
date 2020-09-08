@@ -13,16 +13,20 @@ const useTranslation = makeTranslationHook({
   en: {
     headers: {
       username: "Username",
-      displayname: "Displayname",
+      firstName: "First Name",
+      lastName: "Last Name",
       email: "Email",
+      class: "Class",
       role: "Role",
     },
   },
   de: {
     headers: {
       username: "Nutzername",
-      displayname: "Displayname",
+      firstName: "Vorname",
+      lastName: "Nachname",
       email: "Email",
+      class: "Klasse / Stufe",
       role: "Rolle",
     },
   },
@@ -53,8 +57,15 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = (
           },
         },
         {
-          name: lang.headers.displayname,
-          extract: (user) => user.get("displayname"),
+          name: lang.headers.firstName,
+          extract: (user) => user.get("firstName"),
+          options: {
+            filter: false,
+          },
+        },
+        {
+          name: lang.headers.lastName,
+          extract: (user) => user.get("lastName"),
           options: {
             filter: false,
           },
@@ -64,6 +75,13 @@ export const UserTable: React.FunctionComponent<UserTableOwnProps> = (
           extract: (user) => user.get("email"),
           options: {
             filter: false,
+          },
+        },
+        {
+          name: lang.headers.class,
+          extract: (user) => user.get("class"),
+          options: {
+            filter: true,
           },
         },
         {

@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const useTranslation = makeTranslationHook({
   en: {
     headers: {
-      name: "Name",
+      firstName: "First Name",
+      lastName: "Last Name",
       absentDays: "Absent days",
       absentHours: "Absent hours",
       unexcusedAbsentHours: "Unexcused absent hours",
@@ -33,7 +34,8 @@ const useTranslation = makeTranslationHook({
   },
   de: {
     headers: {
-      name: "Name",
+      firstName: "Vorname",
+      lastName: "Nachname",
       absentDays: "Fehltage",
       absentHours: "Fehlstunden",
       unexcusedAbsentHours: "Unentschuldigte Fehlstunden",
@@ -90,8 +92,15 @@ const ClassReportRoute = (props: {}) => {
           }
           columns={[
             {
-              name: translation.headers.name,
-              extract: (u) => u.get("displayname"),
+              name: translation.headers.firstName,
+              extract: (u) => u.get("firstName"),
+              options: {
+                filter: false,
+              },
+            },
+            {
+              name: translation.headers.lastName,
+              extract: (u) => u.get("lastName"),
               options: {
                 filter: false,
               },
@@ -131,7 +140,7 @@ const ClassReportRoute = (props: {}) => {
               name: translation.headers.hourRate,
               extract: (u) => {
                 const slots = slotsByStudent[u.get("id")] || [];
-                return Reporting.calcHourRate(slots);
+                return Reporting.calcHourRate(slots).toPrecision(2);
               },
               options: {
                 filter: false,

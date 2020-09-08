@@ -10,7 +10,9 @@ import {
 } from "@@types";
 
 const simon: UserDto = {
-  displayname: "Simon",
+  firstName: "Simon",
+  lastName: "Knott",
+  displayname: "Simon Knott",
   email: "info@simonknott.de",
   birthday: "2100-01-01",
   id: "abc",
@@ -21,7 +23,9 @@ const simon: UserDto = {
   language: Languages.ENGLISH,
 };
 const susanne: UserDto = {
-  displayname: "Susanne",
+  displayname: "Susanne Susanne",
+  firstName: "Susanne",
+  lastName: "Susanne",
   language: Languages.ENGLISH,
   children: [simon],
   email: "susanne@simonknott.de",
@@ -32,7 +36,9 @@ const susanne: UserDto = {
   username: "susan",
 };
 const benni: UserDto = {
-  displayname: "Benni",
+  displayname: "Benni Brecht",
+  firstName: "Benni",
+  lastName: "Brecht",
   language: Languages.ENGLISH,
   children: [],
   email: "benni@simonknott.de",

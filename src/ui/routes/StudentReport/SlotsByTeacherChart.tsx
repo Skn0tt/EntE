@@ -28,9 +28,12 @@ function SlotsByTeacherChart(props: SlotsByTeacherChartOwnProps) {
       });
     return {
       x: teacher.get("displayname"),
+      lastName: teacher.get("lastName"),
       y: amount,
     };
   });
+
+  const sortedPointsInPlot = _.sortBy(pointsInPlot, "lastName");
 
   return (
     <FlexibleXYPlot
@@ -41,7 +44,11 @@ function SlotsByTeacherChart(props: SlotsByTeacherChartOwnProps) {
     >
       <YAxis />
       <XAxis tickLabelAngle={-45} />
-      <VerticalBarSeries color="#2196f3" barWidth={0.5} data={pointsInPlot} />
+      <VerticalBarSeries
+        color="#2196f3"
+        barWidth={0.5}
+        data={sortedPointsInPlot}
+      />
     </FlexibleXYPlot>
   );
 }

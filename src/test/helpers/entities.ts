@@ -20,6 +20,8 @@ const withGetDto = <T extends {}>(
 const admin: UserDto & RequestContextUser = withGetDto({
   children: [],
   childrenIds: [],
+  firstName: "Achim",
+  lastName: "Admin",
   displayname: "Admin",
   email: "admin@gmail.com",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d05",
@@ -33,6 +35,8 @@ const admin: UserDto & RequestContextUser = withGetDto({
 const tomTallis: UserDto & RequestContextUser = withGetDto({
   children: [],
   childrenIds: [],
+  firstName: "Thomas",
+  lastName: "Thallis",
   displayname: "Thomas Tallis",
   email: "tom@tallis.de",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d05",
@@ -46,7 +50,9 @@ const tomTallis: UserDto & RequestContextUser = withGetDto({
 const benBongo: UserDto & RequestContextUser = withGetDto({
   children: [],
   childrenIds: [],
-  displayname: "Mr. Bongo",
+  firstName: "Ben",
+  lastName: "Bongo",
+  displayname: "Ben Bongo",
   email: "bongo@my-school.com",
   id: "1cf900d1-2c1e-4178-907a-23e327f11d06",
   birthday: undefined,

@@ -21,6 +21,7 @@ import { AddPrefiledSlots1586165238000 } from "./1586165238000-AddPrefiledSlots"
 import { Add2FATotpSecret1587709969000 } from "./1587709969000-Add2FATotpSecret";
 import { DontCascadeSlotDeletion1588167544000 } from "./1588167544000-DontCascadeSlotDeletion";
 import { DeleteCascadePrefiledFor1591612977000 } from "./1591612977000-DeleteCascadePrefiledFor";
+import { SplitDisplayname1599542662000 } from "./1599542662000-SplitDisplayname";
 
 export const migrations = [
   MakeSlotDateNullable1544015021618,
@@ -46,4 +47,5 @@ export const migrations = [
   Add2FATotpSecret1587709969000,
   DontCascadeSlotDeletion1588167544000,
   DeleteCascadePrefiledFor1591612977000,
+  SplitDisplayname1599542662000,
 ];

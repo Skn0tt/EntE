@@ -52,7 +52,7 @@ import {
 import withErrorBoundary from "../hocs/withErrorBoundary";
 import {
   PatchUserDto,
-  isValidDisplayname,
+  isValidName,
   isValidEmail,
   roleHasBirthday,
   PatchUserDtoValidator,
@@ -79,7 +79,8 @@ const useTranslation = makeTranslationHook({
     resendInvitationEmail: "Resend invitation email",
     titles: {
       email: "Email",
-      displayname: "Displayname",
+      firstName: "First Name",
+      lastName: "Last Name",
       birthday: "Birthday",
       username: "Username",
       role: "Role",
@@ -106,7 +107,8 @@ const useTranslation = makeTranslationHook({
     resendInvitationEmail: "Einladungs-Email erneut verschicken",
     titles: {
       email: "Email",
-      displayname: "Displayname",
+      firstName: "Vorname",
+      lastName: "Nachname",
       birthday: "Geburtstag",
       username: "Benutzername",
       role: "Rolle",
@@ -353,13 +355,23 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
                     />
                   </Grid>
 
-                  {/* Displayname */}
+                  {/* firstName */}
                   <Grid item xs={12}>
                     <TextInput
-                      title={lang.titles.displayname}
-                      value={patch.displayname || user.get("displayname")}
-                      onChange={updatePatch("displayname")}
-                      validator={isValidDisplayname}
+                      title={lang.titles.firstName}
+                      value={patch.firstName || user.get("firstName")}
+                      onChange={updatePatch("firstName")}
+                      validator={isValidName}
+                    />
+                  </Grid>
+
+                  {/* lastName */}
+                  <Grid item xs={12}>
+                    <TextInput
+                      title={lang.titles.lastName}
+                      value={patch.lastName || user.get("lastName")}
+                      onChange={updatePatch("lastName")}
+                      validator={isValidName}
                     />
                   </Grid>
 
