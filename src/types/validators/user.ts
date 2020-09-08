@@ -38,12 +38,12 @@ export const isValidUsername: SyncValidator<string> = matches([
 ]);
 
 /**
- * Validates a Displayname
+ * Validates a firstname / lastname
  * Rules:
  * - 8-100 Characters
  * - No Special Characters
  */
-export const isValidDisplayname: SyncValidator<string> = matches([
+export const isValidName: SyncValidator<string> = matches([
   isLength(1, 100),
   not(containsForbiddenChars),
 ]);

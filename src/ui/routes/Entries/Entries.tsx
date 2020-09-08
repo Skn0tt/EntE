@@ -53,7 +53,8 @@ const useTranslation = makeTranslationHook({
   en: {
     reason: EntryReasonCategoriesTranslation.en,
     headers: {
-      name: "Name",
+      firstName: "First Name",
+      lastName: "Last Name",
       date: "Date",
       created: "Created",
       reason: "Reason",
@@ -69,7 +70,8 @@ const useTranslation = makeTranslationHook({
   de: {
     reason: EntryReasonCategoriesTranslation.de,
     headers: {
-      name: "Name",
+      firstName: "Vorname",
+      lastName: "Nachname",
       date: "Datum",
       created: "Erstellt",
       reason: "Grund",
@@ -174,23 +176,31 @@ export const Entries = () => {
       <Table<EntryN>
         columns={[
           {
-            name: lang.headers.name,
+            name: lang.headers.firstName,
             extract: (e) => {
-              const name = users[e.get("studentId")].get("displayname");
-              const managerReachedOut = e.get("managerReachedOut");
-
-              return { name, managerReachedOut };
+              const name = users[e.get("studentId")].get("firstName");
+              return name;
             },
             options: {
               filter: false,
               display: ownRole !== Roles.STUDENT,
-              customBodyRender: ({
-                name,
-                managerReachedOut,
-              }: {
-                name: string;
-                managerReachedOut: boolean;
-              }) => {
+            },
+          },
+          {
+            name: lang.headers.lastName,
+            extract: (e) => {
+              const name = users[e.get("studentId")].get("lastName");
+              const managerReachedOut = e.get("managerReachedOut");
+              return name + ";" + managerReachedOut;
+            },
+            options: {
+              filter: false,
+              display: ownRole !== Roles.STUDENT,
+              customBodyRender: (row: string) => {
+                console.log(row);
+                const name = row.split(";")[0];
+                const managerReachedOut = row.split(";")[1] === "true";
+
                 if (managerReachedOut && ownRole === Roles.MANAGER) {
                   return (
                     <span

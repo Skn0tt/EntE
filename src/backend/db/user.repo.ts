@@ -176,7 +176,8 @@ export class UserRepo {
                     : await manager.findOne(User, { where: { username: c } });
                 })
               ),
-              displayname: user.displayname,
+              firstName: user.firstName,
+              lastName: user.lastName,
               birthday: user.birthday,
               language: user.language || defaultLanguage,
               password: hash,
@@ -253,7 +254,8 @@ export class UserRepo {
 
         user.children = childrenOfUser;
         user.birthday = dto.birthday || null;
-        user.displayname = dto.displayname;
+        user.firstName = dto.firstName;
+        user.lastName = dto.lastName;
         user.email = dto.email;
         user.class = dto.class || null;
         if (!!dto.language) {
@@ -283,16 +285,20 @@ export class UserRepo {
     return Success({ created: createdUsers, updated: updatedUsers });
   }
 
-  async setDisplayName(id: string, displayname: string) {
-    await this.repo.update(id, { displayname });
-  }
-
   async setIsAdmin(id: string, isAdmin: boolean) {
     await this.repo.update(id, { isAdmin });
   }
 
   async setUsername(id: string, username: string) {
     await this.repo.update(id, { username });
+  }
+
+  async setFirstName(id: string, firstName: string) {
+    await this.repo.update(id, { firstName });
+  }
+
+  async setLastName(id: string, lastName: string) {
+    await this.repo.update(id, { lastName });
   }
 
   async setBirthday(
@@ -550,7 +556,9 @@ export class UserRepo {
     })();
 
     result.isAdmin = !!user.isAdmin;
-    result.displayname = user.displayname;
+    result.displayname = user.firstName + " " + user.lastName;
+    result.firstName = user.firstName;
+    result.lastName = user.lastName;
     result.email = user.email;
     result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;
     result.role = user.role;

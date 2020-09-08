@@ -82,7 +82,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const useTranslation = makeTranslationHook({
   en: {
     headers: {
-      name: "Name",
+      firstName: "First Name",
+      lastName: "Last Name",
       date: "Date",
       from: "From",
       to: "To",
@@ -101,7 +102,8 @@ const useTranslation = makeTranslationHook({
   },
   de: {
     headers: {
-      name: "Name",
+      firstName: "Vorname",
+      lastName: "Nachname",
       date: "Datum",
       from: "Von",
       to: "Bis",
@@ -195,8 +197,16 @@ const Slots = () => {
       <Table<SlotN>
         columns={[
           {
-            name: lang.headers.name,
-            extract: (slot) => users[slot.get("studentId")].get("displayname"),
+            name: lang.headers.firstName,
+            extract: (slot) => users[slot.get("studentId")].get("firstName"),
+            options: {
+              filter: false,
+              display: role !== Roles.STUDENT,
+            },
+          },
+          {
+            name: lang.headers.lastName,
+            extract: (slot) => users[slot.get("studentId")].get("lastName"),
             options: {
               filter: false,
               display: role !== Roles.STUDENT,

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Split "display name" into "first name" and "last name"
+
+## [v0.40.4] - 2020-09-05
+
 - Added username to invitation link
 - Persist number of rows per page
 - display end of entry in table

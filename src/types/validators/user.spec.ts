@@ -10,7 +10,7 @@ import { expect } from "chai";
 import {
   isValidRole,
   isValidEmail,
-  isValidDisplayname,
+  isValidName,
   isValidUsername,
   isValidUuid,
 } from "./user";
@@ -53,8 +53,8 @@ describe("isValidEmail", () => {
   });
 });
 
-describe("isValidDisplayname", () => {
-  describe("when passed a valid displayname returns true", () => {
+describe("isValidName", () => {
+  describe("when passed a valid name returns true", () => {
     [
       "Hans im Glück",
       "Hans Zimmer",
@@ -63,7 +63,7 @@ describe("isValidDisplayname", () => {
       "Hermann Hesse",
     ].forEach((r) => {
       it(r, () => {
-        expect(isValidDisplayname(r)).to.be.true;
+        expect(isValidName(r)).to.be.true;
       });
     });
   });
@@ -71,7 +71,7 @@ describe("isValidDisplayname", () => {
   describe("when passed some other value returns false", () => {
     ["", "!(/&/(?!=?%&/("].forEach((r) => {
       it(r, () => {
-        expect(isValidDisplayname(r)).to.be.false;
+        expect(isValidName(r)).to.be.false;
       });
     });
   });

@@ -8,7 +8,8 @@ To make onboarding easier, you can import users from a `.csv` file.
 Each user has different properties that need to be set:
 
 - username
-- displayname
+- firstName
+- lastName
 - password
 - email
 - role
@@ -32,14 +33,14 @@ The first row of the csv needs to be a header row with the above properties.
 A sample import file could look like this:
 
 ```csv
-username,displayname,email,role,birthday,class,children
-maxmueller,Max Mueller,mmueller@gmail.com,student,2000-02-01,2019,
-majamueller,Maja Mueller,maja@mueller.de,student,2001-02-01,2019,
-tomtoblerone,Tom Toblerone,toblerone@your-school.com,teacher,,,
-gerdmueller,Gerd Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
-gabimueller,Gabi Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
-bertboesreich,Bert Boesreich,boesreich@your-school.com,manager,,2019,
-ralphreicht,Ralph Reicht,reicht@your-school.com,teacher,,
+username,firstName,lastName,email,role,birthday,class,children
+maxmueller,Max,Mueller,mmueller@gmail.com,student,2000-02-01,2019,
+majamueller,Maja,Mueller,maja@mueller.de,student,2001-02-01,2019,
+tomtoblerone,Tom,Toblerone,toblerone@your-school.com,teacher,,,
+gerdmueller,Gerd,Mueller,gerd@mueller.de,parent,,,maxmueller:majamueller
+gabimueller,Gabi,Mueller,gabi@mueller.de,parent,,,maxmueller:majamueller
+bertboesreich,Bert,Boesreich,boesreich@your-school.com,manager,,2019,
+ralphreicht,Ralph,Reicht,reicht@your-school.com,teacher,,
 ```
 
 This would create the following users:
