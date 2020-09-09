@@ -24,6 +24,7 @@ import { RequestContextUser } from "../helpers/request-context";
 import { PaginationInformation } from "../helpers/pagination-info";
 import { InstanceConfigService } from "../instance-config/instance-config.service";
 import { Config } from "../helpers/config";
+import { SlotRepo } from "../db/slot.repo";
 
 export enum CreateUsersFailure {
   UserAlreadyExists,
@@ -87,7 +88,9 @@ export class UsersService implements OnModuleInit {
     private readonly passwordResetService: PasswordResetService,
     @Inject(WinstonLoggerService) private readonly logger: WinstonLoggerService,
     @Inject(InstanceConfigService)
-    private readonly instanceConfigService: InstanceConfigService
+    private readonly instanceConfigService: InstanceConfigService,
+    @Inject(SlotRepo)
+    private readonly slotRepo: SlotRepo
   ) {}
 
   async onModuleInit() {

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug where too many prefiled slots would be deleted
+
 ## [v0.40.4] - 2020-09-05
 - Allow Admins to remove 2FA
 
