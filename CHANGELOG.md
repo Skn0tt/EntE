@@ -7,17 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.41.0] - 2020-09-06
+
 - Fix bug where too many prefiled slots would be deleted
-
-## [v0.40.4] - 2020-09-05
-- Allow Admins to remove 2FA
-
 - Split "display name" into "first name" and "last name"
-
-## [v0.40.4] - 2020-09-05
-
+- Allow Admins to remove 2FA
 - Allow filtering by class
 - Add 404 Page
+
+## [v0.40.4] - 2020-09-05
 
 - Added username to invitation link
 - Persist number of rows per page
