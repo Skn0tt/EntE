@@ -70,6 +70,7 @@ import { ClassPicker } from "../elements/ClassPicker";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { ResponsiveFullscreenDialog } from "../components/ResponsiveFullscreenDialog";
+import { createAPIClient } from "../redux/api";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -77,6 +78,7 @@ const useTranslation = makeTranslationHook({
     close: "Close",
     deleteUser: "Delete User",
     resendInvitationEmail: "Resend invitation email",
+    disable2FA: "Remove Two Factor",
     titles: {
       email: "Email",
       firstName: "First Name",
@@ -99,12 +101,19 @@ const useTranslation = makeTranslationHook({
       error: "An error occured.",
       success: "Invitation has been dispatched successfully.",
     },
+    disable2FAMessages: {
+      error: "An error occured.",
+      success: "2FA has been removed successfully.",
+    },
+    youSure:
+      "Are you sure? Removing 2FA can severely compromise account security.",
   },
   de: {
     submit: "OK",
     close: "Schließen",
     deleteUser: "Benutzer löschen",
     resendInvitationEmail: "Einladungs-Email erneut verschicken",
+    disable2FA: "Zwei-Faktor-Authentifizierung entfernen",
     titles: {
       email: "Email",
       firstName: "Vorname",
@@ -127,6 +136,12 @@ const useTranslation = makeTranslationHook({
       error: "Es ist ein Fehler aufgetreten.",
       success: "Einladung wurde erfolgreich versandt.",
     },
+    disable2FAMessages: {
+      error: "Es ist ein Fehler aufgetreten.",
+      success: "2FA wurde erfolgreich entfernt.",
+    },
+    youSure:
+      "Sind Sie sich sicher? Das fehlerhafte entfernen der 2FA kann die Accountsicherheit erheblich kompromittieren.",
   },
 });
 
@@ -138,12 +153,6 @@ const styles = createStyles<"menuButton">({
   },
 });
 
-/**
- * # Component Types
- */
-interface RouteMatch {
-  userId: string;
-}
 interface SpecificUserStateProps {
   getUser(id: string): Maybe<UserN>;
   availableClasses: string[];
@@ -268,6 +277,20 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
     doIt();
   }, [token, addMessages, userId, lang]);
 
+  const handleDisable2FA = React.useCallback(() => {
+    async function doIt() {
+      const client = createAPIClient(token);
+      try {
+        await client.post(`/2fa/disable/${userId}`);
+        addMessages(lang.disable2FAMessages.success);
+      } catch (error) {
+        addMessages(lang.disable2FAMessages.error);
+      }
+    }
+
+    doIt();
+  }, [token, addMessages, lang]);
+
   return user.cata(
     () => <LoadingIndicator />,
     (user) => (
@@ -333,6 +356,18 @@ export const SpecificUser: React.FunctionComponent<SpecificUserProps> = (
 
                   <MenuItem onClick={handleInvokeInvitationRoutine}>
                     {lang.resendInvitationEmail}
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => {
+                      const sure = confirm(lang.youSure);
+                      if (sure) {
+                        handleDisable2FA();
+                      }
+                    }}
+                    disabled={!user.get("twoFAenabled")}
+                  >
+                    {lang.disable2FA}
                   </MenuItem>
                 </Menu>
               </DialogTitle>

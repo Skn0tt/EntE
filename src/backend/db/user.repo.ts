@@ -563,6 +563,7 @@ export class UserRepo {
     result.birthday = roleHasBirthday(user.role) ? user.birthday! : undefined;
     result.role = user.role;
     result.username = user.username;
+    result.twoFAenabled = !!user.totpSecret;
     result.class = roleHasClass(user.role) ? user.class! : undefined;
     result.graduationYear = parseInt(result.class || "") || -1;
     result.language = user.language;
