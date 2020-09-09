@@ -375,7 +375,7 @@ export class UsersService implements OnModuleInit {
     }
 
     if (!!patch.lastName) {
-      await this.userRepo.setFirstName(id, patch.lastName);
+      await this.userRepo.setLastName(id, patch.lastName);
       user.some().lastName = patch.lastName;
     }
 
