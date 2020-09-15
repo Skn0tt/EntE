@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 (cd en && mkdocs build)
 (cd de && mkdocs build)
 
