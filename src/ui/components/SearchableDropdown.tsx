@@ -53,7 +53,7 @@ export class SearchableDropdown<T> extends React.PureComponent<
 
     return (
       <MuiDownshift
-        inputValue={value}
+        inputValue={value ? itemToString(value) : ""}
         onInputValueChange={onChange}
         items={itemsToShow}
         onChange={(selection: { value: T } | undefined) => {

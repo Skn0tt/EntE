@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Maybe, None, Some } from "monet";
-import { UserN, AppState, getTeachingUsers } from "../../redux";
-import { MapStateToPropsParam, connect } from "react-redux";
+import { UserN, getTeachingUsers, getUserMap } from "../../redux";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
+import { useSelector } from "react-redux";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -26,23 +26,14 @@ const useTranslation = makeTranslationHook({
 
 interface TeacherInputOwnProps {
   onChange: (id: Maybe<string>) => void;
+  value: Maybe<string>;
 }
 
-interface TeacherInputStateProps {
-  teachingUsers: UserN[];
-}
-const mapStateToProps: MapStateToPropsParam<
-  TeacherInputStateProps,
-  TeacherInputOwnProps,
-  AppState
-> = (state) => ({
-  teachingUsers: getTeachingUsers(state),
-});
+function TeacherInput(props: TeacherInputOwnProps) {
+  const { onChange, value } = props;
 
-type TeacherInputProps = TeacherInputOwnProps & TeacherInputStateProps;
-
-const TeacherInput: React.FC<TeacherInputProps> = (props) => {
-  const { onChange, teachingUsers } = props;
+  const users = useSelector(getUserMap);
+  const teachingUsers = useSelector(getTeachingUsers);
 
   const sortedTeachingUsers = React.useMemo(
     () =>
@@ -71,12 +62,16 @@ const TeacherInput: React.FC<TeacherInputProps> = (props) => {
       helperText={translation.helpers.teacher}
       items={sortedTeachingUsers}
       onSelect={handleChange}
+      value={value.cata(
+        () => undefined,
+        (id) => users.get(id)
+      )}
       includeItem={(item, searchTerm) =>
         item.get("displayname").toLowerCase().includes(searchTerm.toLowerCase())
       }
       itemToString={(i) => i.get("displayname")}
     />
   );
-};
+}
 
-export default connect(mapStateToProps)(TeacherInput);
+export default TeacherInput;
