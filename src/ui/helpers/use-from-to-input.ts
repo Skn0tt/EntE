@@ -23,7 +23,7 @@ export const useFromToInput = (
       setFrom(v);
 
       if (!_.isUndefined(to) && v > to) {
-        setTo(v + 1);
+        setTo(v);
       }
     },
     [from, setFrom, to, setTo]

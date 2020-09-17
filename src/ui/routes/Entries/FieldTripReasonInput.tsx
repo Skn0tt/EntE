@@ -49,7 +49,7 @@ const FieldTripReasonInput: React.FC<FieldTripReasonInputPropsConnected> = (
 
   const { onChange, isRange, createEntryDeadline } = props;
 
-  const { from, to, setFrom, setTo } = useFromToInput(1, 2, isRange);
+  const { from, to, setFrom, setTo } = useFromToInput(1, 1, isRange);
   const [startDate, setStartDate] = React.useState<string>(
     dateToIsoString(Date.now())
   );
