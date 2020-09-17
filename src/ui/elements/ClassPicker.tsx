@@ -9,7 +9,7 @@ interface ClassPickerProps {
   label: string;
 }
 
-export const ClassPicker: React.SFC<ClassPickerProps> = (props) => {
+export function ClassPicker(props: ClassPickerProps) {
   const { value, onChange, availableClasses, label } = props;
 
   const availableItems = !!value
@@ -26,4 +26,4 @@ export const ClassPicker: React.SFC<ClassPickerProps> = (props) => {
       onChange={onChange}
     />
   );
-};
+}

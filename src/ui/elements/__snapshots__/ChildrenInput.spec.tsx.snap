@@ -69,7 +69,9 @@ exports[`ChildrenInput renders correctly 1`] = `
           ]
         }
         label="Child"
+        onChange={[Function]}
         onSelect={[Function]}
+        value=""
       />
     </WithStyles(Grid)>
     <WithStyles(Grid)
@@ -138,7 +140,9 @@ exports[`ChildrenInput renders when no additional users are available 1`] = `
         itemToString={[Function]}
         items={Array []}
         label="Child"
+        onChange={[Function]}
         onSelect={[Function]}
+        value=""
       />
     </WithStyles(Grid)>
     <WithStyles(Grid)

@@ -4,6 +4,8 @@ import { UserN, getTeachingUsers, getUserMap } from "../../redux";
 import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { SearchableDropdown } from "../../components/SearchableDropdown";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -56,16 +58,24 @@ function TeacherInput(props: TeacherInputOwnProps) {
     [onChange]
   );
 
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    if (value.isNone()) {
+      setInputValue("");
+    } else {
+      setInputValue(users.get(value.some())!.get("displayname"));
+    }
+  }, [value.orUndefined(), setInputValue]);
+
   return (
     <SearchableDropdown<UserN>
       label={translation.titles.teacher}
       helperText={translation.helpers.teacher}
       items={sortedTeachingUsers}
       onSelect={handleChange}
-      value={value.cata(
-        () => undefined,
-        (id) => users.get(id)
-      )}
+      onChange={setInputValue}
+      value={inputValue}
       includeItem={(item, searchTerm) =>
         item.get("displayname").toLowerCase().includes(searchTerm.toLowerCase())
       }
