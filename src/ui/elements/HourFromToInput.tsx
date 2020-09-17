@@ -23,7 +23,7 @@ export const HourFromToInput: React.FC<FromToInputProps> = (props) => {
   const { onChange } = props;
 
   const translation = useTranslation();
-  const { from, to, setFrom, setTo } = useFromToInput(1, 2);
+  const { from, to, setFrom, setTo } = useFromToInput(1, 1);
 
   React.useEffect(() => {
     onChange({ from, to });

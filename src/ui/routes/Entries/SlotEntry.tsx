@@ -53,7 +53,7 @@ const SlotEntry: React.FC<SlotEntryProps> = (props) => {
   const { defaultDate, datePickerConfig, onAdd, isMultiDay } = props;
   const translation = useTranslation();
 
-  const { from, to, setFrom, setTo } = useFromToInput(1, 2);
+  const { from, to, setFrom, setTo } = useFromToInput(1, 1);
   const [date, setDate] = React.useState<string>(defaultDate);
   const [teacherId, setTeacherId] = React.useState<string | undefined>(
     undefined
