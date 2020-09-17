@@ -123,7 +123,7 @@ const FieldTripReasonInput: React.FC<FieldTripReasonInputPropsConnected> = (
       </Grid>
 
       <Grid item xs={isRange ? 12 : 10}>
-        <TeacherInput onChange={setTeacherId} />
+        <TeacherInput onChange={setTeacherId} value={teacherId} />
       </Grid>
     </Grid>
   );

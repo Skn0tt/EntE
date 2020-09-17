@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Creating new entries: Slot hours now start at "1-1" to prevent students from creating overlapping slots
 - Add `class` column to weekly summary
 - Make students deliberately choose the category of their absence
+- Create Entry Form: clear "teacher" field after adding slot
 
 ## [v0.41.0] - 2020-09-06
 

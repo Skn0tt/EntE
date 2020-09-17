@@ -33,7 +33,7 @@ export const ExamenReasonInput: React.FC<ExamenReasonInputProps> = (props) => {
       </Grid>
 
       <Grid item xs={10}>
-        <TeacherInput onChange={setTeacherId} />
+        <TeacherInput onChange={setTeacherId} value={teacherId} />
       </Grid>
     </Grid>
   );

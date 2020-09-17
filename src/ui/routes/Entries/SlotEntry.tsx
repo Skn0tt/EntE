@@ -71,6 +71,8 @@ const SlotEntry: React.FC<SlotEntryProps> = (props) => {
       date: isMultiDay ? date : undefined,
       teacherId: teacherId!,
     });
+
+    setTeacherId(undefined);
   }, [from, to, date, isMultiDay, teacherId]);
 
   const handleChangeTeacher = React.useCallback(
@@ -84,7 +86,10 @@ const SlotEntry: React.FC<SlotEntryProps> = (props) => {
     <Grid container direction="row" spacing={16}>
       {/* Teacher */}
       <Grid item xs={12} md={isMultiDay ? 4 : 7}>
-        <TeacherInput onChange={handleChangeTeacher} />
+        <TeacherInput
+          onChange={handleChangeTeacher}
+          value={Maybe.fromUndefined(teacherId)}
+        />
       </Grid>
 
       {/* Date */}
