@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Make students deliberately choose the category of their absence
+
 ## [v0.41.0] - 2020-09-06
 
 - Fix bug where too many prefiled slots would be deleted

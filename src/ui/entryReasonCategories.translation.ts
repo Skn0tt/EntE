@@ -2,7 +2,7 @@ import { EntryReasonCategory } from "@@types";
 
 export const EntryReasonCategoriesTranslation = {
   en: {
-    [EntryReasonCategory.ILLNESS]: "Illness",
+    [EntryReasonCategory.ILLNESS]: "Illness / Doctor's Visit",
     [EntryReasonCategory.OTHER_EDUCATIONAL]: "Other (educational)",
     [EntryReasonCategory.OTHER_NON_EDUCATIONAL]: "Other (non-educational)",
     [EntryReasonCategory.EXAMEN]: "Examen",
@@ -10,7 +10,7 @@ export const EntryReasonCategoriesTranslation = {
     [EntryReasonCategory.FIELD_TRIP]: "Field Trip",
   },
   de: {
-    [EntryReasonCategory.ILLNESS]: "Krankheit",
+    [EntryReasonCategory.ILLNESS]: "Krankheit / Arztbesuch",
     [EntryReasonCategory.OTHER_EDUCATIONAL]: "Sonstiges (Schulisch)",
     [EntryReasonCategory.OTHER_NON_EDUCATIONAL]: "Sonstiges (Außerschulisch)",
     [EntryReasonCategory.EXAMEN]: "Klausur",

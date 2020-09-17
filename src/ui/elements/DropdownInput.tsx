@@ -6,7 +6,8 @@ import { InputProps } from "@material-ui/core/Input";
 interface DropdownInputProps<T> {
   onChange: (v: T) => void;
   options: T[];
-  value: T;
+  value: T | undefined;
+  placeholder?: string;
   getOptionLabel: (v: T) => string;
   getOptionKey?: (v: T) => string;
   disableNative?: boolean;
@@ -31,6 +32,7 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
     margin,
     disableNative = false,
     InputProps,
+    placeholder,
   } = props;
 
   const lookup = React.useMemo(() => {
@@ -51,7 +53,7 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
     <TextField
       select
       variant={variant as any}
-      value={getOptionKey(value)}
+      value={typeof value === "undefined" ? undefined : getOptionKey(value)}
       onChange={handleChange}
       fullWidth={fullWidth}
       margin={margin}
@@ -59,17 +61,29 @@ export function DropdownInput<T>(props: DropdownInputProps<T>) {
       InputProps={InputProps}
       SelectProps={{ native: !disableNative }}
     >
-      {disableNative
-        ? options.map((option) => (
+      {disableNative ? (
+        <>
+          <MenuItem disabled selected={typeof value === "undefined"} hidden>
+            {placeholder}
+          </MenuItem>
+          {options.map((option) => (
             <MenuItem key={getOptionKey(option)} value={getOptionKey(option)}>
               {getOptionLabel(option)}
             </MenuItem>
-          ))
-        : options.map((option) => (
+          ))}
+        </>
+      ) : (
+        <>
+          <option disabled selected={typeof value === "undefined"} hidden>
+            {placeholder}
+          </option>
+          {options.map((option) => (
             <option key={getOptionKey(option)} value={getOptionKey(option)}>
               {getOptionLabel(option)}
             </option>
           ))}
+        </>
+      )}
     </TextField>
   );
 }
