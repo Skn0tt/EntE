@@ -33,6 +33,7 @@ import { makeTranslationHook } from "../../helpers/makeTranslationHook";
 import { useBoolean } from "react-use";
 import { LoginAPI } from "../../login.api";
 import { TOTPModal } from "./TOTPModal";
+import { isValidPassword } from "@@types";
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionCode: {
@@ -52,6 +53,8 @@ const lang = {
     passwordForgot: "Forgot Password?",
     defaultBanner: "In order to use EntE, log in.",
     invalidCredentials: "Login failed: Invalid credentials",
+    invalidCredentialsAndMissingSpecialChars:
+      "Login failed: Invalid credentials. Have you thought of the special characters?",
   },
   de: {
     title: "Anmelden",
@@ -60,7 +63,9 @@ const lang = {
     password: "Passwort",
     passwordForgot: "Passwort Vergessen?",
     defaultBanner: "Bitte melden Sie sich an, um EntE zu nutzen.",
-    invalidCredentials: "Anmeldung fehlgeschlagen: Falsche Anmeldedaten",
+    invalidCredentials: "Anmeldung fehlgeschlagen: Falsche Anmeldedaten.",
+    invalidCredentialsAndMissingSpecialChars:
+      "Anmeldung fehlgeschlagen. Hast du an die Sonderzeichen gedacht?",
   },
 };
 
@@ -111,9 +116,14 @@ function Login(prosp: {}) {
         (fail) => {
           switch (fail) {
             case "auth_invalid":
-              setPassword("");
+              addMessages(
+                isValidPassword(password)
+                  ? lang.invalidCredentials
+                  : lang.invalidCredentialsAndMissingSpecialChars
+              );
+
               toggleTOTPModal(false);
-              addMessages(lang.invalidCredentials);
+              setPassword("");
               break;
             case "totp_missing":
               toggleTOTPModal(true);
