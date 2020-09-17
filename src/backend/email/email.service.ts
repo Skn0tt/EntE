@@ -171,6 +171,7 @@ export class EmailService {
 
   async dispatchWeeklySummary(teacher: UserDto, slots: SlotDto[]) {
     const data = slots.map<WeeklySummaryRowData>((s) => ({
+      class: s.student.class!,
       date: s.date,
       displayname: s.student.displayname,
       hour_from: s.from,

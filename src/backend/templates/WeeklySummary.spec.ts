@@ -20,10 +20,12 @@ describe("WeeklySummary", () => {
           hour_from: 1,
           hour_to: 2,
           signed: false,
+          class: "2020",
           educational: false,
         },
         {
           date: dateToIsoString(Date.now() + 24 * 60 * 60 * 1000),
+          class: "2020",
           signed: true,
           hour_to: 1,
           hour_from: 2,
@@ -52,6 +54,7 @@ describe("WeeklySummary", () => {
         {
           date: dateToIsoString(new Date()),
           displayname: "simon",
+          class: "2020",
           hour_from: 1,
           hour_to: 2,
           signed: false,
@@ -63,6 +66,7 @@ describe("WeeklySummary", () => {
           hour_to: 1,
           hour_from: 2,
           displayname: "simone",
+          class: "2020",
           educational: false,
         },
       ];
