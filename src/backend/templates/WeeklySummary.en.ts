@@ -6,6 +6,7 @@ import { format, parseISO, getISOWeek } from "date-fns";
 const tableRow = (data: WeeklySummaryRowData) => `
   <tr>
     <td>${data.displayname}</td>
+    <td>${data.class}</td>
     <td>${format(parseISO(data.date), "PP", { locale: enLocale })}</td>
     <td>${data.hour_from}</td>
     <td>${data.hour_to}</td>
@@ -29,6 +30,7 @@ const template: HandlebarsTemplateDelegate<WeeklySummaryOptions> = Handlebars.co
         <mj-table>
           <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
             <th>Student</th>
+            <th>Class</th>
             <th>Date</th>
             <th>From</th>
             <th>To</th>
