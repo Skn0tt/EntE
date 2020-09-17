@@ -65,6 +65,7 @@ type ChildrenInputProps = ChildrenInputOwnProps &
 
 interface State {
   selected?: UserN;
+  childInput: string;
 }
 
 /**
@@ -78,6 +79,7 @@ export class ChildrenInput extends React.PureComponent<
     selected: this.props.students.filter(
       (u) => !includes(this.props.children)(u)
     )[0],
+    childInput: "",
   };
 
   componentWillUpdate() {
@@ -135,6 +137,8 @@ export class ChildrenInput extends React.PureComponent<
         <Grid item container>
           <Grid item xs={11}>
             <SearchableDropdown<UserN>
+              value={this.state.childInput}
+              onChange={(childInput) => this.setState({ childInput })}
               items={students.filter((u) => !includes(children)(u))}
               onSelect={this.handleSelectChild}
               itemToString={(i) => i.get("displayname")}

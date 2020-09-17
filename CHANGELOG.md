@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix bug introduced in v0.42.0 regarding searchable dropdowns
+
 ## [v0.42.0] - 2020-09-17
 
 The release of small UX improvements :)
