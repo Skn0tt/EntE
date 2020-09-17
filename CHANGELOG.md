@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.42.0] - 2020-09-17
+
+The release of small UX improvements :)
+
 - Remind users of special characters in the password on failed login
 - Creating new entries: Slot hours now start at "1-1" to prevent students from creating overlapping slots
 - Add `class` column to weekly summary
