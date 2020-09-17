@@ -44,14 +44,16 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
 
   const { onChange, isRange } = props;
 
-  const [category, setCategory] = React.useState<EntryReasonCategory>(
-    EntryReasonCategory.ILLNESS
-  );
+  const [category, setCategory] = React.useState<EntryReasonCategory>();
   const [payload, setPayload] = React.useState<
     Partial<EntryReasonPayload> | undefined
   >({});
 
   React.useEffect(() => {
+    if (!category) {
+      return;
+    }
+
     const categoryIsMultidayAllowed = entryReasonCategoryIsAllowedInMultiday(
       category
     );
@@ -62,7 +64,7 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
   }, [category, isRange, setCategory]);
 
   React.useEffect(() => {
-    if (!!payload) {
+    if (!!payload && !!category) {
       onChange({
         category,
         payload,
@@ -84,7 +86,6 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
     <Grid container direction="column" spacing={8}>
       <Grid item>
         <Typography variant="h6">{trans.title}</Typography>
-        <Typography variant="caption">{trans.caption}</Typography>
       </Grid>
 
       <Grid item>
@@ -100,6 +101,7 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
           value={category}
           fullWidth
           label={trans.type}
+          placeholder={trans.caption}
         />
       </Grid>
 

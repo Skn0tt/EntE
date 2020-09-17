@@ -111,10 +111,7 @@ const CreateEntry = (props: {}) => {
   );
   const [endDate, setEndDate] = React.useState<string | undefined>(undefined);
   const [slots, setSlots] = React.useState<CreateSlotDto[]>([]);
-  const [reason, setReason] = React.useState<EntryReasonDto>({
-    category: EntryReasonCategory.ILLNESS,
-    payload: {},
-  });
+  const [reason, setReason] = React.useState<EntryReasonDto>();
   const [prefiledSlots, setPrefiledSlots] = React.useState<string[]>([]);
 
   const firstChildOfParent: string | undefined = children
