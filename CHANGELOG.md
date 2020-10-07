@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix wording for "other" entry reason categories when the rest is hidden
+
 ## [v0.43.0] - 2020-10-07
 
 - Add API to hide specific entry reason categories

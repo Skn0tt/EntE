@@ -8,6 +8,8 @@ export const EntryReasonCategoriesTranslation = {
     [EntryReasonCategory.EXAMEN]: "Examen",
     [EntryReasonCategory.COMPETITION]: "Competition",
     [EntryReasonCategory.FIELD_TRIP]: "Field Trip",
+    other_educational_sole: "Educational",
+    other_non_educational_sole: "Non-educational",
   },
   de: {
     [EntryReasonCategory.ILLNESS]: "Krankheit / Arztbesuch",
@@ -16,5 +18,7 @@ export const EntryReasonCategoriesTranslation = {
     [EntryReasonCategory.EXAMEN]: "Klausur",
     [EntryReasonCategory.COMPETITION]: "Wettbewerb",
     [EntryReasonCategory.FIELD_TRIP]: "Exkursion",
+    other_educational_sole: "Schulisch",
+    other_non_educational_sole: "Außerschulisch",
   },
 };
