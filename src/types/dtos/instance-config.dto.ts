@@ -1,4 +1,5 @@
 import { Languages } from "../languages";
+import { EntryReasonCategory } from "./entry-reason.dto";
 
 export class ParentSignatureTimesDto {
   expiry: number;
@@ -11,6 +12,7 @@ export class InstanceConfigDto {
   parentSignatureTimes: ParentSignatureTimesDto;
   entryCreationDeadline: number;
   isWeeklySummaryDisabled: boolean;
+  hiddenEntryReasonCategories: EntryReasonCategory[];
 }
 
 export const DEFAULT_ENTRY_CREATION_DEADLINE = 14;

@@ -25,6 +25,10 @@ export enum EntryReasonCategory {
 
 export const entryReasonCategoryArray = enumToArray(EntryReasonCategory);
 
+export function isEntryReasonCategory(v: string): v is EntryReasonCategory {
+  return entryReasonCategoryArray.includes(v);
+}
+
 export const REASON_CATEGORIES_EDUCATIONAL = [
   EntryReasonCategory.EXAMEN,
   EntryReasonCategory.FIELD_TRIP,

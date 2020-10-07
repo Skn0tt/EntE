@@ -21,6 +21,7 @@ import {
   DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME,
   DEFAULT_ENTRY_CREATION_DEADLINE,
+  EntryReasonCategory,
 } from "@@types";
 import { Action } from "redux";
 import { FilterScope } from "../filter-scope";
@@ -75,6 +76,7 @@ interface InstanceConfigRecord {
   loginBanners: Map<Languages, string>;
   parentSignatureTimes: ParentSignatureTimesN;
   entryCreationDeadline: number;
+  hiddenEntryReasonCategories: EntryReasonCategory[];
 }
 
 export type InstanceConfigN = ImmutableRecord<InstanceConfigRecord>;
@@ -84,6 +86,7 @@ export const InstanceConfigN = ImmutableRecord<InstanceConfigRecord>(
     loginBanners: Map(),
     parentSignatureTimes: ParentSignatureTimesN(),
     entryCreationDeadline: DEFAULT_ENTRY_CREATION_DEADLINE,
+    hiddenEntryReasonCategories: [],
   },
   "InstanceConfigN"
 );
