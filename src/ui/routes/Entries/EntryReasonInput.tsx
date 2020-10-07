@@ -15,7 +15,7 @@ import { ExamenReasonInput } from "./ExamenReasonInput";
 import FieldTripReasonInput from "./FieldTripReasonInput";
 import { CompetitionReasonInput } from "./CompetitionReasonInput";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
-import { getHiddenEntryReasonCategories, getInstanceConfig } from "ui/redux";
+import { getHiddenEntryReasonCategories } from "ui/redux";
 import { useSelector } from "react-redux";
 
 const useTranslation = makeTranslationHook({
@@ -104,7 +104,33 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
             ...hiddenEntryReasonCategories
           )}
           getOptionKey={_.identity}
-          getOptionLabel={(k) => trans.typeLabels[k]}
+          getOptionLabel={(k) => {
+            if (k === EntryReasonCategory.OTHER_EDUCATIONAL) {
+              const allOthersAreHidden = [
+                EntryReasonCategory.COMPETITION,
+                EntryReasonCategory.EXAMEN,
+                EntryReasonCategory.FIELD_TRIP,
+              ].every((educationalReason) =>
+                hiddenEntryReasonCategories.includes(educationalReason)
+              );
+              if (allOthersAreHidden) {
+                return trans.typeLabels.other_educational_sole;
+              }
+            }
+
+            if (k === EntryReasonCategory.OTHER_NON_EDUCATIONAL) {
+              const allOthersAreHidden = [
+                EntryReasonCategory.ILLNESS,
+              ].every((nonEducationalReason) =>
+                hiddenEntryReasonCategories.includes(nonEducationalReason)
+              );
+              if (allOthersAreHidden) {
+                return trans.typeLabels.other_non_educational_sole;
+              }
+            }
+
+            return trans.typeLabels[k];
+          }}
           value={category}
           fullWidth
           label={trans.type}
