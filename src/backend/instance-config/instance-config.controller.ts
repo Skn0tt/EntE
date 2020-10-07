@@ -15,7 +15,12 @@ import {
   InstanceConfigService,
   SetInstanceConfigValueFail,
 } from "./instance-config.service";
-import { InstanceConfigDto, Languages, isValidLanguage } from "@@types";
+import {
+  InstanceConfigDto,
+  Languages,
+  isValidLanguage,
+  EntryReasonCategory,
+} from "@@types";
 import { Ctx, RequestContext } from "../helpers/request-context";
 import { Request } from "express";
 
@@ -218,5 +223,31 @@ export class InstanceConfigController {
       },
       () => {}
     );
+  }
+
+  @Get("hiddenEntryReasonCategories")
+  async getHiddenEntryReasonCategories(): Promise<EntryReasonCategory[]> {
+    return await this.instanceConfigService.getHiddenEntryReasonCategories();
+  }
+
+  @Put("hiddenEntryReasonCategories")
+  @UseGuards(AuthGuard("combined"))
+  async setHiddenEntryReasonCategories(
+    @Req() req: Request,
+    @Ctx() ctx: RequestContext
+  ): Promise<void> {
+    const result = await this.instanceConfigService.setHiddenEntryReasonCategories(
+      req.body,
+      ctx.user
+    );
+
+    return result.forEachFail((fail) => {
+      switch (fail) {
+        case SetInstanceConfigValueFail.ForbiddenForRole:
+          throw new ForbiddenException();
+        case SetInstanceConfigValueFail.IllegalValue:
+          throw new BadRequestException("Illegal Value");
+      }
+    });
   }
 }

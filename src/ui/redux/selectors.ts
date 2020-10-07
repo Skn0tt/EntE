@@ -20,7 +20,12 @@ import {
   ParentSignatureTimesN,
 } from "./types";
 import { createSelector } from "reselect";
-import { Roles, Languages, DEFAULT_DEFAULT_LANGUAGE } from "@@types";
+import {
+  Roles,
+  Languages,
+  DEFAULT_DEFAULT_LANGUAGE,
+  EntryReasonCategory,
+} from "@@types";
 import { Maybe } from "monet";
 import * as _ from "lodash";
 import { Map, Set } from "immutable";
@@ -224,6 +229,13 @@ export const getStudentsOfClass = (_class: string) =>
 export const getInstanceConfig: Selector<Maybe<InstanceConfigN>> = (state) =>
   Maybe.fromNull(state.get("instanceConfig"));
 
+export const getHiddenEntryReasonCategories: Selector<EntryReasonCategory[]> = (
+  state
+) =>
+  getInstanceConfig(state)
+    .map((u) => u.get("hiddenEntryReasonCategories"))
+    .orSome([]);
+
 export const getOneSelvesLanguage: Selector<Maybe<Languages>> = (state) =>
   getOneSelf(state).flatMap((u) => Maybe.fromFalsy(u.get("language")));
 
@@ -275,6 +287,13 @@ export const getLoginBanners: Selector<Maybe<Map<Languages, string>>> = (
 
 export const isInstanceConfigPresent: Selector<boolean> = (state) =>
   getLoginBanners(state).isSome();
+
+export const isInstanceConfigUpToDate: Selector<boolean> = (state) => {
+  const instanceConfig = getInstanceConfig(state);
+  return instanceConfig
+    .filter((config) => config.has("hiddenEntryReasonCategories"))
+    .isSome();
+};
 
 export const getLoginBannerForLanguage = (
   language: Languages

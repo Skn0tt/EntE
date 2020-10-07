@@ -15,6 +15,8 @@ import { ExamenReasonInput } from "./ExamenReasonInput";
 import FieldTripReasonInput from "./FieldTripReasonInput";
 import { CompetitionReasonInput } from "./CompetitionReasonInput";
 import { EntryReasonCategoriesTranslation } from "../../entryReasonCategories.translation";
+import { getHiddenEntryReasonCategories, getInstanceConfig } from "ui/redux";
+import { useSelector } from "react-redux";
 
 const useTranslation = makeTranslationHook({
   en: {
@@ -48,6 +50,10 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
   const [payload, setPayload] = React.useState<
     Partial<EntryReasonPayload> | undefined
   >({});
+
+  const hiddenEntryReasonCategories = useSelector(
+    getHiddenEntryReasonCategories
+  );
 
   React.useEffect(() => {
     if (!category) {
@@ -91,11 +97,12 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
       <Grid item>
         <DropdownInput<EntryReasonCategory>
           onChange={handleChangeCategory}
-          options={
+          options={_.without(
             isRange
               ? REASON_CATEGORIES_ALLOWED_IN_MULTIDAY
-              : entryReasonCategoryArray
-          }
+              : entryReasonCategoryArray,
+            ...hiddenEntryReasonCategories
+          )}
           getOptionKey={_.identity}
           getOptionLabel={(k) => trans.typeLabels[k]}
           value={category}

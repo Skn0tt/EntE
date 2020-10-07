@@ -422,10 +422,12 @@ const reducer = handleActions<AppState, any>(
           loginBanners,
           parentSignatureTimes,
           entryCreationDeadline,
+          hiddenEntryReasonCategories,
         } = payload!;
         const instanceConfigN = new InstanceConfigN({
           defaultLanguage,
           entryCreationDeadline,
+          hiddenEntryReasonCategories,
           loginBanners: Map(loginBanners as any),
           parentSignatureTimes: ParentSignatureTimesN(parentSignatureTimes),
         });

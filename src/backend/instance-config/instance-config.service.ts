@@ -4,13 +4,14 @@ import {
   Languages,
   languagesArr,
   DEFAULT_DEFAULT_LANGUAGE,
-  Roles,
   DEFAULT_PARENT_SIGNATURE_EXPIRY_TIME,
   DEFAULT_PARENT_SIGNATURE_NOTIFICATION_TIME,
   ParentSignatureTimesDto,
   isValidParentSignatureNotificationTime,
   isValidParentSignatureExpiryTime,
   DEFAULT_ENTRY_CREATION_DEADLINE,
+  EntryReasonCategory,
+  isEntryReasonCategory,
 } from "@@types";
 import * as _ from "lodash";
 import { Maybe, Validation, Success, Fail } from "monet";
@@ -30,6 +31,7 @@ const INSTANCE_CONFIG_KEYS = {
     "INSTANCE_CONFIG__PARENT_SIGNATURE_NOTIFICATION_TIME",
   ENTRY_CREATION_DEADLINE: "INSTANCE_CONFIG__ENTRY_CREATION_DEADLINE",
   DISABLE_WEEKLY_SUMMARY: "INSTANCE_CONFIG__DISABLE_WEEKLY_SUMMARY",
+  HIDDEN_ENTRY_REASON_CATEGORIES: "HIDDEN_ENTRY_REASON_CATEGORIES",
 };
 
 @Injectable()
@@ -56,6 +58,10 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE,
       "" + DEFAULT_ENTRY_CREATION_DEADLINE
     );
+    await this.keyValueStoreRepo.setIfNotExists(
+      INSTANCE_CONFIG_KEYS.HIDDEN_ENTRY_REASON_CATEGORIES,
+      JSON.stringify([])
+    );
   }
 
   async getInstanceConfig(): Promise<InstanceConfigDto> {
@@ -65,7 +71,8 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_EXPIRY_TIME,
       INSTANCE_CONFIG_KEYS.PARENT_SIGNATURE_NOTIFICATION_TIME,
       INSTANCE_CONFIG_KEYS.ENTRY_CREATION_DEADLINE,
-      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY
+      INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY,
+      INSTANCE_CONFIG_KEYS.HIDDEN_ENTRY_REASON_CATEGORIES
     );
 
     const loginBanners = _.fromPairs(
@@ -96,10 +103,17 @@ export class InstanceConfigService implements OnModuleInit {
       .map((s) => s === "true")
       .orSome(false);
 
+    const hiddenEntryReasonCategories: EntryReasonCategory[] = values[
+      INSTANCE_CONFIG_KEYS.HIDDEN_ENTRY_REASON_CATEGORIES
+    ]
+      .map(JSON.parse)
+      .orSome(false);
+
     return {
       defaultLanguage,
       loginBanners,
       isWeeklySummaryDisabled,
+      hiddenEntryReasonCategories,
       entryCreationDeadline: entryCreationDeadline.orSome(
         DEFAULT_ENTRY_CREATION_DEADLINE
       ),
@@ -295,5 +309,32 @@ export class InstanceConfigService implements OnModuleInit {
       INSTANCE_CONFIG_KEYS.DISABLE_WEEKLY_SUMMARY,
       disabled ? "true" : "false"
     );
+  }
+
+  async getHiddenEntryReasonCategories(): Promise<EntryReasonCategory[]> {
+    const res = await this.keyValueStoreRepo.get(
+      INSTANCE_CONFIG_KEYS.HIDDEN_ENTRY_REASON_CATEGORIES
+    );
+    return res.map(JSON.parse).orSome([]);
+  }
+
+  async setHiddenEntryReasonCategories(
+    categories: EntryReasonCategory[],
+    user: RequestContextUser
+  ): Promise<Validation<SetInstanceConfigValueFail, null>> {
+    if (!user.isAdmin) {
+      return Fail(SetInstanceConfigValueFail.ForbiddenForRole);
+    }
+
+    if (!categories.every(isEntryReasonCategory)) {
+      return Fail(SetInstanceConfigValueFail.IllegalValue);
+    }
+
+    await this.keyValueStoreRepo.set(
+      INSTANCE_CONFIG_KEYS.HIDDEN_ENTRY_REASON_CATEGORIES,
+      JSON.stringify(categories)
+    );
+
+    return Success(null);
   }
 }
