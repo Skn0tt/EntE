@@ -11,10 +11,13 @@
     "@material-ui/styles": "^4.9.0",
     "date-fns": "^2.10.0",
     "framer-motion": "^1.9.1",
-    "parcel": "^1.12.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-full-screen": "^0.2.4",
     "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "parcel": "^1.12.4"
   }
 }
