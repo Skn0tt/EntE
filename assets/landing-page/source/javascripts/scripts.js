@@ -183,20 +183,3 @@
 
   scrollToggle(400, firstContactLogo.fadeIn, firstContactLogo.fadeOut);
 })(jQuery);
-
-window.cookieconsent.initialise({
-  palette: {
-    popup: { background: "white", text: "#555" },
-    button: { background: "#fd7e14", text: "white" },
-  },
-  content: {
-    message:
-      "Wir benutzen Cookies 🍪, um unsere Seite weiter optimieren zu können.",
-    dismiss: "Verstanden!",
-  },
-  showLink: false,
-  position: "bottom-center",
-  theme: "edgeless",
-  revokable: false,
-  onStatusChange: console.log,
-});
