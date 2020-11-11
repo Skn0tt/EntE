@@ -4,6 +4,7 @@ import {
   ExamenPayload,
   FieldTripPayload,
   IllnessPayload,
+  QuarantinePayload,
 } from "./entry-reason.dto";
 import { EntryReasonDtoValidator } from "./entry-reason-dto.validator";
 
@@ -15,6 +16,18 @@ describe("EntryReasonValidator", () => {
           EntryReasonDtoValidator().validate({
             category: EntryReasonCategory.ILLNESS,
             payload: {} as IllnessPayload,
+          })
+        ).toBe(true);
+      });
+    });
+  });
+  describe(EntryReasonCategory.QUARANTINE, () => {
+    describe("when given empty object payload", () => {
+      it("returns true", () => {
+        expect(
+          EntryReasonDtoValidator().validate({
+            category: EntryReasonCategory.QUARANTINE,
+            payload: {} as QuarantinePayload,
           })
         ).toBe(true);
       });

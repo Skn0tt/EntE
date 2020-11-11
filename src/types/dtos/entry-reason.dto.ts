@@ -20,6 +20,7 @@ export enum EntryReasonCategory {
   COMPETITION = "competition",
   OTHER_EDUCATIONAL = "other_educational",
   ILLNESS = "illness",
+  QUARANTINE = "quarantine",
   OTHER_NON_EDUCATIONAL = "other_non_educational",
 }
 
@@ -34,6 +35,7 @@ export const REASON_CATEGORIES_EDUCATIONAL = [
   EntryReasonCategory.FIELD_TRIP,
   EntryReasonCategory.COMPETITION,
   EntryReasonCategory.OTHER_EDUCATIONAL,
+  EntryReasonCategory.QUARANTINE,
 ];
 
 export const REASON_CATEGORIES_NON_EDUCATIONAL = [
@@ -49,6 +51,7 @@ export const REASON_CATEGORIES_DISALLOWED_IN_MULTIDAY = [
 export const REASON_CATEGORIES_ALLOWED_IN_MULTIDAY = [
   EntryReasonCategory.FIELD_TRIP,
   EntryReasonCategory.ILLNESS,
+  EntryReasonCategory.QUARANTINE,
   EntryReasonCategory.OTHER_EDUCATIONAL,
   EntryReasonCategory.OTHER_NON_EDUCATIONAL,
 ];
@@ -73,6 +76,7 @@ export const entryReasonIsEducational = (v: EntryReasonDto) => {
 };
 
 export type EntryReasonPayload =
+  | QuarantinePayload
   | OtherNonEducationalPayload
   | OtherEducationalPayload
   | ExamenPayload
@@ -84,6 +88,8 @@ export class IllnessPayload {
   @IsOptional()
   _mock_property?: never;
 }
+
+export class QuarantinePayload extends IllnessPayload {}
 
 export class ExamenPayload {
   @IsInt()
@@ -170,6 +176,8 @@ export class EntryReasonDto {
         return OtherNonEducationalPayload;
       case EntryReasonCategory.ILLNESS:
         return IllnessPayload;
+      case EntryReasonCategory.QUARANTINE:
+        return QuarantinePayload;
     }
     throw new Error("category unknown");
   })

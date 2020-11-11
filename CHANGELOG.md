@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add new entry reason: Quarantine. It's basically "Illness", but with a different label.
+
 ## [v0.43.1] - 2020-10-08
 
 - Fix wording for "other" entry reason categories when the rest is hidden
