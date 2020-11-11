@@ -81,7 +81,11 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
   const handleChangeCategory = React.useCallback(
     (category: EntryReasonCategory) => {
       setCategory(category);
-      if (category === EntryReasonCategory.ILLNESS) {
+      if (
+        [EntryReasonCategory.ILLNESS, EntryReasonCategory.QUARANTINE].includes(
+          category
+        )
+      ) {
         setPayload({});
       }
     },
@@ -121,6 +125,7 @@ export const EntryReasonInput: React.FC<EntryReasonInputProps> = (props) => {
             if (k === EntryReasonCategory.OTHER_NON_EDUCATIONAL) {
               const allOthersAreHidden = [
                 EntryReasonCategory.ILLNESS,
+                EntryReasonCategory.QUARANTINE,
               ].every((nonEducationalReason) =>
                 hiddenEntryReasonCategories.includes(nonEducationalReason)
               );

@@ -51,6 +51,7 @@ export class EntryReasonRepo {
         result.description = description!;
         break;
       }
+      case EntryReasonCategory.QUARANTINE:
       case EntryReasonCategory.ILLNESS: {
         break;
       }
@@ -101,6 +102,7 @@ export class EntryReasonRepo {
         break;
       }
 
+      case EntryReasonCategory.QUARANTINE:
       case EntryReasonCategory.ILLNESS: {
         result.payload = {};
         break;

@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: "rgb(104, 159, 56)",
     color: theme.palette.common.white,
   },
+  [EntryReasonCategoriesTranslation.en.quarantine]: {
+    backgroundColor: "rgb(104, 159, 56)",
+    color: theme.palette.common.white,
+  },
   [EntryReasonCategoriesTranslation.en.other_educational]: {
     backgroundColor: "rgb(69, 90, 100)",
     color: theme.palette.common.white,
@@ -48,6 +52,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.common.white,
   },
   [EntryReasonCategoriesTranslation.de.illness]: {
+    backgroundColor: "rgb(104, 159, 56)",
+    color: theme.palette.common.white,
+  },
+  [EntryReasonCategoriesTranslation.de.quarantine]: {
     backgroundColor: "rgb(104, 159, 56)",
     color: theme.palette.common.white,
   },
