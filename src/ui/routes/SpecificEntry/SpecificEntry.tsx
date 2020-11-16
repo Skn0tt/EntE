@@ -102,7 +102,7 @@ const useTranslation = makeTranslationHook({
         v: OtherNonEducationalPayload
       ) => `Other (non-educational): ${v.description}`,
       [EntryReasonCategory.ILLNESS]: "Illness",
-      [EntryReasonCategory.QUARANTINE]: "Quarantine",
+      [EntryReasonCategory.QUARANTINE]: "Distance Learning",
       [EntryReasonCategory.FIELD_TRIP]: (
         v: FieldTripPayload,
         teacher: Maybe<UserN>
@@ -162,7 +162,7 @@ const useTranslation = makeTranslationHook({
         v: OtherNonEducationalPayload
       ) => `Sonstiges (außerschulisch): ${v.description}`,
       [EntryReasonCategory.ILLNESS]: "Krankheit",
-      [EntryReasonCategory.QUARANTINE]: "Quarantäne",
+      [EntryReasonCategory.QUARANTINE]: "Distanzunterricht",
       [EntryReasonCategory.FIELD_TRIP]: (
         v: FieldTripPayload,
         teacher: Maybe<UserN>
