@@ -1,164 +1,149 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ChildrenInput renders correctly 1`] = `
-<WithStyles(Grid)
-  container={true}
-  direction="column"
+<Provider
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
 >
-  <WithStyles(Grid)
-    item={true}
+  <ChildrenInput
+    onChange={[Function]}
+    students={
+      Array [
+        Immutable.UserN {
+          "id": "fdas90ß9sß0",
+          "username": "hhansen",
+          "children": Array [],
+          "firstName": "Horst",
+          "lastName": "Hansen",
+          "displayname": "Horst Hansen",
+          "email": "hort@hansen.de",
+          "birthday": "2100-01-01",
+          "role": "student",
+          "isAdmin": false,
+          "childrenIds": Array [],
+          "class": undefined,
+          "language": undefined,
+          "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
+          "twoFAenabled": false,
+        },
+        Immutable.UserN {
+          "id": "jkldsfjlk",
+          "username": "hball",
+          "children": Array [],
+          "firstName": "Hanni",
+          "lastName": "Ball",
+          "displayname": "Hanni Ball",
+          "email": "hanni@ball.de",
+          "birthday": "2100-01-01",
+          "role": "student",
+          "isAdmin": false,
+          "childrenIds": Array [],
+          "class": undefined,
+          "language": undefined,
+          "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
+          "twoFAenabled": false,
+        },
+      ]
+    }
   >
-    <WithStyles(Typography)
-      variant="h6"
-    >
-      Children
-    </WithStyles(Typography)>
-  </WithStyles(Grid)>
-  <WithStyles(Grid)
-    item={true}
-  >
-    <WithStyles(List)>
-      <WithStyles(ListItem)
-        key="0"
-      >
-        <WithStyles(ListItemText)
-          primary="Horst Hansen"
-        />
-        <WithStyles(ListItemSecondaryAction)>
-          <WithStyles(IconButton)
-            onClick={[Function]}
-          >
-            <pure(DeleteIcon) />
-          </WithStyles(IconButton)>
-        </WithStyles(ListItemSecondaryAction)>
-      </WithStyles(ListItem)>
-    </WithStyles(List)>
-  </WithStyles(Grid)>
-  <WithStyles(Grid)
-    container={true}
-    item={true}
-  >
-    <WithStyles(Grid)
-      item={true}
-      xs={11}
-    >
-      <SearchableDropdown
-        helperText="Add children"
-        includeItem={[Function]}
-        itemToString={[Function]}
-        items={
-          Array [
-            Immutable.UserN {
-              "id": "jkldsfjlk",
-              "username": "hball",
-              "children": Array [],
-              "firstName": "Hanni",
-              "lastName": "Ball",
-              "displayname": "Hanni Ball",
-              "email": "hanni@ball.de",
-              "birthday": "2100-01-01",
-              "role": "student",
-              "isAdmin": false,
-              "childrenIds": Array [],
-              "class": undefined,
-              "language": undefined,
-              "managerNotes": undefined,
-              "subscribedToWeeklySummary": undefined,
-              "twoFAenabled": false,
-            },
-          ]
-        }
-        label="Child"
-        onChange={[Function]}
-        onSelect={[Function]}
-        value=""
-      />
-    </WithStyles(Grid)>
-    <WithStyles(Grid)
-      item={true}
-      xs={1}
-    >
-      <WithStyles(Button)
-        className="add"
-        disabled={false}
-        mini={true}
-        onClick={[Function]}
-        variant="fab"
-      >
-        <pure(AddIcon) />
-      </WithStyles(Button)>
-    </WithStyles(Grid)>
-  </WithStyles(Grid)>
-</WithStyles(Grid)>
+    id
+    fdas90ß9sß0
+    username
+    hhansen
+    children
+    firstName
+    Horst
+    lastName
+    Hansen
+    displayname
+    Horst Hansen
+    email
+    hort@hansen.de
+    birthday
+    2100-01-01
+    role
+    student
+    isAdmin
+    childrenIds
+    class
+    language
+    managerNotes
+    subscribedToWeeklySummary
+    twoFAenabled
+  </ChildrenInput>
+</Provider>
 `;
 
 exports[`ChildrenInput renders when no additional users are available 1`] = `
-<WithStyles(Grid)
-  container={true}
-  direction="column"
+<Provider
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
 >
-  <WithStyles(Grid)
-    item={true}
+  <ChildrenInput
+    onChange={[Function]}
+    students={
+      Array [
+        Immutable.UserN {
+          "id": "fdas90ß9sß0",
+          "username": "hhansen",
+          "children": Array [],
+          "firstName": "Horst",
+          "lastName": "Hansen",
+          "displayname": "Horst Hansen",
+          "email": "hort@hansen.de",
+          "birthday": "2100-01-01",
+          "role": "student",
+          "isAdmin": false,
+          "childrenIds": Array [],
+          "class": undefined,
+          "language": undefined,
+          "managerNotes": undefined,
+          "subscribedToWeeklySummary": undefined,
+          "twoFAenabled": false,
+        },
+      ]
+    }
   >
-    <WithStyles(Typography)
-      variant="h6"
-    >
-      Children
-    </WithStyles(Typography)>
-  </WithStyles(Grid)>
-  <WithStyles(Grid)
-    item={true}
-  >
-    <WithStyles(List)>
-      <WithStyles(ListItem)
-        key="0"
-      >
-        <WithStyles(ListItemText)
-          primary="Horst Hansen"
-        />
-        <WithStyles(ListItemSecondaryAction)>
-          <WithStyles(IconButton)
-            onClick={[Function]}
-          >
-            <pure(DeleteIcon) />
-          </WithStyles(IconButton)>
-        </WithStyles(ListItemSecondaryAction)>
-      </WithStyles(ListItem)>
-    </WithStyles(List)>
-  </WithStyles(Grid)>
-  <WithStyles(Grid)
-    container={true}
-    item={true}
-  >
-    <WithStyles(Grid)
-      item={true}
-      xs={11}
-    >
-      <SearchableDropdown
-        helperText="Add children"
-        includeItem={[Function]}
-        itemToString={[Function]}
-        items={Array []}
-        label="Child"
-        onChange={[Function]}
-        onSelect={[Function]}
-        value=""
-      />
-    </WithStyles(Grid)>
-    <WithStyles(Grid)
-      item={true}
-      xs={1}
-    >
-      <WithStyles(Button)
-        className="add"
-        disabled={true}
-        mini={true}
-        onClick={[Function]}
-        variant="fab"
-      >
-        <pure(AddIcon) />
-      </WithStyles(Button)>
-    </WithStyles(Grid)>
-  </WithStyles(Grid)>
-</WithStyles(Grid)>
+    id
+    fdas90ß9sß0
+    username
+    hhansen
+    children
+    firstName
+    Horst
+    lastName
+    Hansen
+    displayname
+    Horst Hansen
+    email
+    hort@hansen.de
+    birthday
+    2100-01-01
+    role
+    student
+    isAdmin
+    childrenIds
+    class
+    language
+    managerNotes
+    subscribedToWeeklySummary
+    twoFAenabled
+  </ChildrenInput>
+</Provider>
 `;
