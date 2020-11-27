@@ -7,11 +7,12 @@
  */
 
 import * as React from "react";
-import { ChildrenInput, includes, translation } from "./ChildrenInput";
+import ChildrenInput, { includes } from "./ChildrenInput";
 import { shallow } from "enzyme";
 import { Roles } from "@@types";
 import * as sinon from "sinon";
 import { UserN } from "../redux";
+import { TestWrapper } from "test/TestWrapper";
 
 const userId = "fdas90ß9sß0";
 const user = new UserN({
@@ -38,43 +39,35 @@ const user2 = new UserN({
 });
 
 describe("ChildrenInput", () => {
-  const onChange = sinon.spy();
-
-  const comp = shallow(
-    <ChildrenInput
-      children={[user]}
-      onChange={onChange}
-      translation={translation.en}
-      students={[user, user2]}
-    />
-  );
-
   it("renders correctly", () => {
+    const onChange = sinon.spy();
+
+    const comp = shallow(
+      <TestWrapper>
+        <ChildrenInput
+          children={[user]}
+          onChange={onChange}
+          students={[user, user2]}
+        />
+      </TestWrapper>
+    );
+
     expect(comp).toMatchSnapshot();
   });
 
   it("renders when no additional users are available", () => {
     const onChange = sinon.spy();
     const comp = shallow(
-      <ChildrenInput
-        children={[user]}
-        onChange={onChange}
-        students={[user]}
-        translation={translation.en}
-      />
+      <TestWrapper>
+        <ChildrenInput
+          children={[user]}
+          onChange={onChange}
+          students={[user]}
+        />
+      </TestWrapper>
     );
 
     expect(comp).toMatchSnapshot();
-  });
-
-  describe("when adding user", () => {
-    comp.find(".add").simulate("click");
-
-    it("class `onChange`", () => {
-      expect(onChange.called).toBe(true);
-      expect(onChange.args[0][0]).toHaveLength(2);
-      expect(onChange.args[0][0]).toEqual([user, user2]);
-    });
   });
 });
 

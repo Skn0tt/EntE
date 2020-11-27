@@ -19,7 +19,8 @@ import Typography from "@material-ui/core/Typography/Typography";
 import * as _ from "lodash";
 import { SearchableDropdown } from "../components/SearchableDropdown";
 import { UserN } from "../redux";
-import { withTranslation, WithTranslation } from "../helpers/with-translation";
+import { useState } from "react";
+import { makeTranslationHook } from "../helpers/makeTranslationHook";
 
 export const translation = {
   en: {
@@ -34,22 +35,18 @@ export const translation = {
   },
 };
 
-/**
- * # Helpers
- */
-const without = (arr: any[], ind: number) => {
-  arr.splice(ind, 1);
-  return arr;
-};
+const useTranslation = makeTranslationHook(translation);
+
 export const includes = (exclude: UserN[]) => {
   const excludedIds = exclude.map((u) => u.get("id"));
   return (u: UserN) => _.includes(excludedIds, u.get("id"));
 };
 
-/**
- * # Component Types
- */
-interface ChildrenInputOwnProps {
+function getInitiallySelectedStudent(props: ChildrenInputProps) {
+  return _.differenceBy(props.students, props.children, (u) => u.get("id"))[0];
+}
+
+interface ChildrenInputProps {
   children: UserN[];
   students: UserN[];
   onChange: (children: UserN[]) => void;
@@ -60,113 +57,77 @@ interface ChildrenInputOwnProps {
   };
 }
 
-type ChildrenInputProps = ChildrenInputOwnProps &
-  WithTranslation<typeof translation.en>;
+function ChildrenInput(props: ChildrenInputProps) {
+  const { children, text, students } = props;
+  const [selected, setSelected] = useState<UserN | undefined>(
+    getInitiallySelectedStudent(props)
+  );
 
-interface State {
-  selected?: UserN;
-  childInput: string;
-}
+  const [input, setInput] = useState("");
 
-/**
- * # Component
- */
-export class ChildrenInput extends React.PureComponent<
-  ChildrenInputProps,
-  State
-> {
-  state: State = {
-    selected: this.props.students.filter(
-      (u) => !includes(this.props.children)(u)
-    )[0],
-    childInput: "",
-  };
+  const translation = useTranslation();
 
-  componentWillUpdate() {
-    if (_.isUndefined(this.state.selected)) {
-      const selected = this.props.students.filter(
-        (u) => !includes(this.props.children)(u)
-      )[0];
-      if (!!selected) {
-        this.setState({ selected });
-      }
-    }
-  }
-
-  handleSelectChild = (u?: UserN) =>
-    this.setState({
-      selected: u,
-    });
-
-  handleAdd = () =>
-    this.props.onChange([
-      ...(this.props.children as UserN[]),
-      ...(!!this.state.selected ? [this.state.selected] : []),
-    ]);
-
-  handleDelete = (index: number) =>
-    this.props.onChange(this.props.children.filter((c, i) => i !== index));
-
-  render() {
-    const { students, children, text, translation } = this.props;
-    const { selected } = this.state;
-
-    return (
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="h6">
-            {!!text ? text.title : translation.title}
-          </Typography>
+  return (
+    <Grid container direction="column">
+      <Grid item>
+        <Typography variant="h6">{text?.title ?? translation.title}</Typography>
+      </Grid>
+      {/* List Children */}
+      <Grid item>
+        <List>
+          {children.map((user) => (
+            <ListItem key={user.get("id")}>
+              <ListItemText primary={user.get("displayname")} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  onClick={() => props.onChange(_.without(children, user))}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
+      {/* Add Children */}
+      <Grid item container>
+        <Grid item xs={11}>
+          <SearchableDropdown<UserN>
+            value={input}
+            onChange={setInput}
+            items={students.filter((u) => !includes(children)(u))}
+            onSelect={setSelected}
+            itemToString={(i) => i.get("displayname")}
+            includeItem={(u, searchTerm) =>
+              u
+                .get("displayname")
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+            }
+            helperText={!!text ? text.addChildren : translation.addChildren}
+            label={!!text ? text.child : translation.child}
+          />
         </Grid>
-        {/* List Children */}
-        <Grid item>
-          <List>
-            {children.map((user, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={user.get("displayname")} />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={() => this.handleDelete(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-        {/* Add Children */}
-        <Grid item container>
-          <Grid item xs={11}>
-            <SearchableDropdown<UserN>
-              value={this.state.childInput}
-              onChange={(childInput) => this.setState({ childInput })}
-              items={students.filter((u) => !includes(children)(u))}
-              onSelect={this.handleSelectChild}
-              itemToString={(i) => i.get("displayname")}
-              includeItem={(u, searchTerm) =>
-                u
-                  .get("displayname")
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
+        <Grid item xs={1}>
+          <Button
+            variant="fab"
+            mini
+            onClick={() => {
+              if (!selected) {
+                return;
               }
-              helperText={!!text ? text.addChildren : translation.addChildren}
-              label={!!text ? text.child : translation.child}
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <Button
-              variant="fab"
-              mini
-              onClick={this.handleAdd}
-              className="add"
-              disabled={!selected}
-            >
-              <AddIcon />
-            </Button>
-          </Grid>
+
+              props.onChange([...children, selected]);
+            }}
+            className="add"
+            disabled={!selected}
+          >
+            <AddIcon />
+          </Button>
         </Grid>
       </Grid>
-    );
-  }
+    </Grid>
+  );
 }
 
-export default withTranslation(translation)(ChildrenInput);
+export default ChildrenInput;
