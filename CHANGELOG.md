@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.44.2] - 2020-11-27
+
 - Fix bug in children selector
 
 ## [v0.44.1] - 2020-11-16
