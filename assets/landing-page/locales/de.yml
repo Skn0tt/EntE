@@ -21,7 +21,7 @@ de:
       2018 erhielt EntE den Dr.-Hans-Riegel-Fachpreis der Universität Bonn,
       im Schuljahr 2018/19 begannen erste Pilot-Phasen am Ernst-Moritz-Arndt-Gymnasium.
       Während der Schuljahre 18/19 und 19/20 wurde EntE stetig verbessert.
-      Seit 2020 wird EntE deutschlandweit vertrieben.
+      Zwischen 2020 und 2021 wurde EntE deutschlandweit vertrieben.
   privacy_policy: Datenschutzerklärung
   contact:
     title: Kontakt
@@ -35,6 +35,7 @@ de:
   first_contact:
     title: Erstgespräch vereinbaren
     body: >
+      🚨 EntE wird nicht mehr aktiv entwickelt. Bitte sehen sie von Anfragen ab. 🚨
       Toll, dass Sie sich für EntE interessieren!
       Verraten Sie uns doch ihre E-Mail-Addresse,
       damit wir einen Termin zum unverbindlichen
@@ -43,7 +44,10 @@ de:
   index:
     header:
       title: Digitales Entschuldigungs&shy;verfahren für Schulen
-      subtitle: Digitalisierung geht auch einfach.
+      subtitle: >
+        Digitalisierung geht auch einfach.
+        <br/>
+        🚨 EntE wird nicht mehr aktiv entwickelt. 🚨
       first_contact: Erstgespräch vereinbaren
     advantages:
       subtitle: VORTEILE FÜR SCHULEN
